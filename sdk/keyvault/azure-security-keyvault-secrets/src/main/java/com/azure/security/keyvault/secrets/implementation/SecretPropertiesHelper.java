@@ -11,13 +11,21 @@ public class SecretPropertiesHelper {
 
     public interface SecretPropertiesAccessor {
         void setId(SecretProperties properties, String id);
+
         void setVersion(SecretProperties properties, String version);
+
         void setCreatedOn(SecretProperties properties, OffsetDateTime createdOn);
+
         void setUpdatedOn(SecretProperties properties, OffsetDateTime updatedOn);
+
         void setName(SecretProperties properties, String name);
+
         void setRecoveryLevel(SecretProperties properties, String recoveryLevel);
+
         void setKeyId(SecretProperties properties, String keyId);
+
         void setManaged(SecretProperties properties, Boolean managed);
+
         void setRecoverableDays(SecretProperties properties, Integer recoverableDays);
     }
 

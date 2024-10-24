@@ -170,13 +170,9 @@ public interface Table {
          * The stage of the Table definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithRetentionInDays,
-                DefinitionStages.WithTotalRetentionInDays,
-                DefinitionStages.WithSearchResults,
-                DefinitionStages.WithRestoredLogs,
-                DefinitionStages.WithPlan,
-                DefinitionStages.WithSchema {
+        interface WithCreate extends DefinitionStages.WithRetentionInDays, DefinitionStages.WithTotalRetentionInDays,
+            DefinitionStages.WithSearchResults, DefinitionStages.WithRestoredLogs, DefinitionStages.WithPlan,
+            DefinitionStages.WithSchema {
             /**
              * Executes the create request.
              *
@@ -273,13 +269,8 @@ public interface Table {
     Table.Update update();
 
     /** The template for Table update. */
-    interface Update
-        extends UpdateStages.WithRetentionInDays,
-            UpdateStages.WithTotalRetentionInDays,
-            UpdateStages.WithSearchResults,
-            UpdateStages.WithRestoredLogs,
-            UpdateStages.WithPlan,
-            UpdateStages.WithSchema {
+    interface Update extends UpdateStages.WithRetentionInDays, UpdateStages.WithTotalRetentionInDays,
+        UpdateStages.WithSearchResults, UpdateStages.WithRestoredLogs, UpdateStages.WithPlan, UpdateStages.WithSchema {
         /**
          * Executes the update request.
          *

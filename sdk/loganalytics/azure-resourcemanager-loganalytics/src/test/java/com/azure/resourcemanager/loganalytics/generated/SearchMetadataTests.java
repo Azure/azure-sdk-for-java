@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"requestId\":\"tkl\",\"resultType\":\"xbjhwuaanozjosph\",\"total\":5037944209655699604,\"top\":737566499822055742,\"id\":\"xagl\",\"coreSummaries\":[{\"status\":\"jwosytxitcskfck\",\"numberOfDocuments\":6395656629196998321},{\"status\":\"iekkezz\",\"numberOfDocuments\":3802934058793911141}],\"status\":\"yf\",\"startTime\":\"2021-03-01T23:19:19Z\",\"lastUpdated\":\"2021-02-19T20:13:34Z\",\"eTag\":\"gebdunygaeq\",\"sort\":[{\"name\":\"fatpxllrxcyjmoa\",\"order\":\"desc\"},{\"name\":\"arm\",\"order\":\"asc\"},{\"name\":\"jsjqbjhhyx\",\"order\":\"desc\"},{\"name\":\"yc\",\"order\":\"desc\"}],\"requestTime\":609111947256097194,\"aggregatedValueField\":\"kgymareqnajxqug\",\"aggregatedGroupingFields\":\"ky\",\"sum\":1349349327808665603,\"max\":5313229010418378323,\"schema\":{\"name\":\"ofwq\",\"version\":761384571}}")
-                .toObject(SearchMetadata.class);
+        SearchMetadata model = BinaryData.fromString(
+            "{\"requestId\":\"tkl\",\"resultType\":\"xbjhwuaanozjosph\",\"total\":5037944209655699604,\"top\":737566499822055742,\"id\":\"xagl\",\"coreSummaries\":[{\"status\":\"jwosytxitcskfck\",\"numberOfDocuments\":6395656629196998321},{\"status\":\"iekkezz\",\"numberOfDocuments\":3802934058793911141}],\"status\":\"yf\",\"startTime\":\"2021-03-01T23:19:19Z\",\"lastUpdated\":\"2021-02-19T20:13:34Z\",\"eTag\":\"gebdunygaeq\",\"sort\":[{\"name\":\"fatpxllrxcyjmoa\",\"order\":\"desc\"},{\"name\":\"arm\",\"order\":\"asc\"},{\"name\":\"jsjqbjhhyx\",\"order\":\"desc\"},{\"name\":\"yc\",\"order\":\"desc\"}],\"requestTime\":609111947256097194,\"aggregatedValueField\":\"kgymareqnajxqug\",\"aggregatedGroupingFields\":\"ky\",\"sum\":1349349327808665603,\"max\":5313229010418378323,\"schema\":{\"name\":\"ofwq\",\"version\":761384571}}")
+            .toObject(SearchMetadata.class);
         Assertions.assertEquals("tkl", model.searchId());
         Assertions.assertEquals("xbjhwuaanozjosph", model.resultType());
         Assertions.assertEquals(5037944209655699604L, model.total());
@@ -46,35 +44,28 @@ public final class SearchMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchMetadata model =
-            new SearchMetadata()
-                .withSearchId("tkl")
-                .withResultType("xbjhwuaanozjosph")
-                .withTotal(5037944209655699604L)
-                .withTop(737566499822055742L)
-                .withId("xagl")
-                .withCoreSummaries(
-                    Arrays
-                        .asList(
-                            new CoreSummary().withStatus("jwosytxitcskfck").withNumberOfDocuments(6395656629196998321L),
-                            new CoreSummary().withStatus("iekkezz").withNumberOfDocuments(3802934058793911141L)))
-                .withStatus("yf")
-                .withStartTime(OffsetDateTime.parse("2021-03-01T23:19:19Z"))
-                .withLastUpdated(OffsetDateTime.parse("2021-02-19T20:13:34Z"))
-                .withEtag("gebdunygaeq")
-                .withSort(
-                    Arrays
-                        .asList(
-                            new SearchSort().withName("fatpxllrxcyjmoa").withOrder(SearchSortEnum.DESC),
-                            new SearchSort().withName("arm").withOrder(SearchSortEnum.ASC),
-                            new SearchSort().withName("jsjqbjhhyx").withOrder(SearchSortEnum.DESC),
-                            new SearchSort().withName("yc").withOrder(SearchSortEnum.DESC)))
-                .withRequestTime(609111947256097194L)
-                .withAggregatedValueField("kgymareqnajxqug")
-                .withAggregatedGroupingFields("ky")
-                .withSum(1349349327808665603L)
-                .withMax(5313229010418378323L)
-                .withSchema(new SearchMetadataSchema().withName("ofwq").withVersion(761384571));
+        SearchMetadata model = new SearchMetadata().withSearchId("tkl")
+            .withResultType("xbjhwuaanozjosph")
+            .withTotal(5037944209655699604L)
+            .withTop(737566499822055742L)
+            .withId("xagl")
+            .withCoreSummaries(Arrays.asList(
+                new CoreSummary().withStatus("jwosytxitcskfck").withNumberOfDocuments(6395656629196998321L),
+                new CoreSummary().withStatus("iekkezz").withNumberOfDocuments(3802934058793911141L)))
+            .withStatus("yf")
+            .withStartTime(OffsetDateTime.parse("2021-03-01T23:19:19Z"))
+            .withLastUpdated(OffsetDateTime.parse("2021-02-19T20:13:34Z"))
+            .withEtag("gebdunygaeq")
+            .withSort(Arrays.asList(new SearchSort().withName("fatpxllrxcyjmoa").withOrder(SearchSortEnum.DESC),
+                new SearchSort().withName("arm").withOrder(SearchSortEnum.ASC),
+                new SearchSort().withName("jsjqbjhhyx").withOrder(SearchSortEnum.DESC),
+                new SearchSort().withName("yc").withOrder(SearchSortEnum.DESC)))
+            .withRequestTime(609111947256097194L)
+            .withAggregatedValueField("kgymareqnajxqug")
+            .withAggregatedGroupingFields("ky")
+            .withSum(1349349327808665603L)
+            .withMax(5313229010418378323L)
+            .withSchema(new SearchMetadataSchema().withName("ofwq").withVersion(761384571));
         model = BinaryData.fromObject(model).toObject(SearchMetadata.class);
         Assertions.assertEquals("tkl", model.searchId());
         Assertions.assertEquals("xbjhwuaanozjosph", model.resultType());

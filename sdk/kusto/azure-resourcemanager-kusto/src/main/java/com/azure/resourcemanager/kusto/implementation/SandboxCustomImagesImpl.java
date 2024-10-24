@@ -24,34 +24,31 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public SandboxCustomImagesImpl(
-        SandboxCustomImagesClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public SandboxCustomImagesImpl(SandboxCustomImagesClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SandboxCustomImage> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<SandboxCustomImageInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
+        PagedIterable<SandboxCustomImageInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SandboxCustomImage> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<SandboxCustomImageInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+    public PagedIterable<SandboxCustomImage> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<SandboxCustomImageInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
     }
 
-    public Response<SandboxCustomImage> getWithResponse(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
-        Response<SandboxCustomImageInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, context);
+    public Response<SandboxCustomImage> getWithResponse(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
+        Response<SandboxCustomImageInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SandboxCustomImageImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +56,8 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     }
 
     public SandboxCustomImage get(String resourceGroupName, String clusterName, String sandboxCustomImageName) {
-        SandboxCustomImageInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, sandboxCustomImageName);
+        SandboxCustomImageInner inner
+            = this.serviceClient().get(resourceGroupName, clusterName, sandboxCustomImageName);
         if (inner != null) {
             return new SandboxCustomImageImpl(inner, this.manager());
         } else {
@@ -76,30 +73,22 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
         this.serviceClient().delete(resourceGroupName, clusterName, sandboxCustomImageName, context);
     }
 
-    public Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context) {
-        Response<CheckNameResultInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, context);
+    public Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName, Context context) {
+        Response<CheckNameResultInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+    public CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName) {
+        CheckNameResultInner inner
+            = this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
         if (inner != null) {
             return new CheckNameResultImpl(inner, this.manager());
         } else {
@@ -110,27 +99,18 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     public SandboxCustomImage getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, Context.NONE).getValue();
     }
@@ -138,27 +118,18 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     public Response<SandboxCustomImage> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, sandboxCustomImageName, context);
     }
@@ -166,27 +137,18 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
         }
         this.delete(resourceGroupName, clusterName, sandboxCustomImageName, Context.NONE);
     }
@@ -194,27 +156,18 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
         }
         this.delete(resourceGroupName, clusterName, sandboxCustomImageName, context);
     }

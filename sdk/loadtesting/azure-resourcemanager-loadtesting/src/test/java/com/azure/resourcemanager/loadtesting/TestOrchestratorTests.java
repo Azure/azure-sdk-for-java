@@ -35,13 +35,11 @@ public class TestOrchestratorTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        loadTestManager = LoadTestManager
-            .configure()
+        loadTestManager = LoadTestManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,12 +49,10 @@ public class TestOrchestratorTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(LOCATION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(LOCATION).create();
         }
     }
+
     @Override
     protected void afterTest() {
         if (!testEnv) {
@@ -67,7 +63,8 @@ public class TestOrchestratorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void startTest() {
-        ResourceOperations resourceOperations = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
+        ResourceOperations resourceOperations
+            = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
         resourceOperations.create(loadTestManager);
         resourceOperations.get(loadTestManager);
         resourceOperations.update(loadTestManager);

@@ -36,61 +36,35 @@ public final class QueriesSearchMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"id\":\"drizetpwbr\",\"displayName\":\"lllibph\",\"timeCreated\":\"2021-03-09T02:07:34Z\",\"timeModified\":\"2021-08-01T19:55:34Z\",\"author\":\"aka\",\"description\":\"nkjpdnjzha\",\"body\":\"oylhjlmuoyxprimr\",\"related\":{\"categories\":[\"eecjmeis\",\"stvasylwxdzaumw\",\"oohgu\"],\"resourceTypes\":[\"zboyjathwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"solutions\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"]},\"tags\":{\"qwyxebeybpm\":[\"ndzaapmudq\",\"eqw\",\"gp\",\"bu\"]},\"properties\":\"datanrtffyaqi\"},\"id\":\"hheioqaqhvseuf\",\"name\":\"yrxpdlcgqls\",\"type\":\"mjqfrddgamquhio\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"id\":\"drizetpwbr\",\"displayName\":\"lllibph\",\"timeCreated\":\"2021-03-09T02:07:34Z\",\"timeModified\":\"2021-08-01T19:55:34Z\",\"author\":\"aka\",\"description\":\"nkjpdnjzha\",\"body\":\"oylhjlmuoyxprimr\",\"related\":{\"categories\":[\"eecjmeis\",\"stvasylwxdzaumw\",\"oohgu\"],\"resourceTypes\":[\"zboyjathwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"solutions\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"]},\"tags\":{\"qwyxebeybpm\":[\"ndzaapmudq\",\"eqw\",\"gp\",\"bu\"]},\"properties\":\"datanrtffyaqi\"},\"id\":\"hheioqaqhvseuf\",\"name\":\"yrxpdlcgqls\",\"type\":\"mjqfrddgamquhio\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<LogAnalyticsQueryPackQuery> response =
-            manager
-                .queries()
-                .search(
-                    "hhxud",
-                    "xvodhtnsir",
-                    new LogAnalyticsQueryPackQuerySearchProperties()
-                        .withRelated(
-                            new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                                .withCategories(Arrays.asList("m"))
-                                .withResourceTypes(Arrays.asList("ckdlpag", "rcxfailcfxwmdb"))
-                                .withSolutions(Arrays.asList("fgsftufqob", "jln", "cgcckknhxkizvyt", "rzvul")))
-                        .withTags(
-                            mapOf(
-                                "rwhryvycytd",
-                                Arrays.asList("eranokqgukkjqnv", "roylaxxu", "cdisd", "sfjbjsvg"),
-                                "gtgkylkdghr",
-                                Arrays.asList("xgccknfnw", "btmvpdvjdhttza", "fedxihchrphkm", "rjdqnsdfzp"),
-                                "pifhpfeoajvgcxtx",
-                                Arrays.asList("uutlwxezwzhok", "bwnhhtql", "ehgpp"),
-                                "ucb",
-                                Arrays.asList("sheafid", "tugsresmkssjh", "iftxfkf", "egprhptil"))),
-                    3657497619392778161L,
-                    false,
-                    "dqohmc",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<LogAnalyticsQueryPackQuery> response = manager.queries()
+            .search("hhxud", "xvodhtnsir", new LogAnalyticsQueryPackQuerySearchProperties()
+                .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated().withCategories(Arrays.asList("m"))
+                    .withResourceTypes(Arrays.asList("ckdlpag", "rcxfailcfxwmdb"))
+                    .withSolutions(Arrays.asList("fgsftufqob", "jln", "cgcckknhxkizvyt", "rzvul")))
+                .withTags(mapOf("rwhryvycytd", Arrays.asList("eranokqgukkjqnv", "roylaxxu", "cdisd", "sfjbjsvg"),
+                    "gtgkylkdghr", Arrays.asList("xgccknfnw", "btmvpdvjdhttza", "fedxihchrphkm", "rjdqnsdfzp"),
+                    "pifhpfeoajvgcxtx", Arrays.asList("uutlwxezwzhok", "bwnhhtql", "ehgpp"), "ucb",
+                    Arrays.asList("sheafid", "tugsresmkssjh", "iftxfkf", "egprhptil"))),
+                3657497619392778161L, false, "dqohmc", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lllibph", response.iterator().next().displayName());
         Assertions.assertEquals("nkjpdnjzha", response.iterator().next().description());

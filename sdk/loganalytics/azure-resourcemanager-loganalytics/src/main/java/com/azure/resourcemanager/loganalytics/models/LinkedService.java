@@ -102,11 +102,8 @@ public interface LinkedService {
          * The stage of the LinkedService definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithWriteAccessResourceId,
-                DefinitionStages.WithProvisioningState {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithResourceId,
+            DefinitionStages.WithWriteAccessResourceId, DefinitionStages.WithProvisioningState {
             /**
              * Executes the create request.
              *
@@ -180,11 +177,8 @@ public interface LinkedService {
     LinkedService.Update update();
 
     /** The template for LinkedService update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithResourceId,
-            UpdateStages.WithWriteAccessResourceId,
-            UpdateStages.WithProvisioningState {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithResourceId, UpdateStages.WithWriteAccessResourceId,
+        UpdateStages.WithProvisioningState {
         /**
          * Executes the update request.
          *

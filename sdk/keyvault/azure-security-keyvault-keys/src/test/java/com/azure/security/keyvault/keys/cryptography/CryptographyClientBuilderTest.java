@@ -38,8 +38,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
@@ -51,8 +50,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
@@ -64,8 +62,7 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildSyncClientWithoutKeyVersionTest() {
         String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(versionlessKeyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(versionlessKeyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
@@ -78,8 +75,7 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildSyncClientWithPortInKeyIdentifierTest() {
         String keyIdentifierWithPort = "https://key-vault-url.vault.azure.net:443/keys/TestKey";
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifierWithPort)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifierWithPort)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
@@ -92,8 +88,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
@@ -105,8 +100,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
@@ -118,11 +112,11 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildAsyncClientWithoutKeyVersionTest() {
         String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .keyIdentifier(versionlessKeyIdentifier)
-            .credential(new TestUtils.TestCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        CryptographyAsyncClient cryptographyAsyncClient
+            = new CryptographyClientBuilder().keyIdentifier(versionlessKeyIdentifier)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         assertNotNull(cryptographyAsyncClient);
         assertEquals(CryptographyAsyncClient.class.getSimpleName(), cryptographyAsyncClient.getClass().getSimpleName());
@@ -140,8 +134,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -157,8 +150,7 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
@@ -172,11 +164,10 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
 
@@ -189,22 +180,21 @@ public class CryptographyClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .keyIdentifier(keyIdentifier)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())

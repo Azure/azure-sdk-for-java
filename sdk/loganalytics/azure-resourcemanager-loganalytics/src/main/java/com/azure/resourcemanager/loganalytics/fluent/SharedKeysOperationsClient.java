@@ -24,8 +24,8 @@ public interface SharedKeysOperationsClient {
      * @return the shared keys for a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedKeysInner> getSharedKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<SharedKeysInner> getSharedKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the shared keys for a workspace.

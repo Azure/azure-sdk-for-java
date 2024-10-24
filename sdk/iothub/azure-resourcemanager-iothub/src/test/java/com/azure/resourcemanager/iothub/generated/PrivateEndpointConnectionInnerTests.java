@@ -15,36 +15,27 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"audccsnhs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"nyejhkryhtnap\",\"actionsRequired\":\"wlokjyem\"}},\"id\":\"kvnipjoxz\",\"name\":\"nchgej\",\"type\":\"podmailzydehojwy\"}")
-                .toObject(PrivateEndpointConnectionInner.class);
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
-                model.properties().privateLinkServiceConnectionState().status());
+        PrivateEndpointConnectionInner model = BinaryData.fromString(
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"audccsnhs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"nyejhkryhtnap\",\"actionsRequired\":\"wlokjyem\"}},\"id\":\"kvnipjoxz\",\"name\":\"nchgej\",\"type\":\"podmailzydehojwy\"}")
+            .toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+            model.properties().privateLinkServiceConnectionState().status());
         Assertions.assertEquals("nyejhkryhtnap", model.properties().privateLinkServiceConnectionState().description());
         Assertions.assertEquals("wlokjyem", model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionInner model =
-            new PrivateEndpointConnectionInner()
-                .withProperties(
-                    new PrivateEndpointConnectionProperties()
-                        .withPrivateEndpoint(new PrivateEndpoint())
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                                .withDescription("nyejhkryhtnap")
-                                .withActionsRequired("wlokjyem")));
+        PrivateEndpointConnectionInner model
+            = new PrivateEndpointConnectionInner()
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("nyejhkryhtnap")
+                        .withActionsRequired("wlokjyem")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
-                model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+            model.properties().privateLinkServiceConnectionState().status());
         Assertions.assertEquals("nyejhkryhtnap", model.properties().privateLinkServiceConnectionState().description());
         Assertions.assertEquals("wlokjyem", model.properties().privateLinkServiceConnectionState().actionsRequired());
     }

@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 public final class EncryptionPropertiesIdentityTests {
     @Test
     public void testDeserialize() throws Exception {
-        EncryptionPropertiesIdentity model =
-            BinaryData
-                .fromString("{\"type\":\"SystemAssigned\",\"resourceId\":\"qytbciq\"}")
+        EncryptionPropertiesIdentity model
+            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"resourceId\":\"qytbciq\"}")
                 .toObject(EncryptionPropertiesIdentity.class);
         Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
         Assertions.assertEquals("qytbciq", model.resourceId());
@@ -23,8 +22,8 @@ public final class EncryptionPropertiesIdentityTests {
 
     @Test
     public void testSerialize() throws Exception {
-        EncryptionPropertiesIdentity model =
-            new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED).withResourceId("qytbciq");
+        EncryptionPropertiesIdentity model
+            = new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED).withResourceId("qytbciq");
         model = BinaryData.fromObject(model).toObject(EncryptionPropertiesIdentity.class);
         Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
         Assertions.assertEquals("qytbciq", model.resourceId());

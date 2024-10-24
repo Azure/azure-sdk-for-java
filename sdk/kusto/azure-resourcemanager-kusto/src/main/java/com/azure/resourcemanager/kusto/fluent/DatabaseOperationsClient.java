@@ -27,12 +27,8 @@ public interface DatabaseOperationsClient {
      * @return the result returned from a follower invitation generation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context);
+    Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters, Context context);
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
@@ -47,6 +43,6 @@ public interface DatabaseOperationsClient {
      * @return the result returned from a follower invitation generation request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInviteFollowerResultInner inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters);
+    DatabaseInviteFollowerResultInner inviteFollower(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInviteFollowerRequest parameters);
 }

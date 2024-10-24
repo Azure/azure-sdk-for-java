@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInviteFollowerRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInviteFollowerRequest model =
-            BinaryData
-                .fromString(
-                    "{\"inviteeEmail\":\"mkqzeqqkdltfzxmh\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ur\",\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"tablesToExclude\":[\"iplbpodxunkbebxm\"],\"externalTablesToInclude\":[\"yntwlrbq\",\"koievseo\"],\"externalTablesToExclude\":[\"rlltmuwlauwzizx\"],\"materializedViewsToInclude\":[\"gcj\",\"fuzmuvpbtt\",\"um\"],\"materializedViewsToExclude\":[\"pxebmnzbt\"],\"functionsToInclude\":[\"pglkf\",\"ohdneuel\",\"phsdyhto\"],\"functionsToExclude\":[\"kd\",\"wwquuvxzxclvithh\",\"zonosgg\"]}}")
-                .toObject(DatabaseInviteFollowerRequest.class);
+        DatabaseInviteFollowerRequest model = BinaryData.fromString(
+            "{\"inviteeEmail\":\"mkqzeqqkdltfzxmh\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ur\",\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"tablesToExclude\":[\"iplbpodxunkbebxm\"],\"externalTablesToInclude\":[\"yntwlrbq\",\"koievseo\"],\"externalTablesToExclude\":[\"rlltmuwlauwzizx\"],\"materializedViewsToInclude\":[\"gcj\",\"fuzmuvpbtt\",\"um\"],\"materializedViewsToExclude\":[\"pxebmnzbt\"],\"functionsToInclude\":[\"pglkf\",\"ohdneuel\",\"phsdyhto\"],\"functionsToExclude\":[\"kd\",\"wwquuvxzxclvithh\",\"zonosgg\"]}}")
+            .toObject(DatabaseInviteFollowerRequest.class);
         Assertions.assertEquals("mkqzeqqkdltfzxmh", model.inviteeEmail());
         Assertions.assertEquals("ur", model.tableLevelSharingProperties().tablesToInclude().get(0));
         Assertions.assertEquals("iplbpodxunkbebxm", model.tableLevelSharingProperties().tablesToExclude().get(0));
         Assertions.assertEquals("yntwlrbq", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions
-            .assertEquals("rlltmuwlauwzizx", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("rlltmuwlauwzizx",
+            model.tableLevelSharingProperties().externalTablesToExclude().get(0));
         Assertions.assertEquals("gcj", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
         Assertions.assertEquals("pxebmnzbt", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
         Assertions.assertEquals("pglkf", model.tableLevelSharingProperties().functionsToInclude().get(0));
@@ -32,26 +30,23 @@ public final class DatabaseInviteFollowerRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInviteFollowerRequest model =
-            new DatabaseInviteFollowerRequest()
-                .withInviteeEmail("mkqzeqqkdltfzxmh")
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("ur", "odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
-                        .withTablesToExclude(Arrays.asList("iplbpodxunkbebxm"))
-                        .withExternalTablesToInclude(Arrays.asList("yntwlrbq", "koievseo"))
-                        .withExternalTablesToExclude(Arrays.asList("rlltmuwlauwzizx"))
-                        .withMaterializedViewsToInclude(Arrays.asList("gcj", "fuzmuvpbtt", "um"))
-                        .withMaterializedViewsToExclude(Arrays.asList("pxebmnzbt"))
-                        .withFunctionsToInclude(Arrays.asList("pglkf", "ohdneuel", "phsdyhto"))
-                        .withFunctionsToExclude(Arrays.asList("kd", "wwquuvxzxclvithh", "zonosgg")));
+        DatabaseInviteFollowerRequest model = new DatabaseInviteFollowerRequest().withInviteeEmail("mkqzeqqkdltfzxmh")
+            .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                .withTablesToInclude(Arrays.asList("ur", "odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
+                .withTablesToExclude(Arrays.asList("iplbpodxunkbebxm"))
+                .withExternalTablesToInclude(Arrays.asList("yntwlrbq", "koievseo"))
+                .withExternalTablesToExclude(Arrays.asList("rlltmuwlauwzizx"))
+                .withMaterializedViewsToInclude(Arrays.asList("gcj", "fuzmuvpbtt", "um"))
+                .withMaterializedViewsToExclude(Arrays.asList("pxebmnzbt"))
+                .withFunctionsToInclude(Arrays.asList("pglkf", "ohdneuel", "phsdyhto"))
+                .withFunctionsToExclude(Arrays.asList("kd", "wwquuvxzxclvithh", "zonosgg")));
         model = BinaryData.fromObject(model).toObject(DatabaseInviteFollowerRequest.class);
         Assertions.assertEquals("mkqzeqqkdltfzxmh", model.inviteeEmail());
         Assertions.assertEquals("ur", model.tableLevelSharingProperties().tablesToInclude().get(0));
         Assertions.assertEquals("iplbpodxunkbebxm", model.tableLevelSharingProperties().tablesToExclude().get(0));
         Assertions.assertEquals("yntwlrbq", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions
-            .assertEquals("rlltmuwlauwzizx", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("rlltmuwlauwzizx",
+            model.tableLevelSharingProperties().externalTablesToExclude().get(0));
         Assertions.assertEquals("gcj", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
         Assertions.assertEquals("pxebmnzbt", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
         Assertions.assertEquals("pglkf", model.tableLevelSharingProperties().functionsToInclude().get(0));

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"xyawj\",\"display\":{\"provider\":\"qcslyjpkiid\",\"resource\":\"exznelixhnr\",\"operation\":\"folhbnxknal\",\"description\":\"lp\"},\"isDataAction\":true,\"origin\":\"tpnapnyiropuhpig\"}")
-                .toObject(ResourceProviderOperationInner.class);
+        ResourceProviderOperationInner model = BinaryData.fromString(
+            "{\"name\":\"xyawj\",\"display\":{\"provider\":\"qcslyjpkiid\",\"resource\":\"exznelixhnr\",\"operation\":\"folhbnxknal\",\"description\":\"lp\"},\"isDataAction\":true,\"origin\":\"tpnapnyiropuhpig\"}")
+            .toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("xyawj", model.name());
         Assertions.assertEquals("qcslyjpkiid", model.display().provider());
         Assertions.assertEquals("exznelixhnr", model.display().resource());
@@ -26,15 +24,11 @@ public final class ResourceProviderOperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationInner model =
-            new ResourceProviderOperationInner()
-                .withName("xyawj")
-                .withDisplay(
-                    new ResourceProviderOperationDisplay()
-                        .withProvider("qcslyjpkiid")
-                        .withResource("exznelixhnr")
-                        .withOperation("folhbnxknal")
-                        .withDescription("lp"));
+        ResourceProviderOperationInner model = new ResourceProviderOperationInner().withName("xyawj")
+            .withDisplay(new ResourceProviderOperationDisplay().withProvider("qcslyjpkiid")
+                .withResource("exznelixhnr")
+                .withOperation("folhbnxknal")
+                .withDescription("lp"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("xyawj", model.name());
         Assertions.assertEquals("qcslyjpkiid", model.display().provider());

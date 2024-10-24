@@ -24,8 +24,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the non-security related metadata of an IoT hub along with {@link Response}.
      */
-    Response<IotHubDescription> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<IotHubDescription> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the non-security related metadata of an IoT hub
@@ -205,8 +205,8 @@ public interface IotHubResources {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub as
      *     paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(
-        String resourceGroupName, String resourceName, String eventHubEndpointName);
+    PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(String resourceGroupName, String resourceName,
+        String eventHubEndpointName);
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub
@@ -224,8 +224,8 @@ public interface IotHubResources {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub as
      *     paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, Context context);
+    PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, Context context);
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
@@ -244,8 +244,8 @@ public interface IotHubResources {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub along with {@link
      *     Response}.
      */
-    Response<EventHubConsumerGroupInfo> getEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+    Response<EventHubConsumerGroupInfo> getEventHubConsumerGroupWithResponse(String resourceGroupName,
+        String resourceName, String eventHubEndpointName, String name, Context context);
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
@@ -262,8 +262,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
-    EventHubConsumerGroupInfo getEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
+    EventHubConsumerGroupInfo getEventHubConsumerGroup(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, String name);
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
@@ -281,8 +281,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+    Response<Void> deleteEventHubConsumerGroupWithResponse(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, String name, Context context);
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
@@ -298,8 +298,8 @@ public interface IotHubResources {
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
+    void deleteEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName,
+        String name);
 
     /**
      * Get a list of all the jobs in an IoT hub. For more information, see:
@@ -353,8 +353,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a job from an IoT hub along with {@link Response}.
      */
-    Response<JobResponse> getJobWithResponse(
-        String resourceGroupName, String resourceName, String jobId, Context context);
+    Response<JobResponse> getJobWithResponse(String resourceGroupName, String resourceName, String jobId,
+        Context context);
 
     /**
      * Get the details of a job from an IoT hub. For more information, see:
@@ -403,8 +403,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota metrics for an IoT hub as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the health for routing endpoints
@@ -451,8 +451,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties indicating whether a given IoT hub name is available along with {@link Response}.
      */
-    Response<IotHubNameAvailabilityInfo> checkNameAvailabilityWithResponse(
-        OperationInputs operationInputs, Context context);
+    Response<IotHubNameAvailabilityInfo> checkNameAvailabilityWithResponse(OperationInputs operationInputs,
+        Context context);
 
     /**
      * Check if an IoT hub name is available
@@ -484,8 +484,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of testing all routes along with {@link Response}.
      */
-    Response<TestAllRoutesResult> testAllRoutesWithResponse(
-        String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context);
+    Response<TestAllRoutesResult> testAllRoutesWithResponse(String iotHubName, String resourceGroupName,
+        TestAllRoutesInput input, Context context);
 
     /**
      * Test all routes
@@ -518,8 +518,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of testing one route along with {@link Response}.
      */
-    Response<TestRouteResult> testRouteWithResponse(
-        String iotHubName, String resourceGroupName, TestRouteInput input, Context context);
+    Response<TestRouteResult> testRouteWithResponse(String iotHubName, String resourceGroupName, TestRouteInput input,
+        Context context);
 
     /**
      * Test the new route
@@ -570,8 +570,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a shared access policy by name from an IoT hub. For more information, see:
@@ -590,8 +590,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a shared access policy by name from an IoT hub along with {@link Response}.
      */
-    Response<SharedAccessSignatureAuthorizationRule> getKeysForKeyNameWithResponse(
-        String resourceGroupName, String resourceName, String keyName, Context context);
+    Response<SharedAccessSignatureAuthorizationRule> getKeysForKeyNameWithResponse(String resourceGroupName,
+        String resourceName, String keyName, Context context);
 
     /**
      * Get a shared access policy by name from an IoT hub. For more information, see:
@@ -609,8 +609,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a shared access policy by name from an IoT hub.
      */
-    SharedAccessSignatureAuthorizationRule getKeysForKeyName(
-        String resourceGroupName, String resourceName, String keyName);
+    SharedAccessSignatureAuthorizationRule getKeysForKeyName(String resourceGroupName, String resourceName,
+        String keyName);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -631,8 +631,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object along with {@link Response}.
      */
-    Response<JobResponse> exportDevicesWithResponse(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context);
+    Response<JobResponse> exportDevicesWithResponse(String resourceGroupName, String resourceName,
+        ExportDevicesRequest exportDevicesParameters, Context context);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -652,8 +652,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object.
      */
-    JobResponse exportDevices(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters);
+    JobResponse exportDevices(String resourceGroupName, String resourceName,
+        ExportDevicesRequest exportDevicesParameters);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -674,8 +674,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object along with {@link Response}.
      */
-    Response<JobResponse> importDevicesWithResponse(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context);
+    Response<JobResponse> importDevicesWithResponse(String resourceGroupName, String resourceName,
+        ImportDevicesRequest importDevicesParameters, Context context);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -695,8 +695,8 @@ public interface IotHubResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object.
      */
-    JobResponse importDevices(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters);
+    JobResponse importDevices(String resourceGroupName, String resourceName,
+        ImportDevicesRequest importDevicesParameters);
 
     /**
      * Get the non-security related metadata of an IoT hub

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class OutboundEnvironmentEndpointInnerTests {
     @Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"wmdwzjeiachboo\",\"endpoints\":[{\"domainName\":\"ro\",\"description\":\"qpteeh\",\"endpointDetails\":[]},{\"domainName\":\"pyqr\",\"description\":\"z\",\"endpointDetails\":[]}]}")
-                .toObject(OutboundEnvironmentEndpointInner.class);
+        OutboundEnvironmentEndpointInner model = BinaryData.fromString(
+            "{\"category\":\"wmdwzjeiachboo\",\"endpoints\":[{\"domainName\":\"ro\",\"description\":\"qpteeh\",\"endpointDetails\":[]},{\"domainName\":\"pyqr\",\"description\":\"z\",\"endpointDetails\":[]}]}")
+            .toObject(OutboundEnvironmentEndpointInner.class);
     }
 
     @Test

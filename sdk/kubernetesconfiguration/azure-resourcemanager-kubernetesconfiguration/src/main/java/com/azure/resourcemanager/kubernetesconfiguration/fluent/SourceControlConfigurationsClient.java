@@ -32,13 +32,8 @@ public interface SourceControlConfigurationsClient {
      * @return details of the Source Control Configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SourceControlConfigurationInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context);
+    Response<SourceControlConfigurationInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName, Context context);
 
     /**
      * Gets details of the Source Control Configuration.
@@ -56,12 +51,8 @@ public interface SourceControlConfigurationsClient {
      * @return details of the Source Control Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName);
+    SourceControlConfigurationInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String sourceControlConfigurationName);
 
     /**
      * Create a new Kubernetes Source Control Configuration.
@@ -81,14 +72,9 @@ public interface SourceControlConfigurationsClient {
      * @return the SourceControl Configuration object returned in Get &amp; Put response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SourceControlConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration,
-        Context context);
+    Response<SourceControlConfigurationInner> createOrUpdateWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration, Context context);
 
     /**
      * Create a new Kubernetes Source Control Configuration.
@@ -107,12 +93,8 @@ public interface SourceControlConfigurationsClient {
      * @return the SourceControl Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
+    SourceControlConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration);
 
     /**
@@ -132,12 +114,8 @@ public interface SourceControlConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName);
 
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
@@ -157,13 +135,8 @@ public interface SourceControlConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName, Context context);
 
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
@@ -181,11 +154,7 @@ public interface SourceControlConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String sourceControlConfigurationName);
 
     /**
@@ -205,13 +174,8 @@ public interface SourceControlConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context);
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String sourceControlConfigurationName, Context context);
 
     /**
      * List all Source Control Configurations.
@@ -229,8 +193,8 @@ public interface SourceControlConfigurationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SourceControlConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<SourceControlConfigurationInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName);
 
     /**
      * List all Source Control Configurations.
@@ -249,6 +213,6 @@ public interface SourceControlConfigurationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SourceControlConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<SourceControlConfigurationInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context);
 }

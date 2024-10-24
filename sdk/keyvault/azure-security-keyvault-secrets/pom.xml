@@ -41,6 +41,7 @@
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

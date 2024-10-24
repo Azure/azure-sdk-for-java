@@ -30,13 +30,8 @@ public interface FluxConfigOperationStatusClient {
      * @return async Operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusResultInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
+    Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
         Context context);
 
     /**
@@ -56,11 +51,6 @@ public interface FluxConfigOperationStatusClient {
      * @return async Operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId);
+    OperationStatusResultInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, String operationId);
 }

@@ -21,9 +21,7 @@ public class QuotaOperations {
     }
 
     public void listBuckets(LoadTestManager manager) {
-        PagedIterable<QuotaResource> resource = manager
-            .quotas()
-            .list(location);
+        PagedIterable<QuotaResource> resource = manager.quotas().list(location);
 
         for (QuotaResource quotaResource : resource) {
             Assertions.assertNotNull(quotaResource.id());
@@ -47,19 +45,17 @@ public class QuotaOperations {
     public void checkAvailability(LoadTestManager manager) {
         QuotaResource quotaResource = getQuotaBucket(manager);
 
-        QuotaBucketRequestPropertiesDimensions dimensions = new QuotaBucketRequestPropertiesDimensions()
-            .withLocation(location)
-            .withSubscriptionId(manager.serviceClient().getSubscriptionId());
+        QuotaBucketRequestPropertiesDimensions dimensions
+            = new QuotaBucketRequestPropertiesDimensions().withLocation(location)
+                .withSubscriptionId(manager.serviceClient().getSubscriptionId());
 
-        QuotaBucketRequest request = new QuotaBucketRequest()
-            .withCurrentQuota(quotaResource.limit())
+        QuotaBucketRequest request = new QuotaBucketRequest().withCurrentQuota(quotaResource.limit())
             .withCurrentUsage(quotaResource.usage())
             .withNewQuota(quotaResource.limit())
             .withDimensions(dimensions);
 
-        CheckQuotaAvailabilityResponse resource = manager
-            .quotas()
-            .checkAvailability(location, quotaBucketName, request);
+        CheckQuotaAvailabilityResponse resource
+            = manager.quotas().checkAvailability(location, quotaBucketName, request);
 
         Assertions.assertNotNull(resource.id());
         Assertions.assertEquals(quotaBucketName, resource.name());
@@ -68,9 +64,7 @@ public class QuotaOperations {
     }
 
     private QuotaResource getQuotaBucket(LoadTestManager manager) {
-        QuotaResource resource = manager
-            .quotas()
-            .get(location, quotaBucketName);
+        QuotaResource resource = manager.quotas().get(location, quotaBucketName);
 
         return resource;
     }

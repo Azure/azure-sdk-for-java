@@ -30,8 +30,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the list of private endpoint connections for an IotHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<PrivateEndpointConnectionInner>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<List<PrivateEndpointConnectionInner>> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private endpoint connections
@@ -65,8 +65,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Get private endpoint connection
@@ -83,8 +83,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Update private endpoint connection
@@ -103,9 +103,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
@@ -126,11 +124,8 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context);
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context);
 
     /**
      * Update private endpoint connection
@@ -148,11 +143,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection of an IotHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection);
+    PrivateEndpointConnectionInner update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Update private endpoint connection
@@ -171,11 +163,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection of an IotHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    PrivateEndpointConnectionInner update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context);
 
     /**
@@ -193,8 +182,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginDelete(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Delete private endpoint connection
@@ -230,8 +219,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection of an IotHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Delete private endpoint connection
@@ -249,6 +238,6 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection of an IotHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    PrivateEndpointConnectionInner delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 }

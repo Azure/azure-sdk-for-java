@@ -7,31 +7,42 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Elliptic curve name. */
+/**
+ * Elliptic curve name.
+ */
 public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
-    /** The NIST P-256 elliptic curve, AKA SECG curve SECP256R1. */
+    /**
+     * The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+     */
     public static final KeyCurveName P_256 = fromString("P-256");
 
-    /** The NIST P-384 elliptic curve, AKA SECG curve SECP384R1. */
+    /**
+     * The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+     */
     public static final KeyCurveName P_384 = fromString("P-384");
 
-    /** The NIST P-521 elliptic curve, AKA SECG curve SECP521R1. */
+    /**
+     * The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+     */
     public static final KeyCurveName P_521 = fromString("P-521");
 
-    /** The SECG SECP256K1 elliptic curve. */
+    /**
+     * The SECG SECP256K1 elliptic curve.
+     */
     public static final KeyCurveName P_256K = fromString("P-256K");
 
     /**
      * Creates a new instance of KeyCurveName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyCurveName() {}
+    public KeyCurveName() {
+    }
 
     /**
      * Creates or finds a KeyCurveName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyCurveName.
      */
@@ -41,7 +52,7 @@ public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
 
     /**
      * Gets known KeyCurveName values.
-     *
+     * 
      * @return known KeyCurveName values.
      */
     public static Collection<KeyCurveName> values() {

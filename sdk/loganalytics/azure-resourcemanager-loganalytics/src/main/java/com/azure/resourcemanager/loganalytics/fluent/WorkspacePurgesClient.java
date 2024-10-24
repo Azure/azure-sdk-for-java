@@ -36,8 +36,8 @@ public interface WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspacePurgesPurgeResponse purgeWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
+    WorkspacePurgesPurgeResponse purgeWithResponse(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body, Context context);
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
@@ -74,8 +74,8 @@ public interface WorkspacePurgesClient {
      * @return status of an ongoing purge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(
-        String resourceGroupName, String workspaceName, String purgeId, Context context);
+    Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(String resourceGroupName,
+        String workspaceName, String purgeId, Context context);
 
     /**
      * Gets status of an ongoing purge operation.

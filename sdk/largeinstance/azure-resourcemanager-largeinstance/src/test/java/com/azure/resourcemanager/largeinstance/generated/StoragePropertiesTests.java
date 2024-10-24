@@ -27,9 +27,12 @@ public final class StoragePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProperties model = new StorageProperties().withOfferingType("pyeicxm").withStorageType("iwqvhkh")
-            .withGeneration("uigdtopbobjog").withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
-            .withWorkloadType("u").withStorageBillingProperties(
+        StorageProperties model = new StorageProperties().withOfferingType("pyeicxm")
+            .withStorageType("iwqvhkh")
+            .withGeneration("uigdtopbobjog")
+            .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
+            .withWorkloadType("u")
+            .withStorageBillingProperties(
                 new StorageBillingProperties().withBillingMode("uhrzayvvt").withSku("vdfgiotk"));
         model = BinaryData.fromObject(model).toObject(StorageProperties.class);
         Assertions.assertEquals("pyeicxm", model.offeringType());

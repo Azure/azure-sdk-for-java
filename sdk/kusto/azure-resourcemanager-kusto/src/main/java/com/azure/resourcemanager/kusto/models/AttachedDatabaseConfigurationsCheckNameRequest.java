@@ -77,10 +77,8 @@ public final class AttachedDatabaseConfigurationsCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model AttachedDatabaseConfigurationsCheckNameRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model AttachedDatabaseConfigurationsCheckNameRequest"));
         }
     }
 

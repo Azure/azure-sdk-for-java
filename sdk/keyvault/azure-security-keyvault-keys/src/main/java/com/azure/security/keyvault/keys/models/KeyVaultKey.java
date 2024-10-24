@@ -115,9 +115,7 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeJsonField("key", key)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeJsonField("key", key).writeEndObject();
     }
 
     /**

@@ -32,9 +32,12 @@ public final class AzureLargeStorageInstancePropertiesTests {
     public void testSerialize() throws Exception {
         AzureLargeStorageInstanceProperties model
             = new AzureLargeStorageInstanceProperties().withAzureLargeStorageInstanceUniqueIdentifier("c")
-                .withStorageProperties(new StorageProperties().withOfferingType("pmouexhdz").withStorageType("bqe")
-                    .withGeneration("nxqbzvddn").withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
-                    .withWorkloadType("eic").withStorageBillingProperties(
+                .withStorageProperties(new StorageProperties().withOfferingType("pmouexhdz")
+                    .withStorageType("bqe")
+                    .withGeneration("nxqbzvddn")
+                    .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
+                    .withWorkloadType("eic")
+                    .withStorageBillingProperties(
                         new StorageBillingProperties().withBillingMode("npzaoq").withSku("hrhcffcyddglmjth")));
         model = BinaryData.fromObject(model).toObject(AzureLargeStorageInstanceProperties.class);
         Assertions.assertEquals("c", model.azureLargeStorageInstanceUniqueIdentifier());

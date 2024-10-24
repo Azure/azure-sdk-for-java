@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInputsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInputs model =
-            BinaryData.fromString("{\"name\":\"itxmedjvcslynqww\"}").toObject(OperationInputs.class);
+        OperationInputs model
+            = BinaryData.fromString("{\"name\":\"itxmedjvcslynqww\"}").toObject(OperationInputs.class);
         Assertions.assertEquals("itxmedjvcslynqww", model.name());
     }
 

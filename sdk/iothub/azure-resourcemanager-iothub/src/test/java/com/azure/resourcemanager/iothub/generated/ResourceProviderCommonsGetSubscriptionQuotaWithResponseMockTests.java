@@ -30,40 +30,28 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"m\",\"type\":\"elfk\",\"unit\":\"plcrpwjxeznoig\",\"currentValue\":1629929143,\"limit\":78326163,\"name\":{\"value\":\"kpnb\",\"localizedValue\":\"zejjoqk\"}},{\"id\":\"fhsxttaugz\",\"type\":\"faazpxdtnkdmkqjj\",\"unit\":\"uenvrkp\",\"currentValue\":1149694160,\"limit\":1074259109,\"name\":{\"value\":\"ebqaaysjkixqtnq\",\"localizedValue\":\"ezl\"}},{\"id\":\"ffiakp\",\"type\":\"qqmtedltmmji\",\"unit\":\"eozphv\",\"currentValue\":1760801565,\"limit\":404997188,\"name\":{\"value\":\"ygupkv\",\"localizedValue\":\"mdscwxqupev\"}}],\"nextLink\":\"f\"}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"m\",\"type\":\"elfk\",\"unit\":\"plcrpwjxeznoig\",\"currentValue\":1629929143,\"limit\":78326163,\"name\":{\"value\":\"kpnb\",\"localizedValue\":\"zejjoqk\"}},{\"id\":\"fhsxttaugz\",\"type\":\"faazpxdtnkdmkqjj\",\"unit\":\"uenvrkp\",\"currentValue\":1149694160,\"limit\":1074259109,\"name\":{\"value\":\"ebqaaysjkixqtnq\",\"localizedValue\":\"ezl\"}},{\"id\":\"ffiakp\",\"type\":\"qqmtedltmmji\",\"unit\":\"eozphv\",\"currentValue\":1760801565,\"limit\":404997188,\"name\":{\"value\":\"ygupkv\",\"localizedValue\":\"mdscwxqupev\"}}],\"nextLink\":\"f\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UserSubscriptionQuotaListResult response =
-            manager
-                .resourceProviderCommons()
-                .getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE)
-                .getValue();
+        UserSubscriptionQuotaListResult response = manager.resourceProviderCommons()
+            .getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("m", response.value().get(0).id());
         Assertions.assertEquals("elfk", response.value().get(0).type());

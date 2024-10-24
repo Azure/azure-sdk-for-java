@@ -17,8 +17,7 @@ public final class SavedSearchesListResultImpl implements SavedSearchesListResul
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    SavedSearchesListResultImpl(
-        SavedSearchesListResultInner innerObject,
+    SavedSearchesListResultImpl(SavedSearchesListResultInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class SavedSearchesListResultImpl implements SavedSearchesListResul
     public List<SavedSearch> value() {
         List<SavedSearchInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SavedSearchImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new SavedSearchImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

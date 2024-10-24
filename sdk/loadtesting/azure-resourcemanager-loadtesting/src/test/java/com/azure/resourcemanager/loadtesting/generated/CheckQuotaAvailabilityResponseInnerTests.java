@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Test;
 public final class CheckQuotaAvailabilityResponseInnerTests {
     @Test
     public void testDeserialize() throws Exception {
-        CheckQuotaAvailabilityResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isAvailable\":true,\"availabilityStatus\":\"jpslwejd\"},\"id\":\"wryoqpsoacc\",\"name\":\"azakl\",\"type\":\"lahbcryff\"}")
-                .toObject(CheckQuotaAvailabilityResponseInner.class);
+        CheckQuotaAvailabilityResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"isAvailable\":true,\"availabilityStatus\":\"jpslwejd\"},\"id\":\"wryoqpsoacc\",\"name\":\"azakl\",\"type\":\"lahbcryff\"}")
+            .toObject(CheckQuotaAvailabilityResponseInner.class);
         Assertions.assertEquals(true, model.isAvailable());
         Assertions.assertEquals("jpslwejd", model.availabilityStatus());
     }
 
     @Test
     public void testSerialize() throws Exception {
-        CheckQuotaAvailabilityResponseInner model =
-            new CheckQuotaAvailabilityResponseInner().withIsAvailable(true).withAvailabilityStatus("jpslwejd");
+        CheckQuotaAvailabilityResponseInner model
+            = new CheckQuotaAvailabilityResponseInner().withIsAvailable(true).withAvailabilityStatus("jpslwejd");
         model = BinaryData.fromObject(model).toObject(CheckQuotaAvailabilityResponseInner.class);
         Assertions.assertEquals(true, model.isAvailable());
         Assertions.assertEquals("jpslwejd", model.availabilityStatus());

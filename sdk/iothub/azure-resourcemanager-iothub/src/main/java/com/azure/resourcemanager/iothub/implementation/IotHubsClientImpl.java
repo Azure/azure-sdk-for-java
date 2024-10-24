@@ -56,19 +56,14 @@ public final class IotHubsClientImpl implements IotHubsClient {
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientIotHubs")
     public interface IotHubsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<Flux<ByteBuffer>>> manualFailover(
-            @HostParam("$host") String endpoint,
-            @PathParam("iotHubName") String iotHubName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") FailoverInput failoverInput,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> manualFailover(@HostParam("$host") String endpoint,
+            @PathParam("iotHubName") String iotHubName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") FailoverInput failoverInput, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -88,22 +83,18 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> manualFailoverWithResponseAsync(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
+    private Mono<Response<Flux<ByteBuffer>>> manualFailoverWithResponseAsync(String iotHubName,
+        String resourceGroupName, FailoverInput failoverInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -116,18 +107,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .manualFailover(
-                            this.client.getEndpoint(),
-                            iotHubName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            failoverInput,
-                            accept,
-                            context))
+            .withContext(context -> service.manualFailover(this.client.getEndpoint(), iotHubName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), failoverInput, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -148,22 +130,18 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> manualFailoverWithResponseAsync(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> manualFailoverWithResponseAsync(String iotHubName,
+        String resourceGroupName, FailoverInput failoverInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,16 +154,8 @@ public final class IotHubsClientImpl implements IotHubsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .manualFailover(
-                this.client.getEndpoint(),
-                iotHubName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                failoverInput,
-                accept,
-                context);
+        return service.manualFailover(this.client.getEndpoint(), iotHubName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), failoverInput, accept, context);
     }
 
     /**
@@ -204,14 +174,12 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            manualFailoverWithResponseAsync(iotHubName, resourceGroupName, failoverInput);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = manualFailoverWithResponseAsync(iotHubName, resourceGroupName, failoverInput);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -231,14 +199,13 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            manualFailoverWithResponseAsync(iotHubName, resourceGroupName, failoverInput, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = manualFailoverWithResponseAsync(iotHubName, resourceGroupName, failoverInput, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -257,8 +224,8 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginManualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
+    public SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput) {
         return this.beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput).getSyncPoller();
     }
 
@@ -279,8 +246,8 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginManualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput, Context context) {
         return this.beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context).getSyncPoller();
     }
 
@@ -301,8 +268,7 @@ public final class IotHubsClientImpl implements IotHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> manualFailoverAsync(String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
-        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput)
-            .last()
+        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -323,10 +289,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> manualFailoverAsync(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
-        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context)
-            .last()
+    private Mono<Void> manualFailoverAsync(String iotHubName, String resourceGroupName, FailoverInput failoverInput,
+        Context context) {
+        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -365,8 +330,8 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void manualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
+    public void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput,
+        Context context) {
         manualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context).block();
     }
 }

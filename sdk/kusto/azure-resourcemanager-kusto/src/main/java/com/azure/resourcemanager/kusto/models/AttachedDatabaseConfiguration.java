@@ -155,14 +155,10 @@ public interface AttachedDatabaseConfiguration {
          * The stage of the AttachedDatabaseConfiguration definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithDatabaseName,
-                DefinitionStages.WithClusterResourceId,
-                DefinitionStages.WithDefaultPrincipalsModificationKind,
-                DefinitionStages.WithTableLevelSharingProperties,
-                DefinitionStages.WithDatabaseNameOverride,
-                DefinitionStages.WithDatabaseNamePrefix {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithDatabaseName,
+            DefinitionStages.WithClusterResourceId, DefinitionStages.WithDefaultPrincipalsModificationKind,
+            DefinitionStages.WithTableLevelSharingProperties, DefinitionStages.WithDatabaseNameOverride,
+            DefinitionStages.WithDatabaseNamePrefix {
             /**
              * Executes the create request.
              *
@@ -288,13 +284,9 @@ public interface AttachedDatabaseConfiguration {
     AttachedDatabaseConfiguration.Update update();
 
     /** The template for AttachedDatabaseConfiguration update. */
-    interface Update
-        extends UpdateStages.WithDatabaseName,
-            UpdateStages.WithClusterResourceId,
-            UpdateStages.WithDefaultPrincipalsModificationKind,
-            UpdateStages.WithTableLevelSharingProperties,
-            UpdateStages.WithDatabaseNameOverride,
-            UpdateStages.WithDatabaseNamePrefix {
+    interface Update extends UpdateStages.WithDatabaseName, UpdateStages.WithClusterResourceId,
+        UpdateStages.WithDefaultPrincipalsModificationKind, UpdateStages.WithTableLevelSharingProperties,
+        UpdateStages.WithDatabaseNameOverride, UpdateStages.WithDatabaseNamePrefix {
         /**
          * Executes the update request.
          *

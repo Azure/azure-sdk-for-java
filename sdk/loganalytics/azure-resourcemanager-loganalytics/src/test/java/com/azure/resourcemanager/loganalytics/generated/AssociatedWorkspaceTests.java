@@ -10,11 +10,9 @@ import com.azure.resourcemanager.loganalytics.models.AssociatedWorkspace;
 public final class AssociatedWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociatedWorkspace model =
-            BinaryData
-                .fromString(
-                    "{\"workspaceId\":\"rvexztvb\",\"workspaceName\":\"gsfraoyzkoow\",\"resourceId\":\"mnguxawqaldsyu\",\"associateDate\":\"imerqfobwyznk\"}")
-                .toObject(AssociatedWorkspace.class);
+        AssociatedWorkspace model = BinaryData.fromString(
+            "{\"workspaceId\":\"rvexztvb\",\"workspaceName\":\"gsfraoyzkoow\",\"resourceId\":\"mnguxawqaldsyu\",\"associateDate\":\"imerqfobwyznk\"}")
+            .toObject(AssociatedWorkspace.class);
     }
 
     @org.junit.jupiter.api.Test

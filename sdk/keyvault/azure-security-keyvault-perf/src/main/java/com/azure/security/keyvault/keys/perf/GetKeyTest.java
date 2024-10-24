@@ -19,9 +19,7 @@ public class GetKeyTest extends KeysTest<PerfStressOptions> {
     }
 
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(keyAsyncClient.createKey(keyName, KeyType.RSA))
-            .then();
+        return super.globalSetupAsync().then(keyAsyncClient.createKey(keyName, KeyType.RSA)).then();
     }
 
     @Override

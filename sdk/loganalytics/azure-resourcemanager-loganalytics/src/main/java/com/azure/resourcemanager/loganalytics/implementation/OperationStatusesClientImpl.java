@@ -39,8 +39,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusesClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,19 +51,14 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface OperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/locations/{location}/operationStatuses/{asyncOperationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/locations/{location}/operationStatuses/{asyncOperationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @PathParam("asyncOperationId") String asyncOperationId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @PathParam("asyncOperationId") String asyncOperationId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -80,10 +75,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusInner>> getWithResponseAsync(String location, String asyncOperationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -93,25 +86,14 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                 .error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            location,
-                            asyncOperationId,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), location, asyncOperationId, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -128,13 +110,11 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String location, String asyncOperationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String location, String asyncOperationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -144,23 +124,14 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                 .error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                location,
-                asyncOperationId,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), location, asyncOperationId, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**

@@ -12,8 +12,11 @@ public final class DeletedKeyHelper {
 
     public interface DeletedKeyAccessor {
         DeletedKey createDeletedKey(JsonWebKey jsonWebKey);
+
         void setRecoveryId(DeletedKey deletedKey, String recoveryId);
+
         void setScheduledPurgeDate(DeletedKey deletedKey, OffsetDateTime scheduledPurgeDate);
+
         void setDeletedOn(DeletedKey deletedKey, OffsetDateTime deletedOn);
     }
 

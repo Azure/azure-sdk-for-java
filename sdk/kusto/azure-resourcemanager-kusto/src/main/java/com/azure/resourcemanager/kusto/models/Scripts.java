@@ -35,8 +35,8 @@ public interface Scripts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database script operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Script> listByDatabase(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<Script> listByDatabase(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Gets a Kusto cluster database script.
@@ -51,8 +51,8 @@ public interface Scripts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster database script along with {@link Response}.
      */
-    Response<Script> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context);
+    Response<Script> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        String scriptName, Context context);
 
     /**
      * Gets a Kusto cluster database script.
@@ -108,12 +108,8 @@ public interface Scripts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ScriptCheckNameRequest scriptName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, ScriptCheckNameRequest scriptName, Context context);
 
     /**
      * Checks that the script name is valid and is not already in use.
@@ -127,8 +123,8 @@ public interface Scripts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName, String databaseName,
+        ScriptCheckNameRequest scriptName);
 
     /**
      * Gets a Kusto cluster database script.

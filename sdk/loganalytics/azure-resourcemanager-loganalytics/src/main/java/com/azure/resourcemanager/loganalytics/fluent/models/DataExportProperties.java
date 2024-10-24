@@ -228,9 +228,8 @@ public final class DataExportProperties {
      */
     public void validate() {
         if (tableNames() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tableNames in model DataExportProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tableNames in model DataExportProperties"));
         }
         if (innerDestination() != null) {
             innerDestination().validate();

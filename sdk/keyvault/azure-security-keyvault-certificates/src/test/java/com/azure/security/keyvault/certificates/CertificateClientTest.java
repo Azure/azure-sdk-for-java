@@ -84,17 +84,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     private void createCertificateClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
-                                         String testTenantId) {
-        certificateClient = getCertificateClientBuilder(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId,
-            getEndpoint(), serviceVersion)
-            .buildClient();
+        String testTenantId) {
+        certificateClient = getCertificateClientBuilder(
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            testTenantId, getEndpoint(), serviceVersion).buildClient();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -104,8 +102,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 25);
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName, certificatePolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certName, certificatePolicy));
 
             certPoller.waitForCompletion();
 
@@ -123,8 +122,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName, certificatePolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certName, certificatePolicy));
 
             certPoller.waitForCompletion();
 
@@ -138,8 +138,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName, certificatePolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certName, certificatePolicy));
 
             certPoller.waitForCompletion();
 
@@ -151,8 +152,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     private void deleteAndPurgeCertificate(String certName) {
-        SyncPoller<DeletedCertificate, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-            certificateClient.beginDeleteCertificate(certName));
+        SyncPoller<DeletedCertificate, Void> deletePoller
+            = setPlaybackSyncPollerPollInterval(certificateClient.beginDeleteCertificate(certName));
 
         deletePoller.poll();
         deletePoller.waitForCompletion();
@@ -195,14 +196,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         updateCertificateRunner((originalTags, updatedTags) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName,
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName,
                     CertificatePolicy.getDefault(), true, originalTags));
 
             certPoller.waitForCompletion();
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            KeyVaultCertificate keyVaultCertificate = certificateClient.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
+            KeyVaultCertificate keyVaultCertificate
+                = certificateClient.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
 
             validateMapResponse(updatedTags, returnedTags);
@@ -216,14 +218,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         updateDisabledCertificateRunner((originalTags, updatedTags) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault(), false, originalTags));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certName,
+                    CertificatePolicy.getDefault(), false, originalTags));
 
             certPoller.waitForCompletion();
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            KeyVaultCertificate keyVaultCertificate =
-                certificateClient.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
+            KeyVaultCertificate keyVaultCertificate
+                = certificateClient.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
 
             validateMapResponse(updatedTags, returnedTags);
@@ -239,8 +242,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         getCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
@@ -258,14 +262,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         getCertificateSpecificVersionRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            KeyVaultCertificate getCertificate =
-                certificateClient.getCertificateVersion(certificateName, certificate.getProperties().getVersion());
+            KeyVaultCertificate getCertificate
+                = certificateClient.getCertificateVersion(certificateName, certificate.getProperties().getVersion());
 
             assertCertificate(certificate, getCertificate);
         });
@@ -276,8 +281,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertResponseException(() -> certificateClient.getCertificate("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertResponseException(() -> certificateClient.getCertificate("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -287,13 +292,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         deleteCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
-            SyncPoller<DeletedCertificate, Void> deletedKeyPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginDeleteCertificate(certificateName));
+            SyncPoller<DeletedCertificate, Void> deletedKeyPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginDeleteCertificate(certificateName));
 
             DeletedCertificate deletedCertificate = deletedKeyPoller.waitForCompletion().getValue();
 
@@ -320,13 +326,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         getDeletedCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
-            SyncPoller<DeletedCertificate, Void> deletedKeyPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginDeleteCertificate(certificateName));
+            SyncPoller<DeletedCertificate, Void> deletedKeyPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginDeleteCertificate(certificateName));
 
             deletedKeyPoller.waitForCompletion();
 
@@ -355,19 +362,20 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         recoverDeletedKeyRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
             KeyVaultCertificate createdCertificate = certPoller.getFinalResult();
-            SyncPoller<DeletedCertificate, Void> deletedKeyPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginDeleteCertificate(certificateName));
+            SyncPoller<DeletedCertificate, Void> deletedKeyPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginDeleteCertificate(certificateName));
 
             deletedKeyPoller.waitForCompletion();
 
-            SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginRecoverDeletedCertificate(certificateName));
+            SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginRecoverDeletedCertificate(certificateName));
 
             KeyVaultCertificate recoveredCert = recoverPoller.waitForCompletion().getValue();
 
@@ -393,8 +401,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         backupCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
@@ -421,8 +430,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         restoreCertificateRunner((certificateName) -> {
             CertificatePolicy initialPolicy = setupPolicy();
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, initialPolicy));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, initialPolicy));
 
             certPoller.waitForCompletion();
 
@@ -450,10 +460,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         getCertificateOperationRunner((certificateName) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> retrievePoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.getCertificateOperation(certificateName));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> retrievePoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.getCertificateOperation(certificateName));
 
             retrievePoller.waitForCompletion();
             certPoller.waitForCompletion();
@@ -472,8 +483,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         cancelCertificateOperationRunner(certName -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
                     .setPollInterval(Duration.ofMillis(100));
 
             certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
@@ -497,14 +508,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
         });
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void deleteCertificateOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
         deleteCertificateOperationRunner((certificateName) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()));
 
             certPoller.waitForCompletion();
 
@@ -522,8 +533,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         getCertificatePolicyRunner((certificateName) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
 
             certPoller.waitForCompletion();
 
@@ -539,8 +551,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         updateCertificatePolicyRunner((certificateName) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certificateName, setupPolicy()));
 
             certPoller.waitForCompletion();
 
@@ -548,8 +561,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             certificate.getPolicy().setExportable(false);
 
-            CertificatePolicy policy =
-                certificateClient.updateCertificatePolicy(certificateName, certificate.getPolicy());
+            CertificatePolicy policy
+                = certificateClient.updateCertificatePolicy(certificateName, certificate.getPolicy());
 
             assertPolicy(certificate.getPolicy(), policy);
         });
@@ -576,8 +589,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
             for (String certName : certificates) {
-                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
+                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                    = setPlaybackSyncPollerPollInterval(
+                        certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
                 certPoller.waitForCompletion();
             }
@@ -592,7 +606,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
         });
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listPropertiesOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
@@ -602,15 +615,17 @@ public class CertificateClientTest extends CertificateClientTestBase {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
             for (String certName : certificates) {
-                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
+                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                    = setPlaybackSyncPollerPollInterval(
+                        certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
                 certPoller.waitForCompletion();
             }
 
             sleepIfRunningAgainstService(30000);
 
-            for (CertificateProperties actualKey : certificateClient.listPropertiesOfCertificates(false, Context.NONE)) {
+            for (CertificateProperties actualKey : certificateClient.listPropertiesOfCertificates(false,
+                Context.NONE)) {
                 certificates.remove(actualKey.getName());
             }
 
@@ -761,7 +776,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         sleepIfRunningAgainstService(6000);
 
-        certificateClient.listContacts().stream()
+        certificateClient.listContacts()
+            .stream()
             .forEach((retrievedContact) -> validateContact(setupContact(), retrievedContact));
     }
 
@@ -808,8 +824,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
         int versionsToCreate = 5;
 
         for (int i = 0; i < versionsToCreate; i++) {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
             certPoller.waitForCompletion();
         }
@@ -834,15 +851,16 @@ public class CertificateClientTest extends CertificateClientTestBase {
             HashSet<String> certificatesToDelete = new HashSet<>(certificates);
 
             for (String certName : certificatesToDelete) {
-                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
+                SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                    = setPlaybackSyncPollerPollInterval(
+                        certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()));
 
                 assertNotNull(certPoller.waitForCompletion().getValue());
             }
 
             for (String certName : certificates) {
-                SyncPoller<DeletedCertificate, Void> poller = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginDeleteCertificate(certName));
+                SyncPoller<DeletedCertificate, Void> poller
+                    = setPlaybackSyncPollerPollInterval(certificateClient.beginDeleteCertificate(certName));
 
                 assertNotNull(poller.waitForCompletion().getValue());
             }
@@ -862,20 +880,22 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         importCertificateRunner((importCertificateOptions) -> {
-            KeyVaultCertificateWithPolicy importedCertificate =
-                certificateClient.importCertificate(importCertificateOptions);
+            KeyVaultCertificateWithPolicy importedCertificate
+                = certificateClient.importCertificate(importCertificateOptions);
 
             assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
                 .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
             // Load the CER part into X509Certificate object
-            X509Certificate x509Certificate = assertDoesNotThrow(
-                () -> loadCerToX509Certificate(importedCertificate.getCer()));
+            X509Certificate x509Certificate
+                = assertDoesNotThrow(() -> loadCerToX509Certificate(importedCertificate.getCer()));
 
-            assertTrue(x509Certificate.getSubjectX500Principal().getName()
+            assertTrue(x509Certificate.getSubjectX500Principal()
+                .getName()
                 .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
-            assertTrue(x509Certificate.getIssuerX500Principal().getName()
+            assertTrue(x509Certificate.getIssuerX500Principal()
+                .getName()
                 .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
         });
     }
@@ -890,16 +910,16 @@ public class CertificateClientTest extends CertificateClientTestBase {
             String certificateName = testResourceNamer.randomName("testCert", 25);
             String issuer = "Unknown";
             String subject = "CN=MyCert";
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> createCertificatePoller =
-                setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certificateName,
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> createCertificatePoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certificateName,
                     new CertificatePolicy(issuer, subject).setCertificateTransparent(false)));
 
             createCertificatePoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
 
             CertificateOperation certificateOperation = createCertificatePoller.poll().getValue();
             byte[] certificateSignRequest = certificateOperation.getCsr();
-            PKCS10CertificationRequest pkcs10CertificationRequest =
-                new PKCS10CertificationRequest(certificateSignRequest);
+            PKCS10CertificationRequest pkcs10CertificationRequest
+                = new PKCS10CertificationRequest(certificateSignRequest);
             byte[] certificateToMerge = FakeCredentialsForTests.FAKE_PEM_CERTIFICATE_FOR_MERGE.getBytes();
             X509Certificate x509ToMerge = loadCerToX509Certificate(certificateToMerge);
             PrivateKey privateKey = loadPrivateKey("priv8.der");
@@ -908,24 +928,23 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             X500Name mergeIssuer = new X500Name(x509ToMerge.getSubjectX500Principal().getName());
             X500Name mergeSubject = pkcs10CertificationRequest.getSubject();
-            AlgorithmIdentifier signatureAlgorithmIdentifier =
-                new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
-            AlgorithmIdentifier digestAlgorithmIdentifier =
-                new DefaultDigestAlgorithmIdentifierFinder().find(signatureAlgorithmIdentifier);
+            AlgorithmIdentifier signatureAlgorithmIdentifier
+                = new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
+            AlgorithmIdentifier digestAlgorithmIdentifier
+                = new DefaultDigestAlgorithmIdentifierFinder().find(signatureAlgorithmIdentifier);
             AsymmetricKeyParameter asymmetricKeyParameter = PrivateKeyFactory.createKey(privateKey.getEncoded());
             SubjectPublicKeyInfo publicKeyInfo = pkcs10CertificationRequest.getSubjectPublicKeyInfo();
-            X509v3CertificateBuilder x509CertificateBuilder =
-                new X509v3CertificateBuilder(mergeIssuer, BigInteger.ONE, notBefore, notAfter, mergeSubject,
-                    publicKeyInfo);
+            X509v3CertificateBuilder x509CertificateBuilder = new X509v3CertificateBuilder(mergeIssuer, BigInteger.ONE,
+                notBefore, notAfter, mergeSubject, publicKeyInfo);
 
-            ContentSigner contentSigner =
-                new BcRSAContentSignerBuilder(signatureAlgorithmIdentifier, digestAlgorithmIdentifier)
+            ContentSigner contentSigner
+                = new BcRSAContentSignerBuilder(signatureAlgorithmIdentifier, digestAlgorithmIdentifier)
                     .build(asymmetricKeyParameter);
 
             Certificate certificate = x509CertificateBuilder.build(contentSigner).toASN1Structure();
 
-            MergeCertificateOptions mergeCertificateOptions =
-                new MergeCertificateOptions(certificateName, Collections.singletonList(certificate.getEncoded()));
+            MergeCertificateOptions mergeCertificateOptions
+                = new MergeCertificateOptions(certificateName, Collections.singletonList(certificate.getEncoded()));
 
             certificateClient.mergeCertificate(mergeCertificateOptions);
 
@@ -942,19 +961,21 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertResponseException(() -> certificateClient.mergeCertificate(new MergeCertificateOptions(
-            testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
+        assertResponseException(
+            () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
+                testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
             KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
+        throws IOException {
         createCertificateClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> {
-            KeyVaultCertificateWithPolicy importedCertificate =
-                certificateClient.importCertificate(importCertificateOptions);
+            KeyVaultCertificateWithPolicy importedCertificate
+                = certificateClient.importCertificate(importCertificateOptions);
 
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
             assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());

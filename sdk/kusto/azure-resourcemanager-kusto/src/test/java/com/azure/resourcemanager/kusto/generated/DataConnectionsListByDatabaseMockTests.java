@@ -31,39 +31,27 @@ public final class DataConnectionsListByDatabaseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"xyivpinbm\",\"id\":\"wbjijkgq\",\"name\":\"nhmbkez\",\"type\":\"jauj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"xyivpinbm\",\"id\":\"wbjijkgq\",\"name\":\"nhmbkez\",\"type\":\"jauj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DataConnection> response =
-            manager
-                .dataConnections()
-                .listByDatabase("aolnjpnnbmjk", "ibjgsjjxxahm", "nadzyq", com.azure.core.util.Context.NONE);
+        PagedIterable<DataConnection> response = manager.dataConnections()
+            .listByDatabase("aolnjpnnbmjk", "ibjgsjjxxahm", "nadzyq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xyivpinbm", response.iterator().next().location());
     }

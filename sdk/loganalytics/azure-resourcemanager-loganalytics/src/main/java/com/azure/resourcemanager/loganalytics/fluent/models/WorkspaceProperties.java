@@ -214,8 +214,8 @@ public final class WorkspaceProperties {
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withPublicNetworkAccessForIngestion(
-        PublicNetworkAccessType publicNetworkAccessForIngestion) {
+    public WorkspaceProperties
+        withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion) {
         this.publicNetworkAccessForIngestion = publicNetworkAccessForIngestion;
         return this;
     }

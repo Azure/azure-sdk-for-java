@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the LoadTestClientImpl type. */
-@ServiceClientBuilder(serviceClients = {LoadTestClientImpl.class})
+@ServiceClientBuilder(serviceClients = { LoadTestClientImpl.class })
 public final class LoadTestClientBuilder {
     /*
      * The ID of the target subscription.
@@ -121,24 +121,16 @@ public final class LoadTestClientBuilder {
     public LoadTestClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        LoadTestClientImpl client =
-            new LoadTestClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        LoadTestClientImpl client = new LoadTestClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
         return client;
     }
 }

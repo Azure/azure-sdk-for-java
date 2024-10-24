@@ -290,22 +290,16 @@ public final class IotHubConnectionProperties {
      */
     public void validate() {
         if (iotHubResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property iotHubResourceId in model IotHubConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property iotHubResourceId in model IotHubConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroup in model IotHubConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property consumerGroup in model IotHubConnectionProperties"));
         }
         if (sharedAccessPolicyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharedAccessPolicyName in model IotHubConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sharedAccessPolicyName in model IotHubConnectionProperties"));
         }
     }
 

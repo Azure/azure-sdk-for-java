@@ -32,45 +32,29 @@ public final class DataConnectionsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"nameAvailable\":false,\"name\":\"qinfszpyglqd\",\"message\":\"rjzralcx\",\"reason\":\"AlreadyExists\"}";
+        String responseStr
+            = "{\"nameAvailable\":false,\"name\":\"qinfszpyglqd\",\"message\":\"rjzralcx\",\"reason\":\"AlreadyExists\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckNameResult response =
-            manager
-                .dataConnections()
-                .checkNameAvailabilityWithResponse(
-                    "czhcoeocnh",
-                    "qr",
-                    "ttjzcfyjzpt",
-                    new DataConnectionCheckNameRequest().withName("rl"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        CheckNameResult response = manager.dataConnections()
+            .checkNameAvailabilityWithResponse("czhcoeocnh", "qr", "ttjzcfyjzpt",
+                new DataConnectionCheckNameRequest().withName("rl"), com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(false, response.nameAvailable());
         Assertions.assertEquals("qinfszpyglqd", response.name());

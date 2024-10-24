@@ -128,8 +128,8 @@ public interface Clusters {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void migrate(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context);
+    void migrate(String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest,
+        Context context);
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
@@ -154,8 +154,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Detaches all followers of a database owned by this cluster.
@@ -167,8 +167,8 @@ public interface Clusters {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachFollowerDatabases(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove);
+    void detachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove);
 
     /**
      * Detaches all followers of a database owned by this cluster.
@@ -181,11 +181,8 @@ public interface Clusters {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachFollowerDatabases(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context);
+    void detachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context);
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
@@ -286,8 +283,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String location, ClusterCheckNameRequest clusterName, Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String location, ClusterCheckNameRequest clusterName,
+        Context context);
 
     /**
      * Checks that the cluster name is valid and is not already in use.
@@ -337,8 +334,8 @@ public interface Clusters {
      * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<OutboundNetworkDependenciesEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String clusterName);
+    PagedIterable<OutboundNetworkDependenciesEndpoint>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName);
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
@@ -352,8 +349,8 @@ public interface Clusters {
      * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<OutboundNetworkDependenciesEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<OutboundNetworkDependenciesEndpoint>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
@@ -378,65 +375,62 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LanguageExtension> listLanguageExtensions(
-        String resourceGroupName, String clusterName, Context context);
-
-    /**
-     * Add a list of language extensions that can run within KQL queries.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kusto cluster.
-     * @param languageExtensionsToAdd The language extensions to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void addLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd);
-
-    /**
-     * Add a list of language extensions that can run within KQL queries.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kusto cluster.
-     * @param languageExtensionsToAdd The language extensions to add.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void addLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context);
-
-    /**
-     * Remove a list of language extensions that can run within KQL queries.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kusto cluster.
-     * @param languageExtensionsToRemove The language extensions to remove.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void removeLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove);
-
-    /**
-     * Remove a list of language extensions that can run within KQL queries.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kusto cluster.
-     * @param languageExtensionsToRemove The language extensions to remove.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void removeLanguageExtensions(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
+    PagedIterable<LanguageExtension> listLanguageExtensions(String resourceGroupName, String clusterName,
         Context context);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context);
+
+    /**
+     * Remove a list of language extensions that can run within KQL queries.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param languageExtensionsToRemove The language extensions to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove);
+
+    /**
+     * Remove a list of language extensions that can run within KQL queries.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param languageExtensionsToRemove The language extensions to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove, Context context);
 
     /**
      * Gets a Kusto cluster.

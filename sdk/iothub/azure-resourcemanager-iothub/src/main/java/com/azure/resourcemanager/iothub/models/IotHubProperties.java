@@ -191,8 +191,8 @@ public final class IotHubProperties {
      * @param authorizationPolicies the authorizationPolicies value to set.
      * @return the IotHubProperties object itself.
      */
-    public IotHubProperties withAuthorizationPolicies(
-        List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
+    public IotHubProperties
+        withAuthorizationPolicies(List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
         return this;
     }
@@ -400,8 +400,8 @@ public final class IotHubProperties {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the IotHubProperties object itself.
      */
-    public IotHubProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public IotHubProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -655,37 +655,28 @@ public final class IotHubProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
         if (eventHubEndpoints() != null) {
-            eventHubEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            eventHubEndpoints().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (routing() != null) {
             routing().validate();
         }
         if (storageEndpoints() != null) {
-            storageEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            storageEndpoints().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (messagingEndpoints() != null) {
-            messagingEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            messagingEndpoints().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (cloudToDevice() != null) {
             cloudToDevice().validate();

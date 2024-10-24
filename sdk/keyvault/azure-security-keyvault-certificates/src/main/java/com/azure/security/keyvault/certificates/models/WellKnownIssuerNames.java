@@ -16,7 +16,6 @@ public class WellKnownIssuerNames {
      */
     public static final String SELF = "Self";
 
-
     /**
      * Creates a certificate that requires merging an external X.509 certificate using
      * {@link CertificateClient#mergeCertificate(MergeCertificateOptions)} or

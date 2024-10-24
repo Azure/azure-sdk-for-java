@@ -107,13 +107,11 @@ public final class KustoManager {
     private KustoManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new KustoManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new KustoManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -241,8 +239,8 @@ public final class KustoManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -262,15 +260,13 @@ public final class KustoManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
                 .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -295,31 +291,21 @@ public final class KustoManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new KustoManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -343,8 +329,8 @@ public final class KustoManager {
      */
     public ClusterPrincipalAssignments clusterPrincipalAssignments() {
         if (this.clusterPrincipalAssignments == null) {
-            this.clusterPrincipalAssignments =
-                new ClusterPrincipalAssignmentsImpl(clientObject.getClusterPrincipalAssignments(), this);
+            this.clusterPrincipalAssignments
+                = new ClusterPrincipalAssignmentsImpl(clientObject.getClusterPrincipalAssignments(), this);
         }
         return clusterPrincipalAssignments;
     }
@@ -380,8 +366,8 @@ public final class KustoManager {
      */
     public AttachedDatabaseConfigurations attachedDatabaseConfigurations() {
         if (this.attachedDatabaseConfigurations == null) {
-            this.attachedDatabaseConfigurations =
-                new AttachedDatabaseConfigurationsImpl(clientObject.getAttachedDatabaseConfigurations(), this);
+            this.attachedDatabaseConfigurations
+                = new AttachedDatabaseConfigurationsImpl(clientObject.getAttachedDatabaseConfigurations(), this);
         }
         return attachedDatabaseConfigurations;
     }
@@ -393,8 +379,8 @@ public final class KustoManager {
      */
     public ManagedPrivateEndpoints managedPrivateEndpoints() {
         if (this.managedPrivateEndpoints == null) {
-            this.managedPrivateEndpoints =
-                new ManagedPrivateEndpointsImpl(clientObject.getManagedPrivateEndpoints(), this);
+            this.managedPrivateEndpoints
+                = new ManagedPrivateEndpointsImpl(clientObject.getManagedPrivateEndpoints(), this);
         }
         return managedPrivateEndpoints;
     }
@@ -418,8 +404,8 @@ public final class KustoManager {
      */
     public DatabasePrincipalAssignments databasePrincipalAssignments() {
         if (this.databasePrincipalAssignments == null) {
-            this.databasePrincipalAssignments =
-                new DatabasePrincipalAssignmentsImpl(clientObject.getDatabasePrincipalAssignments(), this);
+            this.databasePrincipalAssignments
+                = new DatabasePrincipalAssignmentsImpl(clientObject.getDatabasePrincipalAssignments(), this);
         }
         return databasePrincipalAssignments;
     }
@@ -455,8 +441,8 @@ public final class KustoManager {
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
@@ -516,8 +502,8 @@ public final class KustoManager {
      */
     public OperationsResultsLocations operationsResultsLocations() {
         if (this.operationsResultsLocations == null) {
-            this.operationsResultsLocations =
-                new OperationsResultsLocationsImpl(clientObject.getOperationsResultsLocations(), this);
+            this.operationsResultsLocations
+                = new OperationsResultsLocationsImpl(clientObject.getOperationsResultsLocations(), this);
         }
         return operationsResultsLocations;
     }

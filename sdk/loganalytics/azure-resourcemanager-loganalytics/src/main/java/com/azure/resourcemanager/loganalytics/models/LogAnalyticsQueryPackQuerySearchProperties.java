@@ -45,8 +45,8 @@ public final class LogAnalyticsQueryPackQuerySearchProperties {
      * @param related the related value to set.
      * @return the LogAnalyticsQueryPackQuerySearchProperties object itself.
      */
-    public LogAnalyticsQueryPackQuerySearchProperties withRelated(
-        LogAnalyticsQueryPackQuerySearchPropertiesRelated related) {
+    public LogAnalyticsQueryPackQuerySearchProperties
+        withRelated(LogAnalyticsQueryPackQuerySearchPropertiesRelated related) {
         this.related = related;
         return this;
     }

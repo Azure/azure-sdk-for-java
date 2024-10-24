@@ -47,16 +47,8 @@ public final class KeyVaultTrustManagerFactoryProvider extends Provider {
     @SuppressWarnings("removal")
     private void initialize() {
         java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            putService(
-                new Provider.Service(
-                    this,
-                    "TrustManagerFactory",
-                    "PKIX",
-                    KeyVaultTrustManagerFactory.class.getName(),
-                    null,
-                    null
-                )
-            );
+            putService(new Provider.Service(this, "TrustManagerFactory", "PKIX",
+                KeyVaultTrustManagerFactory.class.getName(), null, null));
             return null;
         });
     }

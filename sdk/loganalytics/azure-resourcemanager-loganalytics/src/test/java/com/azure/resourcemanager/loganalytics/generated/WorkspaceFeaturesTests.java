@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceFeaturesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceFeatures model =
-            BinaryData
-                .fromString(
-                    "{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"zpxdt\",\"disableLocalAuth\":false,\"\":{\"rkpyouaibrebqaay\":\"dataqjjlwuen\",\"ixqtn\":\"dataj\",\"ffiakp\":\"datattezlw\",\"tmmjihyeozph\":\"datapqqmted\"}}")
-                .toObject(WorkspaceFeatures.class);
+        WorkspaceFeatures model = BinaryData.fromString(
+            "{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"zpxdt\",\"disableLocalAuth\":false,\"\":{\"rkpyouaibrebqaay\":\"dataqjjlwuen\",\"ixqtn\":\"dataj\",\"ffiakp\":\"datattezlw\",\"tmmjihyeozph\":\"datapqqmted\"}}")
+            .toObject(WorkspaceFeatures.class);
         Assertions.assertEquals(false, model.enableDataExport());
         Assertions.assertEquals(true, model.immediatePurgeDataOn30Days());
         Assertions.assertEquals(false, model.enableLogAccessUsingOnlyResourcePermissions());
@@ -27,14 +25,12 @@ public final class WorkspaceFeaturesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceFeatures model =
-            new WorkspaceFeatures()
-                .withEnableDataExport(false)
-                .withImmediatePurgeDataOn30Days(true)
-                .withEnableLogAccessUsingOnlyResourcePermissions(false)
-                .withClusterResourceId("zpxdt")
-                .withDisableLocalAuth(false)
-                .withAdditionalProperties(mapOf());
+        WorkspaceFeatures model = new WorkspaceFeatures().withEnableDataExport(false)
+            .withImmediatePurgeDataOn30Days(true)
+            .withEnableLogAccessUsingOnlyResourcePermissions(false)
+            .withClusterResourceId("zpxdt")
+            .withDisableLocalAuth(false)
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(WorkspaceFeatures.class);
         Assertions.assertEquals(false, model.enableDataExport());
         Assertions.assertEquals(true, model.immediatePurgeDataOn30Days());

@@ -100,16 +100,12 @@ public final class PrivateLinkServiceConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model PrivateLinkServiceConnectionState"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property status in model PrivateLinkServiceConnectionState"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model PrivateLinkServiceConnectionState"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property description in model PrivateLinkServiceConnectionState"));
         }
     }
 

@@ -29,11 +29,8 @@ public interface LinkedStorageAccountsClient {
      * @return linked storage accounts top level resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LinkedStorageAccountsResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        DataSourceType dataSourceType,
-        LinkedStorageAccountsResourceInner parameters,
+    Response<LinkedStorageAccountsResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String workspaceName, DataSourceType dataSourceType, LinkedStorageAccountsResourceInner parameters,
         Context context);
 
     /**
@@ -50,11 +47,8 @@ public interface LinkedStorageAccountsClient {
      * @return linked storage accounts top level resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedStorageAccountsResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        DataSourceType dataSourceType,
-        LinkedStorageAccountsResourceInner parameters);
+    LinkedStorageAccountsResourceInner createOrUpdate(String resourceGroupName, String workspaceName,
+        DataSourceType dataSourceType, LinkedStorageAccountsResourceInner parameters);
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
@@ -69,8 +63,8 @@ public interface LinkedStorageAccountsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, DataSourceType dataSourceType,
+        Context context);
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
@@ -99,8 +93,8 @@ public interface LinkedStorageAccountsClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LinkedStorageAccountsResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
+    Response<LinkedStorageAccountsResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        DataSourceType dataSourceType, Context context);
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.
@@ -114,8 +108,8 @@ public interface LinkedStorageAccountsClient {
      * @return all linked storage account of a specific data source type associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedStorageAccountsResourceInner get(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType);
+    LinkedStorageAccountsResourceInner get(String resourceGroupName, String workspaceName,
+        DataSourceType dataSourceType);
 
     /**
      * Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
@@ -146,6 +140,6 @@ public interface LinkedStorageAccountsClient {
      *     their data source type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

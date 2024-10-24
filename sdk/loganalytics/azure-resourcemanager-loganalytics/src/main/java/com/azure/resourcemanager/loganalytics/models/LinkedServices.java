@@ -49,8 +49,8 @@ public interface LinkedServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a linked service instance along with {@link Response}.
      */
-    Response<LinkedService> getWithResponse(
-        String resourceGroupName, String workspaceName, String linkedServiceName, Context context);
+    Response<LinkedService> getWithResponse(String resourceGroupName, String workspaceName, String linkedServiceName,
+        Context context);
 
     /**
      * Gets a linked service instance.

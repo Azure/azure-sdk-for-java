@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventGridConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventGridConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"storageAccountResourceId\":\"zvfvaawz\",\"eventGridResourceId\":\"dflgzuri\",\"eventHubResourceId\":\"laecxndticok\",\"consumerGroup\":\"vzm\",\"tableName\":\"t\",\"mappingRuleName\":\"dgxobfircl\",\"dataFormat\":\"TXT\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"riykhyawfvjlbox\",\"managedIdentityObjectId\":\"kjlmx\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(EventGridConnectionProperties.class);
+        EventGridConnectionProperties model = BinaryData.fromString(
+            "{\"storageAccountResourceId\":\"zvfvaawz\",\"eventGridResourceId\":\"dflgzuri\",\"eventHubResourceId\":\"laecxndticok\",\"consumerGroup\":\"vzm\",\"tableName\":\"t\",\"mappingRuleName\":\"dgxobfircl\",\"dataFormat\":\"TXT\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"riykhyawfvjlbox\",\"managedIdentityObjectId\":\"kjlmx\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(EventGridConnectionProperties.class);
         Assertions.assertEquals("zvfvaawz", model.storageAccountResourceId());
         Assertions.assertEquals("dflgzuri", model.eventGridResourceId());
         Assertions.assertEquals("laecxndticok", model.eventHubResourceId());
@@ -34,9 +32,8 @@ public final class EventGridConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventGridConnectionProperties model =
-            new EventGridConnectionProperties()
-                .withStorageAccountResourceId("zvfvaawz")
+        EventGridConnectionProperties model
+            = new EventGridConnectionProperties().withStorageAccountResourceId("zvfvaawz")
                 .withEventGridResourceId("dflgzuri")
                 .withEventHubResourceId("laecxndticok")
                 .withConsumerGroup("vzm")

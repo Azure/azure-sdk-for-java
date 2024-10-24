@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AcceptedAudiencesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AcceptedAudiences model =
-            BinaryData.fromString("{\"value\":\"fpdvhpfxxypi\"}").toObject(AcceptedAudiences.class);
+        AcceptedAudiences model
+            = BinaryData.fromString("{\"value\":\"fpdvhpfxxypi\"}").toObject(AcceptedAudiences.class);
         Assertions.assertEquals("fpdvhpfxxypi", model.value());
     }
 

@@ -21,8 +21,8 @@ public interface AvailableServiceTiers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available service tiers for the workspace along with {@link Response}.
      */
-    Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the available service tiers for the workspace.

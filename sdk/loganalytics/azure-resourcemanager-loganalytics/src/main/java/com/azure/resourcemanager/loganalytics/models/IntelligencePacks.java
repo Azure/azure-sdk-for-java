@@ -22,8 +22,8 @@ public interface IntelligencePacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> disableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+    Response<Void> disableWithResponse(String resourceGroupName, String workspaceName, String intelligencePackName,
+        Context context);
 
     /**
      * Disables an intelligence pack for a given workspace.
@@ -49,8 +49,8 @@ public interface IntelligencePacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> enableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+    Response<Void> enableWithResponse(String resourceGroupName, String workspaceName, String intelligencePackName,
+        Context context);
 
     /**
      * Enables an intelligence pack for a given workspace.

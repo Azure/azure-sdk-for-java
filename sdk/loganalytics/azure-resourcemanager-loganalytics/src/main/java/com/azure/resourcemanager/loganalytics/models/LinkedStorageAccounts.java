@@ -22,8 +22,8 @@ public interface LinkedStorageAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, DataSourceType dataSourceType,
+        Context context);
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
@@ -50,8 +50,8 @@ public interface LinkedStorageAccounts {
      * @return all linked storage account of a specific data source type associated with the specified workspace along
      *     with {@link Response}.
      */
-    Response<LinkedStorageAccountsResource> getWithResponse(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
+    Response<LinkedStorageAccountsResource> getWithResponse(String resourceGroupName, String workspaceName,
+        DataSourceType dataSourceType, Context context);
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.
@@ -93,8 +93,8 @@ public interface LinkedStorageAccounts {
      * @return all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
      *     their data source type as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LinkedStorageAccountsResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<LinkedStorageAccountsResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.

@@ -432,7 +432,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
-                                                                         Context context) {
+        Context context) {
         Response<SecretBundle> response = implClient.updateSecretWithResponse(vaultUrl, secretProperties.getName(),
             secretProperties.getVersion(), secretProperties.getContentType(), createSecretAttributes(secretProperties),
             secretProperties.getTags(), context);
@@ -477,10 +477,11 @@ public final class SecretClient {
             deletePollOperation(name), (context, response) -> null, context -> null);
     }
 
-    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> deleteActivationOperation(
-        String name) {
-        return pollingContext -> callWithMappedException(() -> new PollResponse<>(
-            LongRunningOperationStatus.NOT_STARTED, createDeletedSecret(implClient.deleteSecret(vaultUrl, name))),
+    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>>
+        deleteActivationOperation(String name) {
+        return pollingContext -> callWithMappedException(
+            () -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createDeletedSecret(implClient.deleteSecret(vaultUrl, name))),
             SecretAsyncClient::mapDeleteSecretException);
     }
 
@@ -647,16 +648,15 @@ public final class SecretClient {
             recoverPollOperation(name), (context, response) -> null, context -> null);
     }
 
-    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverActivationOperation(
-        String name) {
-        return pollingContext -> callWithMappedException(() -> new PollResponse<>(
-            LongRunningOperationStatus.NOT_STARTED,
-            createKeyVaultSecret(implClient.recoverDeletedSecret(vaultUrl, name))),
+    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>>
+        recoverActivationOperation(String name) {
+        return pollingContext -> callWithMappedException(
+            () -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createKeyVaultSecret(implClient.recoverDeletedSecret(vaultUrl, name))),
             SecretAsyncClient::mapRecoverDeletedSecretException);
     }
 
-    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverPollOperation(
-        String name) {
+    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverPollOperation(String name) {
         return pollingContext -> {
             try {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -867,10 +867,10 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return new PagedIterable<>(maxResults -> mapSecretItemPage(implClient.getSecretsSinglePage(vaultUrl, maxResults,
-            context)),
-            (continuationToken, maxResults) -> mapSecretItemPage(implClient.getSecretsNextSinglePage(continuationToken,
-                vaultUrl, context)));
+        return new PagedIterable<>(
+            maxResults -> mapSecretItemPage(implClient.getSecretsSinglePage(vaultUrl, maxResults, context)),
+            (continuationToken, maxResults) -> mapSecretItemPage(
+                implClient.getSecretsNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -928,10 +928,11 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
-        return new PagedIterable<>(maxResults -> mapDeletedSecretItemPage(implClient.getDeletedSecretsSinglePage(
-            vaultUrl, maxResults, context)),
-            (continuationToken, maxResults) -> mapDeletedSecretItemPage(implClient.getDeletedSecretsNextSinglePage(
-                continuationToken, vaultUrl, context)));
+        return new PagedIterable<>(
+            maxResults -> mapDeletedSecretItemPage(
+                implClient.getDeletedSecretsSinglePage(vaultUrl, maxResults, context)),
+            (continuationToken, maxResults) -> mapDeletedSecretItemPage(
+                implClient.getDeletedSecretsNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     /**
@@ -1013,10 +1014,11 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return new PagedIterable<>(maxResults -> mapSecretItemPage(implClient.getSecretVersionsSinglePage(vaultUrl,
-            name, maxResults, context)),
-            (continuationToken, maxResults) -> mapSecretItemPage(implClient.getSecretVersionsNextSinglePage(
-                continuationToken, vaultUrl, context)));
+        return new PagedIterable<>(
+            maxResults -> mapSecretItemPage(
+                implClient.getSecretVersionsSinglePage(vaultUrl, name, maxResults, context)),
+            (continuationToken, maxResults) -> mapSecretItemPage(
+                implClient.getSecretVersionsNextSinglePage(continuationToken, vaultUrl, context)));
     }
 
     private static <T> T callWithMappedException(Supplier<T> call,

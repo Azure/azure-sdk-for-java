@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchExtension model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"autoUpgradeMinorVersion\":true,\"releaseTrain\":\"jhulsuuvmkjo\",\"version\":\"rwfndiod\",\"configurationSettings\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"configurationProtectedSettings\":{\"jbp\":\"trg\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\",\"vhpfxxypininmay\":\"fpjkjlxofp\"}}}")
-                .toObject(PatchExtension.class);
+        PatchExtension model = BinaryData.fromString(
+            "{\"properties\":{\"autoUpgradeMinorVersion\":true,\"releaseTrain\":\"jhulsuuvmkjo\",\"version\":\"rwfndiod\",\"configurationSettings\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"configurationProtectedSettings\":{\"jbp\":\"trg\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\",\"vhpfxxypininmay\":\"fpjkjlxofp\"}}}")
+            .toObject(PatchExtension.class);
         Assertions.assertEquals(true, model.autoUpgradeMinorVersion());
         Assertions.assertEquals("jhulsuuvmkjo", model.releaseTrain());
         Assertions.assertEquals("rwfndiod", model.version());
@@ -27,15 +25,13 @@ public final class PatchExtensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchExtension model =
-            new PatchExtension()
-                .withAutoUpgradeMinorVersion(true)
-                .withReleaseTrain("jhulsuuvmkjo")
-                .withVersion("rwfndiod")
-                .withConfigurationSettings(
-                    mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
-                .withConfigurationProtectedSettings(
-                    mapOf("jbp", "trg", "jrwzox", "zfsinzgvf", "felluwfzitonpe", "j", "vhpfxxypininmay", "fpjkjlxofp"));
+        PatchExtension model = new PatchExtension().withAutoUpgradeMinorVersion(true)
+            .withReleaseTrain("jhulsuuvmkjo")
+            .withVersion("rwfndiod")
+            .withConfigurationSettings(
+                mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
+            .withConfigurationProtectedSettings(
+                mapOf("jbp", "trg", "jrwzox", "zfsinzgvf", "felluwfzitonpe", "j", "vhpfxxypininmay", "fpjkjlxofp"));
         model = BinaryData.fromObject(model).toObject(PatchExtension.class);
         Assertions.assertEquals(true, model.autoUpgradeMinorVersion());
         Assertions.assertEquals("jhulsuuvmkjo", model.releaseTrain());

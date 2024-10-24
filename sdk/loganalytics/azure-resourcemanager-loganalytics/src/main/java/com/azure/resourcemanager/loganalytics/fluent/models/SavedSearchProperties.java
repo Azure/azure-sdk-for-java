@@ -214,20 +214,16 @@ public final class SavedSearchProperties {
      */
     public void validate() {
         if (category() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property category in model SavedSearchProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property category in model SavedSearchProperties"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model SavedSearchProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property displayName in model SavedSearchProperties"));
         }
         if (query() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property query in model SavedSearchProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property query in model SavedSearchProperties"));
         }
         if (tags() != null) {
             tags().forEach(e -> e.validate());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingEventHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingEventHubProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"onuq\",\"connectionString\":\"fkbey\",\"endpointUri\":\"wrmjmwvvjektc\",\"entityPath\":\"enhwlrs\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"wvlqdqgb\"},\"name\":\"qylihkaetckt\",\"subscriptionId\":\"civfsnkymuctq\",\"resourceGroup\":\"fbebrjcxer\"}")
-                .toObject(RoutingEventHubProperties.class);
+        RoutingEventHubProperties model = BinaryData.fromString(
+            "{\"id\":\"onuq\",\"connectionString\":\"fkbey\",\"endpointUri\":\"wrmjmwvvjektc\",\"entityPath\":\"enhwlrs\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"wvlqdqgb\"},\"name\":\"qylihkaetckt\",\"subscriptionId\":\"civfsnkymuctq\",\"resourceGroup\":\"fbebrjcxer\"}")
+            .toObject(RoutingEventHubProperties.class);
         Assertions.assertEquals("onuq", model.id());
         Assertions.assertEquals("fkbey", model.connectionString());
         Assertions.assertEquals("wrmjmwvvjektc", model.endpointUri());
@@ -31,17 +29,15 @@ public final class RoutingEventHubPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingEventHubProperties model =
-            new RoutingEventHubProperties()
-                .withId("onuq")
-                .withConnectionString("fkbey")
-                .withEndpointUri("wrmjmwvvjektc")
-                .withEntityPath("enhwlrs")
-                .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wvlqdqgb"))
-                .withName("qylihkaetckt")
-                .withSubscriptionId("civfsnkymuctq")
-                .withResourceGroup("fbebrjcxer");
+        RoutingEventHubProperties model = new RoutingEventHubProperties().withId("onuq")
+            .withConnectionString("fkbey")
+            .withEndpointUri("wrmjmwvvjektc")
+            .withEntityPath("enhwlrs")
+            .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wvlqdqgb"))
+            .withName("qylihkaetckt")
+            .withSubscriptionId("civfsnkymuctq")
+            .withResourceGroup("fbebrjcxer");
         model = BinaryData.fromObject(model).toObject(RoutingEventHubProperties.class);
         Assertions.assertEquals("onuq", model.id());
         Assertions.assertEquals("fkbey", model.connectionString());

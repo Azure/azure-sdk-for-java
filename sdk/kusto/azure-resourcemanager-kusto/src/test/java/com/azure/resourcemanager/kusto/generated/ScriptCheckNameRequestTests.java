@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"iuxxpshneekulfg\"}").toObject(ScriptCheckNameRequest.class);
+        ScriptCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"iuxxpshneekulfg\"}").toObject(ScriptCheckNameRequest.class);
         Assertions.assertEquals("iuxxpshneekulfg", model.name());
     }
 

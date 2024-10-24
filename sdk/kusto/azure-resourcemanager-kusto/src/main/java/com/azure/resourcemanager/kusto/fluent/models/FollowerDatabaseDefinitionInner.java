@@ -84,8 +84,8 @@ public final class FollowerDatabaseDefinitionInner {
      * @param attachedDatabaseConfigurationName the attachedDatabaseConfigurationName value to set.
      * @return the FollowerDatabaseDefinitionInner object itself.
      */
-    public FollowerDatabaseDefinitionInner withAttachedDatabaseConfigurationName(
-        String attachedDatabaseConfigurationName) {
+    public FollowerDatabaseDefinitionInner
+        withAttachedDatabaseConfigurationName(String attachedDatabaseConfigurationName) {
         this.attachedDatabaseConfigurationName = attachedDatabaseConfigurationName;
         return this;
     }
@@ -125,17 +125,13 @@ public final class FollowerDatabaseDefinitionInner {
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
         }
         if (attachedDatabaseConfigurationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attachedDatabaseConfigurationName in model"
-                            + " FollowerDatabaseDefinitionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property attachedDatabaseConfigurationName in model"
+                    + " FollowerDatabaseDefinitionInner"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();

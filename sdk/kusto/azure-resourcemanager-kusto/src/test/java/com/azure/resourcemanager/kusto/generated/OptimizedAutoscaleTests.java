@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OptimizedAutoscaleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptimizedAutoscale model =
-            BinaryData
-                .fromString("{\"version\":124042122,\"isEnabled\":true,\"minimum\":1063449943,\"maximum\":1628568580}")
-                .toObject(OptimizedAutoscale.class);
+        OptimizedAutoscale model = BinaryData
+            .fromString("{\"version\":124042122,\"isEnabled\":true,\"minimum\":1063449943,\"maximum\":1628568580}")
+            .toObject(OptimizedAutoscale.class);
         Assertions.assertEquals(124042122, model.version());
         Assertions.assertEquals(true, model.isEnabled());
         Assertions.assertEquals(1063449943, model.minimum());
@@ -23,12 +22,10 @@ public final class OptimizedAutoscaleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptimizedAutoscale model =
-            new OptimizedAutoscale()
-                .withVersion(124042122)
-                .withIsEnabled(true)
-                .withMinimum(1063449943)
-                .withMaximum(1628568580);
+        OptimizedAutoscale model = new OptimizedAutoscale().withVersion(124042122)
+            .withIsEnabled(true)
+            .withMinimum(1063449943)
+            .withMaximum(1628568580);
         model = BinaryData.fromObject(model).toObject(OptimizedAutoscale.class);
         Assertions.assertEquals(124042122, model.version());
         Assertions.assertEquals(true, model.isEnabled());

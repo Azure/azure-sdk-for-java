@@ -10,11 +10,9 @@ import com.azure.resourcemanager.loganalytics.models.AzureEntityResource;
 public final class AzureEntityResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureEntityResource model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"oftpipiwycz\",\"id\":\"hxacpqjlihhyu\",\"name\":\"pskasdvlmfwdg\",\"type\":\"x\"}")
-                .toObject(AzureEntityResource.class);
+        AzureEntityResource model = BinaryData
+            .fromString("{\"etag\":\"oftpipiwycz\",\"id\":\"hxacpqjlihhyu\",\"name\":\"pskasdvlmfwdg\",\"type\":\"x\"}")
+            .toObject(AzureEntityResource.class);
     }
 
     @org.junit.jupiter.api.Test

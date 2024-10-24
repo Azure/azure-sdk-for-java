@@ -14,8 +14,8 @@ public final class UsageMetricImpl implements UsageMetric {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    UsageMetricImpl(
-        UsageMetricInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    UsageMetricImpl(UsageMetricInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

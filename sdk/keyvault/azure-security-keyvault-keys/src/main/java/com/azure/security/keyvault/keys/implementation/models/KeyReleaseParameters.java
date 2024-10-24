@@ -11,9 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The release key parameters. */
+/**
+ * The release key parameters.
+ */
 @Fluent
 public final class KeyReleaseParameters implements JsonSerializable<KeyReleaseParameters> {
     /*
@@ -31,12 +32,15 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
      */
     private KeyExportEncryptionAlgorithm enc;
 
-    /** Creates an instance of KeyReleaseParameters class. */
-    public KeyReleaseParameters() {}
+    /**
+     * Creates an instance of KeyReleaseParameters class.
+     */
+    public KeyReleaseParameters() {
+    }
 
     /**
      * Get the targetAttestationToken property: The attestation assertion for the target of the key release.
-     *
+     * 
      * @return the targetAttestationToken value.
      */
     public String getTargetAttestationToken() {
@@ -45,7 +49,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
 
     /**
      * Set the targetAttestationToken property: The attestation assertion for the target of the key release.
-     *
+     * 
      * @param targetAttestationToken the targetAttestationToken value to set.
      * @return the KeyReleaseParameters object itself.
      */
@@ -56,7 +60,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
 
     /**
      * Get the nonce property: A client provided nonce for freshness.
-     *
+     * 
      * @return the nonce value.
      */
     public String getNonce() {
@@ -65,7 +69,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
 
     /**
      * Set the nonce property: A client provided nonce for freshness.
-     *
+     * 
      * @param nonce the nonce value to set.
      * @return the KeyReleaseParameters object itself.
      */
@@ -76,7 +80,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
 
     /**
      * Get the enc property: The encryption algorithm to use to protected the exported key material.
-     *
+     * 
      * @return the enc value.
      */
     public KeyExportEncryptionAlgorithm getEnc() {
@@ -85,7 +89,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
 
     /**
      * Set the enc property: The encryption algorithm to use to protected the exported key material.
-     *
+     * 
      * @param enc the enc value to set.
      * @return the KeyReleaseParameters object itself.
      */
@@ -94,45 +98,46 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("target", this.targetAttestationToken);
         jsonWriter.writeStringField("nonce", this.nonce);
-        jsonWriter.writeStringField("enc", Objects.toString(this.enc, null));
+        jsonWriter.writeStringField("enc", this.enc == null ? null : this.enc.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of KeyReleaseParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyReleaseParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyReleaseParameters.
      */
     public static KeyReleaseParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyReleaseParameters deserializedKeyReleaseParameters = new KeyReleaseParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyReleaseParameters deserializedKeyReleaseParameters = new KeyReleaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("target".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.targetAttestationToken = reader.getString();
-                        } else if ("nonce".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.nonce = reader.getString();
-                        } else if ("enc".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.enc =
-                                    KeyExportEncryptionAlgorithm.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("target".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.targetAttestationToken = reader.getString();
+                } else if ("nonce".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.nonce = reader.getString();
+                } else if ("enc".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.enc = KeyExportEncryptionAlgorithm.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyReleaseParameters;
-                });
+            return deserializedKeyReleaseParameters;
+        });
     }
 }

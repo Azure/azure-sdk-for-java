@@ -268,10 +268,8 @@ public final class RoutingServiceBusTopicEndpointProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingServiceBusTopicEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model RoutingServiceBusTopicEndpointProperties"));
         }
     }
 

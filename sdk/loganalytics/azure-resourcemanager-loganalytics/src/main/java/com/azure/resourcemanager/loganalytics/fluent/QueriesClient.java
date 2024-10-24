@@ -45,13 +45,8 @@ public interface QueriesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LogAnalyticsQueryPackQueryInner> list(
-        String resourceGroupName,
-        String queryPackName,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQueryInner> list(String resourceGroupName, String queryPackName, Long top,
+        Boolean includeBody, String skipToken, Context context);
 
     /**
      * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
@@ -66,9 +61,7 @@ public interface QueriesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LogAnalyticsQueryPackQueryInner> search(
-        String resourceGroupName,
-        String queryPackName,
+    PagedIterable<LogAnalyticsQueryPackQueryInner> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties);
 
     /**
@@ -89,14 +82,9 @@ public interface QueriesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LogAnalyticsQueryPackQueryInner> search(
-        String resourceGroupName,
-        String queryPackName,
-        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQueryInner> search(String resourceGroupName, String queryPackName,
+        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
+        String skipToken, Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
@@ -111,8 +99,8 @@ public interface QueriesClient {
      * @return a specific Log Analytics Query defined within a Log Analytics QueryPack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackQueryInner> getWithResponse(
-        String resourceGroupName, String queryPackName, String id, Context context);
+    Response<LogAnalyticsQueryPackQueryInner> getWithResponse(String resourceGroupName, String queryPackName, String id,
+        Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
@@ -143,12 +131,8 @@ public interface QueriesClient {
      * @return a Log Analytics QueryPack-Query definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackQueryInner> putWithResponse(
-        String resourceGroupName,
-        String queryPackName,
-        String id,
-        LogAnalyticsQueryPackQueryInner queryPayload,
-        Context context);
+    Response<LogAnalyticsQueryPackQueryInner> putWithResponse(String resourceGroupName, String queryPackName, String id,
+        LogAnalyticsQueryPackQueryInner queryPayload, Context context);
 
     /**
      * Adds or Updates a specific Query within a Log Analytics QueryPack.
@@ -164,8 +148,8 @@ public interface QueriesClient {
      * @return a Log Analytics QueryPack-Query definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsQueryPackQueryInner put(
-        String resourceGroupName, String queryPackName, String id, LogAnalyticsQueryPackQueryInner queryPayload);
+    LogAnalyticsQueryPackQueryInner put(String resourceGroupName, String queryPackName, String id,
+        LogAnalyticsQueryPackQueryInner queryPayload);
 
     /**
      * Adds or Updates a specific Query within a Log Analytics QueryPack.
@@ -182,12 +166,8 @@ public interface QueriesClient {
      * @return a Log Analytics QueryPack-Query definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackQueryInner> updateWithResponse(
-        String resourceGroupName,
-        String queryPackName,
-        String id,
-        LogAnalyticsQueryPackQueryInner queryPayload,
-        Context context);
+    Response<LogAnalyticsQueryPackQueryInner> updateWithResponse(String resourceGroupName, String queryPackName,
+        String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context);
 
     /**
      * Adds or Updates a specific Query within a Log Analytics QueryPack.
@@ -203,8 +183,8 @@ public interface QueriesClient {
      * @return a Log Analytics QueryPack-Query definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsQueryPackQueryInner update(
-        String resourceGroupName, String queryPackName, String id, LogAnalyticsQueryPackQueryInner queryPayload);
+    LogAnalyticsQueryPackQueryInner update(String resourceGroupName, String queryPackName, String id,
+        LogAnalyticsQueryPackQueryInner queryPayload);
 
     /**
      * Deletes a specific Query defined within an Log Analytics QueryPack.

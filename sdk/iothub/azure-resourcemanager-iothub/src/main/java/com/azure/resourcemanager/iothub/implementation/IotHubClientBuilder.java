@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the IotHubClientImpl type. */
-@ServiceClientBuilder(serviceClients = {IotHubClientImpl.class})
+@ServiceClientBuilder(serviceClients = { IotHubClientImpl.class })
 public final class IotHubClientBuilder {
     /*
      * The subscription identifier.
@@ -121,24 +121,16 @@ public final class IotHubClientBuilder {
     public IotHubClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        IotHubClientImpl client =
-            new IotHubClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        IotHubClientImpl client = new IotHubClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the selectiveKeyRestoreOperation operation. */
 public final class SelectiveKeyRestoreOperationResponse
-        extends ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation> {
+    extends ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation> {
     /**
      * Creates an instance of SelectiveKeyRestoreOperationResponse.
      *
@@ -20,12 +20,8 @@ public final class SelectiveKeyRestoreOperationResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SelectiveKeyRestoreOperationResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            SelectiveKeyRestoreOperation value,
-            SelectiveKeyRestoreOperationHeaders headers) {
+    public SelectiveKeyRestoreOperationResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SelectiveKeyRestoreOperation value, SelectiveKeyRestoreOperationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

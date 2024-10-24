@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionValidationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionValidationInner model =
-            BinaryData
-                .fromString(
-                    "{\"dataConnectionName\":\"ybar\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"ayjkqa\",\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}}")
-                .toObject(DataConnectionValidationInner.class);
+        DataConnectionValidationInner model = BinaryData.fromString(
+            "{\"dataConnectionName\":\"ybar\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"ayjkqa\",\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}}")
+            .toObject(DataConnectionValidationInner.class);
         Assertions.assertEquals("ybar", model.dataConnectionName());
         Assertions.assertEquals("ayjkqa", model.properties().location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionValidationInner model =
-            new DataConnectionValidationInner()
-                .withDataConnectionName("ybar")
-                .withProperties(new DataConnectionInner().withLocation("ayjkqa"));
+        DataConnectionValidationInner model = new DataConnectionValidationInner().withDataConnectionName("ybar")
+            .withProperties(new DataConnectionInner().withLocation("ayjkqa"));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationInner.class);
         Assertions.assertEquals("ybar", model.dataConnectionName());
         Assertions.assertEquals("ayjkqa", model.properties().location());

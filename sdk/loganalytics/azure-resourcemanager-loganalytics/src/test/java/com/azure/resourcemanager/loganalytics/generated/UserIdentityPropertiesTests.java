@@ -10,10 +10,8 @@ import com.azure.resourcemanager.loganalytics.models.UserIdentityProperties;
 public final class UserIdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentityProperties model =
-            BinaryData
-                .fromString("{\"principalId\":\"ouicybxarzgszu\",\"clientId\":\"x\"}")
-                .toObject(UserIdentityProperties.class);
+        UserIdentityProperties model = BinaryData.fromString("{\"principalId\":\"ouicybxarzgszu\",\"clientId\":\"x\"}")
+            .toObject(UserIdentityProperties.class);
     }
 
     @org.junit.jupiter.api.Test

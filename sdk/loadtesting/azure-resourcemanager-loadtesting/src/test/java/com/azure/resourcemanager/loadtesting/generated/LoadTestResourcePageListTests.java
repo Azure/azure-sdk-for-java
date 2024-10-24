@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Test;
 public final class LoadTestResourcePageListTests {
     @Test
     public void testDeserialize() throws Exception {
-        LoadTestResourcePageList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"ojakhmsbzjhcrze\",\"provisioningState\":\"Failed\",\"dataPlaneURI\":\"lxaolthqtrgqjbp\"},\"identity\":{\"principalId\":\"d8355447-72f1-44d8-b9d9-424330cd5118\",\"tenantId\":\"4544623b-f738-43d8-9988-aa3a9561b4c4\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"it\":\"rwzoxxjtfelluwf\",\"qfpjk\":\"np\"},\"id\":\"lxofpdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"description\":\"uvamiheognarxzxt\",\"provisioningState\":\"Succeeded\",\"dataPlaneURI\":\"usivye\"},\"identity\":{\"principalId\":\"e70183de-d8ad-4b0a-af38-1fb93774b6cc\",\"tenantId\":\"6e455a2c-2c73-4178-b928-137b9fa6b1c0\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hungbwjzrnf\",\"tags\":{\"ofx\":\"gispemvtzfkufubl\",\"jbasvmsmjqulngs\":\"eofjaeqjh\",\"bkzgcwrwclx\":\"tnb\",\"vkocrcjdkwtn\":\"wrljdouskc\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"description\":\"ebvmgxsabkyqd\",\"provisioningState\":\"Canceled\",\"dataPlaneURI\":\"tcj\"},\"identity\":{\"principalId\":\"61d43b42-c9e8-4183-b0cd-98df81e99923\",\"tenantId\":\"69ff926e-648b-425a-a414-9462a20a386f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hkr\",\"tags\":{\"bdkvwrwjf\":\"appd\"},\"id\":\"usnhutje\",\"name\":\"tmrldhugjzzdatq\",\"type\":\"hocdgeab\"}],\"nextLink\":\"phut\"}")
-                .toObject(LoadTestResourcePageList.class);
+        LoadTestResourcePageList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"ojakhmsbzjhcrze\",\"provisioningState\":\"Failed\",\"dataPlaneURI\":\"lxaolthqtrgqjbp\"},\"identity\":{\"principalId\":\"d8355447-72f1-44d8-b9d9-424330cd5118\",\"tenantId\":\"4544623b-f738-43d8-9988-aa3a9561b4c4\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"it\":\"rwzoxxjtfelluwf\",\"qfpjk\":\"np\"},\"id\":\"lxofpdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"description\":\"uvamiheognarxzxt\",\"provisioningState\":\"Succeeded\",\"dataPlaneURI\":\"usivye\"},\"identity\":{\"principalId\":\"e70183de-d8ad-4b0a-af38-1fb93774b6cc\",\"tenantId\":\"6e455a2c-2c73-4178-b928-137b9fa6b1c0\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hungbwjzrnf\",\"tags\":{\"ofx\":\"gispemvtzfkufubl\",\"jbasvmsmjqulngs\":\"eofjaeqjh\",\"bkzgcwrwclx\":\"tnb\",\"vkocrcjdkwtn\":\"wrljdouskc\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"description\":\"ebvmgxsabkyqd\",\"provisioningState\":\"Canceled\",\"dataPlaneURI\":\"tcj\"},\"identity\":{\"principalId\":\"61d43b42-c9e8-4183-b0cd-98df81e99923\",\"tenantId\":\"69ff926e-648b-425a-a414-9462a20a386f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hkr\",\"tags\":{\"bdkvwrwjf\":\"appd\"},\"id\":\"usnhutje\",\"name\":\"tmrldhugjzzdatq\",\"type\":\"hocdgeab\"}],\"nextLink\":\"phut\"}")
+            .toObject(LoadTestResourcePageList.class);
         Assertions.assertEquals("v", model.value().get(0).location());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.value().get(0).tags().get("it"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
@@ -32,45 +30,24 @@ public final class LoadTestResourcePageListTests {
 
     @Test
     public void testSerialize() throws Exception {
-        LoadTestResourcePageList model =
-            new LoadTestResourcePageList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LoadTestResourceInner()
-                                .withLocation("v")
-                                .withTags(mapOf("it", "rwzoxxjtfelluwf", "qfpjk", "np"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withDescription("ojakhmsbzjhcrze"),
-                            new LoadTestResourceInner()
-                                .withLocation("hungbwjzrnf")
-                                .withTags(
-                                    mapOf(
-                                        "ofx",
-                                        "gispemvtzfkufubl",
-                                        "jbasvmsmjqulngs",
-                                        "eofjaeqjh",
-                                        "bkzgcwrwclx",
-                                        "tnb",
-                                        "vkocrcjdkwtn",
-                                        "wrljdouskc"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withDescription("uvamiheognarxzxt"),
-                            new LoadTestResourceInner()
-                                .withLocation("hkr")
-                                .withTags(mapOf("bdkvwrwjf", "appd"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withDescription("ebvmgxsabkyqd")))
-                .withNextLink("phut");
+        LoadTestResourcePageList model = new LoadTestResourcePageList().withValue(Arrays.asList(
+            new LoadTestResourceInner().withLocation("v")
+                .withTags(mapOf("it", "rwzoxxjtfelluwf", "qfpjk", "np"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf()))
+                .withDescription("ojakhmsbzjhcrze"),
+            new LoadTestResourceInner().withLocation("hungbwjzrnf")
+                .withTags(mapOf("ofx", "gispemvtzfkufubl", "jbasvmsmjqulngs", "eofjaeqjh", "bkzgcwrwclx", "tnb",
+                    "vkocrcjdkwtn", "wrljdouskc"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))
+                .withDescription("uvamiheognarxzxt"),
+            new LoadTestResourceInner().withLocation("hkr")
+                .withTags(mapOf("bdkvwrwjf", "appd"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))
+                .withDescription("ebvmgxsabkyqd")))
+            .withNextLink("phut");
         model = BinaryData.fromObject(model).toObject(LoadTestResourcePageList.class);
         Assertions.assertEquals("v", model.value().get(0).location());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.value().get(0).tags().get("it"));

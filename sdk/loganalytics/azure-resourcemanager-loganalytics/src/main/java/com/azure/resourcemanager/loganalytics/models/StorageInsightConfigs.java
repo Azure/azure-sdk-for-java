@@ -22,8 +22,8 @@ public interface StorageInsightConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a storage insight instance along with {@link Response}.
      */
-    Response<StorageInsight> getWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+    Response<StorageInsight> getWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
+        Context context);
 
     /**
      * Gets a storage insight instance.
@@ -50,8 +50,8 @@ public interface StorageInsightConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
+        Context context);
 
     /**
      * Deletes a storageInsightsConfigs resource.

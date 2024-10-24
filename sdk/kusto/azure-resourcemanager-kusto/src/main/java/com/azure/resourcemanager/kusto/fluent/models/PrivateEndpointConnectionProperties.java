@@ -99,11 +99,9 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkServiceConnectionState in model"
-                            + " PrivateEndpointConnectionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property privateLinkServiceConnectionState in model"
+                    + " PrivateEndpointConnectionProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }

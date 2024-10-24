@@ -39,13 +39,8 @@ public interface Queries {
      * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> list(
-        String resourceGroupName,
-        String queryPackName,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName, Long top,
+        Boolean includeBody, String skipToken, Context context);
 
     /**
      * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
@@ -59,9 +54,7 @@ public interface Queries {
      * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> search(
-        String resourceGroupName,
-        String queryPackName,
+    PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties);
 
     /**
@@ -81,14 +74,9 @@ public interface Queries {
      * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LogAnalyticsQueryPackQuery> search(
-        String resourceGroupName,
-        String queryPackName,
-        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties,
-        Long top,
-        Boolean includeBody,
-        String skipToken,
-        Context context);
+    PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
+        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
+        String skipToken, Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
@@ -102,8 +90,8 @@ public interface Queries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Log Analytics Query defined within a Log Analytics QueryPack along with {@link Response}.
      */
-    Response<LogAnalyticsQueryPackQuery> getWithResponse(
-        String resourceGroupName, String queryPackName, String id, Context context);
+    Response<LogAnalyticsQueryPackQuery> getWithResponse(String resourceGroupName, String queryPackName, String id,
+        Context context);
 
     /**
      * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.

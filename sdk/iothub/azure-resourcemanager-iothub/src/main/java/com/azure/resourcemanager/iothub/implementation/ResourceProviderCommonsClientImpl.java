@@ -39,9 +39,8 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProviderCommonsClientImpl(IotHubClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ResourceProviderCommonsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ResourceProviderCommonsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,16 +51,13 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientResource")
     public interface ResourceProviderCommonsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuota(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuota(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -77,28 +73,17 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscriptionQuota(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getSubscriptionQuota(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -115,29 +100,20 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync(
-        Context context) {
+    private Mono<Response<UserSubscriptionQuotaListResultInner>>
+        getSubscriptionQuotaWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSubscriptionQuota(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getSubscriptionQuota(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

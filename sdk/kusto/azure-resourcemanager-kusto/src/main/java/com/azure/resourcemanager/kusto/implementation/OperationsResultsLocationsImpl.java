@@ -17,8 +17,8 @@ public final class OperationsResultsLocationsImpl implements OperationsResultsLo
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public OperationsResultsLocationsImpl(
-        OperationsResultsLocationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public OperationsResultsLocationsImpl(OperationsResultsLocationsClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

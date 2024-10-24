@@ -57,8 +57,8 @@ public interface SandboxCustomImagesClient {
      * @return class representing a Kusto sandbox custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SandboxCustomImageInner> getWithResponse(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context);
+    Response<SandboxCustomImageInner> getWithResponse(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context);
 
     /**
      * Returns a sandbox custom image.
@@ -88,9 +88,7 @@ public interface SandboxCustomImagesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters);
 
     /**
@@ -108,10 +106,7 @@ public interface SandboxCustomImagesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters,
         Context context);
 
     /**
@@ -127,10 +122,7 @@ public interface SandboxCustomImagesClient {
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SandboxCustomImageInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+    SandboxCustomImageInner createOrUpdate(String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters);
 
     /**
@@ -147,12 +139,8 @@ public interface SandboxCustomImagesClient {
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SandboxCustomImageInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context);
+    SandboxCustomImageInner createOrUpdate(String resourceGroupName, String clusterName, String sandboxCustomImageName,
+        SandboxCustomImageInner parameters, Context context);
 
     /**
      * Updates a sandbox custom image.
@@ -167,11 +155,8 @@ public interface SandboxCustomImagesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters);
+    SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(String resourceGroupName,
+        String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters);
 
     /**
      * Updates a sandbox custom image.
@@ -187,12 +172,8 @@ public interface SandboxCustomImagesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context);
+    SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(String resourceGroupName,
+        String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context);
 
     /**
      * Updates a sandbox custom image.
@@ -207,10 +188,7 @@ public interface SandboxCustomImagesClient {
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SandboxCustomImageInner update(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+    SandboxCustomImageInner update(String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters);
 
     /**
@@ -227,12 +205,8 @@ public interface SandboxCustomImagesClient {
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SandboxCustomImageInner update(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context);
+    SandboxCustomImageInner update(String resourceGroupName, String clusterName, String sandboxCustomImageName,
+        SandboxCustomImageInner parameters, Context context);
 
     /**
      * Deletes a sandbox custom image.
@@ -246,8 +220,8 @@ public interface SandboxCustomImagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName);
 
     /**
      * Deletes a sandbox custom image.
@@ -262,8 +236,8 @@ public interface SandboxCustomImagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context);
 
     /**
      * Deletes a sandbox custom image.
@@ -305,11 +279,8 @@ public interface SandboxCustomImagesClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
@@ -323,6 +294,6 @@ public interface SandboxCustomImagesClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName);
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName);
 }

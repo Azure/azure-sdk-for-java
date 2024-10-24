@@ -28,7 +28,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
 
     public static boolean shouldRunHsmTest() {
         return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
-               || TEST_MODE == TestMode.PLAYBACK;
+            || TEST_MODE == TestMode.PLAYBACK;
     }
 
     /**
@@ -54,8 +54,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
             KeyVaultKey rsaKey = keyClient.createRsaKey(keyToCreate);
 
             assertKeyEquals(keyToCreate, rsaKey);
-            assertEquals(BigInteger.valueOf(keyToCreate.getPublicExponent()),
-                toBigInteger(rsaKey.getKey().getE()));
+            assertEquals(BigInteger.valueOf(keyToCreate.getPublicExponent()), toBigInteger(rsaKey.getKey().getE()));
             assertEquals(keyToCreate.getKeySize(), rsaKey.getKey().getN().length * 8);
         });
     }
@@ -106,8 +105,8 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     public void createOctKeyWithInvalidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createOctKeyRunner(64, (keyToCreate) ->
-            assertThrows(ResourceModifiedException.class, () -> keyClient.createOctKey(keyToCreate)));
+        createOctKeyRunner(64,
+            (keyToCreate) -> assertThrows(ResourceModifiedException.class, () -> keyClient.createOctKey(keyToCreate)));
     }
 
     /**

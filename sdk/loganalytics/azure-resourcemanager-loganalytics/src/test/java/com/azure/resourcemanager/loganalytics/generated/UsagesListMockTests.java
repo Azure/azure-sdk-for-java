@@ -31,45 +31,35 @@ public final class UsagesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":{\"value\":\"gtuhxuicbu\",\"localizedValue\":\"mr\"},\"unit\":\"njlx\",\"currentValue\":33.720955848019294,\"limit\":33.504071266925294,\"nextResetTime\":\"2021-07-24T18:32:54Z\",\"quotaPeriod\":\"baqehgpdoh\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":{\"value\":\"gtuhxuicbu\",\"localizedValue\":\"mr\"},\"unit\":\"njlx\",\"currentValue\":33.720955848019294,\"limit\":33.504071266925294,\"nextResetTime\":\"2021-07-24T18:32:54Z\",\"quotaPeriod\":\"baqehgpdoh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<UsageMetric> response =
-            manager.usages().list("vuwkasiziesfuugh", "uqfecj", com.azure.core.util.Context.NONE);
+        PagedIterable<UsageMetric> response
+            = manager.usages().list("vuwkasiziesfuugh", "uqfecj", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("gtuhxuicbu", response.iterator().next().name().value());
         Assertions.assertEquals("mr", response.iterator().next().name().localizedValue());
         Assertions.assertEquals("njlx", response.iterator().next().unit());
         Assertions.assertEquals(33.720955848019294D, response.iterator().next().currentValue());
         Assertions.assertEquals(33.504071266925294D, response.iterator().next().limit());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-07-24T18:32:54Z"), response.iterator().next().nextResetTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T18:32:54Z"),
+            response.iterator().next().nextResetTime());
         Assertions.assertEquals("baqehgpdoh", response.iterator().next().quotaPeriod());
     }
 }

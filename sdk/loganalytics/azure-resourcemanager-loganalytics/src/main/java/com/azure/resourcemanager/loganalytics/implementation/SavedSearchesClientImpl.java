@@ -43,8 +43,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @param client the instance of the service client containing this operation class.
      */
     SavedSearchesClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SavedSearchesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SavedSearchesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,64 +55,45 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface SavedSearchesService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("savedSearchId") String savedSearchId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("savedSearchId") String savedSearchId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SavedSearchInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SavedSearchInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("savedSearchId") String savedSearchId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SavedSearchInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("savedSearchId") String savedSearchId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SavedSearchInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SavedSearchInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SavedSearchInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("savedSearchId") String savedSearchId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("savedSearchId") String savedSearchId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SavedSearchesListResultInner>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SavedSearchesListResultInner>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -127,19 +108,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String savedSearchId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -153,17 +130,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         }
         final String apiVersion = "2020-08-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            savedSearchId,
-                            apiVersion,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, savedSearchId, apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -180,19 +148,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String savedSearchId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -206,15 +170,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         }
         final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                savedSearchId,
-                apiVersion,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, savedSearchId, apiVersion, context);
     }
 
     /**
@@ -247,8 +204,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String savedSearchId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, context).block();
     }
 
@@ -281,19 +238,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
+    private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String savedSearchId, SavedSearchInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -313,19 +266,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            savedSearchId,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, savedSearchId, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -344,23 +286,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String savedSearchId,
-        SavedSearchInner parameters,
-        Context context) {
+    private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String savedSearchId, SavedSearchInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -380,17 +314,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                savedSearchId,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, savedSearchId, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -406,8 +331,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return value object for saved search results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SavedSearchInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
+    private Mono<SavedSearchInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String savedSearchId, SavedSearchInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -426,12 +351,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return value object for saved search results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SavedSearchInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String savedSearchId,
-        SavedSearchInner parameters,
-        Context context) {
+    public Response<SavedSearchInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String savedSearchId, SavedSearchInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, parameters, context)
             .block();
     }
@@ -449,8 +370,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return value object for saved search results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SavedSearchInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
+    public SavedSearchInner createOrUpdate(String resourceGroupName, String workspaceName, String savedSearchId,
+        SavedSearchInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, parameters, Context.NONE)
             .getValue();
     }
@@ -468,19 +389,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId) {
+    private Mono<Response<SavedSearchInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String savedSearchId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -495,18 +412,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            savedSearchId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, savedSearchId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -524,19 +431,15 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
+    private Mono<Response<SavedSearchInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String savedSearchId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -551,16 +454,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                savedSearchId,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            savedSearchId, apiVersion, accept, context);
     }
 
     /**
@@ -593,8 +488,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return the specified saved search for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SavedSearchInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
+    public Response<SavedSearchInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String savedSearchId, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, context).block();
     }
 
@@ -626,13 +521,11 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -642,25 +535,14 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -677,13 +559,11 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -693,23 +573,14 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -740,8 +611,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @return the saved searches for a given Log Analytics Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
         return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 

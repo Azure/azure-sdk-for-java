@@ -54,8 +54,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @param client the instance of the service client containing this operation class.
      */
     FluxConfigurationsClientImpl(SourceControlConfigurationClientImpl client) {
-        this.service =
-            RestProxy.create(FluxConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FluxConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,102 +66,71 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
     public interface FluxConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FluxConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FluxConfigurationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
             @PathParam("fluxConfigurationName") String fluxConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
             @PathParam("fluxConfigurationName") String fluxConfigurationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") FluxConfigurationInner fluxConfiguration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
             @PathParam("fluxConfigurationName") String fluxConfigurationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") FluxConfigurationPatch fluxConfigurationPatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
             @PathParam("fluxConfigurationName") String fluxConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("forceDelete") Boolean forceDelete,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("forceDelete") Boolean forceDelete,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FluxConfigurationsList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FluxConfigurationsList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FluxConfigurationsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FluxConfigurationsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -180,23 +149,15 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return details of the Flux Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FluxConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
+    private Mono<Response<FluxConfigurationInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -218,20 +179,9 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            fluxConfigurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -252,24 +202,15 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return details of the Flux Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FluxConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Context context) {
+    private Mono<Response<FluxConfigurationInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,18 +232,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -321,15 +252,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return details of the Flux Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluxConfigurationInner> getAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
-        return getWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<FluxConfigurationInner> getAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName) {
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -349,16 +275,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return details of the Flux Configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FluxConfigurationInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, context)
-            .block();
+    public Response<FluxConfigurationInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, context).block();
     }
 
     /**
@@ -377,15 +297,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return details of the Flux Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
-        return getWithResponse(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, Context.NONE)
-            .getValue();
+    public FluxConfigurationInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName) {
+        return getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            Context.NONE).getValue();
     }
 
     /**
@@ -406,24 +321,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationInner fluxConfiguration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -451,21 +358,9 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            fluxConfigurationName,
-                            this.client.getApiVersion(),
-                            fluxConfiguration,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                this.client.getApiVersion(), fluxConfiguration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -488,25 +383,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationInner fluxConfiguration, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -534,19 +420,9 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                this.client.getApiVersion(),
-                fluxConfiguration,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterRp, clusterResourceName, clusterName, fluxConfigurationName, this.client.getApiVersion(),
+            fluxConfiguration, accept, context);
     }
 
     /**
@@ -567,28 +443,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration);
-        return this
-            .client
-            .<FluxConfigurationInner, FluxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FluxConfigurationInner.class,
-                FluxConfigurationInner.class,
-                this.client.getContext());
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationInner fluxConfiguration) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, fluxConfiguration);
+        return this.client.<FluxConfigurationInner, FluxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FluxConfigurationInner.class, FluxConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -610,31 +471,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationInner fluxConfiguration, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration,
-                context);
-        return this
-            .client
-            .<FluxConfigurationInner, FluxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FluxConfigurationInner.class,
-                FluxConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, fluxConfiguration, context);
+        return this.client.<FluxConfigurationInner, FluxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FluxConfigurationInner.class, FluxConfigurationInner.class, context);
     }
 
     /**
@@ -655,20 +498,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationInner fluxConfiguration) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+                fluxConfigurationName, fluxConfiguration)
             .getSyncPoller();
     }
 
@@ -691,22 +525,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationInner fluxConfiguration, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration,
-                context)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+                fluxConfigurationName, fluxConfiguration, context)
             .getSyncPoller();
     }
 
@@ -728,22 +551,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluxConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    private Mono<FluxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationInner fluxConfiguration) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, fluxConfiguration).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -765,24 +577,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluxConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<FluxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationInner fluxConfiguration, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, fluxConfiguration, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -802,21 +601,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration)
-            .block();
+    public FluxConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationInner fluxConfiguration) {
+        return createOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, fluxConfiguration).block();
     }
 
     /**
@@ -837,23 +625,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfiguration,
-                context)
-            .block();
+    public FluxConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationInner fluxConfiguration, Context context) {
+        return createOrUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, fluxConfiguration, context).block();
     }
 
     /**
@@ -874,24 +649,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -912,29 +679,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
                 .error(new IllegalArgumentException("Parameter fluxConfigurationName is required and cannot be null."));
         }
         if (fluxConfigurationPatch == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluxConfigurationPatch is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluxConfigurationPatch is required and cannot be null."));
         } else {
             fluxConfigurationPatch.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            fluxConfigurationName,
-                            this.client.getApiVersion(),
-                            fluxConfigurationPatch,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                this.client.getApiVersion(), fluxConfigurationPatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -957,25 +711,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationPatch fluxConfigurationPatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -996,27 +741,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
                 .error(new IllegalArgumentException("Parameter fluxConfigurationName is required and cannot be null."));
         }
         if (fluxConfigurationPatch == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluxConfigurationPatch is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluxConfigurationPatch is required and cannot be null."));
         } else {
             fluxConfigurationPatch.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                this.client.getApiVersion(),
-                fluxConfigurationPatch,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, this.client.getApiVersion(),
+            fluxConfigurationPatch, accept, context);
     }
 
     /**
@@ -1037,28 +771,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch);
-        return this
-            .client
-            .<FluxConfigurationInner, FluxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FluxConfigurationInner.class,
-                FluxConfigurationInner.class,
-                this.client.getContext());
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, fluxConfigurationPatch);
+        return this.client.<FluxConfigurationInner, FluxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FluxConfigurationInner.class, FluxConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1080,31 +799,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
-        Context context) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch,
-                context);
-        return this
-            .client
-            .<FluxConfigurationInner, FluxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FluxConfigurationInner.class,
-                FluxConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, fluxConfigurationPatch, context);
+        return this.client.<FluxConfigurationInner, FluxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FluxConfigurationInner.class, FluxConfigurationInner.class, context);
     }
 
     /**
@@ -1124,20 +825,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
+            .beginUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
                 fluxConfigurationPatch)
             .getSyncPoller();
     }
@@ -1160,23 +852,12 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
-        Context context) {
+    public SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationPatch fluxConfigurationPatch, Context context) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch,
-                context)
+            .beginUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                fluxConfigurationPatch, context)
             .getSyncPoller();
     }
 
@@ -1198,22 +879,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluxConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    private Mono<FluxConfigurationInner> updateAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch) {
-        return beginUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            fluxConfigurationPatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1235,24 +905,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluxConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<FluxConfigurationInner> updateAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationPatch fluxConfigurationPatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            fluxConfigurationPatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1272,21 +929,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch) {
-        return updateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch)
-            .block();
+    public FluxConfigurationInner update(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch) {
+        return updateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            fluxConfigurationPatch).block();
     }
 
     /**
@@ -1307,23 +953,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluxConfigurationInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
+    public FluxConfigurationInner update(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch,
         Context context) {
-        return updateAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                fluxConfigurationPatch,
-                context)
-            .block();
+        return updateAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            fluxConfigurationPatch, context).block();
     }
 
     /**
@@ -1344,24 +978,15 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1383,21 +1008,9 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            fluxConfigurationName,
-                            this.client.getApiVersion(),
-                            forceDelete,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                this.client.getApiVersion(), forceDelete, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1420,25 +1033,16 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1460,19 +1064,9 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                this.client.getApiVersion(),
-                forceDelete,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, this.client.getApiVersion(), forceDelete, accept,
+            context);
     }
 
     /**
@@ -1493,20 +1087,12 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1526,20 +1112,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName) {
         final Boolean forceDelete = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1561,27 +1140,14 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                forceDelete,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, forceDelete, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1601,16 +1167,12 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName) {
         final Boolean forceDelete = null;
         return this
-            .beginDeleteAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
+            .beginDeleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                forceDelete)
             .getSyncPoller();
     }
 
@@ -1633,23 +1195,12 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete,
         Context context) {
         return this
-            .beginDeleteAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                forceDelete,
-                context)
+            .beginDeleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                forceDelete, context)
             .getSyncPoller();
     }
 
@@ -1671,17 +1222,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
-        return beginDeleteAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            forceDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1701,17 +1245,11 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName) {
         final Boolean forceDelete = null;
-        return beginDeleteAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            forceDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1733,24 +1271,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                forceDelete,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            forceDelete, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1769,11 +1293,7 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String fluxConfigurationName) {
         final Boolean forceDelete = null;
         deleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete)
@@ -1798,23 +1318,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
-        Context context) {
-        deleteAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                forceDelete,
-                context)
-            .block();
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, Boolean forceDelete, Context context) {
+        deleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete,
+            context).block();
     }
 
     /**
@@ -1833,19 +1340,15 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FluxConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    private Mono<PagedResponse<FluxConfigurationInner>> listSinglePageAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1864,27 +1367,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FluxConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterRp, clusterResourceName, clusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FluxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1905,19 +1391,15 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FluxConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    private Mono<PagedResponse<FluxConfigurationInner>> listSinglePageAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1936,25 +1418,10 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+                clusterResourceName, clusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1972,8 +1439,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FluxConfigurationInner> listAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    private PagedFlux<FluxConfigurationInner> listAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1995,8 +1462,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FluxConfigurationInner> listAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    private PagedFlux<FluxConfigurationInner> listAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -2017,8 +1484,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FluxConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    public PagedIterable<FluxConfigurationInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName));
     }
 
@@ -2038,8 +1505,8 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FluxConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    public PagedIterable<FluxConfigurationInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, context));
     }
 
@@ -2060,23 +1527,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FluxConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FluxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2098,23 +1555,13 @@ public final class FluxConfigurationsClientImpl implements FluxConfigurationsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

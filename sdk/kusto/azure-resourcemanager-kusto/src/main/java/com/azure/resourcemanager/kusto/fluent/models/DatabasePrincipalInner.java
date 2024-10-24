@@ -195,19 +195,16 @@ public final class DatabasePrincipalInner {
      */
     public void validate() {
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property role in model DatabasePrincipalInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property role in model DatabasePrincipalInner"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model DatabasePrincipalInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model DatabasePrincipalInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model DatabasePrincipalInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model DatabasePrincipalInner"));
         }
     }
 

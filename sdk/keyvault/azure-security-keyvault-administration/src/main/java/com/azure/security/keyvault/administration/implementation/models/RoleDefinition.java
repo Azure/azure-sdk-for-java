@@ -14,7 +14,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Role definition.
@@ -194,18 +193,24 @@ public class RoleDefinition implements JsonSerializable<RoleDefinition> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (roleName != null || description != null || roleType != null || permissions != null
+        if (roleName != null
+            || description != null
+            || roleType != null
+            || permissions != null
             || assignableScopes != null) {
             jsonWriter.writeStartObject("properties");
             jsonWriter.writeStringField("roleName", this.roleName);
             jsonWriter.writeStringField("description", this.description);
-            jsonWriter.writeStringField("type", Objects.toString(this.roleType, null));
+            jsonWriter.writeStringField("type", this.roleType == null ? null : this.roleType.toString());
             jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeArrayField("assignableScopes", this.assignableScopes,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+                (writer, element) -> writer.writeString(element == null ? null : element.toString()));
             jsonWriter.writeEndObject();
         }
         return jsonWriter.writeEndObject();

@@ -334,16 +334,12 @@ public final class EventHubConnectionProperties {
      */
     public void validate() {
         if (eventHubResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubResourceId in model EventHubConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventHubResourceId in model EventHubConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroup in model EventHubConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property consumerGroup in model EventHubConnectionProperties"));
         }
     }
 

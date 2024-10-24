@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/** The policy rules under which the key can be exported. */
+/**
+ * The policy rules under which the key can be exported.
+ */
 @Fluent
 public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy> {
     /*
@@ -33,12 +35,15 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      */
     private Base64Url encodedPolicy;
 
-    /** Creates an instance of KeyReleasePolicy class. */
-    public KeyReleasePolicy() {}
+    /**
+     * Creates an instance of KeyReleasePolicy class.
+     */
+    public KeyReleasePolicy() {
+    }
 
     /**
      * Get the contentType property: Content type and version of key release policy.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -47,7 +52,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
 
     /**
      * Set the contentType property: Content type and version of key release policy.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -59,7 +64,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Get the immutable property: Defines the mutability state of the policy. Once marked immutable, this flag cannot
      * be reset and the policy cannot be changed under any circumstances.
-     *
+     * 
      * @return the immutable value.
      */
     public Boolean isImmutable() {
@@ -69,7 +74,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Set the immutable property: Defines the mutability state of the policy. Once marked immutable, this flag cannot
      * be reset and the policy cannot be changed under any circumstances.
-     *
+     * 
      * @param immutable the immutable value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -81,7 +86,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Get the encodedPolicy property: Blob encoding the policy rules under which the key can be released. Blob must be
      * base64 URL encoded.
-     *
+     * 
      * @return the encodedPolicy value.
      */
     public byte[] getEncodedPolicy() {
@@ -94,7 +99,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     /**
      * Set the encodedPolicy property: Blob encoding the policy rules under which the key can be released. Blob must be
      * base64 URL encoded.
-     *
+     * 
      * @param encodedPolicy the encodedPolicy value to set.
      * @return the KeyReleasePolicy object itself.
      */
@@ -107,6 +112,9 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,33 +126,32 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
 
     /**
      * Reads an instance of KeyReleasePolicy from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyReleasePolicy if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyReleasePolicy.
      */
     public static KeyReleasePolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyReleasePolicy deserializedKeyReleasePolicy = new KeyReleasePolicy();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyReleasePolicy deserializedKeyReleasePolicy = new KeyReleasePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("contentType".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.contentType = reader.getString();
-                        } else if ("immutable".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.immutable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("data".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.encodedPolicy =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("contentType".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.contentType = reader.getString();
+                } else if ("immutable".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.immutable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("data".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.encodedPolicy
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyReleasePolicy;
-                });
+            return deserializedKeyReleasePolicy;
+        });
     }
 }

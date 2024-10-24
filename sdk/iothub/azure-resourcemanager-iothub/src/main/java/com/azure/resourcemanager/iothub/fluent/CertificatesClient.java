@@ -30,8 +30,8 @@ public interface CertificatesClient {
      * @return the JSON-serialized array of Certificate objects along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateListDescriptionInner> listByIotHubWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<CertificateListDescriptionInner> listByIotHubWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the certificate list.
@@ -65,8 +65,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateDescriptionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<CertificateDescriptionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, Context context);
 
     /**
      * Get the certificate.
@@ -104,13 +104,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateDescriptionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CertificateDescriptionInner certificateDescription,
-        String ifMatch,
-        Context context);
+    Response<CertificateDescriptionInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, CertificateDescriptionInner certificateDescription, String ifMatch, Context context);
 
     /**
      * Upload the certificate to the IoT hub.
@@ -128,10 +123,7 @@ public interface CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
+    CertificateDescriptionInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
         CertificateDescriptionInner certificateDescription);
 
     /**
@@ -151,8 +143,8 @@ public interface CertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        String ifMatch, Context context);
 
     /**
      * Delete an X509 certificate.
@@ -189,8 +181,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateWithNonceDescriptionInner> generateVerificationCodeWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
+    Response<CertificateWithNonceDescriptionInner> generateVerificationCodeWithResponse(String resourceGroupName,
+        String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
      * Generate verification code for proof of possession flow.
@@ -209,8 +201,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateWithNonceDescriptionInner generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch);
+    CertificateWithNonceDescriptionInner generateVerificationCode(String resourceGroupName, String resourceName,
+        String certificateName, String ifMatch);
 
     /**
      * Verify certificate's private key possession.
@@ -231,12 +223,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateDescriptionInner> verifyWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody,
+    Response<CertificateDescriptionInner> verifyWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody,
         Context context);
 
     /**
@@ -257,10 +245,6 @@ public interface CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateDescriptionInner verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody);
+    CertificateDescriptionInner verify(String resourceGroupName, String resourceName, String certificateName,
+        String ifMatch, CertificateVerificationDescription certificateVerificationBody);
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"jcmmxdcufufsrp\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"idnsezcxtb\",\"principalType\":\"Group\",\"tenantName\":\"fycc\",\"principalName\":\"ewmdw\",\"provisioningState\":\"Running\",\"aadObjectId\":\"ac\"}")
-                .toObject(ClusterPrincipalProperties.class);
+        ClusterPrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"jcmmxdcufufsrp\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"idnsezcxtb\",\"principalType\":\"Group\",\"tenantName\":\"fycc\",\"principalName\":\"ewmdw\",\"provisioningState\":\"Running\",\"aadObjectId\":\"ac\"}")
+            .toObject(ClusterPrincipalProperties.class);
         Assertions.assertEquals("jcmmxdcufufsrp", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
         Assertions.assertEquals("idnsezcxtb", model.tenantId());
@@ -26,12 +24,10 @@ public final class ClusterPrincipalPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPrincipalProperties model =
-            new ClusterPrincipalProperties()
-                .withPrincipalId("jcmmxdcufufsrp")
-                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                .withTenantId("idnsezcxtb")
-                .withPrincipalType(PrincipalType.GROUP);
+        ClusterPrincipalProperties model = new ClusterPrincipalProperties().withPrincipalId("jcmmxdcufufsrp")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+            .withTenantId("idnsezcxtb")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalProperties.class);
         Assertions.assertEquals("jcmmxdcufufsrp", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());

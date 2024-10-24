@@ -33,42 +33,31 @@ public final class ClustersListLanguageExtensionsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_6_5\",\"languageExtensionCustomImageName\":\"iojlvfhrb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_6_5\",\"languageExtensionCustomImageName\":\"iojlvfhrb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<LanguageExtension> response =
-            manager.clusters().listLanguageExtensions("sbostzel", "dlat", com.azure.core.util.Context.NONE);
+        PagedIterable<LanguageExtension> response
+            = manager.clusters().listLanguageExtensions("sbostzel", "dlat", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(LanguageExtensionName.R, response.iterator().next().languageExtensionName());
-        Assertions
-            .assertEquals(
-                LanguageExtensionImageName.PYTHON3_6_5, response.iterator().next().languageExtensionImageName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_6_5,
+            response.iterator().next().languageExtensionImageName());
         Assertions.assertEquals("iojlvfhrb", response.iterator().next().languageExtensionCustomImageName());
     }
 }

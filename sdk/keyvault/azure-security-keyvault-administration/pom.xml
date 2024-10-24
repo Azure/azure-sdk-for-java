@@ -43,6 +43,7 @@
       --add-opens com.azure.security.keyvault.administration/com.azure.security.keyvault.administration.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

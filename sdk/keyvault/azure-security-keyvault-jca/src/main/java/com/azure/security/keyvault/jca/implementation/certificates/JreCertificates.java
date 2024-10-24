@@ -35,7 +35,7 @@ public final class JreCertificates implements AzureCertificates {
     /**
      * Stores the jre key store certificates.
      */
-    private final  Map<String, Certificate> certs;
+    private final Map<String, Certificate> certs;
 
     /**
      * Stores the certificate chains by alias.
@@ -45,7 +45,7 @@ public final class JreCertificates implements AzureCertificates {
     /**
      * Stores the jre key store keys
      */
-    private final  Map<String, Key> keys;
+    private final Map<String, Key> keys;
 
     /**
      * Stores the instance of JreCertificates.
@@ -57,38 +57,28 @@ public final class JreCertificates implements AzureCertificates {
      */
     private JreCertificates() {
         KeyStore jreKeyStore = JreKeyStoreFactory.getDefaultKeyStore();
-        aliases = Optional.ofNullable(jreKeyStore)
-            .map(a -> {
-                try {
-                    return Collections.unmodifiableList(Collections.list(a.aliases()));
-                } catch (KeyStoreException e) {
-                    LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
-                }
-                return null;
-            })
-            .orElseGet(Collections::emptyList);
-        certs = aliases.stream()
-            .collect(
-                HashMap::new,
-                (m, v) -> {
-                    try {
-                        m.put(v, jreKeyStore.getCertificate(v));
-                    } catch (KeyStoreException e) {
-                        LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
-                    }
-                },
-                HashMap::putAll);
-        certificateChains = aliases.stream()
-            .collect(
-                HashMap::new,
-                (m, v) -> {
-                    try {
-                        m.put(v, jreKeyStore.getCertificateChain(v));
-                    } catch (KeyStoreException e) {
-                        LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
-                    }
-                },
-                HashMap::putAll);
+        aliases = Optional.ofNullable(jreKeyStore).map(a -> {
+            try {
+                return Collections.unmodifiableList(Collections.list(a.aliases()));
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
+            }
+            return null;
+        }).orElseGet(Collections::emptyList);
+        certs = aliases.stream().collect(HashMap::new, (m, v) -> {
+            try {
+                m.put(v, jreKeyStore.getCertificate(v));
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
+            }
+        }, HashMap::putAll);
+        certificateChains = aliases.stream().collect(HashMap::new, (m, v) -> {
+            try {
+                m.put(v, jreKeyStore.getCertificateChain(v));
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
+            }
+        }, HashMap::putAll);
         keys = Collections.emptyMap();
     }
 
@@ -99,7 +89,6 @@ public final class JreCertificates implements AzureCertificates {
     public static JreCertificates getInstance() {
         return INSTANCE;
     }
-
 
     @Override
     public List<String> getAliases() {

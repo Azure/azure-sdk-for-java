@@ -48,9 +48,8 @@ public final class EventHubConsumerGroupName {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EventHubConsumerGroupName"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model EventHubConsumerGroupName"));
         }
     }
 

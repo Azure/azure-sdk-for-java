@@ -69,8 +69,8 @@ public final class LanguageExtensionInner {
      * @param languageExtensionImageName the languageExtensionImageName value to set.
      * @return the LanguageExtensionInner object itself.
      */
-    public LanguageExtensionInner withLanguageExtensionImageName(
-        LanguageExtensionImageName languageExtensionImageName) {
+    public LanguageExtensionInner
+        withLanguageExtensionImageName(LanguageExtensionImageName languageExtensionImageName) {
         this.languageExtensionImageName = languageExtensionImageName;
         return this;
     }

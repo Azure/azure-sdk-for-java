@@ -190,8 +190,8 @@ public final class FluxConfigurationPatch {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationPatch object itself.
      */
-    public FluxConfigurationPatch withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public FluxConfigurationPatch
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FluxConfigurationPatchProperties();
         }

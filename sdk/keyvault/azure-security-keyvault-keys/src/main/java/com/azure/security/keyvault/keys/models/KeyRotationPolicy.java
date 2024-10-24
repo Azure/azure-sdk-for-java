@@ -19,14 +19,14 @@ public final class KeyRotationPolicy {
     static {
         KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {
             @Override
-            public KeyRotationPolicy createPolicy(
-                com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+            public KeyRotationPolicy
+                createPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
                 return new KeyRotationPolicy(impl);
             }
 
             @Override
-            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(
-                KeyRotationPolicy policy) {
+            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy
+                getImpl(KeyRotationPolicy policy) {
                 return policy.impl;
             }
         });
@@ -70,8 +70,8 @@ public final class KeyRotationPolicy {
             List<KeyRotationLifetimeAction> mappedActions = new ArrayList<>(impl.getLifetimeActions().size());
 
             for (LifetimeActions action : impl.getLifetimeActions()) {
-                KeyRotationLifetimeAction mappedAction = KeyRotationLifetimeActionHelper.createLifetimeAction(
-                    action.getTrigger(), action.getAction());
+                KeyRotationLifetimeAction mappedAction
+                    = KeyRotationLifetimeActionHelper.createLifetimeAction(action.getTrigger(), action.getAction());
 
                 mappedActions.add(mappedAction);
             }
@@ -101,8 +101,7 @@ public final class KeyRotationPolicy {
         List<LifetimeActions> mappedActions = new ArrayList<>(lifetimeActions.size());
 
         for (KeyRotationLifetimeAction action : lifetimeActions) {
-            mappedActions.add(new LifetimeActions()
-                .setAction(KeyRotationLifetimeActionHelper.getActionType(action))
+            mappedActions.add(new LifetimeActions().setAction(KeyRotationLifetimeActionHelper.getActionType(action))
                 .setTrigger(KeyRotationLifetimeActionHelper.getTrigger(action)));
         }
 

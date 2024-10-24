@@ -23,9 +23,7 @@ public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministratio
     protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "REDACTED";
 
     KeyVaultBackupClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
-        return new KeyVaultBackupClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(getPipeline(httpClient, forCleanup));
+        return new KeyVaultBackupClientBuilder().vaultUrl(getEndpoint()).pipeline(getPipeline(httpClient, forCleanup));
     }
 
     @Test
@@ -54,17 +52,14 @@ public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministratio
         String accountName = Configuration.getGlobalConfiguration().get("BLOB_STORAGE_ACCOUNT_NAME");
         String accountKey = Configuration.getGlobalConfiguration().get("BLOB_PRIMARY_STORAGE_ACCOUNT_KEY");
 
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .credential(new StorageSharedKeyCredential(accountName, accountKey))
-            .endpoint(getStorageEndpoint())
-            .buildClient();
+        BlobServiceClient blobServiceClient
+            = new BlobServiceClientBuilder().credential(new StorageSharedKeyCredential(accountName, accountKey))
+                .endpoint(getStorageEndpoint())
+                .buildClient();
 
         AccountSasSignatureValues accountSasSignatureValues = new AccountSasSignatureValues(
-            OffsetDateTime.of(2050, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC),
-            AccountSasPermission.parse("rwdlacuptfx"),
-            AccountSasService.parse("b"),
-            AccountSasResourceType.parse("sco")
-        );
+            OffsetDateTime.of(2050, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC), AccountSasPermission.parse("rwdlacuptfx"),
+            AccountSasService.parse("b"), AccountSasResourceType.parse("sco"));
 
         return blobServiceClient.generateAccountSas(accountSasSignatureValues);
     }

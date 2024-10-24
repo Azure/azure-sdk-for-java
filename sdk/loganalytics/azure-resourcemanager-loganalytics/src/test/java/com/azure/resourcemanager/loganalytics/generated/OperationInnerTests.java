@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"aivwitqscywu\",\"display\":{\"provider\":\"oluhczbwemh\",\"resource\":\"rsbrgzdwm\",\"operation\":\"eypqwdxggicccn\",\"description\":\"huexmk\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"aivwitqscywu\",\"display\":{\"provider\":\"oluhczbwemh\",\"resource\":\"rsbrgzdwm\",\"operation\":\"eypqwdxggicccn\",\"description\":\"huexmk\"}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("aivwitqscywu", model.name());
         Assertions.assertEquals("oluhczbwemh", model.display().provider());
         Assertions.assertEquals("rsbrgzdwm", model.display().resource());
@@ -26,15 +24,11 @@ public final class OperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("aivwitqscywu")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("oluhczbwemh")
-                        .withResource("rsbrgzdwm")
-                        .withOperation("eypqwdxggicccn")
-                        .withDescription("huexmk"));
+        OperationInner model = new OperationInner().withName("aivwitqscywu")
+            .withDisplay(new OperationDisplay().withProvider("oluhczbwemh")
+                .withResource("rsbrgzdwm")
+                .withOperation("eypqwdxggicccn")
+                .withDescription("huexmk"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("aivwitqscywu", model.name());
         Assertions.assertEquals("oluhczbwemh", model.display().provider());

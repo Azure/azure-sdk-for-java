@@ -22,8 +22,8 @@ public interface DataSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Deletes a data source instance.
@@ -49,8 +49,8 @@ public interface DataSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a datasource instance along with {@link Response}.
      */
-    Response<DataSource> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<DataSource> getWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Gets a datasource instance.
@@ -93,8 +93,8 @@ public interface DataSources {
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
      *     response with {@link PagedIterable}.
      */
-    PagedIterable<DataSource> listByWorkspace(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context);
+    PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
+        String skiptoken, Context context);
 
     /**
      * Gets a datasource instance.

@@ -22,11 +22,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspacePatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"customerId\":\"totxhojujb\",\"sku\":{\"name\":\"LACluster\",\"capacityReservationLevel\":100,\"lastSkuUpdate\":\"uvhixbjxyfwn\"},\"retentionInDays\":156258046,\"workspaceCapping\":{\"dailyQuotaGb\":4.7709209282274845,\"quotaNextResetTime\":\"ttpkiwkkbnujrywv\",\"dataIngestionStatus\":\"ForceOff\"},\"createdDate\":\"fpncurdo\",\"modifiedDate\":\"iithtywu\",\"publicNetworkAccessForIngestion\":\"Enabled\",\"publicNetworkAccessForQuery\":\"Disabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"fdntwjchrdgoih\",\"scopeId\":\"mwctondzjluudfd\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"tov\",\"disableLocalAuth\":false,\"\":{\"pttwqmsn\":\"datainqfiufxqknpirgn\",\"ijnkrxfrdd\":\"dataffcdmqnrojl\"}},\"defaultDataCollectionRuleResourceId\":\"ratiz\"},\"identity\":{\"principalId\":\"nasx\",\"tenantId\":\"tozqyzhftwesgo\",\"type\":\"application\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"nnxk\",\"clientId\":\"gnyhmossxkkg\"},\"pdso\":{\"principalId\":\"gh\",\"clientId\":\"bdhqxvcxgf\"},\"wnopqgikyzirtx\":{\"principalId\":\"shrnsvbuswdvz\",\"clientId\":\"bycnunvjsrtkf\"},\"qukrydxt\":{\"principalId\":\"uxzejntpsew\",\"clientId\":\"oi\"}}},\"tags\":{\"tbghhavgrvkf\":\"eoxorggufhyao\",\"mv\":\"ovjzhpjbibgjmfx\",\"zzxscyhwzdgiruj\":\"cluyovwxnbkf\",\"ujviylwdshfs\":\"zbomvzzbtdcqvpni\"},\"etag\":\"rbgyefry\",\"id\":\"sgaojfmwncot\",\"name\":\"rfh\",\"type\":\"rctym\"}")
-                .toObject(WorkspacePatch.class);
+        WorkspacePatch model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"customerId\":\"totxhojujb\",\"sku\":{\"name\":\"LACluster\",\"capacityReservationLevel\":100,\"lastSkuUpdate\":\"uvhixbjxyfwn\"},\"retentionInDays\":156258046,\"workspaceCapping\":{\"dailyQuotaGb\":4.7709209282274845,\"quotaNextResetTime\":\"ttpkiwkkbnujrywv\",\"dataIngestionStatus\":\"ForceOff\"},\"createdDate\":\"fpncurdo\",\"modifiedDate\":\"iithtywu\",\"publicNetworkAccessForIngestion\":\"Enabled\",\"publicNetworkAccessForQuery\":\"Disabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"fdntwjchrdgoih\",\"scopeId\":\"mwctondzjluudfd\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"tov\",\"disableLocalAuth\":false,\"\":{\"pttwqmsn\":\"datainqfiufxqknpirgn\",\"ijnkrxfrdd\":\"dataffcdmqnrojl\"}},\"defaultDataCollectionRuleResourceId\":\"ratiz\"},\"identity\":{\"principalId\":\"nasx\",\"tenantId\":\"tozqyzhftwesgo\",\"type\":\"application\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"nnxk\",\"clientId\":\"gnyhmossxkkg\"},\"pdso\":{\"principalId\":\"gh\",\"clientId\":\"bdhqxvcxgf\"},\"wnopqgikyzirtx\":{\"principalId\":\"shrnsvbuswdvz\",\"clientId\":\"bycnunvjsrtkf\"},\"qukrydxt\":{\"principalId\":\"uxzejntpsew\",\"clientId\":\"oi\"}}},\"tags\":{\"tbghhavgrvkf\":\"eoxorggufhyao\",\"mv\":\"ovjzhpjbibgjmfx\",\"zzxscyhwzdgiruj\":\"cluyovwxnbkf\",\"ujviylwdshfs\":\"zbomvzzbtdcqvpni\"},\"etag\":\"rbgyefry\",\"id\":\"sgaojfmwncot\",\"name\":\"rfh\",\"type\":\"rctym\"}")
+            .toObject(WorkspacePatch.class);
         Assertions.assertEquals(IdentityType.APPLICATION, model.identity().type());
         Assertions.assertEquals("eoxorggufhyao", model.tags().get("tbghhavgrvkf"));
         Assertions.assertEquals(WorkspaceSkuNameEnum.LACLUSTER, model.sku().name());
@@ -46,49 +44,25 @@ public final class WorkspacePatchTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspacePatch model =
-            new WorkspacePatch()
-                .withIdentity(
-                    new Identity()
-                        .withType(IdentityType.APPLICATION)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "h",
-                                new UserIdentityProperties(),
-                                "pdso",
-                                new UserIdentityProperties(),
-                                "wnopqgikyzirtx",
-                                new UserIdentityProperties(),
-                                "qukrydxt",
-                                new UserIdentityProperties())))
-                .withTags(
-                    mapOf(
-                        "tbghhavgrvkf",
-                        "eoxorggufhyao",
-                        "mv",
-                        "ovjzhpjbibgjmfx",
-                        "zzxscyhwzdgiruj",
-                        "cluyovwxnbkf",
-                        "ujviylwdshfs",
-                        "zbomvzzbtdcqvpni"))
-                .withSku(
-                    new WorkspaceSku()
-                        .withName(WorkspaceSkuNameEnum.LACLUSTER)
-                        .withCapacityReservationLevel(CapacityReservationLevel.ONE_ZERO_ZERO))
-                .withRetentionInDays(156258046)
-                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(4.7709209282274845D))
-                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.ENABLED)
-                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.DISABLED)
-                .withForceCmkForQuery(false)
-                .withFeatures(
-                    new WorkspaceFeatures()
-                        .withEnableDataExport(true)
-                        .withImmediatePurgeDataOn30Days(true)
-                        .withEnableLogAccessUsingOnlyResourcePermissions(true)
-                        .withClusterResourceId("tov")
-                        .withDisableLocalAuth(false)
-                        .withAdditionalProperties(mapOf()))
-                .withDefaultDataCollectionRuleResourceId("ratiz");
+        WorkspacePatch model = new WorkspacePatch().withIdentity(new Identity().withType(IdentityType.APPLICATION)
+            .withUserAssignedIdentities(mapOf("h", new UserIdentityProperties(), "pdso", new UserIdentityProperties(),
+                "wnopqgikyzirtx", new UserIdentityProperties(), "qukrydxt", new UserIdentityProperties())))
+            .withTags(mapOf("tbghhavgrvkf", "eoxorggufhyao", "mv", "ovjzhpjbibgjmfx", "zzxscyhwzdgiruj", "cluyovwxnbkf",
+                "ujviylwdshfs", "zbomvzzbtdcqvpni"))
+            .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.LACLUSTER)
+                .withCapacityReservationLevel(CapacityReservationLevel.ONE_ZERO_ZERO))
+            .withRetentionInDays(156258046)
+            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(4.7709209282274845D))
+            .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.ENABLED)
+            .withPublicNetworkAccessForQuery(PublicNetworkAccessType.DISABLED)
+            .withForceCmkForQuery(false)
+            .withFeatures(new WorkspaceFeatures().withEnableDataExport(true)
+                .withImmediatePurgeDataOn30Days(true)
+                .withEnableLogAccessUsingOnlyResourcePermissions(true)
+                .withClusterResourceId("tov")
+                .withDisableLocalAuth(false)
+                .withAdditionalProperties(mapOf()))
+            .withDefaultDataCollectionRuleResourceId("ratiz");
         model = BinaryData.fromObject(model).toObject(WorkspacePatch.class);
         Assertions.assertEquals(IdentityType.APPLICATION, model.identity().type());
         Assertions.assertEquals("eoxorggufhyao", model.tags().get("tbghhavgrvkf"));

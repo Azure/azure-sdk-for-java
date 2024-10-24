@@ -131,15 +131,13 @@ public final class LoadTestRunAsyncClient {
         return new PollerFlux<>(Duration.ofSeconds(5),
             (context) -> createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
                 .flatMap(FluxUtil::toMono),
-            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions)
-                .flatMap(FluxUtil::toMono)
-                .flatMap(testRunBinary ->
-                    PollingUtils.getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(testRunBinary -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
                 .flatMap(FluxUtil::toMono),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
-
 
     /**
      * Associate an app component (collection of azure resources) to a test run.

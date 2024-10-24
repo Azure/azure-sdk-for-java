@@ -23,12 +23,8 @@ public interface DatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
@@ -42,10 +38,7 @@ public interface DatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
@@ -61,12 +54,8 @@ public interface DatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster database principalAssignment along with {@link Response}.
      */
-    Response<DatabasePrincipalAssignment> getWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context);
+    Response<DatabasePrincipalAssignment> getWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context);
 
     /**
      * Gets a Kusto cluster database principalAssignment.
@@ -80,8 +69,8 @@ public interface DatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster database principalAssignment.
      */
-    DatabasePrincipalAssignment get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+    DatabasePrincipalAssignment get(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName);
 
     /**
      * Deletes a Kusto principalAssignment.
@@ -108,11 +97,7 @@ public interface DatabasePrincipalAssignments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
+    void delete(String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName,
         Context context);
 
     /**
@@ -142,8 +127,8 @@ public interface DatabasePrincipalAssignments {
      * @return the list Kusto database principal assignments operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<DatabasePrincipalAssignment> list(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<DatabasePrincipalAssignment> list(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Gets a Kusto cluster database principalAssignment.

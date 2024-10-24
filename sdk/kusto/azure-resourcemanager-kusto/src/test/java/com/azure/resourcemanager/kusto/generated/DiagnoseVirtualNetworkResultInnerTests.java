@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnoseVirtualNetworkResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnoseVirtualNetworkResultInner model =
-            BinaryData.fromString("{\"findings\":[\"pmr\"]}").toObject(DiagnoseVirtualNetworkResultInner.class);
+        DiagnoseVirtualNetworkResultInner model
+            = BinaryData.fromString("{\"findings\":[\"pmr\"]}").toObject(DiagnoseVirtualNetworkResultInner.class);
         Assertions.assertEquals("pmr", model.findings().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnoseVirtualNetworkResultInner model =
-            new DiagnoseVirtualNetworkResultInner().withFindings(Arrays.asList("pmr"));
+        DiagnoseVirtualNetworkResultInner model
+            = new DiagnoseVirtualNetworkResultInner().withFindings(Arrays.asList("pmr"));
         model = BinaryData.fromObject(model).toObject(DiagnoseVirtualNetworkResultInner.class);
         Assertions.assertEquals("pmr", model.findings().get(0));
     }

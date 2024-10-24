@@ -129,22 +129,16 @@ public final class VirtualNetworkConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model VirtualNetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnetId in model VirtualNetworkConfiguration"));
         }
         if (enginePublicIpId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
         }
         if (dataManagementPublicIpId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
         }
     }
 

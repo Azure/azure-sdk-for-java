@@ -106,9 +106,8 @@ public final class Destination {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model Destination"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model Destination"));
         }
         if (innerMetadata() != null) {
             innerMetadata().validate();

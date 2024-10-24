@@ -188,8 +188,8 @@ public final class SourceControlConfigurationInner extends ProxyResource {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the SourceControlConfigurationInner object itself.
      */
-    public SourceControlConfigurationInner withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public SourceControlConfigurationInner
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SourceControlConfigurationProperties();
         }

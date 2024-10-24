@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePurgeResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspacePurgeResponseInner model =
-            BinaryData.fromString("{\"operationId\":\"sbvdkcrodtjinfw\"}").toObject(WorkspacePurgeResponseInner.class);
+        WorkspacePurgeResponseInner model = BinaryData.fromString("{\"operationId\":\"sbvdkcrodtjinfw\"}")
+            .toObject(WorkspacePurgeResponseInner.class);
         Assertions.assertEquals("sbvdkcrodtjinfw", model.operationId());
     }
 

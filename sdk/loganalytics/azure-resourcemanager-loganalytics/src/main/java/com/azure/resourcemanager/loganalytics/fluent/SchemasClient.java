@@ -24,8 +24,8 @@ public interface SchemasClient {
      * @return the schema for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SearchGetSchemaResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<SearchGetSchemaResponseInner> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the schema for a given workspace.

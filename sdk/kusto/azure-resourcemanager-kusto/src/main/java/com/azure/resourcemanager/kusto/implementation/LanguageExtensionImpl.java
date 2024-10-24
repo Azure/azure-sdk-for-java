@@ -14,8 +14,8 @@ public final class LanguageExtensionImpl implements LanguageExtension {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    LanguageExtensionImpl(
-        LanguageExtensionInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    LanguageExtensionImpl(LanguageExtensionInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ImportDevicesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImportDevicesRequest model =
-            BinaryData
-                .fromString(
-                    "{\"inputBlobContainerUri\":\"jrjxgciqibrhosx\",\"outputBlobContainerUri\":\"dqrhzoymib\",\"inputBlobName\":\"qyib\",\"outputBlobName\":\"wfluszdt\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ofyyvoqacpi\"},\"includeConfigurations\":false,\"configurationsBlobName\":\"tg\"}")
-                .toObject(ImportDevicesRequest.class);
+        ImportDevicesRequest model = BinaryData.fromString(
+            "{\"inputBlobContainerUri\":\"jrjxgciqibrhosx\",\"outputBlobContainerUri\":\"dqrhzoymib\",\"inputBlobName\":\"qyib\",\"outputBlobName\":\"wfluszdt\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ofyyvoqacpi\"},\"includeConfigurations\":false,\"configurationsBlobName\":\"tg\"}")
+            .toObject(ImportDevicesRequest.class);
         Assertions.assertEquals("jrjxgciqibrhosx", model.inputBlobContainerUri());
         Assertions.assertEquals("dqrhzoymib", model.outputBlobContainerUri());
         Assertions.assertEquals("qyib", model.inputBlobName());
@@ -30,16 +28,14 @@ public final class ImportDevicesRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportDevicesRequest model =
-            new ImportDevicesRequest()
-                .withInputBlobContainerUri("jrjxgciqibrhosx")
-                .withOutputBlobContainerUri("dqrhzoymib")
-                .withInputBlobName("qyib")
-                .withOutputBlobName("wfluszdt")
-                .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ofyyvoqacpi"))
-                .withIncludeConfigurations(false)
-                .withConfigurationsBlobName("tg");
+        ImportDevicesRequest model = new ImportDevicesRequest().withInputBlobContainerUri("jrjxgciqibrhosx")
+            .withOutputBlobContainerUri("dqrhzoymib")
+            .withInputBlobName("qyib")
+            .withOutputBlobName("wfluszdt")
+            .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ofyyvoqacpi"))
+            .withIncludeConfigurations(false)
+            .withConfigurationsBlobName("tg");
         model = BinaryData.fromObject(model).toObject(ImportDevicesRequest.class);
         Assertions.assertEquals("jrjxgciqibrhosx", model.inputBlobContainerUri());
         Assertions.assertEquals("dqrhzoymib", model.outputBlobContainerUri());

@@ -35,58 +35,46 @@ public final class DeletedWorkspacesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"customerId\":\"eoiojfizfavkjzw\",\"sku\":{\"name\":\"Premium\",\"capacityReservationLevel\":300,\"lastSkuUpdate\":\"kmmfzsbf\"},\"retentionInDays\":627946275,\"workspaceCapping\":{\"dailyQuotaGb\":22.16493961052125,\"quotaNextResetTime\":\"wsrsxkrplbja\",\"dataIngestionStatus\":\"SubscriptionSuspended\"},\"createdDate\":\"w\",\"modifiedDate\":\"yoyp\",\"publicNetworkAccessForIngestion\":\"Enabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"sqwjhqkbiwetpozy\",\"scopeId\":\"qiqyhgfsetzlexbs\"},{\"resourceId\":\"e\",\"scopeId\":\"no\"},{\"resourceId\":\"ziu\",\"scopeId\":\"bzkkd\"},{\"resourceId\":\"hqsycljselp\",\"scopeId\":\"bafvafhlbylcc\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"fwrsofpltdbmair\",\"disableLocalAuth\":false,\"\":{\"pqigtuujwouhd\":\"datanracw\",\"bvitvqkjya\":\"datawsigrbjbxsj\"}},\"defaultDataCollectionRuleResourceId\":\"umtggmuwdchozfn\"},\"identity\":{\"principalId\":\"xlvxnoakiz\",\"tenantId\":\"aikn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jtlkexaonwivkcqh\":{\"principalId\":\"wiguyxlyk\",\"clientId\":\"hvxzcwxhmp\"},\"il\":{\"principalId\":\"hxknlccrmmkyupi\",\"clientId\":\"byqjfkakfqfrkem\"},\"snmgzvyfi\":{\"principalId\":\"dxjascowvfdj\",\"clientId\":\"dxphlk\"},\"jb\":{\"principalId\":\"kzuqnwsith\",\"clientId\":\"olyahluqwqulsut\"}}},\"systemData\":{\"createdBy\":\"kf\",\"createdByType\":\"User\",\"createdAt\":\"2021-11-07T03:15:42Z\",\"lastModifiedBy\":\"qqug\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-04-08T05:18:37Z\"},\"etag\":\"ve\",\"location\":\"reuquowtljvf\",\"tags\":{\"yxvrqtvbczsul\":\"eagk\",\"ykgsangpszng\":\"dgglmepjpfs\",\"jujcngoad\":\"fpgylkve\"},\"id\":\"edmzrgjfoknub\",\"name\":\"oitpkpztrgdgx\",\"type\":\"coqra\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"customerId\":\"eoiojfizfavkjzw\",\"sku\":{\"name\":\"Premium\",\"capacityReservationLevel\":300,\"lastSkuUpdate\":\"kmmfzsbf\"},\"retentionInDays\":627946275,\"workspaceCapping\":{\"dailyQuotaGb\":22.16493961052125,\"quotaNextResetTime\":\"wsrsxkrplbja\",\"dataIngestionStatus\":\"SubscriptionSuspended\"},\"createdDate\":\"w\",\"modifiedDate\":\"yoyp\",\"publicNetworkAccessForIngestion\":\"Enabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"sqwjhqkbiwetpozy\",\"scopeId\":\"qiqyhgfsetzlexbs\"},{\"resourceId\":\"e\",\"scopeId\":\"no\"},{\"resourceId\":\"ziu\",\"scopeId\":\"bzkkd\"},{\"resourceId\":\"hqsycljselp\",\"scopeId\":\"bafvafhlbylcc\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"fwrsofpltdbmair\",\"disableLocalAuth\":false,\"\":{\"pqigtuujwouhd\":\"datanracw\",\"bvitvqkjya\":\"datawsigrbjbxsj\"}},\"defaultDataCollectionRuleResourceId\":\"umtggmuwdchozfn\"},\"identity\":{\"principalId\":\"xlvxnoakiz\",\"tenantId\":\"aikn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jtlkexaonwivkcqh\":{\"principalId\":\"wiguyxlyk\",\"clientId\":\"hvxzcwxhmp\"},\"il\":{\"principalId\":\"hxknlccrmmkyupi\",\"clientId\":\"byqjfkakfqfrkem\"},\"snmgzvyfi\":{\"principalId\":\"dxjascowvfdj\",\"clientId\":\"dxphlk\"},\"jb\":{\"principalId\":\"kzuqnwsith\",\"clientId\":\"olyahluqwqulsut\"}}},\"systemData\":{\"createdBy\":\"kf\",\"createdByType\":\"User\",\"createdAt\":\"2021-11-07T03:15:42Z\",\"lastModifiedBy\":\"qqug\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-04-08T05:18:37Z\"},\"etag\":\"ve\",\"location\":\"reuquowtljvf\",\"tags\":{\"yxvrqtvbczsul\":\"eagk\",\"ykgsangpszng\":\"dgglmepjpfs\",\"jujcngoad\":\"fpgylkve\"},\"id\":\"edmzrgjfoknub\",\"name\":\"oitpkpztrgdgx\",\"type\":\"coqra\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Workspace> response =
-            manager.deletedWorkspaces().listByResourceGroup("upnqrmgjfb", com.azure.core.util.Context.NONE);
+        PagedIterable<Workspace> response
+            = manager.deletedWorkspaces().listByResourceGroup("upnqrmgjfb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("reuquowtljvf", response.iterator().next().location());
         Assertions.assertEquals("eagk", response.iterator().next().tags().get("yxvrqtvbczsul"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
         Assertions.assertEquals("ve", response.iterator().next().etag());
         Assertions.assertEquals(WorkspaceSkuNameEnum.PREMIUM, response.iterator().next().sku().name());
-        Assertions
-            .assertEquals(
-                CapacityReservationLevel.THREE_ZERO_ZERO, response.iterator().next().sku().capacityReservationLevel());
+        Assertions.assertEquals(CapacityReservationLevel.THREE_ZERO_ZERO,
+            response.iterator().next().sku().capacityReservationLevel());
         Assertions.assertEquals(627946275, response.iterator().next().retentionInDays());
         Assertions.assertEquals(22.16493961052125D, response.iterator().next().workspaceCapping().dailyQuotaGb());
-        Assertions
-            .assertEquals(
-                PublicNetworkAccessType.ENABLED, response.iterator().next().publicNetworkAccessForIngestion());
-        Assertions
-            .assertEquals(PublicNetworkAccessType.ENABLED, response.iterator().next().publicNetworkAccessForQuery());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
+            response.iterator().next().publicNetworkAccessForIngestion());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
+            response.iterator().next().publicNetworkAccessForQuery());
         Assertions.assertEquals(false, response.iterator().next().forceCmkForQuery());
         Assertions.assertEquals(true, response.iterator().next().features().enableDataExport());
         Assertions.assertEquals(false, response.iterator().next().features().immediatePurgeDataOn30Days());
-        Assertions
-            .assertEquals(true, response.iterator().next().features().enableLogAccessUsingOnlyResourcePermissions());
+        Assertions.assertEquals(true,
+            response.iterator().next().features().enableLogAccessUsingOnlyResourcePermissions());
         Assertions.assertEquals("fwrsofpltdbmair", response.iterator().next().features().clusterResourceId());
         Assertions.assertEquals(false, response.iterator().next().features().disableLocalAuth());
         Assertions.assertEquals("umtggmuwdchozfn", response.iterator().next().defaultDataCollectionRuleResourceId());

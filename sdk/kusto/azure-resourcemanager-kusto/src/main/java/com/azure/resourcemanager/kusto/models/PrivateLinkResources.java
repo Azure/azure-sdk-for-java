@@ -47,8 +47,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String clusterName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String clusterName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Gets a private link resource.

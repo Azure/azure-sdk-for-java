@@ -64,8 +64,8 @@ public interface LoadTests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LoadTest resource along with {@link Response}.
      */
-    Response<LoadTestResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadTestName, Context context);
+    Response<LoadTestResource> getByResourceGroupWithResponse(String resourceGroupName, String loadTestName,
+        Context context);
 
     /**
      * Get a LoadTest resource.
@@ -112,8 +112,8 @@ public interface LoadTests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName);
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName);
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
@@ -126,8 +126,8 @@ public interface LoadTests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName, Context context);
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName, Context context);
 
     /**
      * Get a LoadTest resource.

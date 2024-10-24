@@ -165,16 +165,12 @@ public final class StorageEndpointProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model StorageEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model StorageEndpointProperties"));
         }
         if (containerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model StorageEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containerName in model StorageEndpointProperties"));
         }
         if (identity() != null) {
             identity().validate();

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ObjectStatusConditionDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ObjectStatusConditionDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"lastTransitionTime\":\"2021-06-22T02:08:06Z\",\"message\":\"odpuozmyzydag\",\"reason\":\"axbezyiuo\",\"status\":\"twhrdxwzywqsm\",\"type\":\"ureximoryocfs\"}")
-                .toObject(ObjectStatusConditionDefinition.class);
+        ObjectStatusConditionDefinition model = BinaryData.fromString(
+            "{\"lastTransitionTime\":\"2021-06-22T02:08:06Z\",\"message\":\"odpuozmyzydag\",\"reason\":\"axbezyiuo\",\"status\":\"twhrdxwzywqsm\",\"type\":\"ureximoryocfs\"}")
+            .toObject(ObjectStatusConditionDefinition.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T02:08:06Z"), model.lastTransitionTime());
         Assertions.assertEquals("odpuozmyzydag", model.message());
         Assertions.assertEquals("axbezyiuo", model.reason());
@@ -26,9 +24,8 @@ public final class ObjectStatusConditionDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ObjectStatusConditionDefinition model =
-            new ObjectStatusConditionDefinition()
-                .withLastTransitionTime(OffsetDateTime.parse("2021-06-22T02:08:06Z"))
+        ObjectStatusConditionDefinition model
+            = new ObjectStatusConditionDefinition().withLastTransitionTime(OffsetDateTime.parse("2021-06-22T02:08:06Z"))
                 .withMessage("odpuozmyzydag")
                 .withReason("axbezyiuo")
                 .withStatus("twhrdxwzywqsm")

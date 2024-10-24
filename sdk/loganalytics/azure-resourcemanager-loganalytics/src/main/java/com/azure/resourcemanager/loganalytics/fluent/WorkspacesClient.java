@@ -75,8 +75,8 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of the top level Workspace resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters);
 
     /**
      * Create or update a workspace.
@@ -91,8 +91,8 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of the top level Workspace resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters, Context context);
 
     /**
      * Create or update a workspace.
@@ -121,8 +121,8 @@ public interface WorkspacesClient {
      * @return the top level Workspace resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner parameters,
+        Context context);
 
     /**
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
@@ -155,8 +155,8 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Boolean force,
+        Context context);
 
     /**
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
@@ -201,8 +201,8 @@ public interface WorkspacesClient {
      * @return a workspace instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a workspace instance.
@@ -230,8 +230,8 @@ public interface WorkspacesClient {
      * @return the top level Workspace resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> updateWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePatch parameters, Context context);
+    Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspacePatch parameters, Context context);
 
     /**
      * Updates a workspace.

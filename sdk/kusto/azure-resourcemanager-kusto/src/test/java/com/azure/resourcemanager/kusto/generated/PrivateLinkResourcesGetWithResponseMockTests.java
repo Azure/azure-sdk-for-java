@@ -29,39 +29,27 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"groupId\":\"hzjkn\",\"requiredMembers\":[\"gvttx\",\"nrup\"],\"requiredZoneNames\":[\"mrdixtreki\",\"swyskbruffg\",\"lukkutvlxhrpqhvm\",\"lcouqehbhbcdszir\"]},\"id\":\"an\",\"name\":\"oypmbltoorm\",\"type\":\"fqlwxldykalsy\"}";
+        String responseStr
+            = "{\"properties\":{\"groupId\":\"hzjkn\",\"requiredMembers\":[\"gvttx\",\"nrup\"],\"requiredZoneNames\":[\"mrdixtreki\",\"swyskbruffg\",\"lukkutvlxhrpqhvm\",\"lcouqehbhbcdszir\"]},\"id\":\"an\",\"name\":\"oypmbltoorm\",\"type\":\"fqlwxldykalsy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateLinkResource response =
-            manager
-                .privateLinkResources()
-                .getWithResponse("e", "oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateLinkResource response = manager.privateLinkResources()
+            .getWithResponse("e", "oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE)
+            .getValue();
     }
 }

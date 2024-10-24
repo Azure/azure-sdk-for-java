@@ -23,8 +23,11 @@ public final class CveSummaryTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CveSummary model = new CveSummary().withCritical(2851326765545975201L).withHigh(3602555477170687906L)
-            .withMedium(7412584900785787675L).withLow(7022663417329031305L).withUnknown(6962157826226813076L);
+        CveSummary model = new CveSummary().withCritical(2851326765545975201L)
+            .withHigh(3602555477170687906L)
+            .withMedium(7412584900785787675L)
+            .withLow(7022663417329031305L)
+            .withUnknown(6962157826226813076L);
         model = BinaryData.fromObject(model).toObject(CveSummary.class);
         Assertions.assertEquals(2851326765545975201L, model.critical());
         Assertions.assertEquals(3602555477170687906L, model.high());

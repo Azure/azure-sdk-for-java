@@ -32,45 +32,33 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"principalId\":\"zjkjexfdeqv\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"ylkkshkbffmbm\",\"principalType\":\"Group\",\"tenantName\":\"rgywwp\",\"principalName\":\"xs\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"ujgicgaaoe\"},\"id\":\"ttaqutdew\",\"name\":\"mxswvruunzz\",\"type\":\"gehkfkimrtixokff\"}";
+        String responseStr
+            = "{\"properties\":{\"principalId\":\"zjkjexfdeqv\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"ylkkshkbffmbm\",\"principalType\":\"Group\",\"tenantName\":\"rgywwp\",\"principalName\":\"xs\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"ujgicgaaoe\"},\"id\":\"ttaqutdew\",\"name\":\"mxswvruunzz\",\"type\":\"gehkfkimrtixokff\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ClusterPrincipalAssignment response =
-            manager
-                .clusterPrincipalAssignments()
-                .define("fy")
-                .withExistingCluster("z", "kiwbuqnyoph")
-                .withPrincipalId("gcrpfbcun")
-                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                .withTenantId("cez")
-                .withPrincipalType(PrincipalType.GROUP)
-                .create();
+        ClusterPrincipalAssignment response = manager.clusterPrincipalAssignments()
+            .define("fy")
+            .withExistingCluster("z", "kiwbuqnyoph")
+            .withPrincipalId("gcrpfbcun")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+            .withTenantId("cez")
+            .withPrincipalType(PrincipalType.GROUP)
+            .create();
 
         Assertions.assertEquals("zjkjexfdeqv", response.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, response.role());

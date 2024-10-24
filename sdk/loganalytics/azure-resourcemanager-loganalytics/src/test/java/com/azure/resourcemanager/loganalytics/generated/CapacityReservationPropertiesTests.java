@@ -10,9 +10,8 @@ import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperti
 public final class CapacityReservationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacityReservationProperties model =
-            BinaryData
-                .fromString("{\"lastSkuUpdate\":\"kutwpf\",\"minCapacity\":1020005576766586576}")
+        CapacityReservationProperties model
+            = BinaryData.fromString("{\"lastSkuUpdate\":\"kutwpf\",\"minCapacity\":1020005576766586576}")
                 .toObject(CapacityReservationProperties.class);
     }
 

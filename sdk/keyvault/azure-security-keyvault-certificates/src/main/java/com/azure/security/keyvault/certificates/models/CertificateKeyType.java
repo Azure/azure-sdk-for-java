@@ -7,31 +7,42 @@ package com.azure.security.keyvault.certificates.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. */
+/**
+ * JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+ */
 public final class CertificateKeyType extends ExpandableStringEnum<CertificateKeyType> {
-    /** Elliptic Curve. */
+    /**
+     * Elliptic Curve.
+     */
     public static final CertificateKeyType EC = fromString("EC");
 
-    /** Elliptic Curve with a private key which is stored in the HSM. */
+    /**
+     * Elliptic Curve with a private key which is stored in the HSM.
+     */
     public static final CertificateKeyType EC_HSM = fromString("EC-HSM");
 
-    /** RSA (https://tools.ietf.org/html/rfc3447). */
+    /**
+     * RSA (https://tools.ietf.org/html/rfc3447).
+     */
     public static final CertificateKeyType RSA = fromString("RSA");
 
-    /** RSA with a private key which is stored in the HSM. */
+    /**
+     * RSA with a private key which is stored in the HSM.
+     */
     public static final CertificateKeyType RSA_HSM = fromString("RSA-HSM");
 
     /**
      * Creates a new instance of CertificateKeyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyType() {}
+    public CertificateKeyType() {
+    }
 
     /**
      * Creates or finds a CertificateKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateKeyType.
      */
@@ -41,7 +52,7 @@ public final class CertificateKeyType extends ExpandableStringEnum<CertificateKe
 
     /**
      * Gets known CertificateKeyType values.
-     *
+     * 
      * @return known CertificateKeyType values.
      */
     public static Collection<CertificateKeyType> values() {

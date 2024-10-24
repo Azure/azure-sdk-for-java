@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDatabaseConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDatabaseConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"ronasxift\",\"properties\":{\"provisioningState\":\"Moving\",\"databaseName\":\"zh\",\"clusterResourceId\":\"tw\",\"attachedDatabaseNames\":[\"ogczhonnxkrlg\",\"yhmossxkkg\",\"h\",\"rghxjb\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"cx\",\"frpdsofbshrns\",\"buswdvzyy\",\"ycnunvjsrtk\"],\"tablesToExclude\":[\"nopqgikyzirtx\",\"yuxzejntpsewgi\",\"ilqu\",\"rydxtqm\"],\"externalTablesToInclude\":[\"xorgg\"],\"externalTablesToExclude\":[\"yaomtb\",\"hhavgrvkffovjz\",\"pjbi\",\"gjmfxumvfcl\"],\"materializedViewsToInclude\":[\"vwxnbkfe\",\"zxscyhwzdgirujb\",\"bomvzzbtdcqv\",\"niyujv\"],\"materializedViewsToExclude\":[\"wdsh\"],\"functionsToInclude\":[\"n\",\"bgye\",\"rymsgaojfmw\",\"cotmr\"],\"functionsToExclude\":[\"rctym\",\"xoftpipiwyczu\",\"xacpqjli\",\"hyus\"]},\"databaseNameOverride\":\"kasdvlm\",\"databaseNamePrefix\":\"dgzxulucvpamrsr\"},\"id\":\"uzvx\",\"name\":\"risjnhnytxifqjz\",\"type\":\"xmrhu\"}")
-                .toObject(AttachedDatabaseConfigurationInner.class);
+        AttachedDatabaseConfigurationInner model = BinaryData.fromString(
+            "{\"location\":\"ronasxift\",\"properties\":{\"provisioningState\":\"Moving\",\"databaseName\":\"zh\",\"clusterResourceId\":\"tw\",\"attachedDatabaseNames\":[\"ogczhonnxkrlg\",\"yhmossxkkg\",\"h\",\"rghxjb\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"cx\",\"frpdsofbshrns\",\"buswdvzyy\",\"ycnunvjsrtk\"],\"tablesToExclude\":[\"nopqgikyzirtx\",\"yuxzejntpsewgi\",\"ilqu\",\"rydxtqm\"],\"externalTablesToInclude\":[\"xorgg\"],\"externalTablesToExclude\":[\"yaomtb\",\"hhavgrvkffovjz\",\"pjbi\",\"gjmfxumvfcl\"],\"materializedViewsToInclude\":[\"vwxnbkfe\",\"zxscyhwzdgirujb\",\"bomvzzbtdcqv\",\"niyujv\"],\"materializedViewsToExclude\":[\"wdsh\"],\"functionsToInclude\":[\"n\",\"bgye\",\"rymsgaojfmw\",\"cotmr\"],\"functionsToExclude\":[\"rctym\",\"xoftpipiwyczu\",\"xacpqjli\",\"hyus\"]},\"databaseNameOverride\":\"kasdvlm\",\"databaseNamePrefix\":\"dgzxulucvpamrsr\"},\"id\":\"uzvx\",\"name\":\"risjnhnytxifqjz\",\"type\":\"xmrhu\"}")
+            .toObject(AttachedDatabaseConfigurationInner.class);
         Assertions.assertEquals("ronasxift", model.location());
         Assertions.assertEquals("zh", model.databaseName());
         Assertions.assertEquals("tw", model.clusterResourceId());
@@ -37,25 +35,21 @@ public final class AttachedDatabaseConfigurationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDatabaseConfigurationInner model =
-            new AttachedDatabaseConfigurationInner()
-                .withLocation("ronasxift")
-                .withDatabaseName("zh")
-                .withClusterResourceId("tw")
-                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE)
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("cx", "frpdsofbshrns", "buswdvzyy", "ycnunvjsrtk"))
-                        .withTablesToExclude(Arrays.asList("nopqgikyzirtx", "yuxzejntpsewgi", "ilqu", "rydxtqm"))
-                        .withExternalTablesToInclude(Arrays.asList("xorgg"))
-                        .withExternalTablesToExclude(Arrays.asList("yaomtb", "hhavgrvkffovjz", "pjbi", "gjmfxumvfcl"))
-                        .withMaterializedViewsToInclude(
-                            Arrays.asList("vwxnbkfe", "zxscyhwzdgirujb", "bomvzzbtdcqv", "niyujv"))
-                        .withMaterializedViewsToExclude(Arrays.asList("wdsh"))
-                        .withFunctionsToInclude(Arrays.asList("n", "bgye", "rymsgaojfmw", "cotmr"))
-                        .withFunctionsToExclude(Arrays.asList("rctym", "xoftpipiwyczu", "xacpqjli", "hyus")))
-                .withDatabaseNameOverride("kasdvlm")
-                .withDatabaseNamePrefix("dgzxulucvpamrsr");
+        AttachedDatabaseConfigurationInner model = new AttachedDatabaseConfigurationInner().withLocation("ronasxift")
+            .withDatabaseName("zh")
+            .withClusterResourceId("tw")
+            .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE)
+            .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                .withTablesToInclude(Arrays.asList("cx", "frpdsofbshrns", "buswdvzyy", "ycnunvjsrtk"))
+                .withTablesToExclude(Arrays.asList("nopqgikyzirtx", "yuxzejntpsewgi", "ilqu", "rydxtqm"))
+                .withExternalTablesToInclude(Arrays.asList("xorgg"))
+                .withExternalTablesToExclude(Arrays.asList("yaomtb", "hhavgrvkffovjz", "pjbi", "gjmfxumvfcl"))
+                .withMaterializedViewsToInclude(Arrays.asList("vwxnbkfe", "zxscyhwzdgirujb", "bomvzzbtdcqv", "niyujv"))
+                .withMaterializedViewsToExclude(Arrays.asList("wdsh"))
+                .withFunctionsToInclude(Arrays.asList("n", "bgye", "rymsgaojfmw", "cotmr"))
+                .withFunctionsToExclude(Arrays.asList("rctym", "xoftpipiwyczu", "xacpqjli", "hyus")))
+            .withDatabaseNameOverride("kasdvlm")
+            .withDatabaseNamePrefix("dgzxulucvpamrsr");
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationInner.class);
         Assertions.assertEquals("ronasxift", model.location());
         Assertions.assertEquals("zh", model.databaseName());

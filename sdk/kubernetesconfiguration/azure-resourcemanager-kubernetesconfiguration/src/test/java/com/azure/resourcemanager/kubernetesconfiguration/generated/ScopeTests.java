@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Scope model =
-            BinaryData
-                .fromString("{\"cluster\":{\"releaseNamespace\":\"vyq\"},\"namespace\":{\"targetNamespace\":\"b\"}}")
-                .toObject(Scope.class);
+        Scope model = BinaryData
+            .fromString("{\"cluster\":{\"releaseNamespace\":\"vyq\"},\"namespace\":{\"targetNamespace\":\"b\"}}")
+            .toObject(Scope.class);
         Assertions.assertEquals("vyq", model.cluster().releaseNamespace());
         Assertions.assertEquals("b", model.namespace().targetNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Scope model =
-            new Scope()
-                .withCluster(new ScopeCluster().withReleaseNamespace("vyq"))
-                .withNamespace(new ScopeNamespace().withTargetNamespace("b"));
+        Scope model = new Scope().withCluster(new ScopeCluster().withReleaseNamespace("vyq"))
+            .withNamespace(new ScopeNamespace().withTargetNamespace("b"));
         model = BinaryData.fromObject(model).toObject(Scope.class);
         Assertions.assertEquals("vyq", model.cluster().releaseNamespace());
         Assertions.assertEquals("b", model.namespace().targetNamespace());

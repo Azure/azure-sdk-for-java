@@ -45,12 +45,13 @@ public final class SbomComponentsListByFirmwareMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SbomComponentResource> response = manager.sbomComponents().listByFirmware("kwobdagxtibq", "xbxwa",
-            "bogqxndlkzgxhu", com.azure.core.util.Context.NONE);
+        PagedIterable<SbomComponentResource> response = manager.sbomComponents()
+            .listByFirmware("kwobdagxtibq", "xbxwa", "bogqxndlkzgxhu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lbpodxunk", response.iterator().next().componentId());
         Assertions.assertEquals("bxmubyynt", response.iterator().next().componentName());

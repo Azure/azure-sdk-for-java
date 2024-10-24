@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMigrateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMigrateRequest model =
-            BinaryData.fromString("{\"clusterResourceId\":\"cpr\"}").toObject(ClusterMigrateRequest.class);
+        ClusterMigrateRequest model
+            = BinaryData.fromString("{\"clusterResourceId\":\"cpr\"}").toObject(ClusterMigrateRequest.class);
         Assertions.assertEquals("cpr", model.clusterResourceId());
     }
 

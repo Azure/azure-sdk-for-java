@@ -126,10 +126,10 @@ public final class LoadTestRunClient {
             defaultRequestOptions.setContext(testRunRequestOptions.getContext());
         }
         return SyncPoller.createPoller(Duration.ofSeconds(5),
-            (context) -> PollingUtils.getTestRunStatus(createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
-                .getValue()),
-            (context) -> PollingUtils.getTestRunStatus(getTestRunWithResponse(testRunId, defaultRequestOptions)
-                .getValue()),
+            (context) -> PollingUtils
+                .getTestRunStatus(createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions).getValue()),
+            (context) -> PollingUtils
+                .getTestRunStatus(getTestRunWithResponse(testRunId, defaultRequestOptions).getValue()),
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions).getValue(),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).getValue());
     }

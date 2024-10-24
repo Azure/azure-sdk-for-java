@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IntelligencePackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntelligencePackInner model =
-            BinaryData
-                .fromString("{\"name\":\"xmyskp\",\"enabled\":true,\"displayName\":\"btkcxywnytnrsyn\"}")
+        IntelligencePackInner model
+            = BinaryData.fromString("{\"name\":\"xmyskp\",\"enabled\":true,\"displayName\":\"btkcxywnytnrsyn\"}")
                 .toObject(IntelligencePackInner.class);
         Assertions.assertEquals("xmyskp", model.name());
         Assertions.assertEquals(true, model.enabled());
@@ -22,8 +21,8 @@ public final class IntelligencePackInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntelligencePackInner model =
-            new IntelligencePackInner().withName("xmyskp").withEnabled(true).withDisplayName("btkcxywnytnrsyn");
+        IntelligencePackInner model
+            = new IntelligencePackInner().withName("xmyskp").withEnabled(true).withDisplayName("btkcxywnytnrsyn");
         model = BinaryData.fromObject(model).toObject(IntelligencePackInner.class);
         Assertions.assertEquals("xmyskp", model.name());
         Assertions.assertEquals(true, model.enabled());

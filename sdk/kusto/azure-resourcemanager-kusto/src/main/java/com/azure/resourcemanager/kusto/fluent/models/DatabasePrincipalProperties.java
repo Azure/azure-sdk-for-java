@@ -192,22 +192,16 @@ public final class DatabasePrincipalProperties {
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model DatabasePrincipalProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalId in model DatabasePrincipalProperties"));
         }
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property role in model DatabasePrincipalProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property role in model DatabasePrincipalProperties"));
         }
         if (principalType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalType in model DatabasePrincipalProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalType in model DatabasePrincipalProperties"));
         }
     }
 

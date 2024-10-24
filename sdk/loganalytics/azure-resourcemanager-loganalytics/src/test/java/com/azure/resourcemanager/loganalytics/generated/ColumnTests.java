@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Column model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ydvfvfcjnae\",\"type\":\"guid\",\"dataTypeHint\":\"armPath\",\"displayName\":\"mgorffukisc\",\"description\":\"mzhwplefaxvxi\",\"isDefaultDisplay\":false,\"isHidden\":false}")
-                .toObject(Column.class);
+        Column model = BinaryData.fromString(
+            "{\"name\":\"ydvfvfcjnae\",\"type\":\"guid\",\"dataTypeHint\":\"armPath\",\"displayName\":\"mgorffukisc\",\"description\":\"mzhwplefaxvxi\",\"isDefaultDisplay\":false,\"isHidden\":false}")
+            .toObject(Column.class);
         Assertions.assertEquals("ydvfvfcjnae", model.name());
         Assertions.assertEquals(ColumnTypeEnum.GUID, model.type());
         Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, model.dataTypeHint());
@@ -27,13 +25,11 @@ public final class ColumnTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Column model =
-            new Column()
-                .withName("ydvfvfcjnae")
-                .withType(ColumnTypeEnum.GUID)
-                .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
-                .withDisplayName("mgorffukisc")
-                .withDescription("mzhwplefaxvxi");
+        Column model = new Column().withName("ydvfvfcjnae")
+            .withType(ColumnTypeEnum.GUID)
+            .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
+            .withDisplayName("mgorffukisc")
+            .withDescription("mzhwplefaxvxi");
         model = BinaryData.fromObject(model).toObject(Column.class);
         Assertions.assertEquals("ydvfvfcjnae", model.name());
         Assertions.assertEquals(ColumnTypeEnum.GUID, model.type());

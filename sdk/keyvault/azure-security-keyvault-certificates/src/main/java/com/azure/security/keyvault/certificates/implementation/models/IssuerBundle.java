@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The issuer for Key Vault certificate. */
+/**
+ * The issuer for Key Vault certificate.
+ */
 @Fluent
 public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     /*
@@ -39,12 +41,15 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
      */
     private IssuerAttributes attributes;
 
-    /** Creates an instance of IssuerBundle class. */
-    public IssuerBundle() {}
+    /**
+     * Creates an instance of IssuerBundle class.
+     */
+    public IssuerBundle() {
+    }
 
     /**
      * Get the id property: Identifier for the issuer object.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -53,7 +58,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Get the provider property: The issuer provider.
-     *
+     * 
      * @return the provider value.
      */
     public String getProvider() {
@@ -62,7 +67,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Set the provider property: The issuer provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the IssuerBundle object itself.
      */
@@ -73,7 +78,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Get the credentials property: The credentials to be used for the issuer.
-     *
+     * 
      * @return the credentials value.
      */
     public IssuerCredentials getCredentials() {
@@ -82,7 +87,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Set the credentials property: The credentials to be used for the issuer.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the IssuerBundle object itself.
      */
@@ -93,7 +98,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Get the organizationDetails property: Details of the organization as provided to the issuer.
-     *
+     * 
      * @return the organizationDetails value.
      */
     public OrganizationDetails getOrganizationDetails() {
@@ -102,7 +107,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Set the organizationDetails property: Details of the organization as provided to the issuer.
-     *
+     * 
      * @param organizationDetails the organizationDetails value to set.
      * @return the IssuerBundle object itself.
      */
@@ -113,7 +118,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Get the attributes property: Attributes of the issuer object.
-     *
+     * 
      * @return the attributes value.
      */
     public IssuerAttributes getAttributes() {
@@ -122,7 +127,7 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Set the attributes property: Attributes of the issuer object.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the IssuerBundle object itself.
      */
@@ -131,6 +136,9 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,36 +151,35 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
 
     /**
      * Reads an instance of IssuerBundle from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of IssuerBundle if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IssuerBundle.
      */
     public static IssuerBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    IssuerBundle deserializedIssuerBundle = new IssuerBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            IssuerBundle deserializedIssuerBundle = new IssuerBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedIssuerBundle.id = reader.getString();
-                        } else if ("provider".equals(fieldName)) {
-                            deserializedIssuerBundle.provider = reader.getString();
-                        } else if ("credentials".equals(fieldName)) {
-                            deserializedIssuerBundle.credentials = IssuerCredentials.fromJson(reader);
-                        } else if ("org_details".equals(fieldName)) {
-                            deserializedIssuerBundle.organizationDetails = OrganizationDetails.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedIssuerBundle.attributes = IssuerAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedIssuerBundle.id = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedIssuerBundle.provider = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedIssuerBundle.credentials = IssuerCredentials.fromJson(reader);
+                } else if ("org_details".equals(fieldName)) {
+                    deserializedIssuerBundle.organizationDetails = OrganizationDetails.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedIssuerBundle.attributes = IssuerAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedIssuerBundle;
-                });
+            return deserializedIssuerBundle;
+        });
     }
 }

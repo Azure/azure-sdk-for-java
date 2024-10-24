@@ -87,26 +87,17 @@ final class Utils {
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
         private PagedIterableImpl(PagedIterable<T> pagedIterable, Function<T, S> mapper) {
-            super(
-                PagedFlux
-                    .create(
-                        () ->
-                            (continuationToken, pageSize) ->
-                                Flux.fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
+            super(PagedFlux.create(() -> (continuationToken, pageSize) -> Flux
+                .fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
             this.pagedIterable = pagedIterable;
             this.mapper = mapper;
             this.pageMapper = getPageMapper(mapper);
         }
 
         private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> getPageMapper(Function<T, S> mapper) {
-            return page ->
-                new PagedResponseBase<Void, S>(
-                    page.getRequest(),
-                    page.getStatusCode(),
-                    page.getHeaders(),
-                    page.getElements().stream().map(mapper).collect(Collectors.toList()),
-                    page.getContinuationToken(),
-                    null);
+            return page -> new PagedResponseBase<Void, S>(page.getRequest(), page.getStatusCode(), page.getHeaders(),
+                page.getElements().stream().map(mapper).collect(Collectors.toList()), page.getContinuationToken(),
+                null);
         }
 
         @Override

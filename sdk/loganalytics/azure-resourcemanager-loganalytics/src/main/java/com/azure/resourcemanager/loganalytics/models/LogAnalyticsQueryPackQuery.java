@@ -153,12 +153,8 @@ public interface LogAnalyticsQueryPackQuery {
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithBody,
-                DefinitionStages.WithRelated,
-                DefinitionStages.WithProperties {
+            extends DefinitionStages.WithTags, DefinitionStages.WithDisplayName, DefinitionStages.WithDescription,
+            DefinitionStages.WithBody, DefinitionStages.WithRelated, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -250,13 +246,8 @@ public interface LogAnalyticsQueryPackQuery {
     LogAnalyticsQueryPackQuery.Update update();
 
     /** The template for LogAnalyticsQueryPackQuery update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithBody,
-            UpdateStages.WithRelated,
-            UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDisplayName, UpdateStages.WithDescription,
+        UpdateStages.WithBody, UpdateStages.WithRelated, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *

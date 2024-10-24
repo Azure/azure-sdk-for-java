@@ -14,8 +14,8 @@ public final class FollowerDatabaseDefinitionImpl implements FollowerDatabaseDef
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    FollowerDatabaseDefinitionImpl(
-        FollowerDatabaseDefinitionInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    FollowerDatabaseDefinitionImpl(FollowerDatabaseDefinitionInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

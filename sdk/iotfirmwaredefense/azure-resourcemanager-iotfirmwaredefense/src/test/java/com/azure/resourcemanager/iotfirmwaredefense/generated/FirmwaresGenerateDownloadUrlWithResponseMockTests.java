@@ -42,12 +42,15 @@ public final class FirmwaresGenerateDownloadUrlWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UrlToken response = manager.firmwares().generateDownloadUrlWithResponse("naenqpehindo", "gmifthnzd",
-            "dslgnayqigynduh", com.azure.core.util.Context.NONE).getValue();
+        UrlToken response = manager.firmwares()
+            .generateDownloadUrlWithResponse("naenqpehindo", "gmifthnzd", "dslgnayqigynduh",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

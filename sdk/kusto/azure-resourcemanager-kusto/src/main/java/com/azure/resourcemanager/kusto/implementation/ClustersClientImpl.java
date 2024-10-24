@@ -80,281 +80,191 @@ public final class ClustersClientImpl implements ClustersClient {
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface ClustersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ClusterInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClusterInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClusterInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("If-Match") String ifMatch, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ClusterUpdate parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("If-Match") String ifMatch,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClusterUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/stop")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/stop")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/start")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/start")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/migrate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/migrate")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> migrate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClusterMigrateRequest clusterMigrateRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FollowerDatabaseListResult>> listFollowerDatabases(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FollowerDatabaseListResult>> listFollowerDatabases(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabases(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabases(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/diagnoseVirtualNetwork")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/diagnoseVirtualNetwork")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetwork(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetwork(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ClusterListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ClusterListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/skus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuDescriptionList>> listSkus(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SkuDescriptionList>> listSkus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @BodyParam("application/json") ClusterCheckNameRequest clusterName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @BodyParam("application/json") ClusterCheckNameRequest clusterName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListResourceSkusResult>> listSkusByResource(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListResourceSkusResult>> listSkusByResource(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundNetworkDependenciesEndpointListResult>> listOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LanguageExtensionsList>> listLanguageExtensions(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LanguageExtensionsList>> listLanguageExtensions(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> addLanguageExtensions(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> addLanguageExtensions(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LanguageExtensionsList languageExtensionsToAdd,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensions(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensions(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LanguageExtensionsList languageExtensionsToRemove,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundNetworkDependenciesEndpointListResult>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -368,13 +278,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -384,24 +292,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -417,13 +314,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -433,22 +328,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -479,8 +365,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return a Kusto cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
+    public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
@@ -515,13 +401,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -531,10 +415,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -543,20 +425,9 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName,
+                ifMatch, ifNoneMatch, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -577,18 +448,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        ClusterInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -598,10 +462,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -610,18 +472,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName, ifMatch, ifNoneMatch,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -640,14 +492,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
@@ -662,16 +512,14 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
@@ -691,20 +539,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        ClusterInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            parameters, ifMatch, ifNoneMatch, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, context);
     }
 
     /**
@@ -719,12 +560,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, ClusterInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
             .getSyncPoller();
     }
 
@@ -745,15 +585,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        ClusterInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
             .getSyncPoller();
     }
 
@@ -773,10 +607,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
-            .last()
+    private Mono<ClusterInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -792,12 +625,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
+    private Mono<ClusterInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        ClusterInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -818,13 +650,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        ClusterInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<ClusterInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        ClusterInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -865,13 +692,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        ClusterInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters,
+        String ifMatch, String ifNoneMatch, Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context).block();
     }
 
@@ -889,13 +711,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterUpdate parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -905,10 +725,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -917,19 +735,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            ifMatch,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, clusterName, ifMatch,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -948,13 +755,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterUpdate parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -964,10 +769,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -976,17 +779,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                ifMatch,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, clusterName, ifMatch,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1003,14 +797,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterUpdate parameters, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
@@ -1025,15 +817,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterUpdate parameters) {
         final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
@@ -1051,15 +841,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, context);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, context);
     }
 
     /**
@@ -1074,8 +862,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterUpdate parameters) {
         final String ifMatch = null;
         return this.beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).getSyncPoller();
     }
@@ -1095,8 +883,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterUpdate parameters, String ifMatch, Context context) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).getSyncPoller();
     }
 
@@ -1114,10 +902,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> updateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch)
-            .last()
+    private Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName, ClusterUpdate parameters,
+        String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1135,8 +922,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName, ClusterUpdate parameters) {
         final String ifMatch = null;
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch)
-            .last()
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1155,10 +941,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> updateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context)
-            .last()
+    private Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName, ClusterUpdate parameters,
+        String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1194,8 +979,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return class representing a Kusto cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterInner update(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+    public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch,
+        Context context) {
         return updateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).block();
     }
 
@@ -1212,10 +997,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1225,24 +1008,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1258,13 +1030,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1274,22 +1044,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1305,10 +1066,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1323,13 +1082,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1359,8 +1117,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
@@ -1392,8 +1150,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1439,10 +1196,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1452,24 +1207,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1485,13 +1229,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1501,22 +1243,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1532,10 +1265,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, clusterName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1550,13 +1281,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String clusterName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, clusterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1618,8 +1348,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginStopAsync(resourceGroupName, clusterName, context)
-            .last()
+        return beginStopAsync(resourceGroupName, clusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1665,10 +1394,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1678,24 +1405,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1711,13 +1427,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1727,22 +1441,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1758,10 +1463,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, clusterName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1776,13 +1479,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String clusterName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, clusterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1812,8 +1514,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String clusterName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName,
+        Context context) {
         return this.beginStartAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
@@ -1845,8 +1547,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginStartAsync(resourceGroupName, clusterName, context)
-            .last()
+        return beginStartAsync(resourceGroupName, clusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1891,13 +1592,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1907,10 +1606,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (clusterMigrateRequest == null) {
             return Mono
@@ -1920,18 +1617,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .migrate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            clusterMigrateRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.migrate(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), clusterMigrateRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1948,13 +1635,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1964,10 +1649,8 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (clusterMigrateRequest == null) {
             return Mono
@@ -1977,16 +1660,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .migrate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                clusterMigrateRequest,
-                accept,
-                context);
+        return service.migrate(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), clusterMigrateRequest, accept, context);
     }
 
     /**
@@ -2001,14 +1676,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            migrateWithResponseAsync(resourceGroupName, clusterName, clusterMigrateRequest);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateWithResponseAsync(resourceGroupName, clusterName, clusterMigrateRequest);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2024,14 +1697,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            migrateWithResponseAsync(resourceGroupName, clusterName, clusterMigrateRequest, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateWithResponseAsync(resourceGroupName, clusterName, clusterMigrateRequest, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2046,8 +1718,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrate(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest) {
         return this.beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest).getSyncPoller();
     }
 
@@ -2064,8 +1736,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrate(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest, Context context) {
         return this.beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest, context).getSyncPoller();
     }
 
@@ -2081,10 +1753,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest) {
-        return beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest)
-            .last()
+    private Mono<Void> migrateAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest) {
+        return beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2101,10 +1772,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateAsync(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
-        return beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest, context)
-            .last()
+    private Mono<Void> migrateAsync(String resourceGroupName, String clusterName,
+        ClusterMigrateRequest clusterMigrateRequest, Context context) {
+        return beginMigrateAsync(resourceGroupName, clusterName, clusterMigrateRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2135,8 +1805,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void migrate(
-        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
+    public void migrate(String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest,
+        Context context) {
         migrateAsync(resourceGroupName, clusterName, clusterMigrateRequest, context).block();
     }
 
@@ -2152,13 +1822,11 @@ public final class ClustersClientImpl implements ClustersClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FollowerDatabaseDefinitionInner>> listFollowerDatabasesSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
+        listFollowerDatabasesSinglePageAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2168,28 +1836,15 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listFollowerDatabases(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FollowerDatabaseDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listFollowerDatabases(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FollowerDatabaseDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2206,13 +1861,11 @@ public final class ClustersClientImpl implements ClustersClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FollowerDatabaseDefinitionInner>> listFollowerDatabasesSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
+        listFollowerDatabasesSinglePageAsync(String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2222,26 +1875,16 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listFollowerDatabases(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listFollowerDatabases(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -2255,8 +1898,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FollowerDatabaseDefinitionInner> listFollowerDatabasesAsync(
-        String resourceGroupName, String clusterName) {
+    private PagedFlux<FollowerDatabaseDefinitionInner> listFollowerDatabasesAsync(String resourceGroupName,
+        String clusterName) {
         return new PagedFlux<>(() -> listFollowerDatabasesSinglePageAsync(resourceGroupName, clusterName));
     }
 
@@ -2272,8 +1915,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FollowerDatabaseDefinitionInner> listFollowerDatabasesAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<FollowerDatabaseDefinitionInner> listFollowerDatabasesAsync(String resourceGroupName,
+        String clusterName, Context context) {
         return new PagedFlux<>(() -> listFollowerDatabasesSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
@@ -2288,8 +1931,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(
-        String resourceGroupName, String clusterName) {
+    public PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(String resourceGroupName,
+        String clusterName) {
         return new PagedIterable<>(listFollowerDatabasesAsync(resourceGroupName, clusterName));
     }
 
@@ -2305,8 +1948,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(String resourceGroupName,
+        String clusterName, Context context) {
         return new PagedIterable<>(listFollowerDatabasesAsync(resourceGroupName, clusterName, context));
     }
 
@@ -2322,13 +1965,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabasesWithResponseAsync(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+    private Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabasesWithResponseAsync(String resourceGroupName,
+        String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2338,32 +1979,20 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (followerDatabaseToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter followerDatabaseToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter followerDatabaseToRemove is required and cannot be null."));
         } else {
             followerDatabaseToRemove.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .detachFollowerDatabases(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            followerDatabaseToRemove,
-                            accept,
-                            context))
+            .withContext(context -> service.detachFollowerDatabases(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), followerDatabaseToRemove,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2380,16 +2009,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabasesWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabasesWithResponseAsync(String resourceGroupName,
+        String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2399,30 +2023,19 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (followerDatabaseToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter followerDatabaseToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter followerDatabaseToRemove is required and cannot be null."));
         } else {
             followerDatabaseToRemove.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .detachFollowerDatabases(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                followerDatabaseToRemove,
-                accept,
-                context);
+        return service.detachFollowerDatabases(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), followerDatabaseToRemove, accept, context);
     }
 
     /**
@@ -2437,14 +2050,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachFollowerDatabasesAsync(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachFollowerDatabasesWithResponseAsync(resourceGroupName, clusterName, followerDatabaseToRemove);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDetachFollowerDatabasesAsync(String resourceGroupName,
+        String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = detachFollowerDatabasesWithResponseAsync(resourceGroupName, clusterName, followerDatabaseToRemove);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2460,17 +2071,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachFollowerDatabasesAsync(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDetachFollowerDatabasesAsync(String resourceGroupName,
+        String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachFollowerDatabasesWithResponseAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = detachFollowerDatabasesWithResponseAsync(resourceGroupName, clusterName,
+            followerDatabaseToRemove, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2485,10 +2092,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
-        return this
-            .beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove)
+    public SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+        return this.beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove)
             .getSyncPoller();
     }
 
@@ -2505,13 +2111,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context) {
-        return this
-            .beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context)
+    public SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
+        return this.beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context)
             .getSyncPoller();
     }
 
@@ -2527,10 +2129,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachFollowerDatabasesAsync(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
-        return beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove)
-            .last()
+    private Mono<Void> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+        return beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2547,11 +2148,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachFollowerDatabasesAsync(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context) {
+    private Mono<Void> detachFollowerDatabasesAsync(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
         return beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2568,8 +2166,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detachFollowerDatabases(
-        String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+    public void detachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
         detachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove).block();
     }
 
@@ -2585,11 +2183,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detachFollowerDatabases(
-        String resourceGroupName,
-        String clusterName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context) {
+    public void detachFollowerDatabases(String resourceGroupName, String clusterName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
         detachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context).block();
     }
 
@@ -2604,13 +2199,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetworkWithResponseAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetworkWithResponseAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2620,24 +2213,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .diagnoseVirtualNetwork(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.diagnoseVirtualNetwork(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2653,13 +2235,11 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetworkWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> diagnoseVirtualNetworkWithResponseAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2669,22 +2249,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .diagnoseVirtualNetwork(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.diagnoseVirtualNetwork(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2701,14 +2272,9 @@ public final class ClustersClientImpl implements ClustersClient {
     private PollerFlux<PollResult<DiagnoseVirtualNetworkResultInner>, DiagnoseVirtualNetworkResultInner>
         beginDiagnoseVirtualNetworkAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = diagnoseVirtualNetworkWithResponseAsync(resourceGroupName, clusterName);
-        return this
-            .client
-            .<DiagnoseVirtualNetworkResultInner, DiagnoseVirtualNetworkResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiagnoseVirtualNetworkResultInner.class,
-                DiagnoseVirtualNetworkResultInner.class,
-                this.client.getContext());
+        return this.client.<DiagnoseVirtualNetworkResultInner, DiagnoseVirtualNetworkResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DiagnoseVirtualNetworkResultInner.class,
+            DiagnoseVirtualNetworkResultInner.class, this.client.getContext());
     }
 
     /**
@@ -2726,16 +2292,11 @@ public final class ClustersClientImpl implements ClustersClient {
     private PollerFlux<PollResult<DiagnoseVirtualNetworkResultInner>, DiagnoseVirtualNetworkResultInner>
         beginDiagnoseVirtualNetworkAsync(String resourceGroupName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            diagnoseVirtualNetworkWithResponseAsync(resourceGroupName, clusterName, context);
-        return this
-            .client
-            .<DiagnoseVirtualNetworkResultInner, DiagnoseVirtualNetworkResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiagnoseVirtualNetworkResultInner.class,
-                DiagnoseVirtualNetworkResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = diagnoseVirtualNetworkWithResponseAsync(resourceGroupName, clusterName, context);
+        return this.client.<DiagnoseVirtualNetworkResultInner, DiagnoseVirtualNetworkResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DiagnoseVirtualNetworkResultInner.class,
+            DiagnoseVirtualNetworkResultInner.class, context);
     }
 
     /**
@@ -2782,10 +2343,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnoseVirtualNetworkResultInner> diagnoseVirtualNetworkAsync(
-        String resourceGroupName, String clusterName) {
-        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName)
-            .last()
+    private Mono<DiagnoseVirtualNetworkResultInner> diagnoseVirtualNetworkAsync(String resourceGroupName,
+        String clusterName) {
+        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2801,10 +2361,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnoseVirtualNetworkResultInner> diagnoseVirtualNetworkAsync(
-        String resourceGroupName, String clusterName, Context context) {
-        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName, context)
-            .last()
+    private Mono<DiagnoseVirtualNetworkResultInner> diagnoseVirtualNetworkAsync(String resourceGroupName,
+        String clusterName, Context context) {
+        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2835,8 +2394,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnoseVirtualNetworkResultInner diagnoseVirtualNetwork(
-        String resourceGroupName, String clusterName, Context context) {
+    public DiagnoseVirtualNetworkResultInner diagnoseVirtualNetwork(String resourceGroupName, String clusterName,
+        Context context) {
         return diagnoseVirtualNetworkAsync(resourceGroupName, clusterName, context).block();
     }
 
@@ -2853,37 +2412,23 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2899,38 +2444,27 @@ public final class ClustersClientImpl implements ClustersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -3002,32 +2536,19 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3044,30 +2565,20 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -3133,32 +2644,19 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSkusSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkus(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SkuDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SkuDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3175,30 +2673,20 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSkusSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSkus(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .listSkus(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -3265,19 +2753,15 @@ public final class ClustersClientImpl implements ClustersClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, ClusterCheckNameRequest clusterName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        ClusterCheckNameRequest clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -3289,17 +2773,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            clusterName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), location, clusterName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3316,19 +2791,15 @@ public final class ClustersClientImpl implements ClustersClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, ClusterCheckNameRequest clusterName, Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        ClusterCheckNameRequest clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -3340,15 +2811,8 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                clusterName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, clusterName, accept, context);
     }
 
     /**
@@ -3362,8 +2826,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String location, ClusterCheckNameRequest clusterName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String location,
+        ClusterCheckNameRequest clusterName) {
         return checkNameAvailabilityWithResponseAsync(location, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -3380,8 +2844,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String location, ClusterCheckNameRequest clusterName, Context context) {
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String location,
+        ClusterCheckNameRequest clusterName, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, clusterName, context).block();
     }
 
@@ -3412,13 +2876,11 @@ public final class ClustersClientImpl implements ClustersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3428,28 +2890,15 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkusByResource(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AzureResourceSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listSkusByResource(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AzureResourceSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3466,13 +2915,11 @@ public final class ClustersClientImpl implements ClustersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3482,26 +2929,16 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSkusByResource(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listSkusByResource(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -3531,8 +2968,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return list of available SKUs for a Kusto Cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureResourceSkuInner> listSkusByResourceAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<AzureResourceSkuInner> listSkusByResourceAsync(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedFlux<>(() -> listSkusByResourceSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
@@ -3563,8 +3000,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return list of available SKUs for a Kusto Cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureResourceSkuInner> listSkusByResource(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<AzureResourceSkuInner> listSkusByResource(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listSkusByResourceAsync(resourceGroupName, clusterName, context));
     }
 
@@ -3583,16 +3020,12 @@ public final class ClustersClientImpl implements ClustersClient {
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>
         listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3603,26 +3036,12 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, this.client.getApiVersion(), accept,
+                context))
             .<PagedResponse<OutboundNetworkDependenciesEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3640,19 +3059,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String clusterName, Context context) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String clusterName,
+            Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3664,23 +3079,10 @@ public final class ClustersClientImpl implements ClustersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3695,8 +3097,8 @@ public final class ClustersClientImpl implements ClustersClient {
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundNetworkDependenciesEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String clusterName) {
+    private PagedFlux<OutboundNetworkDependenciesEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, clusterName),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
@@ -3715,8 +3117,8 @@ public final class ClustersClientImpl implements ClustersClient {
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundNetworkDependenciesEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<OutboundNetworkDependenciesEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String clusterName, Context context) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, clusterName, context),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
@@ -3734,8 +3136,8 @@ public final class ClustersClientImpl implements ClustersClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundNetworkDependenciesEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String clusterName) {
+    public PagedIterable<OutboundNetworkDependenciesEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName) {
         return new PagedIterable<>(listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, clusterName));
     }
 
@@ -3752,8 +3154,8 @@ public final class ClustersClientImpl implements ClustersClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundNetworkDependenciesEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<OutboundNetworkDependenciesEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(
             listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, clusterName, context));
     }
@@ -3770,19 +3172,15 @@ public final class ClustersClientImpl implements ClustersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3794,20 +3192,10 @@ public final class ClustersClientImpl implements ClustersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listLanguageExtensions(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LanguageExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                context -> service.listLanguageExtensions(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, clusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<LanguageExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3824,19 +3212,15 @@ public final class ClustersClientImpl implements ClustersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3848,18 +3232,10 @@ public final class ClustersClientImpl implements ClustersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listLanguageExtensions(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listLanguageExtensions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                clusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -3873,8 +3249,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list of language extension objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LanguageExtensionInner> listLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName) {
+    private PagedFlux<LanguageExtensionInner> listLanguageExtensionsAsync(String resourceGroupName,
+        String clusterName) {
         return new PagedFlux<>(() -> listLanguageExtensionsSinglePageAsync(resourceGroupName, clusterName));
     }
 
@@ -3890,8 +3266,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list of language extension objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LanguageExtensionInner> listLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<LanguageExtensionInner> listLanguageExtensionsAsync(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedFlux<>(() -> listLanguageExtensionsSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
@@ -3922,8 +3298,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LanguageExtensionInner> listLanguageExtensions(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<LanguageExtensionInner> listLanguageExtensions(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listLanguageExtensionsAsync(resourceGroupName, clusterName, context));
     }
 
@@ -3939,19 +3315,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> addLanguageExtensionsWithResponseAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
+    private Mono<Response<Flux<ByteBuffer>>> addLanguageExtensionsWithResponseAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3961,26 +3333,16 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (languageExtensionsToAdd == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter languageExtensionsToAdd is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter languageExtensionsToAdd is required and cannot be null."));
         } else {
             languageExtensionsToAdd.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .addLanguageExtensions(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            languageExtensionsToAdd,
-                            accept,
-                            context))
+            .withContext(context -> service.addLanguageExtensions(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, this.client.getApiVersion(),
+                languageExtensionsToAdd, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3997,19 +3359,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> addLanguageExtensionsWithResponseAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> addLanguageExtensionsWithResponseAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4019,24 +3377,15 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (languageExtensionsToAdd == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter languageExtensionsToAdd is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter languageExtensionsToAdd is required and cannot be null."));
         } else {
             languageExtensionsToAdd.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .addLanguageExtensions(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                languageExtensionsToAdd,
-                accept,
-                context);
+        return service.addLanguageExtensions(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), languageExtensionsToAdd, accept, context);
     }
 
     /**
@@ -4051,14 +3400,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAddLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            addLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToAdd);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginAddLanguageExtensionsAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = addLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToAdd);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -4074,14 +3421,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAddLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginAddLanguageExtensionsAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            addLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = addLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -4096,10 +3442,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
-        return this
-            .beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd)
+    public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd) {
+        return this.beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd)
             .getSyncPoller();
     }
 
@@ -4116,10 +3461,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
-        return this
-            .beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context)
+    public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context) {
+        return this.beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context)
             .getSyncPoller();
     }
 
@@ -4135,10 +3479,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> addLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
-        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd)
-            .last()
+    private Mono<Void> addLanguageExtensionsAsync(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd) {
+        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -4155,10 +3498,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> addLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
-        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context)
-            .last()
+    private Mono<Void> addLanguageExtensionsAsync(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context) {
+        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -4173,8 +3515,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
+    public void addLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd) {
         addLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd).block();
     }
 
@@ -4190,8 +3532,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
+    public void addLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context) {
         addLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context).block();
     }
 
@@ -4207,19 +3549,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensionsWithResponseAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
+    private Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensionsWithResponseAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4229,27 +3567,16 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (languageExtensionsToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter languageExtensionsToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter languageExtensionsToRemove is required and cannot be null."));
         } else {
             languageExtensionsToRemove.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .removeLanguageExtensions(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            languageExtensionsToRemove,
-                            accept,
-                            context))
+            .withContext(context -> service.removeLanguageExtensions(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, this.client.getApiVersion(),
+                languageExtensionsToRemove, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4266,22 +3593,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensionsWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensionsWithResponseAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4291,25 +3611,15 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (languageExtensionsToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter languageExtensionsToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter languageExtensionsToRemove is required and cannot be null."));
         } else {
             languageExtensionsToRemove.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .removeLanguageExtensions(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                languageExtensionsToRemove,
-                accept,
-                context);
+        return service.removeLanguageExtensions(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), languageExtensionsToRemove, accept, context);
     }
 
     /**
@@ -4324,14 +3634,12 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRemoveLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            removeLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToRemove);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginRemoveLanguageExtensionsAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeLanguageExtensionsWithResponseAsync(resourceGroupName, clusterName, languageExtensionsToRemove);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -4347,18 +3655,13 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRemoveLanguageExtensionsAsync(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRemoveLanguageExtensionsAsync(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            removeLanguageExtensionsWithResponseAsync(
-                resourceGroupName, clusterName, languageExtensionsToRemove, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = removeLanguageExtensionsWithResponseAsync(resourceGroupName,
+            clusterName, languageExtensionsToRemove, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -4373,10 +3676,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
-        return this
-            .beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove)
+    public SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
+        return this.beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove)
             .getSyncPoller();
     }
 
@@ -4393,11 +3695,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(String resourceGroupName,
+        String clusterName, LanguageExtensionsList languageExtensionsToRemove, Context context) {
         return this
             .beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove, context)
             .getSyncPoller();
@@ -4415,10 +3714,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> removeLanguageExtensionsAsync(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
-        return beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove)
-            .last()
+    private Mono<Void> removeLanguageExtensionsAsync(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove) {
+        return beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -4435,11 +3733,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> removeLanguageExtensionsAsync(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context) {
+    private Mono<Void> removeLanguageExtensionsAsync(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove, Context context) {
         return beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4456,8 +3751,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeLanguageExtensions(
-        String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
+    public void removeLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove) {
         removeLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove).block();
     }
 
@@ -4473,11 +3768,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeLanguageExtensions(
-        String resourceGroupName,
-        String clusterName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context) {
+    public void removeLanguageExtensions(String resourceGroupName, String clusterName,
+        LanguageExtensionsList languageExtensionsToRemove, Context context) {
         removeLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove, context).block();
     }
 
@@ -4499,27 +3791,16 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpointsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
             .<PagedResponse<OutboundNetworkDependenciesEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4542,23 +3823,14 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

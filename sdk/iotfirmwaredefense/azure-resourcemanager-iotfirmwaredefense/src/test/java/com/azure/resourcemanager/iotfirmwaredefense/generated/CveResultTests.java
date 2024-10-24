@@ -32,8 +32,13 @@ public final class CveResultTests {
     public void testSerialize() throws Exception {
         CveResult model = new CveResult().withCveId("azjdyggd")
             .withComponent(new CveComponent().withComponentId("xhbkuofq").withName("yk").withVersion("enevfyexfwhybci"))
-            .withSeverity("yvdcsitynnaa").withName("ectehf").withCvssScore("scjeypv").withCvssVersion("zrkgqhcjrefovg")
-            .withCvssV2Score("qsl").withCvssV3Score("yvxyqjp").withDescription("cpkvxodp");
+            .withSeverity("yvdcsitynnaa")
+            .withName("ectehf")
+            .withCvssScore("scjeypv")
+            .withCvssVersion("zrkgqhcjrefovg")
+            .withCvssV2Score("qsl")
+            .withCvssV3Score("yvxyqjp")
+            .withDescription("cpkvxodp");
         model = BinaryData.fromObject(model).toObject(CveResult.class);
         Assertions.assertEquals("azjdyggd", model.cveId());
         Assertions.assertEquals("xhbkuofq", model.component().componentId());

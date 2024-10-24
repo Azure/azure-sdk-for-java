@@ -32,7 +32,6 @@ public class SignTest extends CryptographyTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return cryptographyAsyncClient.sign(signatureAlgorithm, digest)
-            .then();
+        return cryptographyAsyncClient.sign(signatureAlgorithm, digest).then();
     }
 }

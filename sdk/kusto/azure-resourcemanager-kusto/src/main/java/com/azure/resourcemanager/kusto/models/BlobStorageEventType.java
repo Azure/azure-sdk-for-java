@@ -11,12 +11,12 @@ import java.util.Collection;
 /** The name of blob storage event type to process. */
 public final class BlobStorageEventType extends ExpandableStringEnum<BlobStorageEventType> {
     /** Static value Microsoft.Storage.BlobCreated for BlobStorageEventType. */
-    public static final BlobStorageEventType MICROSOFT_STORAGE_BLOB_CREATED =
-        fromString("Microsoft.Storage.BlobCreated");
+    public static final BlobStorageEventType MICROSOFT_STORAGE_BLOB_CREATED
+        = fromString("Microsoft.Storage.BlobCreated");
 
     /** Static value Microsoft.Storage.BlobRenamed for BlobStorageEventType. */
-    public static final BlobStorageEventType MICROSOFT_STORAGE_BLOB_RENAMED =
-        fromString("Microsoft.Storage.BlobRenamed");
+    public static final BlobStorageEventType MICROSOFT_STORAGE_BLOB_RENAMED
+        = fromString("Microsoft.Storage.BlobRenamed");
 
     /**
      * Creates a new instance of BlobStorageEventType value.

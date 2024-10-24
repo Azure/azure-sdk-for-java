@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PostBuildDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PostBuildDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"substitute\":{\"cuiywgqyw\":\"yktz\",\"phrcgyncoc\":\"ndrvynhzg\",\"oo\":\"ecfvmm\"},\"substituteFrom\":[{\"kind\":\"zevgb\",\"name\":\"jqabcypmivkwlzuv\",\"optional\":false},{\"kind\":\"nfnbacfionlebxe\",\"name\":\"gtzxdpn\",\"optional\":false},{\"kind\":\"wxrjfeallnwsub\",\"name\":\"njampm\",\"optional\":false},{\"kind\":\"scxaq\",\"name\":\"ochcbonqvpkvl\",\"optional\":true}]}")
-                .toObject(PostBuildDefinition.class);
+        PostBuildDefinition model = BinaryData.fromString(
+            "{\"substitute\":{\"cuiywgqyw\":\"yktz\",\"phrcgyncoc\":\"ndrvynhzg\",\"oo\":\"ecfvmm\"},\"substituteFrom\":[{\"kind\":\"zevgb\",\"name\":\"jqabcypmivkwlzuv\",\"optional\":false},{\"kind\":\"nfnbacfionlebxe\",\"name\":\"gtzxdpn\",\"optional\":false},{\"kind\":\"wxrjfeallnwsub\",\"name\":\"njampm\",\"optional\":false},{\"kind\":\"scxaq\",\"name\":\"ochcbonqvpkvl\",\"optional\":true}]}")
+            .toObject(PostBuildDefinition.class);
         Assertions.assertEquals("yktz", model.substitute().get("cuiywgqyw"));
         Assertions.assertEquals("zevgb", model.substituteFrom().get(0).kind());
         Assertions.assertEquals("jqabcypmivkwlzuv", model.substituteFrom().get(0).name());
@@ -28,28 +26,13 @@ public final class PostBuildDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostBuildDefinition model =
-            new PostBuildDefinition()
-                .withSubstitute(mapOf("cuiywgqyw", "yktz", "phrcgyncoc", "ndrvynhzg", "oo", "ecfvmm"))
-                .withSubstituteFrom(
-                    Arrays
-                        .asList(
-                            new SubstituteFromDefinition()
-                                .withKind("zevgb")
-                                .withName("jqabcypmivkwlzuv")
-                                .withOptional(false),
-                            new SubstituteFromDefinition()
-                                .withKind("nfnbacfionlebxe")
-                                .withName("gtzxdpn")
-                                .withOptional(false),
-                            new SubstituteFromDefinition()
-                                .withKind("wxrjfeallnwsub")
-                                .withName("njampm")
-                                .withOptional(false),
-                            new SubstituteFromDefinition()
-                                .withKind("scxaq")
-                                .withName("ochcbonqvpkvl")
-                                .withOptional(true)));
+        PostBuildDefinition model = new PostBuildDefinition()
+            .withSubstitute(mapOf("cuiywgqyw", "yktz", "phrcgyncoc", "ndrvynhzg", "oo", "ecfvmm"))
+            .withSubstituteFrom(Arrays.asList(
+                new SubstituteFromDefinition().withKind("zevgb").withName("jqabcypmivkwlzuv").withOptional(false),
+                new SubstituteFromDefinition().withKind("nfnbacfionlebxe").withName("gtzxdpn").withOptional(false),
+                new SubstituteFromDefinition().withKind("wxrjfeallnwsub").withName("njampm").withOptional(false),
+                new SubstituteFromDefinition().withKind("scxaq").withName("ochcbonqvpkvl").withOptional(true)));
         model = BinaryData.fromObject(model).toObject(PostBuildDefinition.class);
         Assertions.assertEquals("yktz", model.substitute().get("cuiywgqyw"));
         Assertions.assertEquals("zevgb", model.substituteFrom().get(0).kind());

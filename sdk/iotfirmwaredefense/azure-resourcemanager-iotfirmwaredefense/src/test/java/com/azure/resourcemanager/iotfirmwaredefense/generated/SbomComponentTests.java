@@ -24,8 +24,11 @@ public final class SbomComponentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SbomComponent model = new SbomComponent().withComponentId("vplwzbhv").withComponentName("u")
-            .withVersion("osvmk").withLicense("sxqu").withFilePaths(Arrays.asList("plgmgsxnk"));
+        SbomComponent model = new SbomComponent().withComponentId("vplwzbhv")
+            .withComponentName("u")
+            .withVersion("osvmk")
+            .withLicense("sxqu")
+            .withFilePaths(Arrays.asList("plgmgsxnk"));
         model = BinaryData.fromObject(model).toObject(SbomComponent.class);
         Assertions.assertEquals("vplwzbhv", model.componentId());
         Assertions.assertEquals("u", model.componentName());

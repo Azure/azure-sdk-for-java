@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ibtnmxiebwwaloay\",\"name\":\"gwrtzju\",\"startTime\":\"wyzmhtxon\",\"endTime\":\"ts\",\"status\":\"jcbpwxqpsrknft\"}")
-                .toObject(OperationStatusInner.class);
+        OperationStatusInner model = BinaryData.fromString(
+            "{\"id\":\"ibtnmxiebwwaloay\",\"name\":\"gwrtzju\",\"startTime\":\"wyzmhtxon\",\"endTime\":\"ts\",\"status\":\"jcbpwxqpsrknft\"}")
+            .toObject(OperationStatusInner.class);
         Assertions.assertEquals("ibtnmxiebwwaloay", model.id());
         Assertions.assertEquals("gwrtzju", model.name());
         Assertions.assertEquals("wyzmhtxon", model.startTime());
@@ -25,13 +23,11 @@ public final class OperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusInner model =
-            new OperationStatusInner()
-                .withId("ibtnmxiebwwaloay")
-                .withName("gwrtzju")
-                .withStartTime("wyzmhtxon")
-                .withEndTime("ts")
-                .withStatus("jcbpwxqpsrknft");
+        OperationStatusInner model = new OperationStatusInner().withId("ibtnmxiebwwaloay")
+            .withName("gwrtzju")
+            .withStartTime("wyzmhtxon")
+            .withEndTime("ts")
+            .withStatus("jcbpwxqpsrknft");
         model = BinaryData.fromObject(model).toObject(OperationStatusInner.class);
         Assertions.assertEquals("ibtnmxiebwwaloay", model.id());
         Assertions.assertEquals("gwrtzju", model.name());

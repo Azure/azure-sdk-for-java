@@ -54,13 +54,11 @@ public class IotHubManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        iotHubManager = IotHubManager
-            .configure()
+        iotHubManager = IotHubManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -71,10 +69,7 @@ public class IotHubManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -94,20 +89,20 @@ public class IotHubManagerTests extends TestProxyTestBase {
 
             // @embedmeStart
             Map<String, EventHubProperties> eventHubEndpointsMap = new HashMap<>();
-            eventHubEndpointsMap.put("events", new EventHubProperties()
-                .withRetentionTimeInDays(1L).withPartitionCount(2));
+            eventHubEndpointsMap.put("events",
+                new EventHubProperties().withRetentionTimeInDays(1L).withPartitionCount(2));
 
             Map<String, StorageEndpointProperties> storageEndpointsMap = new HashMap<>();
-            storageEndpointsMap.put("$default", new StorageEndpointProperties()
-                .withSasTtlAsIso8601(Duration.ofHours(1L))
-                .withConnectionString(StringUtil.EMPTY_STRING)
-                .withContainerName(StringUtil.EMPTY_STRING));
+            storageEndpointsMap.put("$default",
+                new StorageEndpointProperties().withSasTtlAsIso8601(Duration.ofHours(1L))
+                    .withConnectionString(StringUtil.EMPTY_STRING)
+                    .withContainerName(StringUtil.EMPTY_STRING));
 
             Map<String, MessagingEndpointProperties> messagingEndpointsMap = new HashMap<>();
-            messagingEndpointsMap.put("fileNotifications", new MessagingEndpointProperties()
-                .withLockDurationAsIso8601(Duration.ofMinutes(1L))
-                .withTtlAsIso8601(Duration.ofHours(1L))
-                .withMaxDeliveryCount(10));
+            messagingEndpointsMap.put("fileNotifications",
+                new MessagingEndpointProperties().withLockDurationAsIso8601(Duration.ofMinutes(1L))
+                    .withTtlAsIso8601(Duration.ofHours(1L))
+                    .withMaxDeliveryCount(10));
 
             iotHubDescription = iotHubManager.iotHubResources()
                 .define(iothubName)
@@ -115,37 +110,31 @@ public class IotHubManagerTests extends TestProxyTestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new IotHubSkuInfo().withName(IotHubSku.F1).withCapacity(1L))
                 .withIdentity(new ArmIdentity().withType(ResourceIdentityType.NONE))
-                .withProperties(
-                    new IotHubProperties()
-                        .withEventHubEndpoints(eventHubEndpointsMap)
-                        .withRouting(new RoutingProperties()
-                            .withFallbackRoute(
-                                new FallbackRouteProperties()
-                                    .withName("$fallback")
-                                    .withSource(RoutingSource.DEVICE_MESSAGES)
-                                    .withCondition("true")
-                                    .withIsEnabled(true)
-                                    .withEndpointNames(Arrays.asList("events"))))
-                        .withStorageEndpoints(storageEndpointsMap)
-                        .withMessagingEndpoints(messagingEndpointsMap)
-                        .withEnableFileUploadNotifications(false)
-                        .withCloudToDevice(new CloudToDeviceProperties()
-                            .withMaxDeliveryCount(10)
-                            .withDefaultTtlAsIso8601(Duration.ofHours(1L))
-                            .withFeedback(new FeedbackProperties()
-                                .withLockDurationAsIso8601(Duration.ofMinutes(1L))
-                                .withTtlAsIso8601(Duration.ofHours(1L))
-                                .withMaxDeliveryCount(10)))
-                        .withFeatures(Capabilities.NONE)
-                        .withDisableLocalAuth(false)
-                        .withEnableDataResidency(false)
-                )
+                .withProperties(new IotHubProperties().withEventHubEndpoints(eventHubEndpointsMap)
+                    .withRouting(
+                        new RoutingProperties().withFallbackRoute(new FallbackRouteProperties().withName("$fallback")
+                            .withSource(RoutingSource.DEVICE_MESSAGES)
+                            .withCondition("true")
+                            .withIsEnabled(true)
+                            .withEndpointNames(Arrays.asList("events"))))
+                    .withStorageEndpoints(storageEndpointsMap)
+                    .withMessagingEndpoints(messagingEndpointsMap)
+                    .withEnableFileUploadNotifications(false)
+                    .withCloudToDevice(new CloudToDeviceProperties().withMaxDeliveryCount(10)
+                        .withDefaultTtlAsIso8601(Duration.ofHours(1L))
+                        .withFeedback(new FeedbackProperties().withLockDurationAsIso8601(Duration.ofMinutes(1L))
+                            .withTtlAsIso8601(Duration.ofHours(1L))
+                            .withMaxDeliveryCount(10)))
+                    .withFeatures(Capabilities.NONE)
+                    .withDisableLocalAuth(false)
+                    .withEnableDataResidency(false))
                 .create();
             // @embedmeEnd
             iotHubDescription.refresh();
 
             Assertions.assertEquals(iotHubDescription.name(), iothubName);
-            Assertions.assertEquals(iotHubDescription.name(), iotHubManager.iotHubResources().getById(iotHubDescription.id()).name());
+            Assertions.assertEquals(iotHubDescription.name(),
+                iotHubManager.iotHubResources().getById(iotHubDescription.id()).name());
             Assertions.assertTrue(iotHubManager.iotHubResources().list().stream().count() > 0);
         } finally {
             if (iotHubDescription != null) {

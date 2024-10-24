@@ -33,13 +33,8 @@ public interface FluxConfigurationsClient {
      * @return details of the Flux Configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FluxConfigurationInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Context context);
+    Response<FluxConfigurationInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Context context);
 
     /**
      * Gets details of the Flux Configuration.
@@ -57,12 +52,8 @@ public interface FluxConfigurationsClient {
      * @return details of the Flux Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FluxConfigurationInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName);
+    FluxConfigurationInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName);
 
     /**
      * Create a new Kubernetes Flux Configuration.
@@ -81,12 +72,8 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationInner fluxConfiguration);
 
     /**
@@ -107,14 +94,9 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context);
+    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationInner fluxConfiguration, Context context);
 
     /**
      * Create a new Kubernetes Flux Configuration.
@@ -133,13 +115,8 @@ public interface FluxConfigurationsClient {
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FluxConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration);
+    FluxConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationInner fluxConfiguration);
 
     /**
      * Create a new Kubernetes Flux Configuration.
@@ -159,14 +136,8 @@ public interface FluxConfigurationsClient {
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FluxConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationInner fluxConfiguration,
-        Context context);
+    FluxConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationInner fluxConfiguration, Context context);
 
     /**
      * Update an existing Kubernetes Flux Configuration.
@@ -185,12 +156,8 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
+    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
         FluxConfigurationPatch fluxConfigurationPatch);
 
     /**
@@ -211,14 +178,9 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
-        Context context);
+    SyncPoller<PollResult<FluxConfigurationInner>, FluxConfigurationInner> beginUpdate(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, String fluxConfigurationName,
+        FluxConfigurationPatch fluxConfigurationPatch, Context context);
 
     /**
      * Update an existing Kubernetes Flux Configuration.
@@ -237,13 +199,8 @@ public interface FluxConfigurationsClient {
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FluxConfigurationInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch);
+    FluxConfigurationInner update(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch);
 
     /**
      * Update an existing Kubernetes Flux Configuration.
@@ -263,13 +220,8 @@ public interface FluxConfigurationsClient {
      * @return the Flux Configuration object returned in Get &amp; Put response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FluxConfigurationInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        FluxConfigurationPatch fluxConfigurationPatch,
+    FluxConfigurationInner update(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, FluxConfigurationPatch fluxConfigurationPatch,
         Context context);
 
     /**
@@ -289,12 +241,8 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName);
 
     /**
      * This will delete the YAML file used to set up the Flux Configuration, thus stopping future sync from the source
@@ -315,13 +263,8 @@ public interface FluxConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, Boolean forceDelete,
         Context context);
 
     /**
@@ -340,11 +283,7 @@ public interface FluxConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String fluxConfigurationName);
 
     /**
@@ -365,14 +304,8 @@ public interface FluxConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete,
-        Context context);
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String fluxConfigurationName, Boolean forceDelete, Context context);
 
     /**
      * List all Flux Configurations.
@@ -389,8 +322,8 @@ public interface FluxConfigurationsClient {
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FluxConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<FluxConfigurationInner> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName);
 
     /**
      * List all Flux Configurations.
@@ -408,6 +341,6 @@ public interface FluxConfigurationsClient {
      * @return result of the request to list Flux Configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FluxConfigurationInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<FluxConfigurationInner> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, Context context);
 }

@@ -30,38 +30,27 @@ public final class IotHubResourcesListJobsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"jobId\":\"kzevdlhewpusds\",\"startTimeUtc\":\"Sat, 06 Feb 2021 17:43:59"
-                + " GMT\",\"endTimeUtc\":\"Fri, 23 Apr 2021 17:16:39"
-                + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"completed\",\"failureReason\":\"jdcngqqm\",\"statusMessage\":\"kufgmj\",\"parentJobId\":\"wr\"}]}";
+        String responseStr = "{\"value\":[{\"jobId\":\"kzevdlhewpusds\",\"startTimeUtc\":\"Sat, 06 Feb 2021 17:43:59"
+            + " GMT\",\"endTimeUtc\":\"Fri, 23 Apr 2021 17:16:39"
+            + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"completed\",\"failureReason\":\"jdcngqqm\",\"statusMessage\":\"kufgmj\",\"parentJobId\":\"wr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<JobResponse> response =
-            manager.iotHubResources().listJobs("r", "kdsnfdsdoakgtdl", com.azure.core.util.Context.NONE);
+        PagedIterable<JobResponse> response
+            = manager.iotHubResources().listJobs("r", "kdsnfdsdoakgtdl", com.azure.core.util.Context.NONE);
     }
 }

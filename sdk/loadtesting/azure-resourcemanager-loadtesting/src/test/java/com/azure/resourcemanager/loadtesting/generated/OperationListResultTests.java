@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationListResultTests {
     @Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"izhwlrxy\",\"isDataAction\":false,\"display\":{\"provider\":\"ijgkdm\",\"resource\":\"azlobcufpdznrbt\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"rifkwm\",\"isDataAction\":true,\"display\":{\"provider\":\"izntocipao\",\"resource\":\"jpsq\",\"operation\":\"mpoyfd\",\"description\":\"ogknygjofjdd\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"upewnwreitjzy\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"izhwlrxy\",\"isDataAction\":false,\"display\":{\"provider\":\"ijgkdm\",\"resource\":\"azlobcufpdznrbt\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"rifkwm\",\"isDataAction\":true,\"display\":{\"provider\":\"izntocipao\",\"resource\":\"jpsq\",\"operation\":\"mpoyfd\",\"description\":\"ogknygjofjdd\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"upewnwreitjzy\"}")
+            .toObject(OperationListResult.class);
     }
 
     @Test

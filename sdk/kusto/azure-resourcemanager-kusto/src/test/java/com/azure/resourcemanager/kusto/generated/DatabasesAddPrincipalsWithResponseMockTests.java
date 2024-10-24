@@ -35,55 +35,36 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"role\":\"User\",\"name\":\"iibakcl\",\"type\":\"User\",\"fqn\":\"fr\",\"email\":\"ousxauzlwvsgmw\",\"appId\":\"qf\",\"tenantName\":\"zvuxm\"},{\"role\":\"Admin\",\"name\":\"jsvthnwpzteko\",\"type\":\"User\",\"fqn\":\"ibiattg\",\"email\":\"ucfotangcf\",\"appId\":\"ykzcugswvxwl\",\"tenantName\":\"qwm\"},{\"role\":\"User\",\"name\":\"xnjmxm\",\"type\":\"App\",\"fqn\":\"udtc\",\"email\":\"lxynpdkvgf\",\"appId\":\"uiyjib\",\"tenantName\":\"phdu\"},{\"role\":\"Admin\",\"name\":\"eiknpgo\",\"type\":\"User\",\"fqn\":\"iuqhibtozipqwj\",\"email\":\"mur\",\"appId\":\"x\",\"tenantName\":\"wpktvqylkmqpzoyh\"}]}";
+        String responseStr
+            = "{\"value\":[{\"role\":\"User\",\"name\":\"iibakcl\",\"type\":\"User\",\"fqn\":\"fr\",\"email\":\"ousxauzlwvsgmw\",\"appId\":\"qf\",\"tenantName\":\"zvuxm\"},{\"role\":\"Admin\",\"name\":\"jsvthnwpzteko\",\"type\":\"User\",\"fqn\":\"ibiattg\",\"email\":\"ucfotangcf\",\"appId\":\"ykzcugswvxwl\",\"tenantName\":\"qwm\"},{\"role\":\"User\",\"name\":\"xnjmxm\",\"type\":\"App\",\"fqn\":\"udtc\",\"email\":\"lxynpdkvgf\",\"appId\":\"uiyjib\",\"tenantName\":\"phdu\"},{\"role\":\"Admin\",\"name\":\"eiknpgo\",\"type\":\"User\",\"fqn\":\"iuqhibtozipqwj\",\"email\":\"mur\",\"appId\":\"x\",\"tenantName\":\"wpktvqylkmqpzoyh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DatabasePrincipalListResult response =
-            manager
-                .databases()
-                .addPrincipalsWithResponse(
-                    "ao",
-                    "jrmzvupor",
-                    "zdfuydzvkfvxcnqm",
-                    new DatabasePrincipalListRequest()
-                        .withValue(
-                            Arrays
-                                .asList(
-                                    new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.INGESTOR)
-                                        .withName("wokmvkhlggd")
-                                        .withType(DatabasePrincipalType.APP)
-                                        .withFqn("mzqkz")
-                                        .withEmail("uwiwtglxxhljfpg")
-                                        .withAppId("crmnzhrgmqgjs"))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        DatabasePrincipalListResult response = manager.databases()
+            .addPrincipalsWithResponse("ao", "jrmzvupor", "zdfuydzvkfvxcnqm",
+                new DatabasePrincipalListRequest()
+                    .withValue(Arrays.asList(new DatabasePrincipalInner().withRole(DatabasePrincipalRole.INGESTOR)
+                        .withName("wokmvkhlggd")
+                        .withType(DatabasePrincipalType.APP)
+                        .withFqn("mzqkz")
+                        .withEmail("uwiwtglxxhljfpg")
+                        .withAppId("crmnzhrgmqgjs"))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(DatabasePrincipalRole.USER, response.value().get(0).role());
         Assertions.assertEquals("iibakcl", response.value().get(0).name());

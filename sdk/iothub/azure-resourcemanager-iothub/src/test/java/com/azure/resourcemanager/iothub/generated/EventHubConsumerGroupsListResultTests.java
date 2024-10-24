@@ -14,22 +14,15 @@ import java.util.Map;
 public final class EventHubConsumerGroupsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConsumerGroupsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"aofmxagkvtme\":\"datalhspkdee\"},\"etag\":\"qkrhahvljua\",\"id\":\"aquhcdhm\",\"name\":\"ualaexqpvfadmw\",\"type\":\"rcrgvx\"}],\"nextLink\":\"gomz\"}")
-                .toObject(EventHubConsumerGroupsListResult.class);
+        EventHubConsumerGroupsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"aofmxagkvtme\":\"datalhspkdee\"},\"etag\":\"qkrhahvljua\",\"id\":\"aquhcdhm\",\"name\":\"ualaexqpvfadmw\",\"type\":\"rcrgvx\"}],\"nextLink\":\"gomz\"}")
+            .toObject(EventHubConsumerGroupsListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConsumerGroupsListResult model =
-            new EventHubConsumerGroupsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EventHubConsumerGroupInfoInner()
-                                .withProperties(mapOf("aofmxagkvtme", "datalhspkdee"))));
+        EventHubConsumerGroupsListResult model = new EventHubConsumerGroupsListResult().withValue(
+            Arrays.asList(new EventHubConsumerGroupInfoInner().withProperties(mapOf("aofmxagkvtme", "datalhspkdee"))));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupsListResult.class);
     }
 

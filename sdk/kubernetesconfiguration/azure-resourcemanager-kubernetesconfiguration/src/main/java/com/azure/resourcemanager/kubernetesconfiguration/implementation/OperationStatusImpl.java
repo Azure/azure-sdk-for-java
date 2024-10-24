@@ -21,54 +21,29 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    public OperationStatusImpl(
-        OperationStatusClient innerClient,
+    public OperationStatusImpl(OperationStatusClient innerClient,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatusResult> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId,
-        Context context) {
-        Response<OperationStatusResultInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    extensionName,
-                    operationId,
-                    context);
+    public Response<OperationStatusResult> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId, Context context) {
+        Response<OperationStatusResultInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId);
+    public OperationStatusResult get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, String operationId) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -76,17 +51,17 @@ public final class OperationStatusImpl implements OperationStatus {
         }
     }
 
-    public PagedIterable<OperationStatusResult> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
-        PagedIterable<OperationStatusResultInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
+    public PagedIterable<OperationStatusResult> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
+        PagedIterable<OperationStatusResultInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OperationStatusResult> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
-        PagedIterable<OperationStatusResultInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
+    public PagedIterable<OperationStatusResult> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
+        PagedIterable<OperationStatusResultInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
     }
 

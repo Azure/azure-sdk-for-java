@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/** The key verify parameters. */
+/**
+ * The key verify parameters.
+ */
 @Fluent
 public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyParameters> {
     /*
@@ -33,13 +35,16 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
      */
     private Base64Url signature;
 
-    /** Creates an instance of KeyVerifyParameters class. */
-    public KeyVerifyParameters() {}
+    /**
+     * Creates an instance of KeyVerifyParameters class.
+     */
+    public KeyVerifyParameters() {
+    }
 
     /**
      * Get the algorithm property: The signing/verification algorithm. For more information on possible algorithm types,
      * see JsonWebKeySignatureAlgorithm.
-     *
+     * 
      * @return the algorithm value.
      */
     public JsonWebKeySignatureAlgorithm getAlgorithm() {
@@ -49,7 +54,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     /**
      * Set the algorithm property: The signing/verification algorithm. For more information on possible algorithm types,
      * see JsonWebKeySignatureAlgorithm.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the KeyVerifyParameters object itself.
      */
@@ -60,7 +65,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Get the digest property: The digest used for signing.
-     *
+     * 
      * @return the digest value.
      */
     public byte[] getDigest() {
@@ -72,7 +77,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Set the digest property: The digest used for signing.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the KeyVerifyParameters object itself.
      */
@@ -87,7 +92,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Get the signature property: The signature to be verified.
-     *
+     * 
      * @return the signature value.
      */
     public byte[] getSignature() {
@@ -99,7 +104,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Set the signature property: The signature to be verified.
-     *
+     * 
      * @param signature the signature value to set.
      * @return the KeyVerifyParameters object itself.
      */
@@ -112,10 +117,13 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("alg", Objects.toString(this.algorithm, null));
+        jsonWriter.writeStringField("alg", this.algorithm == null ? null : this.algorithm.toString());
         jsonWriter.writeStringField("digest", Objects.toString(this.digest, null));
         jsonWriter.writeStringField("value", Objects.toString(this.signature, null));
         return jsonWriter.writeEndObject();
@@ -123,36 +131,35 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
 
     /**
      * Reads an instance of KeyVerifyParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyVerifyParameters if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyVerifyParameters.
      */
     public static KeyVerifyParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyVerifyParameters deserializedKeyVerifyParameters = new KeyVerifyParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyVerifyParameters deserializedKeyVerifyParameters = new KeyVerifyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("alg".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.algorithm =
-                                    JsonWebKeySignatureAlgorithm.fromString(reader.getString());
-                        } else if ("digest".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.digest =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.signature =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("alg".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.algorithm
+                        = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
+                } else if ("digest".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.digest
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.signature
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyVerifyParameters;
-                });
+            return deserializedKeyVerifyParameters;
+        });
     }
 }

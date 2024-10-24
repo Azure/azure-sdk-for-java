@@ -12,12 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The deleted secret list result. */
+/**
+ * The deleted secret list result.
+ */
 @Immutable
 public final class DeletedSecretListResult implements JsonSerializable<DeletedSecretListResult> {
     /*
-     * A response message containing a list of the deleted secrets in the vault along with a link to the next page of
-     * deleted secrets
+     * A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
      */
     private List<DeletedSecretItem> value;
 
@@ -26,13 +27,16 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
      */
     private String nextLink;
 
-    /** Creates an instance of DeletedSecretListResult class. */
-    public DeletedSecretListResult() {}
+    /**
+     * Creates an instance of DeletedSecretListResult class.
+     */
+    public DeletedSecretListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of the deleted secrets in the vault along with a
      * link to the next page of deleted secrets.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedSecretItem> getValue() {
@@ -41,13 +45,16 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
 
     /**
      * Get the nextLink property: The URL to get the next set of deleted secrets.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,32 +63,30 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
 
     /**
      * Reads an instance of DeletedSecretListResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedSecretListResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedSecretListResult.
      */
     public static DeletedSecretListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretListResult deserializedDeletedSecretListResult = new DeletedSecretListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretListResult deserializedDeletedSecretListResult = new DeletedSecretListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<DeletedSecretItem> value =
-                                    reader.readArray(reader1 -> DeletedSecretItem.fromJson(reader1));
-                            deserializedDeletedSecretListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedDeletedSecretListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<DeletedSecretItem> value = reader.readArray(reader1 -> DeletedSecretItem.fromJson(reader1));
+                    deserializedDeletedSecretListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeletedSecretListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretListResult;
-                });
+            return deserializedDeletedSecretListResult;
+        });
     }
 }

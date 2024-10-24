@@ -94,24 +94,20 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, storageInsightName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageInsight create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, storageInsightName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -126,29 +122,25 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, storageInsightName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageInsight apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, storageInsightName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    StorageInsightImpl(
-        StorageInsightInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    StorageInsightImpl(StorageInsightInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
@@ -157,22 +149,18 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageInsight refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageInsightConfigs()
-                .getWithResponse(resourceGroupName, workspaceName, storageInsightName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageInsightConfigs()
+            .getWithResponse(resourceGroupName, workspaceName, storageInsightName, context)
+            .getValue();
         return this;
     }
 

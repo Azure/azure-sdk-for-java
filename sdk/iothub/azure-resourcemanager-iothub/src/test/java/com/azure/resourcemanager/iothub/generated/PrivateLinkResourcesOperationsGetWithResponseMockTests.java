@@ -30,40 +30,28 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"h\",\"name\":\"odqkdlwwqfb\",\"type\":\"lkxt\",\"properties\":{\"groupId\":\"jfsmlmbtxhwgfwsr\",\"requiredMembers\":[\"coezbrhubskh\",\"dyg\",\"ookk\"],\"requiredZoneNames\":[\"jb\",\"leorfmluiqtqz\",\"avyvnqqyba\"]}}";
+        String responseStr
+            = "{\"id\":\"h\",\"name\":\"odqkdlwwqfb\",\"type\":\"lkxt\",\"properties\":{\"groupId\":\"jfsmlmbtxhwgfwsr\",\"requiredMembers\":[\"coezbrhubskh\",\"dyg\",\"ookk\"],\"requiredZoneNames\":[\"jb\",\"leorfmluiqtqz\",\"avyvnqqyba\"]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GroupIdInformation response =
-            manager
-                .privateLinkResourcesOperations()
-                .getWithResponse("thost", "ktst", "dxeclzedqbcvh", com.azure.core.util.Context.NONE)
-                .getValue();
+        GroupIdInformation response = manager.privateLinkResourcesOperations()
+            .getWithResponse("thost", "ktst", "dxeclzedqbcvh", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("jfsmlmbtxhwgfwsr", response.properties().groupId());
         Assertions.assertEquals("coezbrhubskh", response.properties().requiredMembers().get(0));

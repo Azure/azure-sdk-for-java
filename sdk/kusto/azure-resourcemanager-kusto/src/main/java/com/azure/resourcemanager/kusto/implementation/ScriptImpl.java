@@ -83,21 +83,16 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     }
 
     public Script create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Script create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
         return this;
     }
 
@@ -112,20 +107,16 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     }
 
     public Script apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Script apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
         return this;
     }
 
@@ -139,22 +130,18 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     }
 
     public Script refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Script refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context)
+            .getValue();
         return this;
     }
 

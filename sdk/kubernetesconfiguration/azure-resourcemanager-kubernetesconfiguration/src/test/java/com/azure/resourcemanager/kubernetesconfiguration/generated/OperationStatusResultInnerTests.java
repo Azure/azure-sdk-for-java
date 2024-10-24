@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"gfgibm\",\"name\":\"gakeqsr\",\"status\":\"yb\",\"properties\":{\"qytbciq\":\"e\",\"mmnkzsmodmgl\":\"ouf\",\"mutduqktaps\":\"ugpbkw\",\"rtumkdosvq\":\"wgcu\"}}")
-                .toObject(OperationStatusResultInner.class);
+        OperationStatusResultInner model = BinaryData.fromString(
+            "{\"id\":\"gfgibm\",\"name\":\"gakeqsr\",\"status\":\"yb\",\"properties\":{\"qytbciq\":\"e\",\"mmnkzsmodmgl\":\"ouf\",\"mutduqktaps\":\"ugpbkw\",\"rtumkdosvq\":\"wgcu\"}}")
+            .toObject(OperationStatusResultInner.class);
         Assertions.assertEquals("gfgibm", model.id());
         Assertions.assertEquals("gakeqsr", model.name());
         Assertions.assertEquals("yb", model.status());
@@ -26,13 +24,11 @@ public final class OperationStatusResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusResultInner model =
-            new OperationStatusResultInner()
-                .withId("gfgibm")
-                .withName("gakeqsr")
-                .withStatus("yb")
-                .withProperties(
-                    mapOf("qytbciq", "e", "mmnkzsmodmgl", "ouf", "mutduqktaps", "ugpbkw", "rtumkdosvq", "wgcu"));
+        OperationStatusResultInner model = new OperationStatusResultInner().withId("gfgibm")
+            .withName("gakeqsr")
+            .withStatus("yb")
+            .withProperties(
+                mapOf("qytbciq", "e", "mmnkzsmodmgl", "ouf", "mutduqktaps", "ugpbkw", "rtumkdosvq", "wgcu"));
         model = BinaryData.fromObject(model).toObject(OperationStatusResultInner.class);
         Assertions.assertEquals("gfgibm", model.id());
         Assertions.assertEquals("gakeqsr", model.name());

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TestAllRoutesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestAllRoutesResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceMessages\",\"condition\":\"dkwobdagx\",\"endpointNames\":[\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\",\"podxunkb\"],\"isEnabled\":true}}]}")
-                .toObject(TestAllRoutesResultInner.class);
+        TestAllRoutesResultInner model = BinaryData.fromString(
+            "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceMessages\",\"condition\":\"dkwobdagx\",\"endpointNames\":[\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\",\"podxunkb\"],\"isEnabled\":true}}]}")
+            .toObject(TestAllRoutesResultInner.class);
         Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
         Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());
         Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
@@ -29,20 +27,12 @@ public final class TestAllRoutesResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestAllRoutesResultInner model =
-            new TestAllRoutesResultInner()
-                .withRoutes(
-                    Arrays
-                        .asList(
-                            new MatchedRoute()
-                                .withProperties(
-                                    new RouteProperties()
-                                        .withName("qqkdltfzxmhhvhgu")
-                                        .withSource(RoutingSource.DEVICE_MESSAGES)
-                                        .withCondition("dkwobdagx")
-                                        .withEndpointNames(
-                                            Arrays.asList("bqdxbx", "akbogqxndlkzgxh", "ripl", "podxunkb"))
-                                        .withIsEnabled(true))));
+        TestAllRoutesResultInner model = new TestAllRoutesResultInner().withRoutes(
+            Arrays.asList(new MatchedRoute().withProperties(new RouteProperties().withName("qqkdltfzxmhhvhgu")
+                .withSource(RoutingSource.DEVICE_MESSAGES)
+                .withCondition("dkwobdagx")
+                .withEndpointNames(Arrays.asList("bqdxbx", "akbogqxndlkzgxh", "ripl", "podxunkb"))
+                .withIsEnabled(true))));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesResultInner.class);
         Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
         Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());

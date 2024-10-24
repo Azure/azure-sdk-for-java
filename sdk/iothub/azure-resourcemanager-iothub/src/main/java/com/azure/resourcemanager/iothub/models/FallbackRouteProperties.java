@@ -167,15 +167,12 @@ public final class FallbackRouteProperties {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model FallbackRouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property source in model FallbackRouteProperties"));
         }
         if (endpointNames() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointNames in model FallbackRouteProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property endpointNames in model FallbackRouteProperties"));
         }
     }
 

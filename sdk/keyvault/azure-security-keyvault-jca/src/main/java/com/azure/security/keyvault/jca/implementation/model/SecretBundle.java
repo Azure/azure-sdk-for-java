@@ -7,7 +7,7 @@ package com.azure.security.keyvault.jca.implementation.model;
  * The SecretBundle REST model.
  */
 public class SecretBundle {
-    
+
     /**
      * Stores the content type.
      */
@@ -35,7 +35,7 @@ public class SecretBundle {
     public String getValue() {
         return value;
     }
-    
+
     /**
      * Set the content type.
      * 

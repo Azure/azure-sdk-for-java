@@ -57,8 +57,8 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters);
+    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters);
 
     /**
      * Update or Create a Log Analytics workspace table.
@@ -74,8 +74,8 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context);
 
     /**
      * Update or Create a Log Analytics workspace table.
@@ -106,8 +106,8 @@ public interface TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
+        Context context);
 
     /**
      * Update a Log Analytics workspace table.
@@ -122,8 +122,8 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters);
+    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters);
 
     /**
      * Update a Log Analytics workspace table.
@@ -139,8 +139,8 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context);
 
     /**
      * Update a Log Analytics workspace table.
@@ -171,8 +171,8 @@ public interface TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableInner update(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    TableInner update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
+        Context context);
 
     /**
      * Gets a Log Analytics workspace table.
@@ -187,8 +187,8 @@ public interface TablesClient {
      * @return a Log Analytics workspace table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TableInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<TableInner> getWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Gets a Log Analytics workspace table.
@@ -231,8 +231,8 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Delete a Log Analytics workspace table.
@@ -275,8 +275,8 @@ public interface TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> migrateWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
@@ -305,8 +305,8 @@ public interface TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelSearchWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Cancel a log analytics workspace search results table query run.

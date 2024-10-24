@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class QuotaBucketRequestTests {
     @Test
     public void testDeserialize() throws Exception {
-        QuotaBucketRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"currentUsage\":367055683,\"currentQuota\":1978797807,\"newQuota\":1332341838,\"dimensions\":{\"subscriptionId\":\"yemkkvnip\",\"location\":\"xzjnchgejs\"}},\"id\":\"dmailzydehojw\",\"name\":\"ahuxinpm\",\"type\":\"njaqwixjspro\"}")
-                .toObject(QuotaBucketRequest.class);
+        QuotaBucketRequest model = BinaryData.fromString(
+            "{\"properties\":{\"currentUsage\":367055683,\"currentQuota\":1978797807,\"newQuota\":1332341838,\"dimensions\":{\"subscriptionId\":\"yemkkvnip\",\"location\":\"xzjnchgejs\"}},\"id\":\"dmailzydehojw\",\"name\":\"ahuxinpm\",\"type\":\"njaqwixjspro\"}")
+            .toObject(QuotaBucketRequest.class);
         Assertions.assertEquals(367055683, model.currentUsage());
         Assertions.assertEquals(1978797807, model.currentQuota());
         Assertions.assertEquals(1332341838, model.newQuota());
@@ -27,15 +25,11 @@ public final class QuotaBucketRequestTests {
 
     @Test
     public void testSerialize() throws Exception {
-        QuotaBucketRequest model =
-            new QuotaBucketRequest()
-                .withCurrentUsage(367055683)
-                .withCurrentQuota(1978797807)
-                .withNewQuota(1332341838)
-                .withDimensions(
-                    new QuotaBucketRequestPropertiesDimensions()
-                        .withSubscriptionId("yemkkvnip")
-                        .withLocation("xzjnchgejs"));
+        QuotaBucketRequest model = new QuotaBucketRequest().withCurrentUsage(367055683)
+            .withCurrentQuota(1978797807)
+            .withNewQuota(1332341838)
+            .withDimensions(new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("yemkkvnip")
+                .withLocation("xzjnchgejs"));
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequest.class);
         Assertions.assertEquals(367055683, model.currentUsage());
         Assertions.assertEquals(1978797807, model.currentQuota());

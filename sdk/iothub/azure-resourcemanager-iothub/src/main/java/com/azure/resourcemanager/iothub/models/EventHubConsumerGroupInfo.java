@@ -53,11 +53,8 @@ public interface EventHubConsumerGroupInfo {
     EventHubConsumerGroupInfoInner innerModel();
 
     /** The entirety of the EventHubConsumerGroupInfo definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The EventHubConsumerGroupInfo definition stages. */
@@ -76,8 +73,8 @@ public interface EventHubConsumerGroupInfo {
              * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
              * @return the next definition stage.
              */
-            WithProperties withExistingEventHubEndpoint(
-                String resourceGroupName, String resourceName, String eventHubEndpointName);
+            WithProperties withExistingEventHubEndpoint(String resourceGroupName, String resourceName,
+                String eventHubEndpointName);
         }
 
         /** The stage of the EventHubConsumerGroupInfo definition allowing to specify properties. */

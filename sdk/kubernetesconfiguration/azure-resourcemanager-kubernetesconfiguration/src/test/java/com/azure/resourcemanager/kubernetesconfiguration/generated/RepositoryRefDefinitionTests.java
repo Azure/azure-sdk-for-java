@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class RepositoryRefDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RepositoryRefDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"branch\":\"bnbdxkqpxokajion\",\"tag\":\"mexgstxgcp\",\"semver\":\"gmaajrm\",\"commit\":\"jwzrl\"}")
-                .toObject(RepositoryRefDefinition.class);
+        RepositoryRefDefinition model = BinaryData
+            .fromString(
+                "{\"branch\":\"bnbdxkqpxokajion\",\"tag\":\"mexgstxgcp\",\"semver\":\"gmaajrm\",\"commit\":\"jwzrl\"}")
+            .toObject(RepositoryRefDefinition.class);
         Assertions.assertEquals("bnbdxkqpxokajion", model.branch());
         Assertions.assertEquals("mexgstxgcp", model.tag());
         Assertions.assertEquals("gmaajrm", model.semver());
@@ -24,12 +23,10 @@ public final class RepositoryRefDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RepositoryRefDefinition model =
-            new RepositoryRefDefinition()
-                .withBranch("bnbdxkqpxokajion")
-                .withTag("mexgstxgcp")
-                .withSemver("gmaajrm")
-                .withCommit("jwzrl");
+        RepositoryRefDefinition model = new RepositoryRefDefinition().withBranch("bnbdxkqpxokajion")
+            .withTag("mexgstxgcp")
+            .withSemver("gmaajrm")
+            .withCommit("jwzrl");
         model = BinaryData.fromObject(model).toObject(RepositoryRefDefinition.class);
         Assertions.assertEquals("bnbdxkqpxokajion", model.branch());
         Assertions.assertEquals("mexgstxgcp", model.tag());

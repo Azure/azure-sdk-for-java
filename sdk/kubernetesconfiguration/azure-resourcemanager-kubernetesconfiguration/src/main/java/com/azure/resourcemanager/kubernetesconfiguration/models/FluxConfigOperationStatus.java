@@ -26,13 +26,8 @@ public interface FluxConfigOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status along with {@link Response}.
      */
-    Response<OperationStatusResult> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
+    Response<OperationStatusResult> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
         Context context);
 
     /**
@@ -51,11 +46,6 @@ public interface FluxConfigOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status.
      */
-    OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId);
+    OperationStatusResult get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, String operationId);
 }

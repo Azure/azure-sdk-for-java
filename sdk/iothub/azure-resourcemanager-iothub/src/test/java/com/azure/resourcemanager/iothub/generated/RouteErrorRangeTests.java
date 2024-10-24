@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RouteErrorRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteErrorRange model =
-            BinaryData
-                .fromString(
-                    "{\"start\":{\"line\":996289807,\"column\":1448079009},\"end\":{\"line\":608982569,\"column\":146904581}}")
-                .toObject(RouteErrorRange.class);
+        RouteErrorRange model = BinaryData.fromString(
+            "{\"start\":{\"line\":996289807,\"column\":1448079009},\"end\":{\"line\":608982569,\"column\":146904581}}")
+            .toObject(RouteErrorRange.class);
         Assertions.assertEquals(996289807, model.start().line());
         Assertions.assertEquals(1448079009, model.start().column());
         Assertions.assertEquals(608982569, model.end().line());
@@ -25,9 +23,8 @@ public final class RouteErrorRangeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteErrorRange model =
-            new RouteErrorRange()
-                .withStart(new RouteErrorPosition().withLine(996289807).withColumn(1448079009))
+        RouteErrorRange model
+            = new RouteErrorRange().withStart(new RouteErrorPosition().withLine(996289807).withColumn(1448079009))
                 .withEnd(new RouteErrorPosition().withLine(608982569).withColumn(146904581));
         model = BinaryData.fromObject(model).toObject(RouteErrorRange.class);
         Assertions.assertEquals(996289807, model.start().line());

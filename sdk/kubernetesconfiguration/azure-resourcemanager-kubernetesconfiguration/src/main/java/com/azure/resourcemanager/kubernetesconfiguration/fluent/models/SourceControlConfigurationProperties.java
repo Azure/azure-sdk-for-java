@@ -221,8 +221,8 @@ public final class SourceControlConfigurationProperties {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the SourceControlConfigurationProperties object itself.
      */
-    public SourceControlConfigurationProperties withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public SourceControlConfigurationProperties
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         this.configurationProtectedSettings = configurationProtectedSettings;
         return this;
     }
@@ -314,8 +314,8 @@ public final class SourceControlConfigurationProperties {
      * @param helmOperatorProperties the helmOperatorProperties value to set.
      * @return the SourceControlConfigurationProperties object itself.
      */
-    public SourceControlConfigurationProperties withHelmOperatorProperties(
-        HelmOperatorProperties helmOperatorProperties) {
+    public SourceControlConfigurationProperties
+        withHelmOperatorProperties(HelmOperatorProperties helmOperatorProperties) {
         this.helmOperatorProperties = helmOperatorProperties;
         return this;
     }

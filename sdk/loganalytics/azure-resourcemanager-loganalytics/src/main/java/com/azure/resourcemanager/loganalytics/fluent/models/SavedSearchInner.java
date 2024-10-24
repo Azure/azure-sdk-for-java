@@ -235,10 +235,8 @@ public final class SavedSearchInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SavedSearchInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model SavedSearchInner"));
         } else {
             innerProperties().validate();
         }

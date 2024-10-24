@@ -268,10 +268,8 @@ public final class RoutingServiceBusQueueEndpointProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingServiceBusQueueEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model RoutingServiceBusQueueEndpointProperties"));
         }
     }
 

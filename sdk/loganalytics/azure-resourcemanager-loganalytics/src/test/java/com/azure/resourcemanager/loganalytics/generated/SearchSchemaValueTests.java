@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchSchemaValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchSchemaValue model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"rtuzqogs\",\"displayName\":\"nevfdnw\",\"type\":\"mewzsyyc\",\"indexed\":false,\"stored\":true,\"facet\":true,\"ownerType\":[\"bjudpfrxtrthzv\"]}")
-                .toObject(SearchSchemaValue.class);
+        SearchSchemaValue model = BinaryData.fromString(
+            "{\"name\":\"rtuzqogs\",\"displayName\":\"nevfdnw\",\"type\":\"mewzsyyc\",\"indexed\":false,\"stored\":true,\"facet\":true,\"ownerType\":[\"bjudpfrxtrthzv\"]}")
+            .toObject(SearchSchemaValue.class);
         Assertions.assertEquals("rtuzqogs", model.name());
         Assertions.assertEquals("nevfdnw", model.displayName());
         Assertions.assertEquals("mewzsyyc", model.type());
@@ -28,15 +26,13 @@ public final class SearchSchemaValueTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchSchemaValue model =
-            new SearchSchemaValue()
-                .withName("rtuzqogs")
-                .withDisplayName("nevfdnw")
-                .withType("mewzsyyc")
-                .withIndexed(false)
-                .withStored(true)
-                .withFacet(true)
-                .withOwnerType(Arrays.asList("bjudpfrxtrthzv"));
+        SearchSchemaValue model = new SearchSchemaValue().withName("rtuzqogs")
+            .withDisplayName("nevfdnw")
+            .withType("mewzsyyc")
+            .withIndexed(false)
+            .withStored(true)
+            .withFacet(true)
+            .withOwnerType(Arrays.asList("bjudpfrxtrthzv"));
         model = BinaryData.fromObject(model).toObject(SearchSchemaValue.class);
         Assertions.assertEquals("rtuzqogs", model.name());
         Assertions.assertEquals("nevfdnw", model.displayName());

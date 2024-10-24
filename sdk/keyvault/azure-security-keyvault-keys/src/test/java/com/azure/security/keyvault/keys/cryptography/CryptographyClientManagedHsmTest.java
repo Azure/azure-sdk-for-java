@@ -17,6 +17,6 @@ public class CryptographyClientManagedHsmTest extends CryptographyClientTest {
 
     public static boolean shouldRunHsmTest() {
         return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
-               || TEST_MODE == TestMode.PLAYBACK;
+            || TEST_MODE == TestMode.PLAYBACK;
     }
 }

@@ -141,10 +141,8 @@ public final class LinkedServiceInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LinkedServiceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model LinkedServiceInner"));
         } else {
             innerProperties().validate();
         }

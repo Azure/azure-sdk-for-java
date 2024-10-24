@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Creating\",\"customerId\":\"gvjayvblmh\",\"sku\":{\"name\":\"CapacityReservation\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"xvvy\"},\"retentionInDays\":103927992,\"workspaceCapping\":{\"dailyQuotaGb\":49.40524801938477,\"quotaNextResetTime\":\"qufegxuvwzfbn\",\"dataIngestionStatus\":\"ForceOn\"},\"createdDate\":\"tlpdn\",\"modifiedDate\":\"tvgbmhrixkwmy\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"pna\",\"scopeId\":\"exccbdreaxhcexd\"},{\"resourceId\":\"vqahqkghtpwi\",\"scopeId\":\"hyjsvfycx\"},{\"resourceId\":\"fvoow\",\"scopeId\":\"vmtgjqppy\"},{\"resourceId\":\"tronzmyhgfi\",\"scopeId\":\"sxkm\"}],\"features\":{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"eafxtsgumhjglikk\",\"disableLocalAuth\":false,\"\":{\"tgp\":\"datalbqpvuzlmvfelf\"}},\"defaultDataCollectionRuleResourceId\":\"rpw\"}")
-                .toObject(WorkspaceProperties.class);
+        WorkspaceProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Creating\",\"customerId\":\"gvjayvblmh\",\"sku\":{\"name\":\"CapacityReservation\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"xvvy\"},\"retentionInDays\":103927992,\"workspaceCapping\":{\"dailyQuotaGb\":49.40524801938477,\"quotaNextResetTime\":\"qufegxuvwzfbn\",\"dataIngestionStatus\":\"ForceOn\"},\"createdDate\":\"tlpdn\",\"modifiedDate\":\"tvgbmhrixkwmy\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"pna\",\"scopeId\":\"exccbdreaxhcexd\"},{\"resourceId\":\"vqahqkghtpwi\",\"scopeId\":\"hyjsvfycx\"},{\"resourceId\":\"fvoow\",\"scopeId\":\"vmtgjqppy\"},{\"resourceId\":\"tronzmyhgfi\",\"scopeId\":\"sxkm\"}],\"features\":{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"eafxtsgumhjglikk\",\"disableLocalAuth\":false,\"\":{\"tgp\":\"datalbqpvuzlmvfelf\"}},\"defaultDataCollectionRuleResourceId\":\"rpw\"}")
+            .toObject(WorkspaceProperties.class);
         Assertions.assertEquals(WorkspaceSkuNameEnum.CAPACITY_RESERVATION, model.sku().name());
         Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.sku().capacityReservationLevel());
         Assertions.assertEquals(103927992, model.retentionInDays());
@@ -41,26 +39,21 @@ public final class WorkspacePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceProperties model =
-            new WorkspaceProperties()
-                .withSku(
-                    new WorkspaceSku()
-                        .withName(WorkspaceSkuNameEnum.CAPACITY_RESERVATION)
-                        .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO))
-                .withRetentionInDays(103927992)
-                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(49.40524801938477D))
-                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
-                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
-                .withForceCmkForQuery(false)
-                .withFeatures(
-                    new WorkspaceFeatures()
-                        .withEnableDataExport(false)
-                        .withImmediatePurgeDataOn30Days(true)
-                        .withEnableLogAccessUsingOnlyResourcePermissions(true)
-                        .withClusterResourceId("eafxtsgumhjglikk")
-                        .withDisableLocalAuth(false)
-                        .withAdditionalProperties(mapOf()))
-                .withDefaultDataCollectionRuleResourceId("rpw");
+        WorkspaceProperties model = new WorkspaceProperties()
+            .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.CAPACITY_RESERVATION)
+                .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO))
+            .withRetentionInDays(103927992)
+            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(49.40524801938477D))
+            .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
+            .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
+            .withForceCmkForQuery(false)
+            .withFeatures(new WorkspaceFeatures().withEnableDataExport(false)
+                .withImmediatePurgeDataOn30Days(true)
+                .withEnableLogAccessUsingOnlyResourcePermissions(true)
+                .withClusterResourceId("eafxtsgumhjglikk")
+                .withDisableLocalAuth(false)
+                .withAdditionalProperties(mapOf()))
+            .withDefaultDataCollectionRuleResourceId("rpw");
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
         Assertions.assertEquals(WorkspaceSkuNameEnum.CAPACITY_RESERVATION, model.sku().name());
         Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.sku().capacityReservationLevel());

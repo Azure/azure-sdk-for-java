@@ -66,8 +66,7 @@ class KeyVaultAdministrationUtil {
      * @return A {@link Mono} that contains the deserialized response.
      */
     static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCodeAsync(int statusCode,
-                                                                                                     E httpResponseException,
-                                                                                                     ClientLogger logger) {
+        E httpResponseException, ClientLogger logger) {
         try {
             return Mono.just(swallowExceptionForStatusCodeSync(statusCode, httpResponseException, logger));
         } catch (RuntimeException e) {
@@ -86,8 +85,7 @@ class KeyVaultAdministrationUtil {
      * @return the deserialized response.
      */
     static <E extends HttpResponseException> Response<Void> swallowExceptionForStatusCodeSync(int statusCode,
-                                                                                              E httpResponseException,
-                                                                                              ClientLogger logger) {
+        E httpResponseException, ClientLogger logger) {
         HttpResponse httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
@@ -97,7 +95,8 @@ class KeyVaultAdministrationUtil {
         throw logger.logExceptionAsError(httpResponseException);
     }
 
-    static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope, String roleDefinitionId, String principalId, String roleAssignmentName) {
+    static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope,
+        String roleDefinitionId, String principalId, String roleAssignmentName) {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName);
         Objects.requireNonNull(principalId,
             String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'principalId'"));
@@ -108,7 +107,8 @@ class KeyVaultAdministrationUtil {
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
-    static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
+    static RoleDefinitionCreateParameters
+        validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
         Objects.requireNonNull(options, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options'"));
         Objects.requireNonNull(options.getRoleScope(),
             String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleScope()'"));
@@ -118,18 +118,17 @@ class KeyVaultAdministrationUtil {
         List<Permission> permissions = null;
 
         if (options.getPermissions() != null) {
-            permissions = options.getPermissions().stream()
-                .map(keyVaultPermission -> new Permission()
-                    .setActions(keyVaultPermission.getActions())
+            permissions = options.getPermissions()
+                .stream()
+                .map(keyVaultPermission -> new Permission().setActions(keyVaultPermission.getActions())
                     .setNotActions(keyVaultPermission.getNotActions())
                     .setDataActions(keyVaultPermission.getDataActions())
                     .setNotDataActions(keyVaultPermission.getNotDataActions()))
                 .collect(Collectors.toList());
         }
 
-        RoleDefinitionProperties roleDefinitionProperties =
-            new RoleDefinitionProperties()
-                .setRoleName(options.getRoleDefinitionName())
+        RoleDefinitionProperties roleDefinitionProperties
+            = new RoleDefinitionProperties().setRoleName(options.getRoleDefinitionName())
                 .setAssignableScopes(options.getAssignableScopes())
                 .setDescription(options.getDescription())
                 .setPermissions(permissions);
@@ -149,8 +148,8 @@ class KeyVaultAdministrationUtil {
     }
 
     @SuppressWarnings("BoundedWildcard")
-    static PagedResponse<KeyVaultRoleDefinition> transformRoleDefinitionsPagedResponse(
-        PagedResponse<RoleDefinition> pagedResponse) {
+    static PagedResponse<KeyVaultRoleDefinition>
+        transformRoleDefinitionsPagedResponse(PagedResponse<RoleDefinition> pagedResponse) {
 
         List<KeyVaultRoleDefinition> keyVaultRoleDefinitions = new ArrayList<>();
 
@@ -171,26 +170,29 @@ class KeyVaultAdministrationUtil {
         List<KeyVaultPermission> keyVaultPermissions = new ArrayList<>();
 
         for (Permission permission : roleDefinition.getPermissions()) {
-            keyVaultPermissions.add(
-                new KeyVaultPermission(permission.getActions(), permission.getNotActions(),
-                    permission.getDataActions().stream()
-                        .map(dataAction -> KeyVaultDataAction.fromString(dataAction.toString()))
-                        .collect(Collectors.toList()),
-                    permission.getNotDataActions().stream()
-                        .map(notDataAction -> KeyVaultDataAction.fromString(notDataAction.toString()))
-                        .collect(Collectors.toList())));
+            keyVaultPermissions.add(new KeyVaultPermission(permission.getActions(), permission.getNotActions(),
+                permission.getDataActions()
+                    .stream()
+                    .map(dataAction -> KeyVaultDataAction.fromString(dataAction.toString()))
+                    .collect(Collectors.toList()),
+                permission.getNotDataActions()
+                    .stream()
+                    .map(notDataAction -> KeyVaultDataAction.fromString(notDataAction.toString()))
+                    .collect(Collectors.toList())));
         }
 
         return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),
             KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()), roleDefinition.getRoleName(),
             roleDefinition.getDescription(), KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()),
-            keyVaultPermissions, roleDefinition.getAssignableScopes().stream()
-            .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
-            .collect(Collectors.toList()));
+            keyVaultPermissions,
+            roleDefinition.getAssignableScopes()
+                .stream()
+                .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
+                .collect(Collectors.toList()));
     }
 
-    static PagedResponse<KeyVaultRoleAssignment> transformRoleAssignmentsPagedResponse(
-        PagedResponse<RoleAssignment> pagedResponse) {
+    static PagedResponse<KeyVaultRoleAssignment>
+        transformRoleAssignmentsPagedResponse(PagedResponse<RoleAssignment> pagedResponse) {
 
         List<KeyVaultRoleAssignment> keyVaultRoleAssignments = new ArrayList<>();
 
@@ -294,10 +296,13 @@ class KeyVaultAdministrationUtil {
         switch (operationStatus) {
             case "inprogress":
                 return LongRunningOperationStatus.IN_PROGRESS;
+
             case "succeeded":
                 return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+
             case "failed":
                 return LongRunningOperationStatus.FAILED;
+
             default:
                 // Should not reach here
                 return LongRunningOperationStatus.fromString("POLLING_FAILED", true);
@@ -310,24 +315,21 @@ class KeyVaultAdministrationUtil {
 
             return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                restoreOperation.getStartTime(),
-                restoreOperation.getEndTime());
+                restoreOperation.getStartTime(), restoreOperation.getEndTime());
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
             return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
-                selectiveKeyRestoreOperation.getJobId(),
-                selectiveKeyRestoreOperation.getStartTime(),
+                selectiveKeyRestoreOperation.getJobId(), selectiveKeyRestoreOperation.getStartTime(),
                 selectiveKeyRestoreOperation.getEndTime());
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
             return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                fullBackupOperation.getStartTime(),
-                fullBackupOperation.getEndTime(),
+                fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new UnsupportedOperationException();

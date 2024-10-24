@@ -22,24 +22,16 @@ public final class ExtensionsImpl implements Extensions {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    public ExtensionsImpl(
-        ExtensionsClient innerClient,
+    public ExtensionsImpl(ExtensionsClient innerClient,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Extension create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension) {
-        ExtensionInner inner =
-            this
-                .serviceClient()
-                .create(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension);
+    public Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension) {
+        ExtensionInner inner = this.serviceClient()
+            .create(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension);
         if (inner != null) {
             return new ExtensionImpl(inner, this.manager());
         } else {
@@ -47,19 +39,10 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public Extension create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
-        ExtensionInner inner =
-            this
-                .serviceClient()
-                .create(
-                    resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension, context);
+    public Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension, Context context) {
+        ExtensionInner inner = this.serviceClient()
+            .create(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension, context);
         if (inner != null) {
             return new ExtensionImpl(inner, this.manager());
         } else {
@@ -67,37 +50,22 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public Response<Extension> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Context context) {
-        Response<ExtensionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, context);
+    public Response<Extension> getWithResponse(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, Context context) {
+        Response<ExtensionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExtensionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Extension get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    public Extension get(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName) {
-        ExtensionInner inner =
-            this.serviceClient().get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
+        ExtensionInner inner
+            = this.serviceClient().get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
         if (inner != null) {
             return new ExtensionImpl(inner, this.manager());
         } else {
@@ -105,40 +73,22 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName) {
         this.serviceClient().delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Boolean forceDelete,
-        Context context) {
-        this
-            .serviceClient()
-            .delete(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, forceDelete, context);
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, Boolean forceDelete, Context context) {
+        this.serviceClient()
+            .delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, forceDelete,
+                context);
     }
 
-    public Extension update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension) {
-        ExtensionInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension);
+    public Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension) {
+        ExtensionInner inner = this.serviceClient()
+            .update(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension);
         if (inner != null) {
             return new ExtensionImpl(inner, this.manager());
         } else {
@@ -146,25 +96,11 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public Extension update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension,
-        Context context) {
-        ExtensionInner inner =
-            this
-                .serviceClient()
-                .update(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    extensionName,
-                    patchExtension,
-                    context);
+    public Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension, Context context) {
+        ExtensionInner inner = this.serviceClient()
+            .update(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension,
+                context);
         if (inner != null) {
             return new ExtensionImpl(inner, this.manager());
         } else {
@@ -172,17 +108,17 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public PagedIterable<Extension> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
-        PagedIterable<ExtensionInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
+    public PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName) {
+        PagedIterable<ExtensionInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Extension> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
-        PagedIterable<ExtensionInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
+    public PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, Context context) {
+        PagedIterable<ExtensionInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 

@@ -129,11 +129,8 @@ public interface DatabasePrincipalAssignment {
          * The stage of the DatabasePrincipalAssignment definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPrincipalId,
-                DefinitionStages.WithRole,
-                DefinitionStages.WithTenantId,
-                DefinitionStages.WithPrincipalType {
+        interface WithCreate extends DefinitionStages.WithPrincipalId, DefinitionStages.WithRole,
+            DefinitionStages.WithTenantId, DefinitionStages.WithPrincipalType {
             /**
              * Executes the create request.
              *
@@ -205,11 +202,8 @@ public interface DatabasePrincipalAssignment {
     DatabasePrincipalAssignment.Update update();
 
     /** The template for DatabasePrincipalAssignment update. */
-    interface Update
-        extends UpdateStages.WithPrincipalId,
-            UpdateStages.WithRole,
-            UpdateStages.WithTenantId,
-            UpdateStages.WithPrincipalType {
+    interface Update extends UpdateStages.WithPrincipalId, UpdateStages.WithRole, UpdateStages.WithTenantId,
+        UpdateStages.WithPrincipalType {
         /**
          * Executes the update request.
          *

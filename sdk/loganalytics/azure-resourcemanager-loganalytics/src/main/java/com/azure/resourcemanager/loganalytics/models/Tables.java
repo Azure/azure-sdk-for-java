@@ -102,8 +102,8 @@ public interface Tables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> migrateWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
@@ -130,8 +130,8 @@ public interface Tables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> cancelSearchWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Cancel a log analytics workspace search results table query run.

@@ -79,8 +79,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackInner> createOrUpdateWithoutNameWithResponse(
-        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
+    Response<LogAnalyticsQueryPackInner> createOrUpdateWithoutNameWithResponse(String resourceGroupName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
 
     /**
      * Creates a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey nor AppId in
@@ -95,8 +95,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsQueryPackInner createOrUpdateWithoutName(
-        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
+    LogAnalyticsQueryPackInner createOrUpdateWithoutName(String resourceGroupName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
 
     /**
      * Deletes a Log Analytics QueryPack.
@@ -136,8 +136,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String queryPackName, Context context);
+    Response<LogAnalyticsQueryPackInner> getByResourceGroupWithResponse(String resourceGroupName, String queryPackName,
+        Context context);
 
     /**
      * Returns a Log Analytics QueryPack.
@@ -167,11 +167,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String queryPackName,
-        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload,
-        Context context);
+    Response<LogAnalyticsQueryPackInner> createOrUpdateWithResponse(String resourceGroupName, String queryPackName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
 
     /**
      * Creates (or updates) a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey
@@ -187,8 +184,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsQueryPackInner createOrUpdate(
-        String resourceGroupName, String queryPackName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
+    LogAnalyticsQueryPackInner createOrUpdate(String resourceGroupName, String queryPackName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
 
     /**
      * Updates an existing QueryPack's tags. To update other fields use the CreateOrUpdate method.
@@ -203,8 +200,8 @@ public interface QueryPacksClient {
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogAnalyticsQueryPackInner> updateTagsWithResponse(
-        String resourceGroupName, String queryPackName, TagsResource queryPackTags, Context context);
+    Response<LogAnalyticsQueryPackInner> updateTagsWithResponse(String resourceGroupName, String queryPackName,
+        TagsResource queryPackTags, Context context);
 
     /**
      * Updates an existing QueryPack's tags. To update other fields use the CreateOrUpdate method.

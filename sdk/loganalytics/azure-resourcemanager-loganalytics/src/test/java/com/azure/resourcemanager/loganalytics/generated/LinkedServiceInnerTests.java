@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceId\":\"idybyxczf\",\"writeAccessResourceId\":\"haaxdbabphl\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}")
-                .toObject(LinkedServiceInner.class);
+        LinkedServiceInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceId\":\"idybyxczf\",\"writeAccessResourceId\":\"haaxdbabphl\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}")
+            .toObject(LinkedServiceInner.class);
         Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
         Assertions.assertEquals("idybyxczf", model.resourceId());
         Assertions.assertEquals("haaxdbabphl", model.writeAccessResourceId());
@@ -27,12 +25,10 @@ public final class LinkedServiceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceInner model =
-            new LinkedServiceInner()
-                .withTags(mapOf("azt", "ktsthsucocmny"))
-                .withResourceId("idybyxczf")
-                .withWriteAccessResourceId("haaxdbabphl")
-                .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT);
+        LinkedServiceInner model = new LinkedServiceInner().withTags(mapOf("azt", "ktsthsucocmny"))
+            .withResourceId("idybyxczf")
+            .withWriteAccessResourceId("haaxdbabphl")
+            .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT);
         model = BinaryData.fromObject(model).toObject(LinkedServiceInner.class);
         Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
         Assertions.assertEquals("idybyxczf", model.resourceId());

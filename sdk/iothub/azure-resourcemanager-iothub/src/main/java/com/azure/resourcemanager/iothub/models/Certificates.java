@@ -23,8 +23,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the JSON-serialized array of Certificate objects along with {@link Response}.
      */
-    Response<CertificateListDescription> listByIotHubWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<CertificateListDescription> listByIotHubWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the certificate list.
@@ -56,8 +56,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate along with {@link Response}.
      */
-    Response<CertificateDescription> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<CertificateDescription> getWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, Context context);
 
     /**
      * Get the certificate.
@@ -91,8 +91,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        String ifMatch, Context context);
 
     /**
      * Delete an X509 certificate.
@@ -127,8 +127,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate along with {@link Response}.
      */
-    Response<CertificateWithNonceDescription> generateVerificationCodeWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
+    Response<CertificateWithNonceDescription> generateVerificationCodeWithResponse(String resourceGroupName,
+        String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
      * Generate verification code for proof of possession flow.
@@ -146,8 +146,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate.
      */
-    CertificateWithNonceDescription generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch);
+    CertificateWithNonceDescription generateVerificationCode(String resourceGroupName, String resourceName,
+        String certificateName, String ifMatch);
 
     /**
      * Verify certificate's private key possession.
@@ -167,12 +167,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate along with {@link Response}.
      */
-    Response<CertificateDescription> verifyWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody,
+    Response<CertificateDescription> verifyWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody,
         Context context);
 
     /**
@@ -192,11 +188,7 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate.
      */
-    CertificateDescription verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
+    CertificateDescription verify(String resourceGroupName, String resourceName, String certificateName, String ifMatch,
         CertificateVerificationDescription certificateVerificationBody);
 
     /**

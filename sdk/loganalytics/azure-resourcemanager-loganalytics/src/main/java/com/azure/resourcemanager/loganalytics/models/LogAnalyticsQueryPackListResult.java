@@ -79,10 +79,8 @@ public final class LogAnalyticsQueryPackListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model LogAnalyticsQueryPackListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model LogAnalyticsQueryPackListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

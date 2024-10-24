@@ -155,8 +155,8 @@ public final class PatchExtensionProperties {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the PatchExtensionProperties object itself.
      */
-    public PatchExtensionProperties withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public PatchExtensionProperties
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         this.configurationProtectedSettings = configurationProtectedSettings;
         return this;
     }

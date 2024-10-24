@@ -23,12 +23,10 @@ public final class PreFullBackupHeaders {
      */
     private String azureAsyncOperation;
 
-    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PreFullBackupHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PreFullBackupHeaders(HttpHeaders rawHeaders) {
@@ -36,12 +34,12 @@ public final class PreFullBackupHeaders {
         if (retryAfter != null) {
             this.retryAfter = Long.parseLong(retryAfter);
         }
-        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
+        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
     }
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Long getRetryAfter() {
@@ -50,7 +48,7 @@ public final class PreFullBackupHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the PreFullBackupHeaders object itself.
      */
@@ -61,7 +59,7 @@ public final class PreFullBackupHeaders {
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @return the azureAsyncOperation value.
      */
     public String getAzureAsyncOperation() {
@@ -70,7 +68,7 @@ public final class PreFullBackupHeaders {
 
     /**
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the PreFullBackupHeaders object itself.
      */

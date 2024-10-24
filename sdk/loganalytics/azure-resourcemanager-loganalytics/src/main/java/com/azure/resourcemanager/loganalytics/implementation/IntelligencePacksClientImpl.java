@@ -41,8 +41,8 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @param client the instance of the service client containing this operation class.
      */
     IntelligencePacksClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(IntelligencePacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(IntelligencePacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,47 +53,34 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface IntelligencePacksService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Disable")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Disable")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> disable(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Void>> disable(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("intelligencePackName") String intelligencePackName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Enable")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Enable")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> enable(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Void>> enable(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("intelligencePackName") String intelligencePackName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<IntelligencePackInner>>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<List<IntelligencePackInner>>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -108,13 +95,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableWithResponseAsync(
-        String resourceGroupName, String workspaceName, String intelligencePackName) {
+    private Mono<Response<Void>> disableWithResponseAsync(String resourceGroupName, String workspaceName,
+        String intelligencePackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -128,24 +113,13 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 .error(new IllegalArgumentException("Parameter intelligencePackName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disable(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            intelligencePackName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.disable(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                intelligencePackName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -162,13 +136,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableWithResponseAsync(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
+    private Mono<Response<Void>> disableWithResponseAsync(String resourceGroupName, String workspaceName,
+        String intelligencePackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,22 +154,13 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 .error(new IllegalArgumentException("Parameter intelligencePackName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
-        return service
-            .disable(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                intelligencePackName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
+        return service.disable(this.client.getEndpoint(), resourceGroupName, workspaceName, intelligencePackName,
+            apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -230,8 +193,8 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
+    public Response<Void> disableWithResponse(String resourceGroupName, String workspaceName,
+        String intelligencePackName, Context context) {
         return disableWithResponseAsync(resourceGroupName, workspaceName, intelligencePackName, context).block();
     }
 
@@ -262,13 +225,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> enableWithResponseAsync(
-        String resourceGroupName, String workspaceName, String intelligencePackName) {
+    private Mono<Response<Void>> enableWithResponseAsync(String resourceGroupName, String workspaceName,
+        String intelligencePackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -282,24 +243,13 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 .error(new IllegalArgumentException("Parameter intelligencePackName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enable(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            intelligencePackName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.enable(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                intelligencePackName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -316,13 +266,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> enableWithResponseAsync(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
+    private Mono<Response<Void>> enableWithResponseAsync(String resourceGroupName, String workspaceName,
+        String intelligencePackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,22 +284,13 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 .error(new IllegalArgumentException("Parameter intelligencePackName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
-        return service
-            .enable(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                intelligencePackName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
+        return service.enable(this.client.getEndpoint(), resourceGroupName, workspaceName, intelligencePackName,
+            apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -384,8 +323,8 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
+    public Response<Void> enableWithResponse(String resourceGroupName, String workspaceName,
+        String intelligencePackName, Context context) {
         return enableWithResponseAsync(resourceGroupName, workspaceName, intelligencePackName, context).block();
     }
 
@@ -415,13 +354,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return array of IntelligencePack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -431,25 +368,14 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -465,13 +391,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return array of IntelligencePack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -481,23 +405,14 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -527,8 +442,8 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @return array of IntelligencePack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<IntelligencePackInner>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<List<IntelligencePackInner>> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
         return listWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 

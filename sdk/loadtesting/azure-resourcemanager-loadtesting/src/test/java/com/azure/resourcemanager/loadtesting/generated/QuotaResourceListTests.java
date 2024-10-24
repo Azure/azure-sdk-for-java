@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class QuotaResourceListTests {
     @Test
     public void testDeserialize() throws Exception {
-        QuotaResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"limit\":437058664,\"usage\":1438180551,\"provisioningState\":\"Succeeded\"},\"id\":\"bifpikxwczb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}],\"nextLink\":\"b\"}")
-                .toObject(QuotaResourceList.class);
+        QuotaResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"limit\":437058664,\"usage\":1438180551,\"provisioningState\":\"Succeeded\"},\"id\":\"bifpikxwczb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}],\"nextLink\":\"b\"}")
+            .toObject(QuotaResourceList.class);
     }
 
     @Test

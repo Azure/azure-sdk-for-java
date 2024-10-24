@@ -25,6 +25,7 @@
     <codesnippet.skip>false</codesnippet.skip>
     <createSourcesJar>true</createSourcesJar>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

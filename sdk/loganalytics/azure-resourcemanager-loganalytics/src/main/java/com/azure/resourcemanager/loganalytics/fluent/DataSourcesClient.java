@@ -27,12 +27,8 @@ public interface DataSourcesClient {
      * @return datasources under OMS Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String dataSourceName,
-        DataSourceInner parameters,
-        Context context);
+    Response<DataSourceInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String dataSourceName, DataSourceInner parameters, Context context);
 
     /**
      * Create or update a data source.
@@ -47,8 +43,8 @@ public interface DataSourcesClient {
      * @return datasources under OMS Workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataSourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dataSourceName, DataSourceInner parameters);
+    DataSourceInner createOrUpdate(String resourceGroupName, String workspaceName, String dataSourceName,
+        DataSourceInner parameters);
 
     /**
      * Deletes a data source instance.
@@ -63,8 +59,8 @@ public interface DataSourcesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Deletes a data source instance.
@@ -92,8 +88,8 @@ public interface DataSourcesClient {
      * @return a datasource instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataSourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<DataSourceInner> getWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Gets a datasource instance.
@@ -139,6 +135,6 @@ public interface DataSourcesClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataSourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context);
+    PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
+        String skiptoken, Context context);
 }

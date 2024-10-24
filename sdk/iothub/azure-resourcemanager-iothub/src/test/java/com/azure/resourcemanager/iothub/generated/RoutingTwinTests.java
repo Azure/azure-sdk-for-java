@@ -11,19 +11,16 @@ import com.azure.resourcemanager.iothub.models.RoutingTwinProperties;
 public final class RoutingTwinTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingTwin model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":\"datahszhedplvwiwu\",\"properties\":{\"desired\":\"datambes\",\"reported\":\"datankww\"}}")
-                .toObject(RoutingTwin.class);
+        RoutingTwin model = BinaryData
+            .fromString(
+                "{\"tags\":\"datahszhedplvwiwu\",\"properties\":{\"desired\":\"datambes\",\"reported\":\"datankww\"}}")
+            .toObject(RoutingTwin.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingTwin model =
-            new RoutingTwin()
-                .withTags("datahszhedplvwiwu")
-                .withProperties(new RoutingTwinProperties().withDesired("datambes").withReported("datankww"));
+        RoutingTwin model = new RoutingTwin().withTags("datahszhedplvwiwu")
+            .withProperties(new RoutingTwinProperties().withDesired("datambes").withReported("datankww"));
         model = BinaryData.fromObject(model).toObject(RoutingTwin.class);
     }
 }

@@ -247,36 +247,24 @@ public final class CosmosDbDataConnectionProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableName in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tableName in model CosmosDbDataConnectionProperties"));
         }
         if (managedIdentityResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedIdentityResourceId in model"
-                            + " CosmosDbDataConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managedIdentityResourceId in model" + " CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbAccountResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cosmosDbAccountResourceId in model"
-                            + " CosmosDbDataConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cosmosDbAccountResourceId in model" + " CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbDatabase() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cosmosDbDatabase in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cosmosDbDatabase in model CosmosDbDataConnectionProperties"));
         }
         if (cosmosDbContainer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cosmosDbContainer in model CosmosDbDataConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cosmosDbContainer in model CosmosDbDataConnectionProperties"));
         }
     }
 

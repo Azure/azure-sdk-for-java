@@ -26,8 +26,7 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    FluxConfigurationImpl(
-        FluxConfigurationInner innerObject,
+    FluxConfigurationImpl(FluxConfigurationInner innerObject,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

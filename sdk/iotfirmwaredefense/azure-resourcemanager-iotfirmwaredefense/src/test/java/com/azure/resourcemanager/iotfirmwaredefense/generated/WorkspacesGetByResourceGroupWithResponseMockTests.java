@@ -44,12 +44,14 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Workspace response = manager.workspaces()
-            .getByResourceGroupWithResponse("m", "qyib", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("m", "qyib", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("uszdtmhrkwof", response.location());
         Assertions.assertEquals("oqac", response.tags().get("iexpbtgiwbwo"));

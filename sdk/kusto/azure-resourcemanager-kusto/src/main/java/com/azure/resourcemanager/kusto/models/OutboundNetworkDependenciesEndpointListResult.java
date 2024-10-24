@@ -44,8 +44,8 @@ public final class OutboundNetworkDependenciesEndpointListResult {
      * @param value the value value to set.
      * @return the OutboundNetworkDependenciesEndpointListResult object itself.
      */
-    public OutboundNetworkDependenciesEndpointListResult withValue(
-        List<OutboundNetworkDependenciesEndpointInner> value) {
+    public OutboundNetworkDependenciesEndpointListResult
+        withValue(List<OutboundNetworkDependenciesEndpointInner> value) {
         this.value = value;
         return this;
     }
@@ -66,10 +66,8 @@ public final class OutboundNetworkDependenciesEndpointListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model OutboundNetworkDependenciesEndpointListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model OutboundNetworkDependenciesEndpointListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

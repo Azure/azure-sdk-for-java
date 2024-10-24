@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DestinationMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DestinationMetadata model =
-            BinaryData.fromString("{\"eventHubName\":\"uknvudwti\"}").toObject(DestinationMetadata.class);
+        DestinationMetadata model
+            = BinaryData.fromString("{\"eventHubName\":\"uknvudwti\"}").toObject(DestinationMetadata.class);
         Assertions.assertEquals("uknvudwti", model.eventHubName());
     }
 

@@ -125,12 +125,9 @@ public interface Script {
          * The stage of the Script definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithScriptUrl,
-                DefinitionStages.WithScriptUrlSasToken,
-                DefinitionStages.WithScriptContent,
-                DefinitionStages.WithForceUpdateTag,
-                DefinitionStages.WithContinueOnErrors {
+        interface WithCreate extends DefinitionStages.WithScriptUrl, DefinitionStages.WithScriptUrlSasToken,
+            DefinitionStages.WithScriptContent, DefinitionStages.WithForceUpdateTag,
+            DefinitionStages.WithContinueOnErrors {
             /**
              * Executes the create request.
              *

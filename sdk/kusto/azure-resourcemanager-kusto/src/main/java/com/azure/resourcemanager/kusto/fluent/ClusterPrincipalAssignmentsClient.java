@@ -30,11 +30,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
@@ -48,9 +45,7 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
@@ -66,8 +61,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return a Kusto cluster principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterPrincipalAssignmentInner> getWithResponse(
-        String resourceGroupName, String clusterName, String principalAssignmentName, Context context);
+    Response<ClusterPrincipalAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
+        String principalAssignmentName, Context context);
 
     /**
      * Gets a Kusto cluster principalAssignment.
@@ -97,9 +92,7 @@ public interface ClusterPrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String principalAssignmentName,
+        String resourceGroupName, String clusterName, String principalAssignmentName,
         ClusterPrincipalAssignmentInner parameters);
 
     /**
@@ -117,11 +110,8 @@ public interface ClusterPrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String principalAssignmentName,
-        ClusterPrincipalAssignmentInner parameters,
-        Context context);
+        String resourceGroupName, String clusterName, String principalAssignmentName,
+        ClusterPrincipalAssignmentInner parameters, Context context);
 
     /**
      * Create a Kusto cluster principalAssignment.
@@ -136,11 +126,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String principalAssignmentName,
-        ClusterPrincipalAssignmentInner parameters);
+    ClusterPrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName,
+        String principalAssignmentName, ClusterPrincipalAssignmentInner parameters);
 
     /**
      * Create a Kusto cluster principalAssignment.
@@ -156,12 +143,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String principalAssignmentName,
-        ClusterPrincipalAssignmentInner parameters,
-        Context context);
+    ClusterPrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName,
+        String principalAssignmentName, ClusterPrincipalAssignmentInner parameters, Context context);
 
     /**
      * Deletes a Kusto cluster principalAssignment.
@@ -175,8 +158,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String principalAssignmentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String principalAssignmentName);
 
     /**
      * Deletes a Kusto cluster principalAssignment.
@@ -191,8 +174,8 @@ public interface ClusterPrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String principalAssignmentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String principalAssignmentName, Context context);
 
     /**
      * Deletes a Kusto cluster principalAssignment.

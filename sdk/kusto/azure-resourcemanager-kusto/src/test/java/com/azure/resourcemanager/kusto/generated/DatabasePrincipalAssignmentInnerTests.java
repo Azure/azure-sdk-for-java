@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePrincipalAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePrincipalAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalId\":\"cffgdkzzewk\",\"role\":\"User\",\"tenantId\":\"qcrailvpnppfufl\",\"principalType\":\"Group\",\"tenantName\":\"mh\",\"principalName\":\"xyjrxsagafcnih\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"pnedgf\"},\"id\":\"cvkcvqvpkeqdcv\",\"name\":\"rhvoods\",\"type\":\"tbobz\"}")
-                .toObject(DatabasePrincipalAssignmentInner.class);
+        DatabasePrincipalAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalId\":\"cffgdkzzewk\",\"role\":\"User\",\"tenantId\":\"qcrailvpnppfufl\",\"principalType\":\"Group\",\"tenantName\":\"mh\",\"principalName\":\"xyjrxsagafcnih\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"pnedgf\"},\"id\":\"cvkcvqvpkeqdcv\",\"name\":\"rhvoods\",\"type\":\"tbobz\"}")
+            .toObject(DatabasePrincipalAssignmentInner.class);
         Assertions.assertEquals("cffgdkzzewk", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.USER, model.role());
         Assertions.assertEquals("qcrailvpnppfufl", model.tenantId());
@@ -26,12 +24,10 @@ public final class DatabasePrincipalAssignmentInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePrincipalAssignmentInner model =
-            new DatabasePrincipalAssignmentInner()
-                .withPrincipalId("cffgdkzzewk")
-                .withRole(DatabasePrincipalRole.USER)
-                .withTenantId("qcrailvpnppfufl")
-                .withPrincipalType(PrincipalType.GROUP);
+        DatabasePrincipalAssignmentInner model = new DatabasePrincipalAssignmentInner().withPrincipalId("cffgdkzzewk")
+            .withRole(DatabasePrincipalRole.USER)
+            .withTenantId("qcrailvpnppfufl")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentInner.class);
         Assertions.assertEquals("cffgdkzzewk", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.USER, model.role());

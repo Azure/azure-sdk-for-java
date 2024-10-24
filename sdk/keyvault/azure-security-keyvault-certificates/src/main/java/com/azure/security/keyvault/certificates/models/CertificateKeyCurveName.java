@@ -6,19 +6,29 @@ package com.azure.security.keyvault.certificates.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Elliptic curve name. For valid values, see JsonWebKeyCurveName. */
+/**
+ * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+ */
 public final class CertificateKeyCurveName extends ExpandableStringEnum<CertificateKeyCurveName> {
 
-    /** The NIST P-256 elliptic curve, AKA SECG curve SECP256R1. */
+    /**
+     * The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+     */
     public static final CertificateKeyCurveName P_256 = fromString("P-256");
 
-    /** The NIST P-384 elliptic curve, AKA SECG curve SECP384R1. */
+    /**
+     * The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+     */
     public static final CertificateKeyCurveName P_384 = fromString("P-384");
 
-    /** The NIST P-521 elliptic curve, AKA SECG curve SECP521R1. */
+    /**
+     * The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+     */
     public static final CertificateKeyCurveName P_521 = fromString("P-521");
 
-    /** The SECG SECP256K1 elliptic curve. */
+    /**
+     * The SECG SECP256K1 elliptic curve.
+     */
     public static final CertificateKeyCurveName P_256K = fromString("P-256K");
 
     /**
@@ -27,7 +37,8 @@ public final class CertificateKeyCurveName extends ExpandableStringEnum<Certific
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyCurveName() {}
+    public CertificateKeyCurveName() {
+    }
 
     /**
      * Creates or finds a CertificateKeyCurveName from its string representation.

@@ -192,21 +192,16 @@ public final class ClusterPrincipalProperties {
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ClusterPrincipalProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalId in model ClusterPrincipalProperties"));
         }
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property role in model ClusterPrincipalProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property role in model ClusterPrincipalProperties"));
         }
         if (principalType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalType in model ClusterPrincipalProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalType in model ClusterPrincipalProperties"));
         }
     }
 

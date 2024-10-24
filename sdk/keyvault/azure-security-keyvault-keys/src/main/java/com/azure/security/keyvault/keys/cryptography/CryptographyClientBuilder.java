@@ -97,10 +97,8 @@ import java.util.Map;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder implements
-    TokenCredentialTrait<CryptographyClientBuilder>,
-    HttpTrait<CryptographyClientBuilder>,
-    ConfigurationTrait<CryptographyClientBuilder> {
+public final class CryptographyClientBuilder implements TokenCredentialTrait<CryptographyClientBuilder>,
+    HttpTrait<CryptographyClientBuilder>, ConfigurationTrait<CryptographyClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientBuilder.class);
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -169,8 +167,8 @@ public final class CryptographyClientBuilder implements
                         + " is not provided."));
             }
 
-            CryptographyServiceVersion serviceVersion =
-                version != null ? version : CryptographyServiceVersion.getLatest();
+            CryptographyServiceVersion serviceVersion
+                = version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
                 return new CryptographyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
@@ -224,8 +222,8 @@ public final class CryptographyClientBuilder implements
                         + " is not provided."));
             }
 
-            CryptographyServiceVersion serviceVersion =
-                version != null ? version : CryptographyServiceVersion.getLatest();
+            CryptographyServiceVersion serviceVersion
+                = version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
                 return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
@@ -251,8 +249,8 @@ public final class CryptographyClientBuilder implements
     }
 
     HttpPipeline setupPipeline() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -265,8 +263,8 @@ public final class CryptographyClientBuilder implements
             CLIENT_VERSION, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -288,8 +286,7 @@ public final class CryptographyClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)

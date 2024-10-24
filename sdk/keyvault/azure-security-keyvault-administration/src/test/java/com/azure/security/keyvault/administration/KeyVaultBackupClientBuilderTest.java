@@ -41,8 +41,7 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
@@ -54,8 +53,7 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
@@ -66,27 +64,27 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(keyVaultBackupAsyncClient);
-        assertEquals(KeyVaultBackupAsyncClient.class.getSimpleName(), keyVaultBackupAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultBackupAsyncClient.class.getSimpleName(),
+            keyVaultBackupAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(keyVaultBackupAsyncClient);
-        assertEquals(KeyVaultBackupAsyncClient.class.getSimpleName(), keyVaultBackupAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultBackupAsyncClient.class.getSimpleName(),
+            keyVaultBackupAsyncClient.getClass().getSimpleName());
     }
 
     @Test
@@ -101,8 +99,7 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -118,8 +115,7 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
@@ -134,11 +130,10 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
@@ -151,22 +146,21 @@ public class KeyVaultBackupClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())

@@ -47,8 +47,8 @@ public interface DataExports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data export instance along with {@link Response}.
      */
-    Response<DataExport> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
+    Response<DataExport> getWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
 
     /**
      * Gets a data export instance.
@@ -75,8 +75,8 @@ public interface DataExports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
 
     /**
      * Deletes the specified data export in a given workspace..

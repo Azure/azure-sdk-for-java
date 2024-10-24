@@ -13,7 +13,9 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/** The secret management attributes. */
+/**
+ * The secret management attributes.
+ */
 @Fluent
 public final class SecretAttributes extends Attributes {
     /*
@@ -22,19 +24,20 @@ public final class SecretAttributes extends Attributes {
     private Integer recoverableDays;
 
     /*
-     * Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains
-     * 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge
-     * the secret, at the end of the retention interval.
+     * Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end of the retention interval.
      */
     private DeletionRecoveryLevel recoveryLevel;
 
-    /** Creates an instance of SecretAttributes class. */
-    public SecretAttributes() {}
+    /**
+     * Creates an instance of SecretAttributes class.
+     */
+    public SecretAttributes() {
+    }
 
     /**
      * Get the recoverableDays property: softDelete data retention days. Value should be &gt;=7 and &lt;=90 when
      * softDelete enabled, otherwise 0.
-     *
+     * 
      * @return the recoverableDays value.
      */
     public Integer getRecoverableDays() {
@@ -45,34 +48,43 @@ public final class SecretAttributes extends Attributes {
      * Get the recoveryLevel property: Reflects the deletion recovery level currently in effect for secrets in the
      * current vault. If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise,
      * only the system can purge the secret, at the end of the retention interval.
-     *
+     * 
      * @return the recoveryLevel value.
      */
     public DeletionRecoveryLevel getRecoveryLevel() {
         return this.recoveryLevel;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecretAttributes setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecretAttributes setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecretAttributes setExpires(OffsetDateTime expires) {
         super.setExpires(expires);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -88,49 +100,47 @@ public final class SecretAttributes extends Attributes {
 
     /**
      * Reads an instance of SecretAttributes from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretAttributes if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SecretAttributes.
      */
     public static SecretAttributes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretAttributes deserializedSecretAttributes = new SecretAttributes();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretAttributes deserializedSecretAttributes = new SecretAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("enabled".equals(fieldName)) {
-                            deserializedSecretAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("nbf".equals(fieldName)) {
-                            Long notBefore = reader.getNullable(JsonReader::getLong);
-                            if (notBefore != null) {
-                                deserializedSecretAttributes.setNotBefore(
-                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
-                            }
-                        } else if ("exp".equals(fieldName)) {
-                            Long expires = reader.getNullable(JsonReader::getLong);
-                            if (expires != null) {
-                                deserializedSecretAttributes.setExpires(
-                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
-                            }
-                        } else if ("created".equals(fieldName)) {
-                            deserializedSecretAttributes.setCreated(reader.getNullable(JsonReader::getLong));
-                        } else if ("updated".equals(fieldName)) {
-                            deserializedSecretAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
-                        } else if ("recoverableDays".equals(fieldName)) {
-                            deserializedSecretAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
-                        } else if ("recoveryLevel".equals(fieldName)) {
-                            deserializedSecretAttributes.recoveryLevel =
-                                    DeletionRecoveryLevel.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("enabled".equals(fieldName)) {
+                    deserializedSecretAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("nbf".equals(fieldName)) {
+                    Long notBeforeHolder = reader.getNullable(JsonReader::getLong);
+                    if (notBeforeHolder != null) {
+                        deserializedSecretAttributes.setNotBefore(
+                            OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBeforeHolder), ZoneOffset.UTC));
                     }
+                } else if ("exp".equals(fieldName)) {
+                    Long expiresHolder = reader.getNullable(JsonReader::getLong);
+                    if (expiresHolder != null) {
+                        deserializedSecretAttributes
+                            .setExpires(OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresHolder), ZoneOffset.UTC));
+                    }
+                } else if ("created".equals(fieldName)) {
+                    deserializedSecretAttributes.setCreated(reader.getNullable(JsonReader::getLong));
+                } else if ("updated".equals(fieldName)) {
+                    deserializedSecretAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
+                } else if ("recoverableDays".equals(fieldName)) {
+                    deserializedSecretAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryLevel".equals(fieldName)) {
+                    deserializedSecretAttributes.recoveryLevel = DeletionRecoveryLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretAttributes;
-                });
+            return deserializedSecretAttributes;
+        });
     }
 }

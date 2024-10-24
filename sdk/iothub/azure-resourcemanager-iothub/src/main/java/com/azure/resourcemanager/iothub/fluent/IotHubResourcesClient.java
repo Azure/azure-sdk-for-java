@@ -47,8 +47,8 @@ public interface IotHubResourcesClient {
      * @return the non-security related metadata of an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IotHubDescriptionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<IotHubDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the non-security related metadata of an IoT hub
@@ -84,8 +84,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, IotHubDescriptionInner iotHubDescription);
 
     /**
      * Create or update the metadata of an IoT hub.
@@ -108,12 +108,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        IotHubDescriptionInner iotHubDescription,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context);
 
     /**
      * Create or update the metadata of an IoT hub.
@@ -133,8 +129,8 @@ public interface IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IotHubDescriptionInner createOrUpdate(
-        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription);
+    IotHubDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        IotHubDescriptionInner iotHubDescription);
 
     /**
      * Create or update the metadata of an IoT hub.
@@ -157,12 +153,8 @@ public interface IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IotHubDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        IotHubDescriptionInner iotHubDescription,
-        String ifMatch,
-        Context context);
+    IotHubDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        IotHubDescriptionInner iotHubDescription, String ifMatch, Context context);
 
     /**
      * Update an existing IoT Hubs tags.
@@ -178,8 +170,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
-        String resourceGroupName, String resourceName, TagsResource iotHubTags);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(String resourceGroupName,
+        String resourceName, TagsResource iotHubTags);
 
     /**
      * Update an existing IoT Hubs tags.
@@ -196,8 +188,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
-        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(String resourceGroupName,
+        String resourceName, TagsResource iotHubTags, Context context);
 
     /**
      * Update an existing IoT Hubs tags.
@@ -230,8 +222,8 @@ public interface IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IotHubDescriptionInner update(
-        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context);
+    IotHubDescriptionInner update(String resourceGroupName, String resourceName, TagsResource iotHubTags,
+        Context context);
 
     /**
      * Delete an IoT hub
@@ -247,8 +239,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(String resourceGroupName,
+        String resourceName);
 
     /**
      * Delete an IoT hub
@@ -265,8 +257,8 @@ public interface IotHubResourcesClient {
      * @return the {@link SyncPoller} for polling of the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Delete an IoT hub
@@ -375,8 +367,8 @@ public interface IotHubResourcesClient {
      * @return the statistics from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistryStatisticsInner> getStatsWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<RegistryStatisticsInner> getStatsWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the statistics from an IoT hub
@@ -425,8 +417,8 @@ public interface IotHubResourcesClient {
      * @return the list of valid SKUs for an IoT hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IotHubSkuDescriptionInner> getValidSkus(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<IotHubSkuDescriptionInner> getValidSkus(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub
@@ -444,8 +436,8 @@ public interface IotHubResourcesClient {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(
-        String resourceGroupName, String resourceName, String eventHubEndpointName);
+    PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(String resourceGroupName,
+        String resourceName, String eventHubEndpointName);
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub
@@ -464,8 +456,8 @@ public interface IotHubResourcesClient {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, Context context);
+    PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(String resourceGroupName,
+        String resourceName, String eventHubEndpointName, Context context);
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
@@ -485,8 +477,8 @@ public interface IotHubResourcesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+    Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(String resourceGroupName,
+        String resourceName, String eventHubEndpointName, String name, Context context);
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
@@ -504,8 +496,8 @@ public interface IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventHubConsumerGroupInfoInner getEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
+    EventHubConsumerGroupInfoInner getEventHubConsumerGroup(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, String name);
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub
@@ -525,13 +517,9 @@ public interface IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String eventHubEndpointName,
-        String name,
-        EventHubConsumerGroupBodyDescription consumerGroupBody,
-        Context context);
+    Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(String resourceGroupName,
+        String resourceName, String eventHubEndpointName, String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody, Context context);
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub
@@ -550,12 +538,8 @@ public interface IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventHubConsumerGroupInfoInner createEventHubConsumerGroup(
-        String resourceGroupName,
-        String resourceName,
-        String eventHubEndpointName,
-        String name,
-        EventHubConsumerGroupBodyDescription consumerGroupBody);
+    EventHubConsumerGroupInfoInner createEventHubConsumerGroup(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody);
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
@@ -574,8 +558,8 @@ public interface IotHubResourcesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+    Response<Void> deleteEventHubConsumerGroupWithResponse(String resourceGroupName, String resourceName,
+        String eventHubEndpointName, String name, Context context);
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
@@ -592,8 +576,8 @@ public interface IotHubResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
+    void deleteEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName,
+        String name);
 
     /**
      * Get a list of all the jobs in an IoT hub. For more information, see:
@@ -650,8 +634,8 @@ public interface IotHubResourcesClient {
      * @return the details of a job from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResponseInner> getJobWithResponse(
-        String resourceGroupName, String resourceName, String jobId, Context context);
+    Response<JobResponseInner> getJobWithResponse(String resourceGroupName, String resourceName, String jobId,
+        Context context);
 
     /**
      * Get the details of a job from an IoT hub. For more information, see:
@@ -703,8 +687,8 @@ public interface IotHubResourcesClient {
      * @return the quota metrics for an IoT hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IotHubQuotaMetricInfoInner> getQuotaMetrics(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<IotHubQuotaMetricInfoInner> getQuotaMetrics(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the health for routing endpoints
@@ -737,8 +721,8 @@ public interface IotHubResourcesClient {
      * @return the health for routing endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EndpointHealthDataInner> getEndpointHealth(
-        String resourceGroupName, String iotHubName, Context context);
+    PagedIterable<EndpointHealthDataInner> getEndpointHealth(String resourceGroupName, String iotHubName,
+        Context context);
 
     /**
      * Check if an IoT hub name is available
@@ -755,8 +739,8 @@ public interface IotHubResourcesClient {
      * @return the properties indicating whether a given IoT hub name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(
-        OperationInputs operationInputs, Context context);
+    Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(OperationInputs operationInputs,
+        Context context);
 
     /**
      * Check if an IoT hub name is available
@@ -790,8 +774,8 @@ public interface IotHubResourcesClient {
      * @return result of testing all routes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestAllRoutesResultInner> testAllRoutesWithResponse(
-        String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context);
+    Response<TestAllRoutesResultInner> testAllRoutesWithResponse(String iotHubName, String resourceGroupName,
+        TestAllRoutesInput input, Context context);
 
     /**
      * Test all routes
@@ -826,8 +810,8 @@ public interface IotHubResourcesClient {
      * @return result of testing one route along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestRouteResultInner> testRouteWithResponse(
-        String iotHubName, String resourceGroupName, TestRouteInput input, Context context);
+    Response<TestRouteResultInner> testRouteWithResponse(String iotHubName, String resourceGroupName,
+        TestRouteInput input, Context context);
 
     /**
      * Test the new route
@@ -881,8 +865,8 @@ public interface IotHubResourcesClient {
      * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a shared access policy by name from an IoT hub. For more information, see:
@@ -902,8 +886,8 @@ public interface IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(
-        String resourceGroupName, String resourceName, String keyName, Context context);
+    Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(String resourceGroupName,
+        String resourceName, String keyName, Context context);
 
     /**
      * Get a shared access policy by name from an IoT hub. For more information, see:
@@ -922,8 +906,8 @@ public interface IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessSignatureAuthorizationRuleInner getKeysForKeyName(
-        String resourceGroupName, String resourceName, String keyName);
+    SharedAccessSignatureAuthorizationRuleInner getKeysForKeyName(String resourceGroupName, String resourceName,
+        String keyName);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -945,8 +929,8 @@ public interface IotHubResourcesClient {
      * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResponseInner> exportDevicesWithResponse(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context);
+    Response<JobResponseInner> exportDevicesWithResponse(String resourceGroupName, String resourceName,
+        ExportDevicesRequest exportDevicesParameters, Context context);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -967,8 +951,8 @@ public interface IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResponseInner exportDevices(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters);
+    JobResponseInner exportDevices(String resourceGroupName, String resourceName,
+        ExportDevicesRequest exportDevicesParameters);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -990,8 +974,8 @@ public interface IotHubResourcesClient {
      * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResponseInner> importDevicesWithResponse(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context);
+    Response<JobResponseInner> importDevicesWithResponse(String resourceGroupName, String resourceName,
+        ImportDevicesRequest importDevicesParameters, Context context);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -1012,6 +996,6 @@ public interface IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResponseInner importDevices(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters);
+    JobResponseInner importDevices(String resourceGroupName, String resourceName,
+        ImportDevicesRequest importDevicesParameters);
 }

@@ -41,8 +41,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @param client the instance of the service client containing this operation class.
      */
     DatabaseOperationsClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DatabaseOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DatabaseOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,21 +53,16 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface DatabaseOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/inviteFollower")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/inviteFollower")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollower(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollower(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseInviteFollowerRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,19 +79,15 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters) {
+    private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -115,19 +106,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .inviteFollower(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.inviteFollower(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, databaseName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -146,23 +126,15 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context) {
+    private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -181,17 +153,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .inviteFollower(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.inviteFollower(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -208,8 +171,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInviteFollowerResultInner> inviteFollowerAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters) {
+    private Mono<DatabaseInviteFollowerResultInner> inviteFollowerAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters) {
         return inviteFollowerWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -228,12 +191,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @return the result returned from a follower invitation generation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context) {
+    public Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters, Context context) {
         return inviteFollowerWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .block();
     }
@@ -251,8 +210,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @return the result returned from a follower invitation generation request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInviteFollowerResultInner inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters) {
+    public DatabaseInviteFollowerResultInner inviteFollower(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters) {
         return inviteFollowerWithResponse(resourceGroupName, clusterName, databaseName, parameters, Context.NONE)
             .getValue();
     }

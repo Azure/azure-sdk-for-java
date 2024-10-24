@@ -38,87 +38,65 @@ public final class TablesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"retentionInDays\":2021326514,\"totalRetentionInDays\":687821178,\"archiveRetentionInDays\":1888346372,\"searchResults\":{\"query\":\"jdrqcrjidhftu\",\"description\":\"hdxlw\",\"limit\":1689412377,\"startSearchTime\":\"2021-01-18T12:02:21Z\",\"endSearchTime\":\"2020-12-27T03:18:28Z\",\"sourceTable\":\"kfnjyixhafrat\",\"azureAsyncOperationId\":\"mbjrou\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-04-03T06:34:57Z\",\"endRestoreTime\":\"2021-06-08T22:52:49Z\",\"sourceTable\":\"qjrhuzgfxonj\",\"azureAsyncOperationId\":\"usllywpvtiotz\"},\"resultStatistics\":{\"progress\":88.4287,\"ingestedRecords\":1402835309,\"scannedGb\":62.674488},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"qiuasigrows\",\"schema\":{\"name\":\"equygdjboqgrmtq\",\"displayName\":\"qevadrmmw\",\"description\":\"awvcmjzkxiid\",\"columns\":[{\"name\":\"s\",\"type\":\"string\",\"dataTypeHint\":\"armPath\",\"displayName\":\"iqazugamxzkr\",\"description\":\"oiisbamnppcce\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"bezaxyfukzxuiz\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"kpetiarxq\",\"description\":\"bxdukecpxdazvd\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"os\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"s\",\"description\":\"rpcaqkiofkbtf\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"l\",\"type\":\"int\",\"dataTypeHint\":\"uri\",\"displayName\":\"hez\",\"description\":\"u\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"pbrruyu\",\"type\":\"dynamic\",\"dataTypeHint\":\"ip\",\"displayName\":\"bjwcolbmx\",\"description\":\"nwtpcpahprz\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"hocn\",\"zcmjhngxnoqrxt\",\"isn\"],\"labels\":[\"hdlmydidwhe\"],\"source\":\"customer\",\"tableType\":\"RestoredLogs\",\"tableSubType\":\"Classic\",\"solutions\":[\"esxxhmwcdbckyoi\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"njzrbhtmeplvu\",\"createdByType\":\"User\",\"createdAt\":\"2021-07-04T16:43:03Z\",\"lastModifiedBy\":\"bpgsnbagnc\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2020-12-23T11:14:04Z\"},\"id\":\"muowakywalhjy\",\"name\":\"xcgqtagdrclsso\",\"type\":\"jomevtfycnlb\"}";
+        String responseStr
+            = "{\"properties\":{\"retentionInDays\":2021326514,\"totalRetentionInDays\":687821178,\"archiveRetentionInDays\":1888346372,\"searchResults\":{\"query\":\"jdrqcrjidhftu\",\"description\":\"hdxlw\",\"limit\":1689412377,\"startSearchTime\":\"2021-01-18T12:02:21Z\",\"endSearchTime\":\"2020-12-27T03:18:28Z\",\"sourceTable\":\"kfnjyixhafrat\",\"azureAsyncOperationId\":\"mbjrou\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-04-03T06:34:57Z\",\"endRestoreTime\":\"2021-06-08T22:52:49Z\",\"sourceTable\":\"qjrhuzgfxonj\",\"azureAsyncOperationId\":\"usllywpvtiotz\"},\"resultStatistics\":{\"progress\":88.4287,\"ingestedRecords\":1402835309,\"scannedGb\":62.674488},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"qiuasigrows\",\"schema\":{\"name\":\"equygdjboqgrmtq\",\"displayName\":\"qevadrmmw\",\"description\":\"awvcmjzkxiid\",\"columns\":[{\"name\":\"s\",\"type\":\"string\",\"dataTypeHint\":\"armPath\",\"displayName\":\"iqazugamxzkr\",\"description\":\"oiisbamnppcce\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"bezaxyfukzxuiz\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"kpetiarxq\",\"description\":\"bxdukecpxdazvd\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"os\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"s\",\"description\":\"rpcaqkiofkbtf\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"l\",\"type\":\"int\",\"dataTypeHint\":\"uri\",\"displayName\":\"hez\",\"description\":\"u\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"pbrruyu\",\"type\":\"dynamic\",\"dataTypeHint\":\"ip\",\"displayName\":\"bjwcolbmx\",\"description\":\"nwtpcpahprz\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"hocn\",\"zcmjhngxnoqrxt\",\"isn\"],\"labels\":[\"hdlmydidwhe\"],\"source\":\"customer\",\"tableType\":\"RestoredLogs\",\"tableSubType\":\"Classic\",\"solutions\":[\"esxxhmwcdbckyoi\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"njzrbhtmeplvu\",\"createdByType\":\"User\",\"createdAt\":\"2021-07-04T16:43:03Z\",\"lastModifiedBy\":\"bpgsnbagnc\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2020-12-23T11:14:04Z\"},\"id\":\"muowakywalhjy\",\"name\":\"xcgqtagdrclsso\",\"type\":\"jomevtfycnlb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Table response =
-            manager
-                .tables()
-                .define("mvqdbpbhfckdvez")
-                .withExistingWorkspace("ltbxoeeonqlnfw", "y")
-                .withRetentionInDays(1831192721)
-                .withTotalRetentionInDays(1245592437)
-                .withSearchResults(
-                    new SearchResults()
-                        .withQuery("ub")
-                        .withDescription("qfblhkalehpa")
-                        .withLimit(1886897844)
-                        .withStartSearchTime(OffsetDateTime.parse("2021-10-02T07:23:26Z"))
-                        .withEndSearchTime(OffsetDateTime.parse("2021-07-31T19:35:54Z")))
-                .withRestoredLogs(
-                    new RestoredLogs()
-                        .withStartRestoreTime(OffsetDateTime.parse("2021-10-21T05:00:19Z"))
-                        .withEndRestoreTime(OffsetDateTime.parse("2021-01-10T08:24:54Z"))
-                        .withSourceTable("pczykmktpvwxqc"))
-                .withPlan(TablePlanEnum.BASIC)
-                .withSchema(
-                    new Schema()
-                        .withName("wphpzfngqj")
-                        .withDisplayName("idftujwjjufwbe")
-                        .withDescription("k")
-                        .withColumns(
-                            Arrays
-                                .asList(
-                                    new Column()
-                                        .withName("tssruqnmdvhazc")
-                                        .withType(ColumnTypeEnum.INT)
-                                        .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-                                        .withDisplayName("swbqerzwxi")
-                                        .withDescription("x"),
-                                    new Column()
-                                        .withName("lbpktg")
-                                        .withType(ColumnTypeEnum.DYNAMIC)
-                                        .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
-                                        .withDisplayName("ambewreswmowe")
-                                        .withDescription("mut"))))
-                .create();
+        Table response = manager.tables()
+            .define("mvqdbpbhfckdvez")
+            .withExistingWorkspace("ltbxoeeonqlnfw", "y")
+            .withRetentionInDays(1831192721)
+            .withTotalRetentionInDays(1245592437)
+            .withSearchResults(new SearchResults().withQuery("ub")
+                .withDescription("qfblhkalehpa")
+                .withLimit(1886897844)
+                .withStartSearchTime(OffsetDateTime.parse("2021-10-02T07:23:26Z"))
+                .withEndSearchTime(OffsetDateTime.parse("2021-07-31T19:35:54Z")))
+            .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-10-21T05:00:19Z"))
+                .withEndRestoreTime(OffsetDateTime.parse("2021-01-10T08:24:54Z"))
+                .withSourceTable("pczykmktpvwxqc"))
+            .withPlan(TablePlanEnum.BASIC)
+            .withSchema(new Schema().withName("wphpzfngqj")
+                .withDisplayName("idftujwjjufwbe")
+                .withDescription("k")
+                .withColumns(Arrays.asList(
+                    new Column().withName("tssruqnmdvhazc")
+                        .withType(ColumnTypeEnum.INT)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
+                        .withDisplayName("swbqerzwxi")
+                        .withDescription("x"),
+                    new Column().withName("lbpktg")
+                        .withType(ColumnTypeEnum.DYNAMIC)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
+                        .withDisplayName("ambewreswmowe")
+                        .withDescription("mut"))))
+            .create();
 
         Assertions.assertEquals(2021326514, response.retentionInDays());
         Assertions.assertEquals(687821178, response.totalRetentionInDays());
         Assertions.assertEquals("jdrqcrjidhftu", response.searchResults().query());
         Assertions.assertEquals("hdxlw", response.searchResults().description());
         Assertions.assertEquals(1689412377, response.searchResults().limit());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-18T12:02:21Z"), response.searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T12:02:21Z"),
+            response.searchResults().startSearchTime());
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T03:18:28Z"), response.searchResults().endSearchTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-03T06:34:57Z"), response.restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T06:34:57Z"),
+            response.restoredLogs().startRestoreTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T22:52:49Z"), response.restoredLogs().endRestoreTime());
         Assertions.assertEquals("qjrhuzgfxonj", response.restoredLogs().sourceTable());
         Assertions.assertEquals(TablePlanEnum.ANALYTICS, response.plan());

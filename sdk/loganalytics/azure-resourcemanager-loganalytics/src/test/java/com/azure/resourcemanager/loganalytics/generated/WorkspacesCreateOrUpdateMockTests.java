@@ -41,81 +41,57 @@ public final class WorkspacesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"customerId\":\"nqodxahhxhq\",\"sku\":{\"name\":\"CapacityReservation\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"oqgyipemchgav\"},\"retentionInDays\":1196552141,\"workspaceCapping\":{\"dailyQuotaGb\":99.52606584277349,\"quotaNextResetTime\":\"xptlghwzho\",\"dataIngestionStatus\":\"SubscriptionSuspended\"},\"createdDate\":\"j\",\"modifiedDate\":\"liuhqawmoaiancz\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Disabled\",\"forceCmkForQuery\":true,\"privateLinkScopedResources\":[{\"resourceId\":\"xydkxrx\",\"scopeId\":\"bxiwkgfbqljn\"},{\"resourceId\":\"hychocokuleh\",\"scopeId\":\"qlrqffaweyurk\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"juqdbrx\",\"disableLocalAuth\":true,\"\":{\"jbuscg\":\"databapxkiyfjjkb\",\"mclujyxkyxlzgs\":\"datauusioycblev\",\"taf\":\"datagkzz\"}},\"defaultDataCollectionRuleResourceId\":\"zffovwmbjl\"},\"identity\":{\"principalId\":\"czpgvdwnapfdq\",\"tenantId\":\"wf\",\"type\":\"user\",\"userAssignedIdentities\":{\"eldotjv\":{\"principalId\":\"wjtkschgcgqyhl\",\"clientId\":\"eyqrhv\"}}},\"systemData\":{\"createdBy\":\"iswskuk\",\"createdByType\":\"Application\",\"createdAt\":\"2021-10-04T09:54:02Z\",\"lastModifiedBy\":\"wispkxk\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-20T02:17:13Z\"},\"etag\":\"dlqvtwknvg\",\"location\":\"mb\",\"tags\":{\"tmqa\":\"yw\",\"zcbyfq\":\"kueatgroeshoy\",\"uvjmv\":\"kfaoytehq\"},\"id\":\"mtdwcky\",\"name\":\"roejnndl\",\"type\":\"djus\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"customerId\":\"nqodxahhxhq\",\"sku\":{\"name\":\"CapacityReservation\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"oqgyipemchgav\"},\"retentionInDays\":1196552141,\"workspaceCapping\":{\"dailyQuotaGb\":99.52606584277349,\"quotaNextResetTime\":\"xptlghwzho\",\"dataIngestionStatus\":\"SubscriptionSuspended\"},\"createdDate\":\"j\",\"modifiedDate\":\"liuhqawmoaiancz\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Disabled\",\"forceCmkForQuery\":true,\"privateLinkScopedResources\":[{\"resourceId\":\"xydkxrx\",\"scopeId\":\"bxiwkgfbqljn\"},{\"resourceId\":\"hychocokuleh\",\"scopeId\":\"qlrqffaweyurk\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"juqdbrx\",\"disableLocalAuth\":true,\"\":{\"jbuscg\":\"databapxkiyfjjkb\",\"mclujyxkyxlzgs\":\"datauusioycblev\",\"taf\":\"datagkzz\"}},\"defaultDataCollectionRuleResourceId\":\"zffovwmbjl\"},\"identity\":{\"principalId\":\"czpgvdwnapfdq\",\"tenantId\":\"wf\",\"type\":\"user\",\"userAssignedIdentities\":{\"eldotjv\":{\"principalId\":\"wjtkschgcgqyhl\",\"clientId\":\"eyqrhv\"}}},\"systemData\":{\"createdBy\":\"iswskuk\",\"createdByType\":\"Application\",\"createdAt\":\"2021-10-04T09:54:02Z\",\"lastModifiedBy\":\"wispkxk\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-20T02:17:13Z\"},\"etag\":\"dlqvtwknvg\",\"location\":\"mb\",\"tags\":{\"tmqa\":\"yw\",\"zcbyfq\":\"kueatgroeshoy\",\"uvjmv\":\"kfaoytehq\"},\"id\":\"mtdwcky\",\"name\":\"roejnndl\",\"type\":\"djus\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workspace response =
-            manager
-                .workspaces()
-                .define("mr")
-                .withRegion("hgm")
-                .withExistingResourceGroup("nbmjksibjgsjjxxa")
-                .withTags(
-                    mapOf(
-                        "xrerlniylylyf",
-                        "nwyvq",
-                        "yjtcdxabbujftab",
-                        "xzutgqztwhghmupg",
-                        "wwnlzafwxudgnh",
-                        "nbbklqpxzucafed"))
-                .withIdentity(
-                    new Identity()
-                        .withType(IdentityType.USER)
-                        .withUserAssignedIdentities(mapOf("yvca", new UserIdentityProperties())))
-                .withEtag("uf")
-                .withSku(
-                    new WorkspaceSku()
-                        .withName(WorkspaceSkuNameEnum.LACLUSTER)
-                        .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO))
-                .withRetentionInDays(2095777913)
-                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(23.433679879842263D))
-                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
-                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
-                .withForceCmkForQuery(true)
-                .withFeatures(
-                    new WorkspaceFeatures()
-                        .withEnableDataExport(false)
-                        .withImmediatePurgeDataOn30Days(true)
-                        .withEnableLogAccessUsingOnlyResourcePermissions(false)
-                        .withClusterResourceId("smffjkutycyarnr")
-                        .withDisableLocalAuth(true)
-                        .withAdditionalProperties(mapOf()))
-                .withDefaultDataCollectionRuleResourceId("pyglqdhmrjzral")
-                .create();
+        Workspace response = manager.workspaces()
+            .define("mr")
+            .withRegion("hgm")
+            .withExistingResourceGroup("nbmjksibjgsjjxxa")
+            .withTags(mapOf("xrerlniylylyf", "nwyvq", "yjtcdxabbujftab", "xzutgqztwhghmupg", "wwnlzafwxudgnh",
+                "nbbklqpxzucafed"))
+            .withIdentity(new Identity().withType(IdentityType.USER)
+                .withUserAssignedIdentities(mapOf("yvca", new UserIdentityProperties())))
+            .withEtag("uf")
+            .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.LACLUSTER)
+                .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO))
+            .withRetentionInDays(2095777913)
+            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(23.433679879842263D))
+            .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
+            .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
+            .withForceCmkForQuery(true)
+            .withFeatures(new WorkspaceFeatures().withEnableDataExport(false)
+                .withImmediatePurgeDataOn30Days(true)
+                .withEnableLogAccessUsingOnlyResourcePermissions(false)
+                .withClusterResourceId("smffjkutycyarnr")
+                .withDisableLocalAuth(true)
+                .withAdditionalProperties(mapOf()))
+            .withDefaultDataCollectionRuleResourceId("pyglqdhmrjzral")
+            .create();
 
         Assertions.assertEquals("mb", response.location());
         Assertions.assertEquals("yw", response.tags().get("tmqa"));
         Assertions.assertEquals(IdentityType.USER, response.identity().type());
         Assertions.assertEquals("dlqvtwknvg", response.etag());
         Assertions.assertEquals(WorkspaceSkuNameEnum.CAPACITY_RESERVATION, response.sku().name());
-        Assertions
-            .assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, response.sku().capacityReservationLevel());
+        Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO,
+            response.sku().capacityReservationLevel());
         Assertions.assertEquals(1196552141, response.retentionInDays());
         Assertions.assertEquals(99.52606584277349D, response.workspaceCapping().dailyQuotaGb());
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccessForIngestion());

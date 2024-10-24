@@ -26,8 +26,8 @@ public interface SavedSearchesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String savedSearchId,
+        Context context);
 
     /**
      * Deletes the specified saved search in a given workspace.
@@ -56,12 +56,8 @@ public interface SavedSearchesClient {
      * @return value object for saved search results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavedSearchInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String savedSearchId,
-        SavedSearchInner parameters,
-        Context context);
+    Response<SavedSearchInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String savedSearchId, SavedSearchInner parameters, Context context);
 
     /**
      * Creates or updates a saved search for a given workspace.
@@ -76,8 +72,8 @@ public interface SavedSearchesClient {
      * @return value object for saved search results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavedSearchInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters);
+    SavedSearchInner createOrUpdate(String resourceGroupName, String workspaceName, String savedSearchId,
+        SavedSearchInner parameters);
 
     /**
      * Gets the specified saved search for a given workspace.
@@ -92,8 +88,8 @@ public interface SavedSearchesClient {
      * @return the specified saved search for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavedSearchInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context);
+    Response<SavedSearchInner> getWithResponse(String resourceGroupName, String workspaceName, String savedSearchId,
+        Context context);
 
     /**
      * Gets the specified saved search for a given workspace.
@@ -121,8 +117,8 @@ public interface SavedSearchesClient {
      * @return the saved searches for a given Log Analytics Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.

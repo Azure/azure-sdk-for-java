@@ -21,8 +21,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String gatewayId,
+        Context context);
 
     /**
      * Delete a Log Analytics gateway.

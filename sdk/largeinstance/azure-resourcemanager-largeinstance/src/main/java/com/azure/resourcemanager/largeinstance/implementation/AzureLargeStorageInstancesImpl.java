@@ -75,8 +75,8 @@ public final class AzureLargeStorageInstancesImpl implements AzureLargeStorageIn
 
     public Response<AzureLargeStorageInstance> updateWithResponse(String resourceGroupName,
         String azureLargeStorageInstanceName, AzureLargeStorageInstanceTagsUpdate properties, Context context) {
-        Response<AzureLargeStorageInstanceInner> inner = this.serviceClient().updateWithResponse(resourceGroupName,
-            azureLargeStorageInstanceName, properties, context);
+        Response<AzureLargeStorageInstanceInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, azureLargeStorageInstanceName, properties, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureLargeStorageInstanceImpl(inner.getValue(), this.manager()));

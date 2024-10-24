@@ -72,8 +72,7 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
         return createEncryptor(key, iv, additionalAuthenticatedData, null, null);
@@ -81,9 +80,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
@@ -94,8 +92,7 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
         return createDecryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
@@ -103,9 +100,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");

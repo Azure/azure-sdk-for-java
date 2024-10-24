@@ -94,10 +94,8 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LogAnalyticsQueryPackInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LogAnalyticsQueryPackInner"));
         } else {
             innerProperties().validate();
         }

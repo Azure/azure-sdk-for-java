@@ -30,39 +30,27 @@ public final class AvailableServiceTiersListByWorkspaceWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "[{\"serviceTier\":\"CapacityReservation\",\"enabled\":true,\"minimumRetention\":3767644182859901371,\"maximumRetention\":7248546755237746462,\"defaultRetention\":840422895247134750,\"capacityReservationLevel\":8295020029995054755,\"lastSkuUpdate\":\"ujr\"},{\"serviceTier\":\"PerGB2018\",\"enabled\":false,\"minimumRetention\":120736086062160717,\"maximumRetention\":2641992673329436235,\"defaultRetention\":3461505183507942780,\"capacityReservationLevel\":854242813011904996,\"lastSkuUpdate\":\"ikzoeovvtzejetj\"},{\"serviceTier\":\"Free\",\"enabled\":false,\"minimumRetention\":7781117605646169012,\"maximumRetention\":159668866868514414,\"defaultRetention\":7370744360813533838,\"capacityReservationLevel\":700409671675457936,\"lastSkuUpdate\":\"rzvh\"}]";
+        String responseStr
+            = "[{\"serviceTier\":\"CapacityReservation\",\"enabled\":true,\"minimumRetention\":3767644182859901371,\"maximumRetention\":7248546755237746462,\"defaultRetention\":840422895247134750,\"capacityReservationLevel\":8295020029995054755,\"lastSkuUpdate\":\"ujr\"},{\"serviceTier\":\"PerGB2018\",\"enabled\":false,\"minimumRetention\":120736086062160717,\"maximumRetention\":2641992673329436235,\"defaultRetention\":3461505183507942780,\"capacityReservationLevel\":854242813011904996,\"lastSkuUpdate\":\"ikzoeovvtzejetj\"},{\"serviceTier\":\"Free\",\"enabled\":false,\"minimumRetention\":7781117605646169012,\"maximumRetention\":159668866868514414,\"defaultRetention\":7370744360813533838,\"capacityReservationLevel\":700409671675457936,\"lastSkuUpdate\":\"rzvh\"}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        List<AvailableServiceTier> response =
-            manager
-                .availableServiceTiers()
-                .listByWorkspaceWithResponse("ztlvtmvagbwidqlv", "ukoveofi", com.azure.core.util.Context.NONE)
-                .getValue();
+        List<AvailableServiceTier> response = manager.availableServiceTiers()
+            .listByWorkspaceWithResponse("ztlvtmvagbwidqlv", "ukoveofi", com.azure.core.util.Context.NONE)
+            .getValue();
     }
 }

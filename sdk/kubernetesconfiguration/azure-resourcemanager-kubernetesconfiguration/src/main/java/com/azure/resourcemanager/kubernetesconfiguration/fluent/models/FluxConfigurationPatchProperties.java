@@ -184,8 +184,8 @@ public final class FluxConfigurationPatchProperties {
      * @param kustomizations the kustomizations value to set.
      * @return the FluxConfigurationPatchProperties object itself.
      */
-    public FluxConfigurationPatchProperties withKustomizations(
-        Map<String, KustomizationPatchDefinition> kustomizations) {
+    public FluxConfigurationPatchProperties
+        withKustomizations(Map<String, KustomizationPatchDefinition> kustomizations) {
         this.kustomizations = kustomizations;
         return this;
     }
@@ -207,8 +207,8 @@ public final class FluxConfigurationPatchProperties {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationPatchProperties object itself.
      */
-    public FluxConfigurationPatchProperties withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public FluxConfigurationPatchProperties
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         this.configurationProtectedSettings = configurationProtectedSettings;
         return this;
     }
@@ -229,14 +229,11 @@ public final class FluxConfigurationPatchProperties {
             azureBlob().validate();
         }
         if (kustomizations() != null) {
-            kustomizations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            kustomizations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -47,8 +47,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets a private endpoint connection.

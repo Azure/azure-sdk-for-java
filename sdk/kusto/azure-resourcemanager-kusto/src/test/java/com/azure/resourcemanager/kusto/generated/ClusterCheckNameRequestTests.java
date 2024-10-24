@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"t\"}").toObject(ClusterCheckNameRequest.class);
+        ClusterCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"t\"}").toObject(ClusterCheckNameRequest.class);
         Assertions.assertEquals("t", model.name());
     }
 

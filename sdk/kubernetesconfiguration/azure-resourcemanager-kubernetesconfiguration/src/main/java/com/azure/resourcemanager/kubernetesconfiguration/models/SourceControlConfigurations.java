@@ -27,13 +27,8 @@ public interface SourceControlConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Source Control Configuration along with {@link Response}.
      */
-    Response<SourceControlConfiguration> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context);
+    Response<SourceControlConfiguration> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName, Context context);
 
     /**
      * Gets details of the Source Control Configuration.
@@ -50,12 +45,8 @@ public interface SourceControlConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Source Control Configuration.
      */
-    SourceControlConfiguration get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName);
+    SourceControlConfiguration get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String sourceControlConfigurationName);
 
     /**
      * Create a new Kubernetes Source Control Configuration.
@@ -74,14 +65,9 @@ public interface SourceControlConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SourceControl Configuration object returned in Get &amp; Put response along with {@link Response}.
      */
-    Response<SourceControlConfiguration> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration,
-        Context context);
+    Response<SourceControlConfiguration> createOrUpdateWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration, Context context);
 
     /**
      * Create a new Kubernetes Source Control Configuration.
@@ -99,12 +85,8 @@ public interface SourceControlConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SourceControl Configuration object returned in Get &amp; Put response.
      */
-    SourceControlConfiguration createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
+    SourceControlConfiguration createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration);
 
     /**
@@ -122,11 +104,7 @@ public interface SourceControlConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String sourceControlConfigurationName);
 
     /**
@@ -145,13 +123,8 @@ public interface SourceControlConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context);
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String sourceControlConfigurationName, Context context);
 
     /**
      * List all Source Control Configurations.
@@ -168,8 +141,8 @@ public interface SourceControlConfigurations {
      * @return result of the request to list Source Control Configurations as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<SourceControlConfiguration> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName);
 
     /**
      * List all Source Control Configurations.
@@ -187,6 +160,6 @@ public interface SourceControlConfigurations {
      * @return result of the request to list Source Control Configurations as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<SourceControlConfiguration> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context);
 }

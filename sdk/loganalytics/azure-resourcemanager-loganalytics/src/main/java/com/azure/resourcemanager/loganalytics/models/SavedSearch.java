@@ -107,12 +107,8 @@ public interface SavedSearch {
 
     /** The entirety of the SavedSearch definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCategory,
-            DefinitionStages.WithDisplayName,
-            DefinitionStages.WithQuery,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCategory,
+        DefinitionStages.WithDisplayName, DefinitionStages.WithQuery, DefinitionStages.WithCreate {
     }
 
     /** The SavedSearch definition stages. */
@@ -171,12 +167,8 @@ public interface SavedSearch {
          * The stage of the SavedSearch definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithFunctionAlias,
-                DefinitionStages.WithFunctionParameters,
-                DefinitionStages.WithVersion {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithFunctionAlias, DefinitionStages.WithFunctionParameters, DefinitionStages.WithVersion {
             /**
              * Executes the create request.
              *
@@ -266,15 +258,9 @@ public interface SavedSearch {
     SavedSearch.Update update();
 
     /** The template for SavedSearch update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithEtag,
-            UpdateStages.WithCategory,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithQuery,
-            UpdateStages.WithFunctionAlias,
-            UpdateStages.WithFunctionParameters,
-            UpdateStages.WithVersion {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithEtag, UpdateStages.WithCategory,
+        UpdateStages.WithDisplayName, UpdateStages.WithQuery, UpdateStages.WithFunctionAlias,
+        UpdateStages.WithFunctionParameters, UpdateStages.WithVersion {
         /**
          * Executes the update request.
          *
