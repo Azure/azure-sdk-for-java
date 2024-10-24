@@ -13,9 +13,12 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessTokenCache;
+import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -75,7 +78,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         if (this.scopes == null) {
             return Mono.empty();
         }
-        return setAuthorizationHeaderHelper(context, new TokenRequestContext().addScopes(this.scopes), false);
+        return setAuthorizationHeaderHelper(context, new TokenRequestContext().addScopes(this.scopes).setCaeEnabled(true), false);
     }
 
     /**
@@ -84,19 +87,28 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(scopes), false);
+        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true), false);
     }
 
     /**
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
      * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
      * re-authentication.
+     * <p>
+     * The default implementation will attempt to handle Continuous Access Evaluation (CAE) challenges.
+     * </p>
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
      * @return A {@link Mono} containing {@link TokenRequestContext}
      */
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
+        if (AuthorizationChallengeParser.isCaeClaimsChallenge(response)) {
+            TokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
+            if (tokenRequestContext != null) {
+                return setAuthorizationHeader(context, tokenRequestContext).then(Mono.just(true));
+            }
+        }
         return Mono.just(false);
     }
 
@@ -104,12 +116,23 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
      * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
      * re-authentication.
+     * <p>
+     * The default implementation will attempt to handle Continuous Access Evaluation (CAE) challenges.
+     * </p>
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
      * @return A boolean indicating if containing the {@link TokenRequestContext} for re-authentication
      */
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        if (AuthorizationChallengeParser.isCaeClaimsChallenge(response)) {
+            TokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
+            if (tokenRequestContext != null) {
+                setAuthorizationHeaderSync(context, tokenRequestContext);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -197,5 +220,25 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private static void setAuthorizationHeader(HttpHeaders headers, String token) {
         headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+    }
+
+    private TokenRequestContext getTokenRequestContextForCaeChallenge(HttpResponse response) {
+        String decodedClaims = null;
+        String encodedClaims = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "Bearer", "claims");
+
+        try {
+            if (!CoreUtils.isNullOrEmpty(encodedClaims)) {
+                decodedClaims = new String(Base64.getDecoder().decode(encodedClaims));
+            }
+        } catch (IllegalArgumentException e) {
+            // We don't want to throw here, but we want to log this for future incident investigation.
+            LOGGER.warning("Failed to decode the claims from the CAE challenge. Encoded claims" + encodedClaims);
+        }
+
+        if (decodedClaims == null) {
+            return null;
+        }
+
+        return new TokenRequestContext().setClaims(decodedClaims).addScopes(scopes).setCaeEnabled(true);
     }
 }
