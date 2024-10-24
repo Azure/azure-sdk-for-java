@@ -27,7 +27,7 @@ jobs:
             - 'sdk/servicebus'
             - 'sdk/eventhubs'
             - 'common/perf-test-core'
-            - 'sdk/monitor/azure-monitor-opentelemetry-exporter'
+            - 'sdk/monitor/azure-monitor-opentelemetry-autoconfigure'
             - 'sdk/parents/azure-perf-test-parent'
             - 'sdk/parents/azure-sdk-parent'
             - 'eng/code-quality-reports'

@@ -12,7 +12,7 @@
   <modules>
       <module>azure-monitor-ingestion</module>
       <module>azure-monitor-ingestion-perf</module>
-      <module>azure-monitor-opentelemetry-exporter</module>
+      <module>azure-monitor-opentelemetry-autoconfigure</module>
       <module>azure-monitor-query</module>
       <module>azure-monitor-query-perf</module>
   </modules>

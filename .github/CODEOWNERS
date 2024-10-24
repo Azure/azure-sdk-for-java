@@ -591,7 +591,7 @@
 # ServiceOwners:                                     @ambhatna @savjani
 
 # PRLabel:  %OpenTelemetry
-/sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
