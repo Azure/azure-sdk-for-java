@@ -144,6 +144,11 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void uploadInputStreamMinOverwriteFails() {
+        assertThrows(BlobStorageException.class, () -> bc.upload(DATA.getDefaultInputStream()));
+    }
+
+    @Test
     public void uploadInputStreamOverwriteFails() {
         assertThrows(BlobStorageException.class, () -> bc.upload(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize()));
@@ -258,6 +263,7 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadInputStreamMin() {
+        bc = cc.getBlobClient(generateBlobName());
         assertDoesNotThrow(() -> bc.upload(DATA.getDefaultInputStream()));
         TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }

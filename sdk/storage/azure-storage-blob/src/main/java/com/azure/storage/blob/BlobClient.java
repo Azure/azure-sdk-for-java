@@ -248,7 +248,7 @@ public class BlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(InputStream data) {
-        uploadWithResponse(new BlobParallelUploadOptions(data), null, null);
+        upload(data, false);
     }
 
     /**
