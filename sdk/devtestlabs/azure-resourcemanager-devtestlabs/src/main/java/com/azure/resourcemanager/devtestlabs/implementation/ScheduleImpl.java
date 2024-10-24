@@ -125,22 +125,18 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .createOrUpdateWithResponse(resourceGroupName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .createOrUpdateWithResponse(resourceGroupName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -156,22 +152,18 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .updateWithResponse(resourceGroupName, name, updateSchedule, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .updateWithResponse(resourceGroupName, name, updateSchedule, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .updateWithResponse(resourceGroupName, name, updateSchedule, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .updateWithResponse(resourceGroupName, name, updateSchedule, context)
+            .getValue();
         return this;
     }
 
@@ -184,23 +176,19 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
 
     public Schedule refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchedules()
-                .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchedules()
+            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

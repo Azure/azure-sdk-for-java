@@ -663,13 +663,12 @@ public final class WorkflowInner extends Resource {
      *     set.
      * @return the WorkflowInner object itself.
      */
-    public WorkflowInner withNamespaceArtifactGenerationPropertiesNamespace(
-        String namespaceArtifactGenerationPropertiesNamespace) {
+    public WorkflowInner
+        withNamespaceArtifactGenerationPropertiesNamespace(String namespaceArtifactGenerationPropertiesNamespace) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkflowProperties();
         }
-        this
-            .innerProperties()
+        this.innerProperties()
             .withNamespaceArtifactGenerationPropertiesNamespace(namespaceArtifactGenerationPropertiesNamespace);
         return this;
     }

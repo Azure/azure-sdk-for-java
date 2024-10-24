@@ -51,37 +51,44 @@ public final class PrivateEndpointConnectionProxiesValidateWithResponseMockTests
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateEndpointConnectionProxies().validateWithResponse("xcv", "srhnjivo", "v",
-            new PrivateEndpointConnectionProxyInner()
-                .withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId("eamtmcz").withLocation("m")
-                    .withImmutableSubscriptionId("wcw").withImmutableResourceId("ioknssxmoj")
+        manager.privateEndpointConnectionProxies()
+            .validateWithResponse("xcv", "srhnjivo", "v", new PrivateEndpointConnectionProxyInner()
+                .withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId("eamtmcz")
+                    .withLocation("m")
+                    .withImmutableSubscriptionId("wcw")
+                    .withImmutableResourceId("ioknssxmoj")
                     .withVnetTrafficTag("vpkjpr")
                     .withManualPrivateLinkServiceConnections(Arrays.asList(
                         new PrivateLinkServiceConnection().withName("fz")
-                            .withGroupIds(Arrays.asList("yxgtczh", "ydbsd")).withRequestMessage("m"),
+                            .withGroupIds(Arrays.asList("yxgtczh", "ydbsd"))
+                            .withRequestMessage("m"),
                         new PrivateLinkServiceConnection().withName("maehvbbxurip")
-                            .withGroupIds(Arrays.asList("n", "tbaxk", "xywr")).withRequestMessage("pyklyhpluodpvru"),
+                            .withGroupIds(Arrays.asList("n", "tbaxk", "xywr"))
+                            .withRequestMessage("pyklyhpluodpvru"),
                         new PrivateLinkServiceConnection().withName("lgzi")
                             .withGroupIds(Arrays.asList("ostgkts", "vdxec", "zedqbcvhzlhplo", "qkdlw"))
                             .withRequestMessage("fbumlkx")))
                     .withPrivateLinkServiceConnections(Arrays.asList(
-                        new PrivateLinkServiceConnection().withName("fsmlmbtxhwgfw").withGroupIds(Arrays.asList("a"))
+                        new PrivateLinkServiceConnection().withName("fsmlmbtxhwgfw")
+                            .withGroupIds(Arrays.asList("a"))
                             .withRequestMessage("oezbrhubsk"),
-                        new PrivateLinkServiceConnection()
-                            .withName("dyg").withGroupIds(Arrays.asList("kkqfqjbvle", "rfmluiqtq", "fa"))
+                        new PrivateLinkServiceConnection().withName("dyg")
+                            .withGroupIds(Arrays.asList("kkqfqjbvle", "rfmluiqtq", "fa"))
                             .withRequestMessage("vnqqybaryeua"),
-                        new PrivateLinkServiceConnection()
-                            .withName("kq").withGroupIds(Arrays.asList("gzslesjcbhernnti", "w"))
+                        new PrivateLinkServiceConnection().withName("kq")
+                            .withGroupIds(Arrays.asList("gzslesjcbhernnti", "w"))
                             .withRequestMessage("cv")))
                     .withPrivateLinkServiceProxies(Arrays.asList(
                         new PrivateLinkServiceProxy().withId("rbe")
                             .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                .withDescription("hbuffkmrq").withActionsRequired("vvhmxtdrj"))
+                                .withDescription("hbuffkmrq")
+                                .withActionsRequired("vvhmxtdrj"))
                             .withRemotePrivateEndpointConnection(
                                 new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
                             .withGroupConnectivityInformation(
@@ -90,20 +97,21 @@ public final class PrivateEndpointConnectionProxiesValidateWithResponseMockTests
                         new PrivateLinkServiceProxy().withId("cjznmwcpmg")
                             .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                .withDescription("aufactkahzovajjz").withActionsRequired("xxpshneeku"))
+                                .withDescription("aufactkahzovajjz")
+                                .withActionsRequired("xxpshneeku"))
                             .withRemotePrivateEndpointConnection(
                                 new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
                             .withGroupConnectivityInformation(Arrays.asList(new GroupConnectivityInformation())),
                         new PrivateLinkServiceProxy().withId("sutujba")
                             .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                .withDescription("hminyflnorwmduv").withActionsRequired("klvxwmyg"))
+                                .withDescription("hminyflnorwmduv")
+                                .withActionsRequired("klvxwmyg"))
                             .withRemotePrivateEndpointConnection(
                                 new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
                             .withGroupConnectivityInformation(Arrays.asList(new GroupConnectivityInformation()))))
                     .withConnectionDetails(Arrays.asList(new ConnectionDetails(), new ConnectionDetails())))
-                .withStatus("dieuzaofj"),
-            com.azure.core.util.Context.NONE);
+                .withStatus("dieuzaofj"), com.azure.core.util.Context.NONE);
 
     }
 }
