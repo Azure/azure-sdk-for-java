@@ -11,8 +11,11 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
@@ -80,14 +83,27 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     private boolean isKeyVaultConfigured = false;
 
     private final boolean credentialConfigured;
-    
+
     private final int defaultMaxRetries;
+
+    private final AzureAppConfigurationProperties properties;
 
     public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
         boolean credentialConfigured) {
         this.defaultMaxRetries = defaultMaxRetries;
         this.clientFactory = clientFactory;
         this.credentialConfigured = credentialConfigured;
+
+        this.properties = null;
+    }
+
+    public AppConfigurationReplicaClientsBuilder(AzureAppConfigurationProperties properties,
+                                                 ConfigurationClientBuilderFactory clientFactory) {
+        this.properties = properties;
+        this.clientFactory = clientFactory;
+
+        this.credentialConfigured = true; // can use AzureAppConfigurationProperties instead
+        this.defaultMaxRetries = 3;// can use AzureAppConfigurationProperties instead
     }
 
     /**
@@ -132,22 +148,22 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         // Single client or Multiple?
         // If single call buildClient
-        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
-        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
-        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
+//        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
+//        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
+//        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
 
-        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
-            throw new IllegalArgumentException(
-                "More than 1 connection method was set for connecting to App Configuration.");
-        }
+//        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
+//            throw new IllegalArgumentException(
+//                "More than 1 connection method was set for connecting to App Configuration.");
+//        }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-            || configStore.getConnectionStrings().size() > 0;
-
-        if (credentialConfigured && connectionStringIsPresent) {
-            throw new IllegalArgumentException(
-                "More than 1 connection method was set for connecting to App Configuration.");
-        }
+//        boolean connectionStringIsPresent = configStore.getConnectionString() != null
+//            || configStore.getConnectionStrings().size() > 0;
+//
+//        if (credentialConfigured && connectionStringIsPresent) {
+//            throw new IllegalArgumentException(
+//                "More than 1 connection method was set for connecting to App Configuration.");
+//        }
 
         List<String> connectionStrings = configStore.getConnectionStrings();
         List<String> endpoints = configStore.getEndpoints();
@@ -165,18 +181,13 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
                 String endpoint = getEndpointFromConnectionString(connectionString);
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
-                ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
-
+                ConfigurationClientBuilder builder = clientFactory.build();
                 clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
             }
         } else {
             for (String endpoint : endpoints) {
-                ConfigurationClientBuilder builder = this.createBuilderInstance();
-
-                builder.credential(new DefaultAzureCredentialBuilder().build());
-
+                ConfigurationClientBuilder builder = clientFactory.build();
                 builder.endpoint(endpoint);
-
                 clients.add(modifyAndBuildClient(builder, endpoint, endpoints.size() - 1));
             }
         }
@@ -185,18 +196,20 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     public AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
         if (StringUtils.hasText(configStore.getConnectionString())) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
+//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
+//            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionString()));
+            ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else if (configStore.getConnectionStrings().size() > 0) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
+//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
+//            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionStrings().get(0)));
+            ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else {
-            ConfigurationClientBuilder builder = createBuilderInstance();
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            ConfigurationClientBuilder builder = clientFactory.build();
+//            builder.credential(new DefaultAzureCredentialBuilder().build());
 
             builder.endpoint(failoverEndpoint);
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
@@ -209,9 +222,9 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
-        if (clientProvider != null) {
-            clientProvider.customize(builder, endpoint);
-        }
+//        if (clientProvider != null) {
+//            clientProvider.customize(builder, endpoint);
+//        }
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 

@@ -2,9 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.util.StringUtils;
 
@@ -62,23 +69,42 @@ class AzureAppConfigurationBootstrapRegistrar {
         return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores(), replicaLookup);
     }
 
+    @SuppressWarnings("unchecked")
     private static AppConfigurationReplicaClientsBuilder replicaClientBuilder(ConfigDataLocationResolverContext context,
         Binder binder,
         AppConfigurationProviderProperties appProperties, AppConfigurationKeyVaultClientFactory keyVaultClientFactory) {
 
+        AzureGlobalProperties globalProperties = binder
+            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
+            .orElseGet(AzureGlobalProperties::new);
+        AzureAppConfigurationProperties appConfigurationProperties = binder
+            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
+            .orElseGet(AzureAppConfigurationProperties::new);
+        // the properties are used to custom the ConfigurationClientBuilder
+        AzureAppConfigurationProperties properties = AzureGlobalPropertiesUtils.loadProperties(globalProperties, appConfigurationProperties);
+        InstanceSupplier<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizer =
+            context.getBootstrapContext()
+                   .getRegisteredInstanceSupplier((Class<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>>) (Class<?>) AzureServiceClientBuilderCustomizer.class);
         ConfigurationClientBuilderFactory clientFactory = context.getBootstrapContext()
-            .getOrElse(ConfigurationClientBuilderFactory.class, null);
-
-        boolean isCredentialConfigured = isCredentialConfigured(null);
-
-        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
-            appProperties.getMaxRetries(), clientFactory,  isCredentialConfigured);
-
-        InstanceSupplier<ConfigurationClientCustomizer> customizer = context.getBootstrapContext()
-            .getRegisteredInstanceSupplier(ConfigurationClientCustomizer.class);
+            .getOrElseSupply(ConfigurationClientBuilderFactory.class, () -> {
+                ConfigurationClientBuilderFactory factory = new ConfigurationClientBuilderFactory(properties);
+                factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+                if (customizer != null) {
+                    factory.addBuilderCustomizer(customizer.get(context.getBootstrapContext()));
+                }
+                return factory;
+            });
         if (customizer != null) {
-            clientBuilder.setClientProvider(customizer.get(context.getBootstrapContext()));
+            clientFactory.addBuilderCustomizer(customizer.get(context.getBootstrapContext()));
         }
+//        boolean isCredentialConfigured = isCredentialConfigured(null);
+
+        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(properties, clientFactory);
+
+
+//        if (customizer != null) {
+//            clientBuilder.setClientProvider(customizer.get(context.getBootstrapContext()));
+//        }
 
         clientBuilder.setIsKeyVaultConfigured(keyVaultClientFactory.isConfigured());
 
