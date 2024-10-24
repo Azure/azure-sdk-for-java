@@ -1,6 +1,6 @@
 # Release History
 
-## g4
+## 1.3.0 (unreleased)
 
 ### other changes
 
