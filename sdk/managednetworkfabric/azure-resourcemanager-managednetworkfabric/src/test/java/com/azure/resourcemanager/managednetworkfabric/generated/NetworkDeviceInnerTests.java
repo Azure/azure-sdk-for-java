@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkDeviceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"version\":\"kbnbmxlxmwtyg\",\"networkDeviceSku\":\"zusitoqcahfs\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"lreesrfwsszvlcwl\",\"managementIpv4Address\":\"olntfx\",\"managementIpv6Address\":\"rqmipfjwf\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"xxbaizabuln\",\"serialNumber\":\"skjto\",\"annotation\":\"dzjs\"},\"location\":\"nvhxqqmqip\",\"tags\":{\"tfshksnyzm\":\"hfnzocx\",\"bnl\":\"pamwbw\",\"kvi\":\"lcefiqdktw\",\"uuzhw\":\"lpfliwoyn\"},\"id\":\"ladpcmhjha\",\"name\":\"sybkekymffzt\",\"type\":\"ilscv\"}")
-                .toObject(NetworkDeviceInner.class);
+        NetworkDeviceInner model = BinaryData.fromString(
+            "{\"properties\":{\"version\":\"kbnbmxlxmwtyg\",\"networkDeviceSku\":\"zusitoqcahfs\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"lreesrfwsszvlcwl\",\"managementIpv4Address\":\"olntfx\",\"managementIpv6Address\":\"rqmipfjwf\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"xxbaizabuln\",\"serialNumber\":\"skjto\",\"annotation\":\"dzjs\"},\"location\":\"nvhxqqmqip\",\"tags\":{\"tfshksnyzm\":\"hfnzocx\",\"bnl\":\"pamwbw\",\"kvi\":\"lcefiqdktw\",\"uuzhw\":\"lpfliwoyn\"},\"id\":\"ladpcmhjha\",\"name\":\"sybkekymffzt\",\"type\":\"ilscv\"}")
+            .toObject(NetworkDeviceInner.class);
         Assertions.assertEquals("nvhxqqmqip", model.location());
         Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));
         Assertions.assertEquals("zusitoqcahfs", model.networkDeviceSku());
@@ -28,14 +26,12 @@ public final class NetworkDeviceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDeviceInner model =
-            new NetworkDeviceInner()
-                .withLocation("nvhxqqmqip")
-                .withTags(mapOf("tfshksnyzm", "hfnzocx", "bnl", "pamwbw", "kvi", "lcefiqdktw", "uuzhw", "lpfliwoyn"))
-                .withNetworkDeviceSku("zusitoqcahfs")
-                .withHostname("xxbaizabuln")
-                .withSerialNumber("skjto")
-                .withAnnotation("dzjs");
+        NetworkDeviceInner model = new NetworkDeviceInner().withLocation("nvhxqqmqip")
+            .withTags(mapOf("tfshksnyzm", "hfnzocx", "bnl", "pamwbw", "kvi", "lcefiqdktw", "uuzhw", "lpfliwoyn"))
+            .withNetworkDeviceSku("zusitoqcahfs")
+            .withHostname("xxbaizabuln")
+            .withSerialNumber("skjto")
+            .withAnnotation("dzjs");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceInner.class);
         Assertions.assertEquals("nvhxqqmqip", model.location());
         Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));

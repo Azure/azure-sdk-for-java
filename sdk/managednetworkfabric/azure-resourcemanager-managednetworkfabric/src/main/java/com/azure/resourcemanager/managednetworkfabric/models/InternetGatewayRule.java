@@ -112,12 +112,8 @@ public interface InternetGatewayRule {
     InternetGatewayRuleInner innerModel();
 
     /** The entirety of the InternetGatewayRule definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithRuleProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithRuleProperties, DefinitionStages.WithCreate {
     }
 
     /** The InternetGatewayRule definition stages. */
