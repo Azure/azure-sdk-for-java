@@ -29,7 +29,7 @@ public final class AzureMonitorAutoconfigure {
      * @param autoConfigurationCustomizer The OpenTelemetry autoconfiguration to set up.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer) {
-        AzureMonitorExporterOptions exporterOptions = new AzureMonitorExporterOptions();
+        AzureMonitorAutoconfigureOptions exporterOptions = new AzureMonitorAutoconfigureOptions();
         customize(autoConfigurationCustomizer, exporterOptions);
     }
 
@@ -39,8 +39,8 @@ public final class AzureMonitorAutoconfigure {
      * @param connectionString The connection string to connect to an Application Insights resource.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer, String connectionString) {
-        AzureMonitorExporterOptions exporterOptions
-            = new AzureMonitorExporterOptions().connectionString(connectionString);
+        AzureMonitorAutoconfigureOptions exporterOptions
+            = new AzureMonitorAutoconfigureOptions().connectionString(connectionString);
         customize(autoConfigurationCustomizer, exporterOptions);
     }
 
@@ -50,7 +50,7 @@ public final class AzureMonitorAutoconfigure {
      * @param exporterOptions Advanced configuration to send the data to Azure Monitor.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
-        AzureMonitorExporterOptions exporterOptions) {
+        AzureMonitorAutoconfigureOptions exporterOptions) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);

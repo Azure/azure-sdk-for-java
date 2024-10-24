@@ -128,7 +128,7 @@
             files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoconfigure.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterOptions"/>
+            files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoconfigureOptions"/>
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
