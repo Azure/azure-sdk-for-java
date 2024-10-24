@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceUnitArtifactsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceUnitArtifacts model =
-            BinaryData
-                .fromString(
-                    "{\"templateUri\":\"pmqnja\",\"parametersUri\":\"ixjsprozvcputeg\",\"templateArtifactSourceRelativePath\":\"wmfdatscmdvpjhul\",\"parametersArtifactSourceRelativePath\":\"uvm\"}")
-                .toObject(ServiceUnitArtifacts.class);
+        ServiceUnitArtifacts model = BinaryData.fromString(
+            "{\"templateUri\":\"pmqnja\",\"parametersUri\":\"ixjsprozvcputeg\",\"templateArtifactSourceRelativePath\":\"wmfdatscmdvpjhul\",\"parametersArtifactSourceRelativePath\":\"uvm\"}")
+            .toObject(ServiceUnitArtifacts.class);
         Assertions.assertEquals("pmqnja", model.templateUri());
         Assertions.assertEquals("ixjsprozvcputeg", model.parametersUri());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.templateArtifactSourceRelativePath());
@@ -24,12 +22,10 @@ public final class ServiceUnitArtifactsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceUnitArtifacts model =
-            new ServiceUnitArtifacts()
-                .withTemplateUri("pmqnja")
-                .withParametersUri("ixjsprozvcputeg")
-                .withTemplateArtifactSourceRelativePath("wmfdatscmdvpjhul")
-                .withParametersArtifactSourceRelativePath("uvm");
+        ServiceUnitArtifacts model = new ServiceUnitArtifacts().withTemplateUri("pmqnja")
+            .withParametersUri("ixjsprozvcputeg")
+            .withTemplateArtifactSourceRelativePath("wmfdatscmdvpjhul")
+            .withParametersArtifactSourceRelativePath("uvm");
         model = BinaryData.fromObject(model).toObject(ServiceUnitArtifacts.class);
         Assertions.assertEquals("pmqnja", model.templateUri());
         Assertions.assertEquals("ixjsprozvcputeg", model.parametersUri());

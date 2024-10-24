@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Service model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"aoqvuh\",\"serviceUnits\":[{\"name\":\"fcyddg\",\"steps\":[],\"targetResourceGroup\":\"t\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"wpyeicxmqciwqvh\",\"parametersUri\":\"ixuigdtopbobj\",\"templateArtifactSourceRelativePath\":\"hm\",\"parametersArtifactSourceRelativePath\":\"u\"}},{\"name\":\"a\",\"steps\":[],\"targetResourceGroup\":\"z\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"t\",\"parametersUri\":\"vdfgiotk\",\"templateArtifactSourceRelativePath\":\"utqxlngx\",\"parametersArtifactSourceRelativePath\":\"fgugnxkrxdqmid\"}},{\"name\":\"hzrvqd\",\"steps\":[],\"targetResourceGroup\":\"hjybigehoqfbo\",\"deploymentMode\":\"Incremental\",\"artifacts\":{\"templateUri\":\"nyktzlcuiy\",\"parametersUri\":\"qyw\",\"templateArtifactSourceRelativePath\":\"drvyn\",\"parametersArtifactSourceRelativePath\":\"gpphrcgyn\"}}],\"targetLocation\":\"ocpecfvmmco\",\"targetSubscriptionId\":\"fsxlzevgbmqjqa\"}")
-                .toObject(Service.class);
+        Service model = BinaryData.fromString(
+            "{\"name\":\"aoqvuh\",\"serviceUnits\":[{\"name\":\"fcyddg\",\"steps\":[],\"targetResourceGroup\":\"t\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"wpyeicxmqciwqvh\",\"parametersUri\":\"ixuigdtopbobj\",\"templateArtifactSourceRelativePath\":\"hm\",\"parametersArtifactSourceRelativePath\":\"u\"}},{\"name\":\"a\",\"steps\":[],\"targetResourceGroup\":\"z\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"t\",\"parametersUri\":\"vdfgiotk\",\"templateArtifactSourceRelativePath\":\"utqxlngx\",\"parametersArtifactSourceRelativePath\":\"fgugnxkrxdqmid\"}},{\"name\":\"hzrvqd\",\"steps\":[],\"targetResourceGroup\":\"hjybigehoqfbo\",\"deploymentMode\":\"Incremental\",\"artifacts\":{\"templateUri\":\"nyktzlcuiy\",\"parametersUri\":\"qyw\",\"templateArtifactSourceRelativePath\":\"drvyn\",\"parametersArtifactSourceRelativePath\":\"gpphrcgyn\"}}],\"targetLocation\":\"ocpecfvmmco\",\"targetSubscriptionId\":\"fsxlzevgbmqjqa\"}")
+            .toObject(Service.class);
         Assertions.assertEquals("ocpecfvmmco", model.targetLocation());
         Assertions.assertEquals("fsxlzevgbmqjqa", model.targetSubscriptionId());
         Assertions.assertEquals("aoqvuh", model.name());
@@ -34,47 +32,34 @@ public final class ServiceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Service model =
-            new Service()
-                .withTargetLocation("ocpecfvmmco")
-                .withTargetSubscriptionId("fsxlzevgbmqjqa")
-                .withName("aoqvuh")
-                .withServiceUnits(
-                    Arrays
-                        .asList(
-                            new ServiceUnit()
-                                .withTargetResourceGroup("t")
-                                .withDeploymentMode(DeploymentMode.COMPLETE)
-                                .withArtifacts(
-                                    new ServiceUnitArtifacts()
-                                        .withTemplateUri("wpyeicxmqciwqvh")
-                                        .withParametersUri("ixuigdtopbobj")
-                                        .withTemplateArtifactSourceRelativePath("hm")
-                                        .withParametersArtifactSourceRelativePath("u"))
-                                .withName("fcyddg")
-                                .withSteps(Arrays.asList()),
-                            new ServiceUnit()
-                                .withTargetResourceGroup("z")
-                                .withDeploymentMode(DeploymentMode.COMPLETE)
-                                .withArtifacts(
-                                    new ServiceUnitArtifacts()
-                                        .withTemplateUri("t")
-                                        .withParametersUri("vdfgiotk")
-                                        .withTemplateArtifactSourceRelativePath("utqxlngx")
-                                        .withParametersArtifactSourceRelativePath("fgugnxkrxdqmid"))
-                                .withName("a")
-                                .withSteps(Arrays.asList()),
-                            new ServiceUnit()
-                                .withTargetResourceGroup("hjybigehoqfbo")
-                                .withDeploymentMode(DeploymentMode.INCREMENTAL)
-                                .withArtifacts(
-                                    new ServiceUnitArtifacts()
-                                        .withTemplateUri("nyktzlcuiy")
-                                        .withParametersUri("qyw")
-                                        .withTemplateArtifactSourceRelativePath("drvyn")
-                                        .withParametersArtifactSourceRelativePath("gpphrcgyn"))
-                                .withName("hzrvqd")
-                                .withSteps(Arrays.asList())));
+        Service model = new Service().withTargetLocation("ocpecfvmmco")
+            .withTargetSubscriptionId("fsxlzevgbmqjqa")
+            .withName("aoqvuh")
+            .withServiceUnits(Arrays.asList(
+                new ServiceUnit().withTargetResourceGroup("t")
+                    .withDeploymentMode(DeploymentMode.COMPLETE)
+                    .withArtifacts(new ServiceUnitArtifacts().withTemplateUri("wpyeicxmqciwqvh")
+                        .withParametersUri("ixuigdtopbobj")
+                        .withTemplateArtifactSourceRelativePath("hm")
+                        .withParametersArtifactSourceRelativePath("u"))
+                    .withName("fcyddg")
+                    .withSteps(Arrays.asList()),
+                new ServiceUnit().withTargetResourceGroup("z")
+                    .withDeploymentMode(DeploymentMode.COMPLETE)
+                    .withArtifacts(new ServiceUnitArtifacts().withTemplateUri("t")
+                        .withParametersUri("vdfgiotk")
+                        .withTemplateArtifactSourceRelativePath("utqxlngx")
+                        .withParametersArtifactSourceRelativePath("fgugnxkrxdqmid"))
+                    .withName("a")
+                    .withSteps(Arrays.asList()),
+                new ServiceUnit().withTargetResourceGroup("hjybigehoqfbo")
+                    .withDeploymentMode(DeploymentMode.INCREMENTAL)
+                    .withArtifacts(new ServiceUnitArtifacts().withTemplateUri("nyktzlcuiy")
+                        .withParametersUri("qyw")
+                        .withTemplateArtifactSourceRelativePath("drvyn")
+                        .withParametersArtifactSourceRelativePath("gpphrcgyn"))
+                    .withName("hzrvqd")
+                    .withSteps(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(Service.class);
         Assertions.assertEquals("ocpecfvmmco", model.targetLocation());
         Assertions.assertEquals("fsxlzevgbmqjqa", model.targetSubscriptionId());

@@ -102,16 +102,12 @@ public class ServiceUnitProperties {
      */
     public void validate() {
         if (targetResourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceGroup in model ServiceUnitProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceGroup in model ServiceUnitProperties"));
         }
         if (deploymentMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentMode in model ServiceUnitProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deploymentMode in model ServiceUnitProperties"));
         }
         if (artifacts() != null) {
             artifacts().validate();
