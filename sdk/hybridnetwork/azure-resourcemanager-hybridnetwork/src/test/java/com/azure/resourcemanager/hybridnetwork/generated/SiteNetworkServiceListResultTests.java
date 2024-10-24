@@ -42,47 +42,37 @@ public final class SiteNetworkServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SiteNetworkServiceListResult model
-            = new SiteNetworkServiceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SiteNetworkServiceInner().withLocation("bo")
-                                .withTags(mapOf("vqagtltdhlf", "nvdxzxhihfrbbc", "vgtrdcnifmzzs", "qojpy"))
-                                .withProperties(new SiteNetworkServicePropertiesFormat()
-                                    .withManagedResourceGroupConfiguration(new ManagedResourceGroupConfiguration()
-                                        .withName("wzqa").withLocation("lgzurig"))
-                                    .withSiteReference(new ReferencedResource().withId("cx"))
-                                    .withNetworkServiceDesignVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withDesiredStateConfigurationGroupValueReferences(
-                                        mapOf("vkjlmxhom", new ReferencedResource().withId("riykhyawfvjlbox"),
-                                            "uzzptjazysdz", new ReferencedResource().withId("nhdwdigumbnra"))))
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(
-                                        mapOf(
-                                            "gsgbdhuzq", new UserAssignedIdentity(), "dgkynscliqhzvhxn",
-                                            new UserAssignedIdentity())))
-                                .withSku(new Sku().withName(SkuName.BASIC)),
-                            new SiteNetworkServiceInner()
-                                .withLocation("grjqctojcmi")
-                                .withTags(
-                                    mapOf("jy", "ieypef", "u", "dh", "khihihlhzds", "lcplc", "mvec", "tzbsrgnowcjhf"))
-                                .withProperties(new SiteNetworkServicePropertiesFormat()
-                                    .withManagedResourceGroupConfiguration(
-                                        new ManagedResourceGroupConfiguration().withName("spave").withLocation("r"))
-                                    .withSiteReference(new ReferencedResource().withId("unzo"))
-                                    .withNetworkServiceDesignVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withDesiredStateConfigurationGroupValueReferences(
-                                        mapOf("xvxilcbtg", new ReferencedResource().withId("plef"), "zqlqhyc",
-                                            new ReferencedResource().withId("nzeyqxtjj"), "beesmieknlra",
-                                            new ReferencedResource().withId("odggx"))))
-                                .withIdentity(
-                                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("tkad", new UserAssignedIdentity(), "own",
-                                            new UserAssignedIdentity())))
-                                .withSku(new Sku().withName(SkuName.STANDARD))));
+            = new SiteNetworkServiceListResult().withValue(Arrays.asList(
+                new SiteNetworkServiceInner()
+                    .withLocation("bo")
+                    .withTags(mapOf("vqagtltdhlf", "nvdxzxhihfrbbc", "vgtrdcnifmzzs", "qojpy"))
+                    .withProperties(new SiteNetworkServicePropertiesFormat()
+                        .withManagedResourceGroupConfiguration(
+                            new ManagedResourceGroupConfiguration().withName("wzqa").withLocation("lgzurig"))
+                        .withSiteReference(new ReferencedResource().withId("cx"))
+                        .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
+                        .withDesiredStateConfigurationGroupValueReferences(
+                            mapOf("vkjlmxhom", new ReferencedResource().withId("riykhyawfvjlbox"), "uzzptjazysdz",
+                                new ReferencedResource().withId("nhdwdigumbnra"))))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("gsgbdhuzq", new UserAssignedIdentity(), "dgkynscliqhzvhxn",
+                            new UserAssignedIdentity())))
+                    .withSku(new Sku().withName(SkuName.BASIC)),
+                new SiteNetworkServiceInner().withLocation("grjqctojcmi")
+                    .withTags(mapOf("jy", "ieypef", "u", "dh", "khihihlhzds", "lcplc", "mvec", "tzbsrgnowcjhf"))
+                    .withProperties(new SiteNetworkServicePropertiesFormat()
+                        .withManagedResourceGroupConfiguration(
+                            new ManagedResourceGroupConfiguration().withName("spave").withLocation("r"))
+                        .withSiteReference(new ReferencedResource().withId("unzo"))
+                        .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
+                        .withDesiredStateConfigurationGroupValueReferences(
+                            mapOf("xvxilcbtg", new ReferencedResource().withId("plef"), "zqlqhyc",
+                                new ReferencedResource().withId("nzeyqxtjj"), "beesmieknlra",
+                                new ReferencedResource().withId("odggx"))))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf("tkad", new UserAssignedIdentity(), "own", new UserAssignedIdentity())))
+                    .withSku(new Sku().withName(SkuName.STANDARD))));
         model = BinaryData.fromObject(model).toObject(SiteNetworkServiceListResult.class);
         Assertions.assertEquals("bo", model.value().get(0).location());
         Assertions.assertEquals("nvdxzxhihfrbbc", model.value().get(0).tags().get("vqagtltdhlf"));

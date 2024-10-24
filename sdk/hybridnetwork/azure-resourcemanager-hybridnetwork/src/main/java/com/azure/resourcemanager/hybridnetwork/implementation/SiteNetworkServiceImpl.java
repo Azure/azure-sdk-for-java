@@ -95,14 +95,16 @@ public final class SiteNetworkServiceImpl
     }
 
     public SiteNetworkService create() {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices().createOrUpdate(resourceGroupName,
-            siteNetworkServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
+            .createOrUpdate(resourceGroupName, siteNetworkServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SiteNetworkService create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices().createOrUpdate(resourceGroupName,
-            siteNetworkServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
+            .createOrUpdate(resourceGroupName, siteNetworkServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -118,15 +120,18 @@ public final class SiteNetworkServiceImpl
     }
 
     public SiteNetworkService apply() {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices()
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
             .updateTagsWithResponse(resourceGroupName, siteNetworkServiceName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public SiteNetworkService apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices()
-            .updateTagsWithResponse(resourceGroupName, siteNetworkServiceName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
+            .updateTagsWithResponse(resourceGroupName, siteNetworkServiceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -139,14 +144,18 @@ public final class SiteNetworkServiceImpl
     }
 
     public SiteNetworkService refresh() {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices()
-            .getByResourceGroupWithResponse(resourceGroupName, siteNetworkServiceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
+            .getByResourceGroupWithResponse(resourceGroupName, siteNetworkServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SiteNetworkService refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSiteNetworkServices()
-            .getByResourceGroupWithResponse(resourceGroupName, siteNetworkServiceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSiteNetworkServices()
+            .getByResourceGroupWithResponse(resourceGroupName, siteNetworkServiceName, context)
+            .getValue();
         return this;
     }
 

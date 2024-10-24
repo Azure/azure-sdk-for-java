@@ -46,12 +46,14 @@ public final class SiteNetworkServicesGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SiteNetworkService response = manager.siteNetworkServices()
-            .getByResourceGroupWithResponse("clid", "tujwjju", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("clid", "tujwjju", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("vjdrqcrjidhftuk", response.location());
         Assertions.assertEquals("xlwyoj", response.tags().get("fqz"));

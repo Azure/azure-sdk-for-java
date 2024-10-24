@@ -702,8 +702,10 @@ public final class NetworkFunctionDefinitionGroupsClientImpl implements NetworkF
     public SyncPoller<PollResult<NetworkFunctionDefinitionGroupInner>, NetworkFunctionDefinitionGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
             NetworkFunctionDefinitionGroupInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
