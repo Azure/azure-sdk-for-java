@@ -137,7 +137,7 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
         FeedResponse<T> responseMessage);
 
     public abstract <T> boolean hasFetchedAllChanges(
-        FeedResponse<T> responseMessage, long endLSN);
+        FeedResponse<T> responseMessage, Long endLSN);
 
     public abstract Mono<ShouldRetryResult> handleFeedRangeGone(
         RxDocumentClientImpl client,

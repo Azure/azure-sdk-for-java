@@ -98,7 +98,7 @@ public class Paginator {
         int preFetchCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
-        long endLsn,
+        Long endLsn,
         OperationContextAndListenerTuple operationContext) {
 
         return getPaginatedQueryResultAsObservable(

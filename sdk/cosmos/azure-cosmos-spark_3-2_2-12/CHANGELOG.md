@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue when using `ChangeFeed` with `ItemCountPerTriggerHint` causing all cosmos partitions to not be fully processed in some cases. - See
 
 #### Other Changes
 

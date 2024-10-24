@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -65,6 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -841,6 +843,57 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation()).isNotNull();
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).isNotNull();
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 100 * TIMEOUT)
+    public void changeFeedQueryCompleteAfterEndLSN(
+        int throughput,
+        boolean shouldContinuouslyIngestItems) {
+        String testContainerId = UUID.randomUUID().toString();
+
+        try {
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            CosmosAsyncContainer testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    throughput);
+
+            List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
+            AtomicInteger currentPageCount = new AtomicInteger(0);
+
+            insertDocuments(1, 6, testContainer);
+            CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+                .setEndLSN(cosmosChangeFeedRequestOptions, 4L);
+
+            AtomicInteger totalQueryCount = new AtomicInteger(0);
+            AtomicBoolean hasMoreChanges = new AtomicBoolean(false);
+            testContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
+                .byPage(1)
+                .flatMap(response -> {
+                    int currentPage = currentPageCount.incrementAndGet();
+                    totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
+                    hasMoreChanges.set(ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
+                        .getHasMoreChangesToProcess(response));
+
+
+                    // Only start creating new items once we have looped through all feedRanges once to make the test behavior more deterministic
+                    if (shouldContinuouslyIngestItems && currentPage >= feedRanges.size()) {
+                        return testContainer
+                            .createItem(getDocumentDefinition(UUID.randomUUID().toString())).then();
+                    } else {
+                        return Mono.empty();
+                    }
+                })
+                .blockLast();
+            assertThat(hasMoreChanges.get()).isFalse();
+            assertThat(totalQueryCount.get()).isEqualTo(3);
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
     }
 
     @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 100 * TIMEOUT)

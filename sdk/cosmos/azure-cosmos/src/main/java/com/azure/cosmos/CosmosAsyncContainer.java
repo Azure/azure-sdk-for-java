@@ -1187,6 +1187,8 @@ public class CosmosAsyncContainer {
         boolean isNoChangesResponse = isChangeFeed ?
             ModelBridgeInternal.getNoChangesFromFeedResponse(response)
             : false;
+        Boolean hasMoreChangesToProcess = ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
+                .getHasMoreChangesToProcess(response);
 
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             response.getResults(),
@@ -1195,7 +1197,8 @@ public class CosmosAsyncContainer {
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
             isNoChangesResponse,
-            response.getCosmosDiagnostics());
+            response.getCosmosDiagnostics(),
+            hasMoreChangesToProcess);
     }
 
     /**

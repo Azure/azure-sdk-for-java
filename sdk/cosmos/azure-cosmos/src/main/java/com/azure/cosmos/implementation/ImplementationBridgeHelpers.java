@@ -371,8 +371,8 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
-            CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, long endLsn);
-            long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn);
+            Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
@@ -1086,7 +1086,7 @@ public class ImplementationBridgeHelpers {
             <T> FeedResponse<T> createFeedResponse(
                 List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics);
             <T> FeedResponse<T> setHasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess);
-            <T> boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse);
+            <T> Boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse);
         }
     }
 

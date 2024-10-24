@@ -175,12 +175,12 @@ private case class ChangeFeedPartitionReader
       case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
         changeFeedItemDeserializerV1
     }
+    this.partition.endLsn.foreach { endLsn =>
+     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
+       .setEndLSN(options, endLsn)
+    }
 
     options.setCustomItemSerializer(itemDeserializer)
-    this.partition.endLsn.foreach { endLsn =>
-      ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
-      .setEndLSN(options, endLsn)
-    }
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

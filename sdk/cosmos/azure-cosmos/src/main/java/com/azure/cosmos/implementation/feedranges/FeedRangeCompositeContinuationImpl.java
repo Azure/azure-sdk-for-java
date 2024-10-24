@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -270,16 +269,17 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChanges(FeedResponse<T> response, long endLSN) {
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> response, Long endLSN) {
         // if endLSN is not provided, we will use the latest LSN from the session token for available now
-        long lsn = endLSN != -1 ? endLSN : this.getLatestLsnFromSessionToken(response.getSessionToken());
+        // if endLSN is provided, we have to use the min of latestLSNFromSessionToken and endLSN in case some partitions
+        // have less changes than others
+        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(response.getSessionToken());
+        long lsn = endLSN != null ? Math.min(endLSN, lastestLSNFromSessionToken)  : lastestLSNFromSessionToken;
         FeedRangeLSNContext feedRangeLSNContext =
             this.updateFeedRangeEndLSNIfAbsent(
                 this.currentToken.getRange(),
                 lsn);
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
-            .setHasMoreChangesToProcess(response, !feedRangeLSNContext.hasCompleted);
 
         // find next token which can fetch more
         Range<String> initialToken = this.currentToken.getRange();

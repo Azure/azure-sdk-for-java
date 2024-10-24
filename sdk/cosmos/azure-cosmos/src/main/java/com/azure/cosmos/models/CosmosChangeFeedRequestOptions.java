@@ -206,12 +206,12 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     // This will override setCompleteAfterAllCurrentChangesRetrieved if both used together
-    CosmosChangeFeedRequestOptions setEndLSN(long endLsn) {
+    CosmosChangeFeedRequestOptions setEndLSN(Long endLsn) {
         this.actualRequestOptions.setEndLSN(endLsn);
         return this;
     }
 
-    long getEndLSN() {
+    Long getEndLSN() {
         return this.actualRequestOptions.getEndLSN();
     }
 
@@ -634,12 +634,12 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, long endLsn) {
+                public CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn) {
                     return changeFeedRequestOptions.setEndLSN(endLsn);
                 }
 
                 @Override
-                public long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                public Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getEndLSN();
                 }
 
