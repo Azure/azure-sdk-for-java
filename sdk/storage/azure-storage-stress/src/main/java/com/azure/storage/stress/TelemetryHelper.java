@@ -5,7 +5,7 @@ package com.azure.storage.stress;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoconfigure;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -98,7 +98,7 @@ public class TelemetryHelper {
             System.setProperty("otel.metrics.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
         } else {
-            AzureMonitorExporter.customize(sdkBuilder, applicationInsightsConnectionString);
+            AzureMonitorAutoconfigure.customize(sdkBuilder, applicationInsightsConnectionString);
         }
 
         OpenTelemetry otel = sdkBuilder
