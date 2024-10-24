@@ -25,8 +25,8 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
     private boolean sanitizersRemoved = false;
 
-    protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
+    protected static final String DIGITALTWINS_URL
+        = Configuration.getGlobalConfiguration().get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
 
     protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient,
         DigitalTwinsServiceVersion serviceVersion) {
@@ -44,8 +44,8 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             builder.credential(new MockTokenCredential());
             builder.endpoint(PLAYBACK_ENDPOINT);
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
+            interceptorManager.addMatchers(
+                Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
 
             return builder;
         } else if (interceptorManager.isRecordMode()) {

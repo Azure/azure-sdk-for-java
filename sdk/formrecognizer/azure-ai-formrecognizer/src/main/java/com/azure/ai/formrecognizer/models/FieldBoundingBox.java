@@ -49,7 +49,8 @@ public final class FieldBoundingBox {
      */
     @Override
     public String toString() {
-        return points.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
-            point.getY())).collect(Collectors.joining(", "));
+        return points.stream()
+            .map(point -> String.format("[%.2f, %.2f]", point.getX(), point.getY()))
+            .collect(Collectors.joining(", "));
     }
 }

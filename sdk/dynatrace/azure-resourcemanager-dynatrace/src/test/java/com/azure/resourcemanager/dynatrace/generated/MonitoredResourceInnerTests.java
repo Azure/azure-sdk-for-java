@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"zlobcufpd\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"t\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"nq\"}")
-                .toObject(MonitoredResourceInner.class);
+        MonitoredResourceInner model = BinaryData.fromString(
+            "{\"id\":\"zlobcufpd\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"t\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"nq\"}")
+            .toObject(MonitoredResourceInner.class);
         Assertions.assertEquals("zlobcufpd", model.id());
         Assertions.assertEquals(SendingMetricsStatus.ENABLED, model.sendingMetrics());
         Assertions.assertEquals("t", model.reasonForMetricsStatus());
@@ -27,13 +25,11 @@ public final class MonitoredResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceInner model =
-            new MonitoredResourceInner()
-                .withId("zlobcufpd")
-                .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                .withReasonForMetricsStatus("t")
-                .withSendingLogs(SendingLogsStatus.DISABLED)
-                .withReasonForLogsStatus("nq");
+        MonitoredResourceInner model = new MonitoredResourceInner().withId("zlobcufpd")
+            .withSendingMetrics(SendingMetricsStatus.ENABLED)
+            .withReasonForMetricsStatus("t")
+            .withSendingLogs(SendingLogsStatus.DISABLED)
+            .withReasonForLogsStatus("nq");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
         Assertions.assertEquals("zlobcufpd", model.id());
         Assertions.assertEquals(SendingMetricsStatus.ENABLED, model.sendingMetrics());

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,6 +21,11 @@ import java.util.Map;
  */
 @Fluent
 public final class DocumentClassifierBuildOperationDetails extends OperationDetails {
+    /*
+     * Type of operation.
+     */
+    private String kind = "documentClassifierBuild";
+
     /*
      * Operation result upon success.
      */
@@ -37,6 +43,16 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
     public DocumentClassifierBuildOperationDetails(String operationId, OperationStatus status,
         OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -95,21 +111,26 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", "documentClassifierBuild");
         jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
             getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
-        jsonWriter.writeStringField("lastUpdatedDateTime", getLastUpdatedDateTime() == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            getLastUpdatedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
         jsonWriter.writeStringField("resourceLocation", getResourceLocation());
         jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("result", this.result);
         return jsonWriter.writeEndObject();
     }
@@ -120,8 +141,7 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentClassifierBuildOperationDetails if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentClassifierBuildOperationDetails.
      */
     public static DocumentClassifierBuildOperationDetails fromJson(JsonReader jsonReader) throws IOException {
@@ -140,31 +160,25 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
             String apiVersion = null;
             Map<String, String> tags = null;
             Error error = null;
+            String kind = "documentClassifierBuild";
             DocumentClassifierDetails result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"documentClassifierBuild".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'documentClassifierBuild'. The found 'kind' was '"
-                                + kind + "'.");
-                    }
-                } else if ("operationId".equals(fieldName)) {
+                if ("operationId".equals(fieldName)) {
                     operationId = reader.getString();
                     operationIdFound = true;
                 } else if ("status".equals(fieldName)) {
                     status = OperationStatus.fromString(reader.getString());
                     statusFound = true;
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     createdDateTimeFound = true;
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     lastUpdatedDateTimeFound = true;
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
@@ -177,13 +191,18 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("error".equals(fieldName)) {
                     error = Error.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
                 } else if ("result".equals(fieldName)) {
                     result = DocumentClassifierDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
                 && resourceLocationFound) {
                 DocumentClassifierBuildOperationDetails deserializedDocumentClassifierBuildOperationDetails
                     = new DocumentClassifierBuildOperationDetails(operationId, status, createdDateTime,
@@ -192,6 +211,7 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                 deserializedDocumentClassifierBuildOperationDetails.setApiVersion(apiVersion);
                 deserializedDocumentClassifierBuildOperationDetails.setTags(tags);
                 deserializedDocumentClassifierBuildOperationDetails.setError(error);
+                deserializedDocumentClassifierBuildOperationDetails.kind = kind;
                 deserializedDocumentClassifierBuildOperationDetails.result = result;
 
                 return deserializedDocumentClassifierBuildOperationDetails;

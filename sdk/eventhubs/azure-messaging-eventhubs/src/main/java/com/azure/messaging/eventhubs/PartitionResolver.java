@@ -35,16 +35,15 @@ class PartitionResolver {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitions' cannot be empty."));
         }
 
-        final int currentIndex = partitionAssignmentIndex.accumulateAndGet(1,
-            (current, added) -> {
-                try {
-                    return Math.addExact(current, added);
-                } catch (ArithmeticException e) {
-                    LOGGER.info("Overflowed incrementing index. Rolling over.", e);
+        final int currentIndex = partitionAssignmentIndex.accumulateAndGet(1, (current, added) -> {
+            try {
+                return Math.addExact(current, added);
+            } catch (ArithmeticException e) {
+                LOGGER.info("Overflowed incrementing index. Rolling over.", e);
 
-                    return STARTING_INDEX + added;
-                }
-            });
+                return STARTING_INDEX + added;
+            }
+        });
 
         return partitions[(currentIndex % partitions.length)];
     }
@@ -107,8 +106,7 @@ class PartitionResolver {
         int b = a;
         int c = a + seed2;
 
-        final ByteBuffer buffer = ByteBuffer.allocate(data.length)
-            .put(data);
+        final ByteBuffer buffer = ByteBuffer.allocate(data.length).put(data);
 
         buffer.flip();
         buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -159,13 +157,13 @@ class PartitionResolver {
             // fallthrough
             case 11:
                 c += data[index + 10] << 16;
-            // fallthrough
+                // fallthrough
             case 10:
                 c += data[index + 9] << 8;
-            // fallthrough
+                // fallthrough
             case 9:
                 c += data[index + 8];
-            // fallthrough
+                // fallthrough
             case 8:
                 b += buffer.getInt(index + 4);
                 a += buffer.getInt(index);
@@ -174,13 +172,13 @@ class PartitionResolver {
             // fallthrough
             case 7:
                 b += data[index + 6] << 16;
-            // fallthrough
+                // fallthrough
             case 6:
                 b += data[index + 5] << 8;
-            // fallthrough
+                // fallthrough
             case 5:
                 b += data[index + 4];
-            // fallthrough
+                // fallthrough
             case 4:
                 a += buffer.getInt(index);
                 break;
@@ -188,15 +186,17 @@ class PartitionResolver {
             // fallthrough
             case 3:
                 a += data[index + 2] << 16;
-            // fallthrough
+                // fallthrough
             case 2:
                 a += data[index + 1] << 8;
-            // fallthrough
+                // fallthrough
             case 1:
                 a += data[index];
                 break;
+
             case 0:
                 return new Hashed(c, b);
+
             default:
                 break;
         }

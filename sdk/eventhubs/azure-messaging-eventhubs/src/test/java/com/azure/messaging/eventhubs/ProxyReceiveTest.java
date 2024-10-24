@@ -71,11 +71,11 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @Test
     public void testReceiverStartOfStreamFilters() {
-        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+        final EventHubConsumerAsyncClient consumer
+            = toClose(createBuilder().verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .buildAsyncConsumerClient());
         final String partitionId = "3";
         final IntegrationTestEventData integrationTestEventData = getTestData().get(partitionId);
         final PartitionProperties properties = integrationTestEventData.getPartitionProperties();
@@ -83,8 +83,9 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber());
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(partitionId, position)
-            .take(integrationTestEventData.getEvents().size()))
+        StepVerifier
+            .create(
+                consumer.receiveFromPartition(partitionId, position).take(integrationTestEventData.getEvents().size()))
             .expectNextCount(integrationTestEventData.getEvents().size())
             .expectComplete()
             .verify(TIMEOUT);
