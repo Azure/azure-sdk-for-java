@@ -7,7 +7,6 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_A
 
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.RealtimesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -53,9 +52,7 @@ import java.util.Objects;
 @ServiceClientBuilder(
     serviceClients = {
         OpenAIClient.class,
-        OpenAIAsyncClient.class,
-        RealtimeClient.class,
-        RealtimeAsyncClient.class})
+        OpenAIAsyncClient.class})
 public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>,
     ConfigurationTrait<OpenAIClientBuilder>, TokenCredentialTrait<OpenAIClientBuilder>,
     KeyCredentialTrait<OpenAIClientBuilder>, EndpointTrait<OpenAIClientBuilder> {
@@ -363,22 +360,6 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         return useNonAzureOpenAIService()
             ? new OpenAIClient(buildInnerNonAzureOpenAIClient())
             : new OpenAIClient(buildInnerClient());
-    }
-
-    //TODO jpalvarezl: this would be the entry point, should we want to integrate Realtime into Inference
-    // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
-    public RealtimeAsyncClient buildRealtimeAsyncClient() {
-        return useNonAzureOpenAIService()
-            ? new RealtimeAsyncClient(buildInnerNonAzureOpenAIClient().getRealtime())
-            : new RealtimeAsyncClient(buildInnerClient().getRealtime());
-    }
-
-    //TODO jpalvarezl: this would be the entry point, should we want to integrate Realtime into Inference
-    // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
-    public RealtimeClient buildRealtimeClient() {
-        return useNonAzureOpenAIService()
-            ? new RealtimeClient(buildInnerNonAzureOpenAIClient().getRealtime())
-            : new RealtimeClient(buildInnerClient().getRealtime());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientBuilder.class);
