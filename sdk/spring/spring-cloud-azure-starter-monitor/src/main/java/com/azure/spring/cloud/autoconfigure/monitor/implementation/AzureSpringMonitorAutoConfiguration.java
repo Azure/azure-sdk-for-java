@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.monitor.implementation;
 
-import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporter;
-import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterOptions;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import org.slf4j.Logger;
