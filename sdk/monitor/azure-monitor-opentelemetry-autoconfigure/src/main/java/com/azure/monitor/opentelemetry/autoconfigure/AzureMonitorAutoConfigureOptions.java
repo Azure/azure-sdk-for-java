@@ -23,7 +23,7 @@ import java.util.Objects;
  * Providers configuration options for Azure Monitor exporter..
  */
 @Fluent
-public final class AzureMonitorAutoconfigureOptions {
+public final class AzureMonitorAutoConfigureOptions {
 
     ConnectionString connectionString;
     TokenCredential credential;
@@ -36,9 +36,9 @@ public final class AzureMonitorAutoconfigureOptions {
     RetryOptions retryOptions;
 
     /**
-     * Creates an instance of {@link AzureMonitorAutoconfigureOptions}.
+     * Creates an instance of {@link AzureMonitorAutoConfigureOptions}.
      */
-    public AzureMonitorAutoconfigureOptions() {
+    public AzureMonitorAutoConfigureOptions() {
     }
 
     /**
@@ -52,9 +52,9 @@ public final class AzureMonitorAutoconfigureOptions {
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions pipeline(HttpPipeline pipeline) {
+    public AzureMonitorAutoConfigureOptions pipeline(HttpPipeline pipeline) {
         this.httpPipeline = pipeline;
         return this;
     }
@@ -70,9 +70,9 @@ public final class AzureMonitorAutoconfigureOptions {
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions httpClient(HttpClient httpClient) {
+    public AzureMonitorAutoConfigureOptions httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -90,9 +90,9 @@ public final class AzureMonitorAutoconfigureOptions {
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions httpLogOptions(HttpLogOptions logOptions) {
+    public AzureMonitorAutoConfigureOptions httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
     }
@@ -109,9 +109,9 @@ public final class AzureMonitorAutoconfigureOptions {
      *
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public AzureMonitorAutoConfigureOptions addPolicy(HttpPipelinePolicy pipelinePolicy) {
         httpPipelinePolicies.add(Objects.requireNonNull(pipelinePolicy, "'policy' cannot be null."));
         return this;
     }
@@ -127,9 +127,9 @@ public final class AzureMonitorAutoconfigureOptions {
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions retryOptions(RetryOptions retryOptions) {
+    public AzureMonitorAutoConfigureOptions retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -149,10 +149,10 @@ public final class AzureMonitorAutoconfigureOptions {
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      * @see HttpClientOptions
      */
-    public AzureMonitorAutoconfigureOptions clientOptions(ClientOptions clientOptions) {
+    public AzureMonitorAutoConfigureOptions clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -161,11 +161,11 @@ public final class AzureMonitorAutoconfigureOptions {
      * Sets the connection string to use for exporting telemetry events to Azure Monitor.
      *
      * @param connectionString The connection string for the Azure Monitor resource.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
-    public AzureMonitorAutoconfigureOptions connectionString(String connectionString) {
+    public AzureMonitorAutoConfigureOptions connectionString(String connectionString) {
         this.connectionString = ConnectionString.parse(connectionString);
         return this;
     }
@@ -174,9 +174,9 @@ public final class AzureMonitorAutoconfigureOptions {
      * Sets the token credential required for authentication with the ingestion endpoint service.
      *
      * @param credential The Azure Identity TokenCredential.
-     * @return The updated {@link AzureMonitorAutoconfigureOptions} object.
+     * @return The updated {@link AzureMonitorAutoConfigureOptions} object.
      */
-    public AzureMonitorAutoconfigureOptions credential(TokenCredential credential) {
+    public AzureMonitorAutoConfigureOptions credential(TokenCredential credential) {
         this.credential = credential;
         return this;
     }

@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 /**
- * Unit tests for {@link AzureMonitorAutoconfigureOptions}.
+ * Unit tests for {@link AzureMonitorAutoConfigureOptions}.
  */
 public class AzureMonitorAutoConfigureTest {
     @ParameterizedTest

@@ -63,7 +63,7 @@ class AzureMonitorExporterBuilder {
     private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-monitor-opentelemetry-autoconfigure.properties");
 
-    private AzureMonitorAutoconfigureOptions exporterOptions;
+    private AzureMonitorAutoConfigureOptions exporterOptions;
 
     private TelemetryItemExporter builtTelemetryItemExporter;
 
@@ -73,7 +73,7 @@ class AzureMonitorExporterBuilder {
 
     private boolean initialized;
 
-    void initializeIfNot(AzureMonitorAutoconfigureOptions exporterOptions, ConfigProperties configProperties) {
+    void initializeIfNot(AzureMonitorAutoConfigureOptions exporterOptions, ConfigProperties configProperties) {
         if (initialized) {
             return;
         }
