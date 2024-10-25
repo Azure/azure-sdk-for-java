@@ -25,8 +25,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
 
     private static final ClientLogger LOGGER = new ClientLogger(RealtimeClientBuilder.class);
 
-    // TODO jpalvarezl: figure out this. If we ship as part of Inference, we may want to distinguish realtime specific traffic
-    private static final String PROPERTIES = "azure-ai-openai.properties";
+    private static final String PROPERTIES = "azure-ai-openai-realtime.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -38,6 +37,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
     private String deploymentOrModelName;
     private TokenCredential tokenCredential;
     private KeyCredential keyCredential;
+    private OpenAIServiceVersion serviceVersion = OpenAIServiceVersion.V2024_10_01_PREVIEW;
 
     private RetryOptions retryOptions;
     private WebSocketClient webSocketClient;
@@ -78,11 +78,15 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         return this;
     }
 
+    public RealtimeClientBuilder serviceVersion(OpenAIServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
     public RealtimeAsyncClient buildAsyncClient() {
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
         return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(), applicationId, getRetryStrategy());
     }
-
 
     private RetryStrategy getRetryStrategy() {
         RetryStrategy retryStrategy;
@@ -113,7 +117,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         // TODO jpalvarezl: account for TokenCredential too
         return useNonAzureOpenAIService() ?
             ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName, keyCredential) :
-            ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, OpenAIServiceVersion.V2024_10_01_PREVIEW, keyCredential);
+            ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, this.serviceVersion, keyCredential);
     }
 
     /**

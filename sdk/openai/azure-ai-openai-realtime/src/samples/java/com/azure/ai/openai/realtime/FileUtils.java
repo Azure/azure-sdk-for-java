@@ -13,7 +13,7 @@ public class FileUtils {
     private static final int DURATION_MS = 100;
     private static final int BYTES_PER_SAMPLE = 2;
     private static final int SAMPLES_PER_CHUNK = SAMPLE_RATE * DURATION_MS / 1000;
-    private static final int BYTES_PER_CHUNK = 4 *SAMPLES_PER_CHUNK * BYTES_PER_SAMPLE;
+    private static final int BYTES_PER_CHUNK = SAMPLES_PER_CHUNK * BYTES_PER_SAMPLE;
 
     public static Mono<Void> sendAudioFile(RealtimeAsyncClient client, Path audioFile) {
         byte[] audioBytes;

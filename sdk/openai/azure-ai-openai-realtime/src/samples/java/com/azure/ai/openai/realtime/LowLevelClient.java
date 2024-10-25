@@ -1,36 +1,8 @@
 package com.azure.ai.openai.realtime;
 
 
-import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemDeleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionFailed;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemTruncated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCleared;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCommitted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStopped;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventRateLimitsUpdated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -49,12 +21,12 @@ public class LowLevelClient {
 
         RealtimeAsyncClient client = new RealtimeClientBuilder()
                 // Azure
-                .endpoint(endpoint)
-                .deploymentOrModelName(deploymentOrModelId)
-                .credential(new AzureKeyCredential(azureOpenaiKey))
+//                .endpoint(endpoint)
+//                .deploymentOrModelName(deploymentOrModelId)
+//                .credential(new AzureKeyCredential(azureOpenaiKey))
                 // non-Azure
-//                .credential(new KeyCredential(openAIKey))
-//                .deploymentOrModelName(openAIModel)
+                .credential(new KeyCredential(openAIKey))
+                .deploymentOrModelName(openAIModel)
                 .buildAsyncClient();
 
         // We create our user input requester as a reactor.Sink
