@@ -38,8 +38,8 @@ public final class PurchaseRequestPropertiesReservedResourceProperties {
      * @param instanceFlexibility the instanceFlexibility value to set.
      * @return the PurchaseRequestPropertiesReservedResourceProperties object itself.
      */
-    public PurchaseRequestPropertiesReservedResourceProperties withInstanceFlexibility(
-        InstanceFlexibility instanceFlexibility) {
+    public PurchaseRequestPropertiesReservedResourceProperties
+        withInstanceFlexibility(InstanceFlexibility instanceFlexibility) {
         this.instanceFlexibility = instanceFlexibility;
         return this;
     }

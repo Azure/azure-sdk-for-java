@@ -167,8 +167,8 @@ public final class RefundBillingInformation {
      * @param billingCurrencyRemainingCommitmentAmount the billingCurrencyRemainingCommitmentAmount value to set.
      * @return the RefundBillingInformation object itself.
      */
-    public RefundBillingInformation withBillingCurrencyRemainingCommitmentAmount(
-        Price billingCurrencyRemainingCommitmentAmount) {
+    public RefundBillingInformation
+        withBillingCurrencyRemainingCommitmentAmount(Price billingCurrencyRemainingCommitmentAmount) {
         this.billingCurrencyRemainingCommitmentAmount = billingCurrencyRemainingCommitmentAmount;
         return this;
     }

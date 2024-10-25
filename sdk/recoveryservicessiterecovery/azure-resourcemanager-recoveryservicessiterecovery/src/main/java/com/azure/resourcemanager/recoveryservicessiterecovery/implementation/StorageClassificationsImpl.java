@@ -43,8 +43,8 @@ public final class StorageClassificationsImpl implements StorageClassifications 
 
     public Response<StorageClassification> getWithResponse(String resourceName, String resourceGroupName,
         String fabricName, String storageClassificationName, Context context) {
-        Response<StorageClassificationInner> inner = this.serviceClient().getWithResponse(resourceName,
-            resourceGroupName, fabricName, storageClassificationName, context);
+        Response<StorageClassificationInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageClassificationImpl(inner.getValue(), this.manager()));

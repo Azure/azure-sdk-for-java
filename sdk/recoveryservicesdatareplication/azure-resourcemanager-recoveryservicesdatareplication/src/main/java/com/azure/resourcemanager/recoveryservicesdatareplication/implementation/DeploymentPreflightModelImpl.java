@@ -13,13 +13,10 @@ import java.util.List;
 public final class DeploymentPreflightModelImpl implements DeploymentPreflightModel {
     private DeploymentPreflightModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    DeploymentPreflightModelImpl(
-        DeploymentPreflightModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    DeploymentPreflightModelImpl(DeploymentPreflightModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
