@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancerResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerResourceNames model =
-            BinaryData
-                .fromString(
-                    "{\"loadBalancerName\":\"ho\",\"frontendIpConfigurationNames\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"backendPoolNames\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"healthProbeNames\":[\"gzlvdnkfxu\"]}")
-                .toObject(LoadBalancerResourceNames.class);
+        LoadBalancerResourceNames model = BinaryData.fromString(
+            "{\"loadBalancerName\":\"ho\",\"frontendIpConfigurationNames\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"backendPoolNames\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"healthProbeNames\":[\"gzlvdnkfxu\"]}")
+            .toObject(LoadBalancerResourceNames.class);
         Assertions.assertEquals("ho", model.loadBalancerName());
         Assertions.assertEquals("zudphqamvdkfw", model.frontendIpConfigurationNames().get(0));
         Assertions.assertEquals("atkzwpcnpw", model.backendPoolNames().get(0));
@@ -25,12 +23,10 @@ public final class LoadBalancerResourceNamesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerResourceNames model =
-            new LoadBalancerResourceNames()
-                .withLoadBalancerName("ho")
-                .withFrontendIpConfigurationNames(Arrays.asList("zudphqamvdkfw", "nwcvtbvkayhmtnv"))
-                .withBackendPoolNames(Arrays.asList("atkzwpcnpw", "cjaesgvvs", "cyajguqf"))
-                .withHealthProbeNames(Arrays.asList("gzlvdnkfxu"));
+        LoadBalancerResourceNames model = new LoadBalancerResourceNames().withLoadBalancerName("ho")
+            .withFrontendIpConfigurationNames(Arrays.asList("zudphqamvdkfw", "nwcvtbvkayhmtnv"))
+            .withBackendPoolNames(Arrays.asList("atkzwpcnpw", "cjaesgvvs", "cyajguqf"))
+            .withHealthProbeNames(Arrays.asList("gzlvdnkfxu"));
         model = BinaryData.fromObject(model).toObject(LoadBalancerResourceNames.class);
         Assertions.assertEquals("ho", model.loadBalancerName());
         Assertions.assertEquals("zudphqamvdkfw", model.frontendIpConfigurationNames().get(0));

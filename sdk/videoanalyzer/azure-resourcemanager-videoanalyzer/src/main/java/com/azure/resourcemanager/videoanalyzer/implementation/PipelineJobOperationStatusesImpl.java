@@ -20,17 +20,16 @@ public final class PipelineJobOperationStatusesImpl implements PipelineJobOperat
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public PipelineJobOperationStatusesImpl(
-        PipelineJobOperationStatusesClient innerClient,
+    public PipelineJobOperationStatusesImpl(PipelineJobOperationStatusesClient innerClient,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PipelineJobOperationStatus get(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId) {
-        PipelineJobOperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, pipelineJobName, operationId);
+    public PipelineJobOperationStatus get(String resourceGroupName, String accountName, String pipelineJobName,
+        String operationId) {
+        PipelineJobOperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, pipelineJobName, operationId);
         if (inner != null) {
             return new PipelineJobOperationStatusImpl(inner, this.manager());
         } else {
@@ -38,15 +37,12 @@ public final class PipelineJobOperationStatusesImpl implements PipelineJobOperat
         }
     }
 
-    public Response<PipelineJobOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId, Context context) {
-        Response<PipelineJobOperationStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, pipelineJobName, operationId, context);
+    public Response<PipelineJobOperationStatus> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, String operationId, Context context) {
+        Response<PipelineJobOperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, pipelineJobName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PipelineJobOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

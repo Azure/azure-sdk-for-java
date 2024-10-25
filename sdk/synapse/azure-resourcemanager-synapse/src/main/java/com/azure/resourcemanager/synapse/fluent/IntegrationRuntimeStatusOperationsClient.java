@@ -29,8 +29,8 @@ public interface IntegrationRuntimeStatusOperationsClient {
      * @return the integration runtime status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime status
@@ -46,6 +46,6 @@ public interface IntegrationRuntimeStatusOperationsClient {
      * @return the integration runtime status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponseInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

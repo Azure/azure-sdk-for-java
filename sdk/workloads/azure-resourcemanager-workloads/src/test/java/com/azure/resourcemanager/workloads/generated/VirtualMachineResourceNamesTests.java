@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineResourceNames model =
-            BinaryData
-                .fromString(
-                    "{\"vmName\":\"l\",\"hostName\":\"ab\",\"networkInterfaces\":[{\"networkInterfaceName\":\"fkifr\"},{\"networkInterfaceName\":\"puqujmqlgkfbtn\"}],\"osDiskName\":\"aongbj\",\"dataDiskNames\":{\"ybxarzgszu\":[\"jitcjedftwwaez\",\"ojvdcpzfoqo\",\"i\"],\"szzcmrvexztv\":[\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\",\"oegokdwbwh\"],\"lmnguxaw\":[\"qgsfraoyzkoow\"]}}")
-                .toObject(VirtualMachineResourceNames.class);
+        VirtualMachineResourceNames model = BinaryData.fromString(
+            "{\"vmName\":\"l\",\"hostName\":\"ab\",\"networkInterfaces\":[{\"networkInterfaceName\":\"fkifr\"},{\"networkInterfaceName\":\"puqujmqlgkfbtn\"}],\"osDiskName\":\"aongbj\",\"dataDiskNames\":{\"ybxarzgszu\":[\"jitcjedftwwaez\",\"ojvdcpzfoqo\",\"i\"],\"szzcmrvexztv\":[\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\",\"oegokdwbwh\"],\"lmnguxaw\":[\"qgsfraoyzkoow\"]}}")
+            .toObject(VirtualMachineResourceNames.class);
         Assertions.assertEquals("l", model.vmName());
         Assertions.assertEquals("ab", model.hostname());
         Assertions.assertEquals("fkifr", model.networkInterfaces().get(0).networkInterfaceName());
@@ -29,24 +27,14 @@ public final class VirtualMachineResourceNamesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineResourceNames model =
-            new VirtualMachineResourceNames()
-                .withVmName("l")
-                .withHostname("ab")
-                .withNetworkInterfaces(
-                    Arrays
-                        .asList(
-                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("fkifr"),
-                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("puqujmqlgkfbtn")))
-                .withOsDiskName("aongbj")
-                .withDataDiskNames(
-                    mapOf(
-                        "ybxarzgszu",
-                        Arrays.asList("jitcjedftwwaez", "ojvdcpzfoqo", "i"),
-                        "szzcmrvexztv",
-                        Arrays.asList("x", "iqopidoamciod", "khazxkhnzbonlwn", "oegokdwbwh"),
-                        "lmnguxaw",
-                        Arrays.asList("qgsfraoyzkoow")));
+        VirtualMachineResourceNames model = new VirtualMachineResourceNames().withVmName("l")
+            .withHostname("ab")
+            .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("fkifr"),
+                new NetworkInterfaceResourceNames().withNetworkInterfaceName("puqujmqlgkfbtn")))
+            .withOsDiskName("aongbj")
+            .withDataDiskNames(mapOf("ybxarzgszu", Arrays.asList("jitcjedftwwaez", "ojvdcpzfoqo", "i"), "szzcmrvexztv",
+                Arrays.asList("x", "iqopidoamciod", "khazxkhnzbonlwn", "oegokdwbwh"), "lmnguxaw",
+                Arrays.asList("qgsfraoyzkoow")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineResourceNames.class);
         Assertions.assertEquals("l", model.vmName());
         Assertions.assertEquals("ab", model.hostname());

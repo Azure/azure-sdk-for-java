@@ -13,8 +13,8 @@ public final class LanguageExtensionImpl implements LanguageExtension {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    LanguageExtensionImpl(
-        LanguageExtensionInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    LanguageExtensionImpl(LanguageExtensionInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIntegrationRuntimeManagedVirtualNetworkReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIntegrationRuntimeManagedVirtualNetworkReference model =
-            BinaryData
-                .fromString("{\"referenceName\":\"regzgyufutrwpwer\",\"type\":\"kzkdhmeott\",\"id\":\"jyosxwwh\"}")
-                .toObject(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);
+        ManagedIntegrationRuntimeManagedVirtualNetworkReference model = BinaryData
+            .fromString("{\"referenceName\":\"regzgyufutrwpwer\",\"type\":\"kzkdhmeott\",\"id\":\"jyosxwwh\"}")
+            .toObject(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);
         Assertions.assertEquals("regzgyufutrwpwer", model.referenceName());
         Assertions.assertEquals("kzkdhmeott", model.type());
         Assertions.assertEquals("jyosxwwh", model.id());
@@ -22,9 +21,8 @@ public final class ManagedIntegrationRuntimeManagedVirtualNetworkReferenceTests 
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIntegrationRuntimeManagedVirtualNetworkReference model =
-            new ManagedIntegrationRuntimeManagedVirtualNetworkReference()
-                .withReferenceName("regzgyufutrwpwer")
+        ManagedIntegrationRuntimeManagedVirtualNetworkReference model
+            = new ManagedIntegrationRuntimeManagedVirtualNetworkReference().withReferenceName("regzgyufutrwpwer")
                 .withType("kzkdhmeott")
                 .withId("jyosxwwh");
         model = BinaryData.fromObject(model).toObject(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);

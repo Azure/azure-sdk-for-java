@@ -24,11 +24,8 @@ public interface AzureADOnlyAuthentications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory only authentication property along with {@link Response}.
      */
-    Response<AzureADOnlyAuthentication> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        Context context);
+    Response<AzureADOnlyAuthentication> getWithResponse(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName, Context context);
 
     /**
      * Get Azure Active Directory only authentication property
@@ -43,8 +40,8 @@ public interface AzureADOnlyAuthentications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory only authentication property.
      */
-    AzureADOnlyAuthentication get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
+    AzureADOnlyAuthentication get(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
 
     /**
      * Gets a list of Azure Active Directory only authentication property

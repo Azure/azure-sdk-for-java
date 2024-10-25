@@ -30,7 +30,8 @@ public final class ScalarFunctionPropertiesTests {
                 new FunctionInput().withDataType("napkteoellw").withIsConfigurationParameter(true),
                 new FunctionInput().withDataType("ygpfqb").withIsConfigurationParameter(true),
                 new FunctionInput().withDataType("op").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("huaoppp")).withBinding(new FunctionBinding());
+            .withOutput(new FunctionOutput().withDataType("huaoppp"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(ScalarFunctionProperties.class);
         Assertions.assertEquals("cwzzhxgktr", model.inputs().get(0).dataType());
         Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());

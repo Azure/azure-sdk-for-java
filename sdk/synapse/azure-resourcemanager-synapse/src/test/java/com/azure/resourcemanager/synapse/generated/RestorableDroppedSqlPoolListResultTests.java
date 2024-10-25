@@ -12,23 +12,16 @@ import java.util.Arrays;
 public final class RestorableDroppedSqlPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorableDroppedSqlPoolListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"qlgehg\",\"properties\":{\"databaseName\":\"pifhpfeoajvgcxtx\",\"edition\":\"sheafid\",\"maxSizeBytes\":\"ugsresmkssjhoi\",\"serviceLevelObjective\":\"xfkfwegprhptill\",\"elasticPoolName\":\"biqtgdq\",\"creationDate\":\"2021-07-05T05:21:27Z\",\"deletionDate\":\"2021-06-27T02:38:30Z\",\"earliestRestoreDate\":\"2021-05-01T07:33:50Z\"},\"id\":\"drizetpwbr\",\"name\":\"lllibph\",\"type\":\"qzmiza\"},{\"location\":\"kan\",\"properties\":{\"databaseName\":\"dnjzh\",\"edition\":\"oylhjlmuoyxprimr\",\"maxSizeBytes\":\"pteecjme\",\"serviceLevelObjective\":\"ls\",\"elasticPoolName\":\"asylwx\",\"creationDate\":\"2021-07-29T15:52:33Z\",\"deletionDate\":\"2021-01-12T02:29:32Z\",\"earliestRestoreDate\":\"2021-03-03T01:17:06Z\"},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"location\":\"p\",\"properties\":{\"databaseName\":\"xveabf\",\"edition\":\"nmwmqtibx\",\"maxSizeBytes\":\"jddtvqct\",\"serviceLevelObjective\":\"dija\",\"elasticPoolName\":\"kmr\",\"creationDate\":\"2021-09-17T14:17:20Z\",\"deletionDate\":\"2021-06-27T19:58:30Z\",\"earliestRestoreDate\":\"2021-03-21T22:02:33Z\"},\"id\":\"dzaapmudqme\",\"name\":\"wig\",\"type\":\"ibudqwy\"}]}")
-                .toObject(RestorableDroppedSqlPoolListResult.class);
+        RestorableDroppedSqlPoolListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"qlgehg\",\"properties\":{\"databaseName\":\"pifhpfeoajvgcxtx\",\"edition\":\"sheafid\",\"maxSizeBytes\":\"ugsresmkssjhoi\",\"serviceLevelObjective\":\"xfkfwegprhptill\",\"elasticPoolName\":\"biqtgdq\",\"creationDate\":\"2021-07-05T05:21:27Z\",\"deletionDate\":\"2021-06-27T02:38:30Z\",\"earliestRestoreDate\":\"2021-05-01T07:33:50Z\"},\"id\":\"drizetpwbr\",\"name\":\"lllibph\",\"type\":\"qzmiza\"},{\"location\":\"kan\",\"properties\":{\"databaseName\":\"dnjzh\",\"edition\":\"oylhjlmuoyxprimr\",\"maxSizeBytes\":\"pteecjme\",\"serviceLevelObjective\":\"ls\",\"elasticPoolName\":\"asylwx\",\"creationDate\":\"2021-07-29T15:52:33Z\",\"deletionDate\":\"2021-01-12T02:29:32Z\",\"earliestRestoreDate\":\"2021-03-03T01:17:06Z\"},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"location\":\"p\",\"properties\":{\"databaseName\":\"xveabf\",\"edition\":\"nmwmqtibx\",\"maxSizeBytes\":\"jddtvqct\",\"serviceLevelObjective\":\"dija\",\"elasticPoolName\":\"kmr\",\"creationDate\":\"2021-09-17T14:17:20Z\",\"deletionDate\":\"2021-06-27T19:58:30Z\",\"earliestRestoreDate\":\"2021-03-21T22:02:33Z\"},\"id\":\"dzaapmudqme\",\"name\":\"wig\",\"type\":\"ibudqwy\"}]}")
+            .toObject(RestorableDroppedSqlPoolListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestorableDroppedSqlPoolListResult model =
-            new RestorableDroppedSqlPoolListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RestorableDroppedSqlPoolInner(),
-                            new RestorableDroppedSqlPoolInner(),
-                            new RestorableDroppedSqlPoolInner()));
+        RestorableDroppedSqlPoolListResult model
+            = new RestorableDroppedSqlPoolListResult().withValue(Arrays.asList(new RestorableDroppedSqlPoolInner(),
+                new RestorableDroppedSqlPoolInner(), new RestorableDroppedSqlPoolInner()));
         model = BinaryData.fromObject(model).toObject(RestorableDroppedSqlPoolListResult.class);
     }
 }

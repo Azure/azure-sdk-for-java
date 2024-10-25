@@ -43,8 +43,8 @@ public final class PrivateEndpointConnectionForPrivateLinkHubResourceCollectionR
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse object itself.
      */
-    public PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse withValue(
-        List<PrivateEndpointConnectionForPrivateLinkHubInner> value) {
+    public PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse
+        withValue(List<PrivateEndpointConnectionForPrivateLinkHubInner> value) {
         this.value = value;
         return this;
     }

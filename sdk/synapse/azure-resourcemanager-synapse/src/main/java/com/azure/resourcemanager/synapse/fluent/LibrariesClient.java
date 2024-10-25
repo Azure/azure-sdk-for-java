@@ -27,8 +27,8 @@ public interface LibrariesClient {
      * @return library by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LibraryResourceInner> getWithResponse(
-        String resourceGroupName, String libraryName, String workspaceName, Context context);
+    Response<LibraryResourceInner> getWithResponse(String resourceGroupName, String libraryName, String workspaceName,
+        Context context);
 
     /**
      * Get library by name.

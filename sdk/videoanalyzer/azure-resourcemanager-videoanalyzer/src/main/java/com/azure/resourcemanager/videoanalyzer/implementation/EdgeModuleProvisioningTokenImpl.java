@@ -13,8 +13,7 @@ public final class EdgeModuleProvisioningTokenImpl implements EdgeModuleProvisio
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    EdgeModuleProvisioningTokenImpl(
-        EdgeModuleProvisioningTokenInner innerObject,
+    EdgeModuleProvisioningTokenImpl(EdgeModuleProvisioningTokenInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

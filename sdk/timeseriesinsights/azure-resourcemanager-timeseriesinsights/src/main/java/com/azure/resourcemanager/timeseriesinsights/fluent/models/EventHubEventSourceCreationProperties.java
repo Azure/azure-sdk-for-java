@@ -119,10 +119,8 @@ public final class EventHubEventSourceCreationProperties extends EventHubEventSo
     public void validate() {
         super.validate();
         if (sharedAccessKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharedAccessKey in model EventHubEventSourceCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sharedAccessKey in model EventHubEventSourceCreationProperties"));
         }
     }
 

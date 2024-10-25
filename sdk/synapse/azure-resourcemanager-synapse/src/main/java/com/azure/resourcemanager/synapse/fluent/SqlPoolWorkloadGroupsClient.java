@@ -31,8 +31,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return a Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadGroupInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    Response<WorkloadGroupInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
      * Sql pool's workload group
@@ -49,8 +49,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return a Sql pool's workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    WorkloadGroupInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
      * Create Or Update workload group
@@ -68,12 +68,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Create Or Update workload group
@@ -92,12 +88,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters,
         Context context);
 
     /**
@@ -116,12 +108,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Create Or Update workload group
@@ -140,13 +128,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters, Context context);
 
     /**
      * Remove workload group
@@ -163,8 +146,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
      * Remove workload group
@@ -182,8 +165,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
      * Remove workload group
@@ -216,8 +199,8 @@ public interface SqlPoolWorkloadGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        Context context);
 
     /**
      * Sql pool's workload groups
@@ -250,6 +233,6 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadGroupInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<WorkloadGroupInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

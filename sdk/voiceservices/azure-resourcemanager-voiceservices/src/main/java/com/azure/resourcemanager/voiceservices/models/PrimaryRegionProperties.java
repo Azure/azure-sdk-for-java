@@ -97,8 +97,8 @@ public final class PrimaryRegionProperties {
      * @param allowedSignalingSourceAddressPrefixes the allowedSignalingSourceAddressPrefixes value to set.
      * @return the PrimaryRegionProperties object itself.
      */
-    public PrimaryRegionProperties withAllowedSignalingSourceAddressPrefixes(
-        List<String> allowedSignalingSourceAddressPrefixes) {
+    public PrimaryRegionProperties
+        withAllowedSignalingSourceAddressPrefixes(List<String> allowedSignalingSourceAddressPrefixes) {
         this.allowedSignalingSourceAddressPrefixes = allowedSignalingSourceAddressPrefixes;
         return this;
     }
@@ -118,8 +118,8 @@ public final class PrimaryRegionProperties {
      * @param allowedMediaSourceAddressPrefixes the allowedMediaSourceAddressPrefixes value to set.
      * @return the PrimaryRegionProperties object itself.
      */
-    public PrimaryRegionProperties withAllowedMediaSourceAddressPrefixes(
-        List<String> allowedMediaSourceAddressPrefixes) {
+    public PrimaryRegionProperties
+        withAllowedMediaSourceAddressPrefixes(List<String> allowedMediaSourceAddressPrefixes) {
         this.allowedMediaSourceAddressPrefixes = allowedMediaSourceAddressPrefixes;
         return this;
     }
@@ -131,10 +131,8 @@ public final class PrimaryRegionProperties {
      */
     public void validate() {
         if (operatorAddresses() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operatorAddresses in model PrimaryRegionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operatorAddresses in model PrimaryRegionProperties"));
         }
     }
 

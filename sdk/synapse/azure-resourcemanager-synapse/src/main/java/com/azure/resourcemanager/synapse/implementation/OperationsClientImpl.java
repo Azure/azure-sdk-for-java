@@ -45,8 +45,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,56 +57,41 @@ public final class OperationsClientImpl implements OperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface OperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailabilityRequest request,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CheckNameAvailabilityRequest request, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Synapse/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<AvailableRpOperationInner>>> list(
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<List<AvailableRpOperationInner>>> list(@HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/operationResults/{operationId}")
-        @ExpectedResponses({200, 201, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 201, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> getLocationHeaderResult(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> getLocationHeaderResult(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/operationStatuses/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/operationStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResult(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResult(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -121,19 +106,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return check name availability response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest request) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest request) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -143,16 +124,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            request,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -169,19 +142,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return check name availability response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest request, Context context) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -191,9 +160,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), request, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            request, accept, context);
     }
 
     /**
@@ -225,8 +193,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return check name availability response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context) {
+    public Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request, Context context) {
         return checkNameAvailabilityWithResponseAsync(request, context).block();
     }
 
@@ -258,14 +226,11 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AvailableRpOperationInner>>> listWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -283,10 +248,8 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AvailableRpOperationInner>>> listWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -351,19 +314,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the result of an operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getLocationHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String operationId) {
+    private Mono<Response<Void>> getLocationHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,18 +337,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLocationHeaderResult(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -408,19 +357,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the result of an operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getLocationHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
+    private Mono<Response<Void>> getLocationHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,16 +380,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLocationHeaderResult(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                operationId,
-                accept,
-                context);
+        return service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, operationId, accept, context);
     }
 
     /**
@@ -461,8 +398,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the result of an operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getLocationHeaderResultAsync(
-        String resourceGroupName, String workspaceName, String operationId) {
+    private Mono<Void> getLocationHeaderResultAsync(String resourceGroupName, String workspaceName,
+        String operationId) {
         return getLocationHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId)
             .flatMap(ignored -> Mono.empty());
     }
@@ -482,8 +419,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the result of an operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getLocationHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
+    public Response<Void> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String operationId, Context context) {
         return getLocationHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId, context).block();
     }
 
@@ -518,19 +455,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the status of an operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String operationId) {
+    private Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -545,18 +478,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAzureAsyncHeaderResult(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.getAzureAsyncHeaderResult(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -575,19 +498,15 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the status of an operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
+    private Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,16 +521,8 @@ public final class OperationsClientImpl implements OperationsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAzureAsyncHeaderResult(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                operationId,
-                accept,
-                context);
+        return service.getAzureAsyncHeaderResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, operationId, accept, context);
     }
 
     /**
@@ -628,8 +539,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the status of an operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResourceInner> getAzureAsyncHeaderResultAsync(
-        String resourceGroupName, String workspaceName, String operationId) {
+    private Mono<OperationResourceInner> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName,
+        String operationId) {
         return getAzureAsyncHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -649,8 +560,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the status of an operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationResourceInner> getAzureAsyncHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
+    public Response<OperationResourceInner> getAzureAsyncHeaderResultWithResponse(String resourceGroupName,
+        String workspaceName, String operationId, Context context) {
         return getAzureAsyncHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId, context)
             .block();
     }
@@ -669,8 +580,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the status of an operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResourceInner getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId) {
+    public OperationResourceInner getAzureAsyncHeaderResult(String resourceGroupName, String workspaceName,
+        String operationId) {
         return getAzureAsyncHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, Context.NONE)
             .getValue();
     }

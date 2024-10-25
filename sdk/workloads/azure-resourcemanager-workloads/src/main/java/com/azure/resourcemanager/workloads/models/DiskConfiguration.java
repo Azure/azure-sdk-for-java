@@ -41,8 +41,8 @@ public final class DiskConfiguration {
      * @param diskVolumeConfigurations the diskVolumeConfigurations value to set.
      * @return the DiskConfiguration object itself.
      */
-    public DiskConfiguration withDiskVolumeConfigurations(
-        Map<String, DiskVolumeConfiguration> diskVolumeConfigurations) {
+    public DiskConfiguration
+        withDiskVolumeConfigurations(Map<String, DiskVolumeConfiguration> diskVolumeConfigurations) {
         this.diskVolumeConfigurations = diskVolumeConfigurations;
         return this;
     }
@@ -54,14 +54,11 @@ public final class DiskConfiguration {
      */
     public void validate() {
         if (diskVolumeConfigurations() != null) {
-            diskVolumeConfigurations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            diskVolumeConfigurations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

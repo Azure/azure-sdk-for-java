@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class Gen2EnvironmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Gen2EnvironmentResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"timeSeriesIdProperties\":[{\"name\":\"plwzbhvgyugu\",\"type\":\"String\"},{\"name\":\"kfssxqukkf\",\"type\":\"String\"}],\"storageConfiguration\":{\"accountName\":\"mg\"},\"warmStoreConfiguration\":{\"dataRetention\":\"PT223H20M43S\"},\"dataAccessId\":\"7c9469a1-40bd-4f60-828f-4431cc29a820\",\"dataAccessFqdn\":\"zkd\",\"status\":{\"ingress\":{\"state\":\"Ready\"},\"warmStorage\":{}},\"provisioningState\":\"Updating\",\"creationTime\":\"2020-12-31T01:05:02Z\"}")
-                .toObject(Gen2EnvironmentResourceProperties.class);
+        Gen2EnvironmentResourceProperties model = BinaryData.fromString(
+            "{\"timeSeriesIdProperties\":[{\"name\":\"plwzbhvgyugu\",\"type\":\"String\"},{\"name\":\"kfssxqukkf\",\"type\":\"String\"}],\"storageConfiguration\":{\"accountName\":\"mg\"},\"warmStoreConfiguration\":{\"dataRetention\":\"PT223H20M43S\"},\"dataAccessId\":\"7c9469a1-40bd-4f60-828f-4431cc29a820\",\"dataAccessFqdn\":\"zkd\",\"status\":{\"ingress\":{\"state\":\"Ready\"},\"warmStorage\":{}},\"provisioningState\":\"Updating\",\"creationTime\":\"2020-12-31T01:05:02Z\"}")
+            .toObject(Gen2EnvironmentResourceProperties.class);
         Assertions.assertEquals("plwzbhvgyugu", model.timeSeriesIdProperties().get(0).name());
         Assertions.assertEquals(PropertyType.STRING, model.timeSeriesIdProperties().get(0).type());
         Assertions.assertEquals("mg", model.storageConfiguration().accountName());
@@ -30,16 +28,13 @@ public final class Gen2EnvironmentResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Gen2EnvironmentResourceProperties model =
-            new Gen2EnvironmentResourceProperties()
-                .withTimeSeriesIdProperties(
-                    Arrays
-                        .asList(
-                            new TimeSeriesIdProperty().withName("plwzbhvgyugu").withType(PropertyType.STRING),
-                            new TimeSeriesIdProperty().withName("kfssxqukkf").withType(PropertyType.STRING)))
-                .withStorageConfiguration(new Gen2StorageConfigurationOutput().withAccountName("mg"))
-                .withWarmStoreConfiguration(
-                    new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT223H20M43S")));
+        Gen2EnvironmentResourceProperties model = new Gen2EnvironmentResourceProperties()
+            .withTimeSeriesIdProperties(
+                Arrays.asList(new TimeSeriesIdProperty().withName("plwzbhvgyugu").withType(PropertyType.STRING),
+                    new TimeSeriesIdProperty().withName("kfssxqukkf").withType(PropertyType.STRING)))
+            .withStorageConfiguration(new Gen2StorageConfigurationOutput().withAccountName("mg"))
+            .withWarmStoreConfiguration(
+                new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT223H20M43S")));
         model = BinaryData.fromObject(model).toObject(Gen2EnvironmentResourceProperties.class);
         Assertions.assertEquals("plwzbhvgyugu", model.timeSeriesIdProperties().get(0).name());
         Assertions.assertEquals(PropertyType.STRING, model.timeSeriesIdProperties().get(0).type());

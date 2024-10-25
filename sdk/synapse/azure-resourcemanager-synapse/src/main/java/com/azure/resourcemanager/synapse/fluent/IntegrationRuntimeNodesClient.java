@@ -29,12 +29,8 @@ public interface IntegrationRuntimeNodesClient {
      * @return an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node
@@ -51,8 +47,8 @@ public interface IntegrationRuntimeNodesClient {
      * @return an integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SelfHostedIntegrationRuntimeNodeInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    SelfHostedIntegrationRuntimeNodeInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName);
 
     /**
      * Create integration runtime node
@@ -71,13 +67,9 @@ public interface IntegrationRuntimeNodesClient {
      * @return properties of Self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest, Context context);
 
     /**
      * Create integration runtime node
@@ -95,11 +87,8 @@ public interface IntegrationRuntimeNodesClient {
      * @return properties of Self-hosted integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SelfHostedIntegrationRuntimeNodeInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
+    SelfHostedIntegrationRuntimeNodeInner update(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest);
 
     /**
@@ -118,12 +107,8 @@ public interface IntegrationRuntimeNodesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String nodeName, Context context);
 
     /**
      * Delete integration runtime node

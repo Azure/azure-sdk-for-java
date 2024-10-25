@@ -21,8 +21,8 @@ public interface KustoPoolPrivateLinkResourcesOperations {
      * @return the list Kusto Private Link Resources operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName);
+    PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName);
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
@@ -37,6 +37,6 @@ public interface KustoPoolPrivateLinkResourcesOperations {
      * @return the list Kusto Private Link Resources operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context);
+    PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context);
 }

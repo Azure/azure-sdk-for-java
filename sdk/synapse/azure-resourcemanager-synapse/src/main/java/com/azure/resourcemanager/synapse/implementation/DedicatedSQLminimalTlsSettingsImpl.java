@@ -12,8 +12,7 @@ public final class DedicatedSQLminimalTlsSettingsImpl implements DedicatedSQLmin
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DedicatedSQLminimalTlsSettingsImpl(
-        DedicatedSQLminimalTlsSettingsInner innerObject,
+    DedicatedSQLminimalTlsSettingsImpl(DedicatedSQLminimalTlsSettingsInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

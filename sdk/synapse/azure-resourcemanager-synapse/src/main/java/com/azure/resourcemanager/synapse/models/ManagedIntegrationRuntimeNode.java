@@ -37,7 +37,8 @@ public final class ManagedIntegrationRuntimeNode {
     /*
      * Properties of integration runtime node.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of ManagedIntegrationRuntimeNode class. */
     public ManagedIntegrationRuntimeNode() {

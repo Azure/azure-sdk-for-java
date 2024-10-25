@@ -75,8 +75,8 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withTimeSeriesIdProperties(
-        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withTimeSeriesIdProperties(List<TimeSeriesIdProperty> timeSeriesIdProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -103,8 +103,8 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withStorageConfiguration(
-        Gen2StorageConfigurationInput storageConfiguration) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withStorageConfiguration(Gen2StorageConfigurationInput storageConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -129,8 +129,8 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -147,10 +147,8 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model Gen2EnvironmentCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model Gen2EnvironmentCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }

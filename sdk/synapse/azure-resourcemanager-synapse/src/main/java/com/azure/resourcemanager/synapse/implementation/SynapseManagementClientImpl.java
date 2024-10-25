@@ -639,8 +639,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /** The WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object to access its operations. */
-    private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient
-        workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+    private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient workspaceManagedSqlServerExtendedBlobAuditingPolicies;
 
     /**
      * Gets the WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object to access its operations.
@@ -665,8 +664,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /** The WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object to access its operations. */
-    private final WorkspaceManagedSqlServerVulnerabilityAssessmentsClient
-        workspaceManagedSqlServerVulnerabilityAssessments;
+    private final WorkspaceManagedSqlServerVulnerabilityAssessmentsClient workspaceManagedSqlServerVulnerabilityAssessments;
 
     /**
      * Gets the WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object to access its operations.
@@ -715,8 +713,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /** The WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations. */
-    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
-        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
 
     /**
      * Gets the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
@@ -1086,13 +1083,8 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    SynapseManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    SynapseManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -1129,34 +1121,34 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.sqlPoolVulnerabilityAssessments = new SqlPoolVulnerabilityAssessmentsClientImpl(this);
         this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansClientImpl(this);
         this.sqlPoolSecurityAlertPolicies = new SqlPoolSecurityAlertPoliciesClientImpl(this);
-        this.sqlPoolVulnerabilityAssessmentRuleBaselines =
-            new SqlPoolVulnerabilityAssessmentRuleBaselinesClientImpl(this);
+        this.sqlPoolVulnerabilityAssessmentRuleBaselines
+            = new SqlPoolVulnerabilityAssessmentRuleBaselinesClientImpl(this);
         this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesClientImpl(this);
         this.dataMaskingPolicies = new DataMaskingPoliciesClientImpl(this);
         this.dataMaskingRules = new DataMaskingRulesClientImpl(this);
         this.sqlPoolColumns = new SqlPoolColumnsClientImpl(this);
         this.sqlPoolWorkloadGroups = new SqlPoolWorkloadGroupsClientImpl(this);
         this.sqlPoolWorkloadClassifiers = new SqlPoolWorkloadClassifiersClientImpl(this);
-        this.workspaceManagedSqlServerBlobAuditingPolicies =
-            new WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerExtendedBlobAuditingPolicies =
-            new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerSecurityAlertPolicies =
-            new WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerVulnerabilityAssessments =
-            new WorkspaceManagedSqlServerVulnerabilityAssessmentsClientImpl(this);
-        this.workspaceManagedSqlServerEncryptionProtectors =
-            new WorkspaceManagedSqlServerEncryptionProtectorsClientImpl(this);
+        this.workspaceManagedSqlServerBlobAuditingPolicies
+            = new WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerExtendedBlobAuditingPolicies
+            = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerSecurityAlertPolicies
+            = new WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerVulnerabilityAssessments
+            = new WorkspaceManagedSqlServerVulnerabilityAssessmentsClientImpl(this);
+        this.workspaceManagedSqlServerEncryptionProtectors
+            = new WorkspaceManagedSqlServerEncryptionProtectorsClientImpl(this);
         this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesClientImpl(this);
-        this.workspaceManagedSqlServerRecoverableSqlPools =
-            new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
-        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
-            new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
+        this.workspaceManagedSqlServerRecoverableSqlPools
+            = new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
+        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+            = new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsClientImpl(this);
         this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsClientImpl(this);
-        this.workspaceManagedIdentitySqlControlSettings =
-            new WorkspaceManagedIdentitySqlControlSettingsClientImpl(this);
+        this.workspaceManagedIdentitySqlControlSettings
+            = new WorkspaceManagedIdentitySqlControlSettingsClientImpl(this);
         this.restorableDroppedSqlPools = new RestorableDroppedSqlPoolsClientImpl(this);
         this.bigDataPools = new BigDataPoolsClientImpl(this);
         this.libraries = new LibrariesClientImpl(this);
@@ -1215,21 +1207,10 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
@@ -1247,19 +1228,16 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

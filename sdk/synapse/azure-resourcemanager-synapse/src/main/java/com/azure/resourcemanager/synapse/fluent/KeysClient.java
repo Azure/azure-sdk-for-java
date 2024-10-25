@@ -83,8 +83,8 @@ public interface KeysClient {
      * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties, Context context);
+    Response<KeyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String keyName,
+        KeyInner keyProperties, Context context);
 
     /**
      * Creates or updates a workspace key.
@@ -114,8 +114,8 @@ public interface KeysClient {
      * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyInner> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String keyName, Context context);
+    Response<KeyInner> deleteWithResponse(String resourceGroupName, String workspaceName, String keyName,
+        Context context);
 
     /**
      * Deletes a workspace key.

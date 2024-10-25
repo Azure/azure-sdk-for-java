@@ -62,8 +62,8 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
      * @param endpoints the endpoints value to set.
      * @return the IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint object itself.
      */
-    public IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint withEndpoints(
-        List<IntegrationRuntimeOutboundNetworkDependenciesEndpoint> endpoints) {
+    public IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+        withEndpoints(List<IntegrationRuntimeOutboundNetworkDependenciesEndpoint> endpoints) {
         this.endpoints = endpoints;
         return this;
     }

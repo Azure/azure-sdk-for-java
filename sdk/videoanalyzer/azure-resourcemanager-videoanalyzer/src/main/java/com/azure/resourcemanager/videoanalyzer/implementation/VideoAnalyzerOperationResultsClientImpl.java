@@ -39,12 +39,8 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
      * @param client the instance of the service client containing this operation class.
      */
     VideoAnalyzerOperationResultsClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VideoAnalyzerOperationResultsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(VideoAnalyzerOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,20 +51,15 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface VideoAnalyzerOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
-                + "/videoAnalyzerOperationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
+            + "/videoAnalyzerOperationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VideoAnalyzerInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("locationName") String locationName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,16 +75,12 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerInner>> getWithResponseAsync(String locationName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -103,17 +90,8 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                locationName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -129,19 +107,15 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
      * @return video analyzer operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> getWithResponseAsync(
-        String locationName, String operationId, Context context) {
+    private Mono<Response<VideoAnalyzerInner>> getWithResponseAsync(String locationName, String operationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -151,15 +125,8 @@ public final class VideoAnalyzerOperationResultsClientImpl implements VideoAnaly
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), locationName, operationId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

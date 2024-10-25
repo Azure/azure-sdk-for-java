@@ -72,8 +72,8 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
      * @param maintenanceWindowCycles the maintenanceWindowCycles value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
-    public MaintenanceWindowOptionsInner withMaintenanceWindowCycles(
-        List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
+    public MaintenanceWindowOptionsInner
+        withMaintenanceWindowCycles(List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MaintenanceWindowOptionsProperties();
         }
@@ -190,8 +190,8 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
      * @param allowMultipleMaintenanceWindowsPerCycle the allowMultipleMaintenanceWindowsPerCycle value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
-    public MaintenanceWindowOptionsInner withAllowMultipleMaintenanceWindowsPerCycle(
-        Boolean allowMultipleMaintenanceWindowsPerCycle) {
+    public MaintenanceWindowOptionsInner
+        withAllowMultipleMaintenanceWindowsPerCycle(Boolean allowMultipleMaintenanceWindowsPerCycle) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MaintenanceWindowOptionsProperties();
         }

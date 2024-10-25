@@ -40,6 +40,8 @@
       --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
+
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

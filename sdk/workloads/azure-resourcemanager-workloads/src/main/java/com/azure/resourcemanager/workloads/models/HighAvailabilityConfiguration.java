@@ -48,10 +48,8 @@ public final class HighAvailabilityConfiguration {
      */
     public void validate() {
         if (highAvailabilityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property highAvailabilityType in model HighAvailabilityConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property highAvailabilityType in model HighAvailabilityConfiguration"));
         }
     }
 

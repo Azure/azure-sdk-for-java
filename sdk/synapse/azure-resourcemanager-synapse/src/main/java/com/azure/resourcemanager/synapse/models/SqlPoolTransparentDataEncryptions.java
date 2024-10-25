@@ -25,12 +25,8 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
-    Response<TransparentDataEncryption> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        Context context);
+    Response<TransparentDataEncryption> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName, Context context);
 
     /**
      * Get a SQL pool's transparent data encryption configuration
@@ -46,10 +42,7 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's transparent data encryption configuration.
      */
-    TransparentDataEncryption get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    TransparentDataEncryption get(String resourceGroupName, String workspaceName, String sqlPoolName,
         TransparentDataEncryptionName transparentDataEncryptionName);
 
     /**
@@ -83,8 +76,8 @@ public interface SqlPoolTransparentDataEncryptions {
      * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<TransparentDataEncryption> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<TransparentDataEncryption> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get a SQL pool's transparent data encryption configuration

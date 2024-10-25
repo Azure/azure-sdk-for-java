@@ -21,8 +21,8 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Identity Sql Control Settings along with {@link Response}.
      */
-    Response<ManagedIdentitySqlControlSettingsModel> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ManagedIdentitySqlControlSettingsModel> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Get Managed Identity Sql Control Settings.
@@ -47,9 +47,7 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Identity Sql Control Settings.
      */
-    ManagedIdentitySqlControlSettingsModel createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
+    ManagedIdentitySqlControlSettingsModel createOrUpdate(String resourceGroupName, String workspaceName,
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings);
 
     /**
@@ -64,9 +62,6 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Identity Sql Control Settings.
      */
-    ManagedIdentitySqlControlSettingsModel createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-        Context context);
+    ManagedIdentitySqlControlSettingsModel createOrUpdate(String resourceGroupName, String workspaceName,
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context);
 }

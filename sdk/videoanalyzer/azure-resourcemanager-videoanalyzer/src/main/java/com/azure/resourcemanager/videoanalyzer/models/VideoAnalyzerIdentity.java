@@ -61,8 +61,8 @@ public class VideoAnalyzerIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the VideoAnalyzerIdentity object itself.
      */
-    public VideoAnalyzerIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
+    public VideoAnalyzerIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -74,19 +74,15 @@ public class VideoAnalyzerIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model VideoAnalyzerIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model VideoAnalyzerIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
