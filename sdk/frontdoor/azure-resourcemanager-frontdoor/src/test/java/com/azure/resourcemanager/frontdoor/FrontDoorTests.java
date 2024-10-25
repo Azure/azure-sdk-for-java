@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.frontdoor;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -49,21 +50,21 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
         ResourceManager resourceManager = ResourceManager.configure()
-            .authenticate(new AzurePowerShellCredentialBuilder().build(),
-                new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        StorageManager storageManager = StorageManager
-            .configure()
+        StorageManager storageManager = StorageManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(),
-            new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         FrontDoorManager manager = FrontDoorManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
