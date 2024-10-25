@@ -24,9 +24,14 @@ import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ResourceHealthTests extends TestProxyTestBase {
@@ -62,6 +67,8 @@ public class ResourceHealthTests extends TestProxyTestBase {
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
+
+        registeredProvider(resourceManager, Arrays.asList("Microsoft.Compute", "Microsoft.ResourceHealth"));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -130,5 +137,26 @@ public class ResourceHealthTests extends TestProxyTestBase {
                 resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
             }
         }
+    }
+
+    /**
+     * Make sure the resource provider has been registered with this subscription.
+     * So add function for registration provider.
+     *
+     * @param resourceManager the resource manager
+     * @param resourceProviderNamespaces the namespace of resource providers
+     */
+    private static void registeredProvider(ResourceManager resourceManager, List<String> resourceProviderNamespaces) {
+        resourceProviderNamespaces.forEach(resourceProviderNamespace -> {
+            Provider provider = resourceManager.providers().getByName(resourceProviderNamespace);
+            if (!"Registered".equalsIgnoreCase(provider.registrationState())
+                && !"Registering".equalsIgnoreCase(provider.registrationState()) ) {
+                provider = resourceManager.providers().register(resourceProviderNamespace);
+            }
+            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+                provider = resourceManager.providers().getByName(resourceProviderNamespace);
+            }
+        });
     }
 }
