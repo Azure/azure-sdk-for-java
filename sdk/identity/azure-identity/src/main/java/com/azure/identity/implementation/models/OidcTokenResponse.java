@@ -3,7 +3,6 @@
 
 package com.azure.identity.implementation.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,14 +12,14 @@ import java.io.IOException;
 
 public class OidcTokenResponse implements JsonSerializable<OidcTokenResponse> {
     private String oidcToken;
+
     public String getOidcToken() {
         return oidcToken;
     }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("oidcToken", oidcToken)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("oidcToken", oidcToken).writeEndObject();
     }
 
     public static OidcTokenResponse fromJson(JsonReader jsonReader) throws IOException {

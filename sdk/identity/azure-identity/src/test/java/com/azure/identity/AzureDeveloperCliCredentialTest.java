@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 
 public class AzureDeveloperCliCredentialTest {
 
-
     @Test
     public void getTokenMockAsync() {
         // setup
@@ -29,10 +28,11 @@ public class AzureDeveloperCliCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureDeveloperCli(request))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureDeveloperCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            })) {
             // test
             AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -49,11 +49,12 @@ public class AzureDeveloperCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureDeveloperCli(request))
-                .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureDeveloperCli(request))
+                    .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -69,11 +70,12 @@ public class AzureDeveloperCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureDeveloperCli(request))
-                .thenReturn(Mono.error(new Exception("Azure not Login")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureDeveloperCli(request))
+                    .thenReturn(Mono.error(new Exception("Azure not Login")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -86,14 +88,16 @@ public class AzureDeveloperCliCredentialTest {
     @Test
     public void azureDeveloperCliCredentialAuthenticationFailedException() {
         // setup
-        TokenRequestContext request = new TokenRequestContext().addScopes("AzureDeveloperCliCredentialAuthenticationFailed");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("AzureDeveloperCliCredentialAuthenticationFailed");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureDeveloperCli(request))
-                .thenReturn(Mono.error(new Exception("other error")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureDeveloperCli(request))
+                    .thenReturn(Mono.error(new Exception("other error")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))

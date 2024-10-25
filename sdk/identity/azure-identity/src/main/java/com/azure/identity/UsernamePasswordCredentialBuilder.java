@@ -81,8 +81,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public UsernamePasswordCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public UsernamePasswordCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -121,8 +121,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -137,7 +137,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

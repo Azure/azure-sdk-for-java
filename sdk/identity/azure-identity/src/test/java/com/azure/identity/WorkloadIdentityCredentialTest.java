@@ -35,19 +35,22 @@ public class WorkloadIdentityCredentialTest {
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
             // test
-            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
-                .tenantId("dummy-tenantid")
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
                 .clientId("dummy-clientid")
                 .tokenFilePath("dummy-path")
-                .configuration(configuration).clientId(CLIENT_ID).build();
+                .configuration(configuration)
+                .clientId(CLIENT_ID)
+                .build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
@@ -63,19 +66,22 @@ public class WorkloadIdentityCredentialTest {
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // mock
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
-        })) {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1))
+                    .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+            })) {
             // test
-            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
-                .tenantId("dummy-tenantid")
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
                 .clientId("dummy-clientid")
                 .tokenFilePath("dummy-path")
-                .configuration(configuration).clientId(CLIENT_ID).build();
+                .configuration(configuration)
+                .clientId(CLIENT_ID)
+                .build();
 
             AccessToken token = credential.getTokenSync(request1);
 
@@ -89,8 +95,8 @@ public class WorkloadIdentityCredentialTest {
     public void testWorkloadIdentityFlowFailureNoTenantId() {
         // setup
         String endpoint = "https://localhost";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -104,23 +110,23 @@ public class WorkloadIdentityCredentialTest {
     public void testWorkloadIdentityFlowFailureNoClientId() {
         // setup
         String endpoint = "https://localhost";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> new WorkloadIdentityCredentialBuilder().configuration(configuration)
                 .tenantId("TENANT_ID")
-                .tokenFilePath("dummy-path").
-                build());
+                .tokenFilePath("dummy-path")
+                .build());
     }
 
     @Test
     public void testWorkloadIdentityFlowFailureNoTokenPath() {
         // setup
         String endpoint = "https://localhost";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -130,4 +136,3 @@ public class WorkloadIdentityCredentialTest {
                 .build());
     }
 }
-
