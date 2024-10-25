@@ -25,8 +25,9 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
-        PagedIterable<DataFeedIngestionStatus> ingestionStatusIterable = client.listDataFeedIngestionStatus(
-            ListIngestionStatusInput.INSTANCE.dataFeedId, ListIngestionStatusInput.INSTANCE.options);
+        PagedIterable<DataFeedIngestionStatus> ingestionStatusIterable
+            = client.listDataFeedIngestionStatus(ListIngestionStatusInput.INSTANCE.dataFeedId,
+            ListIngestionStatusInput.INSTANCE.options);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatusIterable) {
             assertListIngestionStatusOutput(ingestionStatus);
@@ -53,9 +54,11 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
-        Response<Void> refreshResponse
-            = client.refreshDataFeedIngestionWithResponse(RefreshIngestionInput.INSTANCE.dataFeedId,
-                RefreshIngestionInput.INSTANCE.startTime, RefreshIngestionInput.INSTANCE.endTime, Context.NONE);
+        Response<Void> refreshResponse = client.refreshDataFeedIngestionWithResponse(
+            RefreshIngestionInput.INSTANCE.dataFeedId,
+            RefreshIngestionInput.INSTANCE.startTime,
+            RefreshIngestionInput.INSTANCE.endTime,
+            Context.NONE);
 
         Assertions.assertNotNull(refreshResponse);
         assertRefreshIngestionInputOutput(refreshResponse);

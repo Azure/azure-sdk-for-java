@@ -101,7 +101,8 @@ public final class DataFeedOptions {
      * @return a list containing email or clientId of admins
      */
     public List<String> getAdmins() {
-        return this.admins == null ? null : Collections.unmodifiableList(this.admins);
+        return this.admins == null
+            ? null : Collections.unmodifiableList(this.admins);
     }
 
     /**
@@ -130,7 +131,8 @@ public final class DataFeedOptions {
      * @return a list containing email or clientId of viewers
      */
     public List<String> getViewers() {
-        return this.viewers == null ? null : Collections.unmodifiableList(this.viewers);
+        return this.viewers == null
+            ? null : Collections.unmodifiableList(this.viewers);
     }
 
     /**

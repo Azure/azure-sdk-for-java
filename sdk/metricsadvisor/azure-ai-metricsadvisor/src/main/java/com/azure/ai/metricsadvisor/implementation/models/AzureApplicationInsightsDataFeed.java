@@ -270,10 +270,8 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_APPLICATION_INSIGHTS == null
-                ? null
-                : DataSourceType.AZURE_APPLICATION_INSIGHTS.toString());
+        jsonWriter.writeStringField("dataSourceType", DataSourceType.AZURE_APPLICATION_INSIGHTS == null ? null
+            : DataSourceType.AZURE_APPLICATION_INSIGHTS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());

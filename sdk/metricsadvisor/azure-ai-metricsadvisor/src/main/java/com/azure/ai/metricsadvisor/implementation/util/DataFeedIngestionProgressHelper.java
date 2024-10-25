@@ -13,15 +13,13 @@ import java.time.OffsetDateTime;
 public final class DataFeedIngestionProgressHelper {
     private static DataFeedIngestionProgressAccessor accessor;
 
-    private DataFeedIngestionProgressHelper() {
-    }
+    private DataFeedIngestionProgressHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DataFeedIngestionProgress} instance.
      */
     public interface DataFeedIngestionProgressAccessor {
         void setLatestActiveTimestamp(DataFeedIngestionProgress ingestionProgress, OffsetDateTime dataTime);
-
         void setLatestSuccessTimestamp(DataFeedIngestionProgress ingestionProgress, OffsetDateTime dataTime);
     }
 
@@ -42,3 +40,4 @@ public final class DataFeedIngestionProgressHelper {
         accessor.setLatestSuccessTimestamp(ingestionProgress, dataTime);
     }
 }
+

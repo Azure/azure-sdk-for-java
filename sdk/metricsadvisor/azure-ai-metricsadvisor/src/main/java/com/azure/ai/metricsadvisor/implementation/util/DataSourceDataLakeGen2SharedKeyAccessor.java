@@ -17,7 +17,6 @@ public final class DataSourceDataLakeGen2SharedKeyAccessor {
      */
     public interface Accessor {
         void setId(DataSourceDataLakeGen2SharedKey entity, String id);
-
         String getSharedKey(DataSourceDataLakeGen2SharedKey entity);
     }
 

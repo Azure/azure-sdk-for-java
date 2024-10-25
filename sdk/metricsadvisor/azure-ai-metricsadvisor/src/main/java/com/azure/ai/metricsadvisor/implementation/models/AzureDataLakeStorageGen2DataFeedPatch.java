@@ -242,10 +242,8 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null
-                ? null
-                : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
+        jsonWriter.writeStringField("dataSourceType", DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null ? null
+            : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());

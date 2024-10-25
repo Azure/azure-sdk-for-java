@@ -17,7 +17,6 @@ public final class DataSourceSqlServerConnectionStringAccessor {
      */
     public interface Accessor {
         void setId(DataSourceSqlServerConnectionString entity, String id);
-
         String getConnectionString(DataSourceSqlServerConnectionString entity);
     }
 

@@ -12,8 +12,7 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 public final class MetricAnomalyFeedbackHelper {
     private static MetricAnomalyFeedbackAccessor accessor;
 
-    private MetricAnomalyFeedbackHelper() {
-    }
+    private MetricAnomalyFeedbackHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricAnomalyFeedback} instance.
@@ -31,7 +30,8 @@ public final class MetricAnomalyFeedbackHelper {
         accessor = feedbackAccessor;
     }
 
-    static void setDetectionConfiguration(MetricAnomalyFeedback feedback, AnomalyDetectionConfiguration configuration) {
+    static void setDetectionConfiguration(MetricAnomalyFeedback feedback,
+                                          AnomalyDetectionConfiguration configuration) {
         accessor.setDetectionConfiguration(feedback, configuration);
     }
 }

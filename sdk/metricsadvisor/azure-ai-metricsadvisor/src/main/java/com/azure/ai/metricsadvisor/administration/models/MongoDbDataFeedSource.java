@@ -25,12 +25,13 @@ public final class MongoDbDataFeedSource extends DataFeedSource {
     private final String command;
 
     static {
-        MongoDbDataFeedSourceAccessor.setAccessor(new MongoDbDataFeedSourceAccessor.Accessor() {
-            @Override
-            public String getConnectionString(MongoDbDataFeedSource feedSource) {
-                return feedSource.getConnectionString();
-            }
-        });
+        MongoDbDataFeedSourceAccessor.setAccessor(
+            new MongoDbDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(MongoDbDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
     }
 
     /**
@@ -54,6 +55,7 @@ public final class MongoDbDataFeedSource extends DataFeedSource {
     public String getDatabase() {
         return this.database;
     }
+
 
     /**
      * Get the command property: Query script.
