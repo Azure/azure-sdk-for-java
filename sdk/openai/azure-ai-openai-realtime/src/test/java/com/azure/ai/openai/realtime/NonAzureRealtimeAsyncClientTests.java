@@ -22,12 +22,14 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
         client.start().block();
         StepVerifier.create(client.getServerEvents())
                 .assertNext(event -> {
+                    System.out.println("event type: " + event.getType());
                     assertInstanceOf(RealtimeServerEventSessionCreated.class, event);
                 })
                 .then(() -> {
                     client.sendMessage(RealtimeEventHandler.sessionUpdate()).block();
                 })
                 .assertNext(event -> {
+                    System.out.println("event type: " + event.getType());
                     assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
                 })
                 .then(() -> {

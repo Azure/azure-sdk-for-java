@@ -83,16 +83,20 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // TODO jpalvarez, accumulate fragments while !frame.isFinalFragment()
             // RFC 6455, Section 5.4 https://www.rfc-editor.org/rfc/rfc6455.html#section-5.4
             // only TextFrames can be fragmented
-            String completeWpsMessage = textFrameAccumulator.accumulateAndGet(textFrame.text(), String::concat);
 
             if(frame.isFinalFragment()) {
-                textFrameAccumulator.set("");
-                Object wpsMessage = messageDecoder.decode(completeWpsMessage);
+                String frameSoFar = textFrameAccumulator.getAndSet("");
+                String finalFrameTextValue = frameSoFar + textFrame.text();
+
+                System.out.println("Last bit of the frame: " + textFrame.text());
+                System.out.println("Complete frame       : " + finalFrameTextValue);
+
+                Object wpsMessage = messageDecoder.decode(finalFrameTextValue);
                 messageHandler.accept(wpsMessage);
             } else {
+                String completeWpsMessage = textFrameAccumulator.accumulateAndGet(textFrame.text(), String::concat);
                 System.out.println("Incomplete frame: " + textFrame.text());
-                System.out.println("Accumulated frame: " + completeWpsMessage);
-
+                System.out.println("Accumulat so far: " + completeWpsMessage);
             }
         } else if (frame instanceof PingWebSocketFrame) {
             // Ping, reply Pong
