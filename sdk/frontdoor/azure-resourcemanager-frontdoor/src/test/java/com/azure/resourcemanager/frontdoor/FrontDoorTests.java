@@ -33,6 +33,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -50,19 +51,21 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-        
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
         ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
-        
+
         StorageManager storageManager = StorageManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-        
+
         FrontDoorManager manager = FrontDoorManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
@@ -131,6 +134,10 @@ public class FrontDoorTests extends TestProxyTestBase {
                             .withBackendPool(new SubResource().withId(backendPoolsId)))))
                 .create();
             // @embedmeEnd
+            frontDoor.refresh();
+            Assertions.assertEquals(fdName, frontDoor.name());
+            Assertions.assertEquals(fdName, manager.frontDoors().getById(frontDoor.id()).name());
+            Assertions.assertTrue(manager.frontDoors().list().stream().findAny().isPresent());
         } finally {
             resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
