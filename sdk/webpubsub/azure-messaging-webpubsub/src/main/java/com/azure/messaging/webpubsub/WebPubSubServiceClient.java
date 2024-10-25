@@ -45,7 +45,7 @@ public final class WebPubSubServiceClient {
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-        AzureKeyCredential keyCredential) {
+                           AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
         this.keyCredential = keyCredential;
@@ -61,11 +61,11 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
-        final String path
-            = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT) ? "clients/mqtt/hubs/" : "client/hubs/";
+        final String path = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT)
+            ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
-            Response<BinaryData> response
-                = serviceClient.generateClientTokenWithResponse(hub, configureClientAccessTokenRequestOptions(options));
+            Response<BinaryData> response = serviceClient.generateClientTokenWithResponse(hub,
+                configureClientAccessTokenRequestOptions(options));
             return WebPubSubUtil.createToken(WebPubSubUtil.getToken(response.getValue()), endpoint, hub, path);
         }
         final String audience = endpoint + (endpoint.endsWith("/") ? "" : "/") + path + hub;
@@ -120,7 +120,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(BinaryData message, WebPubSubContentType contentType,
-        long contentLength, RequestOptions requestOptions) {
+                                                long contentLength, RequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
@@ -204,7 +204,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(String connectionId, BinaryData message,
-        WebPubSubContentType contentType, long contentLength, RequestOptions requestOptions) {
+                                                       WebPubSubContentType contentType, long contentLength, RequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
@@ -242,7 +242,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(String connectionId, BinaryData message,
-        RequestOptions requestOptions) {
+                                                       RequestOptions requestOptions) {
         return this.serviceClient.sendToConnectionWithResponse(hub, connectionId, "", message, requestOptions);
     }
 
@@ -276,7 +276,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(String group, BinaryData message, WebPubSubContentType contentType,
-        long contentLength, RequestOptions requestOptions) {
+                                                  long contentLength, RequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
@@ -330,11 +330,12 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addConnectionToGroupWithResponse(String group, String connectionId,
-        RequestOptions requestOptions) {
+                                                           RequestOptions requestOptions) {
         return this.serviceClient.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions);
     }
 
-    private Response<Void> addConnectionsToGroupsWithResponse(BinaryData groupsToAdd, RequestOptions requestOptions) {
+    private Response<Void> addConnectionsToGroupsWithResponse(BinaryData groupsToAdd,
+                                                              RequestOptions requestOptions) {
         return this.serviceClient.addConnectionsToGroupsWithResponse(hub, groupsToAdd, requestOptions);
     }
 
@@ -379,7 +380,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromGroupWithResponse(String group, String connectionId,
-        RequestOptions requestOptions) {
+                                                                RequestOptions requestOptions) {
         return this.serviceClient.removeConnectionFromGroupWithResponse(hub, group, connectionId, requestOptions);
     }
 
@@ -397,7 +398,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromAllGroupsWithResponse(String connectionId,
-        RequestOptions requestOptions) {
+                                                                    RequestOptions requestOptions) {
         return this.serviceClient.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions);
     }
 
@@ -431,7 +432,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(String userId, BinaryData message, WebPubSubContentType contentType,
-        long contentLength, RequestOptions requestOptions) {
+                                                 long contentLength, RequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
@@ -532,7 +533,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> grantPermissionWithResponse(WebPubSubPermission permission, String connectionId,
-        RequestOptions requestOptions) {
+                                                      RequestOptions requestOptions) {
         return this.serviceClient.grantPermissionWithResponse(hub, permission.toString(), connectionId, requestOptions);
     }
 
@@ -549,7 +550,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokePermissionWithResponse(WebPubSubPermission permission, String connectionId,
-        RequestOptions requestOptions) {
+                                                       RequestOptions requestOptions) {
         return this.serviceClient.revokePermissionWithResponse(hub, permission.toString(), connectionId,
             requestOptions);
     }
@@ -567,7 +568,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionWithResponse(WebPubSubPermission permission, String connectionId,
-        RequestOptions requestOptions) {
+                                                         RequestOptions requestOptions) {
         return this.serviceClient.checkPermissionWithResponse(hub, permission.toString(), connectionId, requestOptions);
     }
 
