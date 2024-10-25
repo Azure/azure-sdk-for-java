@@ -6,6 +6,8 @@ package com.azure.storage.queue;
 import com.azure.storage.queue.models.QueueMessageItem;
 import java.time.Duration;
 
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
+
 public class MessageSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
@@ -21,7 +23,7 @@ public class MessageSamples {
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 
         // Create a queue client
-        QueueClient queueClient = queueServiceClient.createQueue(SampleHelper.generateRandomName("enqueue", 15));
+        QueueClient queueClient = queueServiceClient.createQueue(generateRandomName("enqueue", 15));
         for (int i = 0; i < 3; i++) {
             queueClient.sendMessage("Hello World");
         }
