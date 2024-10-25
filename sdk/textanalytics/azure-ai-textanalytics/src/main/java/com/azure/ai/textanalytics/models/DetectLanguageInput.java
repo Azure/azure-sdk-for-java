@@ -81,7 +81,7 @@ public final class DetectLanguageInput {
 
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "Text = %s, Id = %s, Country Hint = %s",
-            this.getText(), this.getId(), this.getCountryHint());
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Country Hint = %s", this.getText(), this.getId(),
+            this.getCountryHint());
     }
 }

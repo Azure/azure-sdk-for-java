@@ -126,7 +126,7 @@ public final class MultiClassificationDocument implements JsonSerializable<Multi
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeArrayField("classifications", this.classifications,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("statistics", this.statistics);
         return jsonWriter.writeEndObject();
@@ -151,11 +151,11 @@ public final class MultiClassificationDocument implements JsonSerializable<Multi
                 if ("id".equals(fieldName)) {
                     deserializedMultiClassificationDocument.id = reader.getString();
                 } else if ("classification".equals(fieldName)) {
-                    deserializedMultiClassificationDocument.classifications = reader.readArray(
-                            reader1 -> ClassificationResult.fromJson(reader1));
+                    deserializedMultiClassificationDocument.classifications
+                        = reader.readArray(reader1 -> ClassificationResult.fromJson(reader1));
                 } else if ("warnings".equals(fieldName)) {
-                    deserializedMultiClassificationDocument.warnings = reader.readArray(
-                            reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedMultiClassificationDocument.warnings
+                        = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {
                     deserializedMultiClassificationDocument.statistics = DocumentStatistics.fromJson(reader);
                 } else {
