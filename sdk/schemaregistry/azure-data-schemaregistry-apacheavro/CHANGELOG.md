@@ -1,5 +1,16 @@
 # Release History
 
+## 1.1.22 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `avro` from `1.11.3` to version `1.11.4`.
+- Upgraded `azure-data-schemaregistry` from `1.5.0` to version `1.6.0-beta.1`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+
 ## 1.1.21 (2024-09-13)
 
 ### Other Changes
