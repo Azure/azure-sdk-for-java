@@ -32,40 +32,27 @@ public final class GlobalSchedulesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"qqug\",\"weeklyRecurrence\":{\"weekdays\":[\"bcvex\"],\"time\":\"uquowtljvfwhr\"},\"dailyRecurrence\":{\"time\":\"khyxvrqtvbcz\"},\"hourlyRecurrence\":{\"minute\":1039478022},\"timeZoneId\":\"gglmepjpfsey\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":276539538,\"webhookUrl\":\"szngafpgyl\",\"emailRecipient\":\"ecjujcng\",\"notificationLocale\":\"dyedmzrgjfo\"},\"createdDate\":\"2021-04-16T15:25:59Z\",\"targetResourceId\":\"noitpkpztr\",\"provisioningState\":\"gxvcoqrasw\",\"uniqueIdentifier\":\"yxp\"},\"location\":\"itweialwvskbuh\",\"tags\":{\"yltcoqcuj\":\"aq\"},\"id\":\"dsxzakuejkmvb\",\"name\":\"ztjofqcvovjufyc\",\"type\":\"jmlbemyejiriux\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"qqug\",\"weeklyRecurrence\":{\"weekdays\":[\"bcvex\"],\"time\":\"uquowtljvfwhr\"},\"dailyRecurrence\":{\"time\":\"khyxvrqtvbcz\"},\"hourlyRecurrence\":{\"minute\":1039478022},\"timeZoneId\":\"gglmepjpfsey\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":276539538,\"webhookUrl\":\"szngafpgyl\",\"emailRecipient\":\"ecjujcng\",\"notificationLocale\":\"dyedmzrgjfo\"},\"createdDate\":\"2021-04-16T15:25:59Z\",\"targetResourceId\":\"noitpkpztr\",\"provisioningState\":\"gxvcoqrasw\",\"uniqueIdentifier\":\"yxp\"},\"location\":\"itweialwvskbuh\",\"tags\":{\"yltcoqcuj\":\"aq\"},\"id\":\"dsxzakuejkmvb\",\"name\":\"ztjofqcvovjufyc\",\"type\":\"jmlbemyejiriux\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Schedule> response =
-            manager
-                .globalSchedules()
-                .listByResourceGroup(
-                    "huqol", "ah", "uqwqulsutrjbhxyk", 1990714971, "y", com.azure.core.util.Context.NONE);
+        PagedIterable<Schedule> response = manager.globalSchedules()
+            .listByResourceGroup("huqol", "ah", "uqwqulsutrjbhxyk", 1990714971, "y", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("itweialwvskbuh", response.iterator().next().location());
         Assertions.assertEquals("aq", response.iterator().next().tags().get("yltcoqcuj"));

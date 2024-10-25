@@ -30,40 +30,28 @@ public final class ReplicasGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"pvhelxprg\",\"properties\":{\"endpoint\":\"dd\",\"provisioningState\":\"Deleting\"},\"id\":\"bcuejrjxgci\",\"name\":\"ibrhosxsdqr\",\"type\":\"zoymibmrqyibahw\"}";
+        String responseStr
+            = "{\"location\":\"pvhelxprg\",\"properties\":{\"endpoint\":\"dd\",\"provisioningState\":\"Deleting\"},\"id\":\"bcuejrjxgci\",\"name\":\"ibrhosxsdqr\",\"type\":\"zoymibmrqyibahw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AppConfigurationManager manager =
-            AppConfigurationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AppConfigurationManager manager = AppConfigurationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Replica response =
-            manager
-                .replicas()
-                .getWithResponse("gkopkwhojvpajqgx", "smocmbq", "qvmkcxo", com.azure.core.util.Context.NONE)
-                .getValue();
+        Replica response = manager.replicas()
+            .getWithResponse("gkopkwhojvpajqgx", "smocmbq", "qvmkcxo", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("pvhelxprg", response.location());
     }

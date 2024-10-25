@@ -37,6 +37,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <spotless.skip>false</spotless.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -119,7 +123,6 @@
             <bannedDependencies>
               <includes>
                 <include>redis.clients:jedis:[5.2.0]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
-                <include>org.mockito:mockito-inline:[4.11.0]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

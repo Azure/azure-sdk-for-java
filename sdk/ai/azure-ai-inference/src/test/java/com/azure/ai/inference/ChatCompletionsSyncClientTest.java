@@ -51,15 +51,14 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     private ChatCompletionsClient client;
     private static final String FUNCTION_NAME = "FutureTemperature";
     private static final String FUNCTION_RETURN = "-7";
-    private static final String TEST_URL =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
+    private static final String TEST_URL
+        = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
     private static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
     private static final String TEST_IMAGE_FORMAT = "png";
 
     private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .buildClient();
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -79,7 +78,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         getChatCompletionsRunner((prompt) -> {
             List<ChatRequestMessage> chatMessages = new ArrayList<>();
             chatMessages.add(new ChatRequestUserMessage(prompt));
-            IterableStream<StreamingChatCompletionsUpdate> resultCompletions = client.completeStream(new ChatCompletionsOptions(chatMessages));
+            IterableStream<StreamingChatCompletionsUpdate> resultCompletions
+                = client.completeStream(new ChatCompletionsOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });
@@ -100,8 +100,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     public void testGetCompletionsWithResponse(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsFromOptionsRunner((options) -> {
-            Response<BinaryData> binaryDataResponse = client.completeWithResponse(
-                BinaryData.fromObject(options), new RequestOptions());
+            Response<BinaryData> binaryDataResponse
+                = client.completeWithResponse(BinaryData.fromObject(options), new RequestOptions());
             ChatCompletions response = binaryDataResponse.getValue().toObject(ChatCompletions.class);
             assertCompletions(1, response);
         });
@@ -158,8 +158,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         client = getChatCompletionsClient(httpClient);
         List<ChatMessageContentItem> contentItems = new ArrayList<>();
         contentItems.add(new ChatMessageTextContentItem("Describe the image."));
-        contentItems.add(new ChatMessageImageContentItem(
-            new ChatMessageImageUrl(TEST_URL)));
+        contentItems.add(new ChatMessageImageContentItem(new ChatMessageImageUrl(TEST_URL)));
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
@@ -177,16 +176,16 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         String location = "Berlin";
         List<ChatRequestMessage> chatMessages = Arrays.asList(
             new ChatRequestSystemMessage("You are a helpful assistant."),
-            new ChatRequestUserMessage(String.format("What sort of clothing should I wear today in %s?", location))
-        );
+            new ChatRequestUserMessage(String.format("What sort of clothing should I wear today in %s?", location)));
 
-        ChatCompletionsFunctionToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-            getFutureTemperatureFunctionDefinition());
+        ChatCompletionsFunctionToolDefinition toolDefinition
+            = new ChatCompletionsFunctionToolDefinition(getFutureTemperatureFunctionDefinition());
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
-        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStream(chatCompletionsOptions);
+        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream
+            = client.completeStream(chatCompletionsOptions);
 
         String toolCallId = null;
         String functionName = null;
@@ -236,12 +235,14 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             // - The tool call id
             // - The function description
             FunctionCall functionCall = new FunctionCall(functionName, functionArguments.toString());
-            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
             ChatRequestAssistantMessage assistantRequestMessage = new ChatRequestAssistantMessage("");
             assistantRequestMessage.setToolCalls(Arrays.asList(functionToolCall));
 
             // As an additional step, you may want to deserialize the parameters, so you can call your function
-            FunctionArguments parameters = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
+            FunctionArguments parameters
+                = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
             assertTrue(parameters.locationName.contentEquals(location));
             String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
@@ -249,14 +250,10 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
             List<ChatRequestMessage> followUpMessages = Arrays.asList(
                 // We add the original messages from the request
-                chatMessages.get(0),
-                chatMessages.get(1),
-                assistantRequestMessage,
-                toolRequestMessage
-            );
+                chatMessages.get(0), chatMessages.get(1), assistantRequestMessage, toolRequestMessage);
 
-            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream = client.completeStream(
-                new ChatCompletionsOptions(followUpMessages));
+            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream
+                = client.completeStream(new ChatCompletionsOptions(followUpMessages));
 
             StringBuilder finalResult = new StringBuilder();
             CompletionsFinishReason finalFinishReason;
@@ -293,7 +290,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         private final String locationName;
         private final String date;
 
-        private FunctionArguments(String location,  String date) {
+        private FunctionArguments(String location, String date) {
             this.locationName = location;
             this.date = date;
         }
@@ -450,4 +447,3 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
 
     }
 }
-

@@ -23,8 +23,10 @@ public final class InputEndpointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputEndpoint model = new InputEndpoint().withEndpointName("gna").withPrivatePort(58413214)
-            .withPublicPort(45173211).withProtocol("bktyjmfc");
+        InputEndpoint model = new InputEndpoint().withEndpointName("gna")
+            .withPrivatePort(58413214)
+            .withPublicPort(45173211)
+            .withProtocol("bktyjmfc");
         model = BinaryData.fromObject(model).toObject(InputEndpoint.class);
         Assertions.assertEquals("gna", model.endpointName());
         Assertions.assertEquals(58413214, model.privatePort());

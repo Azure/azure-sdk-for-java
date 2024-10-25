@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupIdInformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupIdInformationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"seiphe\",\"requiredMembers\":[\"okeyyienj\",\"dlwtgrhpdj\"],\"requiredZoneNames\":[\"masxazjpqyegu\",\"lhbxxhejjzzvdud\",\"wdslfhotwmcy\"]}")
-                .toObject(GroupIdInformationProperties.class);
+        GroupIdInformationProperties model = BinaryData.fromString(
+            "{\"groupId\":\"seiphe\",\"requiredMembers\":[\"okeyyienj\",\"dlwtgrhpdj\"],\"requiredZoneNames\":[\"masxazjpqyegu\",\"lhbxxhejjzzvdud\",\"wdslfhotwmcy\"]}")
+            .toObject(GroupIdInformationProperties.class);
         Assertions.assertEquals("seiphe", model.groupId());
         Assertions.assertEquals("okeyyienj", model.requiredMembers().get(0));
         Assertions.assertEquals("masxazjpqyegu", model.requiredZoneNames().get(0));
@@ -24,11 +22,9 @@ public final class GroupIdInformationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupIdInformationProperties model =
-            new GroupIdInformationProperties()
-                .withGroupId("seiphe")
-                .withRequiredMembers(Arrays.asList("okeyyienj", "dlwtgrhpdj"))
-                .withRequiredZoneNames(Arrays.asList("masxazjpqyegu", "lhbxxhejjzzvdud", "wdslfhotwmcy"));
+        GroupIdInformationProperties model = new GroupIdInformationProperties().withGroupId("seiphe")
+            .withRequiredMembers(Arrays.asList("okeyyienj", "dlwtgrhpdj"))
+            .withRequiredZoneNames(Arrays.asList("masxazjpqyegu", "lhbxxhejjzzvdud", "wdslfhotwmcy"));
         model = BinaryData.fromObject(model).toObject(GroupIdInformationProperties.class);
         Assertions.assertEquals("seiphe", model.groupId());
         Assertions.assertEquals("okeyyienj", model.requiredMembers().get(0));

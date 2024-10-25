@@ -27,8 +27,8 @@ public interface OutboundNetworkDependenciesEndpoints {
      * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with {@link
      *     Response}.
      */
-    Response<List<OutboundEnvironmentEndpoint>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<List<OutboundEnvironmentEndpoint>> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.

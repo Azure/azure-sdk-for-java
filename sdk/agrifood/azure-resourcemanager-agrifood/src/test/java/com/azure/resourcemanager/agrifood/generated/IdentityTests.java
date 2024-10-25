@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class IdentityTests {
     @Test
     public void testDeserialize() {
-        Identity model =
-            BinaryData
-                .fromString("{\"principalId\":\"sszdnru\",\"tenantId\":\"guhmuouqfpr\",\"type\":\"SystemAssigned\"}")
-                .toObject(Identity.class);
+        Identity model = BinaryData
+            .fromString("{\"principalId\":\"sszdnru\",\"tenantId\":\"guhmuouqfpr\",\"type\":\"SystemAssigned\"}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 

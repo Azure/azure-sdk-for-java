@@ -22,9 +22,13 @@ public final class DocumentFieldSchemaHelper {
      */
     public interface DocumentFieldSchemaAccessor {
         void setType(DocumentFieldSchema documentFieldSchema, DocumentFieldType type);
+
         void setDescription(DocumentFieldSchema documentFieldSchema, String description);
+
         void setExample(DocumentFieldSchema documentFieldSchema, String example);
+
         void setItems(DocumentFieldSchema documentFieldSchema, DocumentFieldSchema items);
+
         void setProperties(DocumentFieldSchema documentFieldSchema, Map<String, DocumentFieldSchema> properties);
     }
 
@@ -33,7 +37,8 @@ public final class DocumentFieldSchemaHelper {
      *
      * @param documentFieldSchemaAccessor The accessor.
      */
-    public static void setAccessor(final DocumentFieldSchemaHelper.DocumentFieldSchemaAccessor documentFieldSchemaAccessor) {
+    public static void
+        setAccessor(final DocumentFieldSchemaHelper.DocumentFieldSchemaAccessor documentFieldSchemaAccessor) {
         accessor = documentFieldSchemaAccessor;
     }
 

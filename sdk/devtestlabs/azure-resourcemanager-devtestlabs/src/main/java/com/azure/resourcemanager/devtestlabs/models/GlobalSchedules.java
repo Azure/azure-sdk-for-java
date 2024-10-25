@@ -59,8 +59,8 @@ public interface GlobalSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<Schedule> listByResourceGroup(String resourceGroupName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get schedule.
@@ -74,8 +74,8 @@ public interface GlobalSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule along with {@link Response}.
      */
-    Response<Schedule> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
+    Response<Schedule> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context);
 
     /**
      * Get schedule.
@@ -159,8 +159,8 @@ public interface GlobalSchedules {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void retarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
+    void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties,
+        Context context);
 
     /**
      * Get schedule.

@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DescendantInfoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DescendantInfoProperties model =
-            BinaryData
-                .fromString("{\"displayName\":\"bisnja\",\"parent\":{\"id\":\"ngnzscxaqwoochc\"}}")
+        DescendantInfoProperties model
+            = BinaryData.fromString("{\"displayName\":\"bisnja\",\"parent\":{\"id\":\"ngnzscxaqwoochc\"}}")
                 .toObject(DescendantInfoProperties.class);
         Assertions.assertEquals("bisnja", model.displayName());
         Assertions.assertEquals("ngnzscxaqwoochc", model.parent().id());
@@ -22,10 +21,8 @@ public final class DescendantInfoPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DescendantInfoProperties model =
-            new DescendantInfoProperties()
-                .withDisplayName("bisnja")
-                .withParent(new DescendantParentGroupInfo().withId("ngnzscxaqwoochc"));
+        DescendantInfoProperties model = new DescendantInfoProperties().withDisplayName("bisnja")
+            .withParent(new DescendantParentGroupInfo().withId("ngnzscxaqwoochc"));
         model = BinaryData.fromObject(model).toObject(DescendantInfoProperties.class);
         Assertions.assertEquals("bisnja", model.displayName());
         Assertions.assertEquals("ngnzscxaqwoochc", model.parent().id());

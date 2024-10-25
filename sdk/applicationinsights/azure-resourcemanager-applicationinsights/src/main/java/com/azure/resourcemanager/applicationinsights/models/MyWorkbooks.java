@@ -42,13 +42,8 @@ public interface MyWorkbooks {
      * @return all private workbooks defined within a specified resource group and category as paginated response with
      *     {@link PagedIterable}.
      */
-    PagedIterable<MyWorkbook> listByResourceGroup(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context);
+    PagedIterable<MyWorkbook> listByResourceGroup(String resourceGroupName, CategoryType category, List<String> tags,
+        String sourceId, Boolean canFetchContent, Context context);
 
     /**
      * Get all private workbooks defined within a specified subscription and category.

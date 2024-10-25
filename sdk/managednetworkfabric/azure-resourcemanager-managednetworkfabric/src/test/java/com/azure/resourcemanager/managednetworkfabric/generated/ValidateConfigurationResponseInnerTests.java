@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateConfigurationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateConfigurationResponseInner model =
-            BinaryData
-                .fromString("{\"configurationState\":\"Rejected\",\"url\":\"kukjtasb\"}")
+        ValidateConfigurationResponseInner model
+            = BinaryData.fromString("{\"configurationState\":\"Rejected\",\"url\":\"kukjtasb\"}")
                 .toObject(ValidateConfigurationResponseInner.class);
         Assertions.assertEquals("kukjtasb", model.url());
     }

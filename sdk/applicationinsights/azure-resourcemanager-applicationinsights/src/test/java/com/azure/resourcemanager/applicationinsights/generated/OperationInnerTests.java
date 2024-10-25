@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"tko\",\"display\":{\"provider\":\"ou\",\"resource\":\"vudwtiukbldng\",\"operation\":\"ocipazyxoeg\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"tko\",\"display\":{\"provider\":\"ou\",\"resource\":\"vudwtiukbldng\",\"operation\":\"ocipazyxoeg\"}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("tko", model.name());
         Assertions.assertEquals("ou", model.display().provider());
         Assertions.assertEquals("vudwtiukbldng", model.display().resource());
@@ -25,14 +23,9 @@ public final class OperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("tko")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("ou")
-                        .withResource("vudwtiukbldng")
-                        .withOperation("ocipazyxoeg"));
+        OperationInner model = new OperationInner().withName("tko")
+            .withDisplay(
+                new OperationDisplay().withProvider("ou").withResource("vudwtiukbldng").withOperation("ocipazyxoeg"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("tko", model.name());
         Assertions.assertEquals("ou", model.display().provider());

@@ -23,21 +23,18 @@ public final class StepsImpl implements Steps {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public StepsImpl(
-        StepsClient innerClient, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    public StepsImpl(StepsClient innerClient,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<StepResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String stepName, Context context) {
-        Response<StepResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, stepName, context);
+    public Response<StepResource> getByResourceGroupWithResponse(String resourceGroupName, String stepName,
+        Context context) {
+        Response<StepResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, stepName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StepResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,8 +50,8 @@ public final class StepsImpl implements Steps {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String stepName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String stepName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, stepName, context);
     }
 
@@ -65,12 +62,8 @@ public final class StepsImpl implements Steps {
     public Response<List<StepResource>> listWithResponse(String resourceGroupName, Context context) {
         Response<List<StepResourceInner>> inner = this.serviceClient().listWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new StepResourceImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -82,12 +75,9 @@ public final class StepsImpl implements Steps {
     public List<StepResource> list(String resourceGroupName) {
         List<StepResourceInner> inner = this.serviceClient().list(resourceGroupName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new StepResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new StepResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -96,18 +86,13 @@ public final class StepsImpl implements Steps {
     public StepResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String stepName = Utils.getValueFromIdByName(id, "steps");
         if (stepName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, stepName, Context.NONE).getValue();
     }
@@ -115,18 +100,13 @@ public final class StepsImpl implements Steps {
     public Response<StepResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String stepName = Utils.getValueFromIdByName(id, "steps");
         if (stepName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, stepName, context);
     }
@@ -134,18 +114,13 @@ public final class StepsImpl implements Steps {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String stepName = Utils.getValueFromIdByName(id, "steps");
         if (stepName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, stepName, Context.NONE);
     }
@@ -153,18 +128,13 @@ public final class StepsImpl implements Steps {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String stepName = Utils.getValueFromIdByName(id, "steps");
         if (stepName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'steps'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, stepName, context);
     }

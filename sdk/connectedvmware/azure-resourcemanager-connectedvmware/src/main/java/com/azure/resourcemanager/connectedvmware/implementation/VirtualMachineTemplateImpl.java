@@ -187,25 +187,21 @@ public final class VirtualMachineTemplateImpl
     }
 
     public VirtualMachineTemplate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .create(resourceGroupName, virtualMachineTemplateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .create(resourceGroupName, virtualMachineTemplateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualMachineTemplate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .create(resourceGroupName, virtualMachineTemplateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .create(resourceGroupName, virtualMachineTemplateName, this.innerModel(), context);
         return this;
     }
 
-    VirtualMachineTemplateImpl(
-        String name, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    VirtualMachineTemplateImpl(String name,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = new VirtualMachineTemplateInner();
         this.serviceManager = serviceManager;
         this.virtualMachineTemplateName = name;
@@ -217,27 +213,22 @@ public final class VirtualMachineTemplateImpl
     }
 
     public VirtualMachineTemplate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .updateWithResponse(resourceGroupName, virtualMachineTemplateName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .updateWithResponse(resourceGroupName, virtualMachineTemplateName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualMachineTemplate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .updateWithResponse(resourceGroupName, virtualMachineTemplateName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .updateWithResponse(resourceGroupName, virtualMachineTemplateName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    VirtualMachineTemplateImpl(
-        VirtualMachineTemplateInner innerObject,
+    VirtualMachineTemplateImpl(VirtualMachineTemplateInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -246,22 +237,18 @@ public final class VirtualMachineTemplateImpl
     }
 
     public VirtualMachineTemplate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualMachineTemplate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, context)
+            .getValue();
         return this;
     }
 

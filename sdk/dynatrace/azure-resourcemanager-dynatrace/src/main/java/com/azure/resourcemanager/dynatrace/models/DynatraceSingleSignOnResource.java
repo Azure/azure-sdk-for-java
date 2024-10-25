@@ -115,11 +115,8 @@ public interface DynatraceSingleSignOnResource {
          * The stage of the DynatraceSingleSignOnResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithSingleSignOnState,
-                DefinitionStages.WithEnterpriseAppId,
-                DefinitionStages.WithSingleSignOnUrl,
-                DefinitionStages.WithAadDomains {
+        interface WithCreate extends DefinitionStages.WithSingleSignOnState, DefinitionStages.WithEnterpriseAppId,
+            DefinitionStages.WithSingleSignOnUrl, DefinitionStages.WithAadDomains {
             /**
              * Executes the create request.
              *
@@ -189,11 +186,8 @@ public interface DynatraceSingleSignOnResource {
     DynatraceSingleSignOnResource.Update update();
 
     /** The template for DynatraceSingleSignOnResource update. */
-    interface Update
-        extends UpdateStages.WithSingleSignOnState,
-            UpdateStages.WithEnterpriseAppId,
-            UpdateStages.WithSingleSignOnUrl,
-            UpdateStages.WithAadDomains {
+    interface Update extends UpdateStages.WithSingleSignOnState, UpdateStages.WithEnterpriseAppId,
+        UpdateStages.WithSingleSignOnUrl, UpdateStages.WithAadDomains {
         /**
          * Executes the update request.
          *

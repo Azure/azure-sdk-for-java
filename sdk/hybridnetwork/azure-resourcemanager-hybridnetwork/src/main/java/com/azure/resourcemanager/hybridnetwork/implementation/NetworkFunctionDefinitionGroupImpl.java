@@ -88,14 +88,18 @@ public final class NetworkFunctionDefinitionGroupImpl implements NetworkFunction
     }
 
     public NetworkFunctionDefinitionGroup create() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups().createOrUpdate(
-            resourceGroupName, publisherName, networkFunctionDefinitionGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
+            .createOrUpdate(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public NetworkFunctionDefinitionGroup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups().createOrUpdate(
-            resourceGroupName, publisherName, networkFunctionDefinitionGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
+            .createOrUpdate(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -112,16 +116,20 @@ public final class NetworkFunctionDefinitionGroupImpl implements NetworkFunction
     }
 
     public NetworkFunctionDefinitionGroup apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups().updateWithResponse(resourceGroupName,
-                publisherName, networkFunctionDefinitionGroupName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
+            .updateWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkFunctionDefinitionGroup apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups().updateWithResponse(resourceGroupName,
-                publisherName, networkFunctionDefinitionGroupName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
+            .updateWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -136,15 +144,18 @@ public final class NetworkFunctionDefinitionGroupImpl implements NetworkFunction
     }
 
     public NetworkFunctionDefinitionGroup refresh() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups()
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
             .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, Context.NONE)
             .getValue();
         return this;
     }
 
     public NetworkFunctionDefinitionGroup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionGroups()
-            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionGroups()
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, context)
+            .getValue();
         return this;
     }
 

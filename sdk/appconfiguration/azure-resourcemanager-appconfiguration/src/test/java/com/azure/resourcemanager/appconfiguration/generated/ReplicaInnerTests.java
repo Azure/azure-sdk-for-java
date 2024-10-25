@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"eyueaxibxujwb\",\"properties\":{\"endpoint\":\"lmuzy\",\"provisioningState\":\"Succeeded\"},\"id\":\"epdkzja\",\"name\":\"cuxrhdwbavx\",\"type\":\"niwdjsw\"}")
-                .toObject(ReplicaInner.class);
+        ReplicaInner model = BinaryData.fromString(
+            "{\"location\":\"eyueaxibxujwb\",\"properties\":{\"endpoint\":\"lmuzy\",\"provisioningState\":\"Succeeded\"},\"id\":\"epdkzja\",\"name\":\"cuxrhdwbavx\",\"type\":\"niwdjsw\"}")
+            .toObject(ReplicaInner.class);
         Assertions.assertEquals("eyueaxibxujwb", model.location());
     }
 

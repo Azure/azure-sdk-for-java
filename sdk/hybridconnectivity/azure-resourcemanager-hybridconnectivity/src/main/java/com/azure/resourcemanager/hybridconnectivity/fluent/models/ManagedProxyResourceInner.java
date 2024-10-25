@@ -74,9 +74,8 @@ public final class ManagedProxyResourceInner {
      */
     public void validate() {
         if (proxy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property proxy in model ManagedProxyResourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property proxy in model ManagedProxyResourceInner"));
         }
     }
 

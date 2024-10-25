@@ -33,7 +33,8 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
      * @param authenticationsImpl the container registry token service that calls the token rest APIs.
      * @param aadTokenCredential the ARM access token.
      */
-    ContainerRegistryRefreshTokenCredential(AuthenticationsImpl authenticationsImpl, TokenCredential aadTokenCredential, ContainerRegistryAudience audience) {
+    ContainerRegistryRefreshTokenCredential(AuthenticationsImpl authenticationsImpl, TokenCredential aadTokenCredential,
+        ContainerRegistryAudience audience) {
         this.authenticationsImpl = authenticationsImpl;
         this.aadTokenCredential = aadTokenCredential;
         this.tokenRequestContext = new TokenRequestContext().addScopes(audience + "/.default");
@@ -42,26 +43,30 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (!(request instanceof ContainerRegistryTokenRequestContext)) {
-            return monoError(LOGGER, new IllegalArgumentException("Unexpected request type - " + request.getClass().getName()));
+            return monoError(LOGGER,
+                new IllegalArgumentException("Unexpected request type - " + request.getClass().getName()));
         }
         ContainerRegistryTokenRequestContext crRequest = (ContainerRegistryTokenRequestContext) request;
         return aadTokenCredential.getToken(tokenRequestContext)
-            .flatMap(token ->
-                authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(PostContentSchemaGrantType.ACCESS_TOKEN, crRequest.getServiceName(), null, null, token.getToken(), Context.NONE))
+            .flatMap(token -> authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(
+                PostContentSchemaGrantType.ACCESS_TOKEN, crRequest.getServiceName(), null, null, token.getToken(),
+                Context.NONE))
             .map(this::toAccessToken);
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (!(request instanceof ContainerRegistryTokenRequestContext)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected request type - " + request.getClass().getName()));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Unexpected request type - " + request.getClass().getName()));
         }
 
         ContainerRegistryTokenRequestContext crRequest = (ContainerRegistryTokenRequestContext) request;
 
         AccessToken token = aadTokenCredential.getTokenSync(tokenRequestContext);
-        Response<AcrRefreshToken> acrRefreshToken =
-            authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponse(PostContentSchemaGrantType.ACCESS_TOKEN, crRequest.getServiceName(), null, null, token.getToken(), Context.NONE);
+        Response<AcrRefreshToken> acrRefreshToken = authenticationsImpl
+            .exchangeAadAccessTokenForAcrRefreshTokenWithResponse(PostContentSchemaGrantType.ACCESS_TOKEN,
+                crRequest.getServiceName(), null, null, token.getToken(), Context.NONE);
         return toAccessToken(acrRefreshToken);
     }
 

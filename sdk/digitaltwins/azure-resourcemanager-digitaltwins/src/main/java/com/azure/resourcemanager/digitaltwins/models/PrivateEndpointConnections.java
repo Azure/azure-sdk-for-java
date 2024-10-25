@@ -20,8 +20,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link connections for a Digital Twin along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionsResponse> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnectionsResponse> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private endpoint connection properties.
@@ -47,8 +47,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection properties for the given private endpoint along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Get private endpoint connection properties for the given private endpoint.

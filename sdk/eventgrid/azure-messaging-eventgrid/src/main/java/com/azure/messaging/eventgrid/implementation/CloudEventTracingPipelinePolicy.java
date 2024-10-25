@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 import com.azure.core.models.CloudEvent;
+
 /**
  * This pipeline policy should be added after OpenTelemetryPolicy in the http pipeline.
  *
@@ -29,6 +30,7 @@ import com.azure.core.models.CloudEvent;
  */
 public final class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
     private final Tracer tracer;
+
     public CloudEventTracingPipelinePolicy(Tracer tracer) {
         this.tracer = tracer;
     }
@@ -38,19 +40,19 @@ public final class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy
         final HttpRequest request = context.getHttpRequest();
         final HttpHeader contentType = request.getHeaders().get(Constants.CONTENT_TYPE);
         StringBuilder bodyStringBuilder = new StringBuilder();
-        if (tracer.isEnabled() && contentType != null
+        if (tracer.isEnabled()
+            && contentType != null
             && Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
-            return request.getBody()
-                .map(byteBuffer -> {
-                    if (byteBuffer.hasArray()) {
-                        return bodyStringBuilder.append(new String(byteBuffer.array(),
-                            byteBuffer.arrayOffset() + byteBuffer.position(), byteBuffer.remaining(),
-                            StandardCharsets.UTF_8));
-                    } else {
-                        return bodyStringBuilder.append(new String(FluxUtil.byteBufferToArray(byteBuffer.duplicate()),
-                            StandardCharsets.UTF_8));
-                    }
-                })
+            return request.getBody().map(byteBuffer -> {
+                if (byteBuffer.hasArray()) {
+                    return bodyStringBuilder
+                        .append(new String(byteBuffer.array(), byteBuffer.arrayOffset() + byteBuffer.position(),
+                            byteBuffer.remaining(), StandardCharsets.UTF_8));
+                } else {
+                    return bodyStringBuilder
+                        .append(new String(FluxUtil.byteBufferToArray(byteBuffer.duplicate()), StandardCharsets.UTF_8));
+                }
+            })
                 .then(Mono.fromCallable(() -> replaceTracingPlaceHolder(request, bodyStringBuilder)))
                 .then(next.process());
         } else {

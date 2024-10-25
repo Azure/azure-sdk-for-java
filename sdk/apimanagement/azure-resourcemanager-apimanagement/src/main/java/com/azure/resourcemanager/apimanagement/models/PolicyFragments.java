@@ -28,14 +28,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all policy fragments along with {@link Response}.
      */
-    Response<PolicyFragmentCollection> listByServiceWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context);
+    Response<PolicyFragmentCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context);
 
     /**
      * Gets all policy fragments.
@@ -61,8 +55,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of a policy fragment.
      */
-    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String id, Context context);
+    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String id, Context context);
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
@@ -89,8 +83,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a policy fragment.
      */
-    Response<PolicyFragmentContract> getWithResponse(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context);
+    Response<PolicyFragmentContract> getWithResponse(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContentFormat format, Context context);
 
     /**
      * Gets a policy fragment.
@@ -119,8 +113,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String id, String ifMatch,
+        Context context);
 
     /**
      * Deletes a policy fragment.
@@ -150,8 +144,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of resources along with {@link Response}.
      */
-    Response<ResourceCollection> listReferencesWithResponse(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context);
+    Response<ResourceCollection> listReferencesWithResponse(String resourceGroupName, String serviceName, String id,
+        Integer top, Integer skip, Context context);
 
     /**
      * Lists policy resources that reference the policy fragment.
@@ -188,8 +182,8 @@ public interface PolicyFragments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a policy fragment.
      */
-    Response<PolicyFragmentContract> getByIdWithResponse(
-        String id, PolicyFragmentContentFormat format, Context context);
+    Response<PolicyFragmentContract> getByIdWithResponse(String id, PolicyFragmentContentFormat format,
+        Context context);
 
     /**
      * Deletes a policy fragment.

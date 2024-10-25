@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The CosmosDbSettings model. */
 @Fluent
 public final class CosmosDbSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CosmosDbSettings.class);
 
     /*
      * The throughput of the collections in cosmosdb database

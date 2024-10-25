@@ -10,8 +10,8 @@ import com.azure.resourcemanager.applicationinsights.models.WorkbookInnerErrorTr
 public final class WorkbookInnerErrorTraceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookInnerErrorTrace model =
-            BinaryData.fromString("{\"trace\":[\"lxqtvcofudfl\"]}").toObject(WorkbookInnerErrorTrace.class);
+        WorkbookInnerErrorTrace model
+            = BinaryData.fromString("{\"trace\":[\"lxqtvcofudfl\"]}").toObject(WorkbookInnerErrorTrace.class);
     }
 
     @org.junit.jupiter.api.Test

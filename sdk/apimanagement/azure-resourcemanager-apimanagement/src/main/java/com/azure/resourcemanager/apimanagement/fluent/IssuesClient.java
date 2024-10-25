@@ -47,8 +47,8 @@ public interface IssuesClient {
      * @return paged Issue list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<IssueContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets API Management issue details.

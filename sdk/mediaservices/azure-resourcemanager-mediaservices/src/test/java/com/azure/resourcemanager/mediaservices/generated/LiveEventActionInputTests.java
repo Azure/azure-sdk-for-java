@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventActionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventActionInput model =
-            BinaryData.fromString("{\"removeOutputsOnStop\":false}").toObject(LiveEventActionInput.class);
+        LiveEventActionInput model
+            = BinaryData.fromString("{\"removeOutputsOnStop\":false}").toObject(LiveEventActionInput.class);
         Assertions.assertEquals(false, model.removeOutputsOnStop());
     }
 

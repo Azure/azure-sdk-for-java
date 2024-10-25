@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestContext model =
-            BinaryData
-                .fromString(
-                    "{\"requestScope\":\"iby\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"h\",\"end\":\"hfwpracstwit\"},\"billingPeriod\":\"hevxcced\",\"invoiceId\":\"nmdyodnwzxl\"}}")
-                .toObject(RequestContext.class);
+        RequestContext model = BinaryData.fromString(
+            "{\"requestScope\":\"iby\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"h\",\"end\":\"hfwpracstwit\"},\"billingPeriod\":\"hevxcced\",\"invoiceId\":\"nmdyodnwzxl\"}}")
+            .toObject(RequestContext.class);
         Assertions.assertEquals("iby", model.requestScope());
         Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
         Assertions.assertEquals("h", model.requestBody().timePeriod().start());
@@ -29,15 +27,12 @@ public final class RequestContextTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestContext model =
-            new RequestContext()
-                .withRequestScope("iby")
-                .withRequestBody(
-                    new GenerateCostDetailsReportRequestDefinition()
-                        .withMetric(CostDetailsMetricType.ACTUAL_COST)
-                        .withTimePeriod(new CostDetailsTimePeriod().withStart("h").withEnd("hfwpracstwit"))
-                        .withBillingPeriod("hevxcced")
-                        .withInvoiceId("nmdyodnwzxl"));
+        RequestContext model = new RequestContext().withRequestScope("iby")
+            .withRequestBody(
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("h").withEnd("hfwpracstwit"))
+                    .withBillingPeriod("hevxcced")
+                    .withInvoiceId("nmdyodnwzxl"));
         model = BinaryData.fromObject(model).toObject(RequestContext.class);
         Assertions.assertEquals("iby", model.requestScope());
         Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());

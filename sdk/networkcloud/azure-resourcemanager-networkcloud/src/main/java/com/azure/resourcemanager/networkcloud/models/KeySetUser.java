@@ -111,14 +111,12 @@ public final class KeySetUser {
      */
     public void validate() {
         if (azureUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property azureUsername in model KeySetUser"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property azureUsername in model KeySetUser"));
         }
         if (sshPublicKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sshPublicKey in model KeySetUser"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sshPublicKey in model KeySetUser"));
         } else {
             sshPublicKey().validate();
         }

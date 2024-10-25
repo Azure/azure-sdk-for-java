@@ -96,11 +96,8 @@ public interface Secret {
     SecretInner innerModel();
 
     /** The entirety of the Secret definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The Secret definition stages. */

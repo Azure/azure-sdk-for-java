@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TransportAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransportAvailabilityRequest model =
-            BinaryData.fromString("{\"skuName\":\"DataBoxHeavy\"}").toObject(TransportAvailabilityRequest.class);
+        TransportAvailabilityRequest model
+            = BinaryData.fromString("{\"skuName\":\"DataBoxHeavy\"}").toObject(TransportAvailabilityRequest.class);
         Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
     }
 

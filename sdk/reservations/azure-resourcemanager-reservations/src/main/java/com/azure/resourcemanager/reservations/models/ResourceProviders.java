@@ -42,17 +42,8 @@ public interface ResourceProviders {
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
      *     response with {@link PagedIterable}.
      */
-    PagedIterable<Catalog> list(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context);
+    PagedIterable<Catalog> list(String subscriptionId, String reservedResourceType, String location, String publisherId,
+        String offerId, String planId, String filter, Float skip, Float take, Context context);
 
     /**
      * Get list of applicable `Reservation`s.

@@ -26,7 +26,9 @@ public final class NewRelicSingleSignOnPropertiesTests {
     public void testSerialize() throws Exception {
         NewRelicSingleSignOnProperties model
             = new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
-                .withEnterpriseAppId("o").withSingleSignOnUrl("si").withProvisioningState(ProvisioningState.DELETING);
+                .withEnterpriseAppId("o")
+                .withSingleSignOnUrl("si")
+                .withProvisioningState(ProvisioningState.DELETING);
         model = BinaryData.fromObject(model).toObject(NewRelicSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
         Assertions.assertEquals("o", model.enterpriseAppId());

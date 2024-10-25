@@ -275,41 +275,31 @@ public final class ScheduledActionProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model ScheduledActionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model ScheduledActionProperties"));
         }
         if (fileDestination() != null) {
             fileDestination().validate();
         }
         if (notification() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property notification in model ScheduledActionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property notification in model ScheduledActionProperties"));
         } else {
             notification().validate();
         }
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model ScheduledActionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property schedule in model ScheduledActionProperties"));
         } else {
             schedule().validate();
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model ScheduledActionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model ScheduledActionProperties"));
         }
         if (viewId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property viewId in model ScheduledActionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property viewId in model ScheduledActionProperties"));
         }
     }
 

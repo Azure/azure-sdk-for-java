@@ -92,8 +92,14 @@ public class ScenarioOptions {
         return Duration.ofMinutes(delayTestStartInMinutes);
     }
 
+    /**
+     * Gets the idle duration.
+     *
+     * @return The idle duration.
+     * @throws IllegalArgumentException If the idle duration in minutes is less than zero.
+     */
     public Duration getIdleDuration() {
-        if  (idleDurationInMinutes == 0) {
+        if (idleDurationInMinutes == 0) {
             return Duration.ZERO;
         }
 

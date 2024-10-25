@@ -118,16 +118,12 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     public void validate() {
         super.validate();
         if (attribute() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attribute in model SelectAudioTrackByAttribute"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property attribute in model SelectAudioTrackByAttribute"));
         }
         if (filter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filter in model SelectAudioTrackByAttribute"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filter in model SelectAudioTrackByAttribute"));
         }
     }
 

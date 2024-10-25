@@ -492,8 +492,8 @@ public final class ClusterProperties {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the ClusterProperties object itself.
      */
-    public ClusterProperties withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public ClusterProperties
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -561,10 +561,8 @@ public final class ClusterProperties {
      */
     public void validate() {
         if (aggregatorOrSingleRackDefinition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
         } else {
             aggregatorOrSingleRackDefinition().validate();
         }
@@ -581,15 +579,12 @@ public final class ClusterProperties {
             clusterServicePrincipal().validate();
         }
         if (clusterType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property clusterType in model ClusterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property clusterType in model ClusterProperties"));
         }
         if (clusterVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterVersion in model ClusterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property clusterVersion in model ClusterProperties"));
         }
         if (computeDeploymentThreshold() != null) {
             computeDeploymentThreshold().validate();
@@ -604,10 +599,8 @@ public final class ClusterProperties {
             managedResourceGroupConfiguration().validate();
         }
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model ClusterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property networkFabricId in model ClusterProperties"));
         }
     }
 

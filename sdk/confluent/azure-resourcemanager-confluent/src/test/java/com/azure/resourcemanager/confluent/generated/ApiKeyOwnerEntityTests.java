@@ -22,7 +22,9 @@ public final class ApiKeyOwnerEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiKeyOwnerEntity model = new ApiKeyOwnerEntity().withId("htba").withRelated("gx").withResourceName("rc")
+        ApiKeyOwnerEntity model = new ApiKeyOwnerEntity().withId("htba")
+            .withRelated("gx")
+            .withResourceName("rc")
             .withKind("yklyhpluodpvruud");
         model = BinaryData.fromObject(model).toObject(ApiKeyOwnerEntity.class);
         Assertions.assertEquals("htba", model.id());

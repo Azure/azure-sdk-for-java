@@ -210,8 +210,8 @@ public final class VirtualNetworkPeeringInner extends ProxyResource {
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
-    public VirtualNetworkPeeringInner withRemoteVirtualNetwork(
-        VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
+    public VirtualNetworkPeeringInner
+        withRemoteVirtualNetwork(VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
         }
@@ -267,10 +267,8 @@ public final class VirtualNetworkPeeringInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualNetworkPeeringInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model VirtualNetworkPeeringInner"));
         } else {
             innerProperties().validate();
         }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionLis
 public final class ExportExecutionListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportExecutionListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"executionType\":\"OnDemand\",\"status\":\"Queued\",\"submittedBy\":\"fudflvkgjub\",\"submittedTime\":\"2021-11-23T16:21:59Z\",\"processingStartTime\":\"2021-10-26T17:09:29Z\",\"processingEndTime\":\"2021-09-03T22:34:04Z\",\"fileName\":\"aznqntoru\"},\"eTag\":\"a\",\"id\":\"mkycgra\",\"name\":\"wjue\",\"type\":\"aeburuvdmo\"},{\"properties\":{\"executionType\":\"Scheduled\",\"status\":\"Completed\",\"submittedBy\":\"ab\",\"submittedTime\":\"2021-06-22T12:18:54Z\",\"processingStartTime\":\"2021-09-19T02:18:46Z\",\"processingEndTime\":\"2021-08-18T18:08:28Z\",\"fileName\":\"rvtp\"},\"eTag\":\"mqlgk\",\"id\":\"btndo\",\"name\":\"ongbjcnt\",\"type\":\"jitcjedftwwaez\"},{\"properties\":{\"executionType\":\"OnDemand\",\"status\":\"DataNotAvailable\",\"submittedBy\":\"zfoqouicybxar\",\"submittedTime\":\"2021-04-08T01:14:58Z\",\"processingStartTime\":\"2021-08-24T17:23:35Z\",\"processingEndTime\":\"2021-05-09T22:20:13Z\",\"fileName\":\"ciqopidoa\"},\"eTag\":\"dhkha\",\"id\":\"xkhnzbonlwnto\",\"name\":\"gokdwbwhks\",\"type\":\"zcmrvexztvb\"}]}")
-                .toObject(ExportExecutionListResultInner.class);
+        ExportExecutionListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"executionType\":\"OnDemand\",\"status\":\"Queued\",\"submittedBy\":\"fudflvkgjub\",\"submittedTime\":\"2021-11-23T16:21:59Z\",\"processingStartTime\":\"2021-10-26T17:09:29Z\",\"processingEndTime\":\"2021-09-03T22:34:04Z\",\"fileName\":\"aznqntoru\"},\"eTag\":\"a\",\"id\":\"mkycgra\",\"name\":\"wjue\",\"type\":\"aeburuvdmo\"},{\"properties\":{\"executionType\":\"Scheduled\",\"status\":\"Completed\",\"submittedBy\":\"ab\",\"submittedTime\":\"2021-06-22T12:18:54Z\",\"processingStartTime\":\"2021-09-19T02:18:46Z\",\"processingEndTime\":\"2021-08-18T18:08:28Z\",\"fileName\":\"rvtp\"},\"eTag\":\"mqlgk\",\"id\":\"btndo\",\"name\":\"ongbjcnt\",\"type\":\"jitcjedftwwaez\"},{\"properties\":{\"executionType\":\"OnDemand\",\"status\":\"DataNotAvailable\",\"submittedBy\":\"zfoqouicybxar\",\"submittedTime\":\"2021-04-08T01:14:58Z\",\"processingStartTime\":\"2021-08-24T17:23:35Z\",\"processingEndTime\":\"2021-05-09T22:20:13Z\",\"fileName\":\"ciqopidoa\"},\"eTag\":\"dhkha\",\"id\":\"xkhnzbonlwnto\",\"name\":\"gokdwbwhks\",\"type\":\"zcmrvexztvb\"}]}")
+            .toObject(ExportExecutionListResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

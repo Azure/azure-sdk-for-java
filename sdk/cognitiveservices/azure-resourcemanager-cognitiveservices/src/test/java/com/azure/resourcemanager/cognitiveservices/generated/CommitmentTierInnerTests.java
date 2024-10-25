@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentTierInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"suyonobglaocq\",\"skuName\":\"ccm\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"xy\",\"tier\":\"moyrxvwfudwpz\",\"maxCount\":1508312014,\"quota\":{\"quantity\":7345023164643375975,\"unit\":\"rqjbhckfrl\"},\"cost\":{\"commitmentMeterId\":\"sbkyvpycanuzbp\",\"overageMeterId\":\"afkuwb\"}}")
-                .toObject(CommitmentTierInner.class);
+        CommitmentTierInner model = BinaryData.fromString(
+            "{\"kind\":\"suyonobglaocq\",\"skuName\":\"ccm\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"xy\",\"tier\":\"moyrxvwfudwpz\",\"maxCount\":1508312014,\"quota\":{\"quantity\":7345023164643375975,\"unit\":\"rqjbhckfrl\"},\"cost\":{\"commitmentMeterId\":\"sbkyvpycanuzbp\",\"overageMeterId\":\"afkuwb\"}}")
+            .toObject(CommitmentTierInner.class);
         Assertions.assertEquals("suyonobglaocq", model.kind());
         Assertions.assertEquals("ccm", model.skuName());
         Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, model.hostingModel());
@@ -33,16 +31,14 @@ public final class CommitmentTierInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierInner model =
-            new CommitmentTierInner()
-                .withKind("suyonobglaocq")
-                .withSkuName("ccm")
-                .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
-                .withPlanType("xy")
-                .withTier("moyrxvwfudwpz")
-                .withMaxCount(1508312014)
-                .withQuota(new CommitmentQuota().withQuantity(7345023164643375975L).withUnit("rqjbhckfrl"))
-                .withCost(new CommitmentCost().withCommitmentMeterId("sbkyvpycanuzbp").withOverageMeterId("afkuwb"));
+        CommitmentTierInner model = new CommitmentTierInner().withKind("suyonobglaocq")
+            .withSkuName("ccm")
+            .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
+            .withPlanType("xy")
+            .withTier("moyrxvwfudwpz")
+            .withMaxCount(1508312014)
+            .withQuota(new CommitmentQuota().withQuantity(7345023164643375975L).withUnit("rqjbhckfrl"))
+            .withCost(new CommitmentCost().withCommitmentMeterId("sbkyvpycanuzbp").withOverageMeterId("afkuwb"));
         model = BinaryData.fromObject(model).toObject(CommitmentTierInner.class);
         Assertions.assertEquals("suyonobglaocq", model.kind());
         Assertions.assertEquals("ccm", model.skuName());

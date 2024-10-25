@@ -56,61 +56,43 @@ public final class JobsImpl {
     @Host("{$host}")
     @ServiceInterface(name = "QuantumClientJobs")
     private interface JobsService {
-        @Get(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs")
-        @ExpectedResponses({200})
+        @Get("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<JobDetailsList>> list(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<JobDetailsList>> list(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept);
 
-        @Get(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
-        @ExpectedResponses({200})
+        @Get("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<JobDetails>> get(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @PathParam("jobId") String jobId,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<JobDetails>> get(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept);
 
-        @Put(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
-        @ExpectedResponses({200, 201})
+        @Put("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<JobDetails>> create(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @PathParam("jobId") String jobId,
-                @BodyParam("application/json") JobDetails job,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<JobDetails>> create(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("jobId") String jobId, @BodyParam("application/json") JobDetails job,
+            @HeaderParam("Accept") String accept);
 
-        @Delete(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
-        @ExpectedResponses({204})
+        @Delete("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/jobs/{jobId}")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<Void>> cancel(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @PathParam("jobId") String jobId,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<Void>> cancel(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<JobDetailsList>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<JobDetailsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String host, @HeaderParam("Accept") String accept);
     }
 
     /**
@@ -123,21 +105,11 @@ public final class JobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobDetails>> listSinglePageAsync() {
         final String accept = "application/json";
-        return service.list(
-                        this.client.getHost(),
-                        this.client.getSubscriptionId(),
-                        this.client.getResourceGroupName(),
-                        this.client.getWorkspaceName(),
-                        accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getResourceGroupName(),
+                this.client.getWorkspaceName(), accept)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -176,13 +148,8 @@ public final class JobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobDetails>> getWithResponseAsync(String jobId) {
         final String accept = "application/json";
-        return service.get(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                this.client.getResourceGroupName(),
-                this.client.getWorkspaceName(),
-                jobId,
-                accept);
+        return service.get(this.client.getHost(), this.client.getSubscriptionId(), this.client.getResourceGroupName(),
+            this.client.getWorkspaceName(), jobId, accept);
     }
 
     /**
@@ -196,15 +163,13 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobDetails> getAsync(String jobId) {
-        return getWithResponseAsync(jobId)
-                .flatMap(
-                        (Response<JobDetails> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(jobId).flatMap((Response<JobDetails> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -234,14 +199,8 @@ public final class JobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobDetails>> createWithResponseAsync(String jobId, JobDetails job) {
         final String accept = "application/json";
-        return service.create(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                this.client.getResourceGroupName(),
-                this.client.getWorkspaceName(),
-                jobId,
-                job,
-                accept);
+        return service.create(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getResourceGroupName(), this.client.getWorkspaceName(), jobId, job, accept);
     }
 
     /**
@@ -256,15 +215,13 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobDetails> createAsync(String jobId, JobDetails job) {
-        return createWithResponseAsync(jobId, job)
-                .flatMap(
-                        (Response<JobDetails> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createWithResponseAsync(jobId, job).flatMap((Response<JobDetails> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -294,13 +251,8 @@ public final class JobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String jobId) {
         final String accept = "application/json";
-        return service.cancel(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                this.client.getResourceGroupName(),
-                this.client.getWorkspaceName(),
-                jobId,
-                accept);
+        return service.cancel(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getResourceGroupName(), this.client.getWorkspaceName(), jobId, accept);
     }
 
     /**
@@ -343,14 +295,7 @@ public final class JobsImpl {
     public Mono<PagedResponse<JobDetails>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return service.listNext(nextLink, this.client.getHost(), accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 }

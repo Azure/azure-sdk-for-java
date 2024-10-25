@@ -15,8 +15,7 @@ public final class ApplicationInsightsComponentAnalyticsItemImpl implements Appl
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentAnalyticsItemImpl(
-        ApplicationInsightsComponentAnalyticsItemInner innerObject,
+    ApplicationInsightsComponentAnalyticsItemImpl(ApplicationInsightsComponentAnalyticsItemInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

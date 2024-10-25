@@ -32,47 +32,28 @@ public final class ReportsListByTimeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"rsaeuzso\",\"timestamp\":\"2021-02-08T07:53:09Z\",\"interval\":\"ygftic\",\"country\":\"drswqm\",\"region\":\"uyqtzo\",\"zip\":\"otrbnvoe\",\"userId\":\"t\",\"productId\":\"qoafdv\",\"apiId\":\"lrsrfrxylmdjpspi\",\"operationId\":\"pcvhqadjc\",\"apiRegion\":\"ncgquixu\",\"subscriptionId\":\"atstkvo\",\"callCountSuccess\":1140389867,\"callCountBlocked\":815586248,\"callCountFailed\":661574699,\"callCountOther\":1169170448,\"callCountTotal\":1079041388,\"bandwidth\":906844596468934569,\"cacheHitCount\":274530486,\"cacheMissCount\":1119665802,\"apiTimeAvg\":21.782554232587557,\"apiTimeMin\":81.60573584171237,\"apiTimeMax\":33.22077032680257,\"serviceTimeAvg\":54.19093323953663,\"serviceTimeMin\":17.491782197072357,\"serviceTimeMax\":7.020442156651385}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"rsaeuzso\",\"timestamp\":\"2021-02-08T07:53:09Z\",\"interval\":\"ygftic\",\"country\":\"drswqm\",\"region\":\"uyqtzo\",\"zip\":\"otrbnvoe\",\"userId\":\"t\",\"productId\":\"qoafdv\",\"apiId\":\"lrsrfrxylmdjpspi\",\"operationId\":\"pcvhqadjc\",\"apiRegion\":\"ncgquixu\",\"subscriptionId\":\"atstkvo\",\"callCountSuccess\":1140389867,\"callCountBlocked\":815586248,\"callCountFailed\":661574699,\"callCountOther\":1169170448,\"callCountTotal\":1079041388,\"bandwidth\":906844596468934569,\"cacheHitCount\":274530486,\"cacheMissCount\":1119665802,\"apiTimeAvg\":21.782554232587557,\"apiTimeMin\":81.60573584171237,\"apiTimeMax\":33.22077032680257,\"serviceTimeAvg\":54.19093323953663,\"serviceTimeMin\":17.491782197072357,\"serviceTimeMax\":7.020442156651385}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReportRecordContract> response =
-            manager
-                .reports()
-                .listByTime(
-                    "epcgirsfilxusyzc",
-                    "xjvipehxlbbur",
-                    "xovgjipbnnghsjx",
-                    Duration.parse("PT152H29M18S"),
-                    1576016435,
-                    1570546199,
-                    "goxenhpyix",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<ReportRecordContract> response = manager.reports()
+            .listByTime("epcgirsfilxusyzc", "xjvipehxlbbur", "xovgjipbnnghsjx", Duration.parse("PT152H29M18S"),
+                1576016435, 1570546199, "goxenhpyix", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rsaeuzso", response.iterator().next().name());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T07:53:09Z"), response.iterator().next().timestamp());

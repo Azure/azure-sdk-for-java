@@ -23,8 +23,8 @@ public interface NetworkRacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Rack resource details along with {@link Response}.
      */
-    Response<NetworkRack> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkRackName, Context context);
+    Response<NetworkRack> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
+        Context context);
 
     /**
      * Gets a Network Rack.

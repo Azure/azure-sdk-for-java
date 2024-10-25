@@ -12,8 +12,7 @@ public final class GatewayKeysContractImpl implements GatewayKeysContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    GatewayKeysContractImpl(
-        GatewayKeysContractInner innerObject,
+    GatewayKeysContractImpl(GatewayKeysContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

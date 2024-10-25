@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.AnnotationsListResul
 public final class AnnotationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AnnotationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"AnnotationName\":\"emkkvnipjox\",\"Category\":\"nchgej\",\"EventTime\":\"2021-10-02T19:32:19Z\",\"Id\":\"mailzydehojw\",\"Properties\":\"huxinpmqnj\",\"RelatedAnnotation\":\"wixjsprozvcp\"}]}")
-                .toObject(AnnotationsListResult.class);
+        AnnotationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"AnnotationName\":\"emkkvnipjox\",\"Category\":\"nchgej\",\"EventTime\":\"2021-10-02T19:32:19Z\",\"Id\":\"mailzydehojw\",\"Properties\":\"huxinpmqnj\",\"RelatedAnnotation\":\"wixjsprozvcp\"}]}")
+            .toObject(AnnotationsListResult.class);
     }
 
     @org.junit.jupiter.api.Test

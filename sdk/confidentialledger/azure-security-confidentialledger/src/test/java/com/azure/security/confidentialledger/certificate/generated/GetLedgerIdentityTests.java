@@ -24,8 +24,8 @@ public final class GetLedgerIdentityTests extends ConfidentialLedgerCertificateC
         final RequestOptions requestOptions = new RequestOptions();
 
         // Act
-        final Response<BinaryData> response =
-                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
+        final Response<BinaryData> response
+            = confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
 
         // Assert
         Assertions.assertEquals(200, response.getStatusCode());

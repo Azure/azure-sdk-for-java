@@ -22,9 +22,7 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        super.metricsAdvisorClient
-            .listIncidentsForAlert(super.alertConfigId,
-                super.alertId)
+        super.metricsAdvisorClient.listIncidentsForAlert(super.alertConfigId, super.alertId)
             .stream()
             .limit(super.maxListElements)
             .forEach(incident -> {
@@ -33,9 +31,7 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return super.metricsAdvisorAsyncClient
-            .listIncidentsForAlert(super.alertConfigId,
-                super.alertId)
+        return super.metricsAdvisorAsyncClient.listIncidentsForAlert(super.alertConfigId, super.alertId)
             .take(super.maxListElements)
             .then();
     }

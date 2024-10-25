@@ -39,8 +39,8 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     private float height;
 
     /*
-     * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the
-     * unit is "inch".
+     * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit
+     * is "inch".
      */
     private LengthUnit unit;
 
@@ -170,9 +170,9 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Get the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
      * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
-     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may
-     * change across images and OCR version updates. Thus, business logic should be built upon the actual line location
-     * instead of order.
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
      * 
      * @return the lines value.
      */
@@ -183,9 +183,9 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Set the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
      * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
-     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may
-     * change across images and OCR version updates. Thus, business logic should be built upon the actual line location
-     * instead of order.
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
      * 
      * @param lines the lines value to set.
      * @return the ReadResult object itself.
@@ -215,6 +215,9 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

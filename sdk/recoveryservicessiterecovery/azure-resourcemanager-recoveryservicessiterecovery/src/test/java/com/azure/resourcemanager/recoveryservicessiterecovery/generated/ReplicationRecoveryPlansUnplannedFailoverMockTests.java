@@ -51,17 +51,20 @@ public final class ReplicationRecoveryPlansUnplannedFailoverMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().unplannedFailover("bdjkmnxsggnow", "hyvdbrdvsv",
-            "hbtyc",
-            new RecoveryPlanUnplannedFailoverInput().withProperties(new RecoveryPlanUnplannedFailoverInputProperties()
-                .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
-                .withSourceSiteOperations(SourceSiteOperations.REQUIRED).withProviderSpecificDetails(Arrays.asList(
-                    new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput()))),
-            com.azure.core.util.Context.NONE);
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .unplannedFailover("bdjkmnxsggnow", "hyvdbrdvsv", "hbtyc",
+                new RecoveryPlanUnplannedFailoverInput()
+                    .withProperties(new RecoveryPlanUnplannedFailoverInputProperties()
+                        .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
+                        .withSourceSiteOperations(SourceSiteOperations.REQUIRED)
+                        .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
+                            new RecoveryPlanProviderSpecificFailoverInput()))),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ikh", response.properties().friendlyName());
         Assertions.assertEquals("thypepxshmrd", response.properties().primaryFabricId());

@@ -22,8 +22,8 @@ public interface SingleSignOns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DynatraceSingleSignOnResource along with {@link Response}.
      */
-    Response<DynatraceSingleSignOnResource> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DynatraceSingleSignOnResource> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Get a DynatraceSingleSignOnResource.

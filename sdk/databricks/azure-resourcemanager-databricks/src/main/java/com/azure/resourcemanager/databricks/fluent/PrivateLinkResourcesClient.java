@@ -62,8 +62,8 @@ public interface PrivateLinkResourcesClient {
      * @return the specified private link resource for the given group id (sub-resource) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupIdInformationInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupId, Context context);
+    Response<GroupIdInformationInner> getWithResponse(String resourceGroupName, String workspaceName, String groupId,
+        Context context);
 
     /**
      * Get the specified private link resource

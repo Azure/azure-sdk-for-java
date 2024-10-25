@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpgradeSettings model =
-            BinaryData.fromString("{\"maxSurge\":\"gvpgy\"}").toObject(AgentPoolUpgradeSettings.class);
+        AgentPoolUpgradeSettings model
+            = BinaryData.fromString("{\"maxSurge\":\"gvpgy\"}").toObject(AgentPoolUpgradeSettings.class);
         Assertions.assertEquals("gvpgy", model.maxSurge());
     }
 

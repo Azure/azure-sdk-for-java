@@ -24,8 +24,8 @@ public interface Reservations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities.
      */
-    AvailableScopeProperties availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body);
+    AvailableScopeProperties availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body);
 
     /**
      * Get Available Scopes for `Reservation`.
@@ -41,8 +41,8 @@ public interface Reservations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities.
      */
-    AvailableScopeProperties availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context);
+    AvailableScopeProperties availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body, Context context);
 
     /**
      * Split the `Reservation`.
@@ -145,8 +145,8 @@ public interface Reservations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific `Reservation` details along with {@link Response}.
      */
-    Response<ReservationResponse> getWithResponse(
-        String reservationOrderId, String reservationId, String expand, Context context);
+    Response<ReservationResponse> getWithResponse(String reservationOrderId, String reservationId, String expand,
+        Context context);
 
     /**
      * Get `Reservation` details.
@@ -311,12 +311,6 @@ public interface Reservations {
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
      *     response with {@link PagedIterable}.
      */
-    PagedIterable<ReservationResponse> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context);
+    PagedIterable<ReservationResponse> listAll(String filter, String orderby, String refreshSummary, Float skiptoken,
+        String selectedState, Float take, Context context);
 }

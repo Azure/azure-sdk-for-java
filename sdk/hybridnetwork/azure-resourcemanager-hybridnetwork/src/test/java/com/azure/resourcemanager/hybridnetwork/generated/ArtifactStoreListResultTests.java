@@ -33,35 +33,42 @@ public final class ArtifactStoreListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactStoreListResult model = new ArtifactStoreListResult().withValue(Arrays.asList(
-            new ArtifactStoreInner().withLocation("vdkfwynwcvtbvk")
-                .withTags(mapOf("atkzwpcnpw", "mtnvyq", "cyajguqf", "cjaesgvvs"))
-                .withProperties(new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.UNKNOWN)
-                    .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN).withManagedResourceGroupConfiguration(
-                        new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("gamv")
-                            .withLocation("ho"))),
-            new ArtifactStoreInner().withLocation("erqwkyhkobopg").withTags(mapOf("wep", "k"))
-                .withProperties(new ArtifactStorePropertiesFormat()
-                    .withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
-                    .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN).withManagedResourceGroupConfiguration(
-                        new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("ymgc")
-                            .withLocation("lvez"))),
-            new ArtifactStoreInner().withLocation("uzhlhkjoqrv")
-                .withTags(mapOf("ggjioolvr", "atjinrvgoupmfiib", "v", "x", "wjygvjayvblmhvk", "kkgll", "gsopbyrqufegxu",
-                    "uhbxvvy"))
-                .withProperties(
-                    new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.AZURE_STORAGE_ACCOUNT)
-                        .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
-                        .withManagedResourceGroupConfiguration(
-                            new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("mtdh")
-                                .withLocation("dvypgikdgsz"))),
-            new ArtifactStoreInner().withLocation("eaxhcexdrrvqahqk")
-                .withTags(mapOf("svfycxzbfv", "pwijnhy", "ronzmyhgfip", "owvrvmtgjqppyos")).withProperties(
-                    new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
-                        .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
-                        .withManagedResourceGroupConfiguration(
-                            new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("hrixkwmy")
-                                .withLocation("ejvegrhbpnaixex")))));
+        ArtifactStoreListResult model
+            = new ArtifactStoreListResult()
+                .withValue(Arrays.asList(
+                    new ArtifactStoreInner().withLocation("vdkfwynwcvtbvk")
+                        .withTags(mapOf("atkzwpcnpw", "mtnvyq", "cyajguqf", "cjaesgvvs"))
+                        .withProperties(new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.UNKNOWN)
+                            .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN)
+                            .withManagedResourceGroupConfiguration(
+                                new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("gamv")
+                                    .withLocation("ho"))),
+                    new ArtifactStoreInner().withLocation("erqwkyhkobopg")
+                        .withTags(mapOf("wep", "k"))
+                        .withProperties(new ArtifactStorePropertiesFormat()
+                            .withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
+                            .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN)
+                            .withManagedResourceGroupConfiguration(
+                                new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("ymgc")
+                                    .withLocation("lvez"))),
+                    new ArtifactStoreInner().withLocation("uzhlhkjoqrv")
+                        .withTags(mapOf("ggjioolvr", "atjinrvgoupmfiib", "v", "x", "wjygvjayvblmhvk", "kkgll",
+                            "gsopbyrqufegxu", "uhbxvvy"))
+                        .withProperties(new ArtifactStorePropertiesFormat()
+                            .withStoreType(ArtifactStoreType.AZURE_STORAGE_ACCOUNT)
+                            .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
+                            .withManagedResourceGroupConfiguration(
+                                new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("mtdh")
+                                    .withLocation("dvypgikdgsz"))),
+                    new ArtifactStoreInner().withLocation("eaxhcexdrrvqahqk")
+                        .withTags(mapOf("svfycxzbfv", "pwijnhy", "ronzmyhgfip", "owvrvmtgjqppyos"))
+                        .withProperties(new ArtifactStorePropertiesFormat()
+                            .withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
+                            .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
+                            .withManagedResourceGroupConfiguration(
+                                new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration()
+                                    .withName("hrixkwmy")
+                                    .withLocation("ejvegrhbpnaixex")))));
         model = BinaryData.fromObject(model).toObject(ArtifactStoreListResult.class);
         Assertions.assertEquals("vdkfwynwcvtbvk", model.value().get(0).location());
         Assertions.assertEquals("mtnvyq", model.value().get(0).tags().get("atkzwpcnpw"));

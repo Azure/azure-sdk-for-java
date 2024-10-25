@@ -112,11 +112,8 @@ public interface ServiceFabric {
     ServiceFabricInner innerModel();
 
     /** The entirety of the ServiceFabric definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The ServiceFabric definition stages. */
@@ -161,10 +158,8 @@ public interface ServiceFabric {
          * The stage of the ServiceFabric definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExternalServiceFabricId,
-                DefinitionStages.WithEnvironmentId {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExternalServiceFabricId,
+            DefinitionStages.WithEnvironmentId {
             /**
              * Executes the create request.
              *

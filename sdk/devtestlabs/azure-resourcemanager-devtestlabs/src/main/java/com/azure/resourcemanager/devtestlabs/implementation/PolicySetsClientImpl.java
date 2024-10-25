@@ -41,8 +41,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @param client the instance of the service client containing this operation class.
      */
     PolicySetsClientImpl(DevTestLabsClientImpl client) {
-        this.service =
-            RestProxy.create(PolicySetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PolicySetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,21 +53,16 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientPol")
     public interface PolicySetsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{name}/evaluatePolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{name}/evaluatePolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EvaluatePoliciesResponseInner>> evaluatePolicies(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EvaluatePoliciesResponseInner>> evaluatePolicies(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EvaluatePoliciesRequest evaluatePoliciesRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,19 +79,15 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
+    private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(String resourceGroupName,
+        String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -109,27 +100,16 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (evaluatePoliciesRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter evaluatePoliciesRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter evaluatePoliciesRequest is required and cannot be null."));
         } else {
             evaluatePoliciesRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .evaluatePolicies(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            name,
-                            this.client.getApiVersion(),
-                            evaluatePoliciesRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.evaluatePolicies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, name, this.client.getApiVersion(), evaluatePoliciesRequest, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -148,23 +128,15 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context) {
+    private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(String resourceGroupName,
+        String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,25 +149,15 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (evaluatePoliciesRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter evaluatePoliciesRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter evaluatePoliciesRequest is required and cannot be null."));
         } else {
             evaluatePoliciesRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .evaluatePolicies(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                name,
-                this.client.getApiVersion(),
-                evaluatePoliciesRequest,
-                accept,
-                context);
+        return service.evaluatePolicies(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            labName, name, this.client.getApiVersion(), evaluatePoliciesRequest, accept, context);
     }
 
     /**
@@ -211,8 +173,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @return response body for evaluating a policy set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EvaluatePoliciesResponseInner> evaluatePoliciesAsync(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
+    private Mono<EvaluatePoliciesResponseInner> evaluatePoliciesAsync(String resourceGroupName, String labName,
+        String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
         return evaluatePoliciesWithResponseAsync(resourceGroupName, labName, name, evaluatePoliciesRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -231,12 +193,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @return response body for evaluating a policy set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context) {
+    public Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(String resourceGroupName,
+        String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context) {
         return evaluatePoliciesWithResponseAsync(resourceGroupName, labName, name, evaluatePoliciesRequest, context)
             .block();
     }
@@ -254,8 +212,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @return response body for evaluating a policy set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatePoliciesResponseInner evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
+    public EvaluatePoliciesResponseInner evaluatePolicies(String resourceGroupName, String labName, String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest) {
         return evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, Context.NONE)
             .getValue();
     }

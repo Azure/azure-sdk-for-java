@@ -54,9 +54,8 @@ public final class WaitStepProperties extends StepProperties {
     public void validate() {
         super.validate();
         if (attributes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property attributes in model WaitStepProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property attributes in model WaitStepProperties"));
         } else {
             attributes().validate();
         }

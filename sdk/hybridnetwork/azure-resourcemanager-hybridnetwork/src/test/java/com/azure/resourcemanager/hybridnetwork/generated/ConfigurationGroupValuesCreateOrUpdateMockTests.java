@@ -48,11 +48,14 @@ public final class ConfigurationGroupValuesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ConfigurationGroupValue response = manager.configurationGroupValues().define("kv").withRegion("xff")
+        ConfigurationGroupValue response = manager.configurationGroupValues()
+            .define("kv")
+            .withRegion("xff")
             .withExistingResourceGroup("saasiixtmkzj")
             .withTags(mapOf("xwopdbydpizqa", "kwfbkgo", "gjkn", "lnapxbiygn", "oiquvrehmrnjhvs", "smfcttuxuuyilfl", "w",
                 "jztczytqj"))

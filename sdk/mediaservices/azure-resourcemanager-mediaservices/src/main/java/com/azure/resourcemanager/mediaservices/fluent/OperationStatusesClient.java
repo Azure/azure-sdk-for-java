@@ -29,13 +29,8 @@ public interface OperationStatusesClient {
      * @return asset track operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetTrackOperationStatusInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    Response<AssetTrackOperationStatusInner> getWithResponse(String resourceGroupName, String accountName,
+        String assetName, String trackName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -53,6 +48,6 @@ public interface OperationStatusesClient {
      * @return asset track operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackOperationStatusInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrackOperationStatusInner get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

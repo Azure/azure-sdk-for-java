@@ -29,8 +29,8 @@ public interface VNetPeeringsClient {
      * @return the workspace vNet Peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    Response<VirtualNetworkPeeringInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String peeringName, Context context);
 
     /**
      * Gets the workspace vNet Peering.
@@ -76,8 +76,8 @@ public interface VNetPeeringsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String peeringName,
+        Context context);
 
     /**
      * Deletes the workspace vNetPeering.
@@ -123,9 +123,7 @@ public interface VNetPeeringsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
+        String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
 
     /**
@@ -144,11 +142,8 @@ public interface VNetPeeringsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context);
+        String resourceGroupName, String workspaceName, String peeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, Context context);
 
     /**
      * Creates vNet Peering for workspace.
@@ -164,10 +159,7 @@ public interface VNetPeeringsClient {
      * @return peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
+    VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
 
     /**
@@ -185,12 +177,8 @@ public interface VNetPeeringsClient {
      * @return peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context);
+    VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, Context context);
 
     /**
      * Lists the workspace vNet Peerings.
@@ -219,6 +207,6 @@ public interface VNetPeeringsClient {
      * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

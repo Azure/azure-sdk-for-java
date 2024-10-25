@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableSkuRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableSkuRequest model =
-            BinaryData
-                .fromString(
-                    "{\"transferType\":\"ExportFromAzure\",\"country\":\"jttgzf\",\"location\":\"ishc\",\"skuNames\":[\"DataBoxCustomerDisk\",\"DataBoxHeavy\",\"DataBoxCustomerDisk\",\"DataBoxDisk\"]}")
-                .toObject(AvailableSkuRequest.class);
+        AvailableSkuRequest model = BinaryData.fromString(
+            "{\"transferType\":\"ExportFromAzure\",\"country\":\"jttgzf\",\"location\":\"ishc\",\"skuNames\":[\"DataBoxCustomerDisk\",\"DataBoxHeavy\",\"DataBoxCustomerDisk\",\"DataBoxDisk\"]}")
+            .toObject(AvailableSkuRequest.class);
         Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
         Assertions.assertEquals("jttgzf", model.country());
         Assertions.assertEquals("ishc", model.location());
@@ -27,18 +25,11 @@ public final class AvailableSkuRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableSkuRequest model =
-            new AvailableSkuRequest()
-                .withTransferType(TransferType.EXPORT_FROM_AZURE)
-                .withCountry("jttgzf")
-                .withLocation("ishc")
-                .withSkuNames(
-                    Arrays
-                        .asList(
-                            SkuName.DATA_BOX_CUSTOMER_DISK,
-                            SkuName.DATA_BOX_HEAVY,
-                            SkuName.DATA_BOX_CUSTOMER_DISK,
-                            SkuName.DATA_BOX_DISK));
+        AvailableSkuRequest model = new AvailableSkuRequest().withTransferType(TransferType.EXPORT_FROM_AZURE)
+            .withCountry("jttgzf")
+            .withLocation("ishc")
+            .withSkuNames(Arrays.asList(SkuName.DATA_BOX_CUSTOMER_DISK, SkuName.DATA_BOX_HEAVY,
+                SkuName.DATA_BOX_CUSTOMER_DISK, SkuName.DATA_BOX_DISK));
         model = BinaryData.fromObject(model).toObject(AvailableSkuRequest.class);
         Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
         Assertions.assertEquals("jttgzf", model.country());

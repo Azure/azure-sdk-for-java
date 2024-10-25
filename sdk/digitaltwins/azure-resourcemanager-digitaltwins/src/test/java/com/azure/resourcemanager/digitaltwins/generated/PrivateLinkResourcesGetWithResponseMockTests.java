@@ -30,40 +30,28 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"groupId\":\"zvszj\",\"requiredMembers\":[\"vjfdx\",\"ivetvtcq\",\"qtdo\"],\"requiredZoneNames\":[\"bxvwv\",\"yslqbhsfx\",\"blytk\",\"lmpewwwfbkr\"]},\"id\":\"nsvs\",\"name\":\"johxcrsb\",\"type\":\"vasrruvwb\"}";
+        String responseStr
+            = "{\"properties\":{\"groupId\":\"zvszj\",\"requiredMembers\":[\"vjfdx\",\"ivetvtcq\",\"qtdo\"],\"requiredZoneNames\":[\"bxvwv\",\"yslqbhsfx\",\"blytk\",\"lmpewwwfbkr\"]},\"id\":\"nsvs\",\"name\":\"johxcrsb\",\"type\":\"vasrruvwb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDigitalTwinsManager manager =
-            AzureDigitalTwinsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GroupIdInformation response =
-            manager
-                .privateLinkResources()
-                .getWithResponse("mjh", "xjyngudivk", "tswb", com.azure.core.util.Context.NONE)
-                .getValue();
+        GroupIdInformation response = manager.privateLinkResources()
+            .getWithResponse("mjh", "xjyngudivk", "tswb", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zvszj", response.properties().groupId());
         Assertions.assertEquals("vjfdx", response.properties().requiredMembers().get(0));

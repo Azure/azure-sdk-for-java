@@ -54,18 +54,27 @@ public final class AgentPoolsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AgentPool response
-            = manager.agentPools().define("ucqdpfuvglsb").withExistingConnectedClusterResourceUri("bqwcsdbnwdcf")
+            = manager.agentPools()
+                .define("ucqdpfuvglsb")
+                .withExistingConnectedClusterResourceUri("bqwcsdbnwdcf")
                 .withTags(mapOf("p", "xarzgszufoxciq", "xkhnzbonlwnto", "doamciodhkha", "zcmrvexztvb", "gokdwbwhks",
                     "lmnguxaw", "qgsfraoyzkoow"))
-                .withProperties(new AgentPoolProperties().withOsType(OsType.LINUX).withOsSku(Ossku.CBLMARINER)
-                    .withNodeLabels(mapOf("bjcntujitc", "doaon")).withNodeTaints(Arrays.asList("ftwwaezkojvdc"))
-                    .withMaxCount(457925130).withMinCount(1504008224).withEnableAutoScaling(true)
-                    .withMaxPods(1139129644).withCount(990974821).withVmSize("vxb")
+                .withProperties(new AgentPoolProperties().withOsType(OsType.LINUX)
+                    .withOsSku(Ossku.CBLMARINER)
+                    .withNodeLabels(mapOf("bjcntujitc", "doaon"))
+                    .withNodeTaints(Arrays.asList("ftwwaezkojvdc"))
+                    .withMaxCount(457925130)
+                    .withMinCount(1504008224)
+                    .withEnableAutoScaling(true)
+                    .withMaxPods(1139129644)
+                    .withCount(990974821)
+                    .withVmSize("vxb")
                     .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("cofudflvkgjub")
                         .withReadyReplicas(Arrays.asList(
                             new AgentPoolUpdateProfile().withCount(612947091).withVmSize("vsaznqntorudsg"),

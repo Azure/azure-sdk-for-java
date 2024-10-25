@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * A builder for creating a new instance of the ModelsRepositoryAPI type.
  */
-@ServiceClientBuilder(serviceClients = {ModelsRepositoryAPIImpl.class})
+@ServiceClientBuilder(serviceClients = { ModelsRepositoryAPIImpl.class })
 public final class ModelsRepositoryAPIImplBuilder {
     private static final String SDK_NAME = "name";
 
@@ -208,24 +208,23 @@ public final class ModelsRepositoryAPIImplBuilder {
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-            new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }

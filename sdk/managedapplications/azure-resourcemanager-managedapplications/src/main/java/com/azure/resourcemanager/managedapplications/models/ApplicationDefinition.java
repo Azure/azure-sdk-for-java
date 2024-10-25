@@ -208,12 +208,8 @@ public interface ApplicationDefinition {
     ApplicationDefinitionInner innerModel();
 
     /** The entirety of the ApplicationDefinition definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithLockLevel,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithLockLevel, DefinitionStages.WithCreate {
     }
 
     /** The ApplicationDefinition definition stages. */
@@ -268,23 +264,13 @@ public interface ApplicationDefinition {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithManagedBy,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithIsEnabled,
-                DefinitionStages.WithAuthorizations,
-                DefinitionStages.WithArtifacts,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithPackageFileUri,
-                DefinitionStages.WithStorageAccountId,
-                DefinitionStages.WithMainTemplate,
-                DefinitionStages.WithCreateUiDefinition,
-                DefinitionStages.WithNotificationPolicy,
-                DefinitionStages.WithLockingPolicy,
-                DefinitionStages.WithDeploymentPolicy,
-                DefinitionStages.WithManagementPolicy,
-                DefinitionStages.WithPolicies {
+            extends DefinitionStages.WithTags, DefinitionStages.WithManagedBy, DefinitionStages.WithSku,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithIsEnabled, DefinitionStages.WithAuthorizations,
+            DefinitionStages.WithArtifacts, DefinitionStages.WithDescription, DefinitionStages.WithPackageFileUri,
+            DefinitionStages.WithStorageAccountId, DefinitionStages.WithMainTemplate,
+            DefinitionStages.WithCreateUiDefinition, DefinitionStages.WithNotificationPolicy,
+            DefinitionStages.WithLockingPolicy, DefinitionStages.WithDeploymentPolicy,
+            DefinitionStages.WithManagementPolicy, DefinitionStages.WithPolicies {
             /**
              * Executes the create request.
              *

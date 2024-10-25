@@ -18,7 +18,7 @@ import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_STAR
 
 public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorClientTestBase {
     public abstract void listAnomaliesForDetectionConfig(HttpClient httpClient,
-                                                         MetricsAdvisorServiceVersion serviceVersion);
+        MetricsAdvisorServiceVersion serviceVersion);
 
     // Pre-configured test resource.
     protected static class ListAnomaliesForDetectionConfigInput {
@@ -26,11 +26,10 @@ public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorCl
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final OffsetDateTime startTime = TIME_SERIES_START_TIME;
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
-        final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
-            .setMaxPageSize(10)
-            .setFilter(filter);
+        final ListAnomaliesDetectedFilter filter
+            = new ListAnomaliesDetectedFilter().setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
+        final ListAnomaliesDetectedOptions options
+            = new ListAnomaliesDetectedOptions().setMaxPageSize(10).setFilter(filter);
     }
 
     protected void assertListAnomaliesDetectionConfigOutput(DataPointAnomaly dataPointAnomaly) {

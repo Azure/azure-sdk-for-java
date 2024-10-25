@@ -15,7 +15,8 @@ public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTes
     @Test
     public void testGetConsortiumMembersTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listConsortiumMembers(requestOptions);
+        PagedIterable<BinaryData> pagedIterableResponse
+            = confidentialLedgerClient.listConsortiumMembers(requestOptions);
 
         pagedIterableResponse.streamByPage().forEach(resp -> {
             Assertions.assertEquals(200, resp.getStatusCode());

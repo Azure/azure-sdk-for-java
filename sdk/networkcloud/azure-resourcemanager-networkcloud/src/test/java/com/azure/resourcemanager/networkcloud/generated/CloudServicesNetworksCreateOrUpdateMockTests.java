@@ -37,73 +37,51 @@ public final class CloudServicesNetworksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"mfjhpycvjqdvdwkq\",\"type\":\"ldrlefgnaavua\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"taoutnpdct\",\"endpoints\":[{\"domainName\":\"spfefyihduyeuyld\"},{\"domainName\":\"hmtybkcgsuthhll\"},{\"domainName\":\"mwynefxexlfciatx\"}]},{\"category\":\"jrr\",\"endpoints\":[{\"domainName\":\"mdskjhhxdlajfoxc\"},{\"domainName\":\"scv\"},{\"domainName\":\"lxlhuavkrm\"}]},{\"category\":\"kmyjmkxett\",\"endpoints\":[{\"domainName\":\"lojfkqidnqto\"},{\"domainName\":\"xjhqxcsqhtkb\"},{\"domainName\":\"nqlrng\"}]}],\"associatedResourceIds\":[\"biipsnawwlqkznx\",\"hllxricctkw\",\"uqqoaj\",\"eiyglesrwvaexhdc\"],\"clusterId\":\"ceqnkbrupobehd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"acvumepj\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"zpphepif\",\"endpoints\":[{\"domainName\":\"leqirccjclykcgxv\"},{\"domainName\":\"pjlvczuoda\"}]},{\"category\":\"punettepdjxq\",\"endpoints\":[{\"domainName\":\"koynuiylpckae\"},{\"domainName\":\"sedveskwxegqphrg\"},{\"domainName\":\"nzhctmjtsgh\"}]},{\"category\":\"bcbcpz\",\"endpoints\":[{\"domainName\":\"pzeqacdldtz\"},{\"domainName\":\"pypefcpczshnuq\"}]}],\"hybridAksClustersAssociatedIds\":[\"izupfkhu\"],\"interfaceName\":\"uszxh\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"egw\",\"iukvzwydwt\",\"haokgkskjiv\"]},\"location\":\"shajqf\",\"tags\":{\"hwu\":\"eexpgeumi\",\"dbzsx\":\"trdexyionofnin\",\"bzbcyksiv\":\"wqqrsmpcbbprtuga\",\"rftsjcwjjxs\":\"fogdrtbfcm\"},\"id\":\"mb\",\"name\":\"wvif\",\"type\":\"xkecifhocj\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"mfjhpycvjqdvdwkq\",\"type\":\"ldrlefgnaavua\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"taoutnpdct\",\"endpoints\":[{\"domainName\":\"spfefyihduyeuyld\"},{\"domainName\":\"hmtybkcgsuthhll\"},{\"domainName\":\"mwynefxexlfciatx\"}]},{\"category\":\"jrr\",\"endpoints\":[{\"domainName\":\"mdskjhhxdlajfoxc\"},{\"domainName\":\"scv\"},{\"domainName\":\"lxlhuavkrm\"}]},{\"category\":\"kmyjmkxett\",\"endpoints\":[{\"domainName\":\"lojfkqidnqto\"},{\"domainName\":\"xjhqxcsqhtkb\"},{\"domainName\":\"nqlrng\"}]}],\"associatedResourceIds\":[\"biipsnawwlqkznx\",\"hllxricctkw\",\"uqqoaj\",\"eiyglesrwvaexhdc\"],\"clusterId\":\"ceqnkbrupobehd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"acvumepj\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"zpphepif\",\"endpoints\":[{\"domainName\":\"leqirccjclykcgxv\"},{\"domainName\":\"pjlvczuoda\"}]},{\"category\":\"punettepdjxq\",\"endpoints\":[{\"domainName\":\"koynuiylpckae\"},{\"domainName\":\"sedveskwxegqphrg\"},{\"domainName\":\"nzhctmjtsgh\"}]},{\"category\":\"bcbcpz\",\"endpoints\":[{\"domainName\":\"pzeqacdldtz\"},{\"domainName\":\"pypefcpczshnuq\"}]}],\"hybridAksClustersAssociatedIds\":[\"izupfkhu\"],\"interfaceName\":\"uszxh\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"egw\",\"iukvzwydwt\",\"haokgkskjiv\"]},\"location\":\"shajqf\",\"tags\":{\"hwu\":\"eexpgeumi\",\"dbzsx\":\"trdexyionofnin\",\"bzbcyksiv\":\"wqqrsmpcbbprtuga\",\"rftsjcwjjxs\":\"fogdrtbfcm\"},\"id\":\"mb\",\"name\":\"wvif\",\"type\":\"xkecifhocj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CloudServicesNetwork response =
-            manager
-                .cloudServicesNetworks()
-                .define("kskmqozzkivyhjrl")
-                .withRegion("tnkjjwgcwnphb")
-                .withExistingResourceGroup("fajs")
-                .withExtendedLocation(new ExtendedLocation().withName("izjixlq").withType("hefkwabsolronqq"))
-                .withTags(mapOf("togmhmjpjscdfpd", "y", "vgwmseharxifvqnr", "wtyg", "nvwjhrsidqpxl", "tmbpjp"))
-                .withAdditionalEgressEndpoints(
-                    Arrays
-                        .asList(
-                            new EgressEndpoint()
-                                .withCategory("lqxsjxtelex")
-                                .withEndpoints(
-                                    Arrays
-                                        .asList(
-                                            new EndpointDependency().withDomainName("uqbo"),
-                                            new EndpointDependency().withDomainName("oolzqocarkuzl"))),
-                            new EgressEndpoint()
-                                .withCategory("cnn")
-                                .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("snxawqyt"))),
-                            new EgressEndpoint()
-                                .withCategory("lhdyzmyckzex")
-                                .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("akckywym")))))
-                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
-                .create();
+        CloudServicesNetwork response = manager.cloudServicesNetworks()
+            .define("kskmqozzkivyhjrl")
+            .withRegion("tnkjjwgcwnphb")
+            .withExistingResourceGroup("fajs")
+            .withExtendedLocation(new ExtendedLocation().withName("izjixlq").withType("hefkwabsolronqq"))
+            .withTags(mapOf("togmhmjpjscdfpd", "y", "vgwmseharxifvqnr", "wtyg", "nvwjhrsidqpxl", "tmbpjp"))
+            .withAdditionalEgressEndpoints(Arrays.asList(
+                new EgressEndpoint().withCategory("lqxsjxtelex")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("uqbo"),
+                        new EndpointDependency().withDomainName("oolzqocarkuzl"))),
+                new EgressEndpoint().withCategory("cnn")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("snxawqyt"))),
+                new EgressEndpoint().withCategory("lhdyzmyckzex")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("akckywym")))))
+            .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
+            .create();
 
         Assertions.assertEquals("shajqf", response.location());
         Assertions.assertEquals("eexpgeumi", response.tags().get("hwu"));
         Assertions.assertEquals("mfjhpycvjqdvdwkq", response.extendedLocation().name());
         Assertions.assertEquals("ldrlefgnaavua", response.extendedLocation().type());
         Assertions.assertEquals("taoutnpdct", response.additionalEgressEndpoints().get(0).category());
-        Assertions
-            .assertEquals(
-                "spfefyihduyeuyld", response.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions
-            .assertEquals(
-                CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, response.enableDefaultEgressEndpoints());
+        Assertions.assertEquals("spfefyihduyeuyld",
+            response.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+            response.enableDefaultEgressEndpoints());
     }
 
     // Use "Map.of" if available

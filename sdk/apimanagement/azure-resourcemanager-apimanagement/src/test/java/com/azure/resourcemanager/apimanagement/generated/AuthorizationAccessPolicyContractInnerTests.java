@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationAccessPolicyContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationAccessPolicyContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"tenantId\":\"rgaxwmzwdf\",\"objectId\":\"nrzorpd\"},\"id\":\"tbqctqjfgx\",\"name\":\"saetgzdgvpyig\",\"type\":\"aqqilzdcduwjoed\"}")
-                .toObject(AuthorizationAccessPolicyContractInner.class);
+        AuthorizationAccessPolicyContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"tenantId\":\"rgaxwmzwdf\",\"objectId\":\"nrzorpd\"},\"id\":\"tbqctqjfgx\",\"name\":\"saetgzdgvpyig\",\"type\":\"aqqilzdcduwjoed\"}")
+            .toObject(AuthorizationAccessPolicyContractInner.class);
         Assertions.assertEquals("rgaxwmzwdf", model.tenantId());
         Assertions.assertEquals("nrzorpd", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizationAccessPolicyContractInner model =
-            new AuthorizationAccessPolicyContractInner().withTenantId("rgaxwmzwdf").withObjectId("nrzorpd");
+        AuthorizationAccessPolicyContractInner model
+            = new AuthorizationAccessPolicyContractInner().withTenantId("rgaxwmzwdf").withObjectId("nrzorpd");
         model = BinaryData.fromObject(model).toObject(AuthorizationAccessPolicyContractInner.class);
         Assertions.assertEquals("rgaxwmzwdf", model.tenantId());
         Assertions.assertEquals("nrzorpd", model.objectId());

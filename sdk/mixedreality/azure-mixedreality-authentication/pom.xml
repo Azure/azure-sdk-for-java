@@ -30,6 +30,10 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <spotless.skip>false</spotless.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
