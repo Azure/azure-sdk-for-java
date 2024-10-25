@@ -110,7 +110,8 @@ public final class CallConnection {
      * @return Response with the desired call participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier targetParticipant, Context context) {
+    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier targetParticipant,
+        Context context) {
         return callConnectionAsync.getParticipantWithResponseInternal(targetParticipant, context).block();
     }
 
@@ -164,7 +165,9 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransferCallResult> transferCallToParticipantWithResponse(
         TransferCallToParticipantOptions transferCallToParticipantOptions, Context context) {
-        return callConnectionAsync.transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context).block();
+        return callConnectionAsync
+            .transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context)
+            .block();
     }
 
     /**
@@ -191,7 +194,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantResult> addParticipantWithResponse(AddParticipantOptions addParticipantOptions,
-                                                                       Context context) {
+        Context context) {
         return callConnectionAsync.addParticipantWithResponseInternal(addParticipantOptions, context).block();
     }
 
@@ -218,7 +221,8 @@ public final class CallConnection {
      * @return Response with result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantResult> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
+    public Response<RemoveParticipantResult>
+        removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
         return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
     }
 
@@ -241,7 +245,8 @@ public final class CallConnection {
      * @return a Response containing the MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options, Context context) {
+    public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options,
+        Context context) {
         return callConnectionAsync.muteParticipantWithResponseInternal(options, context).block();
     }
 
@@ -264,7 +269,8 @@ public final class CallConnection {
      * @return a Response containing the UnmuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantResult> unmuteParticipantWithResponse(UnmuteParticipantOptions options, Context context) {
+    public Response<UnmuteParticipantResult> unmuteParticipantWithResponse(UnmuteParticipantOptions options,
+        Context context) {
         return callConnectionAsync.unmuteParticipantWithResponseInternal(options, context).block();
     }
 
@@ -291,8 +297,11 @@ public final class CallConnection {
      * @return Response with result of cancelling add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAddParticipantOperationResult> cancelAddParticipantOperationWithResponse(CancelAddParticipantOperationOptions cancelAddParticipantOperationOptions, Context context) {
-        return callConnectionAsync.cancelAddParticipantOperationWithResponseInternal(cancelAddParticipantOperationOptions, context).block();
+    public Response<CancelAddParticipantOperationResult> cancelAddParticipantOperationWithResponse(
+        CancelAddParticipantOperationOptions cancelAddParticipantOperationOptions, Context context) {
+        return callConnectionAsync
+            .cancelAddParticipantOperationWithResponseInternal(cancelAddParticipantOperationOptions, context)
+            .block();
     }
 
     //region Content management Actions

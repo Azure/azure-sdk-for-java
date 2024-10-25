@@ -120,7 +120,8 @@ public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurat
                 reader.nextToken();
 
                 if ("interToneTimeoutInSeconds".equals(fieldName)) {
-                    configurations.interToneTimeoutInSeconds = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
+                    configurations.interToneTimeoutInSeconds
+                        = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
                 } else if ("maxTonesToCollect".equals(fieldName)) {
                     configurations.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
                 } else if ("stopTones".equals(fieldName)) {

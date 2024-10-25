@@ -9,7 +9,8 @@ import com.azure.communication.callingserver.models.ListParticipantsResult;
 public final class ListParticipantsResponseConstructorProxy {
     private static ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor accessor;
 
-    private ListParticipantsResponseConstructorProxy() { }
+    private ListParticipantsResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor}
@@ -31,7 +32,8 @@ public final class ListParticipantsResponseConstructorProxy {
      *
      * @param accessor The accessor.
      */
-    public static void setAccessor(final ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor accessor) {
+    public static void setAccessor(
+        final ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor accessor) {
         ListParticipantsResponseConstructorProxy.accessor = accessor;
     }
 

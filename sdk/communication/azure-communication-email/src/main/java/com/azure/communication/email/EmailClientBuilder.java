@@ -49,15 +49,10 @@ import java.util.stream.Collectors;
 /**
  * Builder for creating clients of Azure Communication Service Email
  */
-@ServiceClientBuilder(
-        serviceClients = {EmailClient.class, EmailAsyncClient.class})
-public final class EmailClientBuilder
-        implements HttpTrait<EmailClientBuilder>,
-                ConfigurationTrait<EmailClientBuilder>,
-                AzureKeyCredentialTrait<EmailClientBuilder>,
-                EndpointTrait<EmailClientBuilder>,
-                ConnectionStringTrait<EmailClientBuilder>,
-                TokenCredentialTrait<EmailClientBuilder> {
+@ServiceClientBuilder(serviceClients = { EmailClient.class, EmailAsyncClient.class })
+public final class EmailClientBuilder implements HttpTrait<EmailClientBuilder>, ConfigurationTrait<EmailClientBuilder>,
+    AzureKeyCredentialTrait<EmailClientBuilder>, EndpointTrait<EmailClientBuilder>,
+    ConnectionStringTrait<EmailClientBuilder>, TokenCredentialTrait<EmailClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
@@ -208,8 +203,7 @@ public final class EmailClientBuilder
      * @param serviceVersion the serviceVersion value.
      * @return the EmailClientBuilder.
      */
-    public EmailClientBuilder serviceVersion(
-            EmailServiceVersion serviceVersion) {
+    public EmailClientBuilder serviceVersion(EmailServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -242,9 +236,7 @@ public final class EmailClientBuilder
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey));
+        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -261,30 +253,30 @@ public final class EmailClientBuilder
             serviceVersion = EmailServiceVersion.getLatest();
         }
 
-        AzureCommunicationEmailServiceImpl innerClient = new AzureCommunicationEmailServiceImplBuilder()
-            .endpoint(endpoint)
-            .pipeline(pipeline)
-            .apiVersion(serviceVersion.getVersion())
-            .buildClient();
+        AzureCommunicationEmailServiceImpl innerClient
+            = new AzureCommunicationEmailServiceImplBuilder().endpoint(endpoint)
+                .pipeline(pipeline)
+                .apiVersion(serviceVersion.getVersion())
+                .buildClient();
 
         return innerClient;
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("Missing credential information while building a client. Use one of the credential methods to set the credential."));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Missing credential information while building a client. Use one of the credential methods to set the credential."));
         }
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -303,27 +295,23 @@ public final class EmailClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(createHttpPipelineAuthPolicy());
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(clientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .build();
         return httpPipeline;
     }
 

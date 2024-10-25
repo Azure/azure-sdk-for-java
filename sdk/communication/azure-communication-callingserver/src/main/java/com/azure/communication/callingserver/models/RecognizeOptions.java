@@ -197,8 +197,7 @@ public class RecognizeOptions implements JsonSerializable<RecognizeOptions> {
                 }
             }
 
-            return new RecognizeOptions(recognizeInputType, recognizeConfiguration)
-                .setPlayPrompt(playPrompt)
+            return new RecognizeOptions(recognizeInputType, recognizeConfiguration).setPlayPrompt(playPrompt)
                 .setStopCurrentOperations(stopCurrentOperations)
                 .setOperationContext(operationContext);
         });
