@@ -53,14 +53,11 @@ public class FrontDoorTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        ResourceManager resourceManager = ResourceManager
-            .configure()
+        ResourceManager resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
-        StorageManager storageManager = StorageManager
-            .configure()
+        StorageManager storageManager = StorageManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
@@ -73,9 +70,7 @@ public class FrontDoorTests extends TestProxyTestBase {
         String saName = "sa" + randomPadding();
         fdName = "fd" + randomPadding();
 
-        resourceManager.resourceGroups().define(resourceGroupName)
-            .withRegion(REGION)
-            .create();
+        resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
 
         try {
             // @embedmeStart
