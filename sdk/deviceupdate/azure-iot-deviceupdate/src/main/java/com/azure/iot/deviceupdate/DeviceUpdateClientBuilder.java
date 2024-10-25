@@ -38,27 +38,25 @@ import com.azure.iot.deviceupdate.implementation.DeviceUpdateClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the DeviceUpdateClient type. */
-@ServiceClientBuilder(serviceClients = { DeviceUpdateClient.class, DeviceUpdateAsyncClient.class })
+@ServiceClientBuilder(serviceClients = {DeviceUpdateClient.class, DeviceUpdateAsyncClient.class})
 public final class DeviceUpdateClientBuilder
-    implements HttpTrait<DeviceUpdateClientBuilder>, ConfigurationTrait<DeviceUpdateClientBuilder>,
-    TokenCredentialTrait<DeviceUpdateClientBuilder>, EndpointTrait<DeviceUpdateClientBuilder> {
-    @Generated
-    private static final String SDK_NAME = "name";
+        implements HttpTrait<DeviceUpdateClientBuilder>,
+                ConfigurationTrait<DeviceUpdateClientBuilder>,
+                TokenCredentialTrait<DeviceUpdateClientBuilder>,
+                EndpointTrait<DeviceUpdateClientBuilder> {
+    @Generated private static final String SDK_NAME = "name";
+
+    @Generated private static final String SDK_VERSION = "version";
+
+    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
 
     @Generated
-    private static final String SDK_VERSION = "version";
+    private final Map<String, String> properties = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
 
-    @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] { "https://api.adu.microsoft.com/.default" };
-
-    @Generated
-    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
-
-    @Generated
-    private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the DeviceUpdateClientBuilder. */
     @Generated
@@ -69,8 +67,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated
-    private HttpPipeline pipeline;
+    @Generated private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -83,8 +80,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated
-    private HttpClient httpClient;
+    @Generated private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -97,8 +93,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated
-    private HttpLogOptions httpLogOptions;
+    @Generated private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -111,8 +106,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated
-    private ClientOptions clientOptions;
+    @Generated private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -125,8 +119,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated
-    private RetryOptions retryOptions;
+    @Generated private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -140,7 +133,6 @@ public final class DeviceUpdateClientBuilder
     @Generated
     @Override
     public DeviceUpdateClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -148,8 +140,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated
-    private Configuration configuration;
+    @Generated private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -162,8 +153,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated
-    private TokenCredential tokenCredential;
+    @Generated private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -176,8 +166,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The service endpoint
      */
-    @Generated
-    private String endpoint;
+    @Generated private String endpoint;
 
     /** {@inheritDoc}. */
     @Generated
@@ -190,8 +179,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The Device Update for IoT Hub account instance identifier.
      */
-    @Generated
-    private String instanceId;
+    @Generated private String instanceId;
 
     /**
      * Sets The Device Update for IoT Hub account instance identifier.
@@ -208,8 +196,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * Service version
      */
-    @Generated
-    private DeviceUpdateServiceVersion serviceVersion;
+    @Generated private DeviceUpdateServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -226,8 +213,7 @@ public final class DeviceUpdateClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -249,34 +235,44 @@ public final class DeviceUpdateClientBuilder
     @Generated
     private DeviceUpdateClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        DeviceUpdateServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : DeviceUpdateServiceVersion.getLatest();
-        DeviceUpdateClientImpl client = new DeviceUpdateClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, instanceId, localServiceVersion);
+        DeviceUpdateServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : DeviceUpdateServiceVersion.getLatest();
+        DeviceUpdateClientImpl client =
+                new DeviceUpdateClientImpl(
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        endpoint,
+                        instanceId,
+                        localServiceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        if (httpLogOptions == null) {
+            httpLogOptions = new HttpLogOptions();
+        }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -284,15 +280,18 @@ public final class DeviceUpdateClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(clientOptions)
+                        .build();
         return httpPipeline;
     }
 
@@ -313,6 +312,6 @@ public final class DeviceUpdateClientBuilder
      */
     @Generated
     public DeviceUpdateClient buildClient() {
-        return new DeviceUpdateClient(buildInnerClient().getDeviceUpdates());
+        return new DeviceUpdateClient(new DeviceUpdateAsyncClient(buildInnerClient().getDeviceUpdates()));
     }
 }
