@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where BlobClient.upload(InputStream data) would overwrite an existing blob by default.
 
 ### Other Changes
 
