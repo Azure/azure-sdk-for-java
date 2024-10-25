@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.frontdoor;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -50,25 +49,21 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-
-        ResourceManager resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+        ResourceManager resourceManager = ResourceManager.configure()
+            .authenticate(new AzurePowerShellCredentialBuilder().build(),
+                new AzureProfile(AzureEnvironment.AZURE))
+            .withDefaultSubscription();
 
         StorageManager storageManager = StorageManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
+            .authenticate(new AzurePowerShellCredentialBuilder().build(),
+            new AzureProfile(AzureEnvironment.AZURE));
 
-        FrontDoorManager manager = FrontDoorManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
