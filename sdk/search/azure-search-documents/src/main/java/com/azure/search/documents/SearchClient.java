@@ -310,8 +310,8 @@ public final class SearchClient {
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
-    SearchClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-                      HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
+    SearchClient(String endpoint, String indexName, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
+        JsonSerializer serializer, SearchIndexClientImpl restClient) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
@@ -834,11 +834,11 @@ public final class SearchClient {
         Context context) {
 
         try {
-            Response<Map<String, Object>> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, null, context);
+            Response<Map<String, Object>> response
+                = restClient.getDocuments().getWithResponse(key, selectedFields, null, context);
 
-            return new SimpleResponse<>(response, serializer.deserializeFromBytes(
-                serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
+            return new SimpleResponse<>(response, serializer
+                .deserializeFromBytes(serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(Utility.mapErrorResponseException(ex));
         } catch (RuntimeException ex) {
@@ -887,8 +887,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDocuments()
-            .countWithResponse(null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getDocuments().countWithResponse(null, context), LOGGER);
     }
 
     /**
@@ -1005,13 +1005,13 @@ public final class SearchClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, SearchPagedResponse> func = continuationToken ->
-            search(request, continuationToken, firstPageResponseWrapper, context);
+        Function<String, SearchPagedResponse> func
+            = continuationToken -> search(request, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedIterable(() -> func.apply(null), func);
     }
 
     private SearchPagedResponse search(SearchRequest request, String continuationToken,
-                                             SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return firstPageResponseWrapper.getFirstPageResponse();
         }
@@ -1020,14 +1020,14 @@ public final class SearchClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments()
-                .searchPostWithResponse(requestToUse, null, context);
+            Response<SearchDocumentsResult> response
+                = restClient.getDocuments().searchPostWithResponse(requestToUse, null, context);
             SearchDocumentsResult result = response.getValue();
-            SearchPagedResponse page = new SearchPagedResponse(
-                new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                result.getSemanticPartialResponseType());
+            SearchPagedResponse page
+                = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+                    result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+                    result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }
@@ -1098,15 +1098,15 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, Utility.ensureSuggestOptions(suggestOptions));
+        SuggestRequest suggestRequest
+            = createSuggestRequest(searchText, suggesterName, Utility.ensureSuggestOptions(suggestOptions));
         return new SuggestPagedIterable(() -> suggest(suggestRequest, context));
     }
 
     private SuggestPagedResponse suggest(SuggestRequest suggestRequest, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SuggestDocumentsResult> response = restClient.getDocuments()
-                .suggestPostWithResponse(suggestRequest, null, context);
+            Response<SuggestDocumentsResult> response
+                = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, context);
             SuggestDocumentsResult result = response.getValue();
             return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
                 result.getCoverage());
@@ -1172,8 +1172,8 @@ public final class SearchClient {
 
     private AutocompletePagedResponse autocomplete(AutocompleteRequest request, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<AutocompleteResult> response = restClient.getDocuments()
-                .autocompletePostWithResponse(request, null, context);
+            Response<AutocompleteResult> response
+                = restClient.getDocuments().autocompletePostWithResponse(request, null, context);
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
         }, LOGGER);
     }
