@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableGroundStationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableGroundStationInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"bfs\",\"name\":\"rbu\",\"location\":\"cvpnazzmhjrunmpx\",\"type\":\"dbhrbnlankxm\",\"properties\":{\"city\":\"k\",\"providerName\":\"henbtkcxywnytn\",\"longitudeDegrees\":7.4236927,\"latitudeDegrees\":38.21055,\"altitudeMeters\":52.88253,\"releaseMode\":\"Preview\"}}")
-                .toObject(AvailableGroundStationInner.class);
+        AvailableGroundStationInner model = BinaryData.fromString(
+            "{\"id\":\"bfs\",\"name\":\"rbu\",\"location\":\"cvpnazzmhjrunmpx\",\"type\":\"dbhrbnlankxm\",\"properties\":{\"city\":\"k\",\"providerName\":\"henbtkcxywnytn\",\"longitudeDegrees\":7.4236927,\"latitudeDegrees\":38.21055,\"altitudeMeters\":52.88253,\"releaseMode\":\"Preview\"}}")
+            .toObject(AvailableGroundStationInner.class);
         Assertions.assertEquals("cvpnazzmhjrunmpx", model.location());
         Assertions.assertEquals("k", model.city());
         Assertions.assertEquals("henbtkcxywnytn", model.providerName());
@@ -28,15 +26,13 @@ public final class AvailableGroundStationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableGroundStationInner model =
-            new AvailableGroundStationInner()
-                .withLocation("cvpnazzmhjrunmpx")
-                .withCity("k")
-                .withProviderName("henbtkcxywnytn")
-                .withLongitudeDegrees(7.4236927F)
-                .withLatitudeDegrees(38.21055F)
-                .withAltitudeMeters(52.88253F)
-                .withReleaseMode(ReleaseMode.PREVIEW);
+        AvailableGroundStationInner model = new AvailableGroundStationInner().withLocation("cvpnazzmhjrunmpx")
+            .withCity("k")
+            .withProviderName("henbtkcxywnytn")
+            .withLongitudeDegrees(7.4236927F)
+            .withLatitudeDegrees(38.21055F)
+            .withAltitudeMeters(52.88253F)
+            .withReleaseMode(ReleaseMode.PREVIEW);
         model = BinaryData.fromObject(model).toObject(AvailableGroundStationInner.class);
         Assertions.assertEquals("cvpnazzmhjrunmpx", model.location());
         Assertions.assertEquals("k", model.city());

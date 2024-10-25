@@ -28,8 +28,8 @@ public interface ResourceProvidersClient {
      * @return check name availability response model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseModelInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityModel body, Context context);
+    Response<CheckNameAvailabilityResponseModelInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityModel body, Context context);
 
     /**
      * Performs the resource name availability check.
@@ -58,8 +58,8 @@ public interface ResourceProvidersClient {
      * @return deployment preflight model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentPreflightModelInner> deploymentPreflightWithResponse(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body, Context context);
+    Response<DeploymentPreflightModelInner> deploymentPreflightWithResponse(String resourceGroupName,
+        String deploymentId, DeploymentPreflightModelInner body, Context context);
 
     /**
      * Performs resource deployment validation.

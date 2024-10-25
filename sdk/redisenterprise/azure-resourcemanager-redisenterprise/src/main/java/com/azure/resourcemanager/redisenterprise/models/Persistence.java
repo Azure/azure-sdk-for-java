@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Persistence settings
  * 
- * Persistence-related configuration for the RedisEnterprise database.
+ * Persistence-related configuration for the Redis Enterprise database.
  */
 @Fluent
-public final class Persistence {
+public final class Persistence implements JsonSerializable<Persistence> {
     /*
-     * Sets whether AOF is enabled.
+     * Sets whether AOF is enabled. Note that at most one of AOF or RDB persistence may be enabled.
      */
-    @JsonProperty(value = "aofEnabled")
     private Boolean aofEnabled;
 
     /*
-     * Sets whether RDB is enabled.
+     * Sets whether RDB is enabled. Note that at most one of AOF or RDB persistence may be enabled.
      */
-    @JsonProperty(value = "rdbEnabled")
     private Boolean rdbEnabled;
 
     /*
-     * Sets the frequency at which data is written to disk.
+     * Sets the frequency at which data is written to disk. Defaults to '1s', meaning 'every second'. Note that the
+     * 'always' setting is deprecated, because of its performance impact.
      */
-    @JsonProperty(value = "aofFrequency")
     private AofFrequency aofFrequency;
 
     /*
      * Sets the frequency at which a snapshot of the database is created.
      */
-    @JsonProperty(value = "rdbFrequency")
     private RdbFrequency rdbFrequency;
 
     /**
@@ -45,7 +46,8 @@ public final class Persistence {
     }
 
     /**
-     * Get the aofEnabled property: Sets whether AOF is enabled.
+     * Get the aofEnabled property: Sets whether AOF is enabled. Note that at most one of AOF or RDB persistence may be
+     * enabled.
      * 
      * @return the aofEnabled value.
      */
@@ -54,7 +56,8 @@ public final class Persistence {
     }
 
     /**
-     * Set the aofEnabled property: Sets whether AOF is enabled.
+     * Set the aofEnabled property: Sets whether AOF is enabled. Note that at most one of AOF or RDB persistence may be
+     * enabled.
      * 
      * @param aofEnabled the aofEnabled value to set.
      * @return the Persistence object itself.
@@ -65,7 +68,8 @@ public final class Persistence {
     }
 
     /**
-     * Get the rdbEnabled property: Sets whether RDB is enabled.
+     * Get the rdbEnabled property: Sets whether RDB is enabled. Note that at most one of AOF or RDB persistence may be
+     * enabled.
      * 
      * @return the rdbEnabled value.
      */
@@ -74,7 +78,8 @@ public final class Persistence {
     }
 
     /**
-     * Set the rdbEnabled property: Sets whether RDB is enabled.
+     * Set the rdbEnabled property: Sets whether RDB is enabled. Note that at most one of AOF or RDB persistence may be
+     * enabled.
      * 
      * @param rdbEnabled the rdbEnabled value to set.
      * @return the Persistence object itself.
@@ -85,7 +90,8 @@ public final class Persistence {
     }
 
     /**
-     * Get the aofFrequency property: Sets the frequency at which data is written to disk.
+     * Get the aofFrequency property: Sets the frequency at which data is written to disk. Defaults to '1s', meaning
+     * 'every second'. Note that the 'always' setting is deprecated, because of its performance impact.
      * 
      * @return the aofFrequency value.
      */
@@ -94,7 +100,8 @@ public final class Persistence {
     }
 
     /**
-     * Set the aofFrequency property: Sets the frequency at which data is written to disk.
+     * Set the aofFrequency property: Sets the frequency at which data is written to disk. Defaults to '1s', meaning
+     * 'every second'. Note that the 'always' setting is deprecated, because of its performance impact.
      * 
      * @param aofFrequency the aofFrequency value to set.
      * @return the Persistence object itself.
@@ -130,5 +137,50 @@ public final class Persistence {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("aofEnabled", this.aofEnabled);
+        jsonWriter.writeBooleanField("rdbEnabled", this.rdbEnabled);
+        jsonWriter.writeStringField("aofFrequency", this.aofFrequency == null ? null : this.aofFrequency.toString());
+        jsonWriter.writeStringField("rdbFrequency", this.rdbFrequency == null ? null : this.rdbFrequency.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Persistence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Persistence if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Persistence.
+     */
+    public static Persistence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Persistence deserializedPersistence = new Persistence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aofEnabled".equals(fieldName)) {
+                    deserializedPersistence.aofEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rdbEnabled".equals(fieldName)) {
+                    deserializedPersistence.rdbEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("aofFrequency".equals(fieldName)) {
+                    deserializedPersistence.aofFrequency = AofFrequency.fromString(reader.getString());
+                } else if ("rdbFrequency".equals(fieldName)) {
+                    deserializedPersistence.rdbFrequency = RdbFrequency.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersistence;
+        });
     }
 }

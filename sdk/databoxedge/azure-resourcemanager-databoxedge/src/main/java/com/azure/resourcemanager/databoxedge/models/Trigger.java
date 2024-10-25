@@ -6,32 +6,41 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 
-/** An immutable client-side representation of Trigger. */
+/**
+ * An immutable client-side representation of Trigger.
+ */
 public interface Trigger {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the kind property: Trigger Kind.
+     * 
+     * @return the kind value.
+     */
+    TriggerEventType kind();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner object.
-     *
+     * 
      * @return the inner object.
      */
     TriggerInner innerModel();

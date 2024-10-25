@@ -30,40 +30,28 @@ public final class QueriesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"id\":\"h\",\"displayName\":\"nlnzonzlrpi\",\"timeCreated\":\"2021-07-27T05:48:38Z\",\"timeModified\":\"2021-12-01T20:46:37Z\",\"author\":\"jtszcof\",\"description\":\"e\",\"body\":\"tdhgbjkvrelj\",\"related\":{\"categories\":[\"rvzmlovuana\",\"hcxlpm\",\"erbdk\",\"lvidizozs\"],\"resourceTypes\":[\"cxjmonfdgnwncyp\",\"uwwltvuqjctz\"],\"solutions\":[\"eifzzhmk\",\"as\",\"flyh\",\"xcudchxgsr\"]},\"tags\":{\"zbfhfovvac\":[\"forobwjlv\"],\"wumuaslzk\":[\"btuodxeszabbel\"],\"rzpgep\":[\"rwoycqucwyh\",\"hnomdrkywuh\",\"svfuurutlwexxwl\",\"lniexz\"]},\"properties\":\"datayb\"},\"id\":\"wpgdak\",\"name\":\"zyvli\",\"type\":\"nrkcxkj\"}";
+        String responseStr
+            = "{\"properties\":{\"id\":\"h\",\"displayName\":\"nlnzonzlrpi\",\"timeCreated\":\"2021-07-27T05:48:38Z\",\"timeModified\":\"2021-12-01T20:46:37Z\",\"author\":\"jtszcof\",\"description\":\"e\",\"body\":\"tdhgbjkvrelj\",\"related\":{\"categories\":[\"rvzmlovuana\",\"hcxlpm\",\"erbdk\",\"lvidizozs\"],\"resourceTypes\":[\"cxjmonfdgnwncyp\",\"uwwltvuqjctz\"],\"solutions\":[\"eifzzhmk\",\"as\",\"flyh\",\"xcudchxgsr\"]},\"tags\":{\"zbfhfovvac\":[\"forobwjlv\"],\"wumuaslzk\":[\"btuodxeszabbel\"],\"rzpgep\":[\"rwoycqucwyh\",\"hnomdrkywuh\",\"svfuurutlwexxwl\",\"lniexz\"]},\"properties\":\"datayb\"},\"id\":\"wpgdak\",\"name\":\"zyvli\",\"type\":\"nrkcxkj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LogAnalyticsQueryPackQuery response =
-            manager
-                .queries()
-                .getWithResponse("sjuivfcdisyir", "xzhczexrxz", "ujrtrhqvwr", com.azure.core.util.Context.NONE)
-                .getValue();
+        LogAnalyticsQueryPackQuery response = manager.queries()
+            .getWithResponse("sjuivfcdisyir", "xzhczexrxz", "ujrtrhqvwr", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("nlnzonzlrpi", response.displayName());
         Assertions.assertEquals("e", response.description());

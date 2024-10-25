@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.TopQueryStatisticsResultList;
 public final class TopQueryStatisticsResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopQueryStatisticsResultList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"queryId\":\"eojnabc\",\"startTime\":\"2021-09-17T17:08:43Z\",\"endTime\":\"2021-11-20T16:21:10Z\",\"aggregationFunction\":\"psiebtfhvpes\",\"databaseNames\":[],\"queryExecutionCount\":6828337730937778205,\"metricName\":\"qmhjjdhtld\",\"metricDisplayName\":\"yzxuutkncw\",\"metricValue\":96.13681848110254,\"metricValueUnit\":\"lxotogtwrupq\"},\"id\":\"xvnmicykvceov\",\"name\":\"ilovnot\",\"type\":\"fj\"}],\"nextLink\":\"njbkcnxdhbttkph\"}")
-                .toObject(TopQueryStatisticsResultList.class);
+        TopQueryStatisticsResultList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"queryId\":\"tcty\",\"startTime\":\"2021-04-24T03:57:36Z\",\"endTime\":\"2021-06-27T19:00:45Z\",\"aggregationFunction\":\"ovplw\",\"databaseNames\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"],\"queryExecutionCount\":681890883846800256,\"metricName\":\"ghxpkdw\",\"metricDisplayName\":\"aiuebbaumnyqu\",\"metricValue\":20.160809744781183,\"metricValueUnit\":\"jn\"},\"id\":\"bckhsmtxpsi\",\"name\":\"btfhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}],\"nextLink\":\"utknc\"}")
+            .toObject(TopQueryStatisticsResultList.class);
     }
 
     @org.junit.jupiter.api.Test

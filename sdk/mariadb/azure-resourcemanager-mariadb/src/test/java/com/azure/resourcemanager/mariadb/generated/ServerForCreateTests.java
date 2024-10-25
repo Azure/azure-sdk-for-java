@@ -23,11 +23,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerForCreateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerForCreate model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"mhquvgjxp\",\"tier\":\"MemoryOptimized\",\"capacity\":128065962,\"size\":\"hmtzopbsphrup\",\"family\":\"gsybbejhp\"},\"properties\":{\"createMode\":\"ServerPropertiesForCreate\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Disabled\",\"storageProfile\":{\"backupRetentionDays\":212195195,\"geoRedundantBackup\":\"Enabled\",\"storageMB\":1540848477,\"storageAutogrow\":\"Enabled\"}},\"location\":\"oqjzehtbmufpowno\",\"tags\":{\"soqijg\":\"wlrxyb\",\"rbt\":\"dmbpazlobcufpdz\"}}")
-                .toObject(ServerForCreate.class);
+        ServerForCreate model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"mhquvgjxp\",\"tier\":\"MemoryOptimized\",\"capacity\":128065962,\"size\":\"hmtzopbsphrup\",\"family\":\"gsybbejhp\"},\"properties\":{\"createMode\":\"ServerPropertiesForCreate\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Disabled\",\"storageProfile\":{\"backupRetentionDays\":212195195,\"geoRedundantBackup\":\"Enabled\",\"storageMB\":1540848477,\"storageAutogrow\":\"Enabled\"}},\"location\":\"oqjzehtbmufpowno\",\"tags\":{\"soqijg\":\"wlrxyb\",\"rbt\":\"dmbpazlobcufpdz\"}}")
+            .toObject(ServerForCreate.class);
         Assertions.assertEquals("mhquvgjxp", model.sku().name());
         Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
         Assertions.assertEquals(128065962, model.sku().capacity());
@@ -47,29 +45,22 @@ public final class ServerForCreateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerForCreate model =
-            new ServerForCreate()
-                .withSku(
-                    new Sku()
-                        .withName("mhquvgjxp")
-                        .withTier(SkuTier.MEMORY_OPTIMIZED)
-                        .withCapacity(128065962)
-                        .withSize("hmtzopbsphrup")
-                        .withFamily("gsybbejhp"))
-                .withProperties(
-                    new ServerPropertiesForCreate()
-                        .withVersion(ServerVersion.ONE_ZERO_TWO)
-                        .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                        .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
-                        .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)
-                        .withStorageProfile(
-                            new StorageProfile()
-                                .withBackupRetentionDays(212195195)
-                                .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
-                                .withStorageMB(1540848477)
-                                .withStorageAutogrow(StorageAutogrow.ENABLED)))
-                .withLocation("oqjzehtbmufpowno")
-                .withTags(mapOf("soqijg", "wlrxyb", "rbt", "dmbpazlobcufpdz"));
+        ServerForCreate model = new ServerForCreate()
+            .withSku(new Sku().withName("mhquvgjxp")
+                .withTier(SkuTier.MEMORY_OPTIMIZED)
+                .withCapacity(128065962)
+                .withSize("hmtzopbsphrup")
+                .withFamily("gsybbejhp"))
+            .withProperties(new ServerPropertiesForCreate().withVersion(ServerVersion.ONE_ZERO_TWO)
+                .withSslEnforcement(SslEnforcementEnum.ENABLED)
+                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)
+                .withStorageProfile(new StorageProfile().withBackupRetentionDays(212195195)
+                    .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
+                    .withStorageMB(1540848477)
+                    .withStorageAutogrow(StorageAutogrow.ENABLED)))
+            .withLocation("oqjzehtbmufpowno")
+            .withTags(mapOf("soqijg", "wlrxyb", "rbt", "dmbpazlobcufpdz"));
         model = BinaryData.fromObject(model).toObject(ServerForCreate.class);
         Assertions.assertEquals("mhquvgjxp", model.sku().name());
         Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
@@ -88,6 +79,7 @@ public final class ServerForCreateTests {
         Assertions.assertEquals("wlrxyb", model.tags().get("soqijg"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

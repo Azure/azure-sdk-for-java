@@ -123,8 +123,8 @@ public final class AccessControlListPatch extends TagsUpdate {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListPatch object itself.
      */
-    public AccessControlListPatch withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListPatch
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccessControlListPatchProperties();
         }
@@ -147,8 +147,8 @@ public final class AccessControlListPatch extends TagsUpdate {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListPatch object itself.
      */
-    public AccessControlListPatch withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListPatch
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccessControlListPatchProperties();
         }

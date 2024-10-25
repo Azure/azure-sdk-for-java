@@ -709,7 +709,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      */
     private static final class AnyToStringDeserializer extends JsonDeserializer<String> {
         @Override
-        public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public String deserialize(JsonParser p, DeserializationContext context) throws IOException {
             return p.readValueAsTree().toString();
         }
     }

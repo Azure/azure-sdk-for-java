@@ -21,22 +21,18 @@ public final class PolicyDescriptionsImpl implements PolicyDescriptions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PolicyDescriptionsImpl(
-        PolicyDescriptionsClient innerClient,
+    public PolicyDescriptionsImpl(PolicyDescriptionsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PolicyDescriptionCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
-        Response<PolicyDescriptionCollectionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, scope, context);
+    public Response<PolicyDescriptionCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        PolicyScopeContract scope, Context context) {
+        Response<PolicyDescriptionCollectionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyDescriptionCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;

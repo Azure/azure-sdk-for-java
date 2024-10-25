@@ -597,30 +597,22 @@ public final class BareMetalMachineProperties {
      */
     public void validate() {
         if (bmcConnectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bmcConnectionString in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bmcConnectionString in model BareMetalMachineProperties"));
         }
         if (bmcCredentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bmcCredentials in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bmcCredentials in model BareMetalMachineProperties"));
         } else {
             bmcCredentials().validate();
         }
         if (bmcMacAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bmcMacAddress in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bmcMacAddress in model BareMetalMachineProperties"));
         }
         if (bootMacAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bootMacAddress in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bootMacAddress in model BareMetalMachineProperties"));
         }
         if (hardwareInventory() != null) {
             hardwareInventory().validate();
@@ -629,34 +621,24 @@ public final class BareMetalMachineProperties {
             hardwareValidationStatus().validate();
         }
         if (machineDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property machineDetails in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property machineDetails in model BareMetalMachineProperties"));
         }
         if (machineName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property machineName in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property machineName in model BareMetalMachineProperties"));
         }
         if (machineSkuId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property machineSkuId in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property machineSkuId in model BareMetalMachineProperties"));
         }
         if (rackId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rackId in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackId in model BareMetalMachineProperties"));
         }
         if (serialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serialNumber in model BareMetalMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serialNumber in model BareMetalMachineProperties"));
         }
     }
 

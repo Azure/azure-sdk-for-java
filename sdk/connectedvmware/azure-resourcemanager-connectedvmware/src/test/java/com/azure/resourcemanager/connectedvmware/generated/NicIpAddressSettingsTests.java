@@ -10,11 +10,10 @@ import com.azure.resourcemanager.connectedvmware.models.NicIpAddressSettings;
 public final class NicIpAddressSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NicIpAddressSettings model =
-            BinaryData
-                .fromString(
-                    "{\"allocationMethod\":\"ool\",\"ipAddress\":\"tpkiwkkbnujry\",\"subnetMask\":\"tylbfpncurdoiw\"}")
-                .toObject(NicIpAddressSettings.class);
+        NicIpAddressSettings model = BinaryData
+            .fromString(
+                "{\"allocationMethod\":\"ool\",\"ipAddress\":\"tpkiwkkbnujry\",\"subnetMask\":\"tylbfpncurdoiw\"}")
+            .toObject(NicIpAddressSettings.class);
     }
 
     @org.junit.jupiter.api.Test

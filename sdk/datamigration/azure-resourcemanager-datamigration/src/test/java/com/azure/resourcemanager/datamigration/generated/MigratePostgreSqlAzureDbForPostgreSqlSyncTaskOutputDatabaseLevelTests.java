@@ -10,20 +10,16 @@ import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbFo
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"efajpj\",\"startedOn\":\"2021-01-18T23:13:43Z\",\"endedOn\":\"2021-02-18T14:41:58Z\",\"migrationState\":\"COMPLETE\",\"incomingChanges\":2209487539876489237,\"appliedChanges\":569920546864694854,\"cdcInsertCounter\":7478255577198949749,\"cdcDeleteCounter\":8746671564071573242,\"cdcUpdateCounter\":4439293869891812483,\"fullLoadCompletedTables\":832256681574398756,\"fullLoadLoadingTables\":6708049852163844600,\"fullLoadQueuedTables\":8328263583849174000,\"fullLoadErroredTables\":8580947848622831444,\"initializationCompleted\":true,\"latency\":2539867767446398216,\"id\":\"bjxbkzbzk\"}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel model = BinaryData.fromString(
+            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"woluhczbwemhair\",\"startedOn\":\"2021-08-12T10:49:45Z\",\"endedOn\":\"2021-02-28T06:47:58Z\",\"migrationState\":\"UNDEFINED\",\"incomingChanges\":2987884868949644497,\"appliedChanges\":3838902105692629413,\"cdcInsertCounter\":436762079027347032,\"cdcDeleteCounter\":3609708037389400316,\"cdcUpdateCounter\":6872107379910014616,\"fullLoadCompletedTables\":477850177551348326,\"fullLoadLoadingTables\":5986177445160524762,\"fullLoadQueuedTables\":5780541735101767778,\"fullLoadErroredTables\":5852678166783434118,\"initializationCompleted\":true,\"latency\":3065309169479098927,\"id\":\"ywemhzrn\"}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel();
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel();
+        model = BinaryData.fromObject(model)
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel.class);
     }
 }

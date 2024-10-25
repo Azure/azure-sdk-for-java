@@ -4,77 +4,37 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.time.OffsetDateTime;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * A user invitation kind.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "invitationKind")
-@JsonTypeName("User")
-@JsonFlatten
 @Fluent
-public class UserInvitation extends SentShareInvitation {
+public final class UserInvitation extends SentShareInvitation {
     /*
-     * The time at which the invitation will expire. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
+     * The types of invitations.
      */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
+    private InvitationKind invitationKind = InvitationKind.USER_INVITATION;
 
     /*
-     * Whether or not the recipient was notified via email.
+     * Properties of the user invitation type.
      */
-    @JsonProperty(value = "properties.notify")
-    private Boolean notify;
+    private UserInvitationProperties properties;
 
     /*
-     * Email address of the sender.
+     * Type of the resource.
      */
-    @JsonProperty(value = "properties.senderEmail", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderEmail;
+    private String type;
 
     /*
-     * Name of the sender
+     * The unique id of the resource.
      */
-    @JsonProperty(value = "properties.senderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderName;
-
-    /*
-     * Tenant name of the sender
-     */
-    @JsonProperty(value = "properties.senderTenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderTenantName;
-
-    /*
-     * Gets the time at which the invitation was sent. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
-     */
-    @JsonProperty(value = "properties.sentAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime sentAt;
-
-    /*
-     * Share status.
-     */
-    @JsonProperty(value = "properties.shareStatus")
-    private ShareStatus shareStatus;
-
-    /*
-     * State of the resource
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
-
-    /*
-     * The receiver email for the invitation is being sent.
-     */
-    @JsonProperty(value = "properties.targetEmail", required = true)
-    private String targetEmail;
+    private String id;
 
     /**
      * Creates an instance of UserInvitation class.
@@ -83,130 +43,97 @@ public class UserInvitation extends SentShareInvitation {
     }
 
     /**
-     * Get the expirationDate property: The time at which the invitation will expire. Represented in the standard
-     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the expirationDate value.
+     * Get the invitationKind property: The types of invitations.
+     *
+     * @return the invitationKind value.
      */
-    public OffsetDateTime getExpirationDate() {
-        return this.expirationDate;
+    @Override
+    public InvitationKind getInvitationKind() {
+        return this.invitationKind;
     }
 
     /**
-     * Set the expirationDate property: The time at which the invitation will expire. Represented in the standard
-     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @param expirationDate the expirationDate value to set.
+     * Get the properties property: Properties of the user invitation type.
+     *
+     * @return the properties value.
+     */
+    public UserInvitationProperties getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the user invitation type.
+     *
+     * @param properties the properties value to set.
      * @return the UserInvitation object itself.
      */
-    public UserInvitation setExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+    public UserInvitation setProperties(UserInvitationProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the notify property: Whether or not the recipient was notified via email.
-     * 
-     * @return the notify value.
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
      */
-    public Boolean isNotify() {
-        return this.notify;
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Set the notify property: Whether or not the recipient was notified via email.
-     * 
-     * @param notify the notify value to set.
-     * @return the UserInvitation object itself.
+     * Get the id property: The unique id of the resource.
+     *
+     * @return the id value.
      */
-    public UserInvitation setNotify(Boolean notify) {
-        this.notify = notify;
-        return this;
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the senderEmail property: Email address of the sender.
-     * 
-     * @return the senderEmail value.
+     * {@inheritDoc}
      */
-    public String getSenderEmail() {
-        return this.senderEmail;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("invitationKind",
+            this.invitationKind == null ? null : this.invitationKind.toString());
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the senderName property: Name of the sender.
-     * 
-     * @return the senderName value.
+     * Reads an instance of UserInvitation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInvitation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserInvitation.
      */
-    public String getSenderName() {
-        return this.senderName;
-    }
+    public static UserInvitation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInvitation deserializedUserInvitation = new UserInvitation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    /**
-     * Get the senderTenantName property: Tenant name of the sender.
-     * 
-     * @return the senderTenantName value.
-     */
-    public String getSenderTenantName() {
-        return this.senderTenantName;
-    }
+                if ("id".equals(fieldName)) {
+                    deserializedUserInvitation.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserInvitation.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserInvitation.properties = UserInvitationProperties.fromJson(reader);
+                } else if ("invitationKind".equals(fieldName)) {
+                    deserializedUserInvitation.invitationKind = InvitationKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-    /**
-     * Get the sentAt property: Gets the time at which the invitation was sent. Represented in the standard date-time
-     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the sentAt value.
-     */
-    public OffsetDateTime getSentAt() {
-        return this.sentAt;
-    }
-
-    /**
-     * Get the shareStatus property: Share status.
-     * 
-     * @return the shareStatus value.
-     */
-    public ShareStatus getShareStatus() {
-        return this.shareStatus;
-    }
-
-    /**
-     * Set the shareStatus property: Share status.
-     * 
-     * @param shareStatus the shareStatus value to set.
-     * @return the UserInvitation object itself.
-     */
-    public UserInvitation setShareStatus(ShareStatus shareStatus) {
-        this.shareStatus = shareStatus;
-        return this;
-    }
-
-    /**
-     * Get the state property: State of the resource.
-     * 
-     * @return the state value.
-     */
-    public State getState() {
-        return this.state;
-    }
-
-    /**
-     * Get the targetEmail property: The receiver email for the invitation is being sent.
-     * 
-     * @return the targetEmail value.
-     */
-    public String getTargetEmail() {
-        return this.targetEmail;
-    }
-
-    /**
-     * Set the targetEmail property: The receiver email for the invitation is being sent.
-     * 
-     * @param targetEmail the targetEmail value to set.
-     * @return the UserInvitation object itself.
-     */
-    public UserInvitation setTargetEmail(String targetEmail) {
-        this.targetEmail = targetEmail;
-        return this;
+            return deserializedUserInvitation;
+        });
     }
 }

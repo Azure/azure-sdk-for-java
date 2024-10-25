@@ -170,8 +170,8 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
     private final Mono<String[]> partitionIdsMono;
 
     //  Key: partitionId.
-    private final ConcurrentHashMap<String, EventHubBufferedPartitionProducer> partitionProducers =
-        new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, EventHubBufferedPartitionProducer> partitionProducers
+        = new ConcurrentHashMap<>();
     private final AmqpRetryOptions retryOptions;
 
     private final Tracer tracer;
@@ -183,14 +183,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         this.partitionResolver = partitionResolver;
         this.retryOptions = retryOptions;
 
-        final Mono<Void> partitionProducerFluxes = this.client.getEventHubProperties()
-            .flatMapMany(property -> {
-                final String[] as = property.getPartitionIds().stream().toArray(String[]::new);
-                return Flux.fromArray(as);
-            })
-            .map(partitionId -> {
-                return partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
-            }).then();
+        final Mono<Void> partitionProducerFluxes = this.client.getEventHubProperties().flatMapMany(property -> {
+            final String[] as = property.getPartitionIds().stream().toArray(String[]::new);
+            return Flux.fromArray(as);
+        }).map(partitionId -> {
+            return partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
+        }).then();
 
         this.initialisationMono = partitionProducerFluxes.cache();
 
@@ -340,12 +338,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
 
         if (!CoreUtils.isNullOrEmpty(options.getPartitionId())) {
             if (!partitionProducers.containsKey(options.getPartitionId())) {
-                return monoError(logger, new IllegalArgumentException("partitionId is not valid. Available ones: "
-                    + String.join(",", partitionProducers.keySet())));
+                return monoError(logger, new IllegalArgumentException(
+                    "partitionId is not valid. Available ones: " + String.join(",", partitionProducers.keySet())));
             }
 
-            final EventHubBufferedPartitionProducer producer =
-                partitionProducers.computeIfAbsent(options.getPartitionId(), key -> createPartitionProducer(key));
+            final EventHubBufferedPartitionProducer producer
+                = partitionProducers.computeIfAbsent(options.getPartitionId(), key -> createPartitionProducer(key));
 
             return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
         }
@@ -355,10 +353,11 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                 final String partitionId = partitionResolver.assignForPartitionKey(options.getPartitionKey(), ids);
                 final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
                 if (producer == null) {
-                    return monoError(logger, new IllegalArgumentException(
-                        String.format("Unable to find EventHubBufferedPartitionProducer for partitionId: %s when "
-                                + "mapping partitionKey: %s to available partitions.", partitionId,
-                            options.getPartitionKey())));
+                    return monoError(logger,
+                        new IllegalArgumentException(String.format(
+                            "Unable to find EventHubBufferedPartitionProducer for partitionId: %s when "
+                                + "mapping partitionKey: %s to available partitions.",
+                            partitionId, options.getPartitionKey())));
                 }
 
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
@@ -366,8 +365,8 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         } else {
             return partitionIdsMono.flatMap(ids -> {
                 final String partitionId = partitionResolver.assignRoundRobin(ids);
-                final EventHubBufferedPartitionProducer producer =
-                    partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
+                final EventHubBufferedPartitionProducer producer
+                    = partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
 
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
             });
@@ -439,9 +438,8 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @return A mono that completes when the buffers are empty.
      */
     public Mono<Void> flush() {
-        final List<Mono<Void>> flushOperations = partitionProducers.values().stream()
-            .map(value -> value.flush())
-            .collect(Collectors.toList());
+        final List<Mono<Void>> flushOperations
+            = partitionProducers.values().stream().map(value -> value.flush()).collect(Collectors.toList());
 
         return Flux.merge(flushOperations).then();
     }
@@ -460,13 +458,13 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
     }
 
     private EventHubBufferedPartitionProducer createPartitionProducer(String partitionId) {
-        final Supplier<Queue<EventData>> queueSupplier =
-            Queues.get(clientOptions.getMaxEventBufferLengthPerPartition());
+        final Supplier<Queue<EventData>> queueSupplier
+            = Queues.get(clientOptions.getMaxEventBufferLengthPerPartition());
         final Queue<EventData> eventQueue = queueSupplier.get();
         final Sinks.Many<EventData> eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
 
-        return new EventHubBufferedPartitionProducer(client, partitionId, clientOptions, retryOptions,
-            eventSink, eventQueue, tracer);
+        return new EventHubBufferedPartitionProducer(client, partitionId, clientOptions, retryOptions, eventSink,
+            eventQueue, tracer);
     }
 
     /**

@@ -144,8 +144,8 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys for the cognitive services account along with {@link Response}.
      */
-    Response<ApiKeys> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context);
+    Response<ApiKeys> regenerateKeyWithResponse(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -198,8 +198,8 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return usages for the requested Cognitive Services account along with {@link Response}.
      */
-    Response<UsageListResult> listUsagesWithResponse(
-        String resourceGroupName, String accountName, String filter, Context context);
+    Response<UsageListResult> listUsagesWithResponse(String resourceGroupName, String accountName, String filter,
+        Context context);
 
     /**
      * Get usages for the requested Cognitive Services account.

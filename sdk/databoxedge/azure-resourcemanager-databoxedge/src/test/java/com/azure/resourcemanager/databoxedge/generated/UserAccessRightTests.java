@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAccessRightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAccessRight model =
-            BinaryData
-                .fromString("{\"userId\":\"qtaruoujmkcjhwq\",\"accessType\":\"Read\"}")
-                .toObject(UserAccessRight.class);
-        Assertions.assertEquals("qtaruoujmkcjhwq", model.userId());
+        UserAccessRight model = BinaryData.fromString("{\"userId\":\"wqapnedgfbcvk\",\"accessType\":\"Read\"}")
+            .toObject(UserAccessRight.class);
+        Assertions.assertEquals("wqapnedgfbcvk", model.userId());
         Assertions.assertEquals(ShareAccessType.READ, model.accessType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAccessRight model =
-            new UserAccessRight().withUserId("qtaruoujmkcjhwq").withAccessType(ShareAccessType.READ);
+        UserAccessRight model = new UserAccessRight().withUserId("wqapnedgfbcvk").withAccessType(ShareAccessType.READ);
         model = BinaryData.fromObject(model).toObject(UserAccessRight.class);
-        Assertions.assertEquals("qtaruoujmkcjhwq", model.userId());
+        Assertions.assertEquals("wqapnedgfbcvk", model.userId());
         Assertions.assertEquals(ShareAccessType.READ, model.accessType());
     }
 }

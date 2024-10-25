@@ -53,8 +53,8 @@ public interface WorkbookTemplatesClient {
      * @return a single workbook template by its resourceName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<WorkbookTemplateInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a single workbook template by its resourceName.
@@ -108,11 +108,8 @@ public interface WorkbookTemplatesClient {
      * @return an Application Insights workbook template definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkbookTemplateInner workbookTemplateProperties,
-        Context context);
+    Response<WorkbookTemplateInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        WorkbookTemplateInner workbookTemplateProperties, Context context);
 
     /**
      * Create a new workbook template.
@@ -126,8 +123,8 @@ public interface WorkbookTemplatesClient {
      * @return an Application Insights workbook template definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookTemplateInner createOrUpdate(
-        String resourceGroupName, String resourceName, WorkbookTemplateInner workbookTemplateProperties);
+    WorkbookTemplateInner createOrUpdate(String resourceGroupName, String resourceName,
+        WorkbookTemplateInner workbookTemplateProperties);
 
     /**
      * Updates a workbook template that has already been added.
@@ -142,11 +139,8 @@ public interface WorkbookTemplatesClient {
      * @return an Application Insights workbook template definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters,
-        Context context);
+    Response<WorkbookTemplateInner> updateWithResponse(String resourceGroupName, String resourceName,
+        WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters, Context context);
 
     /**
      * Updates a workbook template that has already been added.

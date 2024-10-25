@@ -30,7 +30,8 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     private Object detail;
 
     /** Creates an instance of AcrErrorInfo class. */
-    public AcrErrorInfo() {}
+    public AcrErrorInfo() {
+    }
 
     /**
      * Get the code property: Error code.
@@ -110,25 +111,24 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * @throws IOException If an error occurs while reading the AcrErrorInfo.
      */
     public static AcrErrorInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AcrErrorInfo deserializedAcrErrorInfo = new AcrErrorInfo();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AcrErrorInfo deserializedAcrErrorInfo = new AcrErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedAcrErrorInfo.code = reader.getString();
-                        } else if ("message".equals(fieldName)) {
-                            deserializedAcrErrorInfo.message = reader.getString();
-                        } else if ("detail".equals(fieldName)) {
-                            deserializedAcrErrorInfo.detail = reader.readUntyped();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedAcrErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAcrErrorInfo.message = reader.getString();
+                } else if ("detail".equals(fieldName)) {
+                    deserializedAcrErrorInfo.detail = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAcrErrorInfo;
-                });
+            return deserializedAcrErrorInfo;
+        });
     }
 }

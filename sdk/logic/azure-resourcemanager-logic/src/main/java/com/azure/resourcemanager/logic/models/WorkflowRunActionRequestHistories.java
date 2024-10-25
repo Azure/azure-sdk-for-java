@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowRunActionRequestHistories. */
+/**
+ * Resource collection API of WorkflowRunActionRequestHistories.
+ */
 public interface WorkflowRunActionRequestHistories {
     /**
      * List a workflow run request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -22,12 +24,12 @@ public interface WorkflowRunActionRequestHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestHistory> list(
-        String resourceGroupName, String workflowName, String runName, String actionName);
+    PagedIterable<RequestHistory> list(String resourceGroupName, String workflowName, String runName,
+        String actionName);
 
     /**
      * List a workflow run request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -38,12 +40,12 @@ public interface WorkflowRunActionRequestHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestHistory> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context);
+    PagedIterable<RequestHistory> list(String resourceGroupName, String workflowName, String runName, String actionName,
+        Context context);
 
     /**
      * Gets a workflow run request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -55,17 +57,12 @@ public interface WorkflowRunActionRequestHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workflow run request history along with {@link Response}.
      */
-    Response<RequestHistory> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String requestHistoryName,
-        Context context);
+    Response<RequestHistory> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String actionName, String requestHistoryName, Context context);
 
     /**
      * Gets a workflow run request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -76,6 +73,6 @@ public interface WorkflowRunActionRequestHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workflow run request history.
      */
-    RequestHistory get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName);
+    RequestHistory get(String resourceGroupName, String workflowName, String runName, String actionName,
+        String requestHistoryName);
 }

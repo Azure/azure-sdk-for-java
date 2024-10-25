@@ -44,10 +44,10 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientBuilderWithInvalidKeyCredential() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint(PLAYBACK_ENDPOINT)
-            .credential(new MetricsAdvisorKeyCredential("", ""))
-            .buildClient());
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> new MetricsAdvisorAdministrationClientBuilder().endpoint(PLAYBACK_ENDPOINT)
+                .credential(new MetricsAdvisorKeyCredential("", ""))
+                .buildClient());
         assertEquals("Missing credential information while building a client.", exception.getMessage());
 
     }
@@ -58,10 +58,9 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void clientBuilderWithNullServiceVersion(HttpClient httpClient,
-                                                    MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, (clientBuilder) ->
-            clientBuilder
-                .buildClient()
+        MetricsAdvisorServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion,
+            (clientBuilder) -> clientBuilder.buildClient()
                 .listDataFeeds()
                 .forEach(dataFeed -> assertNotNull(dataFeed)));
 
@@ -73,9 +72,8 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, (clientBuilder) ->
-            clientBuilder
-                .buildClient()
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion,
+            (clientBuilder) -> clientBuilder.buildClient()
                 .listDataFeeds()
                 .forEach(dataFeed -> assertNotNull(dataFeed)));
     }
@@ -86,10 +84,10 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientBuilderWithInvalidEndpoint() {
-        assertThrows(RuntimeException.class, () -> new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint(INVALID_ENDPOINT)
-            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
-            .buildClient());
+        assertThrows(RuntimeException.class,
+            () -> new MetricsAdvisorAdministrationClientBuilder().endpoint(INVALID_ENDPOINT)
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
+                .buildClient());
     }
 
     /**
@@ -99,9 +97,8 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     public void clientBuilderWithTokenCredential(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion, (clientBuilder) ->
-            clientBuilder
-                .buildClient()
+        clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion,
+            (clientBuilder) -> clientBuilder.buildClient()
                 .listDataFeeds()
                 .forEach(dataFeed -> assertNotNull(dataFeed)));
     }
@@ -109,42 +106,41 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint("https://localhost:8080")
-            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new MetricsAdvisorAdministrationClientBuilder().endpoint("https://localhost:8080")
+                .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 
     // Client builder runner
-    private void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                   Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
-        final MetricsAdvisorAdministrationClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
+    private void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
+        final MetricsAdvisorAdministrationClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
-        final MetricsAdvisorAdministrationClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
+    private void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
+        final MetricsAdvisorAdministrationClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithTokenCredentialRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
-        final MetricsAdvisorAdministrationClientBuilder clientBuilder = new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .serviceVersion(serviceVersion)
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
+    private void clientBuilderWithTokenCredentialRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
+        final MetricsAdvisorAdministrationClientBuilder clientBuilder
+            = new MetricsAdvisorAdministrationClientBuilder().endpoint(getEndpoint())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                .serviceVersion(serviceVersion)
+                .configuration(Configuration.getGlobalConfiguration())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
@@ -167,19 +163,18 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
      * @return {@link MetricsAdvisorAdministrationClientBuilder}
      */
     private MetricsAdvisorAdministrationClientBuilder createClientBuilder(HttpClient httpClient,
-                                                                  MetricsAdvisorServiceVersion serviceVersion,
-                                                                  String endpoint,
-                                                                  MetricsAdvisorKeyCredential credential) {
-        final MetricsAdvisorAdministrationClientBuilder clientBuilder = new MetricsAdvisorAdministrationClientBuilder()
-            .credential(credential)
-            .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .serviceVersion(serviceVersion);
+        MetricsAdvisorServiceVersion serviceVersion, String endpoint, MetricsAdvisorKeyCredential credential) {
+        final MetricsAdvisorAdministrationClientBuilder clientBuilder
+            = new MetricsAdvisorAdministrationClientBuilder().credential(credential)
+                .endpoint(endpoint)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .serviceVersion(serviceVersion);
 
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+            interceptorManager
+                .addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
         }
 
         return clientBuilder;
@@ -205,7 +200,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
         return interceptorManager.isPlaybackMode()
             ? new MetricsAdvisorKeyCredential("subscription_key", "api_key")
             : new MetricsAdvisorKeyCredential(
-            Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-            Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY"));
+                Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
+                Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY"));
     }
 }

@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"extendedLocation\":{\"name\":\"piyylhalnswhccsp\",\"type\":\"kaivwit\"},\"properties\":{\"associatedResourceIds\":[\"ywuggwoluhcz\",\"wem\",\"ai\"],\"clusterId\":\"brgz\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"weyp\",\"hybridAksClustersAssociatedIds\":[\"xggicccnxqhuexmk\",\"tlstvlzywem\",\"zrncsdt\",\"lusiy\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"tg\",\"ipAllocationType\":\"IPV4\",\"ipv4ConnectedPrefix\":\"eadcygqukyhejhz\",\"ipv6ConnectedPrefix\":\"xgfpelolppv\",\"l3IsolationDomainId\":\"srp\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"raehtwdwrft\",\"wib\"],\"vlan\":4339974263260215047},\"location\":\"l\",\"tags\":{\"khevxccedc\":\"hfwpracstwit\",\"jc\":\"nmdyodnwzxl\",\"vvwxqi\":\"nhltiugcxn\",\"unyowxwl\":\"y\"},\"id\":\"djrkvfgbvfvpd\",\"name\":\"odacizs\",\"type\":\"q\"}")
-                .toObject(L3NetworkInner.class);
+        L3NetworkInner model = BinaryData.fromString(
+            "{\"extendedLocation\":{\"name\":\"piyylhalnswhccsp\",\"type\":\"kaivwit\"},\"properties\":{\"associatedResourceIds\":[\"ywuggwoluhcz\",\"wem\",\"ai\"],\"clusterId\":\"brgz\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"weyp\",\"hybridAksClustersAssociatedIds\":[\"xggicccnxqhuexmk\",\"tlstvlzywem\",\"zrncsdt\",\"lusiy\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"tg\",\"ipAllocationType\":\"IPV4\",\"ipv4ConnectedPrefix\":\"eadcygqukyhejhz\",\"ipv6ConnectedPrefix\":\"xgfpelolppv\",\"l3IsolationDomainId\":\"srp\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"raehtwdwrft\",\"wib\"],\"vlan\":4339974263260215047},\"location\":\"l\",\"tags\":{\"khevxccedc\":\"hfwpracstwit\",\"jc\":\"nmdyodnwzxl\",\"vvwxqi\":\"nhltiugcxn\",\"unyowxwl\":\"y\"},\"id\":\"djrkvfgbvfvpd\",\"name\":\"odacizs\",\"type\":\"q\"}")
+            .toObject(L3NetworkInner.class);
         Assertions.assertEquals("l", model.location());
         Assertions.assertEquals("hfwpracstwit", model.tags().get("khevxccedc"));
         Assertions.assertEquals("piyylhalnswhccsp", model.extendedLocation().name());
@@ -38,20 +36,17 @@ public final class L3NetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkInner model =
-            new L3NetworkInner()
-                .withLocation("l")
-                .withTags(
-                    mapOf("khevxccedc", "hfwpracstwit", "jc", "nmdyodnwzxl", "vvwxqi", "nhltiugcxn", "unyowxwl", "y"))
-                .withExtendedLocation(new ExtendedLocation().withName("piyylhalnswhccsp").withType("kaivwit"))
-                .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("tg")
-                .withIpAllocationType(IpAllocationType.IPV4)
-                .withIpv4ConnectedPrefix("eadcygqukyhejhz")
-                .withIpv6ConnectedPrefix("xgfpelolppv")
-                .withL3IsolationDomainId("srp")
-                .withVlan(4339974263260215047L);
+        L3NetworkInner model = new L3NetworkInner().withLocation("l")
+            .withTags(mapOf("khevxccedc", "hfwpracstwit", "jc", "nmdyodnwzxl", "vvwxqi", "nhltiugcxn", "unyowxwl", "y"))
+            .withExtendedLocation(new ExtendedLocation().withName("piyylhalnswhccsp").withType("kaivwit"))
+            .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("tg")
+            .withIpAllocationType(IpAllocationType.IPV4)
+            .withIpv4ConnectedPrefix("eadcygqukyhejhz")
+            .withIpv6ConnectedPrefix("xgfpelolppv")
+            .withL3IsolationDomainId("srp")
+            .withVlan(4339974263260215047L);
         model = BinaryData.fromObject(model).toObject(L3NetworkInner.class);
         Assertions.assertEquals("l", model.location());
         Assertions.assertEquals("hfwpracstwit", model.tags().get("khevxccedc"));

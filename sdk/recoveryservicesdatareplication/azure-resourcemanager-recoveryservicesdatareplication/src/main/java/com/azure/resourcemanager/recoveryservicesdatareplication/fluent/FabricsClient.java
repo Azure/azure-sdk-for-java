@@ -30,8 +30,8 @@ public interface FabricsClient {
      * @return the details of the fabric along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FabricModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String fabricName, Context context);
+    Response<FabricModelInner> getByResourceGroupWithResponse(String resourceGroupName, String fabricName,
+        Context context);
 
     /**
      * Gets the fabric.
@@ -78,8 +78,8 @@ public interface FabricsClient {
      * @return the {@link SyncPoller} for polling of fabric model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FabricModelInner>, FabricModelInner> beginCreate(
-        String resourceGroupName, String fabricName, FabricModelInner body, Context context);
+    SyncPoller<PollResult<FabricModelInner>, FabricModelInner> beginCreate(String resourceGroupName, String fabricName,
+        FabricModelInner body, Context context);
 
     /**
      * Puts the fabric.
@@ -143,8 +143,8 @@ public interface FabricsClient {
      * @return the {@link SyncPoller} for polling of fabric model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FabricModelInner>, FabricModelInner> beginUpdate(
-        String resourceGroupName, String fabricName, FabricModelUpdate body, Context context);
+    SyncPoller<PollResult<FabricModelInner>, FabricModelInner> beginUpdate(String resourceGroupName, String fabricName,
+        FabricModelUpdate body, Context context);
 
     /**
      * Updates the fabric.
@@ -295,6 +295,6 @@ public interface FabricsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FabricModelInner> listByResourceGroup(
-        String resourceGroupName, String continuationToken, Context context);
+    PagedIterable<FabricModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,
+        Context context);
 }

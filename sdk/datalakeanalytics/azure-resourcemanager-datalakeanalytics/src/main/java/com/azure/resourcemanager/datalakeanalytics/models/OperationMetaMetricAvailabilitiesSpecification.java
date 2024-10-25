@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The OperationMetaMetricAvailabilitiesSpecification model. */
+/**
+ * The OperationMetaMetricAvailabilitiesSpecification model.
+ */
 @Fluent
-public final class OperationMetaMetricAvailabilitiesSpecification {
+public final class OperationMetaMetricAvailabilitiesSpecification
+    implements JsonSerializable<OperationMetaMetricAvailabilitiesSpecification> {
     /*
      * The timegrain for OperationMetaMetricAvailabilitiesSpecification.
      */
-    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /*
      * The blobDuration for OperationMetaMetricAvailabilitiesSpecification.
      */
-    @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /** Creates an instance of OperationMetaMetricAvailabilitiesSpecification class. */
+    /**
+     * Creates an instance of OperationMetaMetricAvailabilitiesSpecification class.
+     */
     public OperationMetaMetricAvailabilitiesSpecification() {
     }
 
     /**
      * Get the timeGrain property: The timegrain for OperationMetaMetricAvailabilitiesSpecification.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -37,7 +44,7 @@ public final class OperationMetaMetricAvailabilitiesSpecification {
 
     /**
      * Set the timeGrain property: The timegrain for OperationMetaMetricAvailabilitiesSpecification.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the OperationMetaMetricAvailabilitiesSpecification object itself.
      */
@@ -48,7 +55,7 @@ public final class OperationMetaMetricAvailabilitiesSpecification {
 
     /**
      * Get the blobDuration property: The blobDuration for OperationMetaMetricAvailabilitiesSpecification.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -57,7 +64,7 @@ public final class OperationMetaMetricAvailabilitiesSpecification {
 
     /**
      * Set the blobDuration property: The blobDuration for OperationMetaMetricAvailabilitiesSpecification.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the OperationMetaMetricAvailabilitiesSpecification object itself.
      */
@@ -68,9 +75,49 @@ public final class OperationMetaMetricAvailabilitiesSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeGrain", this.timeGrain);
+        jsonWriter.writeStringField("blobDuration", this.blobDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetaMetricAvailabilitiesSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetaMetricAvailabilitiesSpecification if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetaMetricAvailabilitiesSpecification.
+     */
+    public static OperationMetaMetricAvailabilitiesSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetaMetricAvailabilitiesSpecification deserializedOperationMetaMetricAvailabilitiesSpecification
+                = new OperationMetaMetricAvailabilitiesSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeGrain".equals(fieldName)) {
+                    deserializedOperationMetaMetricAvailabilitiesSpecification.timeGrain = reader.getString();
+                } else if ("blobDuration".equals(fieldName)) {
+                    deserializedOperationMetaMetricAvailabilitiesSpecification.blobDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetaMetricAvailabilitiesSpecification;
+        });
     }
 }

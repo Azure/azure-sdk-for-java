@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class KpiPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KpiProperties model =
-            BinaryData
-                .fromString("{\"type\":\"Forecast\",\"id\":\"w\",\"enabled\":false}")
-                .toObject(KpiProperties.class);
+        KpiProperties model = BinaryData.fromString("{\"type\":\"Forecast\",\"id\":\"w\",\"enabled\":false}")
+            .toObject(KpiProperties.class);
         Assertions.assertEquals(KpiType.FORECAST, model.type());
         Assertions.assertEquals("w", model.id());
         Assertions.assertEquals(false, model.enabled());

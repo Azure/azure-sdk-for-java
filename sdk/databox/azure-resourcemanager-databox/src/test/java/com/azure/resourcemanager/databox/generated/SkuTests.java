@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString("{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"hfmvfaxkffe\",\"family\":\"th\"}")
-                .toObject(Sku.class);
+        Sku model = BinaryData
+            .fromString("{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"hfmvfaxkffe\",\"family\":\"th\"}")
+            .toObject(Sku.class);
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.name());
         Assertions.assertEquals("hfmvfaxkffe", model.displayName());
         Assertions.assertEquals("th", model.family());

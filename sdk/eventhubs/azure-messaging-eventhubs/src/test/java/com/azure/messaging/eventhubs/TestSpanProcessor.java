@@ -61,21 +61,21 @@ public class TestSpanProcessor implements SpanProcessor {
 
         InstrumentationScopeInfo instrumentationScopeInfo = span.getInstrumentationScopeInfo();
         LoggingEventBuilder log = LOGGER.atInfo()
-                .addKeyValue("testName", testName)
-                .addKeyValue("name", span.getName())
-                .addKeyValue("traceId", span.getTraceId())
-                .addKeyValue("spanId", span.getSpanId())
-                .addKeyValue("parentSpanId", span.getParentSpanId())
-                .addKeyValue("kind", span.getKind())
-                .addKeyValue("tracerName", instrumentationScopeInfo.getName())
-                .addKeyValue("tracerVersion", instrumentationScopeInfo.getVersion())
-                .addKeyValue("attributes", attributes);
+            .addKeyValue("testName", testName)
+            .addKeyValue("name", span.getName())
+            .addKeyValue("traceId", span.getTraceId())
+            .addKeyValue("spanId", span.getSpanId())
+            .addKeyValue("parentSpanId", span.getParentSpanId())
+            .addKeyValue("kind", span.getKind())
+            .addKeyValue("tracerName", instrumentationScopeInfo.getName())
+            .addKeyValue("tracerVersion", instrumentationScopeInfo.getVersion())
+            .addKeyValue("attributes", attributes);
 
         for (int i = 0; i < span.getLinks().size(); i++) {
             LinkData link = span.getLinks().get(i);
             log.addKeyValue("linkTraceId" + i, link.getSpanContext().getTraceId())
-                    .addKeyValue("linkSpanId" + i, link.getSpanContext().getSpanId())
-                    .addKeyValue("linkAttributes" + i, link.getAttributes());
+                .addKeyValue("linkSpanId" + i, link.getSpanContext().getSpanId())
+                .addKeyValue("linkAttributes" + i, link.getAttributes());
         }
         log.log("got span");
 
@@ -100,9 +100,9 @@ public class TestSpanProcessor implements SpanProcessor {
         notifier.set((span) -> {
             if (filter.test(span)) {
                 LOGGER.atInfo()
-                        .addKeyValue("traceId", span.getSpanContext().getTraceId())
-                        .addKeyValue("spanId", span.getSpanContext().getSpanId())
-                        .log("condition met");
+                    .addKeyValue("traceId", span.getSpanContext().getTraceId())
+                    .addKeyValue("spanId", span.getSpanContext().getSpanId())
+                    .log("condition met");
                 countDownLatch.countDown();
             }
         });

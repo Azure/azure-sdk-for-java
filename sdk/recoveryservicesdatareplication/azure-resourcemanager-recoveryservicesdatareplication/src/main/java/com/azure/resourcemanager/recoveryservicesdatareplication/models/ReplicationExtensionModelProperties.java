@@ -51,8 +51,8 @@ public final class ReplicationExtensionModelProperties {
      * @param customProperties the customProperties value to set.
      * @return the ReplicationExtensionModelProperties object itself.
      */
-    public ReplicationExtensionModelProperties withCustomProperties(
-        ReplicationExtensionModelCustomProperties customProperties) {
+    public ReplicationExtensionModelProperties
+        withCustomProperties(ReplicationExtensionModelCustomProperties customProperties) {
         this.customProperties = customProperties;
         return this;
     }
@@ -64,10 +64,8 @@ public final class ReplicationExtensionModelProperties {
      */
     public void validate() {
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model ReplicationExtensionModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customProperties in model ReplicationExtensionModelProperties"));
         } else {
             customProperties().validate();
         }

@@ -98,6 +98,9 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigAggregationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigAggregation model =
-            BinaryData.fromString("{\"name\":\"ocpcy\",\"function\":\"Sum\"}").toObject(ReportConfigAggregation.class);
+        ReportConfigAggregation model = BinaryData.fromString("{\"name\":\"ocpcy\",\"function\":\"Sum\"}")
+            .toObject(ReportConfigAggregation.class);
         Assertions.assertEquals("ocpcy", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }

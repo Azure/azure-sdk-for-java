@@ -45,12 +45,15 @@ public final class ClustersCheckNameAvailabilityWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NameAvailability response = manager.clusters().checkNameAvailabilityWithResponse(
-            new NameAvailabilityRequest().withName("hashsfwxosow"), com.azure.core.util.Context.NONE).getValue();
+        NameAvailability response = manager.clusters()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityRequest().withName("hashsfwxosow"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("cugicjoox", response.message());
         Assertions.assertEquals(true, response.nameAvailable());

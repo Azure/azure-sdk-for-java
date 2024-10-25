@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryGroupingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryGrouping model =
-            BinaryData
-                .fromString("{\"type\":\"Dimension\",\"name\":\"jrjxgciqibrhosx\"}")
-                .toObject(QueryGrouping.class);
+        QueryGrouping model = BinaryData.fromString("{\"type\":\"Dimension\",\"name\":\"jrjxgciqibrhosx\"}")
+            .toObject(QueryGrouping.class);
         Assertions.assertEquals(QueryColumnType.DIMENSION, model.type());
         Assertions.assertEquals("jrjxgciqibrhosx", model.name());
     }

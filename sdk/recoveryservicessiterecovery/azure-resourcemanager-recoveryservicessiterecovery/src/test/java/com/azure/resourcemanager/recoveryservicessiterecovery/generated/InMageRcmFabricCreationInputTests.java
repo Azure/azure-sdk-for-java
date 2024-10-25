@@ -27,9 +27,12 @@ public final class InMageRcmFabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmFabricCreationInput model = new InMageRcmFabricCreationInput().withVmwareSiteId("aj")
-            .withPhysicalSiteId("iygmgs").withSourceAgentIdentity(
-                new IdentityProviderInput().withTenantId("vmdmzenlr").withApplicationId("tgfczljdncidtjva")
-                    .withObjectId("yyznmrgcdogcvuc").withAudience("ytoxuwhttnzq").withAadAuthority("aqm"));
+            .withPhysicalSiteId("iygmgs")
+            .withSourceAgentIdentity(new IdentityProviderInput().withTenantId("vmdmzenlr")
+                .withApplicationId("tgfczljdncidtjva")
+                .withObjectId("yyznmrgcdogcvuc")
+                .withAudience("ytoxuwhttnzq")
+                .withAadAuthority("aqm"));
         model = BinaryData.fromObject(model).toObject(InMageRcmFabricCreationInput.class);
         Assertions.assertEquals("aj", model.vmwareSiteId());
         Assertions.assertEquals("iygmgs", model.physicalSiteId());

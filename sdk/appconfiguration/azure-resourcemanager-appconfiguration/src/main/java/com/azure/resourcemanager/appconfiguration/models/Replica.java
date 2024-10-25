@@ -85,11 +85,13 @@ public interface Replica {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Replica definition stages. */
     interface DefinitionStages {
         /** The first stage of the Replica definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Replica definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -101,6 +103,7 @@ public interface Replica {
              */
             WithCreate withExistingConfigurationStore(String resourceGroupName, String configStoreName);
         }
+
         /**
          * The stage of the Replica definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -121,6 +124,7 @@ public interface Replica {
              */
             Replica create(Context context);
         }
+
         /** The stage of the Replica definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -140,6 +144,7 @@ public interface Replica {
             WithCreate withRegion(String location);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

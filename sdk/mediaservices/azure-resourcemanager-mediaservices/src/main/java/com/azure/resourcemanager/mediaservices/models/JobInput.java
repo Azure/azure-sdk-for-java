@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputClip", value = JobInputClip.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputs", value = JobInputs.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputSequence", value = JobInputSequence.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputSequence", value = JobInputSequence.class) })
 @Immutable
 public class JobInput {
     /** Creates an instance of JobInput class. */

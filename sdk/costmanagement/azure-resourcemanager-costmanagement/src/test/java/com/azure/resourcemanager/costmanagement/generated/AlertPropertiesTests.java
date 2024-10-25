@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertProperties model =
-            BinaryData
-                .fromString(
-                    "{\"definition\":{\"type\":\"Quota\",\"category\":\"System\",\"criteria\":\"QuotaThresholdApproaching\"},\"description\":\"yzydagfuaxbezyi\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"None\",\"periodStartDate\":\"rdxwzywqsm\",\"triggeredBy\":\"ureximoryocfs\",\"resourceGroupFilter\":[\"dataymddys\"],\"resourceFilter\":[\"dataiuxhqyudxorr\"],\"meterFilter\":[\"datapoczvyifqrvkdvjs\"],\"tagFilter\":\"datarm\",\"operator\":\"LessThanOrEqualTo\",\"unit\":\"t\",\"contactEmails\":[\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"contactGroups\":[\"obpxjmflbvvn\",\"hrk\",\"ciwwzjuqkhr\",\"ajiwkuo\"],\"contactRoles\":[\"kg\",\"sauuimj\",\"vxieduugidyj\"],\"overridingAlert\":\"f\",\"departmentName\":\"aos\",\"companyName\":\"xc\",\"enrollmentNumber\":\"npc\",\"enrollmentStartDate\":\"ocohslkevleg\",\"enrollmentEndDate\":\"fbuhfmvfaxkffe\"},\"costEntityId\":\"hl\",\"status\":\"None\",\"creationTime\":\"yvshxmz\",\"closeTime\":\"bzoggigrx\",\"modificationTime\":\"ur\",\"statusModificationUserName\":\"xxjnspydptk\",\"statusModificationTime\":\"nkoukn\"}")
-                .toObject(AlertProperties.class);
+        AlertProperties model = BinaryData.fromString(
+            "{\"definition\":{\"type\":\"Quota\",\"category\":\"System\",\"criteria\":\"QuotaThresholdApproaching\"},\"description\":\"yzydagfuaxbezyi\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"None\",\"periodStartDate\":\"rdxwzywqsm\",\"triggeredBy\":\"ureximoryocfs\",\"resourceGroupFilter\":[\"dataymddys\"],\"resourceFilter\":[\"dataiuxhqyudxorr\"],\"meterFilter\":[\"datapoczvyifqrvkdvjs\"],\"tagFilter\":\"datarm\",\"operator\":\"LessThanOrEqualTo\",\"unit\":\"t\",\"contactEmails\":[\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"contactGroups\":[\"obpxjmflbvvn\",\"hrk\",\"ciwwzjuqkhr\",\"ajiwkuo\"],\"contactRoles\":[\"kg\",\"sauuimj\",\"vxieduugidyj\"],\"overridingAlert\":\"f\",\"departmentName\":\"aos\",\"companyName\":\"xc\",\"enrollmentNumber\":\"npc\",\"enrollmentStartDate\":\"ocohslkevleg\",\"enrollmentEndDate\":\"fbuhfmvfaxkffe\"},\"costEntityId\":\"hl\",\"status\":\"None\",\"creationTime\":\"yvshxmz\",\"closeTime\":\"bzoggigrx\",\"modificationTime\":\"ur\",\"statusModificationUserName\":\"xxjnspydptk\",\"statusModificationTime\":\"nkoukn\"}")
+            .toObject(AlertProperties.class);
         Assertions.assertEquals(AlertType.QUOTA, model.definition().type());
         Assertions.assertEquals(AlertCategory.SYSTEM, model.definition().category());
         Assertions.assertEquals(AlertCriteria.QUOTA_THRESHOLD_APPROACHING, model.definition().criteria());
@@ -56,42 +54,37 @@ public final class AlertPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertProperties model =
-            new AlertProperties()
-                .withDefinition(
-                    new AlertPropertiesDefinition()
-                        .withType(AlertType.QUOTA)
-                        .withCategory(AlertCategory.SYSTEM)
-                        .withCriteria(AlertCriteria.QUOTA_THRESHOLD_APPROACHING))
-                .withDescription("yzydagfuaxbezyi")
-                .withSource(AlertSource.USER)
-                .withDetails(
-                    new AlertPropertiesDetails()
-                        .withTimeGrainType(AlertTimeGrainType.NONE)
-                        .withPeriodStartDate("rdxwzywqsm")
-                        .withTriggeredBy("ureximoryocfs")
-                        .withResourceGroupFilter(Arrays.asList("dataymddys"))
-                        .withResourceFilter(Arrays.asList("dataiuxhqyudxorr"))
-                        .withMeterFilter(Arrays.asList("datapoczvyifqrvkdvjs"))
-                        .withTagFilter("datarm")
-                        .withOperator(AlertOperator.LESS_THAN_OR_EQUAL_TO)
-                        .withUnit("t")
-                        .withContactEmails(Arrays.asList("ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl"))
-                        .withContactGroups(Arrays.asList("obpxjmflbvvn", "hrk", "ciwwzjuqkhr", "ajiwkuo"))
-                        .withContactRoles(Arrays.asList("kg", "sauuimj", "vxieduugidyj"))
-                        .withOverridingAlert("f")
-                        .withDepartmentName("aos")
-                        .withCompanyName("xc")
-                        .withEnrollmentNumber("npc")
-                        .withEnrollmentStartDate("ocohslkevleg")
-                        .withEnrollmentEndDate("fbuhfmvfaxkffe"))
-                .withCostEntityId("hl")
-                .withStatus(AlertStatus.NONE)
-                .withCreationTime("yvshxmz")
-                .withCloseTime("bzoggigrx")
-                .withModificationTime("ur")
-                .withStatusModificationUsername("xxjnspydptk")
-                .withStatusModificationTime("nkoukn");
+        AlertProperties model = new AlertProperties()
+            .withDefinition(new AlertPropertiesDefinition().withType(AlertType.QUOTA)
+                .withCategory(AlertCategory.SYSTEM)
+                .withCriteria(AlertCriteria.QUOTA_THRESHOLD_APPROACHING))
+            .withDescription("yzydagfuaxbezyi")
+            .withSource(AlertSource.USER)
+            .withDetails(new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.NONE)
+                .withPeriodStartDate("rdxwzywqsm")
+                .withTriggeredBy("ureximoryocfs")
+                .withResourceGroupFilter(Arrays.asList("dataymddys"))
+                .withResourceFilter(Arrays.asList("dataiuxhqyudxorr"))
+                .withMeterFilter(Arrays.asList("datapoczvyifqrvkdvjs"))
+                .withTagFilter("datarm")
+                .withOperator(AlertOperator.LESS_THAN_OR_EQUAL_TO)
+                .withUnit("t")
+                .withContactEmails(Arrays.asList("ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl"))
+                .withContactGroups(Arrays.asList("obpxjmflbvvn", "hrk", "ciwwzjuqkhr", "ajiwkuo"))
+                .withContactRoles(Arrays.asList("kg", "sauuimj", "vxieduugidyj"))
+                .withOverridingAlert("f")
+                .withDepartmentName("aos")
+                .withCompanyName("xc")
+                .withEnrollmentNumber("npc")
+                .withEnrollmentStartDate("ocohslkevleg")
+                .withEnrollmentEndDate("fbuhfmvfaxkffe"))
+            .withCostEntityId("hl")
+            .withStatus(AlertStatus.NONE)
+            .withCreationTime("yvshxmz")
+            .withCloseTime("bzoggigrx")
+            .withModificationTime("ur")
+            .withStatusModificationUsername("xxjnspydptk")
+            .withStatusModificationTime("nkoukn");
         model = BinaryData.fromObject(model).toObject(AlertProperties.class);
         Assertions.assertEquals(AlertType.QUOTA, model.definition().type());
         Assertions.assertEquals(AlertCategory.SYSTEM, model.definition().category());

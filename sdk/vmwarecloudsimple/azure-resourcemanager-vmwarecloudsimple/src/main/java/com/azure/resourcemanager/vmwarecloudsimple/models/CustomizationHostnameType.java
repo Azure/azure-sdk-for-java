@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of host name. */
+/**
+ * Type of host name.
+ */
 public final class CustomizationHostnameType extends ExpandableStringEnum<CustomizationHostnameType> {
-    /** Static value USER_DEFINED for CustomizationHostnameType. */
+    /**
+     * Static value USER_DEFINED for CustomizationHostnameType.
+     */
     public static final CustomizationHostnameType USER_DEFINED = fromString("USER_DEFINED");
 
-    /** Static value PREFIX_BASED for CustomizationHostnameType. */
+    /**
+     * Static value PREFIX_BASED for CustomizationHostnameType.
+     */
     public static final CustomizationHostnameType PREFIX_BASED = fromString("PREFIX_BASED");
 
-    /** Static value FIXED for CustomizationHostnameType. */
+    /**
+     * Static value FIXED for CustomizationHostnameType.
+     */
     public static final CustomizationHostnameType FIXED = fromString("FIXED");
 
-    /** Static value VIRTUAL_MACHINE_NAME for CustomizationHostnameType. */
+    /**
+     * Static value VIRTUAL_MACHINE_NAME for CustomizationHostnameType.
+     */
     public static final CustomizationHostnameType VIRTUAL_MACHINE_NAME = fromString("VIRTUAL_MACHINE_NAME");
 
-    /** Static value CUSTOM_NAME for CustomizationHostnameType. */
+    /**
+     * Static value CUSTOM_NAME for CustomizationHostnameType.
+     */
     public static final CustomizationHostnameType CUSTOM_NAME = fromString("CUSTOM_NAME");
 
     /**
      * Creates a new instance of CustomizationHostnameType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class CustomizationHostnameType extends ExpandableStringEnum<Custom
 
     /**
      * Creates or finds a CustomizationHostnameType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomizationHostnameType.
      */
-    @JsonCreator
     public static CustomizationHostnameType fromString(String name) {
         return fromString(name, CustomizationHostnameType.class);
     }
 
     /**
      * Gets known CustomizationHostnameType values.
-     *
+     * 
      * @return known CustomizationHostnameType values.
      */
     public static Collection<CustomizationHostnameType> values() {

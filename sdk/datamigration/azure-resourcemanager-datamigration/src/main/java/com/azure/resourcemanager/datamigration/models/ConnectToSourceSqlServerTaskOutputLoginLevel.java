@@ -5,55 +5,71 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Login level output for the task that validates connection to SQL Server and also validates source server
  * requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("LoginLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectToSourceSqlServerTaskOutput {
     /*
+     * Type of result - database level or task level
+     */
+    private String resultType = "LoginLevelOutput";
+
+    /*
      * Login name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of login.
      */
-    @JsonProperty(value = "loginType", access = JsonProperty.Access.WRITE_ONLY)
     private LoginType loginType;
 
     /*
      * The default database for the login.
      */
-    @JsonProperty(value = "defaultDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultDatabase;
 
     /*
      * The state of the login.
      */
-    @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnabled;
 
     /*
      * Information about eligibility of login for migration.
      */
-    @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskOutputLoginLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskOutputLoginLevel class.
+     */
     public ConnectToSourceSqlServerTaskOutputLoginLevel() {
     }
 
     /**
+     * Get the resultType property: Type of result - database level or task level.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the name property: Login name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +78,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
 
     /**
      * Get the loginType property: The type of login.
-     *
+     * 
      * @return the loginType value.
      */
     public LoginType loginType() {
@@ -71,7 +87,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
 
     /**
      * Get the defaultDatabase property: The default database for the login.
-     *
+     * 
      * @return the defaultDatabase value.
      */
     public String defaultDatabase() {
@@ -80,7 +96,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
 
     /**
      * Get the isEnabled property: The state of the login.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -89,7 +105,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
 
     /**
      * Get the migrationEligibility property: Information about eligibility of login for migration.
-     *
+     * 
      * @return the migrationEligibility value.
      */
     public MigrationEligibilityInfo migrationEligibility() {
@@ -97,15 +113,76 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (migrationEligibility() != null) {
             migrationEligibility().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskOutputLoginLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskOutputLoginLevel if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskOutputLoginLevel.
+     */
+    public static ConnectToSourceSqlServerTaskOutputLoginLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskOutputLoginLevel deserializedConnectToSourceSqlServerTaskOutputLoginLevel
+                = new ConnectToSourceSqlServerTaskOutputLoginLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.resultType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.name = reader.getString();
+                } else if ("loginType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.loginType
+                        = LoginType.fromString(reader.getString());
+                } else if ("defaultDatabase".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.defaultDatabase = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.isEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("migrationEligibility".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.migrationEligibility
+                        = MigrationEligibilityInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskOutputLoginLevel;
+        });
     }
 }

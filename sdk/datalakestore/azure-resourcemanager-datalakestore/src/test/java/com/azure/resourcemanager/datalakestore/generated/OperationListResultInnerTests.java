@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.OperationListResult
 public final class OperationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"njeaseipheofloke\",\"display\":{\"provider\":\"enjbdlwtgrhp\",\"resource\":\"pj\",\"operation\":\"asxazjpqyegualhb\",\"description\":\"hejjz\"},\"origin\":\"user,system\"},{\"name\":\"dgwdslfhot\",\"display\":{\"provider\":\"ynpwlbj\",\"resource\":\"gacftadeh\",\"operation\":\"ltyfsop\",\"description\":\"suesnzw\"},\"origin\":\"user,system\"},{\"name\":\"avo\",\"display\":{\"provider\":\"dmoh\",\"resource\":\"bqvudwxdndn\",\"operation\":\"w\",\"description\":\"jjugwdkcglhslaz\"},\"origin\":\"user\"},{\"name\":\"gdtjixhbkuofqwey\",\"display\":{\"provider\":\"enevfyexfwhybci\",\"resource\":\"yvdcsitynnaa\",\"operation\":\"ectehf\",\"description\":\"scjeypv\"},\"origin\":\"user,system\"}],\"nextLink\":\"kgqhcjrefovg\"}")
-                .toObject(OperationListResultInner.class);
+        OperationListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"jtjaodxobnbdxkq\",\"display\":{\"provider\":\"kajionpim\",\"resource\":\"gstxgcp\",\"operation\":\"gmaajrm\",\"description\":\"jwzrl\"},\"origin\":\"user\"},{\"name\":\"lwhijcoejctbzaq\",\"display\":{\"provider\":\"y\",\"resource\":\"kbfkg\",\"operation\":\"dkexxppofm\",\"description\":\"x\"},\"origin\":\"user,system\"}],\"nextLink\":\"gddtocj\"}")
+            .toObject(OperationListResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

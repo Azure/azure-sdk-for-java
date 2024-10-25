@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRuleSet model =
-            BinaryData
-                .fromString(
-                    "{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"lsuuvmkjozkrwfnd\"}],\"virtualNetworkRules\":[{\"id\":\"jpslwejd\",\"state\":\"wryoqpsoacc\",\"ignoreMissingVnetServiceEndpoint\":true},{\"id\":\"akl\",\"state\":\"ahbc\",\"ignoreMissingVnetServiceEndpoint\":true}]}")
-                .toObject(NetworkRuleSet.class);
+        NetworkRuleSet model = BinaryData.fromString(
+            "{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"lsuuvmkjozkrwfnd\"}],\"virtualNetworkRules\":[{\"id\":\"jpslwejd\",\"state\":\"wryoqpsoacc\",\"ignoreMissingVnetServiceEndpoint\":true},{\"id\":\"akl\",\"state\":\"ahbc\",\"ignoreMissingVnetServiceEndpoint\":true}]}")
+            .toObject(NetworkRuleSet.class);
         Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
         Assertions.assertEquals("lsuuvmkjozkrwfnd", model.ipRules().get(0).value());
         Assertions.assertEquals("jpslwejd", model.virtualNetworkRules().get(0).id());
@@ -29,21 +27,13 @@ public final class NetworkRuleSetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRuleSet model =
-            new NetworkRuleSet()
-                .withDefaultAction(NetworkRuleAction.DENY)
-                .withIpRules(Arrays.asList(new IpRule().withValue("lsuuvmkjozkrwfnd")))
-                .withVirtualNetworkRules(
-                    Arrays
-                        .asList(
-                            new VirtualNetworkRule()
-                                .withId("jpslwejd")
-                                .withState("wryoqpsoacc")
-                                .withIgnoreMissingVnetServiceEndpoint(true),
-                            new VirtualNetworkRule()
-                                .withId("akl")
-                                .withState("ahbc")
-                                .withIgnoreMissingVnetServiceEndpoint(true)));
+        NetworkRuleSet model = new NetworkRuleSet().withDefaultAction(NetworkRuleAction.DENY)
+            .withIpRules(Arrays.asList(new IpRule().withValue("lsuuvmkjozkrwfnd")))
+            .withVirtualNetworkRules(Arrays.asList(
+                new VirtualNetworkRule().withId("jpslwejd")
+                    .withState("wryoqpsoacc")
+                    .withIgnoreMissingVnetServiceEndpoint(true),
+                new VirtualNetworkRule().withId("akl").withState("ahbc").withIgnoreMissingVnetServiceEndpoint(true)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
         Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
         Assertions.assertEquals("lsuuvmkjozkrwfnd", model.ipRules().get(0).value());

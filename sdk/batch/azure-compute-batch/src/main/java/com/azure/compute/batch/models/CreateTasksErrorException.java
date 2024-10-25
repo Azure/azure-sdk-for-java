@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 package com.azure.compute.batch.models;
-import com.azure.core.exception.AzureException;
 
+import com.azure.core.exception.AzureException;
 
 import java.util.List;
 
@@ -21,7 +21,8 @@ public class CreateTasksErrorException extends AzureException {
      * @param failureTaskList The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
      * @param pendingTaskList The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public CreateTasksErrorException(final String message, List<BatchTaskAddResult> failureTaskList, List<BatchTaskCreateContent> pendingTaskList) {
+    public CreateTasksErrorException(final String message, List<BatchTaskAddResult> failureTaskList,
+        List<BatchTaskCreateContent> pendingTaskList) {
         super(message, null);
         this.failureTaskList = unmodifiableList(failureTaskList);
         this.pendingTaskList = unmodifiableList(pendingTaskList);

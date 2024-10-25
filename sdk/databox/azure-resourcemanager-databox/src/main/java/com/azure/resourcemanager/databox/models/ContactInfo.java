@@ -126,14 +126,12 @@ public final class ContactInfo {
      */
     public void validate() {
         if (contactName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactName in model ContactInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contactName in model ContactInfo"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ContactInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property phone in model ContactInfo"));
         }
     }
 

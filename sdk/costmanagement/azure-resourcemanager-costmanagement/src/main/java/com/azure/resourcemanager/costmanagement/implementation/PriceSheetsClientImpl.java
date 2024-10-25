@@ -44,8 +44,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @param client the instance of the service client containing this operation class.
      */
     PriceSheetsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PriceSheetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PriceSheetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,31 +56,22 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface PriceSheetsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}/providers/Microsoft.CostManagement/pricesheets/default/download")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}/providers/Microsoft.CostManagement/pricesheets/default/download")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> download(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("billingAccountName") String billingAccountName,
-            @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceName") String invoiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> download(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("billingAccountName") String billingAccountName,
+            @PathParam("billingProfileName") String billingProfileName, @PathParam("invoiceName") String invoiceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.CostManagement/pricesheets/default/download")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.CostManagement/pricesheets/default/download")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfile(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("billingAccountName") String billingAccountName,
-            @PathParam("billingProfileName") String billingProfileName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfile(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("billingAccountName") String billingAccountName,
+            @PathParam("billingProfileName") String billingProfileName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -98,13 +89,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceName) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -119,17 +108,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .download(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceName,
-                            accept,
-                            context))
+            .withContext(context -> service.download(this.client.getEndpoint(), this.client.getApiVersion(),
+                billingAccountName, billingProfileName, invoiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -148,13 +128,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -169,15 +147,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .download(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                billingAccountName,
-                billingProfileName,
-                invoiceName,
-                accept,
-                context);
+        return service.download(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountName,
+            billingProfileName, invoiceName, accept, context);
     }
 
     /**
@@ -193,18 +164,12 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return the {@link PollerFlux} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadAsync(
-        String billingAccountName, String billingProfileName, String invoiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            downloadWithResponseAsync(billingAccountName, billingProfileName, invoiceName);
-        return this
-            .client
-            .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DownloadUrlInner.class,
-                DownloadUrlInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadAsync(String billingAccountName,
+        String billingProfileName, String invoiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = downloadWithResponseAsync(billingAccountName, billingProfileName, invoiceName);
+        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DownloadUrlInner.class, DownloadUrlInner.class, this.client.getContext());
     }
 
     /**
@@ -221,15 +186,13 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return the {@link PollerFlux} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadAsync(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
+    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadAsync(String billingAccountName,
+        String billingProfileName, String invoiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            downloadWithResponseAsync(billingAccountName, billingProfileName, invoiceName, context);
-        return this
-            .client
-            .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = downloadWithResponseAsync(billingAccountName, billingProfileName, invoiceName, context);
+        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DownloadUrlInner.class, DownloadUrlInner.class, context);
     }
 
     /**
@@ -245,8 +208,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(
-        String billingAccountName, String billingProfileName, String invoiceName) {
+    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(String billingAccountName,
+        String billingProfileName, String invoiceName) {
         return this.beginDownloadAsync(billingAccountName, billingProfileName, invoiceName).getSyncPoller();
     }
 
@@ -264,8 +227,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
+    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(String billingAccountName,
+        String billingProfileName, String invoiceName, Context context) {
         return this.beginDownloadAsync(billingAccountName, billingProfileName, invoiceName, context).getSyncPoller();
     }
 
@@ -282,10 +245,9 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return a URL to download the pricesheet for an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DownloadUrlInner> downloadAsync(
-        String billingAccountName, String billingProfileName, String invoiceName) {
-        return beginDownloadAsync(billingAccountName, billingProfileName, invoiceName)
-            .last()
+    private Mono<DownloadUrlInner> downloadAsync(String billingAccountName, String billingProfileName,
+        String invoiceName) {
+        return beginDownloadAsync(billingAccountName, billingProfileName, invoiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -303,10 +265,9 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return a URL to download the pricesheet for an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DownloadUrlInner> downloadAsync(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
-        return beginDownloadAsync(billingAccountName, billingProfileName, invoiceName, context)
-            .last()
+    private Mono<DownloadUrlInner> downloadAsync(String billingAccountName, String billingProfileName,
+        String invoiceName, Context context) {
+        return beginDownloadAsync(billingAccountName, billingProfileName, invoiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -341,8 +302,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadUrlInner download(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
+    public DownloadUrlInner download(String billingAccountName, String billingProfileName, String invoiceName,
+        Context context) {
         return downloadAsync(billingAccountName, billingProfileName, invoiceName, context).block();
     }
 
@@ -361,13 +322,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(
-        String billingAccountName, String billingProfileName) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(String billingAccountName,
+        String billingProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -379,16 +338,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .downloadByBillingProfile(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            billingAccountName,
-                            billingProfileName,
-                            accept,
-                            context))
+            .withContext(context -> service.downloadByBillingProfile(this.client.getEndpoint(),
+                this.client.getApiVersion(), billingAccountName, billingProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -408,13 +359,11 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(
-        String billingAccountName, String billingProfileName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(String billingAccountName,
+        String billingProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -426,14 +375,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .downloadByBillingProfile(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                billingAccountName,
-                billingProfileName,
-                accept,
-                context);
+        return service.downloadByBillingProfile(this.client.getEndpoint(), this.client.getApiVersion(),
+            billingAccountName, billingProfileName, accept, context);
     }
 
     /**
@@ -451,18 +394,12 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfileAsync(
-        String billingAccountName, String billingProfileName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            downloadByBillingProfileWithResponseAsync(billingAccountName, billingProfileName);
-        return this
-            .client
-            .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DownloadUrlInner.class,
-                DownloadUrlInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
+        beginDownloadByBillingProfileAsync(String billingAccountName, String billingProfileName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = downloadByBillingProfileWithResponseAsync(billingAccountName, billingProfileName);
+        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DownloadUrlInner.class, DownloadUrlInner.class, this.client.getContext());
     }
 
     /**
@@ -481,15 +418,13 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfileAsync(
-        String billingAccountName, String billingProfileName, Context context) {
+    private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
+        beginDownloadByBillingProfileAsync(String billingAccountName, String billingProfileName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            downloadByBillingProfileWithResponseAsync(billingAccountName, billingProfileName, context);
-        return this
-            .client
-            .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = downloadByBillingProfileWithResponseAsync(billingAccountName, billingProfileName, context);
+        return this.client.<DownloadUrlInner, DownloadUrlInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DownloadUrlInner.class, DownloadUrlInner.class, context);
     }
 
     /**
@@ -507,8 +442,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(
-        String billingAccountName, String billingProfileName) {
+    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner>
+        beginDownloadByBillingProfile(String billingAccountName, String billingProfileName) {
         return this.beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName).getSyncPoller();
     }
 
@@ -528,8 +463,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context) {
+    public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner>
+        beginDownloadByBillingProfile(String billingAccountName, String billingProfileName, Context context) {
         return this.beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName, context).getSyncPoller();
     }
 
@@ -549,8 +484,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadByBillingProfileAsync(String billingAccountName, String billingProfileName) {
-        return beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName)
-            .last()
+        return beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -570,10 +504,9 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DownloadUrlInner> downloadByBillingProfileAsync(
-        String billingAccountName, String billingProfileName, Context context) {
-        return beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName, context)
-            .last()
+    private Mono<DownloadUrlInner> downloadByBillingProfileAsync(String billingAccountName, String billingProfileName,
+        Context context) {
+        return beginDownloadByBillingProfileAsync(billingAccountName, billingProfileName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -610,8 +543,8 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @return a URL to download the current month's pricesheet for a billing profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadUrlInner downloadByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context) {
+    public DownloadUrlInner downloadByBillingProfile(String billingAccountName, String billingProfileName,
+        Context context) {
         return downloadByBillingProfileAsync(billingAccountName, billingProfileName, context).block();
     }
 }

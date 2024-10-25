@@ -5,102 +5,113 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("TableLevelOutput")
+/**
+ * The MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model.
+ */
 @Immutable
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
     extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "TableLevelOutput";
+
+    /*
      * Name of the table
      */
-    @JsonProperty(value = "tableName", access = JsonProperty.Access.WRITE_ONLY)
     private String tableName;
 
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Number of applied inserts
      */
-    @JsonProperty(value = "cdcInsertCounter", access = JsonProperty.Access.WRITE_ONLY)
     private String cdcInsertCounter;
 
     /*
      * Number of applied updates
      */
-    @JsonProperty(value = "cdcUpdateCounter", access = JsonProperty.Access.WRITE_ONLY)
     private String cdcUpdateCounter;
 
     /*
      * Number of applied deletes
      */
-    @JsonProperty(value = "cdcDeleteCounter", access = JsonProperty.Access.WRITE_ONLY)
     private String cdcDeleteCounter;
 
     /*
      * Estimate to finish full load
      */
-    @JsonProperty(value = "fullLoadEstFinishTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadEstFinishTime;
 
     /*
      * Full load start time
      */
-    @JsonProperty(value = "fullLoadStartedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadStartedOn;
 
     /*
      * Full load end time
      */
-    @JsonProperty(value = "fullLoadEndedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadEndedOn;
 
     /*
      * Number of rows applied in full load
      */
-    @JsonProperty(value = "fullLoadTotalRows", access = JsonProperty.Access.WRITE_ONLY)
     private Long fullLoadTotalRows;
 
     /*
      * Current state of the table migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SyncTableMigrationState state;
 
     /*
      * Total number of applied changes
      */
-    @JsonProperty(value = "totalChangesApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalChangesApplied;
 
     /*
      * Number of data errors occurred
      */
-    @JsonProperty(value = "dataErrorsCounter", access = JsonProperty.Access.WRITE_ONLY)
     private Long dataErrorsCounter;
 
     /*
      * Last modified time on target
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
-    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel class.
+     */
     public MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the tableName property: Name of the table.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -109,7 +120,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -118,7 +129,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcInsertCounter property: Number of applied inserts.
-     *
+     * 
      * @return the cdcInsertCounter value.
      */
     public String cdcInsertCounter() {
@@ -127,7 +138,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcUpdateCounter property: Number of applied updates.
-     *
+     * 
      * @return the cdcUpdateCounter value.
      */
     public String cdcUpdateCounter() {
@@ -136,7 +147,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcDeleteCounter property: Number of applied deletes.
-     *
+     * 
      * @return the cdcDeleteCounter value.
      */
     public String cdcDeleteCounter() {
@@ -145,7 +156,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadEstFinishTime property: Estimate to finish full load.
-     *
+     * 
      * @return the fullLoadEstFinishTime value.
      */
     public OffsetDateTime fullLoadEstFinishTime() {
@@ -154,7 +165,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadStartedOn property: Full load start time.
-     *
+     * 
      * @return the fullLoadStartedOn value.
      */
     public OffsetDateTime fullLoadStartedOn() {
@@ -163,7 +174,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadEndedOn property: Full load end time.
-     *
+     * 
      * @return the fullLoadEndedOn value.
      */
     public OffsetDateTime fullLoadEndedOn() {
@@ -172,7 +183,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadTotalRows property: Number of rows applied in full load.
-     *
+     * 
      * @return the fullLoadTotalRows value.
      */
     public Long fullLoadTotalRows() {
@@ -181,7 +192,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the state property: Current state of the table migration.
-     *
+     * 
      * @return the state value.
      */
     public SyncTableMigrationState state() {
@@ -190,7 +201,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the totalChangesApplied property: Total number of applied changes.
-     *
+     * 
      * @return the totalChangesApplied value.
      */
     public Long totalChangesApplied() {
@@ -199,7 +210,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the dataErrorsCounter property: Number of data errors occurred.
-     *
+     * 
      * @return the dataErrorsCounter value.
      */
     public Long dataErrorsCounter() {
@@ -208,7 +219,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
 
     /**
      * Get the lastModifiedTime property: Last modified time on target.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -216,12 +227,98 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.
+     */
+    public static MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel
+                = new MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.resultType = reader.getString();
+                } else if ("tableName".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.tableName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.databaseName = reader.getString();
+                } else if ("cdcInsertCounter".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.cdcInsertCounter
+                        = reader.getString();
+                } else if ("cdcUpdateCounter".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.cdcUpdateCounter
+                        = reader.getString();
+                } else if ("cdcDeleteCounter".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.cdcDeleteCounter
+                        = reader.getString();
+                } else if ("fullLoadEstFinishTime".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.fullLoadEstFinishTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadStartedOn".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.fullLoadStartedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadEndedOn".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.fullLoadEndedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadTotalRows".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.fullLoadTotalRows
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.state
+                        = SyncTableMigrationState.fromString(reader.getString());
+                } else if ("totalChangesApplied".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.totalChangesApplied
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("dataErrorsCounter".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.dataErrorsCounter
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel;
+        });
     }
 }

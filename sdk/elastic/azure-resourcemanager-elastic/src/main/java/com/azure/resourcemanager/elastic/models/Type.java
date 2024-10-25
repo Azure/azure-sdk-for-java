@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the elastic filter. */
+/**
+ * Type of the elastic filter.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value ip for Type. */
+    /**
+     * Static value ip for Type.
+     */
     public static final Type IP = fromString("ip");
 
-    /** Static value azure_private_endpoint for Type. */
+    /**
+     * Static value azure_private_endpoint for Type.
+     */
     public static final Type AZURE_PRIVATE_ENDPOINT = fromString("azure_private_endpoint");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
-    @JsonCreator
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

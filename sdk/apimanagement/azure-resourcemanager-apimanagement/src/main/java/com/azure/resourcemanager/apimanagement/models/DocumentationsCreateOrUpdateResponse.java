@@ -21,12 +21,8 @@ public final class DocumentationsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DocumentationsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        DocumentationContractInner value,
-        DocumentationsCreateOrUpdateHeaders headers) {
+    public DocumentationsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        DocumentationContractInner value, DocumentationsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

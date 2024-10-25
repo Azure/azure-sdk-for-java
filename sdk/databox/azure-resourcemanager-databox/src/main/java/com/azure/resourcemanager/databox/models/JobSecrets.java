@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = CustomerDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobSecrets.class),
-    @JsonSubTypes.Type(name = "DataBox", value = DataboxJobSecrets.class)
-})
+    @JsonSubTypes.Type(name = "DataBox", value = DataboxJobSecrets.class) })
 @Immutable
 public class JobSecrets {
     /*

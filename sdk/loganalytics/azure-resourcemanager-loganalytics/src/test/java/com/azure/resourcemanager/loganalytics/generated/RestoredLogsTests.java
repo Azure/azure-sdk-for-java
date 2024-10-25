@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoredLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoredLogs model =
-            BinaryData
-                .fromString(
-                    "{\"startRestoreTime\":\"2021-07-21T11:43:29Z\",\"endRestoreTime\":\"2021-06-22T11:05:51Z\",\"sourceTable\":\"rjvpglydzgkrvqee\",\"azureAsyncOperationId\":\"oepry\"}")
-                .toObject(RestoredLogs.class);
+        RestoredLogs model = BinaryData.fromString(
+            "{\"startRestoreTime\":\"2021-07-21T11:43:29Z\",\"endRestoreTime\":\"2021-06-22T11:05:51Z\",\"sourceTable\":\"rjvpglydzgkrvqee\",\"azureAsyncOperationId\":\"oepry\"}")
+            .toObject(RestoredLogs.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T11:43:29Z"), model.startRestoreTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T11:05:51Z"), model.endRestoreTime());
         Assertions.assertEquals("rjvpglydzgkrvqee", model.sourceTable());
@@ -24,11 +22,9 @@ public final class RestoredLogsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoredLogs model =
-            new RestoredLogs()
-                .withStartRestoreTime(OffsetDateTime.parse("2021-07-21T11:43:29Z"))
-                .withEndRestoreTime(OffsetDateTime.parse("2021-06-22T11:05:51Z"))
-                .withSourceTable("rjvpglydzgkrvqee");
+        RestoredLogs model = new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-07-21T11:43:29Z"))
+            .withEndRestoreTime(OffsetDateTime.parse("2021-06-22T11:05:51Z"))
+            .withSourceTable("rjvpglydzgkrvqee");
         model = BinaryData.fromObject(model).toObject(RestoredLogs.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T11:43:29Z"), model.startRestoreTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T11:05:51Z"), model.endRestoreTime());

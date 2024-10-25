@@ -12,8 +12,8 @@ import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.nio.file.FileSystems;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class DetectFaces {
     public static void main(String[] args) {
         FaceClient client = new FaceClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         BinaryData imageBinary = BinaryData.fromFile(FileSystems.getDefault().getPath(Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE));

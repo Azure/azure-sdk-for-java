@@ -21,35 +21,31 @@ public final class ServiceConfigurationsImpl implements ServiceConfigurations {
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
 
-    public ServiceConfigurationsImpl(
-        ServiceConfigurationsClient innerClient,
+    public ServiceConfigurationsImpl(ServiceConfigurationsClient innerClient,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServiceConfigurationResource> listByEndpointResource(String resourceUri, String endpointName) {
-        PagedIterable<ServiceConfigurationResourceInner> inner =
-            this.serviceClient().listByEndpointResource(resourceUri, endpointName);
+        PagedIterable<ServiceConfigurationResourceInner> inner
+            = this.serviceClient().listByEndpointResource(resourceUri, endpointName);
         return Utils.mapPage(inner, inner1 -> new ServiceConfigurationResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ServiceConfigurationResource> listByEndpointResource(
-        String resourceUri, String endpointName, Context context) {
-        PagedIterable<ServiceConfigurationResourceInner> inner =
-            this.serviceClient().listByEndpointResource(resourceUri, endpointName, context);
+    public PagedIterable<ServiceConfigurationResource> listByEndpointResource(String resourceUri, String endpointName,
+        Context context) {
+        PagedIterable<ServiceConfigurationResourceInner> inner
+            = this.serviceClient().listByEndpointResource(resourceUri, endpointName, context);
         return Utils.mapPage(inner, inner1 -> new ServiceConfigurationResourceImpl(inner1, this.manager()));
     }
 
-    public Response<ServiceConfigurationResource> getWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context) {
-        Response<ServiceConfigurationResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
+    public Response<ServiceConfigurationResource> getWithResponse(String resourceUri, String endpointName,
+        String serviceConfigurationName, Context context) {
+        Response<ServiceConfigurationResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServiceConfigurationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,8 +53,8 @@ public final class ServiceConfigurationsImpl implements ServiceConfigurations {
     }
 
     public ServiceConfigurationResource get(String resourceUri, String endpointName, String serviceConfigurationName) {
-        ServiceConfigurationResourceInner inner =
-            this.serviceClient().get(resourceUri, endpointName, serviceConfigurationName);
+        ServiceConfigurationResourceInner inner
+            = this.serviceClient().get(resourceUri, endpointName, serviceConfigurationName);
         if (inner != null) {
             return new ServiceConfigurationResourceImpl(inner, this.manager());
         } else {
@@ -66,8 +62,8 @@ public final class ServiceConfigurationsImpl implements ServiceConfigurations {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceUri, String endpointName, String serviceConfigurationName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
     }
 
@@ -76,173 +72,101 @@ public final class ServiceConfigurationsImpl implements ServiceConfigurations {
     }
 
     public ServiceConfigurationResource getById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "resourceUri");
+        String resourceUri = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "endpointName");
+        String endpointName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "endpointName");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
         }
-        String serviceConfigurationName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "serviceConfigurationName");
+        String serviceConfigurationName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "serviceConfigurationName");
         if (serviceConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.", id)));
         }
         return this.getWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE).getValue();
     }
 
     public Response<ServiceConfigurationResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "resourceUri");
+        String resourceUri = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "endpointName");
+        String endpointName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "endpointName");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
         }
-        String serviceConfigurationName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "serviceConfigurationName");
+        String serviceConfigurationName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "serviceConfigurationName");
         if (serviceConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.", id)));
         }
         return this.getWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "resourceUri");
+        String resourceUri = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "endpointName");
+        String endpointName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "endpointName");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
         }
-        String serviceConfigurationName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "serviceConfigurationName");
+        String serviceConfigurationName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "serviceConfigurationName");
         if (serviceConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.", id)));
         }
         this.deleteWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "resourceUri");
+        String resourceUri = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "endpointName");
+        String endpointName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "endpointName");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
         }
-        String serviceConfigurationName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "serviceConfigurationName");
+        String serviceConfigurationName = Utils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "serviceConfigurationName");
         if (serviceConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceConfigurations'.", id)));
         }
         return this.deleteWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
     }

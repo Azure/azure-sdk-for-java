@@ -47,8 +47,8 @@ public interface GitHubOwners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gitHub repo owner Proxy Resource along with {@link Response}.
      */
-    Response<GitHubOwner> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context);
+    Response<GitHubOwner> getWithResponse(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        Context context);
 
     /**
      * Returns a monitored GitHub repository.

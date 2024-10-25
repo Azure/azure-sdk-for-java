@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
@@ -32,11 +31,11 @@ public class KeyVaultKeyStoreTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
         keystore.engineLoad(parameter);
     }
@@ -45,7 +44,6 @@ public class KeyVaultKeyStoreTest {
     public void testEngineGetCertificate() {
         assertNotNull(keystore.engineGetCertificate(certificateName));
     }
-
 
     @Test
     public void testEngineGetCertificateChain() {
@@ -57,7 +55,6 @@ public class KeyVaultKeyStoreTest {
         assertNotNull(keystore.engineGetKey(certificateName, null));
     }
 
-
     @Test
     public void testEngineSetKeyEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
@@ -68,7 +65,6 @@ public class KeyVaultKeyStoreTest {
     public void testEngineAliases() {
         assertTrue(keystore.engineAliases().hasMoreElements());
     }
-
 
     @Test
     public void testEngineGetCreationDate() {

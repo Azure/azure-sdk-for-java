@@ -45,12 +45,14 @@ public final class ArtifactManifestsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ArtifactManifest response = manager.artifactManifests()
-            .getWithResponse("yay", "mmfz", "bfw", "rzx", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("yay", "mmfz", "bfw", "rzx", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("fledynojpziu", response.location());
         Assertions.assertEquals("zkkdtnhqs", response.tags().get("cljse"));

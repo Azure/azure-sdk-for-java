@@ -19,42 +19,30 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
 
     private final RecoveryPointsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public RecoveryPointsImpl(
-        RecoveryPointsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public RecoveryPointsImpl(RecoveryPointsClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RecoveryPointModel> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context) {
-        Response<RecoveryPointModelInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, vaultName, protectedItemName, recoveryPointName, context);
+    public Response<RecoveryPointModel> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName, Context context) {
+        Response<RecoveryPointModelInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, vaultName, protectedItemName, recoveryPointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoveryPointModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecoveryPointModel get(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName) {
-        RecoveryPointModelInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, protectedItemName, recoveryPointName);
+    public RecoveryPointModel get(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName) {
+        RecoveryPointModelInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, protectedItemName, recoveryPointName);
         if (inner != null) {
             return new RecoveryPointModelImpl(inner, this.manager());
         } else {
@@ -62,17 +50,17 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         }
     }
 
-    public PagedIterable<RecoveryPointModel> list(
-        String resourceGroupName, String vaultName, String protectedItemName) {
-        PagedIterable<RecoveryPointModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, protectedItemName);
+    public PagedIterable<RecoveryPointModel> list(String resourceGroupName, String vaultName,
+        String protectedItemName) {
+        PagedIterable<RecoveryPointModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, protectedItemName);
         return Utils.mapPage(inner, inner1 -> new RecoveryPointModelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecoveryPointModel> list(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
-        PagedIterable<RecoveryPointModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, protectedItemName, context);
+    public PagedIterable<RecoveryPointModel> list(String resourceGroupName, String vaultName, String protectedItemName,
+        Context context) {
+        PagedIterable<RecoveryPointModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, protectedItemName, context);
         return Utils.mapPage(inner, inner1 -> new RecoveryPointModelImpl(inner1, this.manager()));
     }
 

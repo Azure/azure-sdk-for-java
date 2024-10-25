@@ -8,36 +8,29 @@ import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.Role;
 import java.util.Arrays;
 
-/** Samples for PeerAsns CreateOrUpdate. */
+/**
+ * Samples for PeerAsns CreateOrUpdate.
+ */
 public final class PeerAsnsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/CreatePeerAsn.json
+     * x-ms-original-file:
+     * specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/CreatePeerAsn.json
      */
     /**
      * Sample code: Create a peer ASN.
-     *
+     * 
      * @param manager Entry point to PeeringManager.
      */
     public static void createAPeerASN(com.azure.resourcemanager.peering.PeeringManager manager) {
-        manager
-            .peerAsns()
+        manager.peerAsns()
             .define("peerAsnName")
             .withPeerAsn(65000)
-            .withPeerContactDetail(
-                Arrays
-                    .asList(
-                        new ContactDetail()
-                            .withRole(Role.NOC)
-                            .withEmail("noc@contoso.com")
-                            .withPhone("+1 (234) 567-8999"),
-                        new ContactDetail()
-                            .withRole(Role.POLICY)
-                            .withEmail("abc@contoso.com")
-                            .withPhone("+1 (234) 567-8900"),
-                        new ContactDetail()
-                            .withRole(Role.TECHNICAL)
-                            .withEmail("xyz@contoso.com")
-                            .withPhone("+1 (234) 567-8900")))
+            .withPeerContactDetail(Arrays.asList(
+                new ContactDetail().withRole(Role.NOC).withEmail("noc@contoso.com").withPhone("+1 (234) 567-8999"),
+                new ContactDetail().withRole(Role.POLICY).withEmail("abc@contoso.com").withPhone("+1 (234) 567-8900"),
+                new ContactDetail().withRole(Role.TECHNICAL)
+                    .withEmail("xyz@contoso.com")
+                    .withPhone("+1 (234) 567-8900")))
             .withPeerName("Contoso")
             .create();
     }

@@ -9,10 +9,8 @@ import com.azure.resourcemanager.datadog.fluent.models.MonitoredSubscriptionProp
 import com.azure.resourcemanager.datadog.models.MonitoredSubscriptionProperties;
 import com.azure.resourcemanager.datadog.models.SubscriptionList;
 
-public final class MonitoredSubscriptionPropertiesImpl
-    implements MonitoredSubscriptionProperties,
-        MonitoredSubscriptionProperties.Definition,
-        MonitoredSubscriptionProperties.Update {
+public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubscriptionProperties,
+    MonitoredSubscriptionProperties.Definition, MonitoredSubscriptionProperties.Update {
     private MonitoredSubscriptionPropertiesInner innerObject;
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
@@ -58,25 +56,21 @@ public final class MonitoredSubscriptionPropertiesImpl
     }
 
     public MonitoredSubscriptionProperties create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitoredSubscriptionProperties create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    MonitoredSubscriptionPropertiesImpl(
-        String name, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    MonitoredSubscriptionPropertiesImpl(String name,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = new MonitoredSubscriptionPropertiesInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -87,25 +81,20 @@ public final class MonitoredSubscriptionPropertiesImpl
     }
 
     public MonitoredSubscriptionProperties apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .update(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .update(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitoredSubscriptionProperties apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .update(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .update(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    MonitoredSubscriptionPropertiesImpl(
-        MonitoredSubscriptionPropertiesInner innerObject,
+    MonitoredSubscriptionPropertiesImpl(MonitoredSubscriptionPropertiesInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -115,22 +104,18 @@ public final class MonitoredSubscriptionPropertiesImpl
     }
 
     public MonitoredSubscriptionProperties refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MonitoredSubscriptionProperties refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitoredSubscriptions()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, context)
+            .getValue();
         return this;
     }
 

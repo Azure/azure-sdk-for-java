@@ -22,7 +22,7 @@ public final class ApplicationTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"rwrbi\"},\"location\":\"ktalywjhhgdnhxms\",\"tags\":{\"ox\":\"omi\",\"euzaof\":\"gdufiqnd\",\"cubiipuipw\":\"chvcyyysfgdo\"},\"id\":\"onmacjekniz\",\"name\":\"hqvcimpevfgmblr\",\"type\":\"ilbywdxsm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"drjf\"},\"location\":\"acoebj\",\"tags\":{\"draufactkah\":\"zcjznmwcpmgua\",\"neekulfg\":\"ovajjziuxxps\",\"d\":\"lqubkwdlen\",\"pjuohminyfl\":\"utujba\"},\"id\":\"rwm\",\"name\":\"uvwpklvxwmyg\",\"type\":\"xpgpq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ApplicationTypesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplicationTypeResource> response
-            = manager.applicationTypes().list("pzlrphw", "soldweyuqdunv", com.azure.core.util.Context.NONE);
+            = manager.applicationTypes().list("ehwagoh", "uffkmrqemvvh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ktalywjhhgdnhxms", response.iterator().next().location());
-        Assertions.assertEquals("omi", response.iterator().next().tags().get("ox"));
+        Assertions.assertEquals("acoebj", response.iterator().next().location());
+        Assertions.assertEquals("zcjznmwcpmgua", response.iterator().next().tags().get("draufactkah"));
     }
 }

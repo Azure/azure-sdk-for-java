@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationAccountSessions. */
+/**
+ * Resource collection API of IntegrationAccountSessions.
+ */
 public interface IntegrationAccountSessions {
     /**
      * Gets a list of integration account sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Gets a list of integration account sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -35,12 +37,12 @@ public interface IntegrationAccountSessions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration account sessions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationAccountSession> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountSession> list(String resourceGroupName, String integrationAccountName, Integer top,
+        String filter, Context context);
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -50,12 +52,12 @@ public interface IntegrationAccountSessions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration account session along with {@link Response}.
      */
-    Response<IntegrationAccountSession> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context);
+    Response<IntegrationAccountSession> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String sessionName, Context context);
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -68,7 +70,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -78,12 +80,12 @@ public interface IntegrationAccountSessions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String sessionName,
+        Context context);
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
@@ -95,7 +97,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,7 +108,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Gets an integration account session.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +120,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +130,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Deletes an integration account session.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +142,7 @@ public interface IntegrationAccountSessions {
 
     /**
      * Begins definition for a new IntegrationAccountSession resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationAccountSession definition.
      */

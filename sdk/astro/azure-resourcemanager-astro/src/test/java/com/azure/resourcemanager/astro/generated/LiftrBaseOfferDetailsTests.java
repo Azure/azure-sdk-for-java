@@ -24,9 +24,12 @@ public final class LiftrBaseOfferDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiftrBaseOfferDetails model
-            = new LiftrBaseOfferDetails().withPublisherId("wxmnteiwao").withOfferId("vkmijcmmxdcuf")
-                .withPlanId("fsrpymzidnse").withPlanName("xtbzsgfyccsne").withTermUnit("dwzjeiach").withTermId("osfln");
+        LiftrBaseOfferDetails model = new LiftrBaseOfferDetails().withPublisherId("wxmnteiwao")
+            .withOfferId("vkmijcmmxdcuf")
+            .withPlanId("fsrpymzidnse")
+            .withPlanName("xtbzsgfyccsne")
+            .withTermUnit("dwzjeiach")
+            .withTermId("osfln");
         model = BinaryData.fromObject(model).toObject(LiftrBaseOfferDetails.class);
         Assertions.assertEquals("wxmnteiwao", model.publisherId());
         Assertions.assertEquals("vkmijcmmxdcuf", model.offerId());

@@ -41,9 +41,8 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationLoginLinksClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AuthorizationLoginLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AuthorizationLoginLinksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,22 +53,17 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface AuthorizationLoginLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/getLoginLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/getLoginLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationLoginLinksPostResponse> post(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<AuthorizationLoginLinksPostResponse> post(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("authorizationProviderId") String authorizationProviderId,
-            @PathParam("authorizationId") String authorizationId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("authorizationId") String authorizationId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationLoginRequestContract parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -86,17 +80,12 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @return authorization login links on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationLoginLinksPostResponse> postWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
+    private Mono<AuthorizationLoginLinksPostResponse> postWithResponseAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId,
         AuthorizationLoginRequestContract parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -106,19 +95,16 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -127,20 +113,9 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .post(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authorizationProviderId,
-                            authorizationId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.post(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authorizationProviderId, authorizationId, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -159,18 +134,12 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @return authorization login links on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationLoginLinksPostResponse> postWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
-        Context context) {
+    private Mono<AuthorizationLoginLinksPostResponse> postWithResponseAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId,
+        AuthorizationLoginRequestContract parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -180,19 +149,16 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -201,18 +167,8 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .post(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.post(this.client.getEndpoint(), resourceGroupName, serviceName, authorizationProviderId,
+            authorizationId, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -229,15 +185,10 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @return authorization login links on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationLoginResponseContractInner> postAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters) {
-        return postWithResponseAsync(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AuthorizationLoginResponseContractInner> postAsync(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters) {
+        return postWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -255,16 +206,11 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationLoginLinksPostResponse postWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
+    public AuthorizationLoginLinksPostResponse postWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters,
         Context context) {
-        return postWithResponseAsync(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters, context)
-            .block();
+        return postWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            parameters, context).block();
     }
 
     /**
@@ -281,14 +227,9 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationLoginResponseContractInner post(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters) {
-        return postWithResponse(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters, Context.NONE)
-            .getValue();
+    public AuthorizationLoginResponseContractInner post(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters) {
+        return postWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters,
+            Context.NONE).getValue();
     }
 }

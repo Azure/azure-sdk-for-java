@@ -28,13 +28,8 @@ public interface Favorites {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of favorites defined within an Application Insights component along with {@link Response}.
      */
-    Response<List<ApplicationInsightsComponentFavorite>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags,
+    Response<List<ApplicationInsightsComponentFavorite>> listWithResponse(String resourceGroupName, String resourceName,
+        FavoriteType favoriteType, FavoriteSourceType sourceType, Boolean canFetchContent, List<String> tags,
         Context context);
 
     /**
@@ -62,8 +57,8 @@ public interface Favorites {
      * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
      *     Response}.
      */
-    Response<ApplicationInsightsComponentFavorite> getWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context);
+    Response<ApplicationInsightsComponentFavorite> getWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, Context context);
 
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
@@ -93,12 +88,8 @@ public interface Favorites {
      * @return properties that define a favorite that is associated to an Application Insights component along with
      *     {@link Response}.
      */
-    Response<ApplicationInsightsComponentFavorite> addWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
-        Context context);
+    Response<ApplicationInsightsComponentFavorite> addWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context);
 
     /**
      * Adds a new favorites to an Application Insights component.
@@ -113,10 +104,7 @@ public interface Favorites {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
-    ApplicationInsightsComponentFavorite add(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    ApplicationInsightsComponentFavorite add(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties);
 
     /**
@@ -133,12 +121,8 @@ public interface Favorites {
      * @return properties that define a favorite that is associated to an Application Insights component along with
      *     {@link Response}.
      */
-    Response<ApplicationInsightsComponentFavorite> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
-        Context context);
+    Response<ApplicationInsightsComponentFavorite> updateWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context);
 
     /**
      * Updates a favorite that has already been added to an Application Insights component.
@@ -152,10 +136,7 @@ public interface Favorites {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
-    ApplicationInsightsComponentFavorite update(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    ApplicationInsightsComponentFavorite update(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties);
 
     /**
@@ -170,8 +151,8 @@ public interface Favorites {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String favoriteId,
+        Context context);
 
     /**
      * Remove a favorite that is associated to an Application Insights component.

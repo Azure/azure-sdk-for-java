@@ -3,26 +3,16 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
-
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
-import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
-import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
+import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
+import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -48,25 +38,34 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
+
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleLateralityDiscrepancyInferenceAsync {
 
-    private static final String DOC_CONTENT = "Exam:   US LT BREAST TARGETED" 
-            + "\r\nTechnique:  Targeted imaging of the  right breast  is performed." 
-            + "\r\nFindings: Targeted imaging of the left breast is performed from the 6:00 to the 9:00 position.  " 
+    private static final String DOC_CONTENT = "Exam:   US LT BREAST TARGETED"
+            + "\r\nTechnique:  Targeted imaging of the  right breast  is performed."
+            + "\r\nFindings: Targeted imaging of the left breast is performed from the 6:00 to the 9:00 position.  "
             + "\r\nAt the 6:00 position, 5 cm from the nipple, there is a 3 x 2 x 4 mm minimally hypoechoic mass with a peripheral calcification. "
-            + "This may correspond to the mammographic finding. No other cystic or solid masses visualized." 
+            + "This may correspond to the mammographic finding. No other cystic or solid masses visualized."
             + "\r\n";
-    
+
     /**
      * The main method is the entry point for the application. It initializes and uses
      * the RadiologyInsightsAsyncClient to perform Radiology Insights operations.
@@ -75,7 +74,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        
+
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
@@ -84,9 +83,9 @@ public class SampleLateralityDiscrepancyInferenceAsync {
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
-        
+
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -107,7 +106,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
-    
+
     /**
      * Display the critical results of the Radiology Insights request.
      *
@@ -168,7 +167,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -233,7 +232,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 

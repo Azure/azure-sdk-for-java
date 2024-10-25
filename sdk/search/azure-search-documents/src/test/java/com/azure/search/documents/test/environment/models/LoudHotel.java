@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@SuppressWarnings({"UseOfObsoleteDateTimeApi", "unused"})
+@SuppressWarnings({ "UseOfObsoleteDateTimeApi", "unused" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel {
     @JsonProperty(value = "HotelId")
@@ -122,7 +122,6 @@ public class LoudHotel {
         this.TAGS = (tags == null) ? null : new ArrayList<>(tags);
         return this;
     }
-
 
     public Boolean PARKINGINCLUDED() {
         return this.PARKINGINCLUDED;

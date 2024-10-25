@@ -96,8 +96,8 @@ public final class AuthenticationSettingsContract {
      * @param oAuth2AuthenticationSettings the oAuth2AuthenticationSettings value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
-    public AuthenticationSettingsContract withOAuth2AuthenticationSettings(
-        List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings) {
+    public AuthenticationSettingsContract
+        withOAuth2AuthenticationSettings(List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings) {
         this.oAuth2AuthenticationSettings = oAuth2AuthenticationSettings;
         return this;
     }
@@ -119,8 +119,8 @@ public final class AuthenticationSettingsContract {
      * @param openidAuthenticationSettings the openidAuthenticationSettings value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
-    public AuthenticationSettingsContract withOpenidAuthenticationSettings(
-        List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings) {
+    public AuthenticationSettingsContract
+        withOpenidAuthenticationSettings(List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings) {
         this.openidAuthenticationSettings = openidAuthenticationSettings;
         return this;
     }

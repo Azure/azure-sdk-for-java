@@ -50,9 +50,8 @@ public final class OperationListResultInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model OperationListResultInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model OperationListResultInner"));
         } else {
             value().forEach(e -> e.validate());
         }

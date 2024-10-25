@@ -315,7 +315,7 @@
 
 ### Breaking Changes
 
-- Removed `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
+- Removed `TokenRequestContextExperimental` class that allows to configure TenantId Challenges.
 - Removed `TimeInterval` as it is no longer being developed.
 - Moved `HttpResponseError` to `azure-core` as `ResponseError`.
 
@@ -345,7 +345,7 @@
 
 ### Features Added
 
-- Added `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
+- Added `TokenRequestContextExperimental` class that allows to configure TenantId Challenges.
 
 ## 1.0.0-beta.16 (2021-08-06)
 

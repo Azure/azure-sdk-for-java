@@ -29,9 +29,7 @@ public interface SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
+        String resourceGroupName, String monitorName, String configurationName,
         DynatraceSingleSignOnResourceInner resource);
 
     /**
@@ -49,11 +47,8 @@ public interface SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource,
-        Context context);
+        String resourceGroupName, String monitorName, String configurationName,
+        DynatraceSingleSignOnResourceInner resource, Context context);
 
     /**
      * Create a DynatraceSingleSignOnResource.
@@ -68,11 +63,8 @@ public interface SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DynatraceSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource);
+    DynatraceSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource);
 
     /**
      * Create a DynatraceSingleSignOnResource.
@@ -88,12 +80,8 @@ public interface SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DynatraceSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource,
-        Context context);
+    DynatraceSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource, Context context);
 
     /**
      * Get a DynatraceSingleSignOnResource.
@@ -108,8 +96,8 @@ public interface SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DynatraceSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DynatraceSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Get a DynatraceSingleSignOnResource.
@@ -152,6 +140,6 @@ public interface SingleSignOnsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DynatraceSingleSignOnResourceInner> list(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
+        Context context);
 }

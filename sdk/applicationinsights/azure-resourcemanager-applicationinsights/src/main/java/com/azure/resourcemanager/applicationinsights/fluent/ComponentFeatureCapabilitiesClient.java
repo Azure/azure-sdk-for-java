@@ -24,8 +24,8 @@ public interface ComponentFeatureCapabilitiesClient {
      * @return an Application Insights component feature capabilities along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentFeatureCapabilitiesInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentFeatureCapabilitiesInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns feature capabilities of the application insights component.

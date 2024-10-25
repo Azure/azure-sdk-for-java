@@ -4,6 +4,9 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
@@ -36,7 +39,10 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
@@ -59,6 +65,8 @@ public class ContainerGroupImpl
     extends GroupableParentResourceImpl<
         ContainerGroup, ContainerGroupInner, ContainerGroupImpl, ContainerInstanceManager>
     implements ContainerGroup, ContainerGroup.Definition, ContainerGroup.Update {
+
+    private final ClientLogger logger = new ClientLogger(ContainerGroupImpl.class);
 
     private String creatableStorageAccountKey;
     private Creatable<Network> creatableVirtualNetwork;
@@ -133,10 +141,58 @@ public class ContainerGroupImpl
         }
     }
 
-    private static class VolumeParameters {
-        private String volumeName;
-        private String fileShareName;
-        private String storageAccountKey;
+    @Override
+    public Accepted<ContainerGroup> beginCreate() {
+        return AcceptedImpl
+            .<ContainerGroup, ContainerGroupInner>newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getContainerGroups()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), innerModel())
+                        .block(),
+                inner ->
+                    new ContainerGroupImpl(
+                        inner.name(),
+                        inner,
+                        this.manager()),
+                ContainerGroupInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
+
+                    // same as createInner
+                    beforeCreation().block();
+                    // msi
+                    this.containerGroupMsiHandler.processCreatedExternalIdentities();
+                    this.containerGroupMsiHandler.handleExternalIdentities();
+                    // storage account
+                    if (!(newFileShares == null || creatableStorageAccountKey == null)) {
+                        final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
+                        List<VolumeParameters> volumeParametersList = createFileShareAsync(storageAccount).collectList().block();
+                        if (!CoreUtils.isNullOrEmpty(volumeParametersList)) {
+                            for (VolumeParameters volumeParameters : volumeParametersList) {
+                                this.defineVolume(volumeParameters.volumeName)
+                                    .withExistingReadWriteAzureFileShare(volumeParameters.fileShareName)
+                                    .withStorageAccountName(storageAccount.name())
+                                    .withStorageAccountKey(volumeParameters.storageAccountKey)
+                                    .attach();
+                            }
+                        }
+                    }
+                },
+                Context.NONE);
+    }
+
+    private static final class VolumeParameters {
+        private final String volumeName;
+        private final String fileShareName;
+        private final String storageAccountKey;
 
         VolumeParameters(String volumeName, String fileShareName, String storageAccountKey) {
             this.volumeName = volumeName;

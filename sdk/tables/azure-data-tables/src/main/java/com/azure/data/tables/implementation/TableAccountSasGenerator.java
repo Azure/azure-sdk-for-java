@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.sas.TableAccountSasPermission;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
@@ -21,7 +20,6 @@ import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryP
  * A class containing utility methods for generating SAS tokens for the Azure Storage accounts.
  */
 public class TableAccountSasGenerator {
-    private final ClientLogger logger = new ClientLogger(TableAccountSasGenerator.class);
     private final OffsetDateTime expiryTime;
     private final OffsetDateTime startTime;
     private final String permissions;

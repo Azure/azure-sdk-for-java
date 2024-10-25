@@ -22,8 +22,8 @@ public interface KeyValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified key-value along with {@link Response}.
      */
-    Response<KeyValue> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context);
+    Response<KeyValue> getWithResponse(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context);
 
     /**
      * Gets the properties of the specified key-value.

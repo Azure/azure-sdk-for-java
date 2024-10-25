@@ -61,16 +61,16 @@ public final class AccessControlListPatchProperties extends AccessControlListPat
 
     /** {@inheritDoc} */
     @Override
-    public AccessControlListPatchProperties withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListPatchProperties
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         super.withMatchConfigurations(matchConfigurations);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AccessControlListPatchProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListPatchProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         super.withDynamicMatchConfigurations(dynamicMatchConfigurations);
         return this;
     }

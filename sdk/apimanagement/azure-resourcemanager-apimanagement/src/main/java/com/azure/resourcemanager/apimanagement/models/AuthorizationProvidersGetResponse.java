@@ -21,12 +21,8 @@ public final class AuthorizationProvidersGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AuthorizationProvidersGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AuthorizationProviderContractInner value,
-        AuthorizationProvidersGetHeaders headers) {
+    public AuthorizationProvidersGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        AuthorizationProviderContractInner value, AuthorizationProvidersGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

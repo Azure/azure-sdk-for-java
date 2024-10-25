@@ -7,11 +7,13 @@ package com.azure.resourcemanager.powerbidedicated.models;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationForExistingResourceResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SkuEnumerationForExistingResourceResult. */
+/**
+ * An immutable client-side representation of SkuEnumerationForExistingResourceResult.
+ */
 public interface SkuEnumerationForExistingResourceResult {
     /**
      * Gets the value property: The collection of available SKUs for existing resources.
-     *
+     * 
      * @return the value value.
      */
     List<SkuDetailsForExistingResource> value();
@@ -19,7 +21,7 @@ public interface SkuEnumerationForExistingResourceResult {
     /**
      * Gets the inner
      * com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationForExistingResourceResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SkuEnumerationForExistingResourceResultInner innerModel();

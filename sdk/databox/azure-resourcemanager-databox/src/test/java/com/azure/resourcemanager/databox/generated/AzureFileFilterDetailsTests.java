@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFileFilterDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileFilterDetails model =
-            BinaryData
-                .fromString(
-                    "{\"filePrefixList\":[\"owgujjugwdkcglhs\"],\"filePathList\":[\"jdyggdtji\"],\"fileShareList\":[\"kuofqweykhme\"]}")
-                .toObject(AzureFileFilterDetails.class);
+        AzureFileFilterDetails model = BinaryData.fromString(
+            "{\"filePrefixList\":[\"owgujjugwdkcglhs\"],\"filePathList\":[\"jdyggdtji\"],\"fileShareList\":[\"kuofqweykhme\"]}")
+            .toObject(AzureFileFilterDetails.class);
         Assertions.assertEquals("owgujjugwdkcglhs", model.filePrefixList().get(0));
         Assertions.assertEquals("jdyggdtji", model.filePathList().get(0));
         Assertions.assertEquals("kuofqweykhme", model.fileShareList().get(0));
@@ -24,9 +22,8 @@ public final class AzureFileFilterDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileFilterDetails model =
-            new AzureFileFilterDetails()
-                .withFilePrefixList(Arrays.asList("owgujjugwdkcglhs"))
+        AzureFileFilterDetails model
+            = new AzureFileFilterDetails().withFilePrefixList(Arrays.asList("owgujjugwdkcglhs"))
                 .withFilePathList(Arrays.asList("jdyggdtji"))
                 .withFileShareList(Arrays.asList("kuofqweykhme"));
         model = BinaryData.fromObject(model).toObject(AzureFileFilterDetails.class);

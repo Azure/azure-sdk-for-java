@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sizeInKB\":13518559059798851,\"createdTime\":\"2021-10-23T04:38:56Z\",\"lastModifiedTime\":\"2021-02-07T15:05:32Z\",\"type\":\"jixhbk\",\"url\":\"fqweykhmene\"}")
-                .toObject(LogFileProperties.class);
-        Assertions.assertEquals(13518559059798851L, model.sizeInKB());
-        Assertions.assertEquals("jixhbk", model.type());
+        LogFileProperties model = BinaryData.fromString(
+            "{\"sizeInKB\":6567367518668633320,\"createdTime\":\"2021-02-11T14:48:18Z\",\"lastModifiedTime\":\"2021-10-27T15:38:07Z\",\"type\":\"nvowgujju\",\"url\":\"dkcglhsl\"}")
+            .toObject(LogFileProperties.class);
+        Assertions.assertEquals(6567367518668633320L, model.sizeInKB());
+        Assertions.assertEquals("nvowgujju", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileProperties model = new LogFileProperties().withSizeInKB(13518559059798851L).withType("jixhbk");
+        LogFileProperties model = new LogFileProperties().withSizeInKB(6567367518668633320L).withType("nvowgujju");
         model = BinaryData.fromObject(model).toObject(LogFileProperties.class);
-        Assertions.assertEquals(13518559059798851L, model.sizeInKB());
-        Assertions.assertEquals("jixhbk", model.type());
+        Assertions.assertEquals(6567367518668633320L, model.sizeInKB());
+        Assertions.assertEquals("nvowgujju", model.type());
     }
 }

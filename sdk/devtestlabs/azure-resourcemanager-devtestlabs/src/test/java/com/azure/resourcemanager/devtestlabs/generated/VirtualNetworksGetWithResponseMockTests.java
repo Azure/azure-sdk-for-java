@@ -31,41 +31,29 @@ public final class VirtualNetworksGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"ngojfsqebuuxjx\",\"labSubnetName\":\"xfjwp\",\"allowPublicIp\":\"Deny\"},{\"resourceId\":\"p\",\"labSubnetName\":\"mxbmbrwgzzxljbkh\",\"allowPublicIp\":\"Default\"},{\"resourceId\":\"laumydmhweqjf\",\"labSubnetName\":\"ydgtokvqbvwgl\",\"allowPublicIp\":\"Deny\"},{\"resourceId\":\"vxakglh\",\"labSubnetName\":\"esrfgamqiydvx\",\"allowPublicIp\":\"Deny\"}],\"description\":\"yhgoq\",\"externalProviderResourceId\":\"oyqyxyjrcbqpb\",\"externalSubnets\":[{\"id\":\"lqjoxtda\",\"name\":\"eaoo\"},{\"id\":\"yjz\",\"name\":\"vfwjlo\"}],\"subnetOverrides\":[{\"resourceId\":\"fsr\",\"labSubnetName\":\"uklajvcfoc\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"kwxnhwhhnoyrza\"},{\"resourceId\":\"ee\",\"labSubnetName\":\"mjenvjeatea\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{},{},{}]},\"virtualNetworkPoolName\":\"xldnaryy\"}],\"createdDate\":\"2021-09-14T08:54:41Z\",\"provisioningState\":\"dolrndw\",\"uniqueIdentifier\":\"vxvzaledoyqxlun\"},\"location\":\"fthmcxqqxmy\",\"tags\":{\"a\":\"a\",\"rqra\":\"pohrvm\",\"ivznllas\":\"a\"},\"id\":\"k\",\"name\":\"khjqjpvbaihxjtg\",\"type\":\"gtaiywbq\"}";
+        String responseStr
+            = "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"ngojfsqebuuxjx\",\"labSubnetName\":\"xfjwp\",\"allowPublicIp\":\"Deny\"},{\"resourceId\":\"p\",\"labSubnetName\":\"mxbmbrwgzzxljbkh\",\"allowPublicIp\":\"Default\"},{\"resourceId\":\"laumydmhweqjf\",\"labSubnetName\":\"ydgtokvqbvwgl\",\"allowPublicIp\":\"Deny\"},{\"resourceId\":\"vxakglh\",\"labSubnetName\":\"esrfgamqiydvx\",\"allowPublicIp\":\"Deny\"}],\"description\":\"yhgoq\",\"externalProviderResourceId\":\"oyqyxyjrcbqpb\",\"externalSubnets\":[{\"id\":\"lqjoxtda\",\"name\":\"eaoo\"},{\"id\":\"yjz\",\"name\":\"vfwjlo\"}],\"subnetOverrides\":[{\"resourceId\":\"fsr\",\"labSubnetName\":\"uklajvcfoc\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"kwxnhwhhnoyrza\"},{\"resourceId\":\"ee\",\"labSubnetName\":\"mjenvjeatea\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{},{},{}]},\"virtualNetworkPoolName\":\"xldnaryy\"}],\"createdDate\":\"2021-09-14T08:54:41Z\",\"provisioningState\":\"dolrndw\",\"uniqueIdentifier\":\"vxvzaledoyqxlun\"},\"location\":\"fthmcxqqxmy\",\"tags\":{\"a\":\"a\",\"rqra\":\"pohrvm\",\"ivznllas\":\"a\"},\"id\":\"k\",\"name\":\"khjqjpvbaihxjtg\",\"type\":\"gtaiywbq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VirtualNetwork response =
-            manager
-                .virtualNetworks()
-                .getWithResponse(
-                    "wsnmrkkyjt", "epwpwfk", "auxuvavcpfpdofu", "kclbtxluevsol", com.azure.core.util.Context.NONE)
-                .getValue();
+        VirtualNetwork response = manager.virtualNetworks()
+            .getWithResponse("wsnmrkkyjt", "epwpwfk", "auxuvavcpfpdofu", "kclbtxluevsol",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("fthmcxqqxmy", response.location());
         Assertions.assertEquals("a", response.tags().get("a"));
@@ -76,10 +64,10 @@ public final class VirtualNetworksGetWithResponseMockTests {
         Assertions.assertEquals("oyqyxyjrcbqpb", response.externalProviderResourceId());
         Assertions.assertEquals("fsr", response.subnetOverrides().get(0).resourceId());
         Assertions.assertEquals("uklajvcfoc", response.subnetOverrides().get(0).labSubnetName());
-        Assertions
-            .assertEquals(UsagePermissionType.DEFAULT, response.subnetOverrides().get(0).useInVmCreationPermission());
-        Assertions
-            .assertEquals(UsagePermissionType.ALLOW, response.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions.assertEquals(UsagePermissionType.DEFAULT,
+            response.subnetOverrides().get(0).useInVmCreationPermission());
+        Assertions.assertEquals(UsagePermissionType.ALLOW,
+            response.subnetOverrides().get(0).usePublicIpAddressPermission());
         Assertions.assertEquals("kwxnhwhhnoyrza", response.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 }

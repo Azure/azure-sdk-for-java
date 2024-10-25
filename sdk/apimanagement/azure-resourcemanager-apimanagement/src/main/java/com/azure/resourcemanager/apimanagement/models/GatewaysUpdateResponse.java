@@ -20,12 +20,8 @@ public final class GatewaysUpdateResponse extends ResponseBase<GatewaysUpdateHea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GatewaysUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        GatewayContractInner value,
-        GatewaysUpdateHeaders headers) {
+    public GatewaysUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        GatewayContractInner value, GatewaysUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

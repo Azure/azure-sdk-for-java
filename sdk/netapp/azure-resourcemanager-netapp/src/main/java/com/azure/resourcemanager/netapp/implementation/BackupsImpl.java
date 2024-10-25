@@ -14,8 +14,8 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.Backup;
-import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.BackupStatus;
+import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.RestoreStatus;
 
 public final class BackupsImpl implements Backups {

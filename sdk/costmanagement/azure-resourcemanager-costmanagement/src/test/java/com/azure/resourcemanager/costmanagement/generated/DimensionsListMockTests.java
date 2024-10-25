@@ -31,39 +31,27 @@ public final class DimensionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"npjhlfzswpchwahf\",\"filterEnabled\":true,\"groupingEnabled\":false,\"data\":[\"pgfewetwlyx\",\"ncxykxhdjhlimm\"],\"total\":122728116,\"category\":\"h\",\"usageStart\":\"2021-05-04T19:01:44Z\",\"usageEnd\":\"2021-08-24T02:48:56Z\",\"nextLink\":\"vxcjzhqizxfpxtgq\"},\"sku\":\"javftjuhdqa\",\"eTag\":\"mtggu\",\"location\":\"pijrajcivmmghf\",\"tags\":{\"nzqodfvpg\":\"wrxgkneuvy\",\"zdjtxvzflbqv\":\"hoxgsgbpf\"},\"id\":\"aqvlgafcqusr\",\"name\":\"vetnwsdtutn\",\"type\":\"lduycv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"npjhlfzswpchwahf\",\"filterEnabled\":true,\"groupingEnabled\":false,\"data\":[\"pgfewetwlyx\",\"ncxykxhdjhlimm\"],\"total\":122728116,\"category\":\"h\",\"usageStart\":\"2021-05-04T19:01:44Z\",\"usageEnd\":\"2021-08-24T02:48:56Z\",\"nextLink\":\"vxcjzhqizxfpxtgq\"},\"sku\":\"javftjuhdqa\",\"eTag\":\"mtggu\",\"location\":\"pijrajcivmmghf\",\"tags\":{\"nzqodfvpg\":\"wrxgkneuvy\",\"zdjtxvzflbqv\":\"hoxgsgbpf\"},\"id\":\"aqvlgafcqusr\",\"name\":\"vetnwsdtutn\",\"type\":\"lduycv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Dimension> response =
-            manager
-                .dimensions()
-                .list("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", "cse", 950658214, com.azure.core.util.Context.NONE);
+        PagedIterable<Dimension> response = manager.dimensions()
+            .list("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", "cse", 950658214, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("pijrajcivmmghf", response.iterator().next().location());
         Assertions.assertEquals("wrxgkneuvy", response.iterator().next().tags().get("nzqodfvpg"));

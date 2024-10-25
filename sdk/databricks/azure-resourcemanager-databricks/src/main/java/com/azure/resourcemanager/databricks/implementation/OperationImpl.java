@@ -13,8 +13,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

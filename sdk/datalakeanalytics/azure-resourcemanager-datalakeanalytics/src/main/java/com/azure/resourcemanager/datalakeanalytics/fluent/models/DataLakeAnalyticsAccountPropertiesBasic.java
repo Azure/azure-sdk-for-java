@@ -5,58 +5,62 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountState;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The basic account specific properties that are associated with an underlying Data Lake Analytics account. */
+/**
+ * The basic account specific properties that are associated with an underlying Data Lake Analytics account.
+ */
 @Immutable
-public class DataLakeAnalyticsAccountPropertiesBasic {
+public class DataLakeAnalyticsAccountPropertiesBasic
+    implements JsonSerializable<DataLakeAnalyticsAccountPropertiesBasic> {
     /*
      * The unique identifier associated with this Data Lake Analytics account.
      */
-    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID accountId;
 
     /*
      * The provisioning status of the Data Lake Analytics account.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeAnalyticsAccountStatus provisioningState;
 
     /*
      * The state of the Data Lake Analytics account.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeAnalyticsAccountState state;
 
     /*
      * The account creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The account last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The full CName endpoint for this account.
      */
-    @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
-    /** Creates an instance of DataLakeAnalyticsAccountPropertiesBasic class. */
+    /**
+     * Creates an instance of DataLakeAnalyticsAccountPropertiesBasic class.
+     */
     public DataLakeAnalyticsAccountPropertiesBasic() {
     }
 
     /**
      * Get the accountId property: The unique identifier associated with this Data Lake Analytics account.
-     *
+     * 
      * @return the accountId value.
      */
     public UUID accountId() {
@@ -64,8 +68,19 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the accountId property: The unique identifier associated with this Data Lake Analytics account.
+     * 
+     * @param accountId the accountId value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withAccountId(UUID accountId) {
+        this.accountId = accountId;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning status of the Data Lake Analytics account.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DataLakeAnalyticsAccountStatus provisioningState() {
@@ -73,8 +88,19 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the provisioningState property: The provisioning status of the Data Lake Analytics account.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withProvisioningState(DataLakeAnalyticsAccountStatus provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the state property: The state of the Data Lake Analytics account.
-     *
+     * 
      * @return the state value.
      */
     public DataLakeAnalyticsAccountState state() {
@@ -82,8 +108,19 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the state property: The state of the Data Lake Analytics account.
+     * 
+     * @param state the state value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withState(DataLakeAnalyticsAccountState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Get the creationTime property: The account creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -91,8 +128,19 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the creationTime property: The account creation time.
+     * 
+     * @param creationTime the creationTime value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
      * Get the lastModifiedTime property: The account last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -100,8 +148,19 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the lastModifiedTime property: The account last modified time.
+     * 
+     * @param lastModifiedTime the lastModifiedTime value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withLastModifiedTime(OffsetDateTime lastModifiedTime) {
+        this.lastModifiedTime = lastModifiedTime;
+        return this;
+    }
+
+    /**
      * Get the endpoint property: The full CName endpoint for this account.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -109,10 +168,72 @@ public class DataLakeAnalyticsAccountPropertiesBasic {
     }
 
     /**
+     * Set the endpoint property: The full CName endpoint for this account.
+     * 
+     * @param endpoint the endpoint value to set.
+     * @return the DataLakeAnalyticsAccountPropertiesBasic object itself.
+     */
+    DataLakeAnalyticsAccountPropertiesBasic withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeAnalyticsAccountPropertiesBasic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeAnalyticsAccountPropertiesBasic if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataLakeAnalyticsAccountPropertiesBasic.
+     */
+    public static DataLakeAnalyticsAccountPropertiesBasic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeAnalyticsAccountPropertiesBasic deserializedDataLakeAnalyticsAccountPropertiesBasic
+                = new DataLakeAnalyticsAccountPropertiesBasic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountId".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.accountId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.provisioningState
+                        = DataLakeAnalyticsAccountStatus.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.state
+                        = DataLakeAnalyticsAccountState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountPropertiesBasic.endpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeAnalyticsAccountPropertiesBasic;
+        });
     }
 }

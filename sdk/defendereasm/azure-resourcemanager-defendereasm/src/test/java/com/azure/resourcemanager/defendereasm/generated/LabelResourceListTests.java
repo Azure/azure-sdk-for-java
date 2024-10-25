@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabelResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabelResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"heotusiv\",\"color\":\"v\",\"provisioningState\":\"Creating\"},\"id\":\"ihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"},{\"properties\":{\"displayName\":\"bljofxqeof\",\"color\":\"e\",\"provisioningState\":\"MigratingApplicationData\"},\"id\":\"jbasvmsmjqulngs\",\"name\":\"tnb\",\"type\":\"bkzgcwrwclx\"},{\"properties\":{\"displayName\":\"ljdousk\",\"color\":\"vkocrcjdkwtn\",\"provisioningState\":\"RunningValidations\"},\"id\":\"jbiksqrglssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"},{\"properties\":{\"displayName\":\"gxsabkyq\",\"color\":\"ujitcjcz\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"ndhkrw\",\"name\":\"d\",\"type\":\"ppdsbdkvwrwj\"}],\"nextLink\":\"usnhutje\"}")
-                .toObject(LabelResourceList.class);
+        LabelResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"heotusiv\",\"color\":\"v\",\"provisioningState\":\"Creating\"},\"id\":\"ihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"},{\"properties\":{\"displayName\":\"bljofxqeof\",\"color\":\"e\",\"provisioningState\":\"MigratingApplicationData\"},\"id\":\"jbasvmsmjqulngs\",\"name\":\"tnb\",\"type\":\"bkzgcwrwclx\"},{\"properties\":{\"displayName\":\"ljdousk\",\"color\":\"vkocrcjdkwtn\",\"provisioningState\":\"RunningValidations\"},\"id\":\"jbiksqrglssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"},{\"properties\":{\"displayName\":\"gxsabkyq\",\"color\":\"ujitcjcz\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"ndhkrw\",\"name\":\"d\",\"type\":\"ppdsbdkvwrwj\"}],\"nextLink\":\"usnhutje\"}")
+            .toObject(LabelResourceList.class);
         Assertions.assertEquals("heotusiv", model.value().get(0).displayName());
         Assertions.assertEquals("v", model.value().get(0).color());
         Assertions.assertEquals("usnhutje", model.nextLink());
@@ -25,15 +23,12 @@ public final class LabelResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabelResourceList model =
-            new LabelResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LabelResourceInner().withDisplayName("heotusiv").withColor("v"),
-                            new LabelResourceInner().withDisplayName("bljofxqeof").withColor("e"),
-                            new LabelResourceInner().withDisplayName("ljdousk").withColor("vkocrcjdkwtn"),
-                            new LabelResourceInner().withDisplayName("gxsabkyq").withColor("ujitcjcz")))
+        LabelResourceList model
+            = new LabelResourceList()
+                .withValue(Arrays.asList(new LabelResourceInner().withDisplayName("heotusiv").withColor("v"),
+                    new LabelResourceInner().withDisplayName("bljofxqeof").withColor("e"),
+                    new LabelResourceInner().withDisplayName("ljdousk").withColor("vkocrcjdkwtn"),
+                    new LabelResourceInner().withDisplayName("gxsabkyq").withColor("ujitcjcz")))
                 .withNextLink("usnhutje");
         model = BinaryData.fromObject(model).toObject(LabelResourceList.class);
         Assertions.assertEquals("heotusiv", model.value().get(0).displayName());

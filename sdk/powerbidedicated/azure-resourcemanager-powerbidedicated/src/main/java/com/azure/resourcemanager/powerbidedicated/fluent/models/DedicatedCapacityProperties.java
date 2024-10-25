@@ -5,37 +5,52 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.CapacityProvisioningState;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityAdministrators;
 import com.azure.resourcemanager.powerbidedicated.models.Mode;
 import com.azure.resourcemanager.powerbidedicated.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of Dedicated Capacity resource. */
+/**
+ * Properties of Dedicated Capacity resource.
+ */
 @Fluent
 public final class DedicatedCapacityProperties extends DedicatedCapacityMutableProperties {
     /*
      * The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource
      * provisioning.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private State state;
 
     /*
      * The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for
      * resource provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityProvisioningState provisioningState;
 
-    /** Creates an instance of DedicatedCapacityProperties class. */
+    /*
+     * Capacity name
+     */
+    private String friendlyName;
+
+    /*
+     * Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     */
+    private String tenantId;
+
+    /**
+     * Creates an instance of DedicatedCapacityProperties class.
+     */
     public DedicatedCapacityProperties() {
     }
 
     /**
      * Get the state property: The current state of PowerBI Dedicated resource. The state is to indicate more states
      * outside of resource provisioning.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -45,21 +60,45 @@ public final class DedicatedCapacityProperties extends DedicatedCapacityMutableP
     /**
      * Get the provisioningState property: The current deployment state of PowerBI Dedicated resource. The
      * provisioningState is to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CapacityProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the friendlyName property: Capacity name.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCapacityProperties withAdministration(DedicatedCapacityAdministrators administration) {
         super.withAdministration(administration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCapacityProperties withMode(Mode mode) {
         super.withMode(mode);
@@ -68,11 +107,62 @@ public final class DedicatedCapacityProperties extends DedicatedCapacityMutableP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (administration() != null) {
+            administration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("administration", administration());
+        jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCapacityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCapacityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedCapacityProperties.
+     */
+    public static DedicatedCapacityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCapacityProperties deserializedDedicatedCapacityProperties = new DedicatedCapacityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administration".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties
+                        .withAdministration(DedicatedCapacityAdministrators.fromJson(reader));
+                } else if ("mode".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties.withMode(Mode.fromString(reader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties.tenantId = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties.friendlyName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties.state = State.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDedicatedCapacityProperties.provisioningState
+                        = CapacityProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCapacityProperties;
+        });
     }
 }

@@ -6,73 +6,42 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.models.WaitStatistic;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WaitStatisticsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"startTime\":\"2021-01-16T07:41:18Z\",\"endTime\":\"2021-07-21T11:43:29Z\",\"eventName\":\"zrrjvpgly\",\"eventTypeName\":\"gkrvqeevto\",\"queryId\":1091393206697441407,\"databaseName\":\"t\",\"userId\":2510251875801272544,\"count\":7661539638900058482,\"totalTimeInMs\":2.5969741077197406},\"id\":\"zvfvaawz\",\"name\":\"adflgzu\",\"type\":\"iglaecx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"startTime\":\"2021-11-24T12:45:46Z\",\"endTime\":\"2021-09-25T00:56:36Z\",\"eventName\":\"aufactkahzovajjz\",\"eventTypeName\":\"xxpshneeku\",\"queryId\":2168665183399118168,\"databaseName\":\"qubkw\",\"userId\":3017831175252114752,\"count\":360137626592325734,\"totalTimeInMs\":54.73180858927521},\"id\":\"jbazpjuohminy\",\"name\":\"lnorwmdu\",\"type\":\"wpklvxw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WaitStatistic response = manager.waitStatistics()
+            .getWithResponse("wk", "ziycslevufuztck", "yhjtqedcgzu", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WaitStatistic response =
-            manager
-                .waitStatistics()
-                .getWithResponse("mvvhmxtdrjfuta", "oe", "jvewzcjznmwcp", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T12:45:46Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T00:56:36Z"), response.endTime());
-        Assertions.assertEquals("aufactkahzovajjz", response.eventName());
-        Assertions.assertEquals("xxpshneeku", response.eventTypeName());
-        Assertions.assertEquals(2168665183399118168L, response.queryId());
-        Assertions.assertEquals("qubkw", response.databaseName());
-        Assertions.assertEquals(3017831175252114752L, response.userId());
-        Assertions.assertEquals(360137626592325734L, response.count());
-        Assertions.assertEquals(54.73180858927521D, response.totalTimeInMs());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T07:41:18Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T11:43:29Z"), response.endTime());
+        Assertions.assertEquals("zrrjvpgly", response.eventName());
+        Assertions.assertEquals("gkrvqeevto", response.eventTypeName());
+        Assertions.assertEquals(1091393206697441407L, response.queryId());
+        Assertions.assertEquals("t", response.databaseName());
+        Assertions.assertEquals(2510251875801272544L, response.userId());
+        Assertions.assertEquals(7661539638900058482L, response.count());
+        Assertions.assertEquals(2.5969741077197406D, response.totalTimeInMs());
     }
 }

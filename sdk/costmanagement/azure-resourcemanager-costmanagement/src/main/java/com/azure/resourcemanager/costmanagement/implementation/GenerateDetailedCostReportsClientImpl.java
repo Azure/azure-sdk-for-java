@@ -46,10 +46,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @param client the instance of the service client containing this operation class.
      */
     GenerateDetailedCostReportsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GenerateDetailedCostReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GenerateDetailedCostReportsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,17 +58,14 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface GenerateDetailedCostReportsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.CostManagement/generateDetailedCostReport")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOperation(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOperation(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenerateDetailedCostReportDefinition parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -89,13 +84,11 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(
-        String scope, GenerateDetailedCostReportDefinition parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
+        GenerateDetailedCostReportDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -107,11 +100,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOperation(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.createOperation(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -132,13 +122,11 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -150,9 +138,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOperation(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOperation(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
@@ -170,19 +157,14 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the {@link PollerFlux} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    private
+        PollerFlux<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperationAsync(String scope, GenerateDetailedCostReportDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOperationWithResponseAsync(scope, parameters);
-        return this
-            .client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    this.client.getContext());
+        return this.client
+            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenerateDetailedCostReportOperationResultInner.class,
+                GenerateDetailedCostReportOperationResultInner.class, this.client.getContext());
     }
 
     /**
@@ -201,20 +183,15 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the {@link PollerFlux} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    private
+        PollerFlux<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperationAsync(String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOperationWithResponseAsync(scope, parameters, context);
-        return this
-            .client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    context);
+        return this.client
+            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenerateDetailedCostReportOperationResultInner.class,
+                GenerateDetailedCostReportOperationResultInner.class, context);
     }
 
     /**
@@ -232,8 +209,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    public
+        SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperation(String scope, GenerateDetailedCostReportDefinition parameters) {
         return this.beginCreateOperationAsync(scope, parameters).getSyncPoller();
     }
@@ -254,8 +231,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    public
+        SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperation(String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
         return this.beginCreateOperationAsync(scope, parameters, context).getSyncPoller();
     }
@@ -276,8 +253,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(
-        String scope, GenerateDetailedCostReportDefinition parameters) {
+    private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(String scope,
+        GenerateDetailedCostReportDefinition parameters) {
         return beginCreateOperationAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -298,10 +275,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
-        return beginCreateOperationAsync(scope, parameters, context)
-            .last()
+    private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context) {
+        return beginCreateOperationAsync(scope, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -320,8 +296,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateDetailedCostReportOperationResultInner createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters) {
+    public GenerateDetailedCostReportOperationResultInner createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters) {
         return createOperationAsync(scope, parameters).block();
     }
 
@@ -341,8 +317,8 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * @return the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateDetailedCostReportOperationResultInner createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
+    public GenerateDetailedCostReportOperationResultInner createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context) {
         return createOperationAsync(scope, parameters, context).block();
     }
 }

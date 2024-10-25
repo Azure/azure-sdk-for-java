@@ -29,8 +29,8 @@ public interface DeletedAccountsClient {
      *     and SKU along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountInner> getWithResponse(
-        String location, String resourceGroupName, String accountName, Context context);
+    Response<AccountInner> getWithResponse(String location, String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
@@ -74,8 +74,8 @@ public interface DeletedAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String location, String resourceGroupName, String accountName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String location, String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Deletes a Cognitive Services account from the resource group.

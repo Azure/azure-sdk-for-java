@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the user's elastic account. */
+/**
+ * Details of the user's elastic account.
+ */
 @Immutable
-public final class ElasticCloudUser {
+public final class ElasticCloudUser implements JsonSerializable<ElasticCloudUser> {
     /*
      * Email of the Elastic User Account.
      */
-    @JsonProperty(value = "emailAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String emailAddress;
 
     /*
      * User Id of the elastic account of the User.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Elastic cloud default dashboard sso URL of the Elastic user account.
      */
-    @JsonProperty(value = "elasticCloudSsoDefaultUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticCloudSsoDefaultUrl;
 
-    /** Creates an instance of ElasticCloudUser class. */
+    /**
+     * Creates an instance of ElasticCloudUser class.
+     */
     public ElasticCloudUser() {
     }
 
     /**
      * Get the emailAddress property: Email of the Elastic User Account.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -43,7 +48,7 @@ public final class ElasticCloudUser {
 
     /**
      * Get the id property: User Id of the elastic account of the User.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +57,7 @@ public final class ElasticCloudUser {
 
     /**
      * Get the elasticCloudSsoDefaultUrl property: Elastic cloud default dashboard sso URL of the Elastic user account.
-     *
+     * 
      * @return the elasticCloudSsoDefaultUrl value.
      */
     public String elasticCloudSsoDefaultUrl() {
@@ -61,9 +66,48 @@ public final class ElasticCloudUser {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticCloudUser from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticCloudUser if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticCloudUser.
+     */
+    public static ElasticCloudUser fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticCloudUser deserializedElasticCloudUser = new ElasticCloudUser();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailAddress".equals(fieldName)) {
+                    deserializedElasticCloudUser.emailAddress = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedElasticCloudUser.id = reader.getString();
+                } else if ("elasticCloudSsoDefaultUrl".equals(fieldName)) {
+                    deserializedElasticCloudUser.elasticCloudSsoDefaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticCloudUser;
+        });
     }
 }

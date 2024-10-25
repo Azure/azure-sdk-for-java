@@ -245,6 +245,7 @@
         <Class name="com.azure.core.http.policy.HttpLogOptions"/>
         <Or>
           <Method name="getAllowedHeaderNames"/>
+          <Method name="getAllowedHttpHeaderNames"/>
           <Method name="getAllowedQueryParamNames"/>
         </Or>
       </And>

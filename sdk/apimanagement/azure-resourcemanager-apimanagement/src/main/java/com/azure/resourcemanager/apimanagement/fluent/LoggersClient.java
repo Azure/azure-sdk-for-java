@@ -50,8 +50,8 @@ public interface LoggersClient {
      * @return paged Logger list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LoggerContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<LoggerContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
@@ -66,8 +66,8 @@ public interface LoggersClient {
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoggersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context);
+    LoggersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
@@ -126,13 +126,8 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoggersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        LoggerContractInner parameters,
-        String ifMatch,
-        Context context);
+    LoggersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String loggerId, LoggerContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or Updates a logger.
@@ -147,8 +142,8 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoggerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters);
+    LoggerContractInner createOrUpdate(String resourceGroupName, String serviceName, String loggerId,
+        LoggerContractInner parameters);
 
     /**
      * Updates an existing logger.
@@ -166,13 +161,8 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoggersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters,
-        Context context);
+    LoggersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch, LoggerUpdateContract parameters, Context context);
 
     /**
      * Updates an existing logger.
@@ -189,8 +179,8 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoggerContractInner update(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch, LoggerUpdateContract parameters);
+    LoggerContractInner update(String resourceGroupName, String serviceName, String loggerId, String ifMatch,
+        LoggerUpdateContract parameters);
 
     /**
      * Deletes the specified logger.
@@ -207,8 +197,8 @@ public interface LoggersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String loggerId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified logger.

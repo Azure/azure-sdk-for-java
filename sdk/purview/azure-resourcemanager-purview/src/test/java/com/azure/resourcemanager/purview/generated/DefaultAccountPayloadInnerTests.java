@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultAccountPayloadInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultAccountPayloadInner model =
-            BinaryData
-                .fromString(
-                    "{\"accountName\":\"gwdslfhotwm\",\"resourceGroupName\":\"npwlbjnpg\",\"scope\":\"ftadehxnltyfs\",\"scopeTenantId\":\"pusuesn\",\"scopeType\":\"Tenant\",\"subscriptionId\":\"jbavorxzdm\"}")
-                .toObject(DefaultAccountPayloadInner.class);
-        Assertions.assertEquals("gwdslfhotwm", model.accountName());
-        Assertions.assertEquals("npwlbjnpg", model.resourceGroupName());
-        Assertions.assertEquals("ftadehxnltyfs", model.scope());
-        Assertions.assertEquals("pusuesn", model.scopeTenantId());
+        DefaultAccountPayloadInner model = BinaryData.fromString(
+            "{\"accountName\":\"hxepcyvahfnlj\",\"resourceGroupName\":\"qxj\",\"scope\":\"ujqgidok\",\"scopeTenantId\":\"ljyoxgvcltb\",\"scopeType\":\"Tenant\",\"subscriptionId\":\"ghkjeszzhbi\"}")
+            .toObject(DefaultAccountPayloadInner.class);
+        Assertions.assertEquals("hxepcyvahfnlj", model.accountName());
+        Assertions.assertEquals("qxj", model.resourceGroupName());
+        Assertions.assertEquals("ujqgidok", model.scope());
+        Assertions.assertEquals("ljyoxgvcltb", model.scopeTenantId());
         Assertions.assertEquals(ScopeType.TENANT, model.scopeType());
-        Assertions.assertEquals("jbavorxzdm", model.subscriptionId());
+        Assertions.assertEquals("ghkjeszzhbi", model.subscriptionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefaultAccountPayloadInner model =
-            new DefaultAccountPayloadInner()
-                .withAccountName("gwdslfhotwm")
-                .withResourceGroupName("npwlbjnpg")
-                .withScope("ftadehxnltyfs")
-                .withScopeTenantId("pusuesn")
-                .withScopeType(ScopeType.TENANT)
-                .withSubscriptionId("jbavorxzdm");
+        DefaultAccountPayloadInner model = new DefaultAccountPayloadInner().withAccountName("hxepcyvahfnlj")
+            .withResourceGroupName("qxj")
+            .withScope("ujqgidok")
+            .withScopeTenantId("ljyoxgvcltb")
+            .withScopeType(ScopeType.TENANT)
+            .withSubscriptionId("ghkjeszzhbi");
         model = BinaryData.fromObject(model).toObject(DefaultAccountPayloadInner.class);
-        Assertions.assertEquals("gwdslfhotwm", model.accountName());
-        Assertions.assertEquals("npwlbjnpg", model.resourceGroupName());
-        Assertions.assertEquals("ftadehxnltyfs", model.scope());
-        Assertions.assertEquals("pusuesn", model.scopeTenantId());
+        Assertions.assertEquals("hxepcyvahfnlj", model.accountName());
+        Assertions.assertEquals("qxj", model.resourceGroupName());
+        Assertions.assertEquals("ujqgidok", model.scope());
+        Assertions.assertEquals("ljyoxgvcltb", model.scopeTenantId());
         Assertions.assertEquals(ScopeType.TENANT, model.scopeType());
-        Assertions.assertEquals("jbavorxzdm", model.subscriptionId());
+        Assertions.assertEquals("ghkjeszzhbi", model.subscriptionId());
     }
 }

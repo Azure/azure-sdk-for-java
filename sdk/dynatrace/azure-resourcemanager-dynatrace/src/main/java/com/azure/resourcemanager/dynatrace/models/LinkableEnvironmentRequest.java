@@ -100,22 +100,16 @@ public final class LinkableEnvironmentRequest {
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model LinkableEnvironmentRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tenantId in model LinkableEnvironmentRequest"));
         }
         if (userPrincipal() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userPrincipal in model LinkableEnvironmentRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userPrincipal in model LinkableEnvironmentRequest"));
         }
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property region in model LinkableEnvironmentRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property region in model LinkableEnvironmentRequest"));
         }
     }
 

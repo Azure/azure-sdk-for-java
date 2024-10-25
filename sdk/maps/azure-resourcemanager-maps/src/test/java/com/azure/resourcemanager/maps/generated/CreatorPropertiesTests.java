@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CreatorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreatorProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"ermclfplphoxuscr\",\"storageUnits\":1022629586}")
+        CreatorProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"ermclfplphoxuscr\",\"storageUnits\":1022629586}")
                 .toObject(CreatorProperties.class);
         Assertions.assertEquals(1022629586, model.storageUnits());
     }

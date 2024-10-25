@@ -19,6 +19,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.models.OidcTokenResponse;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -50,9 +51,6 @@ import java.net.URL;
 @Immutable
 public class AzurePipelinesCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredential.class);
-    private static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
-    private static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
-    private static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
 
@@ -79,12 +77,12 @@ public class AzurePipelinesCredential implements TokenCredential {
                     request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                     request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
                     // Prevents the service from responding with a redirect HTTP status code (useful for automation).
-                    request.setHeader(X_TFS_FED_AUTH_REDIRECT, "Suppress");
+                    request.setHeader(IdentityUtil.X_TFS_FED_AUTH_REDIRECT, "Suppress");
                     try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
                         String responseBody = response.getBodyAsBinaryData().toString();
                         if (response.getStatusCode() != 200) {
-                            String xVssHeader = response.getHeaderValue(X_VSS_E2EID);
-                            String xMsEdgeRefHeader = response.getHeaderValue(X_MSEDGE_REF);
+                            String xVssHeader = response.getHeaderValue(IdentityUtil.X_VSS_E2EID);
+                            String xMsEdgeRefHeader = response.getHeaderValue(IdentityUtil.X_MSEDGE_REF);
                             String message = "Failed to get the client assertion token "
                                 + responseBody + ".";
                             if (xVssHeader != null) {

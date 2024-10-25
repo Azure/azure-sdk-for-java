@@ -45,9 +45,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @param client the instance of the service client containing this operation class.
      */
     ExportConfigurationsClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ExportConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ExportConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,80 +57,54 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface ExportConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") ApplicationInsightsComponentExportRequest exportProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("exportId") String exportId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("exportId") String exportId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("exportId") String exportId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("exportId") String exportId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
             @PathParam("exportId") String exportId,
             @BodyParam("application/json") ApplicationInsightsComponentExportRequest exportProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -146,23 +119,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> listWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>>
+        listWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -170,17 +139,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -197,23 +157,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> listWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>>
+        listWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -221,15 +177,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, accept, context);
     }
 
     /**
@@ -244,8 +193,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> listAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> listAsync(String resourceGroupName,
+        String resourceName) {
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -262,8 +211,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ApplicationInsightsComponentExportConfigurationInner>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<List<ApplicationInsightsComponentExportConfigurationInner>>
+        listWithResponse(String resourceGroupName, String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -278,8 +227,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return a list of Continuous Export configuration of an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<ApplicationInsightsComponentExportConfigurationInner> list(
-        String resourceGroupName, String resourceName) {
+    public List<ApplicationInsightsComponentExportConfigurationInner> list(String resourceGroupName,
+        String resourceName) {
         return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
@@ -300,20 +249,16 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
         String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -327,18 +272,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            exportProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, exportProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -358,25 +293,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentExportRequest exportProperties,
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -390,16 +319,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                exportProperties,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, exportProperties, accept, context);
     }
 
     /**
@@ -415,8 +336,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return a list of Continuous Export configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> createAsync(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
+    private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> createAsync(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, exportProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -436,9 +357,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentExportRequest exportProperties,
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties,
         Context context) {
         return createWithResponseAsync(resourceGroupName, resourceName, exportProperties, context).block();
     }
@@ -456,8 +375,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return a list of Continuous Export configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<ApplicationInsightsComponentExportConfigurationInner> create(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
+    public List<ApplicationInsightsComponentExportConfigurationInner> create(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
         return createWithResponse(resourceGroupName, resourceName, exportProperties, Context.NONE).getValue();
     }
 
@@ -474,23 +393,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String exportId) {
+    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
+        deleteWithResponseAsync(String resourceGroupName, String resourceName, String exportId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -501,18 +416,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            exportId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, exportId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -530,23 +435,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
+        deleteWithResponseAsync(String resourceGroupName, String resourceName, String exportId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -557,16 +458,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                exportId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, exportId, accept, context);
     }
 
     /**
@@ -581,8 +474,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentExportConfigurationInner> deleteAsync(
-        String resourceGroupName, String resourceName, String exportId) {
+    private Mono<ApplicationInsightsComponentExportConfigurationInner> deleteAsync(String resourceGroupName,
+        String resourceName, String exportId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, exportId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -600,8 +493,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentExportConfigurationInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
+    public Response<ApplicationInsightsComponentExportConfigurationInner> deleteWithResponse(String resourceGroupName,
+        String resourceName, String exportId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, exportId, context).block();
     }
 
@@ -617,8 +510,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentExportConfigurationInner delete(
-        String resourceGroupName, String resourceName, String exportId) {
+    public ApplicationInsightsComponentExportConfigurationInner delete(String resourceGroupName, String resourceName,
+        String exportId) {
         return deleteWithResponse(resourceGroupName, resourceName, exportId, Context.NONE).getValue();
     }
 
@@ -635,23 +528,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String exportId) {
+    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName, String exportId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -662,18 +551,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            exportId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, exportId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -691,23 +570,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName, String exportId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -718,16 +593,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                exportId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, exportId, accept, context);
     }
 
     /**
@@ -742,8 +609,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return the Continuous Export configuration for this export id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentExportConfigurationInner> getAsync(
-        String resourceGroupName, String resourceName, String exportId) {
+    private Mono<ApplicationInsightsComponentExportConfigurationInner> getAsync(String resourceGroupName,
+        String resourceName, String exportId) {
         return getWithResponseAsync(resourceGroupName, resourceName, exportId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -761,8 +628,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return the Continuous Export configuration for this export id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentExportConfigurationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
+    public Response<ApplicationInsightsComponentExportConfigurationInner> getWithResponse(String resourceGroupName,
+        String resourceName, String exportId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, exportId, context).block();
     }
 
@@ -778,8 +645,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return the Continuous Export configuration for this export id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentExportConfigurationInner get(
-        String resourceGroupName, String resourceName, String exportId) {
+    public ApplicationInsightsComponentExportConfigurationInner get(String resourceGroupName, String resourceName,
+        String exportId) {
         return getWithResponse(resourceGroupName, resourceName, exportId, Context.NONE).getValue();
     }
 
@@ -798,25 +665,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
+        String resourceGroupName, String resourceName, String exportId,
         ApplicationInsightsComponentExportRequest exportProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -833,19 +694,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            exportId,
-                            exportProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, exportId, exportProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -865,26 +715,19 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties,
-        Context context) {
+        String resourceGroupName, String resourceName, String exportId,
+        ApplicationInsightsComponentExportRequest exportProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -901,17 +744,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                exportId,
-                exportProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, exportId, exportProperties, accept, context);
     }
 
     /**
@@ -927,11 +761,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentExportConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties) {
+    private Mono<ApplicationInsightsComponentExportConfigurationInner> updateAsync(String resourceGroupName,
+        String resourceName, String exportId, ApplicationInsightsComponentExportRequest exportProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, exportId, exportProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -950,11 +781,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentExportConfigurationInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties,
+    public Response<ApplicationInsightsComponentExportConfigurationInner> updateWithResponse(String resourceGroupName,
+        String resourceName, String exportId, ApplicationInsightsComponentExportRequest exportProperties,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, exportId, exportProperties, context).block();
     }
@@ -972,11 +800,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @return properties that define a Continuous Export configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentExportConfigurationInner update(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties) {
+    public ApplicationInsightsComponentExportConfigurationInner update(String resourceGroupName, String resourceName,
+        String exportId, ApplicationInsightsComponentExportRequest exportProperties) {
         return updateWithResponse(resourceGroupName, resourceName, exportId, exportProperties, Context.NONE).getValue();
     }
 }

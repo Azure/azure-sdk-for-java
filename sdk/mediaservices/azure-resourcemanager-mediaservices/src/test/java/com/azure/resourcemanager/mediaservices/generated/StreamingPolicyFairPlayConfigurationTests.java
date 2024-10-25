@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPolicyFairPlayConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPolicyFairPlayConfiguration model =
-            BinaryData
-                .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"tppjflcx\",\"allowPersistentLicense\":true}")
-                .toObject(StreamingPolicyFairPlayConfiguration.class);
+        StreamingPolicyFairPlayConfiguration model = BinaryData
+            .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"tppjflcx\",\"allowPersistentLicense\":true}")
+            .toObject(StreamingPolicyFairPlayConfiguration.class);
         Assertions.assertEquals("tppjflcx", model.customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals(true, model.allowPersistentLicense());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPolicyFairPlayConfiguration model =
-            new StreamingPolicyFairPlayConfiguration()
-                .withCustomLicenseAcquisitionUrlTemplate("tppjflcx")
+        StreamingPolicyFairPlayConfiguration model
+            = new StreamingPolicyFairPlayConfiguration().withCustomLicenseAcquisitionUrlTemplate("tppjflcx")
                 .withAllowPersistentLicense(true);
         model = BinaryData.fromObject(model).toObject(StreamingPolicyFairPlayConfiguration.class);
         Assertions.assertEquals("tppjflcx", model.customLicenseAcquisitionUrlTemplate());

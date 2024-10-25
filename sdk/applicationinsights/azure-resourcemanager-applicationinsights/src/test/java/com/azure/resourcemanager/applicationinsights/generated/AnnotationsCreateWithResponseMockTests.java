@@ -32,50 +32,35 @@ public final class AnnotationsCreateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "[{\"AnnotationName\":\"jjklff\",\"Category\":\"ouw\",\"EventTime\":\"2021-02-08T18:01:31Z\",\"Id\":\"rfzeey\",\"Properties\":\"izikayuhq\",\"RelatedAnnotation\":\"jbsybbqw\"},{\"AnnotationName\":\"t\",\"Category\":\"gmfpgvmp\",\"EventTime\":\"2021-10-24T06:37:57Z\",\"Id\":\"ltha\",\"Properties\":\"x\",\"RelatedAnnotation\":\"mwutwbdsre\"},{\"AnnotationName\":\"drhneuyow\",\"Category\":\"d\",\"EventTime\":\"2021-09-27T03:48:20Z\",\"Id\":\"sibircgpi\",\"Properties\":\"zimejzanlfzx\",\"RelatedAnnotation\":\"vrmbzono\"},{\"AnnotationName\":\"xrjqcirgzpfrlazs\",\"Category\":\"nwoiind\",\"EventTime\":\"2020-12-22T05:34:35Z\",\"Id\":\"jylwbtlhflsj\",\"Properties\":\"hszfjvfb\",\"RelatedAnnotation\":\"feljagrqm\"}]";
+        String responseStr
+            = "[{\"AnnotationName\":\"jjklff\",\"Category\":\"ouw\",\"EventTime\":\"2021-02-08T18:01:31Z\",\"Id\":\"rfzeey\",\"Properties\":\"izikayuhq\",\"RelatedAnnotation\":\"jbsybbqw\"},{\"AnnotationName\":\"t\",\"Category\":\"gmfpgvmp\",\"EventTime\":\"2021-10-24T06:37:57Z\",\"Id\":\"ltha\",\"Properties\":\"x\",\"RelatedAnnotation\":\"mwutwbdsre\"},{\"AnnotationName\":\"drhneuyow\",\"Category\":\"d\",\"EventTime\":\"2021-09-27T03:48:20Z\",\"Id\":\"sibircgpi\",\"Properties\":\"zimejzanlfzx\",\"RelatedAnnotation\":\"vrmbzono\"},{\"AnnotationName\":\"xrjqcirgzpfrlazs\",\"Category\":\"nwoiind\",\"EventTime\":\"2020-12-22T05:34:35Z\",\"Id\":\"jylwbtlhflsj\",\"Properties\":\"hszfjvfb\",\"RelatedAnnotation\":\"feljagrqm\"}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        List<Annotation> response =
-            manager
-                .annotations()
-                .createWithResponse(
-                    "kghv",
-                    "ndzwmkrefa",
-                    new AnnotationInner()
-                        .withAnnotationName("jorwkqnyhgbij")
-                        .withCategory("ivfxzsjabibsyst")
-                        .withEventTime(OffsetDateTime.parse("2021-05-13T21:12:04Z"))
-                        .withId("djpvkvpbjxbkz")
-                        .withProperties("kd")
-                        .withRelatedAnnotation("cjabudurgkakmo"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        List<Annotation> response = manager.annotations()
+            .createWithResponse("kghv", "ndzwmkrefa",
+                new AnnotationInner().withAnnotationName("jorwkqnyhgbij")
+                    .withCategory("ivfxzsjabibsyst")
+                    .withEventTime(OffsetDateTime.parse("2021-05-13T21:12:04Z"))
+                    .withId("djpvkvpbjxbkz")
+                    .withProperties("kd")
+                    .withRelatedAnnotation("cjabudurgkakmo"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("jjklff", response.get(0).annotationName());
         Assertions.assertEquals("ouw", response.get(0).category());

@@ -17,8 +17,7 @@ public final class UsageListResultImpl implements UsageListResult {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    UsageListResultImpl(
-        UsageListResultInner innerObject,
+    UsageListResultImpl(UsageListResultInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -31,9 +30,8 @@ public final class UsageListResultImpl implements UsageListResult {
     public List<Usage> value() {
         List<UsageInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new UsageImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new UsageImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -23,7 +23,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * A type that channels synchronous receive requests to a backing asynchronous receiver client.
  */
 final class SynchronousPartitionReceiver {
-    private static final String TERMINAL_MESSAGE = "The receiver client is terminated. Re-create the client to continue receive attempt.";
+    private static final String TERMINAL_MESSAGE
+        = "The receiver client is terminated. Re-create the client to continue receive attempt.";
     private final EventHubsConsumerInstrumentation instrumentation;
     private final AtomicReference<Receiver> receiver = new AtomicReference<>(null);
 
@@ -87,11 +88,13 @@ final class SynchronousPartitionReceiver {
             // Decorates the provided 'toDecorate' flux for tracing the signals (events, termination) it produces.
             return instrumentation.syncReceive(toDecorate, partitionId);
         });
-        return new WindowedSubscriber<>(Collections.singletonMap(PARTITION_ID_KEY, partitionId), TERMINAL_MESSAGE, options);
+        return new WindowedSubscriber<>(Collections.singletonMap(PARTITION_ID_KEY, partitionId), TERMINAL_MESSAGE,
+            options);
     }
 
     private interface Receiver {
-        Receiver DISPOSED = (partitionId, startingPosition, receiveOptions) -> Flux.error(new RuntimeException(TERMINAL_MESSAGE));
+        Receiver DISPOSED
+            = (partitionId, startingPosition, receiveOptions) -> Flux.error(new RuntimeException(TERMINAL_MESSAGE));
 
         Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition, ReceiveOptions receiveOptions);
     }
@@ -104,7 +107,8 @@ final class SynchronousPartitionReceiver {
         }
 
         @Override
-        public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition, ReceiveOptions receiveOptions) {
+        public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition,
+            ReceiveOptions receiveOptions) {
             assert client.isV2();
             return client.receiveFromPartition(partitionId, startingPosition, receiveOptions);
         }

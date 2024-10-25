@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Provides information about an Azure data center location. */
+/**
+ * Provides information about an Azure data center location.
+ */
 @Fluent
-public final class LocationInner {
+public final class LocationInner implements JsonSerializable<LocationInner> {
     /*
      * Specifies the resource identifier of the location.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Specifies the name of the location. Use List Locations to get all supported locations.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the type of the location.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * location properties
      */
-    @JsonProperty(value = "properties")
     private LocationProperties innerProperties;
 
-    /** Creates an instance of LocationInner class. */
+    /**
+     * Creates an instance of LocationInner class.
+     */
     public LocationInner() {
     }
 
     /**
      * Get the id property: Specifies the resource identifier of the location.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class LocationInner {
 
     /**
      * Set the id property: Specifies the resource identifier of the location.
-     *
+     * 
      * @param id the id value to set.
      * @return the LocationInner object itself.
      */
@@ -61,7 +65,7 @@ public final class LocationInner {
 
     /**
      * Get the name property: Specifies the name of the location. Use List Locations to get all supported locations.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class LocationInner {
 
     /**
      * Set the name property: Specifies the name of the location. Use List Locations to get all supported locations.
-     *
+     * 
      * @param name the name value to set.
      * @return the LocationInner object itself.
      */
@@ -81,7 +85,7 @@ public final class LocationInner {
 
     /**
      * Get the type property: Specifies the type of the location.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +94,7 @@ public final class LocationInner {
 
     /**
      * Set the type property: Specifies the type of the location.
-     *
+     * 
      * @param type the type value to set.
      * @return the LocationInner object itself.
      */
@@ -101,7 +105,7 @@ public final class LocationInner {
 
     /**
      * Get the innerProperties property: location properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LocationProperties innerProperties() {
@@ -110,7 +114,7 @@ public final class LocationInner {
 
     /**
      * Get the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the recipientName value.
      */
     public String recipientName() {
@@ -119,7 +123,7 @@ public final class LocationInner {
 
     /**
      * Set the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param recipientName the recipientName value to set.
      * @return the LocationInner object itself.
      */
@@ -134,7 +138,7 @@ public final class LocationInner {
     /**
      * Get the streetAddress1 property: The first line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
@@ -144,7 +148,7 @@ public final class LocationInner {
     /**
      * Set the streetAddress1 property: The first line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @param streetAddress1 the streetAddress1 value to set.
      * @return the LocationInner object itself.
      */
@@ -159,7 +163,7 @@ public final class LocationInner {
     /**
      * Get the streetAddress2 property: The second line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
@@ -169,7 +173,7 @@ public final class LocationInner {
     /**
      * Set the streetAddress2 property: The second line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @param streetAddress2 the streetAddress2 value to set.
      * @return the LocationInner object itself.
      */
@@ -183,7 +187,7 @@ public final class LocationInner {
 
     /**
      * Get the city property: The city name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -192,7 +196,7 @@ public final class LocationInner {
 
     /**
      * Set the city property: The city name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param city the city value to set.
      * @return the LocationInner object itself.
      */
@@ -206,7 +210,7 @@ public final class LocationInner {
 
     /**
      * Get the stateOrProvince property: The state or province to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
@@ -215,7 +219,7 @@ public final class LocationInner {
 
     /**
      * Set the stateOrProvince property: The state or province to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param stateOrProvince the stateOrProvince value to set.
      * @return the LocationInner object itself.
      */
@@ -229,7 +233,7 @@ public final class LocationInner {
 
     /**
      * Get the postalCode property: The postal code to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -238,7 +242,7 @@ public final class LocationInner {
 
     /**
      * Set the postalCode property: The postal code to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the LocationInner object itself.
      */
@@ -252,7 +256,7 @@ public final class LocationInner {
 
     /**
      * Get the countryOrRegion property: The country or region to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -261,7 +265,7 @@ public final class LocationInner {
 
     /**
      * Set the countryOrRegion property: The country or region to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the LocationInner object itself.
      */
@@ -275,7 +279,7 @@ public final class LocationInner {
 
     /**
      * Get the phone property: The phone number for the Azure data center.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -284,7 +288,7 @@ public final class LocationInner {
 
     /**
      * Set the phone property: The phone number for the Azure data center.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the LocationInner object itself.
      */
@@ -299,7 +303,7 @@ public final class LocationInner {
     /**
      * Get the additionalShippingInformation property: Additional shipping information for customer, specific to
      * datacenter to which customer should send their disks.
-     *
+     * 
      * @return the additionalShippingInformation value.
      */
     public String additionalShippingInformation() {
@@ -309,7 +313,7 @@ public final class LocationInner {
     /**
      * Set the additionalShippingInformation property: Additional shipping information for customer, specific to
      * datacenter to which customer should send their disks.
-     *
+     * 
      * @param additionalShippingInformation the additionalShippingInformation value to set.
      * @return the LocationInner object itself.
      */
@@ -323,7 +327,7 @@ public final class LocationInner {
 
     /**
      * Get the supportedCarriers property: A list of carriers that are supported at this location.
-     *
+     * 
      * @return the supportedCarriers value.
      */
     public List<String> supportedCarriers() {
@@ -332,7 +336,7 @@ public final class LocationInner {
 
     /**
      * Set the supportedCarriers property: A list of carriers that are supported at this location.
-     *
+     * 
      * @param supportedCarriers the supportedCarriers value to set.
      * @return the LocationInner object itself.
      */
@@ -348,7 +352,7 @@ public final class LocationInner {
      * Get the alternateLocations property: A list of location IDs that should be used to ship shipping drives to for
      * jobs created against the current location. If the current location is active, it will be part of the list. If it
      * is temporarily closed due to maintenance, this list may contain other locations.
-     *
+     * 
      * @return the alternateLocations value.
      */
     public List<String> alternateLocations() {
@@ -359,7 +363,7 @@ public final class LocationInner {
      * Set the alternateLocations property: A list of location IDs that should be used to ship shipping drives to for
      * jobs created against the current location. If the current location is active, it will be part of the list. If it
      * is temporarily closed due to maintenance, this list may contain other locations.
-     *
+     * 
      * @param alternateLocations the alternateLocations value to set.
      * @return the LocationInner object itself.
      */
@@ -373,12 +377,57 @@ public final class LocationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationInner.
+     */
+    public static LocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationInner deserializedLocationInner = new LocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLocationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLocationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLocationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLocationInner.innerProperties = LocationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationInner;
+        });
     }
 }

@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.ImageFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JpgFormat", value = JpgFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.PngFormat", value = PngFormat.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.PngFormat", value = PngFormat.class) })
 @Fluent
 public class ImageFormat extends Format {
     /** Creates an instance of ImageFormat class. */

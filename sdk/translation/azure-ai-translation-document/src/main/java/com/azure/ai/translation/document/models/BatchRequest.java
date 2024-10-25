@@ -5,35 +5,35 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Definition for the input batch translation request.
  */
 @Fluent
-public final class BatchRequest {
+public final class BatchRequest implements JsonSerializable<BatchRequest> {
 
     /*
      * Source of the input documents
      */
     @Generated
-    @JsonProperty(value = "source")
     private final SourceInput source;
 
     /*
      * Location of the destination for the output
      */
     @Generated
-    @JsonProperty(value = "targets")
     private final List<TargetInput> targets;
 
     /*
      * Storage type of the input documents source string
      */
     @Generated
-    @JsonProperty(value = "storageType")
     private StorageInputType storageType;
 
     /**
@@ -43,9 +43,7 @@ public final class BatchRequest {
      * @param targets the targets value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchRequest(@JsonProperty(value = "source") SourceInput source,
-        @JsonProperty(value = "targets") List<TargetInput> targets) {
+    public BatchRequest(SourceInput source, List<TargetInput> targets) {
         this.source = source;
         this.targets = targets;
     }
@@ -90,5 +88,52 @@ public final class BatchRequest {
     public BatchRequest setStorageType(StorageInputType storageType) {
         this.storageType = storageType;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchRequest.
+     */
+    @Generated
+    public static BatchRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceInput source = null;
+            List<TargetInput> targets = null;
+            StorageInputType storageType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("source".equals(fieldName)) {
+                    source = SourceInput.fromJson(reader);
+                } else if ("targets".equals(fieldName)) {
+                    targets = reader.readArray(reader1 -> TargetInput.fromJson(reader1));
+                } else if ("storageType".equals(fieldName)) {
+                    storageType = StorageInputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchRequest deserializedBatchRequest = new BatchRequest(source, targets);
+            deserializedBatchRequest.storageType = storageType;
+            return deserializedBatchRequest;
+        });
     }
 }

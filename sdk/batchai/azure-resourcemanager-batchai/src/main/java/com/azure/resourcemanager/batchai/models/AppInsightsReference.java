@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Azure Application Insights information for performance counters reporting. */
 @Fluent
 public final class AppInsightsReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppInsightsReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AppInsightsReference.class);
 
     /*
      * Azure Application Insights component resource ID.
@@ -91,8 +92,8 @@ public final class AppInsightsReference {
      * @param instrumentationKeySecretReference the instrumentationKeySecretReference value to set.
      * @return the AppInsightsReference object itself.
      */
-    public AppInsightsReference withInstrumentationKeySecretReference(
-        KeyVaultSecretReference instrumentationKeySecretReference) {
+    public AppInsightsReference
+        withInstrumentationKeySecretReference(KeyVaultSecretReference instrumentationKeySecretReference) {
         this.instrumentationKeySecretReference = instrumentationKeySecretReference;
         return this;
     }
@@ -104,9 +105,8 @@ public final class AppInsightsReference {
      */
     public void validate() {
         if (component() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property component in model AppInsightsReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property component in model AppInsightsReference"));
         } else {
             component().validate();
         }

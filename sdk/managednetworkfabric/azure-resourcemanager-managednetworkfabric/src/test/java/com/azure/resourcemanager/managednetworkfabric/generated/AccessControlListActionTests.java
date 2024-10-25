@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlListActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControlListAction model =
-            BinaryData
-                .fromString("{\"type\":\"Drop\",\"counterName\":\"winhehfqpo\"}")
-                .toObject(AccessControlListAction.class);
+        AccessControlListAction model = BinaryData.fromString("{\"type\":\"Drop\",\"counterName\":\"winhehfqpo\"}")
+            .toObject(AccessControlListAction.class);
         Assertions.assertEquals(AclActionType.DROP, model.type());
         Assertions.assertEquals("winhehfqpo", model.counterName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListAction model =
-            new AccessControlListAction().withType(AclActionType.DROP).withCounterName("winhehfqpo");
+        AccessControlListAction model
+            = new AccessControlListAction().withType(AclActionType.DROP).withCounterName("winhehfqpo");
         model = BinaryData.fromObject(model).toObject(AccessControlListAction.class);
         Assertions.assertEquals(AclActionType.DROP, model.type());
         Assertions.assertEquals("winhehfqpo", model.counterName());

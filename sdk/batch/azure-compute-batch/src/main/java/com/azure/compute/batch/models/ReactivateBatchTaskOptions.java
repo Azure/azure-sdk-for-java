@@ -35,5 +35,4 @@ public class ReactivateBatchTaskOptions extends BatchBaseOptions {
         return this;
     }
 
-
 }

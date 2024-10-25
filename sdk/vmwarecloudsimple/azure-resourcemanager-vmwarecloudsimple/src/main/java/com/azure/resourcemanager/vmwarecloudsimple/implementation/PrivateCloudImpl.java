@@ -24,8 +24,7 @@ public final class PrivateCloudImpl implements PrivateCloud {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    PrivateCloudImpl(
-        PrivateCloudInner innerObject,
+    PrivateCloudImpl(PrivateCloudInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -99,12 +98,9 @@ public final class PrivateCloudImpl implements PrivateCloud {
     public List<ResourcePool> resourcePools() {
         List<ResourcePoolInner> inner = this.innerModel().resourcePools();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ResourcePoolImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ResourcePoolImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -149,12 +145,9 @@ public final class PrivateCloudImpl implements PrivateCloud {
     public List<VirtualMachineTemplate> virtualMachineTemplates() {
         List<VirtualMachineTemplateInner> inner = this.innerModel().virtualMachineTemplates();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -163,12 +156,9 @@ public final class PrivateCloudImpl implements PrivateCloud {
     public List<VirtualNetwork> virtualNetworks() {
         List<VirtualNetworkInner> inner = this.innerModel().virtualNetworks();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNetworkImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new VirtualNetworkImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

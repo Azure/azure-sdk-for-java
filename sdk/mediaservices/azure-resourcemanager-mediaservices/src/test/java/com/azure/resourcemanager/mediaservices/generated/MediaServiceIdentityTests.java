@@ -14,20 +14,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MediaServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MediaServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"qjqabcypmivkwl\",\"principalId\":\"a55eb1ba-077c-4c10-bdf5-fee3de755d37\",\"tenantId\":\"c6587608-fedb-4a8a-8730-0fefc209bdb3\",\"userAssignedIdentities\":{\"nfnbacfionlebxe\":{\"clientId\":\"8f741151-f5d3-4373-9827-f9d180571118\",\"principalId\":\"4b30cea5-74e4-41a4-8a09-85cb7083f2b3\"}}}")
-                .toObject(MediaServiceIdentity.class);
+        MediaServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"qjqabcypmivkwl\",\"principalId\":\"a55eb1ba-077c-4c10-bdf5-fee3de755d37\",\"tenantId\":\"c6587608-fedb-4a8a-8730-0fefc209bdb3\",\"userAssignedIdentities\":{\"nfnbacfionlebxe\":{\"clientId\":\"8f741151-f5d3-4373-9827-f9d180571118\",\"principalId\":\"4b30cea5-74e4-41a4-8a09-85cb7083f2b3\"}}}")
+            .toObject(MediaServiceIdentity.class);
         Assertions.assertEquals("qjqabcypmivkwl", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MediaServiceIdentity model =
-            new MediaServiceIdentity()
-                .withType("qjqabcypmivkwl")
-                .withUserAssignedIdentities(mapOf("nfnbacfionlebxe", new UserAssignedManagedIdentity()));
+        MediaServiceIdentity model = new MediaServiceIdentity().withType("qjqabcypmivkwl")
+            .withUserAssignedIdentities(mapOf("nfnbacfionlebxe", new UserAssignedManagedIdentity()));
         model = BinaryData.fromObject(model).toObject(MediaServiceIdentity.class);
         Assertions.assertEquals("qjqabcypmivkwl", model.type());
     }

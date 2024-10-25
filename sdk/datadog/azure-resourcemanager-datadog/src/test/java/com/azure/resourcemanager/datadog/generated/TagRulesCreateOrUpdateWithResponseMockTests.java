@@ -36,81 +36,42 @@ public final class TagRulesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"nayqi\",\"value\":\"nduhavhqlkthum\",\"action\":\"Exclude\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"cdui\",\"value\":\"tgccymvaolpss\",\"action\":\"Exclude\"},{\"name\":\"mmdnbbglzps\",\"value\":\"ydmcwyhzdxssa\",\"action\":\"Exclude\"}]},\"automuting\":true},\"id\":\"dfznudaodv\",\"name\":\"zbn\",\"type\":\"blylpstdbh\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"nayqi\",\"value\":\"nduhavhqlkthum\",\"action\":\"Exclude\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"cdui\",\"value\":\"tgccymvaolpss\",\"action\":\"Exclude\"},{\"name\":\"mmdnbbglzps\",\"value\":\"ydmcwyhzdxssa\",\"action\":\"Exclude\"}]},\"automuting\":true},\"id\":\"dfznudaodv\",\"name\":\"zbn\",\"type\":\"blylpstdbh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MicrosoftDatadogManager manager =
-            MicrosoftDatadogManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MicrosoftDatadogManager manager = MicrosoftDatadogManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MonitoringTagRules response =
-            manager
-                .tagRules()
-                .define("qzvszjf")
-                .withExistingMonitor("xjyngudivk", "tswb")
-                .withProperties(
-                    new MonitoringTagRulesProperties()
-                        .withLogRules(
-                            new LogRules()
-                                .withSendAadLogs(false)
-                                .withSendSubscriptionLogs(false)
-                                .withSendResourceLogs(false)
-                                .withFilteringTags(
-                                    Arrays
-                                        .asList(
-                                            new FilteringTag()
-                                                .withName("cqaqtdoqmcbx")
-                                                .withValue("vxysl")
-                                                .withAction(TagAction.EXCLUDE),
-                                            new FilteringTag()
-                                                .withName("fxoblytkb")
-                                                .withValue("pe")
-                                                .withAction(TagAction.EXCLUDE),
-                                            new FilteringTag()
-                                                .withName("bkrvrnsvshqj")
-                                                .withValue("xc")
-                                                .withAction(TagAction.EXCLUDE))))
-                        .withMetricRules(
-                            new MetricRules()
-                                .withFilteringTags(
-                                    Arrays
-                                        .asList(
-                                            new FilteringTag()
-                                                .withName("srruvwbhsqfsubcg")
-                                                .withValue("irx")
-                                                .withAction(TagAction.EXCLUDE),
-                                            new FilteringTag()
-                                                .withName("srfbjfdtwss")
-                                                .withValue("ftpvjzbexil")
-                                                .withAction(TagAction.INCLUDE),
-                                            new FilteringTag()
-                                                .withName("qqnvwpmq")
-                                                .withValue("ruoujmk")
-                                                .withAction(TagAction.INCLUDE))))
-                        .withAutomuting(true))
-                .create();
+        MonitoringTagRules response = manager.tagRules()
+            .define("qzvszjf")
+            .withExistingMonitor("xjyngudivk", "tswb")
+            .withProperties(new MonitoringTagRulesProperties()
+                .withLogRules(new LogRules().withSendAadLogs(false)
+                    .withSendSubscriptionLogs(false)
+                    .withSendResourceLogs(false)
+                    .withFilteringTags(Arrays.asList(
+                        new FilteringTag().withName("cqaqtdoqmcbx").withValue("vxysl").withAction(TagAction.EXCLUDE),
+                        new FilteringTag().withName("fxoblytkb").withValue("pe").withAction(TagAction.EXCLUDE),
+                        new FilteringTag().withName("bkrvrnsvshqj").withValue("xc").withAction(TagAction.EXCLUDE))))
+                .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("srruvwbhsqfsubcg").withValue("irx").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("srfbjfdtwss").withValue("ftpvjzbexil").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("qqnvwpmq").withValue("ruoujmk").withAction(TagAction.INCLUDE))))
+                .withAutomuting(true))
+            .create();
 
         Assertions.assertEquals(true, response.properties().logRules().sendAadLogs());
         Assertions.assertEquals(false, response.properties().logRules().sendSubscriptionLogs());

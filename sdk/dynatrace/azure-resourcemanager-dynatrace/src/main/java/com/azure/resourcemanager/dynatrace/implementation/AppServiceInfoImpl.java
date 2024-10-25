@@ -17,8 +17,8 @@ public final class AppServiceInfoImpl implements AppServiceInfo {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    AppServiceInfoImpl(
-        AppServiceInfoInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    AppServiceInfoImpl(AppServiceInfoInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

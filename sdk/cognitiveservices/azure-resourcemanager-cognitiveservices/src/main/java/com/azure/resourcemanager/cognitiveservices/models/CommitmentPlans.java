@@ -50,8 +50,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified commitmentPlans associated with the Cognitive Services account along with {@link Response}.
      */
-    Response<CommitmentPlan> getWithResponse(
-        String resourceGroupName, String accountName, String commitmentPlanName, Context context);
+    Response<CommitmentPlan> getWithResponse(String resourceGroupName, String accountName, String commitmentPlanName,
+        Context context);
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
@@ -79,12 +79,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account commitment plan along with {@link Response}.
      */
-    Response<CommitmentPlan> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String commitmentPlanName,
-        CommitmentPlanInner commitmentPlan,
-        Context context);
+    Response<CommitmentPlan> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context);
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
@@ -98,8 +94,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account commitment plan.
      */
-    CommitmentPlan createOrUpdate(
-        String resourceGroupName, String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan);
+    CommitmentPlan createOrUpdate(String resourceGroupName, String accountName, String commitmentPlanName,
+        CommitmentPlanInner commitmentPlan);
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
@@ -160,8 +156,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account commitment plan along with {@link Response}.
      */
-    Response<CommitmentPlan> getByResourceGroupWithResponse(
-        String resourceGroupName, String commitmentPlanName, Context context);
+    Response<CommitmentPlan> getByResourceGroupWithResponse(String resourceGroupName, String commitmentPlanName,
+        Context context);
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
@@ -233,8 +229,8 @@ public interface CommitmentPlans {
      * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<CommitmentPlanAccountAssociation> listAssociations(
-        String resourceGroupName, String commitmentPlanName);
+    PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
+        String commitmentPlanName);
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
@@ -248,8 +244,8 @@ public interface CommitmentPlans {
      * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<CommitmentPlanAccountAssociation> listAssociations(
-        String resourceGroupName, String commitmentPlanName, Context context);
+    PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
+        String commitmentPlanName, Context context);
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
@@ -264,8 +260,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the association of the Cognitive Services commitment plan along with {@link Response}.
      */
-    Response<CommitmentPlanAccountAssociation> getAssociationWithResponse(
-        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context);
+    Response<CommitmentPlanAccountAssociation> getAssociationWithResponse(String resourceGroupName,
+        String commitmentPlanName, String commitmentPlanAssociationName, Context context);
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
@@ -279,8 +275,8 @@ public interface CommitmentPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the association of the Cognitive Services commitment plan.
      */
-    CommitmentPlanAccountAssociation getAssociation(
-        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName);
+    CommitmentPlanAccountAssociation getAssociation(String resourceGroupName, String commitmentPlanName,
+        String commitmentPlanAssociationName);
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
@@ -307,8 +303,8 @@ public interface CommitmentPlans {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteAssociation(
-        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context);
+    void deleteAssociation(String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName,
+        Context context);
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.

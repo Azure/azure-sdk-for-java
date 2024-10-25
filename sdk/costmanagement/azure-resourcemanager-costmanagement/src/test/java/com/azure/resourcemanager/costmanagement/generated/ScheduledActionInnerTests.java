@@ -22,11 +22,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledActionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledActionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"yajguqfhwygzlv\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"mdwzrmuhapfcqdps\",\"xqv\",\"svuo\",\"mgccelvezrypq\"],\"language\":\"feo\",\"message\":\"rqwky\",\"regionalFormat\":\"ob\",\"subject\":\"pg\"},\"notificationEmail\":\"dkow\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":1181532095,\"daysOfWeek\":[\"Wednesday\"],\"weeksOfMonth\":[\"Third\",\"Third\"],\"dayOfMonth\":2104767633,\"startDate\":\"2021-10-14T17:11:50Z\",\"endDate\":\"2021-02-04T16:35:40Z\"},\"scope\":\"vcdwxlpqekftn\",\"status\":\"Enabled\",\"viewId\":\"tjsyin\"},\"eTag\":\"fq\",\"kind\":\"Email\",\"id\":\"dhtmdvypgikd\",\"name\":\"szywkbirryu\",\"type\":\"hlhkjoqrvqqaatj\"}")
-                .toObject(ScheduledActionInner.class);
+        ScheduledActionInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"yajguqfhwygzlv\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"mdwzrmuhapfcqdps\",\"xqv\",\"svuo\",\"mgccelvezrypq\"],\"language\":\"feo\",\"message\":\"rqwky\",\"regionalFormat\":\"ob\",\"subject\":\"pg\"},\"notificationEmail\":\"dkow\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":1181532095,\"daysOfWeek\":[\"Wednesday\"],\"weeksOfMonth\":[\"Third\",\"Third\"],\"dayOfMonth\":2104767633,\"startDate\":\"2021-10-14T17:11:50Z\",\"endDate\":\"2021-02-04T16:35:40Z\"},\"scope\":\"vcdwxlpqekftn\",\"status\":\"Enabled\",\"viewId\":\"tjsyin\"},\"eTag\":\"fq\",\"kind\":\"Email\",\"id\":\"dhtmdvypgikd\",\"name\":\"szywkbirryu\",\"type\":\"hlhkjoqrvqqaatj\"}")
+            .toObject(ScheduledActionInner.class);
         Assertions.assertEquals(ScheduledActionKind.EMAIL, model.kind());
         Assertions.assertEquals("yajguqfhwygzlv", model.displayName());
         Assertions.assertEquals(FileFormat.CSV, model.fileDestination().fileFormats().get(0));
@@ -50,33 +48,27 @@ public final class ScheduledActionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionInner model =
-            new ScheduledActionInner()
-                .withKind(ScheduledActionKind.EMAIL)
-                .withDisplayName("yajguqfhwygzlv")
-                .withFileDestination(
-                    new FileDestination()
-                        .withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV, FileFormat.CSV)))
-                .withNotification(
-                    new NotificationProperties()
-                        .withTo(Arrays.asList("mdwzrmuhapfcqdps", "xqv", "svuo", "mgccelvezrypq"))
-                        .withLanguage("feo")
-                        .withMessage("rqwky")
-                        .withRegionalFormat("ob")
-                        .withSubject("pg"))
-                .withNotificationEmail("dkow")
-                .withSchedule(
-                    new ScheduleProperties()
-                        .withFrequency(ScheduleFrequency.WEEKLY)
-                        .withHourOfDay(1181532095)
-                        .withDaysOfWeek(Arrays.asList(DaysOfWeek.WEDNESDAY))
-                        .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.THIRD, WeeksOfMonth.THIRD))
-                        .withDayOfMonth(2104767633)
-                        .withStartDate(OffsetDateTime.parse("2021-10-14T17:11:50Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-02-04T16:35:40Z")))
-                .withScope("vcdwxlpqekftn")
-                .withStatus(ScheduledActionStatus.ENABLED)
-                .withViewId("tjsyin");
+        ScheduledActionInner model = new ScheduledActionInner().withKind(ScheduledActionKind.EMAIL)
+            .withDisplayName("yajguqfhwygzlv")
+            .withFileDestination(
+                new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV, FileFormat.CSV)))
+            .withNotification(
+                new NotificationProperties().withTo(Arrays.asList("mdwzrmuhapfcqdps", "xqv", "svuo", "mgccelvezrypq"))
+                    .withLanguage("feo")
+                    .withMessage("rqwky")
+                    .withRegionalFormat("ob")
+                    .withSubject("pg"))
+            .withNotificationEmail("dkow")
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.WEEKLY)
+                .withHourOfDay(1181532095)
+                .withDaysOfWeek(Arrays.asList(DaysOfWeek.WEDNESDAY))
+                .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.THIRD, WeeksOfMonth.THIRD))
+                .withDayOfMonth(2104767633)
+                .withStartDate(OffsetDateTime.parse("2021-10-14T17:11:50Z"))
+                .withEndDate(OffsetDateTime.parse("2021-02-04T16:35:40Z")))
+            .withScope("vcdwxlpqekftn")
+            .withStatus(ScheduledActionStatus.ENABLED)
+            .withViewId("tjsyin");
         model = BinaryData.fromObject(model).toObject(ScheduledActionInner.class);
         Assertions.assertEquals(ScheduledActionKind.EMAIL, model.kind());
         Assertions.assertEquals("yajguqfhwygzlv", model.displayName());

@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationStoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationStoreInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"o\":{\"principalId\":\"pjoxzjnch\",\"clientId\":\"jspodmailzyde\"}},\"principalId\":\"yahux\",\"tenantId\":\"pmqnja\"},\"properties\":{\"provisioningState\":\"Deleting\",\"creationDate\":\"2021-08-22T00:38:37Z\",\"endpoint\":\"r\",\"encryption\":{},\"privateEndpointConnections\":[{\"id\":\"tegjvwmf\",\"name\":\"t\",\"type\":\"mdvpjhulsu\"},{\"id\":\"kjozkrwfnd\",\"name\":\"djpslw\",\"type\":\"dpvwryoqpsoaccta\"},{\"id\":\"ljlahbcryf\",\"name\":\"fdosyg\",\"type\":\"paojakhmsbzjh\"}],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":656929943,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"lthqtrgqjbp\"},\"location\":\"fsinzgvfcjrwzoxx\",\"tags\":{\"eqfpj\":\"elluwfziton\",\"ninmayhuyb\":\"jlxofpdvhpfxxyp\",\"ooginuvamih\":\"kpode\",\"vyevcciqi\":\"ognarxzxtheotus\"},\"id\":\"nhungbw\",\"name\":\"zrnf\",\"type\":\"gxg\"}")
-                .toObject(ConfigurationStoreInner.class);
+        ConfigurationStoreInner model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"o\":{\"principalId\":\"pjoxzjnch\",\"clientId\":\"jspodmailzyde\"}},\"principalId\":\"yahux\",\"tenantId\":\"pmqnja\"},\"properties\":{\"provisioningState\":\"Deleting\",\"creationDate\":\"2021-08-22T00:38:37Z\",\"endpoint\":\"r\",\"encryption\":{},\"privateEndpointConnections\":[{\"id\":\"tegjvwmf\",\"name\":\"t\",\"type\":\"mdvpjhulsu\"},{\"id\":\"kjozkrwfnd\",\"name\":\"djpslw\",\"type\":\"dpvwryoqpsoaccta\"},{\"id\":\"ljlahbcryf\",\"name\":\"fdosyg\",\"type\":\"paojakhmsbzjh\"}],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":656929943,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"lthqtrgqjbp\"},\"location\":\"fsinzgvfcjrwzoxx\",\"tags\":{\"eqfpj\":\"elluwfziton\",\"ninmayhuyb\":\"jlxofpdvhpfxxyp\",\"ooginuvamih\":\"kpode\",\"vyevcciqi\":\"ognarxzxtheotus\"},\"id\":\"nhungbw\",\"name\":\"zrnf\",\"type\":\"gxg\"}")
+            .toObject(ConfigurationStoreInner.class);
         Assertions.assertEquals("fsinzgvfcjrwzoxx", model.location());
         Assertions.assertEquals("elluwfziton", model.tags().get("eqfpj"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
@@ -38,30 +36,18 @@ public final class ConfigurationStoreInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationStoreInner model =
-            new ConfigurationStoreInner()
-                .withLocation("fsinzgvfcjrwzoxx")
-                .withTags(
-                    mapOf(
-                        "eqfpj",
-                        "elluwfziton",
-                        "ninmayhuyb",
-                        "jlxofpdvhpfxxyp",
-                        "ooginuvamih",
-                        "kpode",
-                        "vyevcciqi",
-                        "ognarxzxtheotus"))
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType(IdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("o", new UserIdentity())))
-                .withSku(new Sku().withName("lthqtrgqjbp"))
-                .withEncryption(new EncryptionProperties())
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .withDisableLocalAuth(true)
-                .withSoftDeleteRetentionInDays(656929943)
-                .withEnablePurgeProtection(false)
-                .withCreateMode(CreateMode.DEFAULT);
+        ConfigurationStoreInner model = new ConfigurationStoreInner().withLocation("fsinzgvfcjrwzoxx")
+            .withTags(mapOf("eqfpj", "elluwfziton", "ninmayhuyb", "jlxofpdvhpfxxyp", "ooginuvamih", "kpode",
+                "vyevcciqi", "ognarxzxtheotus"))
+            .withIdentity(new ResourceIdentity().withType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("o", new UserIdentity())))
+            .withSku(new Sku().withName("lthqtrgqjbp"))
+            .withEncryption(new EncryptionProperties())
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withDisableLocalAuth(true)
+            .withSoftDeleteRetentionInDays(656929943)
+            .withEnablePurgeProtection(false)
+            .withCreateMode(CreateMode.DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationStoreInner.class);
         Assertions.assertEquals("fsinzgvfcjrwzoxx", model.location());
         Assertions.assertEquals("elluwfziton", model.tags().get("eqfpj"));

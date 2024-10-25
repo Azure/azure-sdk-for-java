@@ -101,16 +101,12 @@ public final class IssueCommentContractProperties {
      */
     public void validate() {
         if (text() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property text in model IssueCommentContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property text in model IssueCommentContractProperties"));
         }
         if (userId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userId in model IssueCommentContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userId in model IssueCommentContractProperties"));
         }
     }
 

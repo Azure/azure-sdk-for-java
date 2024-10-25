@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "instanceType",
     defaultImpl = DraModelCustomProperties.class)
 @JsonTypeName("DraModelCustomProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMware", value = VMwareDraModelCustomProperties.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMware", value = VMwareDraModelCustomProperties.class) })
 @Immutable
 public class DraModelCustomProperties {
     /** Creates an instance of DraModelCustomProperties class. */

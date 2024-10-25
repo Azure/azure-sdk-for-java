@@ -1,14 +1,10 @@
 # Release History
 
-## 2.44.0-beta.2 (Unreleased)
+## 2.44.0 (2024-10-25)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `beginCreate` method for `ContainerGroup`.
 
 ## 2.44.0-beta.1 (2024-10-08)
 

@@ -126,10 +126,8 @@ public final class CheckinManifestInfoInner {
      */
     public void validate() {
         if (statusMessage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property statusMessage in model CheckinManifestInfoInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property statusMessage in model CheckinManifestInfoInner"));
         }
     }
 

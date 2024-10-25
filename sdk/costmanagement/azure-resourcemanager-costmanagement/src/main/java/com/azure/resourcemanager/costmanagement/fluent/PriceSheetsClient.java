@@ -26,8 +26,8 @@ public interface PriceSheetsClient {
      * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(
-        String billingAccountName, String billingProfileName, String invoiceName);
+    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(String billingAccountName,
+        String billingProfileName, String invoiceName);
 
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
@@ -43,8 +43,8 @@ public interface PriceSheetsClient {
      * @return the {@link SyncPoller} for polling of a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context);
+    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownload(String billingAccountName,
+        String billingProfileName, String invoiceName, Context context);
 
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
@@ -75,8 +75,8 @@ public interface PriceSheetsClient {
      * @return a URL to download the pricesheet for an invoice.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DownloadUrlInner download(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context);
+    DownloadUrlInner download(String billingAccountName, String billingProfileName, String invoiceName,
+        Context context);
 
     /**
      * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
@@ -93,8 +93,8 @@ public interface PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(
-        String billingAccountName, String billingProfileName);
+    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(String billingAccountName,
+        String billingProfileName);
 
     /**
      * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for
@@ -112,8 +112,8 @@ public interface PriceSheetsClient {
      *     profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context);
+    SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadByBillingProfile(String billingAccountName,
+        String billingProfileName, Context context);
 
     /**
      * Gets a URL to download the current month's pricesheet for a billing profile. The operation is supported for

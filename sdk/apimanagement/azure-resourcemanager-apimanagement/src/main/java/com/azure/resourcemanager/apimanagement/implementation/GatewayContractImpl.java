@@ -68,24 +68,20 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
     }
 
     public GatewayContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -102,29 +98,24 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
     }
 
     public GatewayContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, updateIfMatch, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .updateWithResponse(resourceGroupName, serviceName, gatewayId, updateIfMatch, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, updateIfMatch, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .updateWithResponse(resourceGroupName, serviceName, gatewayId, updateIfMatch, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    GatewayContractImpl(
-        GatewayContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    GatewayContractImpl(GatewayContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -133,22 +124,18 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
     }
 
     public GatewayContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGateways()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGateways()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, context)
+            .getValue();
         return this;
     }
 
@@ -161,8 +148,7 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
     }
 
     public Response<Void> regenerateKeyWithResponse(GatewayKeyRegenerationRequestContract parameters, Context context) {
-        return serviceManager
-            .gateways()
+        return serviceManager.gateways()
             .regenerateKeyWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
     }
 
@@ -170,10 +156,9 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
         serviceManager.gateways().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
-    public Response<GatewayTokenContract> generateTokenWithResponse(
-        GatewayTokenRequestContract parameters, Context context) {
-        return serviceManager
-            .gateways()
+    public Response<GatewayTokenContract> generateTokenWithResponse(GatewayTokenRequestContract parameters,
+        Context context) {
+        return serviceManager.gateways()
             .generateTokenWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
     }
 

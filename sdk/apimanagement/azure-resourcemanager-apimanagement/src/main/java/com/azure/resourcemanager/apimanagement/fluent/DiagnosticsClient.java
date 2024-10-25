@@ -47,8 +47,8 @@ public interface DiagnosticsClient {
      * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DiagnosticContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<DiagnosticContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
@@ -63,8 +63,8 @@ public interface DiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context);
+    DiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
@@ -92,8 +92,8 @@ public interface DiagnosticsClient {
      * @return the details of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context);
+    DiagnosticsGetResponse getWithResponse(String resourceGroupName, String serviceName, String diagnosticId,
+        Context context);
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
@@ -124,13 +124,8 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        DiagnosticContractInner parameters,
-        String ifMatch,
-        Context context);
+    DiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, DiagnosticContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Diagnostic or updates an existing one.
@@ -145,8 +140,8 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String diagnosticId, DiagnosticContractInner parameters);
+    DiagnosticContractInner createOrUpdate(String resourceGroupName, String serviceName, String diagnosticId,
+        DiagnosticContractInner parameters);
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
@@ -164,13 +159,8 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters,
-        Context context);
+    DiagnosticsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String diagnosticId,
+        String ifMatch, DiagnosticContractInner parameters, Context context);
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
@@ -187,11 +177,7 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
+    DiagnosticContractInner update(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch,
         DiagnosticContractInner parameters);
 
     /**
@@ -209,8 +195,8 @@ public interface DiagnosticsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified Diagnostic.

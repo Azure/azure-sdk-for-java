@@ -66,9 +66,8 @@ public final class WorkflowModelInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model WorkflowModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model WorkflowModelInner"));
         } else {
             properties().validate();
         }

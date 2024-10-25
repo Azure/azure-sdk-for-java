@@ -45,14 +45,16 @@ public final class ArtifactManifestsUpdateStateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ArtifactManifestUpdateState response = manager.artifactManifests().updateState("lv", "noakiz", "oaiknaqlnuwig",
-            "yxl",
-            new ArtifactManifestUpdateStateInner().withArtifactManifestState(ArtifactManifestState.VALIDATION_FAILED),
-            com.azure.core.util.Context.NONE);
+        ArtifactManifestUpdateState response = manager.artifactManifests()
+            .updateState(
+                "lv", "noakiz", "oaiknaqlnuwig", "yxl", new ArtifactManifestUpdateStateInner()
+                    .withArtifactManifestState(ArtifactManifestState.VALIDATION_FAILED),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ArtifactManifestState.VALIDATING, response.artifactManifestState());
     }

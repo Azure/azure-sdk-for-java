@@ -27,8 +27,8 @@ public interface DelegationSettingsClient {
      * @return the entity state (Etag) version of the DelegationSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
@@ -84,12 +84,8 @@ public interface DelegationSettingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalDelegationSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalDelegationSettingsInner parameters, Context context);
 
     /**
      * Update Delegation settings.
@@ -120,12 +116,8 @@ public interface DelegationSettingsClient {
      * @return delegation settings for a developer portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalDelegationSettingsInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalDelegationSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalDelegationSettingsInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Delegation settings.
@@ -139,8 +131,8 @@ public interface DelegationSettingsClient {
      * @return delegation settings for a developer portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalDelegationSettingsInner createOrUpdate(
-        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters);
+    PortalDelegationSettingsInner createOrUpdate(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters);
 
     /**
      * Gets the secret validation key of the DelegationSettings.
@@ -154,8 +146,8 @@ public interface DelegationSettingsClient {
      * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSettingValidationKeyContractInner> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingValidationKeyContractInner> listSecretsWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the secret validation key of the DelegationSettings.

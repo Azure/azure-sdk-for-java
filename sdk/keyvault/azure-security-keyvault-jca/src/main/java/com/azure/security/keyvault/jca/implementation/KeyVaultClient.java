@@ -43,6 +43,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.getCertificateNameFromCertificateItemId;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificatesFromSecretBundleValue;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
@@ -96,7 +97,6 @@ public class KeyVaultClient {
      * Stores a flag indicating if challenge resource verification shall be disabled.
      */
     private final boolean disableChallengeResourceVerification;
-
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -155,8 +155,8 @@ public class KeyVaultClient {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        boolean disableChallengeResourceVerification =
-            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        boolean disableChallengeResourceVerification
+            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
         return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
             disableChallengeResourceVerification);
@@ -197,8 +197,8 @@ public class KeyVaultClient {
             if (tenantId != null && clientId != null && clientSecret != null) {
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
-                accessToken =
-                    AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+                accessToken
+                    = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
@@ -229,17 +229,15 @@ public class KeyVaultClient {
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
-                certificateListResult =
-                    (CertificateListResult) JsonConverterUtil.fromJson(response, CertificateListResult.class);
+                certificateListResult
+                    = (CertificateListResult) JsonConverterUtil.fromJson(response, CertificateListResult.class);
             }
 
             if (certificateListResult != null) {
                 uri = certificateListResult.getNextLink();
-
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
-                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-
+                    String alias = getCertificateNameFromCertificateItemId(id);
                     result.add(alias);
                 }
             } else {
@@ -292,8 +290,8 @@ public class KeyVaultClient {
             if (certificateString != null) {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                    certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
+                    certificate = (X509Certificate) cf
+                        .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
                 }
@@ -329,7 +327,7 @@ public class KeyVaultClient {
         try {
             certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
         } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
-                 | NoSuchProviderException | PKCSException e) {
+            | NoSuchProviderException | PKCSException e) {
             LOGGER.log(WARNING, "Unable to decode certificate chain", e);
         }
         LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
@@ -403,8 +401,8 @@ public class KeyVaultClient {
             try {
                 KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
-                keyStore.load(
-                    new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())), "".toCharArray());
+                keyStore.load(new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                    "".toCharArray());
 
                 alias = keyStore.aliases().nextElement();
                 key = keyStore.getKey(alias, "".toCharArray());

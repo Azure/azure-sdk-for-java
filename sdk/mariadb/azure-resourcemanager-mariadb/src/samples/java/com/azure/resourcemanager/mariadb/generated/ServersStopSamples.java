@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Servers Stop. */
+/**
+ * Samples for Servers Stop.
+ */
 public final class ServersStopSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2020-01-01/examples/ServerStop.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2020-01-01/examples/ServerStop.json
      */
     /**
      * Sample code: ServerStop.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void serverStop(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

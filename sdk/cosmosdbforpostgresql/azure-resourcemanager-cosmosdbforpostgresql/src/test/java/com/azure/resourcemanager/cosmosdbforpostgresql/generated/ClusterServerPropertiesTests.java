@@ -27,10 +27,14 @@ public final class ClusterServerPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServerProperties model
-            = new ClusterServerProperties().withServerEdition("kwy").withStorageQuotaInMb(1581994668)
-                .withVCores(1308251370).withEnableHa(false).withRole(ServerRole.COORDINATOR)
-                .withAvailabilityZone("ddhsgcbacphe").withPostgresqlVersion("ot").withCitusVersion("qgoulznd");
+        ClusterServerProperties model = new ClusterServerProperties().withServerEdition("kwy")
+            .withStorageQuotaInMb(1581994668)
+            .withVCores(1308251370)
+            .withEnableHa(false)
+            .withRole(ServerRole.COORDINATOR)
+            .withAvailabilityZone("ddhsgcbacphe")
+            .withPostgresqlVersion("ot")
+            .withCitusVersion("qgoulznd");
         model = BinaryData.fromObject(model).toObject(ClusterServerProperties.class);
         Assertions.assertEquals("kwy", model.serverEdition());
         Assertions.assertEquals(1581994668, model.storageQuotaInMb());

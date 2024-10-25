@@ -190,8 +190,8 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
      * @param adxTwinLifecycleEventsTableName the adxTwinLifecycleEventsTableName value to set.
      * @return the AzureDataExplorerConnectionProperties object itself.
      */
-    public AzureDataExplorerConnectionProperties withAdxTwinLifecycleEventsTableName(
-        String adxTwinLifecycleEventsTableName) {
+    public AzureDataExplorerConnectionProperties
+        withAdxTwinLifecycleEventsTableName(String adxTwinLifecycleEventsTableName) {
         this.adxTwinLifecycleEventsTableName = adxTwinLifecycleEventsTableName;
         return this;
     }
@@ -213,8 +213,8 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
      * @param adxRelationshipLifecycleEventsTableName the adxRelationshipLifecycleEventsTableName value to set.
      * @return the AzureDataExplorerConnectionProperties object itself.
      */
-    public AzureDataExplorerConnectionProperties withAdxRelationshipLifecycleEventsTableName(
-        String adxRelationshipLifecycleEventsTableName) {
+    public AzureDataExplorerConnectionProperties
+        withAdxRelationshipLifecycleEventsTableName(String adxRelationshipLifecycleEventsTableName) {
         this.adxRelationshipLifecycleEventsTableName = adxRelationshipLifecycleEventsTableName;
         return this;
     }
@@ -326,8 +326,8 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
      * @param recordPropertyAndItemRemovals the recordPropertyAndItemRemovals value to set.
      * @return the AzureDataExplorerConnectionProperties object itself.
      */
-    public AzureDataExplorerConnectionProperties withRecordPropertyAndItemRemovals(
-        RecordPropertyAndItemRemovals recordPropertyAndItemRemovals) {
+    public AzureDataExplorerConnectionProperties
+        withRecordPropertyAndItemRemovals(RecordPropertyAndItemRemovals recordPropertyAndItemRemovals) {
         this.recordPropertyAndItemRemovals = recordPropertyAndItemRemovals;
         return this;
     }
@@ -348,42 +348,29 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     public void validate() {
         super.validate();
         if (adxResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adxResourceId in model AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adxResourceId in model AzureDataExplorerConnectionProperties"));
         }
         if (adxEndpointUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adxEndpointUri in model AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adxEndpointUri in model AzureDataExplorerConnectionProperties"));
         }
         if (adxDatabaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adxDatabaseName in model AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adxDatabaseName in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEndpointUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubEndpointUri in model"
-                            + " AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventHubEndpointUri in model" + " AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEntityPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubEntityPath in model AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventHubEntityPath in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubNamespaceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubNamespaceResourceId in model"
-                            + " AzureDataExplorerConnectionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventHubNamespaceResourceId in model"
+                    + " AzureDataExplorerConnectionProperties"));
         }
     }
 

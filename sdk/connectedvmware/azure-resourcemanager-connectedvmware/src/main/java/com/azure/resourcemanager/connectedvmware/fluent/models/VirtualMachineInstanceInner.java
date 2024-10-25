@@ -288,10 +288,8 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualMachineInstanceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model VirtualMachineInstanceInner"));
         } else {
             innerProperties().validate();
         }

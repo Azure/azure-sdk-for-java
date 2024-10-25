@@ -122,6 +122,7 @@ public final class AzureChatExtensionDataSourceResponseCitation
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("filepath", this.filepath);
         jsonWriter.writeStringField("chunk_id", this.chunkId);
+        jsonWriter.writeNumberField("rerank_score", this.rerankScore);
         return jsonWriter.writeEndObject();
     }
 
@@ -142,6 +143,7 @@ public final class AzureChatExtensionDataSourceResponseCitation
             String url = null;
             String filepath = null;
             String chunkId = null;
+            Double rerankScore = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,6 +157,8 @@ public final class AzureChatExtensionDataSourceResponseCitation
                     filepath = reader.getString();
                 } else if ("chunk_id".equals(fieldName)) {
                     chunkId = reader.getString();
+                } else if ("rerank_score".equals(fieldName)) {
+                    rerankScore = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
@@ -165,7 +169,24 @@ public final class AzureChatExtensionDataSourceResponseCitation
             deserializedAzureChatExtensionDataSourceResponseCitation.url = url;
             deserializedAzureChatExtensionDataSourceResponseCitation.filepath = filepath;
             deserializedAzureChatExtensionDataSourceResponseCitation.chunkId = chunkId;
+            deserializedAzureChatExtensionDataSourceResponseCitation.rerankScore = rerankScore;
             return deserializedAzureChatExtensionDataSourceResponseCitation;
         });
+    }
+
+    /*
+     * The rerank score of the retrieved document.
+     */
+    @Generated
+    private Double rerankScore;
+
+    /**
+     * Get the rerankScore property: The rerank score of the retrieved document.
+     *
+     * @return the rerankScore value.
+     */
+    @Generated
+    public Double getRerankScore() {
+        return this.rerankScore;
     }
 }

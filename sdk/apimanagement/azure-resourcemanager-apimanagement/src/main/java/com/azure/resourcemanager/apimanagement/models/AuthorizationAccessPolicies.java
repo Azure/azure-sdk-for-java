@@ -22,8 +22,8 @@ public interface AuthorizationAccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+    PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId);
 
     /**
      * Lists a collection of authorization access policy defined within a authorization.
@@ -44,14 +44,8 @@ public interface AuthorizationAccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
+    PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String filter, Integer top, Integer skip,
         Context context);
 
     /**
@@ -68,13 +62,8 @@ public interface AuthorizationAccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization access policy specified by its identifier.
      */
-    Response<AuthorizationAccessPolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        Context context);
+    Response<AuthorizationAccessPolicyContract> getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, Context context);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.
@@ -89,12 +78,8 @@ public interface AuthorizationAccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization access policy specified by its identifier.
      */
-    AuthorizationAccessPolicyContract get(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId);
+    AuthorizationAccessPolicyContract get(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId);
 
     /**
      * Deletes specific access policy from the Authorization.
@@ -112,14 +97,8 @@ public interface AuthorizationAccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch, Context context);
 
     /**
      * Deletes specific access policy from the Authorization.
@@ -135,13 +114,8 @@ public interface AuthorizationAccessPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String authorizationAccessPolicyId, String ifMatch);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.

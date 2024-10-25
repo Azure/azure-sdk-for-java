@@ -21,6 +21,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeUpdateParameters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmManagedIdentity;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmSetupAction;
@@ -314,6 +315,15 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public String computerNamePrefix() {
         return this.innerModel().computerNamePrefix();
+    }
+
+    public List<VmApplication> vmApplications() {
+        List<VmApplication> inner = this.innerModel().vmApplications();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {
@@ -691,6 +701,11 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withComputerNamePrefix(String computerNamePrefix) {
         this.innerModel().withComputerNamePrefix(computerNamePrefix);
+        return this;
+    }
+
+    public NodeTypeImpl withVmApplications(List<VmApplication> vmApplications) {
+        this.innerModel().withVmApplications(vmApplications);
         return this;
     }
 

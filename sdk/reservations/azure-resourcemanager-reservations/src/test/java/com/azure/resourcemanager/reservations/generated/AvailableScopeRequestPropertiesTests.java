@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableScopeRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableScopeRequestProperties model =
-            BinaryData
-                .fromString("{\"scopes\":[\"zopbsphrupidgs\",\"bb\",\"jhphoyc\",\"sx\"]}")
+        AvailableScopeRequestProperties model
+            = BinaryData.fromString("{\"scopes\":[\"zopbsphrupidgs\",\"bb\",\"jhphoyc\",\"sx\"]}")
                 .toObject(AvailableScopeRequestProperties.class);
         Assertions.assertEquals("zopbsphrupidgs", model.scopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableScopeRequestProperties model =
-            new AvailableScopeRequestProperties().withScopes(Arrays.asList("zopbsphrupidgs", "bb", "jhphoyc", "sx"));
+        AvailableScopeRequestProperties model
+            = new AvailableScopeRequestProperties().withScopes(Arrays.asList("zopbsphrupidgs", "bb", "jhphoyc", "sx"));
         model = BinaryData.fromObject(model).toObject(AvailableScopeRequestProperties.class);
         Assertions.assertEquals("zopbsphrupidgs", model.scopes().get(0));
     }

@@ -19,20 +19,20 @@ public final class UsagesImpl implements Usages {
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    public UsagesImpl(
-        UsagesClient innerClient, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
+    public UsagesImpl(UsagesClient innerClient,
+        com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Quota> list(String location) {
         PagedIterable<QuotaInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Quota> list(String location, Context context) {
         PagedIterable<QuotaInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {
