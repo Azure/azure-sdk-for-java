@@ -74,12 +74,8 @@ public interface CustomDomain {
     CustomDomainInner innerModel();
 
     /** The entirety of the CustomDomain definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithDomainName,
-            DefinitionStages.WithCustomCertificate,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithDomainName, DefinitionStages.WithCustomCertificate, DefinitionStages.WithCreate {
     }
 
     /** The CustomDomain definition stages. */

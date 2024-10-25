@@ -20,13 +20,15 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-msb", "--messageSizeBytes" }, description = "Size(in bytes) of one Message")
     private int messagesSizeBytesToSend = 10;
 
-    @Parameter(names = { "-idm", "--isDeleteMode" }, description = "Receiver client is receive_and_delete mode or peek_lock mode")
+    @Parameter(
+        names = { "-idm", "--isDeleteMode" },
+        description = "Receiver client is receive_and_delete mode or peek_lock mode")
     private boolean isDeleteMode = true;
 
     @Parameter(names = { "-mcc", "--maxConcurrentCalls" }, description = "Processor client max concurrent calls")
     private int maxConcurrentCalls = 1;
 
-    @Parameter(names = { "-pc", "--prefetchCount"}, description = "Client prefetch count")
+    @Parameter(names = { "-pc", "--prefetchCount" }, description = "Client prefetch count")
     private int prefetchCount = 1;
 
     /**

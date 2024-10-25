@@ -24,12 +24,8 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an availability group listener along with {@link Response}.
      */
-    Response<AvailabilityGroupListener> getWithResponse(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context);
+    Response<AvailabilityGroupListener> getWithResponse(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, String expand, Context context);
 
     /**
      * Gets an availability group listener.
@@ -43,8 +39,8 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an availability group listener.
      */
-    AvailabilityGroupListener get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
+    AvailabilityGroupListener get(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName);
 
     /**
      * Deletes an availability group listener.
@@ -71,10 +67,7 @@ public interface AvailabilityGroupListeners {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+    void delete(String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         Context context);
 
     /**
@@ -102,8 +95,8 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailabilityGroupListener> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<AvailabilityGroupListener> listByGroup(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Gets an availability group listener.

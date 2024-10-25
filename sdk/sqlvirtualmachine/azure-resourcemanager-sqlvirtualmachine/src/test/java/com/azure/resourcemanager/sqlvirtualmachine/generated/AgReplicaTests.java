@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AgReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgReplica model =
-            BinaryData
-                .fromString(
-                    "{\"sqlVirtualMachineInstanceId\":\"akhmsbzjhcrz\",\"role\":\"SECONDARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"ALL\"}")
-                .toObject(AgReplica.class);
+        AgReplica model = BinaryData.fromString(
+            "{\"sqlVirtualMachineInstanceId\":\"akhmsbzjhcrz\",\"role\":\"SECONDARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"ALL\"}")
+            .toObject(AgReplica.class);
         Assertions.assertEquals("akhmsbzjhcrz", model.sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.role());
         Assertions.assertEquals(Commit.ASYNCHRONOUS_COMMIT, model.commit());
@@ -29,13 +27,11 @@ public final class AgReplicaTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgReplica model =
-            new AgReplica()
-                .withSqlVirtualMachineInstanceId("akhmsbzjhcrz")
-                .withRole(Role.SECONDARY)
-                .withCommit(Commit.ASYNCHRONOUS_COMMIT)
-                .withFailover(Failover.AUTOMATIC)
-                .withReadableSecondary(ReadableSecondary.ALL);
+        AgReplica model = new AgReplica().withSqlVirtualMachineInstanceId("akhmsbzjhcrz")
+            .withRole(Role.SECONDARY)
+            .withCommit(Commit.ASYNCHRONOUS_COMMIT)
+            .withFailover(Failover.AUTOMATIC)
+            .withReadableSecondary(ReadableSecondary.ALL);
         model = BinaryData.fromObject(model).toObject(AgReplica.class);
         Assertions.assertEquals("akhmsbzjhcrz", model.sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.role());

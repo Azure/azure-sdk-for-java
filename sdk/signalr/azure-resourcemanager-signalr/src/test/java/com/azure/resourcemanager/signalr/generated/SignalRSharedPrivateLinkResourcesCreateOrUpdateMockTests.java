@@ -30,44 +30,32 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"groupId\":\"mkfqlwxldy\",\"privateLinkResourceId\":\"alsygao\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"nnbmjksibjgsjj\",\"status\":\"Disconnected\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"}";
+        String responseStr
+            = "{\"properties\":{\"groupId\":\"mkfqlwxldy\",\"privateLinkResourceId\":\"alsygao\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"nnbmjksibjgsjj\",\"status\":\"Disconnected\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SharedPrivateLinkResource response =
-            manager
-                .signalRSharedPrivateLinkResources()
-                .define("lz")
-                .withExistingSignalR("zjknyuxg", "ttxpnrupza")
-                .withGroupId("rdixt")
-                .withPrivateLinkResourceId("ekidswyskb")
-                .withRequestMessage("gllukkutvlxhrpqh")
-                .create();
+        SharedPrivateLinkResource response = manager.signalRSharedPrivateLinkResources()
+            .define("lz")
+            .withExistingSignalR("zjknyuxg", "ttxpnrupza")
+            .withGroupId("rdixt")
+            .withPrivateLinkResourceId("ekidswyskb")
+            .withRequestMessage("gllukkutvlxhrpqh")
+            .create();
 
         Assertions.assertEquals("mkfqlwxldy", response.groupId());
         Assertions.assertEquals("alsygao", response.privateLinkResourceId());

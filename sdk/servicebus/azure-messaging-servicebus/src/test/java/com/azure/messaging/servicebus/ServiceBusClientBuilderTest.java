@@ -50,13 +50,16 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
 
-    private static final String NAMESPACE_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
-        ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
-    private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
-        ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
-    private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    private static final String NAMESPACE_CONNECTION_STRING = String.format(
+        "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s", ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
+    private static final String ENTITY_PATH_CONNECTION_STRING
+        = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s", ENDPOINT,
+            SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
+    private static final Proxy PROXY_ADDRESS
+        = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
-    private static final String TEST_MESSAGE = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \nUt sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \nAenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \nAenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \nDonec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
+    private static final String TEST_MESSAGE
+        = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \nUt sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \nAenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \nAenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \nDonec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
 
     ServiceBusClientBuilderTest() {
         super(new ClientLogger(ServiceBusClientBuilderTest.class));
@@ -65,11 +68,8 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void ensureIdentifierString() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceBusSenderAsyncClient client = toClose(builder
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .buildAsyncClient());
+        final ServiceBusSenderAsyncClient client = toClose(
+            builder.connectionString(NAMESPACE_CONNECTION_STRING).sender().queueName(QUEUE_NAME).buildAsyncClient());
 
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
     }
@@ -77,12 +77,11 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void deadLetterQueueClient() {
         // Arrange
-        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .queueName(QUEUE_NAME)
-            .subQueue(SubQueue.DEAD_LETTER_QUEUE);
-
+        final ServiceBusReceiverClientBuilder builder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING)
+                .receiver()
+                .queueName(QUEUE_NAME)
+                .subQueue(SubQueue.DEAD_LETTER_QUEUE);
 
         // Act
         final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
@@ -94,11 +93,11 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void transferDeadLetterqueueClient() {
         // Arrange
-        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .queueName(QUEUE_NAME)
-            .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
+        final ServiceBusReceiverClientBuilder builder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING)
+                .receiver()
+                .queueName(QUEUE_NAME)
+                .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
 
         // Act
         final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
@@ -111,19 +110,15 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     void missingConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-            builder.sender()
-                .queueName(QUEUE_NAME)
-                .buildAsyncClient();
+            builder.sender().queueName(QUEUE_NAME).buildAsyncClient();
         });
     }
 
     @Test
     void defaultProxyConfigurationBuilder() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .buildAsyncClient();
+        final ServiceBusSenderAsyncClient client
+            = builder.connectionString(NAMESPACE_CONNECTION_STRING).sender().queueName(QUEUE_NAME).buildAsyncClient();
 
         assertNotNull(client);
     }
@@ -131,15 +126,14 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void customNoneProxyConfigurationBuilder() {
         // Arrange
-        final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
-            null, null);
+        final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
 
         // Act
-        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(ENTITY_PATH_CONNECTION_STRING)
-            .proxyOptions(proxyConfig)
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .sender();
+        final ServiceBusSenderClientBuilder builder
+            = new ServiceBusClientBuilder().connectionString(ENTITY_PATH_CONNECTION_STRING)
+                .proxyOptions(proxyConfig)
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .sender();
 
         // Assert
         assertNotNull(builder.buildAsyncClient());
@@ -149,13 +143,12 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     void throwsWithProxyWhenTransportTypeNotChanged() {
         assertThrows(IllegalArgumentException.class, () -> {
             // Arrange
-            final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
-                null, null);
+            final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY_ADDRESS, null, null);
 
             // Act
-            final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-                .connectionString(ENTITY_PATH_CONNECTION_STRING)
-                .proxyOptions(proxyConfig);
+            final ServiceBusClientBuilder builder
+                = new ServiceBusClientBuilder().connectionString(ENTITY_PATH_CONNECTION_STRING)
+                    .proxyOptions(proxyConfig);
 
             // Assert
             assertNotNull(builder.sender().buildAsyncClient());
@@ -186,12 +179,10 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         String subscriptionName) {
 
         // Arrange
-        final ServiceBusSenderClientBuilder senderBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender();
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver();
+        final ServiceBusSenderClientBuilder senderBuilder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING).sender();
+        final ServiceBusReceiverClientBuilder receiverBuilder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING).receiver();
 
         // Act & Assert
         assertThrows(IllegalStateException.class, senderBuilder::buildAsyncClient);
@@ -204,10 +195,8 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void throwsWhenSubscriptionNameNotSet() {
         // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz");
+        final ServiceBusReceiverClientBuilder receiverBuilder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING).receiver().topicName("baz");
 
         // Act & Assert
         assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
@@ -219,11 +208,12 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void invalidPrefetch() {
         // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
+        final ServiceBusReceiverClientBuilder receiverBuilder
+            = new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING)
+                .receiver()
+                .topicName("baz")
+                .subscriptionName("bar")
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(-1));
@@ -232,16 +222,17 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration) {
-        Configuration configuration = TestUtils.getGlobalConfiguration().clone()
+        Configuration configuration = TestUtils.getGlobalConfiguration()
+            .clone()
             .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
             .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
 
         // Client creation should not fail with incorrect proxy configuration
-        toClose(new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
+        toClose(new ServiceBusClientBuilder().connectionString(NAMESPACE_CONNECTION_STRING)
             .configuration(configuration)
             .receiver()
-            .topicName("baz").subscriptionName("bar")
+            .topicName("baz")
+            .subscriptionName("bar")
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildClient());
     }
@@ -250,16 +241,13 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     public void testConnectionStringWithSas() {
         String connectionStringWithEntityPath = "Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;"
             + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
-        assertNotNull(new ServiceBusClientBuilder()
-            .connectionString(connectionStringWithEntityPath));
+        assertNotNull(new ServiceBusClientBuilder().connectionString(connectionStringWithEntityPath));
 
-        assertThrows(IllegalArgumentException.class,
-            () -> new ServiceBusClientBuilder()
-                .connectionString("SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name"));
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .connectionString("SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name"));
 
-        assertThrows(IllegalArgumentException.class,
-            () -> new ServiceBusClientBuilder()
-                .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
     }
 
     @Test
@@ -268,32 +256,26 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         String sharedAccessKeyName = "SharedAccessKeyName test-value";
         String sharedAccessKey = "SharedAccessKey test-value";
 
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(null,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder().credential(null,
+            new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder().credential("",
+            new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace,
+            new AzureNamedKeyCredential(null, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace,
+            new AzureNamedKeyCredential(sharedAccessKeyName, null)));
 
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential("",
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
-
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential(null, sharedAccessKey)));
-
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential(sharedAccessKeyName, null)));
+            .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential("", sharedAccessKey)));
 
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential("", sharedAccessKey)));
+            .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, "")));
 
-        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential(sharedAccessKeyName, "")));
-
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
+        assertThrows(NullPointerException.class,
+            () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
 
     }
 
@@ -302,36 +284,29 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessSignature = "SharedAccessSignature test-value";
 
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(null, new AzureSasCredential(sharedAccessSignature)));
+        assertThrows(NullPointerException.class,
+            () -> new ServiceBusClientBuilder().credential(null, new AzureSasCredential(sharedAccessSignature)));
 
-        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential("", new AzureSasCredential(sharedAccessSignature)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder().credential("", new AzureSasCredential(sharedAccessSignature)));
 
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new AzureSasCredential(null)));
+        assertThrows(NullPointerException.class,
+            () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace, new AzureSasCredential(null)));
 
-        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new AzureSasCredential("")));
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace, new AzureSasCredential("")));
 
-        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, (AzureSasCredential) null));
+        assertThrows(NullPointerException.class,
+            () -> new ServiceBusClientBuilder().credential(fullyQualifiedNamespace, (AzureSasCredential) null));
 
     }
 
     private static Stream<Arguments> getProxyConfigurations() {
-        return Stream.of(
-            Arguments.of("http://localhost:8080"),
-            Arguments.of("localhost:8080"),
-            Arguments.of("localhost_8080"),
-            Arguments.of("http://example.com:8080"),
-            Arguments.of("http://sub.example.com:8080"),
-            Arguments.of(":8080"),
-            Arguments.of("http://localhost"),
-            Arguments.of("sub.example.com:8080"),
-            Arguments.of("https://username:password@sub.example.com:8080"),
-            Arguments.of("https://username:password@sub.example.com")
-        );
+        return Stream.of(Arguments.of("http://localhost:8080"), Arguments.of("localhost:8080"),
+            Arguments.of("localhost_8080"), Arguments.of("http://example.com:8080"),
+            Arguments.of("http://sub.example.com:8080"), Arguments.of(":8080"), Arguments.of("http://localhost"),
+            Arguments.of("sub.example.com:8080"), Arguments.of("https://username:password@sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com"));
 
     }
 
@@ -339,8 +314,8 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
         } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespace), exception);
+            throw new IllegalArgumentException(String.format(Locale.US, "Invalid namespace name: %s", namespace),
+                exception);
         }
     }
 

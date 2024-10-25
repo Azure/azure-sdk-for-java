@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlVirtualMachineGroupUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVirtualMachineGroupUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"vbqid\":\"gpbtoqcjmklj\"}}")
-                .toObject(SqlVirtualMachineGroupUpdate.class);
+        SqlVirtualMachineGroupUpdate model = BinaryData.fromString("{\"tags\":{\"vbqid\":\"gpbtoqcjmklj\"}}")
+            .toObject(SqlVirtualMachineGroupUpdate.class);
         Assertions.assertEquals("gpbtoqcjmklj", model.tags().get("vbqid"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlVirtualMachineGroupUpdate model =
-            new SqlVirtualMachineGroupUpdate().withTags(mapOf("vbqid", "gpbtoqcjmklj"));
+        SqlVirtualMachineGroupUpdate model
+            = new SqlVirtualMachineGroupUpdate().withTags(mapOf("vbqid", "gpbtoqcjmklj"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineGroupUpdate.class);
         Assertions.assertEquals("gpbtoqcjmklj", model.tags().get("vbqid"));
     }

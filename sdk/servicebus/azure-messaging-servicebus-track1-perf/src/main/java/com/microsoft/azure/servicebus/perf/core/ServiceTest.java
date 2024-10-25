@@ -38,14 +38,13 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (connectionString == null || connectionString.length() == 0) {
-            throw new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set.");
+            throw new IllegalArgumentException(
+                "Environment variable " + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set.");
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (queueName == null || queueName.length() == 0) {
-            throw new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICEBUS_QUEUE_NAME + " must be set.");
+            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set.");
         }
 
         // Setup the service client

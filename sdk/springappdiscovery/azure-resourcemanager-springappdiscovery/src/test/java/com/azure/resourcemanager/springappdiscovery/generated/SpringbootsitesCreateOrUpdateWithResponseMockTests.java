@@ -49,16 +49,20 @@ public final class SpringbootsitesCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure().withHttpClient(httpClient)
+        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SpringbootsitesModel response = manager.springbootsites().define("isnjampmngnz").withRegion("lwtgrhpdj")
+        SpringbootsitesModel response = manager.springbootsites()
+            .define("isnjampmngnz")
+            .withRegion("lwtgrhpdj")
             .withExistingResourceGroup("feallnwsu")
             .withTags(
                 mapOf("lhbxxhejjzzvdud", "masxazjpqyegu", "pwlbjnpg", "wdslfhotwmcy", "nltyfsoppusuesnz", "cftadeh"))
             .withProperties(new SpringbootsitesProperties().withMasterSiteId("aqw")
-                .withMigrateProjectId("chcbonqvpkvlrxnj").withProvisioningState(ProvisioningState.DELETING))
+                .withMigrateProjectId("chcbonqvpkvlrxnj")
+                .withProvisioningState(ProvisioningState.DELETING))
             .withExtendedLocation(new SpringbootsitesModelExtendedLocation().withType("pheoflokeyy").withName("nj"))
             .create();
 

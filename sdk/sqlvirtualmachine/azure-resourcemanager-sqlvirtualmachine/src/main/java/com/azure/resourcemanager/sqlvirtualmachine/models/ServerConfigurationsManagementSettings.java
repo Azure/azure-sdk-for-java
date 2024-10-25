@@ -65,8 +65,8 @@ public final class ServerConfigurationsManagementSettings {
      * @param sqlConnectivityUpdateSettings the sqlConnectivityUpdateSettings value to set.
      * @return the ServerConfigurationsManagementSettings object itself.
      */
-    public ServerConfigurationsManagementSettings withSqlConnectivityUpdateSettings(
-        SqlConnectivityUpdateSettings sqlConnectivityUpdateSettings) {
+    public ServerConfigurationsManagementSettings
+        withSqlConnectivityUpdateSettings(SqlConnectivityUpdateSettings sqlConnectivityUpdateSettings) {
         this.sqlConnectivityUpdateSettings = sqlConnectivityUpdateSettings;
         return this;
     }
@@ -86,8 +86,8 @@ public final class ServerConfigurationsManagementSettings {
      * @param sqlWorkloadTypeUpdateSettings the sqlWorkloadTypeUpdateSettings value to set.
      * @return the ServerConfigurationsManagementSettings object itself.
      */
-    public ServerConfigurationsManagementSettings withSqlWorkloadTypeUpdateSettings(
-        SqlWorkloadTypeUpdateSettings sqlWorkloadTypeUpdateSettings) {
+    public ServerConfigurationsManagementSettings
+        withSqlWorkloadTypeUpdateSettings(SqlWorkloadTypeUpdateSettings sqlWorkloadTypeUpdateSettings) {
         this.sqlWorkloadTypeUpdateSettings = sqlWorkloadTypeUpdateSettings;
         return this;
     }
@@ -107,8 +107,8 @@ public final class ServerConfigurationsManagementSettings {
      * @param sqlStorageUpdateSettings the sqlStorageUpdateSettings value to set.
      * @return the ServerConfigurationsManagementSettings object itself.
      */
-    public ServerConfigurationsManagementSettings withSqlStorageUpdateSettings(
-        SqlStorageUpdateSettings sqlStorageUpdateSettings) {
+    public ServerConfigurationsManagementSettings
+        withSqlStorageUpdateSettings(SqlStorageUpdateSettings sqlStorageUpdateSettings) {
         this.sqlStorageUpdateSettings = sqlStorageUpdateSettings;
         return this;
     }
@@ -169,8 +169,8 @@ public final class ServerConfigurationsManagementSettings {
      * @param azureAdAuthenticationSettings the azureAdAuthenticationSettings value to set.
      * @return the ServerConfigurationsManagementSettings object itself.
      */
-    public ServerConfigurationsManagementSettings withAzureAdAuthenticationSettings(
-        AadAuthenticationSettings azureAdAuthenticationSettings) {
+    public ServerConfigurationsManagementSettings
+        withAzureAdAuthenticationSettings(AadAuthenticationSettings azureAdAuthenticationSettings) {
         this.azureAdAuthenticationSettings = azureAdAuthenticationSettings;
         return this;
     }
