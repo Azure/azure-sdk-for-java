@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -54,7 +55,7 @@ public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
-    private static final HttpClient VERTX_HTTP_CLIENT;;
+    private static final HttpClient VERTX_HTTP_CLIENT = new VertxAsyncHttpClientProvider().createInstance();
     private static final HttpClient JDK_HTTP_HTTP_CLIENT;
 
     static {
@@ -66,33 +67,12 @@ public final class StorageCommonTestUtils {
         }
 
         JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
-
-        HttpClient vertxHttpClient;
-        try {
-            vertxHttpClient = createVertxHttpClient();
-        } catch (LinkageError | ReflectiveOperationException e) {
-            vertxHttpClient = null;
-        }
-
-        VERTX_HTTP_CLIENT = vertxHttpClient;
     }
 
+    @SuppressWarnings("deprecation")
     private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
         Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
-        return (HttpClient) clazz.getDeclaredMethod("createInstance")
-            .invoke(clazz.getDeclaredConstructor().newInstance());
-    }
-
-    private static HttpClient createVertxHttpClient() throws ReflectiveOperationException {
-        Class<?> clazz;
-        try {
-            clazz = Class.forName("com.azure.core.http.vertx.VertxHttpClientProvider");
-        } catch (ReflectiveOperationException e) {
-            clazz = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientProvider");
-        }
-
-        return (HttpClient) clazz.getDeclaredMethod("createInstance")
-            .invoke(clazz.getDeclaredConstructor().newInstance());
+        return (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
     }
 
     /**
