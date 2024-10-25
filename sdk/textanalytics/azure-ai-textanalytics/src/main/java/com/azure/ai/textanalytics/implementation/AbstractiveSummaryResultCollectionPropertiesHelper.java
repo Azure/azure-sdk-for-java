@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 public final class AbstractiveSummaryResultCollectionPropertiesHelper {
     private static AbstractiveSummaryResultCollectionAccessor accessor;
 
-    private AbstractiveSummaryResultCollectionPropertiesHelper() {
-    }
+    private AbstractiveSummaryResultCollectionPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -21,8 +20,8 @@ public final class AbstractiveSummaryResultCollectionPropertiesHelper {
      */
     public interface AbstractiveSummaryResultCollectionAccessor {
         void setModelVersion(AbstractiveSummaryResultCollection resultCollection, String modelVersion);
-
-        void setStatistics(AbstractiveSummaryResultCollection resultCollection, TextDocumentBatchStatistics statistics);
+        void setStatistics(AbstractiveSummaryResultCollection resultCollection,
+                           TextDocumentBatchStatistics statistics);
     }
 
     /**
@@ -30,17 +29,18 @@ public final class AbstractiveSummaryResultCollectionPropertiesHelper {
      *
      * @param abstractiveSummaryResultCollectionAccessor The accessor.
      */
-    public static void
-        setAccessor(final AbstractiveSummaryResultCollectionAccessor abstractiveSummaryResultCollectionAccessor) {
+    public static void setAccessor(
+        final AbstractiveSummaryResultCollectionAccessor abstractiveSummaryResultCollectionAccessor) {
         accessor = abstractiveSummaryResultCollectionAccessor;
     }
 
-    public static void setModelVersion(AbstractiveSummaryResultCollection resultCollection, String modelVersion) {
+    public static void setModelVersion(
+            AbstractiveSummaryResultCollection resultCollection, String modelVersion) {
         accessor.setModelVersion(resultCollection, modelVersion);
     }
 
-    public static void setStatistics(AbstractiveSummaryResultCollection resultCollection,
-        TextDocumentBatchStatistics statistics) {
+    public static void setStatistics(
+            AbstractiveSummaryResultCollection resultCollection, TextDocumentBatchStatistics statistics) {
         accessor.setStatistics(resultCollection, statistics);
     }
 }

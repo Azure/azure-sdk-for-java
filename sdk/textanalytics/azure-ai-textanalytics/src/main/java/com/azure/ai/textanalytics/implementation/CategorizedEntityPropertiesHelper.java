@@ -11,15 +11,13 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 public final class CategorizedEntityPropertiesHelper {
     private static CategorizedEntityAccessor accessor;
 
-    private CategorizedEntityPropertiesHelper() {
-    }
+    private CategorizedEntityPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link CategorizedEntity} instance.
      */
     public interface CategorizedEntityAccessor {
         void setLength(CategorizedEntity entity, int length);
-
         void setOffset(CategorizedEntity entity, int offset);
     }
 

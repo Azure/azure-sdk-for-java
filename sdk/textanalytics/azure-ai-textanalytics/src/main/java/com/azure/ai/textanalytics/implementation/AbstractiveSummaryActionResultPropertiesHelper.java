@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 public final class AbstractiveSummaryActionResultPropertiesHelper {
     private static AbstractiveSummaryActionResultAccessor accessor;
 
-    private AbstractiveSummaryActionResultPropertiesHelper() {
-    }
+    private AbstractiveSummaryActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryActionResult}
@@ -21,7 +20,7 @@ public final class AbstractiveSummaryActionResultPropertiesHelper {
      */
     public interface AbstractiveSummaryActionResultAccessor {
         void setDocumentsResults(AbstractiveSummaryActionResult actionResult,
-            AbstractiveSummaryResultCollection documentsResults);
+                                 AbstractiveSummaryResultCollection documentsResults);
     }
 
     /**
@@ -29,13 +28,13 @@ public final class AbstractiveSummaryActionResultPropertiesHelper {
      *
      * @param abstractiveSummaryActionResultAccessor The accessor.
      */
-    public static void
-        setAccessor(final AbstractiveSummaryActionResultAccessor abstractiveSummaryActionResultAccessor) {
+    public static void setAccessor(
+        final AbstractiveSummaryActionResultAccessor abstractiveSummaryActionResultAccessor) {
         accessor = abstractiveSummaryActionResultAccessor;
     }
 
     public static void setDocumentsResults(AbstractiveSummaryActionResult actionResult,
-        AbstractiveSummaryResultCollection documentsResults) {
+                                           AbstractiveSummaryResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

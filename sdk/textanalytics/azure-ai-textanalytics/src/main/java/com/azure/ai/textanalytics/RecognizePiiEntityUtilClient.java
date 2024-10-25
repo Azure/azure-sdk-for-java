@@ -80,25 +80,26 @@ class RecognizePiiEntityUtilClient {
     Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
         try {
-            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
                     TextAnalyticsServiceVersion.V3_1));
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
-                    .map(resultCollectionResponse -> {
-                        PiiEntityCollection entityCollection = null;
-                        // for each loop will have only one entry inside
-                        for (RecognizePiiEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
-                            if (entitiesResult.isError()) {
-                                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
-                            }
-                            entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
-                                entitiesResult.getEntities().getRedactedText(),
-                                entitiesResult.getEntities().getWarnings());
+                .map(resultCollectionResponse -> {
+                    PiiEntityCollection entityCollection = null;
+                    // for each loop will have only one entry inside
+                    for (RecognizePiiEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
+                        if (entitiesResult.isError()) {
+                            throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
-                        return entityCollection;
-                    });
+                        entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getRedactedText(),
+                            entitiesResult.getEntities().getWarnings());
+                    }
+                    return entityCollection;
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -113,8 +114,8 @@ class RecognizePiiEntityUtilClient {
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
-    Mono<Response<RecognizePiiEntitiesResultCollection>>
-        recognizePiiEntitiesBatch(Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
+    Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
+        Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         try {
             return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -136,7 +137,8 @@ class RecognizePiiEntityUtilClient {
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+        throwIfTargetServiceVersionFound(this.serviceVersion,
+            Arrays.asList(TextAnalyticsServiceVersion.V3_0),
             getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
                 TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
@@ -147,41 +149,48 @@ class RecognizePiiEntityUtilClient {
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-        final String finalDomainFilter
-            = options.getDomainFilter() != null ? options.getDomainFilter().toString() : null;
+        final String finalDomainFilter = options.getDomainFilter() != null
+            ? options.getDomainFilter().toString() : null;
         if (service != null) {
-            return service
-                .analyzeTextWithResponseAsync(
-                    new AnalyzeTextPiiEntitiesRecognitionInput()
-                        .setParameters(new PiiTaskParameters().setDomain(PiiDomain.fromString(finalDomainFilter))
-                            .setPiiCategories(toCategoriesFilter(options.getCategoriesFilter()))
+            return service.analyzeTextWithResponseAsync(
+                new AnalyzeTextPiiEntitiesRecognitionInput()
+                    .setParameters(
+                        new PiiTaskParameters()
+                            .setDomain(PiiDomain.fromString(finalDomainFilter))
+                            .setPiiCategories(
+                                toCategoriesFilter(options.getCategoriesFilter()))
                             .setStringIndexType(finalStringIndexType)
                             .setModelVersion(finalModelVersion)
                             .setLoggingOptOut(finalLoggingOptOut))
-                        .setAnalysisInput(
-                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                    finalIncludeStatistics, finalContext)
-                .doOnSubscribe(ignoredValue -> LOGGER
-                    .info("Start recognizing Personally Identifiable Information entities for a batch of documents."))
+                    .setAnalysisInput(new MultiLanguageAnalysisInput()
+                        .setDocuments(toMultiLanguageInput(documents))),
+                finalIncludeStatistics,
+                finalContext)
+                .doOnSubscribe(ignoredValue -> LOGGER.info(
+                    "Start recognizing Personally Identifiable Information entities for a batch of documents."))
                 .doOnSuccess(response -> LOGGER.info("Successfully recognized Personally Identifiable Information "
                     + "entities for a batch of documents."))
-                .doOnError(error -> LOGGER
-                    .warning("Failed to recognize Personally Identifiable Information entities - {}", error))
+                .doOnError(error -> LOGGER.warning(
+                    "Failed to recognize Personally Identifiable Information entities - {}", error))
                 .map(Utility::toRecognizePiiEntitiesResultCollectionResponseLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService
-            .entitiesRecognitionPiiWithResponseAsync(
-                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
-                finalIncludeStatistics, finalLoggingOptOut, finalDomainFilter, finalStringIndexType,
-                toCategoriesFilter(options.getCategoriesFilter()), finalContext)
-            .doOnSubscribe(ignoredValue -> LOGGER
-                .info("Start recognizing Personally Identifiable Information entities for a batch of documents."))
-            .doOnSuccess(response -> LOGGER
-                .info("Successfully recognized Personally Identifiable Information entities for a batch of documents."))
-            .doOnError(
-                error -> LOGGER.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
+        return legacyService.entitiesRecognitionPiiWithResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalDomainFilter,
+            finalStringIndexType,
+            toCategoriesFilter(options.getCategoriesFilter()),
+            finalContext)
+            .doOnSubscribe(ignoredValue -> LOGGER.info(
+                "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+            .doOnSuccess(response -> LOGGER.info(
+                "Successfully recognized Personally Identifiable Information entities for a batch of documents."))
+            .doOnError(error ->
+                LOGGER.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
             .map(Utility::toRecognizePiiEntitiesResultCollectionResponseLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
@@ -200,7 +209,8 @@ class RecognizePiiEntityUtilClient {
      */
     Response<RecognizePiiEntitiesResultCollection> getRecognizePiiEntitiesResponseSync(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+        throwIfTargetServiceVersionFound(this.serviceVersion,
+            Arrays.asList(TextAnalyticsServiceVersion.V3_0),
             getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
                 TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
@@ -211,25 +221,35 @@ class RecognizePiiEntityUtilClient {
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-        final String finalDomainFilter
-            = options.getDomainFilter() != null ? options.getDomainFilter().toString() : null;
+        final String finalDomainFilter = options.getDomainFilter() != null
+            ? options.getDomainFilter().toString() : null;
         try {
             return (service != null)
-                ? toRecognizePiiEntitiesResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
-                    new AnalyzeTextPiiEntitiesRecognitionInput()
-                        .setParameters(new PiiTaskParameters().setDomain(PiiDomain.fromString(finalDomainFilter))
-                            .setPiiCategories(toCategoriesFilter(options.getCategoriesFilter()))
-                            .setStringIndexType(finalStringIndexType)
-                            .setModelVersion(finalModelVersion)
-                            .setLoggingOptOut(finalLoggingOptOut))
-                        .setAnalysisInput(
-                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                    finalIncludeStatistics, finalContext))
+                ? toRecognizePiiEntitiesResultCollectionResponseLanguageApi(
+                    service.analyzeTextWithResponse(
+                        new AnalyzeTextPiiEntitiesRecognitionInput()
+                            .setParameters(
+                                new PiiTaskParameters()
+                                    .setDomain(PiiDomain.fromString(finalDomainFilter))
+                                    .setPiiCategories(
+                                        toCategoriesFilter(options.getCategoriesFilter()))
+                                    .setStringIndexType(finalStringIndexType)
+                                    .setModelVersion(finalModelVersion)
+                                    .setLoggingOptOut(finalLoggingOptOut))
+                            .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                .setDocuments(toMultiLanguageInput(documents))),
+                        finalIncludeStatistics,
+                        finalContext))
                 : toRecognizePiiEntitiesResultCollectionResponseLegacyApi(
                     legacyService.entitiesRecognitionPiiWithResponseSync(
-                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
-                        finalIncludeStatistics, finalLoggingOptOut, finalDomainFilter, finalStringIndexType,
-                        toCategoriesFilter(options.getCategoriesFilter()), finalContext));
+                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                        finalModelVersion,
+                        finalIncludeStatistics,
+                        finalLoggingOptOut,
+                        finalDomainFilter,
+                        finalStringIndexType,
+                        toCategoriesFilter(options.getCategoriesFilter()),
+                        finalContext));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
