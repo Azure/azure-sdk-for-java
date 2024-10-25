@@ -333,22 +333,35 @@ public class KeyVaultClient {
         LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
 
         HashMap<String, String> headers = new HashMap<>();
+
         headers.put("Authorization", "Bearer " + getAccessToken());
+
         String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
         String response = HttpUtil.get(uri, headers);
+
         if (response == null) {
             throw new NullPointerException();
         }
-        SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(response, SecretBundle.class);
+
+        SecretBundle secretBundle = null;
+
+        try {
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, response);
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse secret bundle response", e);
+        }
 
         Certificate[] certificates = new Certificate[0];
+
         try {
             certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
         } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
                  | NoSuchProviderException | PKCSException e) {
             LOGGER.log(WARNING, "Unable to decode certificate chain", e);
         }
+
         LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
+
         return certificates;
     }
 

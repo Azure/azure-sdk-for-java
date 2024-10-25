@@ -139,7 +139,7 @@ public final class AccessTokenUtil {
         try {
             encodedClientSecret = URLEncoder.encode(clientSecret, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warning("Failed to encode client secret for access token request");
+            LOGGER.log(WARNING, "Failed to encode client secret for access token request", e);
         }
 
         StringBuilder requestBody = new StringBuilder();
@@ -240,7 +240,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse access token response.", e);
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnContainerApp", result);
