@@ -543,8 +543,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsCreateHeaders, Void> createWithResponse(String requestId, Integer timeout,
         String properties, Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.createSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -604,8 +604,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String requestId, Integer timeout, String properties,
         Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -904,22 +904,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsSetPropertiesHeaders, Void> setPropertiesWithResponse(String requestId,
         Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
-            final String accept = "application/json";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            DateTimeRfc1123 ifModifiedSinceConverted
-                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-            DateTimeRfc1123 ifUnmodifiedSinceConverted
-                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setPropertiesSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -985,22 +985,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout, String properties,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
-            final String accept = "application/json";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            DateTimeRfc1123 ifModifiedSinceConverted
-                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-            DateTimeRfc1123 ifUnmodifiedSinceConverted
-                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -1175,8 +1175,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsGetPropertiesHeaders, Void> getPropertiesWithResponse(String requestId,
         Integer timeout, Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.getPropertiesSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -1221,8 +1221,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout, Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -1513,22 +1513,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsDeleteHeaders, Void> deleteWithResponse(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
-            final String accept = "application/json";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            DateTimeRfc1123 ifModifiedSinceConverted
-                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-            DateTimeRfc1123 ifUnmodifiedSinceConverted
-                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context);
@@ -1591,22 +1591,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
-            final String accept = "application/json";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (modifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            DateTimeRfc1123 ifModifiedSinceConverted
-                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-            DateTimeRfc1123 ifUnmodifiedSinceConverted
-                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context);
@@ -1886,8 +1886,8 @@ public final class FileSystemsImpl {
     public ResponseBase<FileSystemsListPathsHeaders, PathList> listPathsWithResponse(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn,
         Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.listPathsSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
                 context);
@@ -1969,8 +1969,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathList> listPathsNoCustomHeadersWithResponse(boolean recursive, String requestId, Integer timeout,
         String continuation, String path, Integer maxResults, Boolean upn, Context context) {
+        final String accept = "application/json";
         try {
-            final String accept = "application/json";
             return service.listPathsNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
                 maxResults, upn, accept, context);
@@ -2267,15 +2267,15 @@ public final class FileSystemsImpl {
         listBlobHierarchySegmentWithResponse(String prefix, String delimiter, String marker, Integer maxResults,
             List<ListBlobsIncludeItem> include, ListBlobsShowOnly showonly, Integer timeout, String requestId,
             Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         try {
-            final String restype = "container";
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentSync(this.client.getUrl(), this.client.getFileSystem(), restype,
                 comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
                 this.client.getVersion(), requestId, accept, context);
@@ -2353,15 +2353,15 @@ public final class FileSystemsImpl {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersWithResponse(
         String prefix, String delimiter, String marker, Integer maxResults, List<ListBlobsIncludeItem> include,
         ListBlobsShowOnly showonly, Integer timeout, String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         try {
-            final String restype = "container";
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(),
                 this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
                 showonly, timeout, this.client.getVersion(), requestId, accept, context);

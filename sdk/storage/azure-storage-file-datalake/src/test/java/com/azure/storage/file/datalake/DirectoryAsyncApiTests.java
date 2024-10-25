@@ -266,17 +266,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.createWithResponse(null, null, null, null, drc);
-                });
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.createWithResponse(null, null, null, null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -297,17 +304,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<PathInfo>> response =
-            Mono.zip(setupPathLeaseCondition(dc, leaseID), setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.createWithResponse(null, null, null, null, drc);
-                });
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.createWithResponse(null, null, null, null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -740,17 +750,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.deleteWithResponse(false, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteWithResponse(false, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -760,17 +777,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.deleteWithResponse(false, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteWithResponse(false, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -815,21 +835,28 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
+        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-                    DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                        .setIsRecursive(false);
+                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+                    .setIsRecursive(false);
 
-                    return dc.deleteIfExistsWithResponse(options);
-                });
+                return dc.deleteIfExistsWithResponse(options);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -839,20 +866,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                        .setIsRecursive(false);
+        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+                    .setIsRecursive(false);
 
-                    return dc.deleteIfExistsWithResponse(options);
-                });
+                return dc.deleteIfExistsWithResponse(options);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -878,17 +908,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-                });
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -898,17 +935,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-                });
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -943,17 +983,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-                });
+
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -962,17 +1010,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-                });
+
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2310,17 +2362,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.getAccessControlWithResponse(false, drc);
-                });
+
+        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.getAccessControlWithResponse(false, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -2333,17 +2393,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             return; // known issue - remove when resolved.
         }
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.getAccessControlWithResponse(false, drc);
-                });
+        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.getAccessControlWithResponse(false, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2398,17 +2461,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.renameWithResponse(null, generatePathName(), drc, null);
-                });
+        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.renameWithResponse(null, generatePathName(), drc, null);
+            });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -2418,17 +2488,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameSourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.renameWithResponse(null, generatePathName(), drc, null);
-                });
+        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.renameWithResponse(null, generatePathName(), drc, null);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2440,17 +2513,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.renameWithResponse(null, pathName, null, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.renameWithResponse(null, pathName, null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -2461,17 +2541,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.renameWithResponse(null, pathName, null, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.renameWithResponse(null, pathName, null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2559,17 +2642,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                 String leaseID) {
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.getPropertiesWithResponse(drc);
-                });
+        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.getPropertiesWithResponse(drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -2579,17 +2669,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                     String leaseID) {
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.getPropertiesWithResponse(drc);
-                });
+        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newLeaseID = tuple.getT1();
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newLeaseID)) {
+                    newLeaseID = null;
+                }
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLeaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.getPropertiesWithResponse(drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2660,17 +2757,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setHttpHeadersWithResponse(null, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setHttpHeadersWithResponse(null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -2680,17 +2784,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setHttpHeadersWithResponse(null, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setHttpHeadersWithResponse(null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2762,17 +2869,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                               String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, match), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(conditions.get(0))
-                        .setIfMatch(conditions.get(1))
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setMetadataWithResponse(null, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setMetadataWithResponse(null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -2781,17 +2895,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                   String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(dc, leaseID),
-            setupPathMatchCondition(dc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(conditions -> {
-                    DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(conditions.get(1))
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                    return dc.setMetadataWithResponse(null, drc);
-                });
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.setMetadataWithResponse(null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -2883,17 +3000,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.createFileWithResponse(pathName, null, null, null, null, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.createFileWithResponse(pathName, null, null, null, null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -2904,17 +3028,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.createFileWithResponse(pathName, null, null, null, null, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.createFileWithResponse(pathName, null, null, null, null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -3044,17 +3171,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.deleteFileWithResponse(pathName, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteFileWithResponse(pathName, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -3065,17 +3199,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.deleteFileWithResponse(pathName, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteFileWithResponse(pathName, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -3147,18 +3284,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
 
         Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
-                        return dc.deleteFileIfExistsWithResponse(pathName, options);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
+                return dc.deleteFileIfExistsWithResponse(pathName, options);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -3169,17 +3313,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                          String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.deleteFileIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setRequestConditions(drc));
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteFileIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setRequestConditions(drc));
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -3282,18 +3429,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-                        return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
-                    });
+                return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -3304,17 +3458,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                    String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -3473,18 +3630,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-                        return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
-                    });
+                return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -3495,17 +3659,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                    String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
-                    });
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
@@ -3572,20 +3739,27 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                        String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, match), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(conditions.get(0))
-                            .setIfMatch(conditions.get(1))
-                            .setIfNoneMatch(noneMatch)
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                            .setIsRecursive(false);
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
+            .flatMap(setupTuple -> {
+                String newLease = setupTuple.getT1();
+                String newMatch = setupTuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+                    .setIsRecursive(false);
 
-                        return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
-                    });
+                return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
+            });
 
         assertAsyncResponseStatusCode(response, 200);
     }
@@ -3596,20 +3770,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                            String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseCondition(clientReturn, leaseID),
-                setupPathMatchCondition(clientReturn, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(conditions -> {
-                        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(leaseID)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(conditions.get(1))
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified);
-                        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                            .setIsRecursive(false);
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                DataLakeRequestConditions drc = new DataLakeRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+                    .setIsRecursive(false);
 
-                        return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
-                    });
+                return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
+            });
 
         StepVerifier.create(response)
             .verifyError(DataLakeStorageException.class);
