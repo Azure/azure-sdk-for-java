@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 3.3.5 and Spring Cloud dependencies version to 2023.0.3
 
 ## 5.18.0-beta.1 (unreleased)
 
