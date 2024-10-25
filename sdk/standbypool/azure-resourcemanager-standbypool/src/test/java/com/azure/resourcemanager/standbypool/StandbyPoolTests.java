@@ -63,17 +63,15 @@ public class StandbyPoolTests extends TestProxyTestBase {
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        standbyPoolManager = StandbyPoolManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        standbyPoolManager = StandbyPoolManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-                .authenticate(credential, profile);
+            .authenticate(credential, profile);
 
-        computeManager = ComputeManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        computeManager = ComputeManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-                .authenticate(credential, profile);
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -121,7 +119,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
                     .withRegion(REGION)
                     .withExistingResourceGroup(resourceGroupName)
                     .withFlexibleOrchestrationMode()
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
                     .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
                     .withoutPrimaryInternetFacingLoadBalancer()
                     .withoutPrimaryInternalLoadBalancer()
