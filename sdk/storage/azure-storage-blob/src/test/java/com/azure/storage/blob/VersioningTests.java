@@ -95,7 +95,6 @@ public class VersioningTests extends BlobTestBase {
         assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void downloadBlobByVersion() {
         ByteArrayInputStream inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8));

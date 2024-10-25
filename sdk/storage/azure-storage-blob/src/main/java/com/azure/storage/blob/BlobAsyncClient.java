@@ -15,7 +15,6 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -86,19 +85,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * The block size to use if none is specified in parallel operations.
      */
-    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     /**
      * The number of buffers to use if none is specified on the buffered upload method.
      */
-    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobConstants.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
 
     /**
      * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
-    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
 
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
 
@@ -108,7 +107,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * and {@link BinaryData#fromFile(Path, Long, Long, int)}
      * to represent the content.
      */
-    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = BlobConstants.DEFAULT_FILE_READ_CHUNK_SIZE;
+    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClient.class);
 

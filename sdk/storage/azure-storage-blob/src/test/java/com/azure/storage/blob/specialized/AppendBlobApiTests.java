@@ -18,7 +18,6 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -47,7 +46,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -244,14 +242,6 @@ public class AppendBlobApiTests extends BlobTestBase {
         validateBasicHeaders(createResponse.getHeaders());
         assertNull(createResponse.getValue().getContentMd5());
         assertTrue(createResponse.getValue().isServerEncrypted());
-    }
-
-    @Test
-    public void createIfNotExistsSimple() {
-        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-
-        bc.createIfNotExists();
-        assertTrue(bc.exists());
     }
 
     @Test
@@ -748,7 +738,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void sealDefaults() {
         Response<Void> sealResponse = bc.sealWithResponse(null, null, null);
         assertResponseStatusCode(sealResponse, 200);
-        assertEquals("true", sealResponse.getHeaders().getValue(X_MS_BLOB_SEALED));
+        assertEquals("true", sealResponse.getHeaders().getValue("x-ms-blob-sealed"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -885,38 +875,5 @@ public class AppendBlobApiTests extends BlobTestBase {
             .buildAppendBlobClient();
 
         assertTrue(aadBlob.exists());
-    }
-
-    @Test
-    public void getSnapshotClient() {
-        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
-        BlobClientBase fakeSnapshotClient = bc.getSnapshotClient(fakeVersion);
-        assertEquals(fakeVersion, fakeSnapshotClient.getSnapshotId());
-    }
-
-    @Test
-    public void getVersionClient() {
-        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
-        BlobClientBase fakeVersionClient = bc.getVersionClient(fakeVersion);
-        assertEquals(fakeVersion, fakeVersionClient.getVersionId());
-    }
-
-    @Test
-    public void getEncryptionScopeClient() {
-        String fakeScope = "fakeScope";
-        BlobClientBase fakeEncryptionScopeClient = bc.getEncryptionScopeClient(fakeScope);
-        assertEquals(fakeScope, fakeEncryptionScopeClient.getEncryptionScope());
-    }
-
-    @Test
-    public void getCPKClient() {
-        CustomerProvidedKey fakeCPK = new CustomerProvidedKey(getRandomKey());
-        BlobClientBase fakeCPKClient = bc.getCustomerProvidedKeyClient(fakeCPK);
-        assertEquals(fakeCPK.getKey(), fakeCPKClient.getCustomerProvidedKey().getEncryptionKey());
-    }
-
-    @Test
-    public void getMaxBlocks() {
-        assertEquals(MAX_APPEND_BLOCKS, bc.getMaxBlocks());
     }
 }

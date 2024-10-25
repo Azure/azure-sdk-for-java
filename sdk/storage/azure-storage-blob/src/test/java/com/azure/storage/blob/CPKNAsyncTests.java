@@ -81,6 +81,7 @@ public class CPKNAsyncTests extends BlobTestBase {
     public void containerDenyEncryptionScopeOverride() {
         BlobContainerAsyncClient cpknCesContainer = builder.blobContainerEncryptionScope(ces)
             .containerName(generateContainerName()).buildAsyncClient();
+        cpknCesContainer.create().block();
 
         cpknAppendBlob = builder.encryptionScope(es)
             .containerName(cpknCesContainer.getBlobContainerName())
@@ -88,7 +89,7 @@ public class CPKNAsyncTests extends BlobTestBase {
             .getBlobAsyncClient(generateBlobName())
             .getAppendBlobAsyncClient();
 
-        StepVerifier.create(cpknCesContainer.create().then(cpknAppendBlob.create()))
+        StepVerifier.create(cpknAppendBlob.create())
             .verifyError(BlobStorageException.class);
     }
 
@@ -99,10 +100,12 @@ public class CPKNAsyncTests extends BlobTestBase {
             .encryptionScope(null)
             .containerName(generateContainerName())
             .buildAsyncClient();
+        cpkncesContainer.create().block();
         AppendBlobAsyncClient cpknAppendBlob = cpkncesContainer.getBlobAsyncClient(generateBlobName())
             .getAppendBlobAsyncClient();
+        cpknAppendBlob.create().block();
 
-        StepVerifier.create(cpkncesContainer.create().then(cpknAppendBlob.create()).thenMany(cpkncesContainer.listBlobs()))
+        StepVerifier.create(cpkncesContainer.listBlobs())
             .assertNext(r -> assertEquals(scope2, r.getProperties().getEncryptionScope()))
             .verifyComplete();
     }
@@ -114,10 +117,12 @@ public class CPKNAsyncTests extends BlobTestBase {
             .encryptionScope(null)
             .containerName(generateContainerName())
             .buildAsyncClient();
+        cpkncesContainer.create().block();
         AppendBlobAsyncClient cpknAppendBlob = cpkncesContainer.getBlobAsyncClient(generateBlobName())
             .getAppendBlobAsyncClient();
+        cpknAppendBlob.create().block();
 
-        StepVerifier.create(cpkncesContainer.create().then(cpknAppendBlob.create()).thenMany(cpkncesContainer.listBlobsByHierarchy("")))
+        StepVerifier.create(cpkncesContainer.listBlobsByHierarchy(""))
             .assertNext(r -> assertEquals(scope2, r.getProperties().getEncryptionScope()))
             .verifyComplete();
     }
