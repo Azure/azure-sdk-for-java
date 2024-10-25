@@ -42,9 +42,7 @@ public final class TransferCallResponseInternal implements JsonSerializable<Tran
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("operationContext", operationContext)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("operationContext", operationContext).writeEndObject();
     }
 
     /**

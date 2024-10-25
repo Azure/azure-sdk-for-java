@@ -144,7 +144,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+    public CallMediaRecognizeSpeechOrDtmfOptions
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
@@ -156,7 +157,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
      * @param endSilenceTimeout the endSilenceTimeout value to set.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeout) {
+    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect,
+        Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH_OR_DTMF, targetParticipant);
         this.endSilenceTimeout = endSilenceTimeout;
         this.interToneTimeout = Duration.ofSeconds(2);
@@ -173,9 +175,11 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());
         jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
-        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
+        jsonWriter.writeStringField("initialSilenceTimeout",
+            CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
         jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
-        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
+        final CommunicationIdentifierModel participant
+            = CommunicationIdentifierConverter.convert(getTargetParticipant());
         jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
@@ -186,7 +190,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         if (maxTonesToCollect != null) {
             jsonWriter.writeNumberField("maxTonesToCollect", maxTonesToCollect);
         }
-        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
+        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones,
+            (writer, element) -> writer.writeString(element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -239,7 +244,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                     reader.skipChildren();
                 }
             }
-            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
+            final CallMediaRecognizeSpeechOrDtmfOptions options
+                = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
             //
             options.speechLanguage = speechLanguage;
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;

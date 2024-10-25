@@ -35,7 +35,8 @@ public final class UnmuteParticipantResult {
      * @param  unmuteParticipantsResponseInternal The response from the service
      */
     UnmuteParticipantResult(UnmuteParticipantsResponseInternal unmuteParticipantsResponseInternal) {
-        Objects.requireNonNull(unmuteParticipantsResponseInternal, "unmuteParticipantsResponseInternal must not be null");
+        Objects.requireNonNull(unmuteParticipantsResponseInternal,
+            "unmuteParticipantsResponseInternal must not be null");
 
         this.operationContext = unmuteParticipantsResponseInternal.getOperationContext();
     }

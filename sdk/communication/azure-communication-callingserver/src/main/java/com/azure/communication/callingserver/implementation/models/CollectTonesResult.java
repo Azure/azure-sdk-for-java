@@ -43,9 +43,7 @@ public final class CollectTonesResult implements JsonSerializable<CollectTonesRe
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeArrayField("tones", tones, JsonWriter::writeString)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeArrayField("tones", tones, JsonWriter::writeString).writeEndObject();
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-
 import com.azure.communication.callingserver.models.AnswerCallResult;
 import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -89,9 +88,10 @@ public final class CallAutomationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUrl,
-                                                             MediaStreamingConfiguration mediaStreamingConfiguration,
-                                                             Context context) {
-        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context).block();
+        MediaStreamingConfiguration mediaStreamingConfiguration, Context context) {
+        return callAutomationAsyncClient
+            .answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context)
+            .block();
     }
 
     /**
@@ -119,7 +119,8 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
+    public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target,
+        Context context) {
         return callAutomationAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
     }
 
@@ -149,8 +150,9 @@ public final class CallAutomationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason,
-                                                 Context context) {
-        return callAutomationAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
+        Context context) {
+        return callAutomationAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context)
+            .block();
     }
     //endregion
 

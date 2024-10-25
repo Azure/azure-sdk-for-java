@@ -14,7 +14,8 @@ import java.net.URISyntaxException;
 public final class CallConnectionPropertiesConstructorProxy {
     private static CallConnectionPropertiesConstructorAccessor accessor;
 
-    private CallConnectionPropertiesConstructorProxy() { }
+    private CallConnectionPropertiesConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link CallConnectionPropertiesConstructorAccessor}
@@ -47,7 +48,8 @@ public final class CallConnectionPropertiesConstructorProxy {
      * @param internalResponse The internal response.
      * @return A new instance of {@link CallConnectionProperties}.
      */
-    public static CallConnectionProperties create(CallConnectionPropertiesInternal internalResponse) throws URISyntaxException {
+    public static CallConnectionProperties create(CallConnectionPropertiesInternal internalResponse)
+        throws URISyntaxException {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses CallConnectionProperties which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.

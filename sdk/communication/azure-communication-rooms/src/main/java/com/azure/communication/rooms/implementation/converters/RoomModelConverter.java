@@ -18,7 +18,8 @@ public final class RoomModelConverter {
             return null;
         }
 
-        CommunicationRoom communicationRoom = new CommunicationRoom(room.getId(), room.getValidFrom(), room.getValidUntil(), room.getCreatedAt(), room.isPstnDialOutEnabled());
+        CommunicationRoom communicationRoom = new CommunicationRoom(room.getId(), room.getValidFrom(),
+            room.getValidUntil(), room.getCreatedAt(), room.isPstnDialOutEnabled());
 
         return communicationRoom;
     }
@@ -26,16 +27,17 @@ public final class RoomModelConverter {
     /**
      * Maps from {@link CommunicationRoom} to {com.azure.communication.rooms.implementation.models.RoomModel}.
     */
-    public static com.azure.communication.rooms.implementation.models.RoomModel convert(CommunicationRoom communicationRoom) {
+    public static com.azure.communication.rooms.implementation.models.RoomModel
+        convert(CommunicationRoom communicationRoom) {
         if (communicationRoom == null) {
             return null;
         }
 
-        com.azure.communication.rooms.implementation.models.RoomModel room = new com.azure.communication.rooms.implementation.models.RoomModel()
-            .setId(communicationRoom.getRoomId())
-            .setValidFrom(communicationRoom.getValidFrom())
-            .setValidUntil(communicationRoom.getValidUntil())
-            .setCreatedAt(communicationRoom.getCreatedAt());
+        com.azure.communication.rooms.implementation.models.RoomModel room
+            = new com.azure.communication.rooms.implementation.models.RoomModel().setId(communicationRoom.getRoomId())
+                .setValidFrom(communicationRoom.getValidFrom())
+                .setValidUntil(communicationRoom.getValidUntil())
+                .setCreatedAt(communicationRoom.getCreatedAt());
 
         return room;
 

@@ -46,6 +46,7 @@
     <jacoco.min.linecoverage>0.6</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.6</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
