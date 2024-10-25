@@ -23,17 +23,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SchemaRegistryClientBuilderTest {
     @Test
     public void testNullCredentials() {
-        assertThrows(NullPointerException.class, () -> new SchemaRegistryClientBuilder().buildAsyncClient());
+        assertThrows(NullPointerException.class,
+            () -> new SchemaRegistryClientBuilder().buildAsyncClient());
     }
 
     @Test
     public void testNullEndpoint() {
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId("tenant-id")
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId("tenant-id")
             .clientId("client-id")
             .clientSecret("client-secret")
             .build();
         assertThrows(NullPointerException.class,
-            () -> new SchemaRegistryClientBuilder().credential(credential).buildAsyncClient());
+            () -> new SchemaRegistryClientBuilder()
+                .credential(credential)
+                .buildAsyncClient());
     }
 
     @Test
@@ -43,7 +47,8 @@ public class SchemaRegistryClientBuilderTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class,
-            () -> new SchemaRegistryClientBuilder().credential(credential)
+            () -> new SchemaRegistryClientBuilder()
+                .credential(credential)
                 .fullyQualifiedNamespace("")
                 .buildAsyncClient());
     }
@@ -51,12 +56,14 @@ public class SchemaRegistryClientBuilderTest {
     @Test
     public void testSchemaRegistryClientCreation() {
 
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId("tenant-id")
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId("tenant-id")
             .clientId("client-id")
             .clientSecret("client-secret")
             .build();
 
-        Assertions.assertNotNull(new SchemaRegistryClientBuilder().credential(credential)
+        Assertions.assertNotNull(new SchemaRegistryClientBuilder()
+            .credential(credential)
             .fullyQualifiedNamespace("https://localhost")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient());
@@ -64,16 +71,17 @@ public class SchemaRegistryClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId("tenant-id")
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId("tenant-id")
             .clientId("client-id")
             .clientSecret("client-secret")
             .build();
 
-        assertThrows(IllegalStateException.class,
-            () -> new SchemaRegistryClientBuilder().credential(credential)
-                .fullyQualifiedNamespace("https://localhost")
-                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-                .retryPolicy(new RetryPolicy())
-                .buildAsyncClient());
+        assertThrows(IllegalStateException.class, () -> new SchemaRegistryClientBuilder()
+            .credential(credential)
+            .fullyQualifiedNamespace("https://localhost")
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildAsyncClient());
     }
 }
