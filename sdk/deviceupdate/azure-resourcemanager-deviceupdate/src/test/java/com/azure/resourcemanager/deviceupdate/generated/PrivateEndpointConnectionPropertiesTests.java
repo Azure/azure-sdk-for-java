@@ -31,7 +31,8 @@ public final class PrivateEndpointConnectionPropertiesTests {
             = new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("n").withActionsRequired("v"))
+                        .withDescription("n")
+                        .withActionsRequired("v"))
                 .withGroupIds(Arrays.asList("rwzoxxjtfelluwf", "it"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,

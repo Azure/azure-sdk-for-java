@@ -57,9 +57,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationServersClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AuthorizationServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AuthorizationServersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,127 +69,82 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface AuthorizationServersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationServerCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AuthorizationServerCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationServersGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<AuthorizationServersGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationServersGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<AuthorizationServersGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationServerContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationServersUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<AuthorizationServersUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationServerUpdateContract parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}/listSecrets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}/listSecrets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationServersListSecretsResponse> listSecrets(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("authsid") String authsid,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<AuthorizationServersListSecretsResponse> listSecrets(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("authsid") String authsid, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AuthorizationServerCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -211,13 +165,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -227,36 +179,15 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AuthorizationServerContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AuthorizationServerContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -279,13 +210,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -295,34 +224,16 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -342,10 +253,9 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -360,13 +270,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName) {
+    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(String resourceGroupName,
+        String serviceName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -388,8 +297,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -431,8 +340,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AuthorizationServerContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    public PagedIterable<AuthorizationServerContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
 
@@ -449,13 +358,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid) {
+    private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -468,25 +375,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authsid, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -504,13 +399,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,23 +416,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -572,8 +455,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String authsid, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
 
@@ -605,13 +488,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid) {
+    private Mono<AuthorizationServersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String authsid) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -624,25 +505,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -660,13 +529,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    private Mono<AuthorizationServersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String authsid, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -679,23 +546,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -711,8 +568,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServerContractInner> getAsync(
-        String resourceGroupName, String serviceName, String authsid) {
+    private Mono<AuthorizationServerContractInner> getAsync(String resourceGroupName, String serviceName,
+        String authsid) {
         return getWithResponseAsync(resourceGroupName, serviceName, authsid)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -730,8 +587,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    public AuthorizationServersGetResponse getWithResponse(String resourceGroupName, String serviceName, String authsid,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
 
@@ -765,17 +622,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        AuthorizationServerContractInner parameters,
-        String ifMatch) {
+    private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, AuthorizationServerContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -788,10 +639,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -801,19 +650,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+                    ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -832,18 +670,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        AuthorizationServerContractInner parameters,
-        String ifMatch,
+    private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, AuthorizationServerContractInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -856,10 +688,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -868,18 +698,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, authsid, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -895,8 +715,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServerContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String authsid, AuthorizationServerContractInner parameters) {
+    private Mono<AuthorizationServerContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String authsid, AuthorizationServerContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, authsid, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -917,12 +737,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        AuthorizationServerContractInner parameters,
-        String ifMatch,
+    public AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String authsid, AuthorizationServerContractInner parameters, String ifMatch,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, authsid, parameters, ifMatch, context)
             .block();
@@ -941,8 +757,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String authsid, AuthorizationServerContractInner parameters) {
+    public AuthorizationServerContractInner createOrUpdate(String resourceGroupName, String serviceName, String authsid,
+        AuthorizationServerContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponse(resourceGroupName, serviceName, authsid, parameters, ifMatch, Context.NONE)
             .getValue();
@@ -963,17 +779,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters) {
+    private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, String ifMatch, AuthorizationServerUpdateContract parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -989,10 +799,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1001,20 +809,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1034,18 +830,12 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters,
+    private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, String ifMatch, AuthorizationServerUpdateContract parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1061,10 +851,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1073,18 +861,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, authsid, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1102,12 +880,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServerContractInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters) {
+    private Mono<AuthorizationServerContractInner> updateAsync(String resourceGroupName, String serviceName,
+        String authsid, String ifMatch, AuthorizationServerUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, authsid, ifMatch, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1128,13 +902,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters,
-        Context context) {
+    public AuthorizationServersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName,
+        String authsid, String ifMatch, AuthorizationServerUpdateContract parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serviceName, authsid, ifMatch, parameters, context).block();
     }
 
@@ -1153,12 +922,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServerContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters) {
+    public AuthorizationServerContractInner update(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch, AuthorizationServerUpdateContract parameters) {
         return updateWithResponse(resourceGroupName, serviceName, authsid, ifMatch, parameters, Context.NONE)
             .getValue();
     }
@@ -1177,13 +942,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1199,26 +962,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1237,13 +987,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1259,24 +1007,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, authsid, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1313,8 +1050,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String authsid, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, authsid, ifMatch, context).block();
     }
 
@@ -1347,13 +1084,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid) {
+    private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1366,25 +1101,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSecrets(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authsid,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listSecrets(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authsid, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1401,13 +1124,11 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(String resourceGroupName,
+        String serviceName, String authsid, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1420,23 +1141,13 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter authsid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSecrets(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authsid,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listSecrets(this.client.getEndpoint(), resourceGroupName, serviceName, authsid,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1451,8 +1162,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationServerSecretsContractInner> listSecretsAsync(
-        String resourceGroupName, String serviceName, String authsid) {
+    private Mono<AuthorizationServerSecretsContractInner> listSecretsAsync(String resourceGroupName, String serviceName,
+        String authsid) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, authsid)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1470,8 +1181,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServersListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context) {
+    public AuthorizationServersListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName,
+        String authsid, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
 
@@ -1487,8 +1198,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationServerSecretsContractInner listSecrets(
-        String resourceGroupName, String serviceName, String authsid) {
+    public AuthorizationServerSecretsContractInner listSecrets(String resourceGroupName, String serviceName,
+        String authsid) {
         return listSecretsWithResponse(resourceGroupName, serviceName, authsid, Context.NONE).getValue();
     }
 
@@ -1509,23 +1220,14 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AuthorizationServerContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AuthorizationServerContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1542,29 +1244,19 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

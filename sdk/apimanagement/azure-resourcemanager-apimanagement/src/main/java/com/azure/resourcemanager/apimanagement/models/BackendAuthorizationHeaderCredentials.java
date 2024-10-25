@@ -74,16 +74,12 @@ public final class BackendAuthorizationHeaderCredentials {
      */
     public void validate() {
         if (scheme() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scheme in model BackendAuthorizationHeaderCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property scheme in model BackendAuthorizationHeaderCredentials"));
         }
         if (parameter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameter in model BackendAuthorizationHeaderCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameter in model BackendAuthorizationHeaderCredentials"));
         }
     }
 

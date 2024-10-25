@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchResourceTagsAndSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchResourceTagsAndSku model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"umh\",\"tier\":\"Premium\",\"size\":\"kkxwslol\",\"family\":\"pvuzlmv\",\"capacity\":1530472980},\"tags\":{\"crpw\":\"tgp\",\"brnjwmw\":\"xeznoi\"}}")
-                .toObject(PatchResourceTagsAndSku.class);
+        PatchResourceTagsAndSku model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"umh\",\"tier\":\"Premium\",\"size\":\"kkxwslol\",\"family\":\"pvuzlmv\",\"capacity\":1530472980},\"tags\":{\"crpw\":\"tgp\",\"brnjwmw\":\"xeznoi\"}}")
+            .toObject(PatchResourceTagsAndSku.class);
         Assertions.assertEquals("tgp", model.tags().get("crpw"));
         Assertions.assertEquals("umh", model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
@@ -30,16 +28,13 @@ public final class PatchResourceTagsAndSkuTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceTagsAndSku model =
-            new PatchResourceTagsAndSku()
-                .withTags(mapOf("crpw", "tgp", "brnjwmw", "xeznoi"))
-                .withSku(
-                    new Sku()
-                        .withName("umh")
-                        .withTier(SkuTier.PREMIUM)
-                        .withSize("kkxwslol")
-                        .withFamily("pvuzlmv")
-                        .withCapacity(1530472980));
+        PatchResourceTagsAndSku model
+            = new PatchResourceTagsAndSku().withTags(mapOf("crpw", "tgp", "brnjwmw", "xeznoi"))
+                .withSku(new Sku().withName("umh")
+                    .withTier(SkuTier.PREMIUM)
+                    .withSize("kkxwslol")
+                    .withFamily("pvuzlmv")
+                    .withCapacity(1530472980));
         model = BinaryData.fromObject(model).toObject(PatchResourceTagsAndSku.class);
         Assertions.assertEquals("tgp", model.tags().get("crpw"));
         Assertions.assertEquals("umh", model.sku().name());

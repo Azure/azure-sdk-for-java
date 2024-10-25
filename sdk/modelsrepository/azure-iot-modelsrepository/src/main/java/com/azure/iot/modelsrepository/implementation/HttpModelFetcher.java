@@ -9,9 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,7 +51,7 @@ class HttpModelFetcher implements ModelFetcher {
 
             return evaluatePath(tryContentPath, context)
                 .onErrorResume(error -> {
-                    if (work.size() != 0) {
+                    if (!work.isEmpty()) {
                         return evaluatePath(work.poll(), context);
                     } else {
                         logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath));
@@ -78,7 +78,7 @@ class HttpModelFetcher implements ModelFetcher {
                 .map(s -> {
                     try {
                         return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
-                    } catch (JsonProcessingException e) {
+                    } catch (IOException e) {
                         logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
                         return null;
                     }

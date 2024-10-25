@@ -180,23 +180,18 @@ public final class CreateTenantRequestBody {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model CreateTenantRequestBody"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model CreateTenantRequestBody"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CreateTenantRequestBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model CreateTenantRequestBody"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model CreateTenantRequestBody"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model CreateTenantRequestBody"));
         } else {
             sku().validate();
         }

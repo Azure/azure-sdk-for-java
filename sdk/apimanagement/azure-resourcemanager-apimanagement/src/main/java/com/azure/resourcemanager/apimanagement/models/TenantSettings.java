@@ -34,8 +34,8 @@ public interface TenantSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TenantSettingsContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context);
+    PagedIterable<TenantSettingsContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Context context);
 
     /**
      * Get tenant settings.
@@ -49,8 +49,8 @@ public interface TenantSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant settings.
      */
-    Response<TenantSettingsContract> getWithResponse(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context);
+    Response<TenantSettingsContract> getWithResponse(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType, Context context);
 
     /**
      * Get tenant settings.

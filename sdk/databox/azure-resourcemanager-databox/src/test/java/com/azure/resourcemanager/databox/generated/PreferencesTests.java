@@ -17,18 +17,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PreferencesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Preferences model =
-            BinaryData
-                .fromString(
-                    "{\"preferredDataCenterRegion\":[\"ynnaam\",\"ectehf\",\"qsc\",\"eypvhezrkg\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":true},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"MicrosoftManaged\",\"isUpdated\":true},\"encryptionPreferences\":{\"doubleEncryption\":\"Disabled\",\"hardwareEncryption\":\"Enabled\"},\"storageAccountAccessTierPreferences\":[\"yyvxyqjpkcattpn\",\"jcrcczsqpjhvmda\",\"v\",\"ysou\"]}")
-                .toObject(Preferences.class);
+        Preferences model = BinaryData.fromString(
+            "{\"preferredDataCenterRegion\":[\"ynnaam\",\"ectehf\",\"qsc\",\"eypvhezrkg\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":true},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"MicrosoftManaged\",\"isUpdated\":true},\"encryptionPreferences\":{\"doubleEncryption\":\"Disabled\",\"hardwareEncryption\":\"Enabled\"},\"storageAccountAccessTierPreferences\":[\"yyvxyqjpkcattpn\",\"jcrcczsqpjhvmda\",\"v\",\"ysou\"]}")
+            .toObject(Preferences.class);
         Assertions.assertEquals("ynnaam", model.preferredDataCenterRegion().get(0));
-        Assertions
-            .assertEquals(
-                TransportShipmentTypes.CUSTOMER_MANAGED, model.transportPreferences().preferredShipmentType());
-        Assertions
-            .assertEquals(
-                TransportShipmentTypes.MICROSOFT_MANAGED, model.reverseTransportPreferences().preferredShipmentType());
+        Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
+            model.transportPreferences().preferredShipmentType());
+        Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
+            model.reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.DISABLED, model.encryptionPreferences().doubleEncryption());
         Assertions.assertEquals(HardwareEncryption.ENABLED, model.encryptionPreferences().hardwareEncryption());
         Assertions.assertEquals("yyvxyqjpkcattpn", model.storageAccountAccessTierPreferences().get(0));
@@ -36,27 +32,21 @@ public final class PreferencesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Preferences model =
-            new Preferences()
-                .withPreferredDataCenterRegion(Arrays.asList("ynnaam", "ectehf", "qsc", "eypvhezrkg"))
-                .withTransportPreferences(
-                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED))
-                .withReverseTransportPreferences(
-                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
-                .withEncryptionPreferences(
-                    new EncryptionPreferences()
-                        .withDoubleEncryption(DoubleEncryption.DISABLED)
-                        .withHardwareEncryption(HardwareEncryption.ENABLED))
-                .withStorageAccountAccessTierPreferences(
-                    Arrays.asList("yyvxyqjpkcattpn", "jcrcczsqpjhvmda", "v", "ysou"));
+        Preferences model = new Preferences()
+            .withPreferredDataCenterRegion(Arrays.asList("ynnaam", "ectehf", "qsc", "eypvhezrkg"))
+            .withTransportPreferences(
+                new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED))
+            .withReverseTransportPreferences(
+                new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
+            .withEncryptionPreferences(new EncryptionPreferences().withDoubleEncryption(DoubleEncryption.DISABLED)
+                .withHardwareEncryption(HardwareEncryption.ENABLED))
+            .withStorageAccountAccessTierPreferences(Arrays.asList("yyvxyqjpkcattpn", "jcrcczsqpjhvmda", "v", "ysou"));
         model = BinaryData.fromObject(model).toObject(Preferences.class);
         Assertions.assertEquals("ynnaam", model.preferredDataCenterRegion().get(0));
-        Assertions
-            .assertEquals(
-                TransportShipmentTypes.CUSTOMER_MANAGED, model.transportPreferences().preferredShipmentType());
-        Assertions
-            .assertEquals(
-                TransportShipmentTypes.MICROSOFT_MANAGED, model.reverseTransportPreferences().preferredShipmentType());
+        Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
+            model.transportPreferences().preferredShipmentType());
+        Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
+            model.reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.DISABLED, model.encryptionPreferences().doubleEncryption());
         Assertions.assertEquals(HardwareEncryption.ENABLED, model.encryptionPreferences().hardwareEncryption());
         Assertions.assertEquals("yyvxyqjpkcattpn", model.storageAccountAccessTierPreferences().get(0));

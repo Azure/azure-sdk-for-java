@@ -46,14 +46,8 @@ public interface ProductGroupsClient {
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GroupContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GroupContractInner> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
@@ -69,8 +63,8 @@ public interface ProductGroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String groupId, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
@@ -100,8 +94,8 @@ public interface ProductGroupsClient {
      * @return contract details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupContractInner> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<GroupContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, String groupId, Context context);
 
     /**
      * Adds the association between the specified developer group with the specified product.
@@ -132,8 +126,8 @@ public interface ProductGroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String groupId,
+        Context context);
 
     /**
      * Deletes the association between the specified group and product.

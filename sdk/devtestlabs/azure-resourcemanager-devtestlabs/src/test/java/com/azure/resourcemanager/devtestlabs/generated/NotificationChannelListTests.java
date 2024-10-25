@@ -17,60 +17,45 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationChannelListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationChannelList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"webHookUrl\":\"ewdjcvbquwrb\",\"emailRecipient\":\"wagohbuffk\",\"notificationLocale\":\"qem\",\"description\":\"hmxtdr\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-02-21T18:33:04Z\",\"provisioningState\":\"vewzcj\",\"uniqueIdentifier\":\"m\"},\"location\":\"cpmguaadraufact\",\"tags\":{\"jjziuxxpsh\":\"zov\",\"enr\":\"eekulfgslqubkwd\"},\"id\":\"sutujba\",\"name\":\"pjuohminyfl\",\"type\":\"orwmduvwpklv\"},{\"properties\":{\"webHookUrl\":\"mygdxpgpqch\",\"emailRecipient\":\"zepn\",\"notificationLocale\":\"jcrxgibbdaxcon\",\"description\":\"zauorsuk\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-12-08T11:17:35Z\",\"provisioningState\":\"nuuepzlrp\",\"uniqueIdentifier\":\"zsoldwey\"},\"location\":\"qdunvmnnrwrbior\",\"tags\":{\"dnhxmsi\":\"lywjhh\",\"ufiqndieuzaof\":\"fomiloxgg\",\"cubiipuipw\":\"chvcyyysfgdo\"},\"id\":\"qonmacj\",\"name\":\"k\",\"type\":\"izsh\"}],\"nextLink\":\"cimpevfg\"}")
-                .toObject(NotificationChannelList.class);
+        NotificationChannelList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"webHookUrl\":\"ewdjcvbquwrb\",\"emailRecipient\":\"wagohbuffk\",\"notificationLocale\":\"qem\",\"description\":\"hmxtdr\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-02-21T18:33:04Z\",\"provisioningState\":\"vewzcj\",\"uniqueIdentifier\":\"m\"},\"location\":\"cpmguaadraufact\",\"tags\":{\"jjziuxxpsh\":\"zov\",\"enr\":\"eekulfgslqubkwd\"},\"id\":\"sutujba\",\"name\":\"pjuohminyfl\",\"type\":\"orwmduvwpklv\"},{\"properties\":{\"webHookUrl\":\"mygdxpgpqch\",\"emailRecipient\":\"zepn\",\"notificationLocale\":\"jcrxgibbdaxcon\",\"description\":\"zauorsuk\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-12-08T11:17:35Z\",\"provisioningState\":\"nuuepzlrp\",\"uniqueIdentifier\":\"zsoldwey\"},\"location\":\"qdunvmnnrwrbior\",\"tags\":{\"dnhxmsi\":\"lywjhh\",\"ufiqndieuzaof\":\"fomiloxgg\",\"cubiipuipw\":\"chvcyyysfgdo\"},\"id\":\"qonmacj\",\"name\":\"k\",\"type\":\"izsh\"}],\"nextLink\":\"cimpevfg\"}")
+            .toObject(NotificationChannelList.class);
         Assertions.assertEquals("cpmguaadraufact", model.value().get(0).location());
         Assertions.assertEquals("zov", model.value().get(0).tags().get("jjziuxxpsh"));
         Assertions.assertEquals("ewdjcvbquwrb", model.value().get(0).webhookUrl());
         Assertions.assertEquals("wagohbuffk", model.value().get(0).emailRecipient());
         Assertions.assertEquals("qem", model.value().get(0).notificationLocale());
         Assertions.assertEquals("hmxtdr", model.value().get(0).description());
-        Assertions
-            .assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.value().get(0).events().get(0).eventName());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN,
+            model.value().get(0).events().get(0).eventName());
         Assertions.assertEquals("cimpevfg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationChannelList model =
-            new NotificationChannelList()
+        NotificationChannelList model
+            = new NotificationChannelList()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new NotificationChannelInner()
-                                .withLocation("cpmguaadraufact")
-                                .withTags(mapOf("jjziuxxpsh", "zov", "enr", "eekulfgslqubkwd"))
-                                .withWebhookUrl("ewdjcvbquwrb")
-                                .withEmailRecipient("wagohbuffk")
-                                .withNotificationLocale("qem")
-                                .withDescription("hmxtdr")
-                                .withEvents(
-                                    Arrays
-                                        .asList(
-                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
-                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN))),
-                            new NotificationChannelInner()
-                                .withLocation("qdunvmnnrwrbior")
-                                .withTags(
-                                    mapOf(
-                                        "dnhxmsi",
-                                        "lywjhh",
-                                        "ufiqndieuzaof",
-                                        "fomiloxgg",
-                                        "cubiipuipw",
-                                        "chvcyyysfgdo"))
-                                .withWebhookUrl("mygdxpgpqch")
-                                .withEmailRecipient("zepn")
-                                .withNotificationLocale("jcrxgibbdaxcon")
-                                .withDescription("zauorsuk")
-                                .withEvents(
-                                    Arrays
-                                        .asList(
-                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
-                                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)))))
+                    Arrays.asList(
+                        new NotificationChannelInner().withLocation("cpmguaadraufact")
+                            .withTags(mapOf("jjziuxxpsh", "zov", "enr", "eekulfgslqubkwd"))
+                            .withWebhookUrl("ewdjcvbquwrb")
+                            .withEmailRecipient("wagohbuffk")
+                            .withNotificationLocale("qem")
+                            .withDescription("hmxtdr")
+                            .withEvents(Arrays.asList(
+                                new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                                new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN))),
+                        new NotificationChannelInner().withLocation("qdunvmnnrwrbior")
+                            .withTags(
+                                mapOf("dnhxmsi", "lywjhh", "ufiqndieuzaof", "fomiloxgg", "cubiipuipw", "chvcyyysfgdo"))
+                            .withWebhookUrl("mygdxpgpqch")
+                            .withEmailRecipient("zepn")
+                            .withNotificationLocale("jcrxgibbdaxcon")
+                            .withDescription("zauorsuk")
+                            .withEvents(
+                                Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                                    new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)))))
                 .withNextLink("cimpevfg");
         model = BinaryData.fromObject(model).toObject(NotificationChannelList.class);
         Assertions.assertEquals("cpmguaadraufact", model.value().get(0).location());
@@ -79,8 +64,8 @@ public final class NotificationChannelListTests {
         Assertions.assertEquals("wagohbuffk", model.value().get(0).emailRecipient());
         Assertions.assertEquals("qem", model.value().get(0).notificationLocale());
         Assertions.assertEquals("hmxtdr", model.value().get(0).description());
-        Assertions
-            .assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.value().get(0).events().get(0).eventName());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN,
+            model.value().get(0).events().get(0).eventName());
         Assertions.assertEquals("cimpevfg", model.nextLink());
     }
 

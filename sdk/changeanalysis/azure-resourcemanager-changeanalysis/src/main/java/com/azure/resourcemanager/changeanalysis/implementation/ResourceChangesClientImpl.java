@@ -46,8 +46,8 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @param client the instance of the service client containing this operation class.
      */
     ResourceChangesClientImpl(AzureChangeAnalysisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceChangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceChangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,29 +58,21 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureChangeAnalysisM")
     public interface ResourceChangesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{resourceId}/providers/Microsoft.ChangeAnalysis/resourceChanges")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangeList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceId") String resourceId,
-            @QueryParam("$startTime") OffsetDateTime startTime,
-            @QueryParam("$endTime") OffsetDateTime endTime,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ChangeList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceId") String resourceId,
+            @QueryParam("$startTime") OffsetDateTime startTime, @QueryParam("$endTime") OffsetDateTime endTime,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangeList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ChangeList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -99,13 +91,11 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken) {
+    private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(String resourceId, OffsetDateTime startTime,
+        OffsetDateTime endTime, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -118,27 +108,10 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceId,
-                            startTime,
-                            endTime,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ChangeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceId,
+                startTime, endTime, skipToken, accept, context))
+            .<PagedResponse<ChangeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -159,13 +132,11 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context) {
+    private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(String resourceId, OffsetDateTime startTime,
+        OffsetDateTime endTime, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -179,24 +150,10 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceId,
-                startTime,
-                endTime,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceId, startTime, endTime, skipToken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -215,10 +172,9 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ChangeInner> listAsync(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceId, startTime, endTime, skipToken),
+    private PagedFlux<ChangeInner> listAsync(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime,
+        String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceId, startTime, endTime, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -237,8 +193,7 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listAsync(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceId, startTime, endTime, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceId, startTime, endTime, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -259,10 +214,9 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ChangeInner> listAsync(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceId, startTime, endTime, skipToken, context),
+    private PagedFlux<ChangeInner> listAsync(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime,
+        String skipToken, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceId, startTime, endTime, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -301,8 +255,8 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChangeInner> list(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context) {
+    public PagedIterable<ChangeInner> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime,
+        String skipToken, Context context) {
         return new PagedIterable<>(listAsync(resourceId, startTime, endTime, skipToken, context));
     }
 
@@ -322,23 +276,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ChangeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ChangeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -359,23 +303,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -23,11 +23,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryDataset model =
-            BinaryData
-                .fromString(
-                    "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"fvhqc\",\"a\",\"lvpnpp\",\"uflrwd\"]},\"aggregation\":{\"agafcnihgwqap\":{\"name\":\"lxyjr\",\"function\":\"Sum\"},\"keqdcvdrhvoods\":{\"name\":\"edgfbcvkcvq\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bzdopcj\"},{\"type\":\"Dimension\",\"name\":\"nhdldwmgxcx\"},{\"type\":\"Dimension\",\"name\":\"lpmutwuoegrpkhj\"},{\"type\":\"TagKey\",\"name\":\"iyq\"}],\"filter\":{\"and\":[{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"fy\",\"operator\":\"In\",\"values\":[\"pfvmwyhrfou\",\"ft\"]},\"tags\":{\"name\":\"kcpwiy\",\"operator\":\"In\",\"values\":[\"tmnubexkpzksmon\",\"jmquxvypomgk\",\"pkwhojvpa\"]}}}")
-                .toObject(QueryDataset.class);
+        QueryDataset model = BinaryData.fromString(
+            "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"fvhqc\",\"a\",\"lvpnpp\",\"uflrwd\"]},\"aggregation\":{\"agafcnihgwqap\":{\"name\":\"lxyjr\",\"function\":\"Sum\"},\"keqdcvdrhvoods\":{\"name\":\"edgfbcvkcvq\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bzdopcj\"},{\"type\":\"Dimension\",\"name\":\"nhdldwmgxcx\"},{\"type\":\"Dimension\",\"name\":\"lpmutwuoegrpkhj\"},{\"type\":\"TagKey\",\"name\":\"iyq\"}],\"filter\":{\"and\":[{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"fy\",\"operator\":\"In\",\"values\":[\"pfvmwyhrfou\",\"ft\"]},\"tags\":{\"name\":\"kcpwiy\",\"operator\":\"In\",\"values\":[\"tmnubexkpzksmon\",\"jmquxvypomgk\",\"pkwhojvpa\"]}}}")
+            .toObject(QueryDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
         Assertions.assertEquals("fvhqc", model.configuration().columns().get(0));
         Assertions.assertEquals("lxyjr", model.aggregation().get("agafcnihgwqap").name());
@@ -44,44 +42,28 @@ public final class QueryDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDataset model =
-            new QueryDataset()
-                .withGranularity(GranularityType.DAILY)
-                .withConfiguration(
-                    new QueryDatasetConfiguration().withColumns(Arrays.asList("fvhqc", "a", "lvpnpp", "uflrwd")))
-                .withAggregation(
-                    mapOf(
-                        "agafcnihgwqap",
-                        new QueryAggregation().withName("lxyjr").withFunction(FunctionType.SUM),
-                        "keqdcvdrhvoods",
-                        new QueryAggregation().withName("edgfbcvkcvq").withFunction(FunctionType.SUM)))
-                .withGrouping(
-                    Arrays
-                        .asList(
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("bzdopcj"),
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("nhdldwmgxcx"),
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("lpmutwuoegrpkhj"),
-                            new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("iyq")))
-                .withFilter(
-                    new QueryFilter()
-                        .withAnd(Arrays.asList(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withOr(
-                            Arrays
-                                .asList(
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withDimensions(
-                            new QueryComparisonExpression()
-                                .withName("fy")
-                                .withOperator(QueryOperatorType.IN)
-                                .withValues(Arrays.asList("pfvmwyhrfou", "ft")))
-                        .withTags(
-                            new QueryComparisonExpression()
-                                .withName("kcpwiy")
-                                .withOperator(QueryOperatorType.IN)
-                                .withValues(Arrays.asList("tmnubexkpzksmon", "jmquxvypomgk", "pkwhojvpa"))));
+        QueryDataset model = new QueryDataset().withGranularity(GranularityType.DAILY)
+            .withConfiguration(
+                new QueryDatasetConfiguration().withColumns(Arrays.asList("fvhqc", "a", "lvpnpp", "uflrwd")))
+            .withAggregation(
+                mapOf("agafcnihgwqap", new QueryAggregation().withName("lxyjr").withFunction(FunctionType.SUM),
+                    "keqdcvdrhvoods", new QueryAggregation().withName("edgfbcvkcvq").withFunction(FunctionType.SUM)))
+            .withGrouping(Arrays.asList(new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("bzdopcj"),
+                new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("nhdldwmgxcx"),
+                new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("lpmutwuoegrpkhj"),
+                new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("iyq")))
+            .withFilter(new QueryFilter()
+                .withAnd(Arrays.asList(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                .withOr(Arrays.asList(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                .withDimensions(new QueryComparisonExpression().withName("fy")
+                    .withOperator(QueryOperatorType.IN)
+                    .withValues(Arrays.asList("pfvmwyhrfou", "ft")))
+                .withTags(new QueryComparisonExpression().withName("kcpwiy")
+                    .withOperator(QueryOperatorType.IN)
+                    .withValues(Arrays.asList("tmnubexkpzksmon", "jmquxvypomgk", "pkwhojvpa"))));
         model = BinaryData.fromObject(model).toObject(QueryDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
         Assertions.assertEquals("fvhqc", model.configuration().columns().get(0));

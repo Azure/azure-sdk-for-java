@@ -53,12 +53,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @param client the instance of the service client containing this operation class.
      */
     TimeSeriesDatabaseConnectionsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    TimeSeriesDatabaseConnectionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(TimeSeriesDatabaseConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,76 +65,54 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
     public interface TimeSeriesDatabaseConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TimeSeriesDatabaseConnectionListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TimeSeriesDatabaseConnectionListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TimeSeriesDatabaseConnectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<TimeSeriesDatabaseConnectionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("timeSeriesDatabaseConnectionName") String timeSeriesDatabaseConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("timeSeriesDatabaseConnectionName") String timeSeriesDatabaseConnectionName,
             @BodyParam("application/json") TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections/{timeSeriesDatabaseConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("timeSeriesDatabaseConnectionName") String timeSeriesDatabaseConnectionName,
             @QueryParam("cleanupConnectionArtifacts") CleanupConnectionArtifacts cleanupConnectionArtifacts,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TimeSeriesDatabaseConnectionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -153,19 +127,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,26 +146,10 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<TimeSeriesDatabaseConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<TimeSeriesDatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -212,19 +166,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,23 +186,10 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -268,8 +205,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TimeSeriesDatabaseConnectionInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -285,10 +222,9 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TimeSeriesDatabaseConnectionInner> listAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<TimeSeriesDatabaseConnectionInner> listAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -321,8 +257,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TimeSeriesDatabaseConnectionInner> list(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -339,19 +275,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String timeSeriesDatabaseConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,25 +293,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            timeSeriesDatabaseConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -397,19 +318,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
+    private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,23 +336,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, accept, context);
     }
 
     /**
@@ -450,8 +357,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return the description of an existing time series database connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> getAsync(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    private Mono<TimeSeriesDatabaseConnectionInner> getAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
         return getWithResponseAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -469,8 +376,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return the description of an existing time series database connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TimeSeriesDatabaseConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
+    public Response<TimeSeriesDatabaseConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context).block();
     }
 
@@ -486,8 +393,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return the description of an existing time series database connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    public TimeSeriesDatabaseConnectionInner get(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
         return getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
             .getValue();
     }
@@ -506,22 +413,16 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String timeSeriesDatabaseConnectionName,
         TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -531,34 +432,20 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionDescription == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionDescription is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionDescription is required and cannot be null."));
         } else {
             timeSeriesDatabaseConnectionDescription.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            timeSeriesDatabaseConnectionName,
-                            timeSeriesDatabaseConnectionDescription,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                timeSeriesDatabaseConnectionDescription, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -577,23 +464,16 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String timeSeriesDatabaseConnectionName,
+        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -603,32 +483,20 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionDescription == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionDescription is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionDescription is required and cannot be null."));
         } else {
             timeSeriesDatabaseConnectionDescription.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            timeSeriesDatabaseConnectionDescription, accept, context);
     }
 
     /**
@@ -645,25 +513,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
             TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription);
-        return this
-            .client
-            .<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TimeSeriesDatabaseConnectionInner.class,
-                TimeSeriesDatabaseConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
+            timeSeriesDatabaseConnectionName, timeSeriesDatabaseConnectionDescription);
+        return this.client.<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TimeSeriesDatabaseConnectionInner.class,
+            TimeSeriesDatabaseConnectionInner.class, this.client.getContext());
     }
 
     /**
@@ -681,28 +537,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
-            TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+            TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription,
-                context);
-        return this
-            .client
-            .<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TimeSeriesDatabaseConnectionInner.class,
-                TimeSeriesDatabaseConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
+            timeSeriesDatabaseConnectionName, timeSeriesDatabaseConnectionDescription, context);
+        return this.client.<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TimeSeriesDatabaseConnectionInner.class,
+            TimeSeriesDatabaseConnectionInner.class, context);
     }
 
     /**
@@ -719,16 +561,10 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
+        beginCreateOrUpdate(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
             TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
                 timeSeriesDatabaseConnectionDescription)
             .getSyncPoller();
     }
@@ -748,19 +584,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
-            TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-            Context context) {
+        beginCreateOrUpdate(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+            TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription,
-                context)
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                timeSeriesDatabaseConnectionDescription, context)
             .getSyncPoller();
     }
 
@@ -777,18 +605,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
+    private Mono<TimeSeriesDatabaseConnectionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
         TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            timeSeriesDatabaseConnectionDescription).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -805,20 +626,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
+    private Mono<TimeSeriesDatabaseConnectionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
-        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            timeSeriesDatabaseConnectionDescription, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -834,17 +646,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
+    public TimeSeriesDatabaseConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
         TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            timeSeriesDatabaseConnectionDescription).block();
     }
 
     /**
@@ -861,19 +667,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
+    public TimeSeriesDatabaseConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
-        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                timeSeriesDatabaseConnectionDescription,
-                context)
-            .block();
+        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            timeSeriesDatabaseConnectionDescription, context).block();
     }
 
     /**
@@ -892,22 +690,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -917,26 +708,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            timeSeriesDatabaseConnectionName,
-                            cleanupConnectionArtifacts,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                cleanupConnectionArtifacts, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -957,23 +736,16 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -983,24 +755,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (timeSeriesDatabaseConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter timeSeriesDatabaseConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                cleanupConnectionArtifacts,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, accept,
+            context);
     }
 
     /**
@@ -1019,22 +781,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginDeleteAsync(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
+        beginDeleteAsync(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
             CleanupConnectionArtifacts cleanupConnectionArtifacts) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts);
-        return this
-            .client
-            .<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TimeSeriesDatabaseConnectionInner.class,
-                TimeSeriesDatabaseConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName,
+            timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts);
+        return this.client.<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TimeSeriesDatabaseConnectionInner.class,
+            TimeSeriesDatabaseConnectionInner.class, this.client.getContext());
     }
 
     /**
@@ -1052,17 +805,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
     private PollerFlux<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
         beginDeleteAsync(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
         final CleanupConnectionArtifacts cleanupConnectionArtifacts = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts);
-        return this
-            .client
-            .<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TimeSeriesDatabaseConnectionInner.class,
-                TimeSeriesDatabaseConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName,
+            timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts);
+        return this.client.<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TimeSeriesDatabaseConnectionInner.class,
+            TimeSeriesDatabaseConnectionInner.class, this.client.getContext());
     }
 
     /**
@@ -1082,24 +829,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
-        beginDeleteAsync(
-            String resourceGroupName,
-            String resourceName,
-            String timeSeriesDatabaseConnectionName,
-            CleanupConnectionArtifacts cleanupConnectionArtifacts,
-            Context context) {
+        beginDeleteAsync(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+            CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context);
-        return this
-            .client
-            .<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TimeSeriesDatabaseConnectionInner.class,
-                TimeSeriesDatabaseConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName,
+            timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context);
+        return this.client.<TimeSeriesDatabaseConnectionInner, TimeSeriesDatabaseConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TimeSeriesDatabaseConnectionInner.class,
+            TimeSeriesDatabaseConnectionInner.class, context);
     }
 
     /**
@@ -1114,12 +851,12 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return the {@link SyncPoller} for polling of describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginDelete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    public SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
+        beginDelete(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
         final CleanupConnectionArtifacts cleanupConnectionArtifacts = null;
         return this
-            .beginDeleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts)
+            .beginDeleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                cleanupConnectionArtifacts)
             .getSyncPoller();
     }
 
@@ -1140,14 +877,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginDelete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
-        Context context) {
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context) {
         return this
-            .beginDeleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context)
+            .beginDeleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+                cleanupConnectionArtifacts, context)
             .getSyncPoller();
     }
 
@@ -1166,15 +900,10 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts) {
-        return beginDeleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts) {
+        return beginDeleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1189,13 +918,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
         final CleanupConnectionArtifacts cleanupConnectionArtifacts = null;
-        return beginDeleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1214,16 +941,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    private Mono<TimeSeriesDatabaseConnectionInner> deleteAsync(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1238,12 +960,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+    public TimeSeriesDatabaseConnectionInner delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
         final CleanupConnectionArtifacts cleanupConnectionArtifacts = null;
-        return deleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts)
-            .block();
+        return deleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts).block();
     }
 
     /**
@@ -1262,15 +983,11 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner delete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    public TimeSeriesDatabaseConnectionInner delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context) {
-        return deleteAsync(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context)
-            .block();
+        return deleteAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts, context).block();
     }
 
     /**
@@ -1290,23 +1007,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TimeSeriesDatabaseConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TimeSeriesDatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1323,29 +1030,19 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

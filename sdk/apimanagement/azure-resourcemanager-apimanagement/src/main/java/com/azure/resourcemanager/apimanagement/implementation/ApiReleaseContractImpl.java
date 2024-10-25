@@ -75,24 +75,20 @@ public final class ApiReleaseContractImpl
     }
 
     public ApiReleaseContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, releaseId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, releaseId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiReleaseContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, releaseId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, releaseId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -109,29 +105,24 @@ public final class ApiReleaseContractImpl
     }
 
     public ApiReleaseContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, releaseId, updateIfMatch, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, releaseId, updateIfMatch, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiReleaseContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, releaseId, updateIfMatch, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, releaseId, updateIfMatch, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ApiReleaseContractImpl(
-        ApiReleaseContractInner innerObject,
+    ApiReleaseContractImpl(ApiReleaseContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -142,22 +133,18 @@ public final class ApiReleaseContractImpl
     }
 
     public ApiReleaseContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .getWithResponse(resourceGroupName, serviceName, apiId, releaseId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .getWithResponse(resourceGroupName, serviceName, apiId, releaseId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiReleaseContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiReleases()
-                .getWithResponse(resourceGroupName, serviceName, apiId, releaseId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiReleases()
+            .getWithResponse(resourceGroupName, serviceName, apiId, releaseId, context)
+            .getValue();
         return this;
     }
 

@@ -5,27 +5,28 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Source of the input documents.
  */
 @Fluent
-public final class SourceInput {
+public final class SourceInput implements JsonSerializable<SourceInput> {
 
     /*
      * Location of the folder / container or single file with your documents
      */
     @Generated
-    @JsonProperty(value = "sourceUrl")
     private final String sourceUrl;
 
     /*
      * Document filter
      */
     @Generated
-    @JsonProperty(value = "filter")
     private DocumentFilter filter;
 
     /*
@@ -33,14 +34,12 @@ public final class SourceInput {
      * If none is specified, we will perform auto detect on the document
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * Storage Source
      */
     @Generated
-    @JsonProperty(value = "storageSource")
     private StorageSource storageSource;
 
     /**
@@ -49,8 +48,7 @@ public final class SourceInput {
      * @param sourceUrl the sourceUrl value to set.
      */
     @Generated
-    @JsonCreator
-    public SourceInput(@JsonProperty(value = "sourceUrl") String sourceUrl) {
+    public SourceInput(String sourceUrl) {
         this.sourceUrl = sourceUrl;
     }
 
@@ -130,5 +128,58 @@ public final class SourceInput {
     public SourceInput setStorageSource(StorageSource storageSource) {
         this.storageSource = storageSource;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceUrl", this.sourceUrl);
+        jsonWriter.writeJsonField("filter", this.filter);
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("storageSource", this.storageSource == null ? null : this.storageSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceInput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceInput.
+     */
+    @Generated
+    public static SourceInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String sourceUrl = null;
+            DocumentFilter filter = null;
+            String language = null;
+            StorageSource storageSource = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sourceUrl".equals(fieldName)) {
+                    sourceUrl = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    filter = DocumentFilter.fromJson(reader);
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("storageSource".equals(fieldName)) {
+                    storageSource = StorageSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            SourceInput deserializedSourceInput = new SourceInput(sourceUrl);
+            deserializedSourceInput.filter = filter;
+            deserializedSourceInput.language = language;
+            deserializedSourceInput.storageSource = storageSource;
+            return deserializedSourceInput;
+        });
     }
 }

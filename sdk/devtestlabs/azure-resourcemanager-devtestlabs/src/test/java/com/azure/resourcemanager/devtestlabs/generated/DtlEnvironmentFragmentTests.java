@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DtlEnvironmentFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DtlEnvironmentFragment model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jumvqqolihrraio\":\"cgegydcwbo\",\"fuojrngif\":\"aubrjtloq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\",\"lzo\":\"fdvruz\"}}")
-                .toObject(DtlEnvironmentFragment.class);
+        DtlEnvironmentFragment model = BinaryData.fromString(
+            "{\"tags\":{\"jumvqqolihrraio\":\"cgegydcwbo\",\"fuojrngif\":\"aubrjtloq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\",\"lzo\":\"fdvruz\"}}")
+            .toObject(DtlEnvironmentFragment.class);
         Assertions.assertEquals("cgegydcwbo", model.tags().get("jumvqqolihrraio"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DtlEnvironmentFragment model =
-            new DtlEnvironmentFragment()
-                .withTags(
-                    mapOf(
-                        "jumvqqolihrraio",
-                        "cgegydcwbo",
-                        "fuojrngif",
-                        "aubrjtloq",
-                        "dfqwmkyoq",
-                        "rzpasccbiuimzdly",
-                        "lzo",
-                        "fdvruz"));
+        DtlEnvironmentFragment model = new DtlEnvironmentFragment().withTags(mapOf("jumvqqolihrraio", "cgegydcwbo",
+            "fuojrngif", "aubrjtloq", "dfqwmkyoq", "rzpasccbiuimzdly", "lzo", "fdvruz"));
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentFragment.class);
         Assertions.assertEquals("cgegydcwbo", model.tags().get("jumvqqolihrraio"));
     }

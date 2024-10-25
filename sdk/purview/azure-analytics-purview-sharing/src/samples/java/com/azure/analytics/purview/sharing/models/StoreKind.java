@@ -4,10 +4,9 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * The types of asset.
@@ -25,7 +24,7 @@ public final class StoreKind extends ExpandableStringEnum<StoreKind> {
 
     /**
      * Creates a new instance of StoreKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +33,17 @@ public final class StoreKind extends ExpandableStringEnum<StoreKind> {
 
     /**
      * Creates or finds a StoreKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding StoreKind.
      */
-    @JsonCreator
     public static StoreKind fromString(String name) {
         return fromString(name, StoreKind.class);
     }
 
     /**
      * Gets known StoreKind values.
-     * 
+     *
      * @return known StoreKind values.
      */
     public static Collection<StoreKind> values() {

@@ -33,43 +33,32 @@ public final class DigitalTwinsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-26T18:25:08Z\",\"lastUpdatedTime\":\"2021-04-20T11:39:18Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"xy\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"fudwpznt\",\"tenantId\":\"dzhlrq\",\"userAssignedIdentities\":{}},\"location\":\"kfrlhrxsbky\",\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-26T18:25:08Z\",\"lastUpdatedTime\":\"2021-04-20T11:39:18Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"xy\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"fudwpznt\",\"tenantId\":\"dzhlrq\",\"userAssignedIdentities\":{}},\"location\":\"kfrlhrxsbky\",\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDigitalTwinsManager manager =
-            AzureDigitalTwinsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DigitalTwinsDescription> response =
-            manager.digitalTwins().listByResourceGroup("cq", com.azure.core.util.Context.NONE);
+        PagedIterable<DigitalTwinsDescription> response
+            = manager.digitalTwins().listByResourceGroup("cq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("kfrlhrxsbky", response.iterator().next().location());
         Assertions.assertEquals("ca", response.iterator().next().tags().get("uzbpzkafku"));
-        Assertions
-            .assertEquals(
-                DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
     }
 }

@@ -109,13 +109,9 @@ public interface ApiVersionSetContract {
          * The stage of the ApiVersionSetContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithVersioningScheme,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithVersionQueryName,
-                DefinitionStages.WithVersionHeaderName,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithVersioningScheme,
+            DefinitionStages.WithDescription, DefinitionStages.WithVersionQueryName,
+            DefinitionStages.WithVersionHeaderName, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -216,12 +212,8 @@ public interface ApiVersionSetContract {
 
     /** The template for ApiVersionSetContract update. */
     interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithVersioningScheme,
-            UpdateStages.WithDescription,
-            UpdateStages.WithVersionQueryName,
-            UpdateStages.WithVersionHeaderName,
-            UpdateStages.WithIfMatch {
+        extends UpdateStages.WithDisplayName, UpdateStages.WithVersioningScheme, UpdateStages.WithDescription,
+        UpdateStages.WithVersionQueryName, UpdateStages.WithVersionHeaderName, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

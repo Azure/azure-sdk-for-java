@@ -133,20 +133,16 @@ public final class AvailableSkuRequest {
      */
     public void validate() {
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferType in model AvailableSkuRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property transferType in model AvailableSkuRequest"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model AvailableSkuRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property country in model AvailableSkuRequest"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model AvailableSkuRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model AvailableSkuRequest"));
         }
     }
 

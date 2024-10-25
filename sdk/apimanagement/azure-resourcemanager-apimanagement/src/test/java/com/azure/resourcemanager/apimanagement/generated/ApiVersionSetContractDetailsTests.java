@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionSetContractDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionSetContractDetails model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"git\",\"name\":\"qhabifpikxwcz\",\"description\":\"scnpqxuhivy\",\"versioningScheme\":\"Header\",\"versionQueryName\":\"b\",\"versionHeaderName\":\"rkxvdum\"}")
-                .toObject(ApiVersionSetContractDetails.class);
+        ApiVersionSetContractDetails model = BinaryData.fromString(
+            "{\"id\":\"git\",\"name\":\"qhabifpikxwcz\",\"description\":\"scnpqxuhivy\",\"versioningScheme\":\"Header\",\"versionQueryName\":\"b\",\"versionHeaderName\":\"rkxvdum\"}")
+            .toObject(ApiVersionSetContractDetails.class);
         Assertions.assertEquals("git", model.id());
         Assertions.assertEquals("qhabifpikxwcz", model.name());
         Assertions.assertEquals("scnpqxuhivy", model.description());
@@ -27,14 +25,12 @@ public final class ApiVersionSetContractDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetContractDetails model =
-            new ApiVersionSetContractDetails()
-                .withId("git")
-                .withName("qhabifpikxwcz")
-                .withDescription("scnpqxuhivy")
-                .withVersioningScheme(VersioningScheme.HEADER)
-                .withVersionQueryName("b")
-                .withVersionHeaderName("rkxvdum");
+        ApiVersionSetContractDetails model = new ApiVersionSetContractDetails().withId("git")
+            .withName("qhabifpikxwcz")
+            .withDescription("scnpqxuhivy")
+            .withVersioningScheme(VersioningScheme.HEADER)
+            .withVersionQueryName("b")
+            .withVersionHeaderName("rkxvdum");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetContractDetails.class);
         Assertions.assertEquals("git", model.id());
         Assertions.assertEquals("qhabifpikxwcz", model.name());

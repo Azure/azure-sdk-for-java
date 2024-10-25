@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDependency model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"gzlgpyaixihz\",\"endpointDetails\":[{\"port\":271809891,\"region\":\"uy\"},{\"port\":850797696,\"region\":\"tkacybdueurgmcd\"},{\"port\":1677529495,\"region\":\"hlo\"}]}")
-                .toObject(EndpointDependency.class);
+        EndpointDependency model = BinaryData.fromString(
+            "{\"domainName\":\"gzlgpyaixihz\",\"endpointDetails\":[{\"port\":271809891,\"region\":\"uy\"},{\"port\":850797696,\"region\":\"tkacybdueurgmcd\"},{\"port\":1677529495,\"region\":\"hlo\"}]}")
+            .toObject(EndpointDependency.class);
         Assertions.assertEquals("gzlgpyaixihz", model.domainName());
         Assertions.assertEquals(271809891, model.endpointDetails().get(0).port());
         Assertions.assertEquals("uy", model.endpointDetails().get(0).region());
@@ -25,15 +23,10 @@ public final class EndpointDependencyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDependency model =
-            new EndpointDependency()
-                .withDomainName("gzlgpyaixihz")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail().withPort(271809891).withRegion("uy"),
-                            new EndpointDetail().withPort(850797696).withRegion("tkacybdueurgmcd"),
-                            new EndpointDetail().withPort(1677529495).withRegion("hlo")));
+        EndpointDependency model = new EndpointDependency().withDomainName("gzlgpyaixihz")
+            .withEndpointDetails(Arrays.asList(new EndpointDetail().withPort(271809891).withRegion("uy"),
+                new EndpointDetail().withPort(850797696).withRegion("tkacybdueurgmcd"),
+                new EndpointDetail().withPort(1677529495).withRegion("hlo")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
         Assertions.assertEquals("gzlgpyaixihz", model.domainName());
         Assertions.assertEquals(271809891, model.endpointDetails().get(0).port());

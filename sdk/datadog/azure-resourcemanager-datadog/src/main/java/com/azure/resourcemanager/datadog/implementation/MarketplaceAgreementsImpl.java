@@ -21,8 +21,7 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public MarketplaceAgreementsImpl(
-        MarketplaceAgreementsClient innerClient,
+    public MarketplaceAgreementsImpl(MarketplaceAgreementsClient innerClient,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -38,14 +37,11 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
         return Utils.mapPage(inner, inner1 -> new DatadogAgreementResourceImpl(inner1, this.manager()));
     }
 
-    public Response<DatadogAgreementResource> createOrUpdateWithResponse(
-        DatadogAgreementResourceInner body, Context context) {
+    public Response<DatadogAgreementResource> createOrUpdateWithResponse(DatadogAgreementResourceInner body,
+        Context context) {
         Response<DatadogAgreementResourceInner> inner = this.serviceClient().createOrUpdateWithResponse(body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DatadogAgreementResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

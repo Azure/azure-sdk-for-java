@@ -45,14 +45,8 @@ public interface SchedulesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
@@ -68,8 +62,8 @@ public interface SchedulesClient {
      * @return schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get schedule.
@@ -99,8 +93,8 @@ public interface SchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, ScheduleInner schedule, Context context);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
@@ -159,8 +153,8 @@ public interface SchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, ScheduleFragment schedule, Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
@@ -204,8 +198,8 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName, String labName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Execute a schedule. This operation can take a while to complete.

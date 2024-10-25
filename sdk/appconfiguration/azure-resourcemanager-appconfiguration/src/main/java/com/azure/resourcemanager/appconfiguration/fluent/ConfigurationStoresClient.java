@@ -70,8 +70,8 @@ public interface ConfigurationStoresClient {
      * @return the result of a request to list configuration stores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConfigurationStoreInner> listByResourceGroup(
-        String resourceGroupName, String skipToken, Context context);
+    PagedIterable<ConfigurationStoreInner> listByResourceGroup(String resourceGroupName, String skipToken,
+        Context context);
 
     /**
      * Gets the properties of the specified configuration store.
@@ -85,8 +85,8 @@ public interface ConfigurationStoresClient {
      * @return the properties of the specified configuration store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationStoreInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String configStoreName, Context context);
+    Response<ConfigurationStoreInner> getByResourceGroupWithResponse(String resourceGroupName, String configStoreName,
+        Context context);
 
     /**
      * Gets the properties of the specified configuration store.
@@ -113,8 +113,8 @@ public interface ConfigurationStoresClient {
      * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
-        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters);
+    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(String resourceGroupName,
+        String configStoreName, ConfigurationStoreInner configStoreCreationParameters);
 
     /**
      * Creates a configuration store with the specified parameters.
@@ -129,11 +129,8 @@ public interface ConfigurationStoresClient {
      * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
-        Context context);
+    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(String resourceGroupName,
+        String configStoreName, ConfigurationStoreInner configStoreCreationParameters, Context context);
 
     /**
      * Creates a configuration store with the specified parameters.
@@ -147,8 +144,8 @@ public interface ConfigurationStoresClient {
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationStoreInner create(
-        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters);
+    ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters);
 
     /**
      * Creates a configuration store with the specified parameters.
@@ -163,11 +160,8 @@ public interface ConfigurationStoresClient {
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationStoreInner create(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
-        Context context);
+    ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters, Context context);
 
     /**
      * Deletes a configuration store.
@@ -233,10 +227,8 @@ public interface ConfigurationStoresClient {
      * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters);
+    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(String resourceGroupName,
+        String configStoreName, ConfigurationStoreUpdateParameters configStoreUpdateParameters);
 
     /**
      * Updates a configuration store with the specified parameters.
@@ -251,11 +243,8 @@ public interface ConfigurationStoresClient {
      * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(String resourceGroupName,
+        String configStoreName, ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context);
 
     /**
      * Updates a configuration store with the specified parameters.
@@ -269,9 +258,7 @@ public interface ConfigurationStoresClient {
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationStoreInner update(
-        String resourceGroupName,
-        String configStoreName,
+    ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters);
 
     /**
@@ -287,11 +274,8 @@ public interface ConfigurationStoresClient {
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationStoreInner update(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context);
+    ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context);
 
     /**
      * Lists the access key for the specified configuration store.
@@ -321,8 +305,8 @@ public interface ConfigurationStoresClient {
      * @return the result of a request to list API keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiKeyInner> listKeys(
-        String resourceGroupName, String configStoreName, String skipToken, Context context);
+    PagedIterable<ApiKeyInner> listKeys(String resourceGroupName, String configStoreName, String skipToken,
+        Context context);
 
     /**
      * Regenerates an access key for the specified configuration store.
@@ -337,11 +321,8 @@ public interface ConfigurationStoresClient {
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiKeyInner> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        RegenerateKeyParameters regenerateKeyParameters,
-        Context context);
+    Response<ApiKeyInner> regenerateKeyWithResponse(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters, Context context);
 
     /**
      * Regenerates an access key for the specified configuration store.
@@ -355,8 +336,8 @@ public interface ConfigurationStoresClient {
      * @return an API key used for authenticating with a configuration store endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiKeyInner regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters);
+    ApiKeyInner regenerateKey(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
@@ -394,8 +375,8 @@ public interface ConfigurationStoresClient {
      * @return a deleted Azure app configuration store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeletedConfigurationStoreInner> getDeletedWithResponse(
-        String location, String configStoreName, Context context);
+    Response<DeletedConfigurationStoreInner> getDeletedWithResponse(String location, String configStoreName,
+        Context context);
 
     /**
      * Gets a deleted Azure app configuration store.

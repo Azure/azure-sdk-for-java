@@ -11,10 +11,10 @@ import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +74,7 @@ public final class RepositoryHandler {
                             processedModels.put(metadata.getId(), result.getDefinition());
                         }
                     }
-                } catch (JsonProcessingException ex) {
+                } catch (IOException ex) {
                     return Mono.error(ex);
                 }
 

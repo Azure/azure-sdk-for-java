@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationStoreUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationStoreUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"encryption\":{},\"disableLocalAuth\":false,\"publicNetworkAccess\":\"Disabled\",\"enablePurgeProtection\":true},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"uqktap\":{\"principalId\":\"mmnkzsmodmgl\",\"clientId\":\"gpbkwtmut\"},\"gbbjfddgmbmbe\":{\"principalId\":\"wgcu\",\"clientId\":\"tumkdosvqwhbm\"}},\"principalId\":\"pbhtqqrolfpfpsa\",\"tenantId\":\"bquxigjy\"},\"sku\":{\"name\":\"zjaoyfhrtxil\"},\"tags\":{\"wrlyxwjkcprb\":\"kujysvlejuvfq\",\"vpys\":\"wbxgjvt\"}}")
-                .toObject(ConfigurationStoreUpdateParameters.class);
+        ConfigurationStoreUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"encryption\":{},\"disableLocalAuth\":false,\"publicNetworkAccess\":\"Disabled\",\"enablePurgeProtection\":true},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"uqktap\":{\"principalId\":\"mmnkzsmodmgl\",\"clientId\":\"gpbkwtmut\"},\"gbbjfddgmbmbe\":{\"principalId\":\"wgcu\",\"clientId\":\"tumkdosvqwhbm\"}},\"principalId\":\"pbhtqqrolfpfpsa\",\"tenantId\":\"bquxigjy\"},\"sku\":{\"name\":\"zjaoyfhrtxil\"},\"tags\":{\"wrlyxwjkcprb\":\"kujysvlejuvfq\",\"vpys\":\"wbxgjvt\"}}")
+            .toObject(ConfigurationStoreUpdateParameters.class);
         Assertions.assertEquals(IdentityType.NONE, model.identity().type());
         Assertions.assertEquals("zjaoyfhrtxil", model.sku().name());
         Assertions.assertEquals("kujysvlejuvfq", model.tags().get("wrlyxwjkcprb"));
@@ -34,19 +32,15 @@ public final class ConfigurationStoreUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationStoreUpdateParameters model =
-            new ConfigurationStoreUpdateParameters()
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType(IdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf("uqktap", new UserIdentity(), "gbbjfddgmbmbe", new UserIdentity())))
-                .withSku(new Sku().withName("zjaoyfhrtxil"))
-                .withTags(mapOf("wrlyxwjkcprb", "kujysvlejuvfq", "vpys", "wbxgjvt"))
-                .withEncryption(new EncryptionProperties())
-                .withDisableLocalAuth(false)
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .withEnablePurgeProtection(true);
+        ConfigurationStoreUpdateParameters model = new ConfigurationStoreUpdateParameters()
+            .withIdentity(new ResourceIdentity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("uqktap", new UserIdentity(), "gbbjfddgmbmbe", new UserIdentity())))
+            .withSku(new Sku().withName("zjaoyfhrtxil"))
+            .withTags(mapOf("wrlyxwjkcprb", "kujysvlejuvfq", "vpys", "wbxgjvt"))
+            .withEncryption(new EncryptionProperties())
+            .withDisableLocalAuth(false)
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withEnablePurgeProtection(true);
         model = BinaryData.fromObject(model).toObject(ConfigurationStoreUpdateParameters.class);
         Assertions.assertEquals(IdentityType.NONE, model.identity().type());
         Assertions.assertEquals("zjaoyfhrtxil", model.sku().name());

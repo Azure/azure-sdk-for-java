@@ -23,7 +23,7 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
     @Parameter(names = { "-pi", "--partitionId" }, description = "Target Partition Id")
     private Integer paritionId = 0;
 
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    @Parameter(names = { "-cg", "--consumerGroup" }, description = "Name of the consumer group.")
     private String consumerGroup = "$Default";
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")

@@ -11,6 +11,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import com.azure.analytics.purview.sharing.models.UserInvitationProperties;
 import org.junit.jupiter.api.Test;
 
 import com.azure.analytics.purview.sharing.models.SentShare;
@@ -49,10 +50,10 @@ class SentShareClientTest extends PurviewShareTestBase {
 
         this.createSentShare(sentShareId);
 
-        UserInvitation sentShareInvitation = new UserInvitation()
+        UserInvitation sentShareInvitation = new UserInvitation().setProperties(new UserInvitationProperties()
                 .setTargetEmail(super.consumerEmail)
                 .setNotify(true)
-                .setExpirationDate(OffsetDateTime.of(2500, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC));
+                .setExpirationDate(OffsetDateTime.of(2500, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)));
 
         Response<BinaryData> invitationResponse = sentSharesClient.createSentShareInvitationWithResponse(
                 sentShareId.toString(), sentShareInvitationId, BinaryData.fromObject(sentShareInvitation),
@@ -63,7 +64,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         assertEquals(201, invitationResponse.getStatusCode());
         assertNotNull(invitation);
         assertEquals(sentShareInvitationId.toString(), invitation.getId());
-        assertEquals(this.consumerEmail, invitation.getTargetEmail());
+        assertEquals(this.consumerEmail, invitation.getProperties().getTargetEmail());
     }
 
     @Test
@@ -119,8 +120,8 @@ class SentShareClientTest extends PurviewShareTestBase {
 
         assertEquals(201, invitationResponse.getStatusCode());
         assertEquals(sentShareInvitationId.toString(), invitation.getId());
-        assertEquals(this.targetActiveDirectoryId, invitation.getTargetActiveDirectoryId().toString());
-        assertEquals(this.targetObjectId, invitation.getTargetObjectId().toString());
+        assertEquals(this.targetActiveDirectoryId, invitation.getProperties().getTargetActiveDirectoryId().toString());
+        assertEquals(this.targetObjectId, invitation.getProperties().getTargetObjectId().toString());
     }
 
     @Test
@@ -136,8 +137,8 @@ class SentShareClientTest extends PurviewShareTestBase {
 
         assertEquals(200, invitationResponse.getStatusCode());
         assertEquals(sentShareInvitationId.toString(), invitation.getId());
-        assertEquals(this.targetActiveDirectoryId, invitation.getTargetActiveDirectoryId().toString());
-        assertEquals(this.targetObjectId, invitation.getTargetObjectId().toString());
+        assertEquals(this.targetActiveDirectoryId, invitation.getProperties().getTargetActiveDirectoryId().toString());
+        assertEquals(this.targetObjectId, invitation.getProperties().getTargetObjectId().toString());
     }
 
     @Test

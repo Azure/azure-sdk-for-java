@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"wzwbnguitn\",\"provisioningState\":\"Created\",\"uiDefinitionUri\":\"a\",\"authorizations\":[],\"createdDateTime\":\"2020-12-27T04:43:40Z\",\"workspaceId\":\"ckyfih\",\"workspaceUrl\":\"idf\",\"diskEncryptionSetId\":\"zuhtymwisdkfthwx\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureServiceRules\"},\"sku\":{\"name\":\"pvkmijcmmxdcuf\",\"tier\":\"srp\"},\"location\":\"zidnsezcxtbzsgfy\",\"tags\":{\"sflnrosfqp\":\"newmdwzjeiachbo\"},\"id\":\"eeh\",\"name\":\"zvypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"managedResourceGroupId\":\"dqxhcrmnohjtckwh\",\"provisioningState\":\"Canceled\",\"uiDefinitionUri\":\"iy\",\"authorizations\":[],\"createdDateTime\":\"2021-02-24T22:15:36Z\",\"workspaceId\":\"pgrjbz\",\"workspaceUrl\":\"rcjxvsnbyxqabn\",\"diskEncryptionSetId\":\"cyshurzafbljjgp\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureDatabricksRules\"},\"sku\":{\"name\":\"ljavbqid\",\"tier\":\"ajzyul\"},\"location\":\"u\",\"tags\":{\"xzlocxscp\":\"rlkhbzhfepgzgq\",\"j\":\"ierhhbcsglummaj\",\"jionpimexgstxgc\":\"odxobnbdxkqpxok\"},\"id\":\"odgmaajrmvdjwz\",\"name\":\"lovmclwhijcoe\",\"type\":\"ctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
-                .toObject(WorkspaceListResult.class);
+        WorkspaceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"wzwbnguitn\",\"provisioningState\":\"Created\",\"uiDefinitionUri\":\"a\",\"authorizations\":[],\"createdDateTime\":\"2020-12-27T04:43:40Z\",\"workspaceId\":\"ckyfih\",\"workspaceUrl\":\"idf\",\"diskEncryptionSetId\":\"zuhtymwisdkfthwx\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureServiceRules\"},\"sku\":{\"name\":\"pvkmijcmmxdcuf\",\"tier\":\"srp\"},\"location\":\"zidnsezcxtbzsgfy\",\"tags\":{\"sflnrosfqp\":\"newmdwzjeiachbo\"},\"id\":\"eeh\",\"name\":\"zvypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"managedResourceGroupId\":\"dqxhcrmnohjtckwh\",\"provisioningState\":\"Canceled\",\"uiDefinitionUri\":\"iy\",\"authorizations\":[],\"createdDateTime\":\"2021-02-24T22:15:36Z\",\"workspaceId\":\"pgrjbz\",\"workspaceUrl\":\"rcjxvsnbyxqabn\",\"diskEncryptionSetId\":\"cyshurzafbljjgp\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureDatabricksRules\"},\"sku\":{\"name\":\"ljavbqid\",\"tier\":\"ajzyul\"},\"location\":\"u\",\"tags\":{\"xzlocxscp\":\"rlkhbzhfepgzgq\",\"j\":\"ierhhbcsglummaj\",\"jionpimexgstxgc\":\"odxobnbdxkqpxok\"},\"id\":\"odgmaajrmvdjwz\",\"name\":\"lovmclwhijcoe\",\"type\":\"ctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
+            .toObject(WorkspaceListResult.class);
         Assertions.assertEquals("zidnsezcxtbzsgfy", model.value().get(0).location());
         Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).tags().get("sflnrosfqp"));
         Assertions.assertEquals("pvkmijcmmxdcuf", model.value().get(0).sku().name());
@@ -36,37 +34,25 @@ public final class WorkspaceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceListResult model =
-            new WorkspaceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkspaceInner()
-                                .withLocation("zidnsezcxtbzsgfy")
-                                .withTags(mapOf("sflnrosfqp", "newmdwzjeiachbo"))
-                                .withSku(new Sku().withName("pvkmijcmmxdcuf").withTier("srp"))
-                                .withManagedResourceGroupId("wzwbnguitn")
-                                .withUiDefinitionUri("a")
-                                .withAuthorizations(Arrays.asList())
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_SERVICE_RULES),
-                            new WorkspaceInner()
-                                .withLocation("u")
-                                .withTags(
-                                    mapOf(
-                                        "xzlocxscp",
-                                        "rlkhbzhfepgzgq",
-                                        "j",
-                                        "ierhhbcsglummaj",
-                                        "jionpimexgstxgc",
-                                        "odxobnbdxkqpxok"))
-                                .withSku(new Sku().withName("ljavbqid").withTier("ajzyul"))
-                                .withManagedResourceGroupId("dqxhcrmnohjtckwh")
-                                .withUiDefinitionUri("iy")
-                                .withAuthorizations(Arrays.asList())
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES)))
-                .withNextLink("sycbkbfk");
+        WorkspaceListResult model = new WorkspaceListResult().withValue(Arrays.asList(
+            new WorkspaceInner().withLocation("zidnsezcxtbzsgfy")
+                .withTags(mapOf("sflnrosfqp", "newmdwzjeiachbo"))
+                .withSku(new Sku().withName("pvkmijcmmxdcuf").withTier("srp"))
+                .withManagedResourceGroupId("wzwbnguitn")
+                .withUiDefinitionUri("a")
+                .withAuthorizations(Arrays.asList())
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_SERVICE_RULES),
+            new WorkspaceInner().withLocation("u")
+                .withTags(
+                    mapOf("xzlocxscp", "rlkhbzhfepgzgq", "j", "ierhhbcsglummaj", "jionpimexgstxgc", "odxobnbdxkqpxok"))
+                .withSku(new Sku().withName("ljavbqid").withTier("ajzyul"))
+                .withManagedResourceGroupId("dqxhcrmnohjtckwh")
+                .withUiDefinitionUri("iy")
+                .withAuthorizations(Arrays.asList())
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES)))
+            .withNextLink("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(WorkspaceListResult.class);
         Assertions.assertEquals("zidnsezcxtbzsgfy", model.value().get(0).location());
         Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).tags().get("sflnrosfqp"));

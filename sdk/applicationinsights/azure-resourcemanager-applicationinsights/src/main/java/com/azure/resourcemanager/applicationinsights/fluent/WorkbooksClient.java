@@ -46,8 +46,8 @@ public interface WorkbooksClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkbookInner> list(
-        CategoryType category, List<String> tags, Boolean canFetchContent, Context context);
+    PagedIterable<WorkbookInner> list(CategoryType category, List<String> tags, Boolean canFetchContent,
+        Context context);
 
     /**
      * Get all Workbooks defined within a specified resource group and category.
@@ -82,13 +82,8 @@ public interface WorkbooksClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkbookInner> listByResourceGroup(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context);
+    PagedIterable<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category, List<String> tags,
+        String sourceId, Boolean canFetchContent, Context context);
 
     /**
      * Get a single workbook by its resourceName.
@@ -105,8 +100,8 @@ public interface WorkbooksClient {
      * @return a single workbook by its resourceName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Boolean canFetchContent, Context context);
+    Response<WorkbookInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Boolean canFetchContent, Context context);
 
     /**
      * Get a single workbook by its resourceName.
@@ -165,12 +160,8 @@ public interface WorkbooksClient {
      * @return a workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkbookInner workbookProperties,
-        String sourceId,
-        Context context);
+    Response<WorkbookInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        WorkbookInner workbookProperties, String sourceId, Context context);
 
     /**
      * Create a new workbook.
@@ -202,12 +193,8 @@ public interface WorkbooksClient {
      * @return a workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String sourceId,
-        WorkbookUpdateParameters workbookUpdateParameters,
-        Context context);
+    Response<WorkbookInner> updateWithResponse(String resourceGroupName, String resourceName, String sourceId,
+        WorkbookUpdateParameters workbookUpdateParameters, Context context);
 
     /**
      * Updates a workbook that has already been added.
@@ -268,8 +255,8 @@ public interface WorkbooksClient {
      * @return a single workbook revision defined by its revisionId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookInner> revisionGetWithResponse(
-        String resourceGroupName, String resourceName, String revisionId, Context context);
+    Response<WorkbookInner> revisionGetWithResponse(String resourceGroupName, String resourceName, String revisionId,
+        Context context);
 
     /**
      * Get a single workbook revision defined by its revisionId.

@@ -145,12 +145,8 @@ public interface Account {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithProperties {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithKind,
+            DefinitionStages.WithSku, DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -250,12 +246,8 @@ public interface Account {
     Account.Update update();
 
     /** The template for Account update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithKind,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithSku,
+        UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *

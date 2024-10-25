@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserEntityBaseParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserEntityBaseParameters model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"deleted\",\"note\":\"zomucmqgisnionet\",\"identities\":[{\"provider\":\"dpuenxkgtlzlmtr\",\"id\":\"cznnhzkbn\"}]}")
-                .toObject(UserEntityBaseParameters.class);
+        UserEntityBaseParameters model = BinaryData.fromString(
+            "{\"state\":\"deleted\",\"note\":\"zomucmqgisnionet\",\"identities\":[{\"provider\":\"dpuenxkgtlzlmtr\",\"id\":\"cznnhzkbn\"}]}")
+            .toObject(UserEntityBaseParameters.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
         Assertions.assertEquals("zomucmqgisnionet", model.note());
         Assertions.assertEquals("dpuenxkgtlzlmtr", model.identities().get(0).provider());
@@ -27,12 +25,10 @@ public final class UserEntityBaseParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserEntityBaseParameters model =
-            new UserEntityBaseParameters()
-                .withState(UserState.DELETED)
-                .withNote("zomucmqgisnionet")
-                .withIdentities(
-                    Arrays.asList(new UserIdentityContractInner().withProvider("dpuenxkgtlzlmtr").withId("cznnhzkbn")));
+        UserEntityBaseParameters model = new UserEntityBaseParameters().withState(UserState.DELETED)
+            .withNote("zomucmqgisnionet")
+            .withIdentities(
+                Arrays.asList(new UserIdentityContractInner().withProvider("dpuenxkgtlzlmtr").withId("cznnhzkbn")));
         model = BinaryData.fromObject(model).toObject(UserEntityBaseParameters.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
         Assertions.assertEquals("zomucmqgisnionet", model.note());

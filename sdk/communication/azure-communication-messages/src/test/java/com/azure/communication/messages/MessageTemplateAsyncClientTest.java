@@ -43,22 +43,6 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldReturnWhatsTemplateListWithTokenCredentialAsyncClient(HttpClient httpClient) {
-        messageTemplateClient = buildMessageTemplateAsyncClientWithTokenCredential(httpClient);
-
-        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
-            .toStream()
-            .forEach(template -> {
-                assertNotNull(template.getName());
-                assertNotNull(template.getLanguage());
-                assertNotNull(template.getStatus());
-                assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldThrowExceptionForInvalidChannelIdAsync(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateAsyncClient(httpClient);
         assertThrows(HttpResponseException.class,

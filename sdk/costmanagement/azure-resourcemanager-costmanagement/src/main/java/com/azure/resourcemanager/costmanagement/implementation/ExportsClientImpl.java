@@ -56,79 +56,55 @@ public final class ExportsClientImpl implements ExportsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface ExportsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/exports")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExportListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExportListResultInner>> list(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExportInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("exportName") String exportName,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExportInner>> get(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("exportName") String exportName, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExportInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("exportName") String exportName,
-            @BodyParam("application/json") ExportInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExportInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("exportName") String exportName, @BodyParam("application/json") ExportInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("exportName") String exportName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("exportName") String exportName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/run")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> execute(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("exportName") String exportName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> execute(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("exportName") String exportName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/runHistory")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExportExecutionListResultInner>> getExecutionHistory(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("exportName") String exportName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExportExecutionListResultInner>> getExecutionHistory(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("exportName") String exportName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -158,20 +134,16 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), scope, this.client.getApiVersion(), expand, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), expand,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -203,10 +175,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -330,10 +300,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportInner>> getWithResponseAsync(String scope, String exportName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -343,17 +311,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            exportName,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                exportName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -384,13 +343,11 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return an export resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportInner>> getWithResponseAsync(
-        String scope, String exportName, String expand, Context context) {
+    private Mono<Response<ExportInner>> getWithResponseAsync(String scope, String exportName, String expand,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -400,8 +357,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, expand, accept, context);
+        return service.get(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, expand, accept,
+            context);
     }
 
     /**
@@ -519,13 +476,11 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return an export resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(
-        String scope, String exportName, ExportInner parameters) {
+    private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(String scope, String exportName,
+        ExportInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -540,17 +495,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            exportName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), exportName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -581,13 +527,11 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return an export resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(
-        String scope, String exportName, ExportInner parameters, Context context) {
+    private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(String scope, String exportName,
+        ExportInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -602,9 +546,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName,
+            parameters, accept, context);
     }
 
     /**
@@ -665,8 +608,8 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return an export resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportInner> createOrUpdateWithResponse(
-        String scope, String exportName, ExportInner parameters, Context context) {
+    public Response<ExportInner> createOrUpdateWithResponse(String scope, String exportName, ExportInner parameters,
+        Context context) {
         return createOrUpdateWithResponseAsync(scope, exportName, parameters, context).block();
     }
 
@@ -726,10 +669,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String scope, String exportName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -739,11 +680,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                exportName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -774,10 +712,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String scope, String exportName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -787,8 +723,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context);
+        return service.delete(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept,
+            context);
     }
 
     /**
@@ -901,10 +837,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> executeWithResponseAsync(String scope, String exportName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -914,11 +848,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .execute(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
+            .withContext(context -> service.execute(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                exportName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -949,10 +880,8 @@ public final class ExportsClientImpl implements ExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> executeWithResponseAsync(String scope, String exportName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -962,8 +891,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .execute(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context);
+        return service.execute(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept,
+            context);
     }
 
     /**
@@ -1075,13 +1004,11 @@ public final class ExportsClientImpl implements ExportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
-        String scope, String exportName) {
+    private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(String scope,
+        String exportName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1091,11 +1018,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getExecutionHistory(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
+            .withContext(context -> service.getExecutionHistory(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), exportName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1125,13 +1049,11 @@ public final class ExportsClientImpl implements ExportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
-        String scope, String exportName, Context context) {
+    private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(String scope,
+        String exportName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1141,9 +1063,8 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getExecutionHistory(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context);
+        return service.getExecutionHistory(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName,
+            accept, context);
     }
 
     /**
@@ -1199,8 +1120,8 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return result of listing the run history of an export along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(
-        String scope, String exportName, Context context) {
+    public Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(String scope, String exportName,
+        Context context) {
         return getExecutionHistoryWithResponseAsync(scope, exportName, context).block();
     }
 

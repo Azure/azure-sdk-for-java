@@ -326,11 +326,8 @@ public interface LabVirtualMachine {
     LabVirtualMachineInner innerModel();
 
     /** The entirety of the LabVirtualMachine definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The LabVirtualMachine definition stages. */
@@ -374,31 +371,16 @@ public interface LabVirtualMachine {
          * The stage of the LabVirtualMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithNotes,
-                DefinitionStages.WithOwnerObjectId,
-                DefinitionStages.WithOwnerUserPrincipalName,
-                DefinitionStages.WithCreatedDate,
-                DefinitionStages.WithCustomImageId,
-                DefinitionStages.WithSize,
-                DefinitionStages.WithUsername,
-                DefinitionStages.WithPassword,
-                DefinitionStages.WithSshKey,
-                DefinitionStages.WithIsAuthenticationWithSshKey,
-                DefinitionStages.WithLabSubnetName,
-                DefinitionStages.WithLabVirtualNetworkId,
-                DefinitionStages.WithDisallowPublicIpAddress,
-                DefinitionStages.WithArtifacts,
-                DefinitionStages.WithGalleryImageReference,
-                DefinitionStages.WithPlanId,
-                DefinitionStages.WithNetworkInterface,
-                DefinitionStages.WithExpirationDate,
-                DefinitionStages.WithAllowClaim,
-                DefinitionStages.WithStorageType,
-                DefinitionStages.WithEnvironmentId,
-                DefinitionStages.WithDataDiskParameters,
-                DefinitionStages.WithScheduleParameters {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNotes,
+            DefinitionStages.WithOwnerObjectId, DefinitionStages.WithOwnerUserPrincipalName,
+            DefinitionStages.WithCreatedDate, DefinitionStages.WithCustomImageId, DefinitionStages.WithSize,
+            DefinitionStages.WithUsername, DefinitionStages.WithPassword, DefinitionStages.WithSshKey,
+            DefinitionStages.WithIsAuthenticationWithSshKey, DefinitionStages.WithLabSubnetName,
+            DefinitionStages.WithLabVirtualNetworkId, DefinitionStages.WithDisallowPublicIpAddress,
+            DefinitionStages.WithArtifacts, DefinitionStages.WithGalleryImageReference, DefinitionStages.WithPlanId,
+            DefinitionStages.WithNetworkInterface, DefinitionStages.WithExpirationDate, DefinitionStages.WithAllowClaim,
+            DefinitionStages.WithStorageType, DefinitionStages.WithEnvironmentId,
+            DefinitionStages.WithDataDiskParameters, DefinitionStages.WithScheduleParameters {
             /**
              * Executes the create request.
              *

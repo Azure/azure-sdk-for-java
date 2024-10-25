@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskScheduleAvailabilityRequest model =
-            BinaryData
-                .fromString(
-                    "{\"skuName\":\"DataBoxDisk\",\"expectedDataSizeInTeraBytes\":1305337055,\"storageLocation\":\"xbjhwuaanozjosph\",\"country\":\"ulpjr\"}")
-                .toObject(DiskScheduleAvailabilityRequest.class);
+        DiskScheduleAvailabilityRequest model = BinaryData.fromString(
+            "{\"skuName\":\"DataBoxDisk\",\"expectedDataSizeInTeraBytes\":1305337055,\"storageLocation\":\"xbjhwuaanozjosph\",\"country\":\"ulpjr\"}")
+            .toObject(DiskScheduleAvailabilityRequest.class);
         Assertions.assertEquals("xbjhwuaanozjosph", model.storageLocation());
         Assertions.assertEquals("ulpjr", model.country());
         Assertions.assertEquals(1305337055, model.expectedDataSizeInTeraBytes());
@@ -23,9 +21,8 @@ public final class DiskScheduleAvailabilityRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskScheduleAvailabilityRequest model =
-            new DiskScheduleAvailabilityRequest()
-                .withStorageLocation("xbjhwuaanozjosph")
+        DiskScheduleAvailabilityRequest model
+            = new DiskScheduleAvailabilityRequest().withStorageLocation("xbjhwuaanozjosph")
                 .withCountry("ulpjr")
                 .withExpectedDataSizeInTeraBytes(1305337055);
         model = BinaryData.fromObject(model).toObject(DiskScheduleAvailabilityRequest.class);

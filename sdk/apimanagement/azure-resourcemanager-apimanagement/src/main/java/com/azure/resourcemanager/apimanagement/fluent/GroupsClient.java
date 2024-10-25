@@ -51,8 +51,8 @@ public interface GroupsClient {
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GroupContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GroupContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
@@ -67,8 +67,8 @@ public interface GroupsClient {
      * @return the entity state (Etag) version of the group specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GroupsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String groupId, Context context);
+    GroupsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String groupId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
@@ -127,13 +127,8 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GroupsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String groupId,
-        GroupCreateParameters parameters,
-        String ifMatch,
-        Context context);
+    GroupsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String groupId, GroupCreateParameters parameters, String ifMatch, Context context);
 
     /**
      * Creates or Updates a group.
@@ -148,8 +143,8 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GroupContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String groupId, GroupCreateParameters parameters);
+    GroupContractInner createOrUpdate(String resourceGroupName, String serviceName, String groupId,
+        GroupCreateParameters parameters);
 
     /**
      * Updates the details of the group specified by its identifier.
@@ -167,13 +162,8 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GroupsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String groupId,
-        String ifMatch,
-        GroupUpdateParameters parameters,
-        Context context);
+    GroupsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String ifMatch, GroupUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the group specified by its identifier.
@@ -190,8 +180,8 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GroupContractInner update(
-        String resourceGroupName, String serviceName, String groupId, String ifMatch, GroupUpdateParameters parameters);
+    GroupContractInner update(String resourceGroupName, String serviceName, String groupId, String ifMatch,
+        GroupUpdateParameters parameters);
 
     /**
      * Deletes specific group of the API Management service instance.
@@ -208,8 +198,8 @@ public interface GroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String groupId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific group of the API Management service instance.

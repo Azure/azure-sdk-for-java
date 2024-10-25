@@ -23,7 +23,6 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
     protected EventHubClient eventHubClient;
     private ScheduledExecutorService executor;
 
-
     public ServiceBatchTest(TOptions options) {
         super(options);
         connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");

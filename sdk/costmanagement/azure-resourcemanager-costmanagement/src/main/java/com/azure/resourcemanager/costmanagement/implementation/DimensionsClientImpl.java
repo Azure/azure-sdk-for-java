@@ -45,8 +45,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @param client the instance of the service client containing this operation class.
      */
     DimensionsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DimensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DimensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,36 +57,26 @@ public final class DimensionsClientImpl implements DimensionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface DimensionsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/dimensions")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DimensionsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DimensionsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$skiptoken") String skiptoken, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/dimensions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DimensionsListResult>> byExternalCloudProviderType(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DimensionsListResult>> byExternalCloudProviderType(@HostParam("$host") String endpoint,
             @PathParam("externalCloudProviderType") ExternalCloudProviderType externalCloudProviderType,
             @PathParam("externalCloudProviderId") String externalCloudProviderId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -120,36 +110,21 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(
-        String scope, String filter, String expand, String skiptoken, Integer top) {
+    private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(String scope, String filter, String expand,
+        String skiptoken, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            skiptoken,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DimensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), filter,
+                expand, skiptoken, top, accept, context))
+            .<PagedResponse<DimensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -185,13 +160,11 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context) {
+    private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(String scope, String filter, String expand,
+        String skiptoken, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -199,20 +172,10 @@ public final class DimensionsClientImpl implements DimensionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                scope,
-                this.client.getApiVersion(),
-                filter,
-                expand,
-                skiptoken,
-                top,
-                accept,
+            .list(this.client.getEndpoint(), scope, this.client.getApiVersion(), filter, expand, skiptoken, top, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -246,8 +209,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DimensionInner> listAsync(
-        String scope, String filter, String expand, String skiptoken, Integer top) {
+    private PagedFlux<DimensionInner> listAsync(String scope, String filter, String expand, String skiptoken,
+        Integer top) {
         return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, expand, skiptoken, top));
     }
 
@@ -314,8 +277,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DimensionInner> listAsync(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context) {
+    private PagedFlux<DimensionInner> listAsync(String scope, String filter, String expand, String skiptoken,
+        Integer top, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, expand, skiptoken, top, context));
     }
 
@@ -382,8 +345,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DimensionInner> list(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context) {
+    public PagedIterable<DimensionInner> list(String scope, String filter, String expand, String skiptoken, Integer top,
+        Context context) {
         return new PagedIterable<>(listAsync(scope, filter, expand, skiptoken, top, context));
     }
 
@@ -410,49 +373,27 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> byExternalCloudProviderTypeSinglePageAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top) {
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
+        String expand, String skiptoken, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .byExternalCloudProviderType(
-                            this.client.getEndpoint(),
-                            externalCloudProviderType,
-                            externalCloudProviderId,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            skiptoken,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DimensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.byExternalCloudProviderType(this.client.getEndpoint(),
+                externalCloudProviderType, externalCloudProviderId, this.client.getApiVersion(), filter, expand,
+                skiptoken, top, accept, context))
+            .<PagedResponse<DimensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -480,48 +421,27 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> byExternalCloudProviderTypeSinglePageAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
-        Context context) {
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
+        String expand, String skiptoken, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .byExternalCloudProviderType(
-                this.client.getEndpoint(),
-                externalCloudProviderType,
-                externalCloudProviderId,
-                this.client.getApiVersion(),
-                filter,
-                expand,
-                skiptoken,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .byExternalCloudProviderType(this.client.getEndpoint(), externalCloudProviderType, externalCloudProviderId,
+                this.client.getApiVersion(), filter, expand, skiptoken, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -547,16 +467,10 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> byExternalCloudProviderTypeAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top) {
-        return new PagedFlux<>(
-            () ->
-                byExternalCloudProviderTypeSinglePageAsync(
-                    externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top));
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
+        String expand, String skiptoken, Integer top) {
+        return new PagedFlux<>(() -> byExternalCloudProviderTypeSinglePageAsync(externalCloudProviderType,
+            externalCloudProviderId, filter, expand, skiptoken, top));
     }
 
     /**
@@ -579,10 +493,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
         final String expand = null;
         final String skiptoken = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () ->
-                byExternalCloudProviderTypeSinglePageAsync(
-                    externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top));
+        return new PagedFlux<>(() -> byExternalCloudProviderTypeSinglePageAsync(externalCloudProviderType,
+            externalCloudProviderId, filter, expand, skiptoken, top));
     }
 
     /**
@@ -609,17 +521,10 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> byExternalCloudProviderTypeAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                byExternalCloudProviderTypeSinglePageAsync(
-                    externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top, context));
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
+        String expand, String skiptoken, Integer top, Context context) {
+        return new PagedFlux<>(() -> byExternalCloudProviderTypeSinglePageAsync(externalCloudProviderType,
+            externalCloudProviderId, filter, expand, skiptoken, top, context));
     }
 
     /**
@@ -642,9 +547,8 @@ public final class DimensionsClientImpl implements DimensionsClient {
         final String expand = null;
         final String skiptoken = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            byExternalCloudProviderTypeAsync(
-                externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top));
+        return new PagedIterable<>(byExternalCloudProviderTypeAsync(externalCloudProviderType, externalCloudProviderId,
+            filter, expand, skiptoken, top));
     }
 
     /**
@@ -671,15 +575,9 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
-        Context context) {
-        return new PagedIterable<>(
-            byExternalCloudProviderTypeAsync(
-                externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top, context));
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, String filter,
+        String expand, String skiptoken, Integer top, Context context) {
+        return new PagedIterable<>(byExternalCloudProviderTypeAsync(externalCloudProviderType, externalCloudProviderId,
+            filter, expand, skiptoken, top, context));
     }
 }

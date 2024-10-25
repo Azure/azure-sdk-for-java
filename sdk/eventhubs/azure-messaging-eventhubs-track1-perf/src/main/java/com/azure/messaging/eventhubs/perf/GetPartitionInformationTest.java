@@ -47,9 +47,9 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromCompletionStage(clientFuture
-            .thenComposeAsync(client -> client.getPartitionRuntimeInformation(options.getPartitionId()))
-            .thenAccept(information -> printRuntimeInformation(information)));
+        return Mono.fromCompletionStage(
+            clientFuture.thenComposeAsync(client -> client.getPartitionRuntimeInformation(options.getPartitionId()))
+                .thenAccept(information -> printRuntimeInformation(information)));
     }
 
     private static void printRuntimeInformation(PartitionRuntimeInformation information) {

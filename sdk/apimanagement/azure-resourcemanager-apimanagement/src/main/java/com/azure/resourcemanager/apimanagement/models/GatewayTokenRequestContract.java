@@ -79,16 +79,12 @@ public final class GatewayTokenRequestContract {
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model GatewayTokenRequestContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyType in model GatewayTokenRequestContract"));
         }
         if (expiry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expiry in model GatewayTokenRequestContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expiry in model GatewayTokenRequestContract"));
         }
     }
 

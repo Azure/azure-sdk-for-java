@@ -149,8 +149,8 @@ public final class RemotePrivateEndpointConnectionWrapper {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
-    public RemotePrivateEndpointConnectionWrapper withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnectionWrapper
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionWrapperProperties();
         }

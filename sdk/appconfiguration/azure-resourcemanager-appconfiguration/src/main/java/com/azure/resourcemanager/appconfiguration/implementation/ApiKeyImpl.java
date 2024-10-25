@@ -13,8 +13,8 @@ public final class ApiKeyImpl implements ApiKey {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    ApiKeyImpl(
-        ApiKeyInner innerObject, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    ApiKeyImpl(ApiKeyInner innerObject,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

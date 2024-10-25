@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureDataExplorerConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataExplorerConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"connectionType\":\"AzureDataExplorer\",\"adxResourceId\":\"wflzlfbxzpuzy\",\"adxEndpointUri\":\"ispnqzahmgkbrp\",\"adxDatabaseName\":\"y\",\"adxTableName\":\"ibnuqqkpik\",\"adxTwinLifecycleEventsTableName\":\"rgvtqag\",\"adxRelationshipLifecycleEventsTableName\":\"uynhijg\",\"eventHubEndpointUri\":\"mebf\",\"eventHubEntityPath\":\"iarbutrcvpna\",\"eventHubNamespaceResourceId\":\"zmhjrunmp\",\"eventHubConsumerGroup\":\"tdbhrbnla\",\"recordPropertyAndItemRemovals\":\"true\",\"provisioningState\":\"Suspending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"henbtkcxywnytn\"}}")
-                .toObject(AzureDataExplorerConnectionProperties.class);
+        AzureDataExplorerConnectionProperties model = BinaryData.fromString(
+            "{\"connectionType\":\"AzureDataExplorer\",\"adxResourceId\":\"wflzlfbxzpuzy\",\"adxEndpointUri\":\"ispnqzahmgkbrp\",\"adxDatabaseName\":\"y\",\"adxTableName\":\"ibnuqqkpik\",\"adxTwinLifecycleEventsTableName\":\"rgvtqag\",\"adxRelationshipLifecycleEventsTableName\":\"uynhijg\",\"eventHubEndpointUri\":\"mebf\",\"eventHubEntityPath\":\"iarbutrcvpna\",\"eventHubNamespaceResourceId\":\"zmhjrunmp\",\"eventHubConsumerGroup\":\"tdbhrbnla\",\"recordPropertyAndItemRemovals\":\"true\",\"provisioningState\":\"Suspending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"henbtkcxywnytn\"}}")
+            .toObject(AzureDataExplorerConnectionProperties.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("henbtkcxywnytn", model.identity().userAssignedIdentity());
         Assertions.assertEquals("wflzlfbxzpuzy", model.adxResourceId());
@@ -36,23 +34,20 @@ public final class AzureDataExplorerConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerConnectionProperties model =
-            new AzureDataExplorerConnectionProperties()
-                .withIdentity(
-                    new ManagedIdentityReference()
-                        .withType(IdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("henbtkcxywnytn"))
-                .withAdxResourceId("wflzlfbxzpuzy")
-                .withAdxEndpointUri("ispnqzahmgkbrp")
-                .withAdxDatabaseName("y")
-                .withAdxTableName("ibnuqqkpik")
-                .withAdxTwinLifecycleEventsTableName("rgvtqag")
-                .withAdxRelationshipLifecycleEventsTableName("uynhijg")
-                .withEventHubEndpointUri("mebf")
-                .withEventHubEntityPath("iarbutrcvpna")
-                .withEventHubNamespaceResourceId("zmhjrunmp")
-                .withEventHubConsumerGroup("tdbhrbnla")
-                .withRecordPropertyAndItemRemovals(RecordPropertyAndItemRemovals.TRUE);
+        AzureDataExplorerConnectionProperties model = new AzureDataExplorerConnectionProperties()
+            .withIdentity(new ManagedIdentityReference().withType(IdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentity("henbtkcxywnytn"))
+            .withAdxResourceId("wflzlfbxzpuzy")
+            .withAdxEndpointUri("ispnqzahmgkbrp")
+            .withAdxDatabaseName("y")
+            .withAdxTableName("ibnuqqkpik")
+            .withAdxTwinLifecycleEventsTableName("rgvtqag")
+            .withAdxRelationshipLifecycleEventsTableName("uynhijg")
+            .withEventHubEndpointUri("mebf")
+            .withEventHubEntityPath("iarbutrcvpna")
+            .withEventHubNamespaceResourceId("zmhjrunmp")
+            .withEventHubConsumerGroup("tdbhrbnla")
+            .withRecordPropertyAndItemRemovals(RecordPropertyAndItemRemovals.TRUE);
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerConnectionProperties.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("henbtkcxywnytn", model.identity().userAssignedIdentity());

@@ -49,14 +49,8 @@ public interface GatewayApisClient {
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiContractInner> listByService(String resourceGroupName, String serviceName, String gatewayId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Gateway entity.
@@ -73,8 +67,8 @@ public interface GatewayApisClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayApisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context);
+    GatewayApisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String apiId, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Gateway entity.
@@ -107,13 +101,8 @@ public interface GatewayApisClient {
      * @return aPI details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiContractInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String apiId,
-        AssociationContract parameters,
-        Context context);
+    Response<ApiContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String apiId, AssociationContract parameters, Context context);
 
     /**
      * Adds an API to the specified Gateway.
@@ -146,8 +135,8 @@ public interface GatewayApisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String apiId,
+        Context context);
 
     /**
      * Deletes the specified API from the specified Gateway.

@@ -104,4 +104,13 @@ public final class CertificateUtil {
             .collect(Collectors.toList())
             .toArray(new Certificate[0]);
     }
+
+    public static String getCertificateNameFromCertificateItemId(String id) {
+        // Example id: https://mycertificates.vault.azure.net/certificates/mycert
+        // Here, vault name is mycertificates.
+        // Vault name must be a 3-24 character string, containing only 0-9, a-z, A-Z, and not consecutive -.
+        String keyWord = "/certificates/";
+        return id.substring(id.indexOf(keyWord) + keyWord.length());
+    }
+
 }

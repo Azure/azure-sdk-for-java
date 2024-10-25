@@ -47,8 +47,8 @@ public interface TagRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
-    Response<MonitoringTagRules> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<MonitoringTagRules> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a tag rule set for a given monitor resource.

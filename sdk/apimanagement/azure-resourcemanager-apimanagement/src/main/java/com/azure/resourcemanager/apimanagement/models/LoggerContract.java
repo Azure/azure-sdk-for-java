@@ -111,12 +111,8 @@ public interface LoggerContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLoggerType,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithCredentials,
-                DefinitionStages.WithIsBuffered,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithLoggerType, DefinitionStages.WithDescription, DefinitionStages.WithCredentials,
+            DefinitionStages.WithIsBuffered, DefinitionStages.WithResourceId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -216,12 +212,8 @@ public interface LoggerContract {
     LoggerContract.Update update();
 
     /** The template for LoggerContract update. */
-    interface Update
-        extends UpdateStages.WithLoggerType,
-            UpdateStages.WithDescription,
-            UpdateStages.WithCredentials,
-            UpdateStages.WithIsBuffered,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithLoggerType, UpdateStages.WithDescription, UpdateStages.WithCredentials,
+        UpdateStages.WithIsBuffered, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

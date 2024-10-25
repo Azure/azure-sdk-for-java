@@ -97,11 +97,8 @@ public interface WorkspaceResource {
     WorkspaceResourceInner innerModel();
 
     /** The entirety of the WorkspaceResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The WorkspaceResource definition stages. */

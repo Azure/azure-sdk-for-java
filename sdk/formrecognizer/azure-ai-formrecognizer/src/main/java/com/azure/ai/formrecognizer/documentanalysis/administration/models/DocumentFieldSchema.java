@@ -159,7 +159,8 @@ public final class DocumentFieldSchema {
             }
 
             @Override
-            public void setProperties(DocumentFieldSchema documentFieldSchema, Map<String, DocumentFieldSchema> properties) {
+            public void setProperties(DocumentFieldSchema documentFieldSchema,
+                Map<String, DocumentFieldSchema> properties) {
                 documentFieldSchema.setProperties(properties);
             }
         });

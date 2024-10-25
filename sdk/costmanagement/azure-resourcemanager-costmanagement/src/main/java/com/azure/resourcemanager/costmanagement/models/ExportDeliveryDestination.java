@@ -183,10 +183,8 @@ public final class ExportDeliveryDestination {
      */
     public void validate() {
         if (container() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property container in model ExportDeliveryDestination"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property container in model ExportDeliveryDestination"));
         }
     }
 

@@ -170,16 +170,12 @@ public final class EmailTemplateContractProperties {
      */
     public void validate() {
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subject in model EmailTemplateContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subject in model EmailTemplateContractProperties"));
         }
         if (body() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property body in model EmailTemplateContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property body in model EmailTemplateContractProperties"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

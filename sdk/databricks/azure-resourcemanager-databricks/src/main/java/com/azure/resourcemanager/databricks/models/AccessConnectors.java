@@ -22,8 +22,8 @@ public interface AccessConnectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an azure databricks accessConnector along with {@link Response}.
      */
-    Response<AccessConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectorName, Context context);
+    Response<AccessConnector> getByResourceGroupWithResponse(String resourceGroupName, String connectorName,
+        Context context);
 
     /**
      * Gets an azure databricks accessConnector.

@@ -213,26 +213,15 @@ public interface AuthorizationServerContract {
          * The stage of the AuthorizationServerContract definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithUseInTestConsole,
-                DefinitionStages.WithUseInApiDocumentation,
-                DefinitionStages.WithClientRegistrationEndpoint,
-                DefinitionStages.WithAuthorizationEndpoint,
-                DefinitionStages.WithGrantTypes,
-                DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithAuthorizationMethods,
-                DefinitionStages.WithClientAuthenticationMethod,
-                DefinitionStages.WithTokenBodyParameters,
-                DefinitionStages.WithTokenEndpoint,
-                DefinitionStages.WithSupportState,
-                DefinitionStages.WithDefaultScope,
-                DefinitionStages.WithBearerTokenSendingMethods,
-                DefinitionStages.WithResourceOwnerUsername,
-                DefinitionStages.WithResourceOwnerPassword,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithUseInTestConsole,
+            DefinitionStages.WithUseInApiDocumentation, DefinitionStages.WithClientRegistrationEndpoint,
+            DefinitionStages.WithAuthorizationEndpoint, DefinitionStages.WithGrantTypes, DefinitionStages.WithClientId,
+            DefinitionStages.WithClientSecret, DefinitionStages.WithDescription,
+            DefinitionStages.WithAuthorizationMethods, DefinitionStages.WithClientAuthenticationMethod,
+            DefinitionStages.WithTokenBodyParameters, DefinitionStages.WithTokenEndpoint,
+            DefinitionStages.WithSupportState, DefinitionStages.WithDefaultScope,
+            DefinitionStages.WithBearerTokenSendingMethods, DefinitionStages.WithResourceOwnerUsername,
+            DefinitionStages.WithResourceOwnerPassword, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -505,26 +494,14 @@ public interface AuthorizationServerContract {
     AuthorizationServerContract.Update update();
 
     /** The template for AuthorizationServerContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithUseInTestConsole,
-            UpdateStages.WithUseInApiDocumentation,
-            UpdateStages.WithClientRegistrationEndpoint,
-            UpdateStages.WithAuthorizationEndpoint,
-            UpdateStages.WithGrantTypes,
-            UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
-            UpdateStages.WithDescription,
-            UpdateStages.WithAuthorizationMethods,
-            UpdateStages.WithClientAuthenticationMethod,
-            UpdateStages.WithTokenBodyParameters,
-            UpdateStages.WithTokenEndpoint,
-            UpdateStages.WithSupportState,
-            UpdateStages.WithDefaultScope,
-            UpdateStages.WithBearerTokenSendingMethods,
-            UpdateStages.WithResourceOwnerUsername,
-            UpdateStages.WithResourceOwnerPassword,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithUseInTestConsole,
+        UpdateStages.WithUseInApiDocumentation, UpdateStages.WithClientRegistrationEndpoint,
+        UpdateStages.WithAuthorizationEndpoint, UpdateStages.WithGrantTypes, UpdateStages.WithClientId,
+        UpdateStages.WithClientSecret, UpdateStages.WithDescription, UpdateStages.WithAuthorizationMethods,
+        UpdateStages.WithClientAuthenticationMethod, UpdateStages.WithTokenBodyParameters,
+        UpdateStages.WithTokenEndpoint, UpdateStages.WithSupportState, UpdateStages.WithDefaultScope,
+        UpdateStages.WithBearerTokenSendingMethods, UpdateStages.WithResourceOwnerUsername,
+        UpdateStages.WithResourceOwnerPassword, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

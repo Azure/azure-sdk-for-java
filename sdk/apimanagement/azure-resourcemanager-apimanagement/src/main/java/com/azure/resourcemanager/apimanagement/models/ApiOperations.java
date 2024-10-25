@@ -47,15 +47,8 @@ public interface ApiOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OperationContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        String tags,
-        Context context);
+    PagedIterable<OperationContract> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, String tags, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
@@ -72,8 +65,8 @@ public interface ApiOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation specified by its identifier.
      */
-    ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    ApiOperationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
@@ -105,8 +98,8 @@ public interface ApiOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the API Operation specified by its identifier.
      */
-    Response<OperationContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    Response<OperationContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, Context context);
 
     /**
      * Gets the details of the API Operation specified by its identifier.
@@ -141,13 +134,8 @@ public interface ApiOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified operation in the API.

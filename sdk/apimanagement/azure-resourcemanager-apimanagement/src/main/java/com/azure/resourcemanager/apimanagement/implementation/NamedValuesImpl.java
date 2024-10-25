@@ -26,35 +26,27 @@ public final class NamedValuesImpl implements NamedValues {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public NamedValuesImpl(
-        NamedValuesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public NamedValuesImpl(NamedValuesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<NamedValueContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<NamedValueContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<NamedValueContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new NamedValueContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NamedValueContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean isKeyVaultRefreshFailed,
-        Context context) {
-        PagedIterable<NamedValueContractInner> inner =
-            this
-                .serviceClient()
-                .listByService(resourceGroupName, serviceName, filter, top, skip, isKeyVaultRefreshFailed, context);
+    public PagedIterable<NamedValueContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean isKeyVaultRefreshFailed, Context context) {
+        PagedIterable<NamedValueContractInner> inner = this.serviceClient()
+            .listByService(resourceGroupName, serviceName, filter, top, skip, isKeyVaultRefreshFailed, context);
         return Utils.mapPage(inner, inner1 -> new NamedValueContractImpl(inner1, this.manager()));
     }
 
-    public NamedValuesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context) {
+    public NamedValuesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, namedValueId, context);
     }
 
@@ -62,15 +54,12 @@ public final class NamedValuesImpl implements NamedValues {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, namedValueId);
     }
 
-    public Response<NamedValueContract> getWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context) {
-        NamedValuesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, namedValueId, context);
+    public Response<NamedValueContract> getWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context) {
+        NamedValuesGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, namedValueId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NamedValueContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -86,8 +75,8 @@ public final class NamedValuesImpl implements NamedValues {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String namedValueId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, namedValueId, ifMatch, context);
     }
 
@@ -95,15 +84,12 @@ public final class NamedValuesImpl implements NamedValues {
         this.serviceClient().delete(resourceGroupName, serviceName, namedValueId, ifMatch);
     }
 
-    public Response<NamedValueSecretContract> listValueWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context) {
-        NamedValuesListValueResponse inner =
-            this.serviceClient().listValueWithResponse(resourceGroupName, serviceName, namedValueId, context);
+    public Response<NamedValueSecretContract> listValueWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context) {
+        NamedValuesListValueResponse inner
+            = this.serviceClient().listValueWithResponse(resourceGroupName, serviceName, namedValueId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NamedValueSecretContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -111,8 +97,8 @@ public final class NamedValuesImpl implements NamedValues {
     }
 
     public NamedValueSecretContract listValue(String resourceGroupName, String serviceName, String namedValueId) {
-        NamedValueSecretContractInner inner =
-            this.serviceClient().listValue(resourceGroupName, serviceName, namedValueId);
+        NamedValueSecretContractInner inner
+            = this.serviceClient().listValue(resourceGroupName, serviceName, namedValueId);
         if (inner != null) {
             return new NamedValueSecretContractImpl(inner, this.manager());
         } else {
@@ -121,8 +107,8 @@ public final class NamedValuesImpl implements NamedValues {
     }
 
     public NamedValueContract refreshSecret(String resourceGroupName, String serviceName, String namedValueId) {
-        NamedValueContractInner inner =
-            this.serviceClient().refreshSecret(resourceGroupName, serviceName, namedValueId);
+        NamedValueContractInner inner
+            = this.serviceClient().refreshSecret(resourceGroupName, serviceName, namedValueId);
         if (inner != null) {
             return new NamedValueContractImpl(inner, this.manager());
         } else {
@@ -130,10 +116,10 @@ public final class NamedValuesImpl implements NamedValues {
         }
     }
 
-    public NamedValueContract refreshSecret(
-        String resourceGroupName, String serviceName, String namedValueId, Context context) {
-        NamedValueContractInner inner =
-            this.serviceClient().refreshSecret(resourceGroupName, serviceName, namedValueId, context);
+    public NamedValueContract refreshSecret(String resourceGroupName, String serviceName, String namedValueId,
+        Context context) {
+        NamedValueContractInner inner
+            = this.serviceClient().refreshSecret(resourceGroupName, serviceName, namedValueId, context);
         if (inner != null) {
             return new NamedValueContractImpl(inner, this.manager());
         } else {
@@ -144,25 +130,18 @@ public final class NamedValuesImpl implements NamedValues {
     public NamedValueContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String namedValueId = Utils.getValueFromIdByName(id, "namedValues");
         if (namedValueId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, namedValueId, Context.NONE).getValue();
     }
@@ -170,25 +149,18 @@ public final class NamedValuesImpl implements NamedValues {
     public Response<NamedValueContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String namedValueId = Utils.getValueFromIdByName(id, "namedValues");
         if (namedValueId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, namedValueId, context);
     }
@@ -196,25 +168,18 @@ public final class NamedValuesImpl implements NamedValues {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String namedValueId = Utils.getValueFromIdByName(id, "namedValues");
         if (namedValueId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, namedValueId, localIfMatch, Context.NONE);
@@ -223,25 +188,18 @@ public final class NamedValuesImpl implements NamedValues {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String namedValueId = Utils.getValueFromIdByName(id, "namedValues");
         if (namedValueId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namedValues'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, namedValueId, ifMatch, context);
     }

@@ -145,8 +145,8 @@ public interface AlertsClient {
      * @return an individual alert along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertInner> dismissWithResponse(
-        String scope, String alertId, DismissAlertPayload parameters, Context context);
+    Response<AlertInner> dismissWithResponse(String scope, String alertId, DismissAlertPayload parameters,
+        Context context);
 
     /**
      * Dismisses the specified alert.
@@ -190,8 +190,8 @@ public interface AlertsClient {
      * @return result of alerts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertsResultInner> listExternalWithResponse(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context);
+    Response<AlertsResultInner> listExternalWithResponse(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, Context context);
 
     /**
      * Lists the Alerts for external cloud provider type defined.

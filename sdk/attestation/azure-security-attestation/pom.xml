@@ -37,7 +37,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.security.attestation/com.azure.security.attestation=ALL-UNNAMED
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=ALL-UNNAMED
-      --add-opens com.azure.security.attestation/com.azure.security.attestation.models=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
     <spotless.skip>false</spotless.skip>
   </properties>

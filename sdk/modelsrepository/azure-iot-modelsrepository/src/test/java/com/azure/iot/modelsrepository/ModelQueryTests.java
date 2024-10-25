@@ -5,11 +5,11 @@ package com.azure.iot.modelsrepository;
 
 import com.azure.iot.modelsrepository.implementation.ModelsQuery;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,7 @@ class ModelQueryTests {
             "\"@id\": \"\", | ''"
         },
         delimiter = '|')
-    public void getIdTests(String id, String expected) throws JsonProcessingException {
+    public void getIdTests(String id, String expected) throws IOException {
         String modelContent = String.format(MODEL_TEMPLATE, id, "", "");
         ModelsQuery query = new ModelsQuery(modelContent);
         String modelId = query.parseModel().getId();
@@ -117,7 +117,7 @@ class ModelQueryTests {
                 "| ''",
         },
         delimiter = '|')
-    public void getComponentSchemaTests(String contents, String expected) throws JsonProcessingException {
+    public void getComponentSchemaTests(String contents, String expected) throws IOException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {
@@ -146,7 +146,7 @@ class ModelQueryTests {
             "\"extends\": \"dtmi:com:example:Camera;3\", | dtmi:com:example:Camera;3"
         },
         delimiter = '|')
-    public void getExtendsTests(String extend, String expected) throws JsonProcessingException {
+    public void getExtendsTests(String extend, String expected) throws IOException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {
@@ -282,7 +282,8 @@ class ModelQueryTests {
                 "dtmi:example:Interface2;1,dtmi:example:Interface4;1,dtmi:example:Interface6;1"
         },
         delimiter = '|')
-    public void getModelDependenciesTests(String id, String extend, String contents, String expected) throws JsonProcessingException {
+    public void getModelDependenciesTests(String id, String extend, String contents, String expected)
+        throws IOException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {

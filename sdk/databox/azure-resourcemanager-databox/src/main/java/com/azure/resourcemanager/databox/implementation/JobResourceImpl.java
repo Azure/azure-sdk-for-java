@@ -168,17 +168,15 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     }
 
     public JobResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .create(resourceGroupName, jobName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .create(resourceGroupName, jobName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public JobResource create(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getJobs().create(resourceGroupName, jobName, this.innerModel(), context);
+        this.innerObject
+            = serviceManager.serviceClient().getJobs().create(resourceGroupName, jobName, this.innerModel(), context);
         return this;
     }
 
@@ -195,20 +193,16 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     }
 
     public JobResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .update(resourceGroupName, jobName, updateJobResourceUpdateParameter, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .update(resourceGroupName, jobName, updateJobResourceUpdateParameter, updateIfMatch, Context.NONE);
         return this;
     }
 
     public JobResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .update(resourceGroupName, jobName, updateJobResourceUpdateParameter, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .update(resourceGroupName, jobName, updateJobResourceUpdateParameter, updateIfMatch, context);
         return this;
     }
 
@@ -221,30 +215,25 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
 
     public JobResource refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobResource refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, context)
+            .getValue();
         return this;
     }
 
-    public Response<Void> markDevicesShippedWithResponse(
-        MarkDevicesShippedRequest markDevicesShippedRequest, Context context) {
-        return serviceManager
-            .jobs()
+    public Response<Void> markDevicesShippedWithResponse(MarkDevicesShippedRequest markDevicesShippedRequest,
+        Context context) {
+        return serviceManager.jobs()
             .markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, context);
     }
 
@@ -252,10 +241,9 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
         serviceManager.jobs().markDevicesShipped(jobName, resourceGroupName, markDevicesShippedRequest);
     }
 
-    public Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(
-        ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
-        return serviceManager
-            .jobs()
+    public Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(ShipmentPickUpRequest shipmentPickUpRequest,
+        Context context) {
+        return serviceManager.jobs()
             .bookShipmentPickUpWithResponse(resourceGroupName, jobName, shipmentPickUpRequest, context);
     }
 

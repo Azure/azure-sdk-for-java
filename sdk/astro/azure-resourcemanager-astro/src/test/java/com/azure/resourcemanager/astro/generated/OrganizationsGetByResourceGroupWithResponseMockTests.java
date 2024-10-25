@@ -47,12 +47,14 @@ public final class OrganizationsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AstroManager manager = AstroManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AstroManager manager = AstroManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OrganizationResource response = manager.organizations()
-            .getByResourceGroupWithResponse("ctq", "jf", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("ctq", "jf", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zt", response.location());
         Assertions.assertEquals("wwrq", response.tags().get("uedck"));

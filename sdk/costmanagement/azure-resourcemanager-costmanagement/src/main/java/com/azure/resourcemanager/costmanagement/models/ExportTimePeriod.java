@@ -78,14 +78,12 @@ public final class ExportTimePeriod {
      */
     public void validate() {
         if (from() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property from in model ExportTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property from in model ExportTimePeriod"));
         }
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model ExportTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property to in model ExportTimePeriod"));
         }
     }
 

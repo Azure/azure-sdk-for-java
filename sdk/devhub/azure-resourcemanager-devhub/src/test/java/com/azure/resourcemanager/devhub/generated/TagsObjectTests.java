@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsObject model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"oqfbowskanyk\":\"drabhjybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"}}")
-                .toObject(TagsObject.class);
+        TagsObject model = BinaryData.fromString(
+            "{\"tags\":{\"oqfbowskanyk\":\"drabhjybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"}}")
+            .toObject(TagsObject.class);
         Assertions.assertEquals("drabhjybige", model.tags().get("oqfbowskanyk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsObject model =
-            new TagsObject()
-                .withTags(
-                    mapOf(
-                        "oqfbowskanyk",
-                        "drabhjybige",
-                        "nhzgpphrcgyn",
-                        "zlcuiywgqywgndrv",
-                        "fsxlzevgbmqjqa",
-                        "ocpecfvmmco",
-                        "pmivkwlzu",
-                        "c"));
+        TagsObject model = new TagsObject().withTags(mapOf("oqfbowskanyk", "drabhjybige", "nhzgpphrcgyn",
+            "zlcuiywgqywgndrv", "fsxlzevgbmqjqa", "ocpecfvmmco", "pmivkwlzu", "c"));
         model = BinaryData.fromObject(model).toObject(TagsObject.class);
         Assertions.assertEquals("drabhjybige", model.tags().get("oqfbowskanyk"));
     }

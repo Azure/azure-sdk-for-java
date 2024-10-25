@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportManifestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportManifest model =
-            BinaryData
-                .fromString(
-                    "{\"manifestVersion\":\"gq\",\"dataFormat\":\"Csv\",\"byteCount\":8734080438498794448,\"blobCount\":600272259,\"compressData\":false,\"requestContext\":{\"requestScope\":\"fpel\",\"requestBody\":{\"metric\":\"ActualCost\",\"billingPeriod\":\"srp\",\"invoiceId\":\"ujzra\"}},\"blobs\":[{\"blobLink\":\"dw\",\"byteCount\":6706633430332800015}]}")
-                .toObject(ReportManifest.class);
+        ReportManifest model = BinaryData.fromString(
+            "{\"manifestVersion\":\"gq\",\"dataFormat\":\"Csv\",\"byteCount\":8734080438498794448,\"blobCount\":600272259,\"compressData\":false,\"requestContext\":{\"requestScope\":\"fpel\",\"requestBody\":{\"metric\":\"ActualCost\",\"billingPeriod\":\"srp\",\"invoiceId\":\"ujzra\"}},\"blobs\":[{\"blobLink\":\"dw\",\"byteCount\":6706633430332800015}]}")
+            .toObject(ReportManifest.class);
         Assertions.assertEquals("gq", model.manifestVersion());
         Assertions.assertEquals(CostDetailsDataFormat.CSV, model.dataFormat());
         Assertions.assertEquals(8734080438498794448L, model.byteCount());
@@ -36,20 +34,17 @@ public final class ReportManifestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportManifest model =
-            new ReportManifest()
-                .withManifestVersion("gq")
-                .withDataFormat(CostDetailsDataFormat.CSV)
-                .withByteCount(8734080438498794448L)
-                .withBlobCount(600272259)
-                .withCompressData(false)
-                .withBlobs(Arrays.asList(new BlobInfo().withBlobLink("dw").withByteCount(6706633430332800015L)))
-                .withRequestScope("fpel")
-                .withRequestBody(
-                    new GenerateCostDetailsReportRequestDefinition()
-                        .withMetric(CostDetailsMetricType.ACTUAL_COST)
-                        .withBillingPeriod("srp")
-                        .withInvoiceId("ujzra"));
+        ReportManifest model = new ReportManifest().withManifestVersion("gq")
+            .withDataFormat(CostDetailsDataFormat.CSV)
+            .withByteCount(8734080438498794448L)
+            .withBlobCount(600272259)
+            .withCompressData(false)
+            .withBlobs(Arrays.asList(new BlobInfo().withBlobLink("dw").withByteCount(6706633430332800015L)))
+            .withRequestScope("fpel")
+            .withRequestBody(
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withBillingPeriod("srp")
+                    .withInvoiceId("ujzra"));
         model = BinaryData.fromObject(model).toObject(ReportManifest.class);
         Assertions.assertEquals("gq", model.manifestVersion());
         Assertions.assertEquals(CostDetailsDataFormat.CSV, model.dataFormat());

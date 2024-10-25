@@ -36,6 +36,6 @@ public interface ApiManagementServiceSkus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ResourceSkuResult> listAvailableServiceSkus(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<ResourceSkuResult> listAvailableServiceSkus(String resourceGroupName, String serviceName,
+        Context context);
 }

@@ -34,8 +34,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AccessInformationContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context);
+    PagedIterable<AccessInformationContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Context context);
 
     /**
      * Tenant access metadata.
@@ -49,8 +49,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    TenantAccessGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    TenantAccessGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Tenant access metadata.
@@ -76,8 +76,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant access information details without secrets.
      */
-    Response<AccessInformationContract> getWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<AccessInformationContract> getWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Get tenant access information details without secrets.
@@ -104,8 +104,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate primary access key.
@@ -131,8 +131,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate secondary access key.
@@ -158,8 +158,8 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant access information details.
      */
-    Response<AccessInformationSecretsContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<AccessInformationSecretsContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Get tenant access information details.

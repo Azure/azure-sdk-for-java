@@ -71,189 +71,127 @@ public final class AccountsClientImpl implements AccountsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
     public interface AccountsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AccountInner account,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") AccountInner account, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AccountInner account,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") AccountInner account, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccountInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccountListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AccountListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApiKeysInner>> listKeys(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/regenerateKey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApiKeysInner>> regenerateKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") RegenerateKeyParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccountSkuListResultInner>> listSkus(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/regenerateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/usages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiKeysInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RegenerateKeyParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UsageListResultInner>> listUsages(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/models")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountSkuListResultInner>> listSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccountModelListResult>> listModels(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/usages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsageListResultInner>> listUsages(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/models")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountModelListResult>> listModels(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccountListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountModelListResult>> listModelsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -270,13 +208,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, AccountInner account) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        AccountInner account) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -286,10 +222,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (account == null) {
             return Mono.error(new IllegalArgumentException("Parameter account is required and cannot be null."));
@@ -298,18 +232,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            account,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), account, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -328,13 +252,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        AccountInner account, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -344,10 +266,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (account == null) {
             return Mono.error(new IllegalArgumentException("Parameter account is required and cannot be null."));
@@ -356,16 +276,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                account,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), account, accept, context);
     }
 
     /**
@@ -382,13 +294,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
-        String resourceGroupName, String accountName, AccountInner account) {
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(String resourceGroupName,
+        String accountName, AccountInner account) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, account);
-        return this
-            .client
-            .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, this.client.getContext());
+        return this.client.<AccountInner, AccountInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccountInner.class, AccountInner.class, this.client.getContext());
     }
 
     /**
@@ -406,15 +316,13 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(String resourceGroupName,
+        String accountName, AccountInner account, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, account, context);
-        return this
-            .client
-            .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, account, context);
+        return this.client.<AccountInner, AccountInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccountInner.class, AccountInner.class, context);
     }
 
     /**
@@ -431,8 +339,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account) {
         return this.beginCreateAsync(resourceGroupName, accountName, account).getSyncPoller();
     }
 
@@ -451,8 +359,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account, Context context) {
         return this.beginCreateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
     }
 
@@ -471,8 +379,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> createAsync(String resourceGroupName, String accountName, AccountInner account) {
-        return beginCreateAsync(resourceGroupName, accountName, account)
-            .last()
+        return beginCreateAsync(resourceGroupName, accountName, account).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -491,10 +398,9 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccountInner> createAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, account, context)
-            .last()
+    private Mono<AccountInner> createAsync(String resourceGroupName, String accountName, AccountInner account,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, account, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -548,13 +454,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, AccountInner account) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        AccountInner account) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -564,10 +468,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (account == null) {
             return Mono.error(new IllegalArgumentException("Parameter account is required and cannot be null."));
@@ -576,18 +478,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            account,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), account, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -605,13 +497,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        AccountInner account, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -621,10 +511,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (account == null) {
             return Mono.error(new IllegalArgumentException("Parameter account is required and cannot be null."));
@@ -633,16 +521,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                account,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), account, accept, context);
     }
 
     /**
@@ -658,13 +538,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, AccountInner account) {
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, AccountInner account) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, account);
-        return this
-            .client
-            .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, this.client.getContext());
+        return this.client.<AccountInner, AccountInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccountInner.class, AccountInner.class, this.client.getContext());
     }
 
     /**
@@ -681,15 +559,13 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, AccountInner account, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, account, context);
-        return this
-            .client
-            .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, account, context);
+        return this.client.<AccountInner, AccountInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccountInner.class, AccountInner.class, context);
     }
 
     /**
@@ -705,8 +581,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountInner account) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountInner account) {
         return this.beginUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
     }
 
@@ -724,8 +600,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountInner account, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
     }
 
@@ -743,8 +619,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> updateAsync(String resourceGroupName, String accountName, AccountInner account) {
-        return beginUpdateAsync(resourceGroupName, accountName, account)
-            .last()
+        return beginUpdateAsync(resourceGroupName, accountName, account).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -762,10 +637,9 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccountInner> updateAsync(
-        String resourceGroupName, String accountName, AccountInner account, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, account, context)
-            .last()
+    private Mono<AccountInner> updateAsync(String resourceGroupName, String accountName, AccountInner account,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, account, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -817,10 +691,8 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -830,24 +702,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -863,13 +724,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -879,22 +738,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -910,10 +760,8 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -928,13 +776,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -964,8 +811,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
@@ -997,8 +844,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1043,13 +889,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1059,24 +903,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1093,13 +926,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1109,22 +940,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1157,8 +979,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *     and SKU along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<AccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
@@ -1191,42 +1013,23 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AccountInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AccountInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1242,43 +1045,27 @@ public final class AccountsClientImpl implements AccountsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1292,8 +1079,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1309,8 +1095,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1356,37 +1141,19 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AccountInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AccountInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1403,35 +1170,20 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1457,8 +1209,8 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1503,10 +1255,8 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApiKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1516,24 +1266,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1550,13 +1289,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<ApiKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1566,22 +1303,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1644,13 +1372,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1660,10 +1386,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1672,18 +1396,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1701,13 +1415,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
+    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1717,10 +1429,8 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1729,16 +1439,8 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1753,8 +1455,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+    private Mono<ApiKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1772,8 +1474,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
+    public Response<ApiKeysInner> regenerateKeyWithResponse(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
@@ -1789,8 +1491,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiKeysInner regenerateKey(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+    public ApiKeysInner regenerateKey(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters) {
         return regenerateKeyWithResponse(resourceGroupName, accountName, parameters, Context.NONE).getValue();
     }
 
@@ -1806,13 +1508,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1822,24 +1522,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1856,13 +1545,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1872,22 +1559,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSkus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listSkus(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1918,8 +1596,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountSkuListResultInner> listSkusWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<AccountSkuListResultInner> listSkusWithResponse(String resourceGroupName, String accountName,
+        Context context) {
         return listSkusWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
@@ -1952,13 +1630,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(
-        String resourceGroupName, String accountName, String filter) {
+    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(String resourceGroupName,
+        String accountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1968,25 +1644,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listUsages(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            filter,
-                            accept,
-                            context))
+            .withContext(context -> service.listUsages(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2005,13 +1669,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(
-        String resourceGroupName, String accountName, String filter, Context context) {
+    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(String resourceGroupName,
+        String accountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2021,23 +1683,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listUsages(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                filter,
-                accept,
-                context);
+        return service.listUsages(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, context);
     }
 
     /**
@@ -2071,8 +1723,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UsageListResultInner> listUsagesWithResponse(
-        String resourceGroupName, String accountName, String filter, Context context) {
+    public Response<UsageListResultInner> listUsagesWithResponse(String resourceGroupName, String accountName,
+        String filter, Context context) {
         return listUsagesWithResponseAsync(resourceGroupName, accountName, filter, context).block();
     }
 
@@ -2104,13 +1756,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccountModelInner>> listModelsSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<AccountModelInner>> listModelsSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2120,33 +1770,15 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listModels(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AccountModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listModels(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AccountModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2163,13 +1795,11 @@ public final class AccountsClientImpl implements AccountsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccountModelInner>> listModelsSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<AccountModelInner>> listModelsSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2179,31 +1809,16 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listModels(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listModels(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2218,8 +1833,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountModelInner> listModelsAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(resourceGroupName, accountName),
+        return new PagedFlux<>(() -> listModelsSinglePageAsync(resourceGroupName, accountName),
             nextLink -> listModelsNextSinglePageAsync(nextLink));
     }
 
@@ -2235,10 +1849,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AccountModelInner> listModelsAsync(
-        String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(resourceGroupName, accountName, context),
+    private PagedFlux<AccountModelInner> listModelsAsync(String resourceGroupName, String accountName,
+        Context context) {
+        return new PagedFlux<>(() -> listModelsSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
@@ -2292,24 +1905,15 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AccountInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AccountInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2331,24 +1935,14 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2368,23 +1962,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AccountInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AccountInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2406,24 +1990,14 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2443,23 +2017,14 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listModelsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AccountModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AccountModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2481,23 +2046,13 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listModelsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listModelsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

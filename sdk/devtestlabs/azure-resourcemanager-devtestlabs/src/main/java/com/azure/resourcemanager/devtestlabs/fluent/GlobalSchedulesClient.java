@@ -70,8 +70,8 @@ public interface GlobalSchedulesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
@@ -86,8 +86,8 @@ public interface GlobalSchedulesClient {
      * @return schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
+    Response<ScheduleInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context);
 
     /**
      * Get schedule.
@@ -115,8 +115,8 @@ public interface GlobalSchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String name, ScheduleInner schedule, Context context);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String name, ScheduleInner schedule,
+        Context context);
 
     /**
      * Create or replace an existing schedule.
@@ -171,8 +171,8 @@ public interface GlobalSchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName, String name, ScheduleFragment schedule, Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String name, ScheduleFragment schedule,
+        Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
@@ -252,8 +252,8 @@ public interface GlobalSchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRetarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties);
+    SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
+        RetargetScheduleProperties retargetScheduleProperties);
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
@@ -268,8 +268,8 @@ public interface GlobalSchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRetarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
+        RetargetScheduleProperties retargetScheduleProperties, Context context);
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
@@ -296,6 +296,6 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void retarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
+    void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties,
+        Context context);
 }

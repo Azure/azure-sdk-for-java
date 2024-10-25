@@ -117,17 +117,16 @@ public interface FarmBeats {
     FarmBeatsInner innerModel();
 
     /** The entirety of the FarmBeats definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The FarmBeats definition stages. */
     interface DefinitionStages {
         /** The first stage of the FarmBeats definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the FarmBeats definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -146,6 +145,7 @@ public interface FarmBeats {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the FarmBeats definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -156,15 +156,13 @@ public interface FarmBeats {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the FarmBeats definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSensorIntegration,
-                DefinitionStages.WithPublicNetworkAccess {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithSensorIntegration, DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              *
@@ -180,6 +178,7 @@ public interface FarmBeats {
              */
             FarmBeats create(Context context);
         }
+
         /** The stage of the FarmBeats definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -190,6 +189,7 @@ public interface FarmBeats {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the FarmBeats definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -200,6 +200,7 @@ public interface FarmBeats {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the FarmBeats definition allowing to specify sensorIntegration. */
         interface WithSensorIntegration {
             /**
@@ -210,6 +211,7 @@ public interface FarmBeats {
              */
             WithCreate withSensorIntegration(SensorIntegration sensorIntegration);
         }
+
         /** The stage of the FarmBeats definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -222,6 +224,7 @@ public interface FarmBeats {
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
+
     /**
      * Begins update for the FarmBeats resource.
      *
@@ -246,6 +249,7 @@ public interface FarmBeats {
          */
         FarmBeats apply(Context context);
     }
+
     /** The FarmBeats update stages. */
     interface UpdateStages {
         /** The stage of the FarmBeats update allowing to specify tags. */
@@ -258,6 +262,7 @@ public interface FarmBeats {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the FarmBeats update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -268,6 +273,7 @@ public interface FarmBeats {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the FarmBeats update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -279,6 +285,7 @@ public interface FarmBeats {
             Update withProperties(FarmBeatsUpdateProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

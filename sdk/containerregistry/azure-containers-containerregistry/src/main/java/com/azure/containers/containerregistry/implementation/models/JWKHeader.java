@@ -40,7 +40,8 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
     private String y;
 
     /** Creates an instance of JWKHeader class. */
-    public JWKHeader() {}
+    public JWKHeader() {
+    }
 
     /**
      * Get the crv property: crv value.
@@ -162,29 +163,28 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @throws IOException If an error occurs while reading the JWKHeader.
      */
     public static JWKHeader fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JWKHeader deserializedJWKHeader = new JWKHeader();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            JWKHeader deserializedJWKHeader = new JWKHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("crv".equals(fieldName)) {
-                            deserializedJWKHeader.crv = reader.getString();
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedJWKHeader.kid = reader.getString();
-                        } else if ("kty".equals(fieldName)) {
-                            deserializedJWKHeader.kty = reader.getString();
-                        } else if ("x".equals(fieldName)) {
-                            deserializedJWKHeader.x = reader.getString();
-                        } else if ("y".equals(fieldName)) {
-                            deserializedJWKHeader.y = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("crv".equals(fieldName)) {
+                    deserializedJWKHeader.crv = reader.getString();
+                } else if ("kid".equals(fieldName)) {
+                    deserializedJWKHeader.kid = reader.getString();
+                } else if ("kty".equals(fieldName)) {
+                    deserializedJWKHeader.kty = reader.getString();
+                } else if ("x".equals(fieldName)) {
+                    deserializedJWKHeader.x = reader.getString();
+                } else if ("y".equals(fieldName)) {
+                    deserializedJWKHeader.y = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedJWKHeader;
-                });
+            return deserializedJWKHeader;
+        });
     }
 }

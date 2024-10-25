@@ -104,15 +104,12 @@ public final class ManagedDiskEncryption {
      */
     public void validate() {
         if (keySource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keySource in model ManagedDiskEncryption"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keySource in model ManagedDiskEncryption"));
         }
         if (keyVaultProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultProperties in model ManagedDiskEncryption"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultProperties in model ManagedDiskEncryption"));
         } else {
             keyVaultProperties().validate();
         }

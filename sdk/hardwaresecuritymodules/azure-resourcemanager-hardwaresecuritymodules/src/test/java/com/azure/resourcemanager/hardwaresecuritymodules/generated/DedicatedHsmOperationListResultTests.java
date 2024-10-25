@@ -28,15 +28,24 @@ public final class DedicatedHsmOperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmOperationListResult model = new DedicatedHsmOperationListResult().withValue(Arrays.asList(
-            new DedicatedHsmOperationInner().withName("ashsfwxos").withOrigin("cugicjoox")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bwpucwwfvovbv").withResource("uecivyhz")
-                    .withOperation("uojgj").withDescription("jueiotwmcdytd")),
-            new DedicatedHsmOperationInner().withName("it").withOrigin("awgqwgxhni")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("fbkp").withResource("gklwn")
-                    .withOperation("hjdauwhvylwz").withDescription("dhxujznbmpo")),
-            new DedicatedHsmOperationInner().withName("wpr").withOrigin("eualupjmkhf")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bcswsrt").withResource("iplrbpbewtghfgb")
-                    .withOperation("gw").withDescription("vlvqhjkbegi"))));
+            new DedicatedHsmOperationInner().withName("ashsfwxos")
+                .withOrigin("cugicjoox")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bwpucwwfvovbv")
+                    .withResource("uecivyhz")
+                    .withOperation("uojgj")
+                    .withDescription("jueiotwmcdytd")),
+            new DedicatedHsmOperationInner().withName("it")
+                .withOrigin("awgqwgxhni")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("fbkp")
+                    .withResource("gklwn")
+                    .withOperation("hjdauwhvylwz")
+                    .withDescription("dhxujznbmpo")),
+            new DedicatedHsmOperationInner().withName("wpr")
+                .withOrigin("eualupjmkhf")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bcswsrt")
+                    .withResource("iplrbpbewtghfgb")
+                    .withOperation("gw")
+                    .withDescription("vlvqhjkbegi"))));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmOperationListResult.class);
         Assertions.assertEquals("ashsfwxos", model.value().get(0).name());
         Assertions.assertEquals("cugicjoox", model.value().get(0).origin());

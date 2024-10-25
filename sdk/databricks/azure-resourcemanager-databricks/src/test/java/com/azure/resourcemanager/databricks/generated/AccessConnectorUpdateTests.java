@@ -16,40 +16,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessConnectorUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessConnectorUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jljyoxgv\":\"ujqgidok\",\"szzhbijhtxfvgxbf\":\"ltbgsncghkj\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\"},\"identity\":{\"principalId\":\"1411a3e5-a26f-4f94-ae71-b0ec1b527d3e\",\"tenantId\":\"25c17099-5ea0-43a7-8d65-5393b15ee9cb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zpuzycisp\":{\"principalId\":\"a5bb5228-9b36-4d1a-8c16-697e2406d47c\",\"clientId\":\"18034bca-9343-4048-8ff9-2d93f2df9bb6\"},\"ahmgkbrp\":{\"principalId\":\"2f2e3a07-f555-4d7a-a167-9d9820bce1ef\",\"clientId\":\"a134ac77-e688-46b9-8127-7dcd30b025f7\"},\"hibnuqqkpika\":{\"principalId\":\"98b0ab9d-d3b5-4d5b-b0cc-0082ca9f4f84\",\"clientId\":\"9252c6e2-cb83-4857-8734-2dde7a217efa\"}}}}")
-                .toObject(AccessConnectorUpdate.class);
+        AccessConnectorUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"jljyoxgv\":\"ujqgidok\",\"szzhbijhtxfvgxbf\":\"ltbgsncghkj\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\"},\"identity\":{\"principalId\":\"1411a3e5-a26f-4f94-ae71-b0ec1b527d3e\",\"tenantId\":\"25c17099-5ea0-43a7-8d65-5393b15ee9cb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zpuzycisp\":{\"principalId\":\"a5bb5228-9b36-4d1a-8c16-697e2406d47c\",\"clientId\":\"18034bca-9343-4048-8ff9-2d93f2df9bb6\"},\"ahmgkbrp\":{\"principalId\":\"2f2e3a07-f555-4d7a-a167-9d9820bce1ef\",\"clientId\":\"a134ac77-e688-46b9-8127-7dcd30b025f7\"},\"hibnuqqkpika\":{\"principalId\":\"98b0ab9d-d3b5-4d5b-b0cc-0082ca9f4f84\",\"clientId\":\"9252c6e2-cb83-4857-8734-2dde7a217efa\"}}}}")
+            .toObject(AccessConnectorUpdate.class);
         Assertions.assertEquals("ujqgidok", model.tags().get("jljyoxgv"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessConnectorUpdate model =
-            new AccessConnectorUpdate()
-                .withTags(
-                    mapOf(
-                        "jljyoxgv",
-                        "ujqgidok",
-                        "szzhbijhtxfvgxbf",
-                        "ltbgsncghkj",
-                        "ec",
-                        "mxnehmp",
-                        "gr",
-                        "godebfqkkrbmpu"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "zpuzycisp",
-                                new UserAssignedIdentity(),
-                                "ahmgkbrp",
-                                new UserAssignedIdentity(),
-                                "hibnuqqkpika",
-                                new UserAssignedIdentity())));
+        AccessConnectorUpdate model = new AccessConnectorUpdate()
+            .withTags(mapOf("jljyoxgv", "ujqgidok", "szzhbijhtxfvgxbf", "ltbgsncghkj", "ec", "mxnehmp", "gr",
+                "godebfqkkrbmpu"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("zpuzycisp", new UserAssignedIdentity(), "ahmgkbrp",
+                        new UserAssignedIdentity(), "hibnuqqkpika", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(AccessConnectorUpdate.class);
         Assertions.assertEquals("ujqgidok", model.tags().get("jljyoxgv"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());

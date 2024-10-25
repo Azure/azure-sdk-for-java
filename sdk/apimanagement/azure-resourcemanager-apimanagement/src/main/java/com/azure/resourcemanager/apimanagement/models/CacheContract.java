@@ -100,12 +100,8 @@ public interface CacheContract {
          * The stage of the CacheContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription,
-                DefinitionStages.WithConnectionString,
-                DefinitionStages.WithUseFromLocation,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDescription, DefinitionStages.WithConnectionString,
+            DefinitionStages.WithUseFromLocation, DefinitionStages.WithResourceId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -190,12 +186,8 @@ public interface CacheContract {
     CacheContract.Update update();
 
     /** The template for CacheContract update. */
-    interface Update
-        extends UpdateStages.WithDescription,
-            UpdateStages.WithConnectionString,
-            UpdateStages.WithUseFromLocation,
-            UpdateStages.WithResourceId,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithConnectionString,
+        UpdateStages.WithUseFromLocation, UpdateStages.WithResourceId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

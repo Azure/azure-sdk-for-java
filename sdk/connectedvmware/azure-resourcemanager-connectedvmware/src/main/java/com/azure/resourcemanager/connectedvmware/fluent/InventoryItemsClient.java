@@ -29,12 +29,8 @@ public interface InventoryItemsClient {
      * @return defines the inventory item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InventoryItemInner> createWithResponse(
-        String resourceGroupName,
-        String vcenterName,
-        String inventoryItemName,
-        InventoryItemInner body,
-        Context context);
+    Response<InventoryItemInner> createWithResponse(String resourceGroupName, String vcenterName,
+        String inventoryItemName, InventoryItemInner body, Context context);
 
     /**
      * Implements InventoryItem PUT method.
@@ -67,8 +63,8 @@ public interface InventoryItemsClient {
      * @return defines the inventory item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InventoryItemInner> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<InventoryItemInner> getWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Gets InventoryItem.
@@ -101,8 +97,8 @@ public interface InventoryItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Deletes an inventoryItem.

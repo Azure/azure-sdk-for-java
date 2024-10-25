@@ -31,41 +31,29 @@ public final class PolicyDescriptionsListByServiceWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"nfvbsymag\",\"scope\":7283216164922059710},\"id\":\"btjmk\",\"name\":\"zonrklbizrxh\",\"type\":\"qfvpanloq\"},{\"properties\":{\"description\":\"cxgqtquirgopgza\",\"scope\":2197391753358015136},\"id\":\"jtjuz\",\"name\":\"y\",\"type\":\"xuxc\"}],\"count\":7491829687777506457}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"nfvbsymag\",\"scope\":7283216164922059710},\"id\":\"btjmk\",\"name\":\"zonrklbizrxh\",\"type\":\"qfvpanloq\"},{\"properties\":{\"description\":\"cxgqtquirgopgza\",\"scope\":2197391753358015136},\"id\":\"jtjuz\",\"name\":\"y\",\"type\":\"xuxc\"}],\"count\":7491829687777506457}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PolicyDescriptionCollection response =
-            manager
-                .policyDescriptions()
-                .listByServiceWithResponse(
-                    "rrpl", "mfvmjjfzizxlbiqq", PolicyScopeContract.OPERATION, com.azure.core.util.Context.NONE)
-                .getValue();
+        PolicyDescriptionCollection response = manager.policyDescriptions()
+            .listByServiceWithResponse("rrpl", "mfvmjjfzizxlbiqq", PolicyScopeContract.OPERATION,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(7491829687777506457L, response.count());
     }

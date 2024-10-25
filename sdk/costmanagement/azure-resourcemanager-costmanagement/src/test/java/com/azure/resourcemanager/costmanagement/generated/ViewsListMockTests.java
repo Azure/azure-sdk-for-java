@@ -36,34 +36,24 @@ public final class ViewsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"cypsxjv\",\"scope\":\"imwkslircizj\",\"createdOn\":\"2021-01-01T11:30:07Z\",\"modifiedOn\":\"2021-08-31T12:53:55Z\",\"dateRange\":\"eacvl\",\"currency\":\"ygdyftumrtw\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"WeekToDate\",\"includeMonetaryCommitment\":false},\"chart\":\"Table\",\"accumulated\":\"false\",\"metric\":\"AmortizedCost\",\"kpis\":[],\"pivots\":[]},\"eTag\":\"mznbaeqphch\",\"id\":\"nrnrp\",\"name\":\"ehuwrykqgaifmvik\",\"type\":\"bydvkhbejdz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"cypsxjv\",\"scope\":\"imwkslircizj\",\"createdOn\":\"2021-01-01T11:30:07Z\",\"modifiedOn\":\"2021-08-31T12:53:55Z\",\"dateRange\":\"eacvl\",\"currency\":\"ygdyftumrtw\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"WeekToDate\",\"includeMonetaryCommitment\":false},\"chart\":\"Table\",\"accumulated\":\"false\",\"metric\":\"AmortizedCost\",\"kpis\":[],\"pivots\":[]},\"eTag\":\"mznbaeqphch\",\"id\":\"nrnrp\",\"name\":\"ehuwrykqgaifmvik\",\"type\":\"bydvkhbejdz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<View> response = manager.views().list(com.azure.core.util.Context.NONE);
 

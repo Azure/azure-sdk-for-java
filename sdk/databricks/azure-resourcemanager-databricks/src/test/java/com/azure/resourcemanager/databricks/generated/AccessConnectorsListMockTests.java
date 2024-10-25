@@ -32,34 +32,24 @@ public final class AccessConnectorsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"0b6e54aa-aa52-4836-ac81-01efe6d11758\",\"tenantId\":\"d4b0e95f-10eb-45df-9d18-d4503b2b5f2e\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"xllrxcyjm\",\"tags\":{\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\",\"hky\":\"kgymareqnajxqug\"},\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"0b6e54aa-aa52-4836-ac81-01efe6d11758\",\"tenantId\":\"d4b0e95f-10eb-45df-9d18-d4503b2b5f2e\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"xllrxcyjm\",\"tags\":{\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\",\"hky\":\"kgymareqnajxqug\"},\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AccessConnector> response = manager.accessConnectors().list(com.azure.core.util.Context.NONE);
 

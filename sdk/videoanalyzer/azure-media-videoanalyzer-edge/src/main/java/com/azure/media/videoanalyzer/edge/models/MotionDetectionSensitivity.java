@@ -5,32 +5,51 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MotionDetectionSensitivity. */
+/**
+ * Motion detection sensitivity: low, medium, high.
+ */
 public final class MotionDetectionSensitivity extends ExpandableStringEnum<MotionDetectionSensitivity> {
-    /** Static value low for MotionDetectionSensitivity. */
+    /**
+     * Low sensitivity.
+     */
     public static final MotionDetectionSensitivity LOW = fromString("low");
 
-    /** Static value medium for MotionDetectionSensitivity. */
+    /**
+     * Medium sensitivity.
+     */
     public static final MotionDetectionSensitivity MEDIUM = fromString("medium");
 
-    /** Static value high for MotionDetectionSensitivity. */
+    /**
+     * High sensitivity.
+     */
     public static final MotionDetectionSensitivity HIGH = fromString("high");
 
     /**
+     * Creates a new instance of MotionDetectionSensitivity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MotionDetectionSensitivity() {
+    }
+
+    /**
      * Creates or finds a MotionDetectionSensitivity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MotionDetectionSensitivity.
      */
-    @JsonCreator
     public static MotionDetectionSensitivity fromString(String name) {
         return fromString(name, MotionDetectionSensitivity.class);
     }
 
-    /** @return known MotionDetectionSensitivity values. */
+    /**
+     * Gets known MotionDetectionSensitivity values.
+     * 
+     * @return known MotionDetectionSensitivity values.
+     */
     public static Collection<MotionDetectionSensitivity> values() {
         return values(MotionDetectionSensitivity.class);
     }
