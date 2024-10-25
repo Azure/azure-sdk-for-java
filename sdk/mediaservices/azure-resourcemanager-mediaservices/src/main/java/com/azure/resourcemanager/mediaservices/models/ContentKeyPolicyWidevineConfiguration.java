@@ -54,10 +54,8 @@ public final class ContentKeyPolicyWidevineConfiguration extends ContentKeyPolic
     public void validate() {
         super.validate();
         if (widevineTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property widevineTemplate in model ContentKeyPolicyWidevineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property widevineTemplate in model ContentKeyPolicyWidevineConfiguration"));
         }
     }
 

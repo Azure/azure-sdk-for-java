@@ -100,11 +100,13 @@ public interface ServiceResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ServiceResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ServiceResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ServiceResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -116,17 +118,14 @@ public interface ServiceResource {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the ServiceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithKvTags,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithKeys,
-                DefinitionStages.WithEnvironmentImageRequest {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithDescription, DefinitionStages.WithKvTags,
+            DefinitionStages.WithProperties, DefinitionStages.WithKeys, DefinitionStages.WithEnvironmentImageRequest {
             /**
              * Executes the create request.
              *
@@ -142,6 +141,7 @@ public interface ServiceResource {
              */
             ServiceResource create(Context context);
         }
+
         /** The stage of the ServiceResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -160,6 +160,7 @@ public interface ServiceResource {
              */
             WithCreate withRegion(String location);
         }
+
         /** The stage of the ServiceResource definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -170,6 +171,7 @@ public interface ServiceResource {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ServiceResource definition allowing to specify kvTags. */
         interface WithKvTags {
             /**
@@ -180,6 +182,7 @@ public interface ServiceResource {
              */
             WithCreate withKvTags(Map<String, String> kvTags);
         }
+
         /** The stage of the ServiceResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -190,6 +193,7 @@ public interface ServiceResource {
              */
             WithCreate withProperties(Map<String, String> properties);
         }
+
         /** The stage of the ServiceResource definition allowing to specify keys. */
         interface WithKeys {
             /**
@@ -200,6 +204,7 @@ public interface ServiceResource {
              */
             WithCreate withKeys(CreateServiceRequestKeys keys);
         }
+
         /** The stage of the ServiceResource definition allowing to specify environmentImageRequest. */
         interface WithEnvironmentImageRequest {
             /**
@@ -212,6 +217,7 @@ public interface ServiceResource {
             WithCreate withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest);
         }
     }
+
     /**
      * Begins update for the ServiceResource resource.
      *
@@ -220,12 +226,8 @@ public interface ServiceResource {
     ServiceResource.Update update();
 
     /** The template for ServiceResource update. */
-    interface Update
-        extends UpdateStages.WithDescription,
-            UpdateStages.WithKvTags,
-            UpdateStages.WithProperties,
-            UpdateStages.WithKeys,
-            UpdateStages.WithEnvironmentImageRequest {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithKvTags, UpdateStages.WithProperties,
+        UpdateStages.WithKeys, UpdateStages.WithEnvironmentImageRequest {
         /**
          * Executes the update request.
          *
@@ -241,6 +243,7 @@ public interface ServiceResource {
          */
         ServiceResource apply(Context context);
     }
+
     /** The ServiceResource update stages. */
     interface UpdateStages {
         /** The stage of the ServiceResource update allowing to specify description. */
@@ -253,6 +256,7 @@ public interface ServiceResource {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ServiceResource update allowing to specify kvTags. */
         interface WithKvTags {
             /**
@@ -263,6 +267,7 @@ public interface ServiceResource {
              */
             Update withKvTags(Map<String, String> kvTags);
         }
+
         /** The stage of the ServiceResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -273,6 +278,7 @@ public interface ServiceResource {
              */
             Update withProperties(Map<String, String> properties);
         }
+
         /** The stage of the ServiceResource update allowing to specify keys. */
         interface WithKeys {
             /**
@@ -283,6 +289,7 @@ public interface ServiceResource {
              */
             Update withKeys(CreateServiceRequestKeys keys);
         }
+
         /** The stage of the ServiceResource update allowing to specify environmentImageRequest. */
         interface WithEnvironmentImageRequest {
             /**
@@ -295,6 +302,7 @@ public interface ServiceResource {
             Update withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

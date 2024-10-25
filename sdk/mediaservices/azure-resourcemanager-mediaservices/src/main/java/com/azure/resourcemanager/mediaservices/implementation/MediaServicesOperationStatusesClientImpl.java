@@ -39,12 +39,8 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
      * @param client the instance of the service client containing this operation class.
      */
     MediaServicesOperationStatusesClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    MediaServicesOperationStatusesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(MediaServicesOperationStatusesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,20 +51,15 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesMe")
     public interface MediaServicesOperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
-                + "/mediaServicesOperationStatuses/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
+            + "/mediaServicesOperationStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MediaServiceOperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MediaServiceOperationStatusInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("locationName") String locationName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,19 +75,15 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
      * @return media service operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceOperationStatusInner>> getWithResponseAsync(
-        String locationName, String operationId) {
+    private Mono<Response<MediaServiceOperationStatusInner>> getWithResponseAsync(String locationName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -107,17 +94,8 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            operationId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                locationName, operationId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -135,19 +113,15 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
      * @return media service operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceOperationStatusInner>> getWithResponseAsync(
-        String locationName, String operationId, Context context) {
+    private Mono<Response<MediaServiceOperationStatusInner>> getWithResponseAsync(String locationName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -158,15 +132,8 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationName,
-                operationId,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), locationName, operationId,
+            apiVersion, accept, context);
     }
 
     /**
@@ -200,8 +167,8 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
      * @return media service operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MediaServiceOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context) {
+    public Response<MediaServiceOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context) {
         return getWithResponseAsync(locationName, operationId, context).block();
     }
 

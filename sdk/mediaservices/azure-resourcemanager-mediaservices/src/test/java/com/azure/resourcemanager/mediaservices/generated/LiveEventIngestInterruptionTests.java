@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventIngestInterruptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventIngestInterruption model =
-            BinaryData
-                .fromString(
-                    "{\"begin\":\"2021-10-30T20:25:20Z\",\"end\":\"2021-11-18T02:26Z\",\"duration\":\"PT61H59M50S\",\"reason\":\"kooebwnu\"}")
-                .toObject(LiveEventIngestInterruption.class);
+        LiveEventIngestInterruption model = BinaryData.fromString(
+            "{\"begin\":\"2021-10-30T20:25:20Z\",\"end\":\"2021-11-18T02:26Z\",\"duration\":\"PT61H59M50S\",\"reason\":\"kooebwnu\"}")
+            .toObject(LiveEventIngestInterruption.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T20:25:20Z"), model.begin());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T02:26Z"), model.end());
         Assertions.assertEquals(Duration.parse("PT61H59M50S"), model.duration());
@@ -26,9 +24,8 @@ public final class LiveEventIngestInterruptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventIngestInterruption model =
-            new LiveEventIngestInterruption()
-                .withBegin(OffsetDateTime.parse("2021-10-30T20:25:20Z"))
+        LiveEventIngestInterruption model
+            = new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-10-30T20:25:20Z"))
                 .withEnd(OffsetDateTime.parse("2021-11-18T02:26Z"))
                 .withDuration(Duration.parse("PT61H59M50S"))
                 .withReason("kooebwnu");

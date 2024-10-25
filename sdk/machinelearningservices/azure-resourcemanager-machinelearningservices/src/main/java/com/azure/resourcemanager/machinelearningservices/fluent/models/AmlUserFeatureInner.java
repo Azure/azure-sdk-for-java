@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Features enabled for a workspace. */
 @Fluent
 public final class AmlUserFeatureInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlUserFeatureInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AmlUserFeatureInner.class);
 
     /*
      * Specifies the feature ID

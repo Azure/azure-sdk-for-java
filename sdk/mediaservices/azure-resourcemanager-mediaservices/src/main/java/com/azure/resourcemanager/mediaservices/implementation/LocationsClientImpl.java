@@ -41,8 +41,8 @@ public final class LocationsClientImpl implements LocationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     LocationsClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,18 +53,14 @@ public final class LocationsClientImpl implements LocationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesLo")
     public interface LocationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EntityNameAvailabilityCheckOutputInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckNameAvailabilityInput parameters,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckNameAvailabilityInput parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -82,19 +78,15 @@ public final class LocationsClientImpl implements LocationsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EntityNameAvailabilityCheckOutputInner>> checkNameAvailabilityWithResponseAsync(
-        String locationName, CheckNameAvailabilityInput parameters) {
+    private Mono<Response<EntityNameAvailabilityCheckOutputInner>>
+        checkNameAvailabilityWithResponseAsync(String locationName, CheckNameAvailabilityInput parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -107,17 +99,8 @@ public final class LocationsClientImpl implements LocationsClient {
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), locationName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -139,16 +122,12 @@ public final class LocationsClientImpl implements LocationsClient {
     private Mono<Response<EntityNameAvailabilityCheckOutputInner>> checkNameAvailabilityWithResponseAsync(
         String locationName, CheckNameAvailabilityInput parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -161,15 +140,8 @@ public final class LocationsClientImpl implements LocationsClient {
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), locationName,
+            apiVersion, parameters, accept, context);
     }
 
     /**
@@ -185,8 +157,8 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the response from the check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityAsync(
-        String locationName, CheckNameAvailabilityInput parameters) {
+    private Mono<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityAsync(String locationName,
+        CheckNameAvailabilityInput parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -205,8 +177,8 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the response from the check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityInput parameters, Context context) {
+    public Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityInput parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters, context).block();
     }
 
@@ -223,8 +195,8 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the response from the check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityInput parameters) {
+    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(String locationName,
+        CheckNameAvailabilityInput parameters) {
         return checkNameAvailabilityWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 }

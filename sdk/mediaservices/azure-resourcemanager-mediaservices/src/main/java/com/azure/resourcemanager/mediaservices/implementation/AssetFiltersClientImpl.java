@@ -48,8 +48,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @param client the instance of the service client containing this operation class.
      */
     AssetFiltersClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(AssetFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AssetFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,101 +60,69 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesAs")
     public interface AssetFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/assetFilters")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/assetFilters")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetFilterCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetFilterCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetFilterInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetFilterInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("filterName") String filterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("filterName") String filterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetFilterInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetFilterInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("filterName") String filterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AssetFilterInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("filterName") String filterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AssetFilterInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("filterName") String filterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("filterName") String filterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetFilterInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetFilterInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("filterName") String filterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AssetFilterInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("filterName") String filterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AssetFilterInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetFilterCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AssetFilterCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -172,19 +140,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String assetName) {
+    private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String assetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -199,27 +163,10 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<AssetFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, apiVersion, accept, context))
+            .<PagedResponse<AssetFilterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -239,19 +186,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String assetName, Context context) {
+    private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String assetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -267,24 +210,10 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, assetName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
@@ -302,8 +231,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AssetFilterInner> listAsync(String resourceGroupName, String accountName, String assetName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, assetName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, assetName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -322,10 +250,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return a collection of AssetFilter items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssetFilterInner> listAsync(
-        String resourceGroupName, String accountName, String assetName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, assetName, context),
+    private PagedFlux<AssetFilterInner> listAsync(String resourceGroupName, String accountName, String assetName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, assetName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -362,8 +289,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return a collection of AssetFilter items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssetFilterInner> list(
-        String resourceGroupName, String accountName, String assetName, Context context) {
+    public PagedIterable<AssetFilterInner> list(String resourceGroupName, String accountName, String assetName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, assetName, context));
     }
 
@@ -383,19 +310,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String filterName) {
+    private Mono<Response<AssetFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String filterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -413,19 +336,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            filterName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, filterName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -446,19 +358,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
+    private Mono<Response<AssetFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String filterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -476,17 +384,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                filterName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            assetName, filterName, apiVersion, accept, context);
     }
 
     /**
@@ -505,8 +404,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetFilterInner> getAsync(
-        String resourceGroupName, String accountName, String assetName, String filterName) {
+    private Mono<AssetFilterInner> getAsync(String resourceGroupName, String accountName, String assetName,
+        String filterName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, filterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -527,8 +426,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetFilterInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
+    public Response<AssetFilterInner> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, filterName, context).block();
     }
 
@@ -567,23 +466,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
+    private Mono<Response<AssetFilterInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String filterName, AssetFilterInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -606,20 +497,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            filterName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, filterName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -640,24 +519,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context) {
+    private Mono<Response<AssetFilterInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String filterName, AssetFilterInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,18 +550,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                filterName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, filterName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -710,12 +570,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetFilterInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
+    private Mono<AssetFilterInner> createOrUpdateAsync(String resourceGroupName, String accountName, String assetName,
+        String filterName, AssetFilterInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -737,16 +593,10 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetFilterInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, assetName, filterName, parameters, context)
-            .block();
+    public Response<AssetFilterInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String assetName, String filterName, AssetFilterInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters,
+            context).block();
     }
 
     /**
@@ -765,15 +615,10 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetFilterInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, accountName, assetName, filterName, parameters, Context.NONE)
-            .getValue();
+    public AssetFilterInner createOrUpdate(String resourceGroupName, String accountName, String assetName,
+        String filterName, AssetFilterInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, accountName, assetName, filterName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -791,19 +636,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String filterName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String assetName,
+        String filterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -821,19 +662,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            filterName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, filterName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -853,19 +683,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -883,17 +709,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                filterName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, filterName, apiVersion, accept, context);
     }
 
     /**
@@ -932,8 +749,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, assetName, filterName, context).block();
     }
 
@@ -971,23 +788,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
+    private Mono<Response<AssetFilterInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String filterName, AssetFilterInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1010,20 +819,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            filterName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, filterName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1044,24 +841,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetFilterInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context) {
+    private Mono<Response<AssetFilterInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String filterName, AssetFilterInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1084,18 +872,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                filterName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, filterName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1114,12 +892,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetFilterInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
+    private Mono<AssetFilterInner> updateAsync(String resourceGroupName, String accountName, String assetName,
+        String filterName, AssetFilterInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1141,13 +915,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetFilterInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context) {
+    public Response<AssetFilterInner> updateWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, AssetFilterInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters, context)
             .block();
     }
@@ -1168,11 +937,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetFilterInner update(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
+    public AssetFilterInner update(String resourceGroupName, String accountName, String assetName, String filterName,
         AssetFilterInner parameters) {
         return updateWithResponse(resourceGroupName, accountName, assetName, filterName, parameters, Context.NONE)
             .getValue();
@@ -1195,23 +960,13 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AssetFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AssetFilterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1233,23 +988,13 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

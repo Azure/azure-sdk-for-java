@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** User Assigned Identity. */
 @Immutable
 public class UserAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
 
     /*
      * The principal ID of the user assigned identity.

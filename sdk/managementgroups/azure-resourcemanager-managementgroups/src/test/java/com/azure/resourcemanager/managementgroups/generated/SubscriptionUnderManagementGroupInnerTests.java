@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionUnderManagementGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionUnderManagementGroupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"tenant\":\"ipheoflokeyyien\",\"displayName\":\"dlwtgrhpdj\",\"parent\":{\"id\":\"masxazjpqyegu\"},\"state\":\"hb\"},\"id\":\"xhejjzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"}")
-                .toObject(SubscriptionUnderManagementGroupInner.class);
+        SubscriptionUnderManagementGroupInner model = BinaryData.fromString(
+            "{\"properties\":{\"tenant\":\"ipheoflokeyyien\",\"displayName\":\"dlwtgrhpdj\",\"parent\":{\"id\":\"masxazjpqyegu\"},\"state\":\"hb\"},\"id\":\"xhejjzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"}")
+            .toObject(SubscriptionUnderManagementGroupInner.class);
         Assertions.assertEquals("ipheoflokeyyien", model.tenant());
         Assertions.assertEquals("dlwtgrhpdj", model.displayName());
         Assertions.assertEquals("masxazjpqyegu", model.parent().id());
@@ -25,9 +23,8 @@ public final class SubscriptionUnderManagementGroupInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionUnderManagementGroupInner model =
-            new SubscriptionUnderManagementGroupInner()
-                .withTenant("ipheoflokeyyien")
+        SubscriptionUnderManagementGroupInner model
+            = new SubscriptionUnderManagementGroupInner().withTenant("ipheoflokeyyien")
                 .withDisplayName("dlwtgrhpdj")
                 .withParent(new DescendantParentGroupInfo().withId("masxazjpqyegu"))
                 .withState("hb");

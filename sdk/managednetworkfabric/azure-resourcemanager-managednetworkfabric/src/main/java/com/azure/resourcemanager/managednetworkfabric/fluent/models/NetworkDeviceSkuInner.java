@@ -167,10 +167,8 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkDeviceSkuInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkDeviceSkuInner"));
         } else {
             innerProperties().validate();
         }

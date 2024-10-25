@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioOverlayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AudioOverlay model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioOverlay\",\"inputLabel\":\"acegfnmntf\",\"start\":\"PT49H27M36S\",\"end\":\"PT150H52M6S\",\"fadeInDuration\":\"PT221H48M18S\",\"fadeOutDuration\":\"PT147H47M11S\",\"audioGainLevel\":33.91120911397068}")
-                .toObject(AudioOverlay.class);
+        AudioOverlay model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.AudioOverlay\",\"inputLabel\":\"acegfnmntf\",\"start\":\"PT49H27M36S\",\"end\":\"PT150H52M6S\",\"fadeInDuration\":\"PT221H48M18S\",\"fadeOutDuration\":\"PT147H47M11S\",\"audioGainLevel\":33.91120911397068}")
+            .toObject(AudioOverlay.class);
         Assertions.assertEquals("acegfnmntf", model.inputLabel());
         Assertions.assertEquals(Duration.parse("PT49H27M36S"), model.start());
         Assertions.assertEquals(Duration.parse("PT150H52M6S"), model.end());
@@ -27,14 +25,12 @@ public final class AudioOverlayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AudioOverlay model =
-            new AudioOverlay()
-                .withInputLabel("acegfnmntf")
-                .withStart(Duration.parse("PT49H27M36S"))
-                .withEnd(Duration.parse("PT150H52M6S"))
-                .withFadeInDuration(Duration.parse("PT221H48M18S"))
-                .withFadeOutDuration(Duration.parse("PT147H47M11S"))
-                .withAudioGainLevel(33.91120911397068D);
+        AudioOverlay model = new AudioOverlay().withInputLabel("acegfnmntf")
+            .withStart(Duration.parse("PT49H27M36S"))
+            .withEnd(Duration.parse("PT150H52M6S"))
+            .withFadeInDuration(Duration.parse("PT221H48M18S"))
+            .withFadeOutDuration(Duration.parse("PT147H47M11S"))
+            .withAudioGainLevel(33.91120911397068D);
         model = BinaryData.fromObject(model).toObject(AudioOverlay.class);
         Assertions.assertEquals("acegfnmntf", model.inputLabel());
         Assertions.assertEquals(Duration.parse("PT49H27M36S"), model.start());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectVideoTrackByAttributeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectVideoTrackByAttribute model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackByAttribute\",\"attribute\":\"Language\",\"filter\":\"Top\",\"filterValue\":\"kyxvxevblbjedn\"}")
-                .toObject(SelectVideoTrackByAttribute.class);
+        SelectVideoTrackByAttribute model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackByAttribute\",\"attribute\":\"Language\",\"filter\":\"Top\",\"filterValue\":\"kyxvxevblbjedn\"}")
+            .toObject(SelectVideoTrackByAttribute.class);
         Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
         Assertions.assertEquals(AttributeFilter.TOP, model.filter());
         Assertions.assertEquals("kyxvxevblbjedn", model.filterValue());
@@ -25,11 +23,9 @@ public final class SelectVideoTrackByAttributeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelectVideoTrackByAttribute model =
-            new SelectVideoTrackByAttribute()
-                .withAttribute(TrackAttribute.LANGUAGE)
-                .withFilter(AttributeFilter.TOP)
-                .withFilterValue("kyxvxevblbjedn");
+        SelectVideoTrackByAttribute model = new SelectVideoTrackByAttribute().withAttribute(TrackAttribute.LANGUAGE)
+            .withFilter(AttributeFilter.TOP)
+            .withFilterValue("kyxvxevblbjedn");
         model = BinaryData.fromObject(model).toObject(SelectVideoTrackByAttribute.class);
         Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
         Assertions.assertEquals(AttributeFilter.TOP, model.filter());

@@ -288,16 +288,12 @@ public final class StreamingLocatorProperties {
      */
     public void validate() {
         if (assetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property assetName in model StreamingLocatorProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property assetName in model StreamingLocatorProperties"));
         }
         if (streamingPolicyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property streamingPolicyName in model StreamingLocatorProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property streamingPolicyName in model StreamingLocatorProperties"));
         }
         if (contentKeys() != null) {
             contentKeys().forEach(e -> e.validate());

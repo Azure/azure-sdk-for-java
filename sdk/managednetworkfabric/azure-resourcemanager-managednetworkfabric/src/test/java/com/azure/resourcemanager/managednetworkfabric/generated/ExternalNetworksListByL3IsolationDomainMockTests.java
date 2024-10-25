@@ -32,70 +32,51 @@ public final class ExternalNetworksListByL3IsolationDomainMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"networkToNetworkInterconnectId\":\"gctygbbmu\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"crsm\",\"ojmxwc\",\"umnru\",\"q\"],\"exportRouteTargets\":[\"qjftvltj\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"vpkbz\",\"tnowpajfhxsmu\"],\"importIpv6RouteTargets\":[\"adzglm\",\"uzpsuhs\",\"pxm\"],\"exportIpv4RouteTargets\":[\"hfrerkqpyfjxkb\"],\"exportIpv6RouteTargets\":[\"buq\",\"mxbdjkmn\"]}},\"optionAProperties\":{\"mtu\":1668571308,\"vlanId\":735928963,\"fabricASN\":2048786040696358626,\"peerASN\":8143716610874917650,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1291322883,\"multiplier\":818358311},\"ingressAclId\":\"btycvl\",\"egressAclId\":\"sgiikh\",\"primaryIpv4Prefix\":\"thypepxshmrd\",\"primaryIpv6Prefix\":\"csdvkymktc\",\"secondaryIpv4Prefix\":\"ivoxgzegnglafnf\",\"secondaryIpv6Prefix\":\"zaghddc\"},\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"importRoutePolicyId\":\"rutuh\",\"exportRoutePolicyId\":\"mgxlssolqyp\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"lxo\",\"importIpv6RoutePolicyId\":\"rkqvrv\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"jc\",\"exportIpv6RoutePolicyId\":\"fcm\"},\"annotation\":\"jpj\"},\"id\":\"kjd\",\"name\":\"uod\",\"type\":\"cg\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"networkToNetworkInterconnectId\":\"gctygbbmu\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"crsm\",\"ojmxwc\",\"umnru\",\"q\"],\"exportRouteTargets\":[\"qjftvltj\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"vpkbz\",\"tnowpajfhxsmu\"],\"importIpv6RouteTargets\":[\"adzglm\",\"uzpsuhs\",\"pxm\"],\"exportIpv4RouteTargets\":[\"hfrerkqpyfjxkb\"],\"exportIpv6RouteTargets\":[\"buq\",\"mxbdjkmn\"]}},\"optionAProperties\":{\"mtu\":1668571308,\"vlanId\":735928963,\"fabricASN\":2048786040696358626,\"peerASN\":8143716610874917650,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1291322883,\"multiplier\":818358311},\"ingressAclId\":\"btycvl\",\"egressAclId\":\"sgiikh\",\"primaryIpv4Prefix\":\"thypepxshmrd\",\"primaryIpv6Prefix\":\"csdvkymktc\",\"secondaryIpv4Prefix\":\"ivoxgzegnglafnf\",\"secondaryIpv6Prefix\":\"zaghddc\"},\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"importRoutePolicyId\":\"rutuh\",\"exportRoutePolicyId\":\"mgxlssolqyp\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"lxo\",\"importIpv6RoutePolicyId\":\"rkqvrv\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"jc\",\"exportIpv6RoutePolicyId\":\"fcm\"},\"annotation\":\"jpj\"},\"id\":\"kjd\",\"name\":\"uod\",\"type\":\"cg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ExternalNetwork> response =
-            manager
-                .externalNetworks()
-                .listByL3IsolationDomain("uwrfgpjfvqwk", "eodvlmdzgvcykz", com.azure.core.util.Context.NONE);
+        PagedIterable<ExternalNetwork> response = manager.externalNetworks()
+            .listByL3IsolationDomain("uwrfgpjfvqwk", "eodvlmdzgvcykz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PeeringOption.OPTIONB, response.iterator().next().peeringOption());
         Assertions.assertEquals("crsm", response.iterator().next().optionBProperties().importRouteTargets().get(0));
         Assertions.assertEquals("qjftvltj", response.iterator().next().optionBProperties().exportRouteTargets().get(0));
-        Assertions
-            .assertEquals(
-                "vpkbz", response.iterator().next().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
-        Assertions
-            .assertEquals(
-                "adzglm",
-                response.iterator().next().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
-        Assertions
-            .assertEquals(
-                "hfrerkqpyfjxkb",
-                response.iterator().next().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions
-            .assertEquals(
-                "buq", response.iterator().next().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
+        Assertions.assertEquals("vpkbz",
+            response.iterator().next().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
+        Assertions.assertEquals("adzglm",
+            response.iterator().next().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
+        Assertions.assertEquals("hfrerkqpyfjxkb",
+            response.iterator().next().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
+        Assertions.assertEquals("buq",
+            response.iterator().next().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
         Assertions.assertEquals("thypepxshmrd", response.iterator().next().optionAProperties().primaryIpv4Prefix());
         Assertions.assertEquals("csdvkymktc", response.iterator().next().optionAProperties().primaryIpv6Prefix());
-        Assertions
-            .assertEquals("ivoxgzegnglafnf", response.iterator().next().optionAProperties().secondaryIpv4Prefix());
+        Assertions.assertEquals("ivoxgzegnglafnf",
+            response.iterator().next().optionAProperties().secondaryIpv4Prefix());
         Assertions.assertEquals("zaghddc", response.iterator().next().optionAProperties().secondaryIpv6Prefix());
         Assertions.assertEquals(1668571308, response.iterator().next().optionAProperties().mtu());
         Assertions.assertEquals(735928963, response.iterator().next().optionAProperties().vlanId());
         Assertions.assertEquals(8143716610874917650L, response.iterator().next().optionAProperties().peerAsn());
-        Assertions
-            .assertEquals(
-                1291322883, response.iterator().next().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
-        Assertions
-            .assertEquals(818358311, response.iterator().next().optionAProperties().bfdConfiguration().multiplier());
+        Assertions.assertEquals(1291322883,
+            response.iterator().next().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(818358311,
+            response.iterator().next().optionAProperties().bfdConfiguration().multiplier());
         Assertions.assertEquals("btycvl", response.iterator().next().optionAProperties().ingressAclId());
         Assertions.assertEquals("sgiikh", response.iterator().next().optionAProperties().egressAclId());
         Assertions.assertEquals("rutuh", response.iterator().next().importRoutePolicyId());

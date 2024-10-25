@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlListPortConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControlListPortCondition model =
-            BinaryData
-                .fromString(
-                    "{\"flags\":[\"wefqsfapaqtferr\",\"wexjkmfxapjwogq\",\"nobpudcdabtqwpw\",\"awbzasqb\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"TCP\",\"ports\":[\"yexaoguy\",\"i\",\"ids\",\"ault\"],\"portGroupNames\":[\"jumfqwazlnq\"]}")
-                .toObject(AccessControlListPortCondition.class);
+        AccessControlListPortCondition model = BinaryData.fromString(
+            "{\"flags\":[\"wefqsfapaqtferr\",\"wexjkmfxapjwogq\",\"nobpudcdabtqwpw\",\"awbzasqb\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"TCP\",\"ports\":[\"yexaoguy\",\"i\",\"ids\",\"ault\"],\"portGroupNames\":[\"jumfqwazlnq\"]}")
+            .toObject(AccessControlListPortCondition.class);
         Assertions.assertEquals(PortType.SOURCE_PORT, model.portType());
         Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());
         Assertions.assertEquals("yexaoguy", model.ports().get(0));
@@ -28,13 +26,11 @@ public final class AccessControlListPortConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListPortCondition model =
-            new AccessControlListPortCondition()
-                .withPortType(PortType.SOURCE_PORT)
-                .withLayer4Protocol(Layer4Protocol.TCP)
-                .withPorts(Arrays.asList("yexaoguy", "i", "ids", "ault"))
-                .withPortGroupNames(Arrays.asList("jumfqwazlnq"))
-                .withFlags(Arrays.asList("wefqsfapaqtferr", "wexjkmfxapjwogq", "nobpudcdabtqwpw", "awbzasqb"));
+        AccessControlListPortCondition model = new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
+            .withLayer4Protocol(Layer4Protocol.TCP)
+            .withPorts(Arrays.asList("yexaoguy", "i", "ids", "ault"))
+            .withPortGroupNames(Arrays.asList("jumfqwazlnq"))
+            .withFlags(Arrays.asList("wefqsfapaqtferr", "wexjkmfxapjwogq", "nobpudcdabtqwpw", "awbzasqb"));
         model = BinaryData.fromObject(model).toObject(AccessControlListPortCondition.class);
         Assertions.assertEquals(PortType.SOURCE_PORT, model.portType());
         Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());

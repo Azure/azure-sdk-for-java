@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The RGitHubPackageResponse model. */
 @Fluent
 public final class RGitHubPackageResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RGitHubPackageResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RGitHubPackageResponse.class);
 
     /*
      * Repository address in the format username/repo[/subdir][@ref|#pull].

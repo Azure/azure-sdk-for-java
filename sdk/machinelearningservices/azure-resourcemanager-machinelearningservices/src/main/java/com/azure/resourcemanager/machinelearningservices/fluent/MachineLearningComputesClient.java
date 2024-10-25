@@ -45,8 +45,8 @@ public interface MachineLearningComputesClient {
      * @return computes in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ComputeResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, String skip, Context context);
+    PagedIterable<ComputeResourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        Context context);
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
@@ -77,46 +77,7 @@ public interface MachineLearningComputesClient {
      * @return compute definition by its name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputeResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
-
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters);
-
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
+    Response<ComputeResourceInner> getWithResponse(String resourceGroupName, String workspaceName, String computeName,
         Context context);
 
     /**
@@ -133,8 +94,8 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeResourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters);
+    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ComputeResourceInner parameters);
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
@@ -151,12 +112,43 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
-        Context context);
+    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ComputeResourceInner parameters, Context context);
+
+    /**
+     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
+     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+     *
+     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param computeName Name of the Azure Machine Learning compute.
+     * @param parameters Payload with Machine Learning compute definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return machine Learning compute object wrapped into ARM resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
+        ComputeResourceInner parameters);
+
+    /**
+     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
+     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+     *
+     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param computeName Name of the Azure Machine Learning compute.
+     * @param parameters Payload with Machine Learning compute definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return machine Learning compute object wrapped into ARM resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
+        ComputeResourceInner parameters, Context context);
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
@@ -172,8 +164,8 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters);
+    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ClusterUpdateParameters parameters);
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
@@ -190,12 +182,8 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context);
+    SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ClusterUpdateParameters parameters, Context context);
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
@@ -211,8 +199,8 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeResourceInner update(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters);
+    ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters);
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
@@ -229,12 +217,8 @@ public interface MachineLearningComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeResourceInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context);
+    ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters, Context context);
 
     /**
      * Deletes specified Machine Learning compute.
@@ -250,10 +234,7 @@ public interface MachineLearningComputesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction);
 
     /**
@@ -271,12 +252,8 @@ public interface MachineLearningComputesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context);
 
     /**
      * Deletes specified Machine Learning compute.
@@ -291,10 +268,7 @@ public interface MachineLearningComputesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction);
 
     /**
@@ -311,12 +285,8 @@ public interface MachineLearningComputesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context);
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
@@ -330,8 +300,8 @@ public interface MachineLearningComputesClient {
      * @return the details (e.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName);
+    PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName);
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
@@ -346,8 +316,8 @@ public interface MachineLearningComputesClient {
      * @return the details (e.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName, Context context);
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
@@ -376,8 +346,8 @@ public interface MachineLearningComputesClient {
      * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputeSecretsInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    Response<ComputeSecretsInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        String computeName, Context context);
 
     /**
      * Posts a start action to a compute instance.
@@ -406,8 +376,8 @@ public interface MachineLearningComputesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 
     /**
      * Posts a start action to a compute instance.
@@ -463,8 +433,8 @@ public interface MachineLearningComputesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 
     /**
      * Posts a stop action to a compute instance.
@@ -519,6 +489,6 @@ public interface MachineLearningComputesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> restartWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    Response<Void> restartWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 }

@@ -60,8 +60,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupsClientImpl(ManagementGroupsApiImpl client) {
-        this.service =
-            RestProxy.create(ManagementGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ManagementGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,104 +72,76 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiM")
     public interface ManagementGroupsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementGroupListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Cache-Control") String cacheControl,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") ManagementGroupExpandType expand,
-            @QueryParam("$recurse") Boolean recurse,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementGroupInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$expand") ManagementGroupExpandType expand, @QueryParam("$recurse") Boolean recurse,
+            @QueryParam("$filter") String filter, @HeaderParam("Cache-Control") String cacheControl,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{groupId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Cache-Control") String cacheControl,
             @BodyParam("application/json") CreateManagementGroupRequest createManagementGroupRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/providers/Microsoft.Management/managementGroups/{groupId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementGroupInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ManagementGroupInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Cache-Control") String cacheControl,
             @BodyParam("application/json") PatchManagementGroupRequest patchGroupRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/managementGroups/{groupId}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/descendants")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DescendantListResult>> getDescendants(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DescendantListResult>> getDescendants(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skiptoken") String skiptoken, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DescendantListResult>> getDescendantsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -189,32 +161,15 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInfoInner>> listSinglePageAsync(String cacheControl, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<ManagementGroupInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), cacheControl,
+                skiptoken, accept, context))
+            .<PagedResponse<ManagementGroupInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -234,27 +189,18 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementGroupInfoInner>> listSinglePageAsync(
-        String cacheControl, String skiptoken, Context context) {
+    private Mono<PagedResponse<ManagementGroupInfoInner>> listSinglePageAsync(String cacheControl, String skiptoken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), cacheControl, skiptoken, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -273,8 +219,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementGroupInfoInner> listAsync(String cacheControl, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(cacheControl, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(cacheControl, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink, cacheControl));
     }
 
@@ -290,8 +235,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     private PagedFlux<ManagementGroupInfoInner> listAsync() {
         final String cacheControl = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(cacheControl, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(cacheControl, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink, cacheControl));
     }
 
@@ -312,8 +256,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementGroupInfoInner> listAsync(String cacheControl, String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(cacheControl, skiptoken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(cacheControl, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, cacheControl, context));
     }
 
@@ -371,32 +314,19 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the details of the management group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementGroupInner>> getWithResponseAsync(
-        String groupId, ManagementGroupExpandType expand, Boolean recurse, String filter, String cacheControl) {
+    private Mono<Response<ManagementGroupInner>> getWithResponseAsync(String groupId, ManagementGroupExpandType expand,
+        Boolean recurse, String filter, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            expand,
-                            recurse,
-                            filter,
-                            cacheControl,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), groupId, this.client.getApiVersion(), expand,
+                recurse, filter, cacheControl, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -420,35 +350,19 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the details of the management group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementGroupInner>> getWithResponseAsync(
-        String groupId,
-        ManagementGroupExpandType expand,
-        Boolean recurse,
-        String filter,
-        String cacheControl,
-        Context context) {
+    private Mono<Response<ManagementGroupInner>> getWithResponseAsync(String groupId, ManagementGroupExpandType expand,
+        Boolean recurse, String filter, String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                groupId,
-                this.client.getApiVersion(),
-                expand,
-                recurse,
-                filter,
-                cacheControl,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), groupId, this.client.getApiVersion(), expand, recurse, filter,
+            cacheControl, accept, context);
     }
 
     /**
@@ -490,13 +404,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the details of the management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementGroupInner> getWithResponse(
-        String groupId,
-        ManagementGroupExpandType expand,
-        Boolean recurse,
-        String filter,
-        String cacheControl,
-        Context context) {
+    public Response<ManagementGroupInner> getWithResponse(String groupId, ManagementGroupExpandType expand,
+        Boolean recurse, String filter, String cacheControl, Context context) {
         return getWithResponseAsync(groupId, expand, recurse, filter, cacheControl, context).block();
     }
 
@@ -532,38 +441,25 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createManagementGroupRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createManagementGroupRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createManagementGroupRequest is required and cannot be null."));
         } else {
             createManagementGroupRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            createManagementGroupRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), groupId,
+                this.client.getApiVersion(), cacheControl, createManagementGroupRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -582,39 +478,25 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createManagementGroupRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createManagementGroupRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createManagementGroupRequest is required and cannot be null."));
         } else {
             createManagementGroupRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                groupId,
-                this.client.getApiVersion(),
-                cacheControl,
-                createManagementGroupRequest,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), groupId, this.client.getApiVersion(), cacheControl,
+            createManagementGroupRequest, accept, context);
     }
 
     /**
@@ -631,18 +513,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl);
-        return this
-            .client
-            .<ManagementGroupInner, ManagementGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagementGroupInner.class,
-                ManagementGroupInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl);
+        return this.client.<ManagementGroupInner, ManagementGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagementGroupInner.class, ManagementGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -657,19 +533,13 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest) {
+    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest) {
         final String cacheControl = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl);
-        return this
-            .client
-            .<ManagementGroupInner, ManagementGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagementGroupInner.class,
-                ManagementGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl);
+        return this.client.<ManagementGroupInner, ManagementGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagementGroupInner.class, ManagementGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -687,18 +557,13 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
+    private PollerFlux<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl, context);
-        return this
-            .client
-            .<ManagementGroupInner, ManagementGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ManagementGroupInner.class, ManagementGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(groupId, createManagementGroupRequest, cacheControl, context);
+        return this.client.<ManagementGroupInner, ManagementGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagementGroupInner.class, ManagementGroupInner.class, context);
     }
 
     /**
@@ -713,8 +578,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link SyncPoller} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest) {
+    public SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest) {
         final String cacheControl = null;
         return this.beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl).getSyncPoller();
     }
@@ -734,13 +599,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link SyncPoller} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl, context)
+    public SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context) {
+        return this.beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl, context)
             .getSyncPoller();
     }
 
@@ -758,10 +619,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementGroupInner> createOrUpdateAsync(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
-        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl)
-            .last()
+    private Mono<ManagementGroupInner> createOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl) {
+        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -777,11 +637,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementGroupInner> createOrUpdateAsync(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest) {
+    private Mono<ManagementGroupInner> createOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest) {
         final String cacheControl = null;
-        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl)
-            .last()
+        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -800,13 +659,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementGroupInner> createOrUpdateAsync(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
-        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl, context)
-            .last()
+    private Mono<ManagementGroupInner> createOrUpdateAsync(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context) {
+        return beginCreateOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -822,8 +677,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementGroupInner createOrUpdate(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest) {
+    public ManagementGroupInner createOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest) {
         final String cacheControl = null;
         return createOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl).block();
     }
@@ -843,11 +698,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementGroupInner createOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
+    public ManagementGroupInner createOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context) {
         return createOrUpdateAsync(groupId, createManagementGroupRequest, cacheControl, context).block();
     }
 
@@ -864,13 +716,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementGroupInner>> updateWithResponseAsync(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl) {
+    private Mono<Response<ManagementGroupInner>> updateWithResponseAsync(String groupId,
+        PatchManagementGroupRequest patchGroupRequest, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -883,17 +733,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            patchGroupRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+                cacheControl, patchGroupRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -911,13 +752,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementGroupInner>> updateWithResponseAsync(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context) {
+    private Mono<Response<ManagementGroupInner>> updateWithResponseAsync(String groupId,
+        PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -930,15 +769,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                groupId,
-                this.client.getApiVersion(),
-                cacheControl,
-                patchGroupRequest,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), groupId, this.client.getApiVersion(), cacheControl,
+            patchGroupRequest, accept, context);
     }
 
     /**
@@ -972,8 +804,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the management group details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementGroupInner> updateWithResponse(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context) {
+    public Response<ManagementGroupInner> updateWithResponse(String groupId,
+        PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context) {
         return updateWithResponseAsync(groupId, patchGroupRequest, cacheControl, context).block();
     }
 
@@ -1007,26 +839,16 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String groupId, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+                cacheControl, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1043,21 +865,19 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the results of Azure-AsyncOperation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String groupId, String cacheControl, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String groupId, String cacheControl,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), groupId, this.client.getApiVersion(), cacheControl, accept, context);
+        return service.delete(this.client.getEndpoint(), groupId, this.client.getApiVersion(), cacheControl, accept,
+            context);
     }
 
     /**
@@ -1072,17 +892,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDeleteAsync(
-        String groupId, String cacheControl) {
+    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDeleteAsync(String groupId, String cacheControl) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupId, cacheControl);
-        return this
-            .client
-            .<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureAsyncOperationResultsInner.class,
-                AzureAsyncOperationResultsInner.class,
-                this.client.getContext());
+        return this.client.<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureAsyncOperationResultsInner.class, AzureAsyncOperationResultsInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1095,18 +910,13 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDeleteAsync(
-        String groupId) {
+    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDeleteAsync(String groupId) {
         final String cacheControl = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupId, cacheControl);
-        return this
-            .client
-            .<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureAsyncOperationResultsInner.class,
-                AzureAsyncOperationResultsInner.class,
-                this.client.getContext());
+        return this.client.<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureAsyncOperationResultsInner.class, AzureAsyncOperationResultsInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1122,18 +932,13 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link PollerFlux} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDeleteAsync(
-        String groupId, String cacheControl, Context context) {
+    private PollerFlux<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDeleteAsync(String groupId, String cacheControl, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupId, cacheControl, context);
-        return this
-            .client
-            .<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureAsyncOperationResultsInner.class,
-                AzureAsyncOperationResultsInner.class,
-                context);
+        return this.client.<AzureAsyncOperationResultsInner, AzureAsyncOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureAsyncOperationResultsInner.class, AzureAsyncOperationResultsInner.class,
+            context);
     }
 
     /**
@@ -1146,8 +951,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link SyncPoller} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDelete(
-        String groupId) {
+    public SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDelete(String groupId) {
         final String cacheControl = null;
         return this.beginDeleteAsync(groupId, cacheControl).getSyncPoller();
     }
@@ -1165,8 +970,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return the {@link SyncPoller} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDelete(
-        String groupId, String cacheControl, Context context) {
+    public SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDelete(String groupId, String cacheControl, Context context) {
         return this.beginDeleteAsync(groupId, cacheControl, context).getSyncPoller();
     }
 
@@ -1265,39 +1070,21 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(
-        String groupId, String skiptoken, Integer top) {
+    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(String groupId, String skiptoken,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDescendants(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DescendantInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.getDescendants(this.client.getEndpoint(), groupId,
+                this.client.getApiVersion(), skiptoken, top, accept, context))
+            .<PagedResponse<DescendantInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1317,13 +1104,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(
-        String groupId, String skiptoken, Integer top, Context context) {
+    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(String groupId, String skiptoken,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1331,17 +1116,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getDescendants(
-                this.client.getEndpoint(), groupId, this.client.getApiVersion(), skiptoken, top, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .getDescendants(this.client.getEndpoint(), groupId, this.client.getApiVersion(), skiptoken, top, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1359,8 +1137,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DescendantInfoInner> getDescendantsAsync(String groupId, String skiptoken, Integer top) {
-        return new PagedFlux<>(
-            () -> getDescendantsSinglePageAsync(groupId, skiptoken, top),
+        return new PagedFlux<>(() -> getDescendantsSinglePageAsync(groupId, skiptoken, top),
             nextLink -> getDescendantsNextSinglePageAsync(nextLink));
     }
 
@@ -1377,8 +1154,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     private PagedFlux<DescendantInfoInner> getDescendantsAsync(String groupId) {
         final String skiptoken = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> getDescendantsSinglePageAsync(groupId, skiptoken, top),
+        return new PagedFlux<>(() -> getDescendantsSinglePageAsync(groupId, skiptoken, top),
             nextLink -> getDescendantsNextSinglePageAsync(nextLink));
     }
 
@@ -1397,10 +1173,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return describes the result of the request to view descendants as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DescendantInfoInner> getDescendantsAsync(
-        String groupId, String skiptoken, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> getDescendantsSinglePageAsync(groupId, skiptoken, top, context),
+    private PagedFlux<DescendantInfoInner> getDescendantsAsync(String groupId, String skiptoken, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> getDescendantsSinglePageAsync(groupId, skiptoken, top, context),
             nextLink -> getDescendantsNextSinglePageAsync(nextLink, context));
     }
 
@@ -1435,8 +1210,8 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @return describes the result of the request to view descendants as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DescendantInfoInner> getDescendants(
-        String groupId, String skiptoken, Integer top, Context context) {
+    public PagedIterable<DescendantInfoInner> getDescendants(String groupId, String skiptoken, Integer top,
+        Context context) {
         return new PagedIterable<>(getDescendantsAsync(groupId, skiptoken, top, context));
     }
 
@@ -1454,30 +1229,21 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(
-        String nextLink, String cacheControl) {
+    private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(String nextLink,
+        String cacheControl) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context))
-            .<PagedResponse<ManagementGroupInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagementGroupInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1496,30 +1262,20 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(
-        String nextLink, String cacheControl, Context context) {
+    private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(String nextLink, String cacheControl,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1539,23 +1295,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDescendantsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DescendantInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DescendantInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1572,29 +1319,19 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DescendantInfoInner>> getDescendantsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDescendantsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getDescendantsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

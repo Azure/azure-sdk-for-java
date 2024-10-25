@@ -12,7 +12,8 @@ import java.util.Map;
 /** The details of the AZURE ML environment. */
 @Immutable
 public final class EnvironmentImageResponseEnvironment extends ModelEnvironmentDefinitionResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentImageResponseEnvironment.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnvironmentImageResponseEnvironment.class);
 
     /** {@inheritDoc} */
     @Override

@@ -75,14 +75,12 @@ public final class StaticRouteProperties {
      */
     public void validate() {
         if (prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property prefix in model StaticRouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property prefix in model StaticRouteProperties"));
         }
         if (nextHop() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextHop in model StaticRouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nextHop in model StaticRouteProperties"));
         }
     }
 
