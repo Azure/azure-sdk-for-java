@@ -19,7 +19,8 @@ import java.util.List;
     property = "@type",
     defaultImpl = ProcessorNodeBase.class)
 @JsonTypeName("#Microsoft.VideoAnalyzer.ProcessorNodeBase")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderProcessor", value = EncoderProcessor.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderProcessor", value = EncoderProcessor.class) })
 @Fluent
 public class ProcessorNodeBase extends NodeBase {
     /*
@@ -67,9 +68,8 @@ public class ProcessorNodeBase extends NodeBase {
     public void validate() {
         super.validate();
         if (inputs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property inputs in model ProcessorNodeBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property inputs in model ProcessorNodeBase"));
         } else {
             inputs().forEach(e -> e.validate());
         }
