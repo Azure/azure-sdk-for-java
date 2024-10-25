@@ -3,6 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.PublishHeaders;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,6 +17,12 @@ import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.mock;
 
 class QuickPulseCoordinatorTest {
+    private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
+    private static final HttpHeaderName QPS_SERVICE_POLLING_INTERVAL_HINT
+        = HttpHeaderName.fromString("x-ms-qps-service-polling-interval-hint");
+    private static final HttpHeaderName QPS_SERVICE_ENDPOINT_REDIRECT
+        = HttpHeaderName.fromString("x-ms-qps-service-endpoint-redirect-v2");
+
 
     @Test
     void testOnlyPings() throws InterruptedException {
@@ -41,10 +51,10 @@ class QuickPulseCoordinatorTest {
 
         thread.join();
 
-        Mockito.verify(mockFetcher, Mockito.never()).prepareQuickPulseDataForSend(null);
+        Mockito.verify(mockFetcher, Mockito.never()).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.never()).startSending();
-        Mockito.verify(mockSender, Mockito.never()).getQuickPulseHeaderInfo();
+        Mockito.verify(mockSender, Mockito.never()).getPostResponseHeaders();
 
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // make sure QP_IS_OFF after ping
@@ -55,14 +65,24 @@ class QuickPulseCoordinatorTest {
     void testOnePingAndThenOnePost() throws InterruptedException {
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
-        Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF))
+        HttpHeaders rawHeaders = new HttpHeaders();
+        rawHeaders.add(QPS_STATUS_HEADER, "false");
+        PublishHeaders postHeaders = new PublishHeaders(rawHeaders);
+        Mockito.doReturn(postHeaders)
             .when(mockSender)
-            .getQuickPulseHeaderInfo();
+            .getPostResponseHeaders();
 
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
+        HttpHeaders rawHeadersPingOn = new HttpHeaders();
+        rawHeadersPingOn.add(QPS_STATUS_HEADER, "on");
+        IsSubscribedHeaders pingHeadersOn = new IsSubscribedHeaders(rawHeadersPingOn);
+
+        HttpHeaders rawHeadersPingOff = new HttpHeaders();
+        rawHeadersPingOff.add(QPS_STATUS_HEADER, "off");
+        IsSubscribedHeaders pingHeadersOff = new IsSubscribedHeaders(rawHeadersPingOff);
         Mockito.when(mockPingSender.ping(null))
-            .thenReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON),
-                new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF));
+            .thenReturn(pingHeadersOn,
+                pingHeadersOff);
 
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
@@ -84,10 +104,10 @@ class QuickPulseCoordinatorTest {
 
         thread.join();
 
-        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend(null);
+        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.times(1)).startSending();
-        Mockito.verify(mockSender, Mockito.times(1)).getQuickPulseHeaderInfo();
+        Mockito.verify(mockSender, Mockito.times(1)).getPostResponseHeaders();
 
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // Make sure QP_IS_OFF after one post and ping
@@ -101,13 +121,25 @@ class QuickPulseCoordinatorTest {
         QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
 
-        Mockito.doNothing().when(mockFetcher).prepareQuickPulseDataForSend(notNull());
-        Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON, "https://new.endpoint.com", 100))
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "on");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://new.endpoint.com");
+        rawPingHeaders.add(QPS_SERVICE_POLLING_INTERVAL_HINT, "100");
+        IsSubscribedHeaders pingHeadersOn = new IsSubscribedHeaders(rawPingHeaders);
+
+        HttpHeaders rawPostHeaders = new HttpHeaders();
+        rawPostHeaders.add(QPS_STATUS_HEADER, "false");
+        rawPostHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://new.endpoint.com");
+        rawPostHeaders.add(QPS_SERVICE_POLLING_INTERVAL_HINT, "400");
+        PublishHeaders postHeadersOff = new PublishHeaders(rawPostHeaders);
+
+        Mockito.doNothing().when(mockFetcher).prepareQuickPulseDataForSend();
+        Mockito.doReturn(pingHeadersOn)
             .when(mockPingSender)
             .ping(any());
-        Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF, "https://new.endpoint.com", 400))
+        Mockito.doReturn(postHeadersOff)
             .when(mockSender)
-            .getQuickPulseHeaderInfo();
+            .getPostResponseHeaders();
 
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
             .withDataSender(mockSender)
@@ -128,7 +160,7 @@ class QuickPulseCoordinatorTest {
 
         thread.join();
 
-        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend("https://new.endpoint.com");
+        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend();
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         Mockito.verify(mockPingSender, Mockito.times(2)).ping("https://new.endpoint.com");
     }

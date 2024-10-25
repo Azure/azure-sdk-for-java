@@ -9,6 +9,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -61,12 +64,14 @@ class QuickPulsePingSenderTests {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
             .tracer(new NoopTracer())
             .build();
+        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
-            = new QuickPulsePingSender(httpPipeline, connectionString::getLiveEndpoint,
+            = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
-        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
-        assertThat(QuickPulseStatus.QP_IS_ON).isEqualTo(quickPulseHeaderInfo.getQuickPulseStatus());
-        assertThat(1000).isEqualTo(quickPulseHeaderInfo.getQpsServicePollingInterval());
-        assertThat("https://new.endpoint.com").isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
+        IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
+        assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
+        assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());
+        assertThat("https://new.endpoint.com").isEqualTo(pingHeaders.getXMsQpsServiceEndpointRedirectV2());
     }
 }

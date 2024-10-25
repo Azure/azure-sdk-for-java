@@ -71,11 +71,12 @@ final class QuickPulseCoordinator implements Runnable {
     private long sendData() {
         dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
         dataFetcher.prepareQuickPulseDataForSend();
-        QuickPulseHeaderInfo currentQuickPulseHeaderInfo = dataSender.getQuickPulseHeaderInfo();
+        PublishHeaders postHeaders = dataSender.getPostResponseHeaders();
+        String isSubscribed = postHeaders.getXMsQpsSubscribed();
 
-        this.handleReceivedHeaders(currentQuickPulseHeaderInfo);
-        collector.setQuickPulseStatus(currentQuickPulseHeaderInfo.getQuickPulseStatus());
-        switch (currentQuickPulseHeaderInfo.getQuickPulseStatus()) {
+        QuickPulseStatus qpStatus = this.getQuickPulseStatusFromHeader(isSubscribed);
+        collector.setQuickPulseStatus(qpStatus);
+        switch (qpStatus) {
             case ERROR:
                 pingMode = true;
                 return waitOnErrorInMillis;
@@ -126,7 +127,7 @@ final class QuickPulseCoordinator implements Runnable {
         return 0;
     }
 
-    private void handleReceivedHeaders(QuickPulseHeaderInfo currentQuickPulseHeaderInfo) {
+    /*private void handleReceivedHeaders(QuickPulseHeaderInfo currentQuickPulseHeaderInfo) {
         String redirectLink = currentQuickPulseHeaderInfo.getQpsServiceEndpointRedirect();
         if (!Strings.isNullOrEmpty(redirectLink)) {
             qpsServiceRedirectedEndpoint = redirectLink;
@@ -136,7 +137,7 @@ final class QuickPulseCoordinator implements Runnable {
         if (newPollingInterval > 0) {
             qpsServicePollingIntervalHintMillis = newPollingInterval;
         }
-    }
+    }*/
 
     private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();

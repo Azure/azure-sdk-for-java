@@ -18,7 +18,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -41,8 +41,8 @@ class QuickPulsePingSender {
     // TODO: remove httpPipeline if not needed
     //private final HttpPipeline httpPipeline;
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
-    private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
+    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+   // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -127,7 +127,7 @@ class QuickPulsePingSender {
         return endpointUrl.get().toString() + "QuickPulseService.svc";
     }
 
-    private String buildPingEntity(long timeInMillis) throws IOException {
+    /*private String buildPingEntity(long timeInMillis) throws IOException {
         if (pingEnvelope == null) {
             pingEnvelope = new QuickPulseEnvelope();
             pingEnvelope.setInstance(instanceName);
@@ -141,7 +141,7 @@ class QuickPulsePingSender {
 
         // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
         return pingEnvelope.toJsonString().replace("/", "\\/");
-    }
+    }*/
 
     private MonitoringDataPoint buildMonitoringDataPoint() {
         MonitoringDataPoint dataPoint = new MonitoringDataPoint();

@@ -3,14 +3,16 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+//import com.azure.core.http.HttpPipeline;
+//import com.azure.core.http.HttpRequest;
+//import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
+//import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.CollectionConfigurationInfo;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
@@ -18,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Supplier;
@@ -26,7 +29,7 @@ class QuickPulseDataSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
-    private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
     //private final HttpPipeline httpPipeline; // TODO: remove if not needed
     private volatile PublishHeaders postResponseHeaders;
     private long lastValidTransmission = 0;
@@ -43,11 +46,13 @@ class QuickPulseDataSender implements Runnable {
 
     private Supplier<String> instrumentationKey;
 
+    private static final long TICKS_AT_EPOCH = 621355968000000000L;
+
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,  ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
-        this.qpStatus = QuickPulseStatus.QP_IS_ON; // does this need to start as off
+        this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
     }
 
@@ -71,13 +76,38 @@ class QuickPulseDataSender implements Runnable {
 
             long sendTime = System.nanoTime();
             String endpointPrefix = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
+            List<MonitoringDataPoint> dataPointList = new ArrayList<>();
+            dataPointList.add(point);
+            Date currentDate = new Date();
+            long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
-                List<MonitoringDataPoint> dataPointList = new ArrayList<>();
-                dataPointList.add(point);
-                // TODO: calculate ticks for transmission time here
-                //TODO: In filtering feature, fix etag here
+                //TODO: populate the saved etag here for filtering
                 Mono<Response<CollectionConfigurationInfo>> responseMono =
-                    liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "", transmissionTime, dataPointList);
+                    liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "", transmissionTimeInTicks, dataPointList);
+                if (responseMono == null) {
+                    // this shouldn't happen, the mono should complete with a response or a failure
+                    throw new AssertionError("http response mono returned empty");
+                }
+                responseMono.doOnNext(response -> { //do on Success or do on Next??
+                    PublishHeaders headers = new PublishHeaders(response.getHeaders());
+                    String isSubscribed = headers.getXMsQpsSubscribed();
+                    this.qpStatus = getQuickPulseStatusFromHeader(isSubscribed);
+                    switch(this.qpStatus) {
+                        case QP_IS_OFF:
+                        case QP_IS_ON:
+                            lastValidTransmission = sendTime;
+                            //TODO: parse the response body here for filtering
+                            break;
+
+                        case ERROR:
+                            onPostError(sendTime); // see if this part is a bug in tha main code
+                            break;
+                    }
+                    this.postResponseHeaders = headers;
+                });
+
+            } catch (Exception e) {
+                logger.error("QuickPulseDataSender failed to send a request", e.getMessage());
             }
             /*try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
                 if (response == null) {
@@ -106,17 +136,18 @@ class QuickPulseDataSender implements Runnable {
     }
 
     void startSending() {
-        quickPulseHeaderInfo = new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON);
+        qpStatus = QuickPulseStatus.QP_IS_ON;
     }
 
-    QuickPulseHeaderInfo getQuickPulseHeaderInfo() {
-        return quickPulseHeaderInfo;
+    PublishHeaders getPostResponseHeaders() {
+        return postResponseHeaders;
     }
 
     private void onPostError(long sendTime) {
         double timeFromLastValidTransmission = (sendTime - lastValidTransmission) / 1000000000.0;
         if (timeFromLastValidTransmission >= 20.0) {
-            quickPulseHeaderInfo = new QuickPulseHeaderInfo(QuickPulseStatus.ERROR);
+            qpStatus = QuickPulseStatus.ERROR;
+            postResponseHeaders = new PublishHeaders(new HttpHeaders());
         }
     }
 
@@ -126,5 +157,15 @@ class QuickPulseDataSender implements Runnable {
 
     private String getQuickPulseEndpoint() {
         return endpointUrl.get().toString() + "QuickPulseService.svc";
+    }
+
+    private QuickPulseStatus getQuickPulseStatusFromHeader(String headerValue) {
+        if (!Strings.isNullOrEmpty(headerValue)) {
+            return QuickPulseStatus.ERROR;
+        } else if (headerValue.equalsIgnoreCase("true")) {
+            return QuickPulseStatus.QP_IS_ON;
+        } else {
+            return QuickPulseStatus.QP_IS_OFF;
+        }
     }
 }
