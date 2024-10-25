@@ -23,7 +23,8 @@ public final class TransformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransformationProperties model = new TransformationProperties().withStreamingUnits(194307867)
-            .withValidStreamingUnits(Arrays.asList(1382743089, 384033547, 701234104)).withQuery("xzlocxscp");
+            .withValidStreamingUnits(Arrays.asList(1382743089, 384033547, 701234104))
+            .withQuery("xzlocxscp");
         model = BinaryData.fromObject(model).toObject(TransformationProperties.class);
         Assertions.assertEquals(194307867, model.streamingUnits());
         Assertions.assertEquals(1382743089, model.validStreamingUnits().get(0));
