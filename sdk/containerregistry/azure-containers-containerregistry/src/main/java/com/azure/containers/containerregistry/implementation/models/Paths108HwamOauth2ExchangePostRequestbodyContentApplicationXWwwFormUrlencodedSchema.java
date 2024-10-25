@@ -15,7 +15,8 @@ import java.util.Objects;
 /** The Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema model. */
 @Fluent
 public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-    implements JsonSerializable<Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
+        implements JsonSerializable<
+                Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
     /*
      * Can take a value of access_token_refresh_token, or access_token, or refresh_token
      */
@@ -44,8 +45,7 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Creates an instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
-    }
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {}
 
     /**
      * Get the grantType property: Can take a value of access_token_refresh_token, or access_token, or refresh_token.
@@ -62,8 +62,8 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @param grantType the grantType value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setGrantType(PostContentSchemaGrantType grantType) {
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setGrantType(
+            PostContentSchemaGrantType grantType) {
         this.grantType = grantType;
         return this;
     }
@@ -83,8 +83,8 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @param service the service value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setService(String service) {
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setService(
+            String service) {
         this.service = service;
         return this;
     }
@@ -104,8 +104,8 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @param tenant the tenant value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setTenant(String tenant) {
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setTenant(
+            String tenant) {
         this.tenant = tenant;
         return this;
     }
@@ -127,8 +127,8 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @param refreshToken the refreshToken value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setRefreshToken(String refreshToken) {
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setRefreshToken(
+            String refreshToken) {
         this.refreshToken = refreshToken;
         return this;
     }
@@ -150,8 +150,8 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @param aadAccessToken the aadAccessToken value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setAadAccessToken(String aadAccessToken) {
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAadAccessToken(
+            String aadAccessToken) {
         this.aadAccessToken = aadAccessToken;
         return this;
     }
@@ -178,36 +178,43 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * @throws IOException If an error occurs while reading the
      *     Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
      */
-    public static Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-                = new Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    public static Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema fromJson(
+            JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema =
+                                    new Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("grant_type".equals(fieldName)) {
-                    deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.grantType
-                        = PostContentSchemaGrantType.fromString(reader.getString());
-                } else if ("service".equals(fieldName)) {
-                    deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.service
-                        = reader.getString();
-                } else if ("tenant".equals(fieldName)) {
-                    deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.tenant
-                        = reader.getString();
-                } else if ("refresh_token".equals(fieldName)) {
-                    deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.refreshToken
-                        = reader.getString();
-                } else if ("access_token".equals(fieldName)) {
-                    deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.aadAccessToken
-                        = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("grant_type".equals(fieldName)) {
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .grantType =
+                                    PostContentSchemaGrantType.fromString(reader.getString());
+                        } else if ("service".equals(fieldName)) {
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .service =
+                                    reader.getString();
+                        } else if ("tenant".equals(fieldName)) {
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .tenant =
+                                    reader.getString();
+                        } else if ("refresh_token".equals(fieldName)) {
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .refreshToken =
+                                    reader.getString();
+                        } else if ("access_token".equals(fieldName)) {
+                            deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .aadAccessToken =
+                                    reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
-        });
+                    return deserializedPaths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
+                });
     }
 }

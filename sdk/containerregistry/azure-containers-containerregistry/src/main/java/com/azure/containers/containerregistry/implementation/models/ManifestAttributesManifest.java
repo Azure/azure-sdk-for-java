@@ -22,8 +22,7 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
     private List<ArtifactManifestPlatform> references;
 
     /** Creates an instance of ManifestAttributesManifest class. */
-    public ManifestAttributesManifest() {
-    }
+    public ManifestAttributesManifest() {}
 
     /**
      * Get the references property: List of manifest attributes details.
@@ -61,22 +60,24 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
      * @throws IOException If an error occurs while reading the ManifestAttributesManifest.
      */
     public static ManifestAttributesManifest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ManifestAttributesManifest deserializedManifestAttributesManifest = new ManifestAttributesManifest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestAttributesManifest deserializedManifestAttributesManifest =
+                            new ManifestAttributesManifest();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("references".equals(fieldName)) {
-                    List<ArtifactManifestPlatform> references
-                        = reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
-                    deserializedManifestAttributesManifest.references = references;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("references".equals(fieldName)) {
+                            List<ArtifactManifestPlatform> references =
+                                    reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
+                            deserializedManifestAttributesManifest.references = references;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifestAttributesManifest;
-        });
+                    return deserializedManifestAttributesManifest;
+                });
     }
 }

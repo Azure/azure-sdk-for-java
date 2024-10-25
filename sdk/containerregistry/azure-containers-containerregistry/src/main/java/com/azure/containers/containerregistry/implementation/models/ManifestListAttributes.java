@@ -37,8 +37,7 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
     private Platform platform;
 
     /** Creates an instance of ManifestListAttributes class. */
-    public ManifestListAttributes() {
-    }
+    public ManifestListAttributes() {}
 
     /**
      * Get the mediaType property: The MIME type of the referenced object. This will generally be
@@ -147,26 +146,27 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
      * @throws IOException If an error occurs while reading the ManifestListAttributes.
      */
     public static ManifestListAttributes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ManifestListAttributes deserializedManifestListAttributes = new ManifestListAttributes();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestListAttributes deserializedManifestListAttributes = new ManifestListAttributes();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("mediaType".equals(fieldName)) {
-                    deserializedManifestListAttributes.mediaType = reader.getString();
-                } else if ("size".equals(fieldName)) {
-                    deserializedManifestListAttributes.size = reader.getNullable(JsonReader::getLong);
-                } else if ("digest".equals(fieldName)) {
-                    deserializedManifestListAttributes.digest = reader.getString();
-                } else if ("platform".equals(fieldName)) {
-                    deserializedManifestListAttributes.platform = Platform.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("mediaType".equals(fieldName)) {
+                            deserializedManifestListAttributes.mediaType = reader.getString();
+                        } else if ("size".equals(fieldName)) {
+                            deserializedManifestListAttributes.size = reader.getNullable(JsonReader::getLong);
+                        } else if ("digest".equals(fieldName)) {
+                            deserializedManifestListAttributes.digest = reader.getString();
+                        } else if ("platform".equals(fieldName)) {
+                            deserializedManifestListAttributes.platform = Platform.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifestListAttributes;
-        });
+                    return deserializedManifestListAttributes;
+                });
     }
 }

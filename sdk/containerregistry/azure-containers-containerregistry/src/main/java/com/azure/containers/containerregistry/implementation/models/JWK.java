@@ -25,8 +25,7 @@ public final class JWK implements JsonSerializable<JWK> {
     private String alg;
 
     /** Creates an instance of JWK class. */
-    public JWK() {
-    }
+    public JWK() {}
 
     /**
      * Get the jwk property: JSON web key parameter.
@@ -85,22 +84,23 @@ public final class JWK implements JsonSerializable<JWK> {
      * @throws IOException If an error occurs while reading the JWK.
      */
     public static JWK fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            JWK deserializedJWK = new JWK();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    JWK deserializedJWK = new JWK();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("jwk".equals(fieldName)) {
-                    deserializedJWK.jwk = JWKHeader.fromJson(reader);
-                } else if ("alg".equals(fieldName)) {
-                    deserializedJWK.alg = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("jwk".equals(fieldName)) {
+                            deserializedJWK.jwk = JWKHeader.fromJson(reader);
+                        } else if ("alg".equals(fieldName)) {
+                            deserializedJWK.alg = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedJWK;
-        });
+                    return deserializedJWK;
+                });
     }
 }

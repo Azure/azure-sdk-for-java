@@ -20,8 +20,7 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
     private String refreshToken;
 
     /** Creates an instance of AcrRefreshToken class. */
-    public AcrRefreshToken() {
-    }
+    public AcrRefreshToken() {}
 
     /**
      * Get the refreshToken property: The refresh token to be used for generating access tokens.
@@ -59,20 +58,21 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
      * @throws IOException If an error occurs while reading the AcrRefreshToken.
      */
     public static AcrRefreshToken fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcrRefreshToken deserializedAcrRefreshToken = new AcrRefreshToken();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    AcrRefreshToken deserializedAcrRefreshToken = new AcrRefreshToken();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("refresh_token".equals(fieldName)) {
-                    deserializedAcrRefreshToken.refreshToken = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("refresh_token".equals(fieldName)) {
+                            deserializedAcrRefreshToken.refreshToken = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedAcrRefreshToken;
-        });
+                    return deserializedAcrRefreshToken;
+                });
     }
 }

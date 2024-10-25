@@ -30,8 +30,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
     private String protectedProperty;
 
     /** Creates an instance of ImageSignature class. */
-    public ImageSignature() {
-    }
+    public ImageSignature() {}
 
     /**
      * Get the headerProperty property: A JSON web signature.
@@ -111,24 +110,25 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * @throws IOException If an error occurs while reading the ImageSignature.
      */
     public static ImageSignature fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ImageSignature deserializedImageSignature = new ImageSignature();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ImageSignature deserializedImageSignature = new ImageSignature();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("header".equals(fieldName)) {
-                    deserializedImageSignature.headerProperty = JWK.fromJson(reader);
-                } else if ("signature".equals(fieldName)) {
-                    deserializedImageSignature.signature = reader.getString();
-                } else if ("protected".equals(fieldName)) {
-                    deserializedImageSignature.protectedProperty = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("header".equals(fieldName)) {
+                            deserializedImageSignature.headerProperty = JWK.fromJson(reader);
+                        } else if ("signature".equals(fieldName)) {
+                            deserializedImageSignature.signature = reader.getString();
+                        } else if ("protected".equals(fieldName)) {
+                            deserializedImageSignature.protectedProperty = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedImageSignature;
-        });
+                    return deserializedImageSignature;
+                });
     }
 }

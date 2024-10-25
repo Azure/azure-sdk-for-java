@@ -20,8 +20,7 @@ public class Manifest implements JsonSerializable<Manifest> {
     private Integer schemaVersion;
 
     /** Creates an instance of Manifest class. */
-    public Manifest() {
-    }
+    public Manifest() {}
 
     /**
      * Get the schemaVersion property: Schema version.
@@ -59,20 +58,21 @@ public class Manifest implements JsonSerializable<Manifest> {
      * @throws IOException If an error occurs while reading the Manifest.
      */
     public static Manifest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Manifest deserializedManifest = new Manifest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    Manifest deserializedManifest = new Manifest();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("schemaVersion".equals(fieldName)) {
-                    deserializedManifest.schemaVersion = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedManifest.schemaVersion = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifest;
-        });
+                    return deserializedManifest;
+                });
     }
 }

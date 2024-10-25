@@ -31,8 +31,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
     private ArtifactOperatingSystem operatingSystem;
 
     /** Creates an instance of ArtifactManifestPlatform class. */
-    public ArtifactManifestPlatform() {
-    }
+    public ArtifactManifestPlatform() {}
 
     /**
      * Get the digest property: Manifest digest.
@@ -80,26 +79,27 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      * @throws IOException If an error occurs while reading the ArtifactManifestPlatform.
      */
     public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("digest".equals(fieldName)) {
-                    deserializedArtifactManifestPlatform.digest = reader.getString();
-                } else if ("architecture".equals(fieldName)) {
-                    deserializedArtifactManifestPlatform.architecture
-                        = ArtifactArchitecture.fromString(reader.getString());
-                } else if ("os".equals(fieldName)) {
-                    deserializedArtifactManifestPlatform.operatingSystem
-                        = ArtifactOperatingSystem.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("digest".equals(fieldName)) {
+                            deserializedArtifactManifestPlatform.digest = reader.getString();
+                        } else if ("architecture".equals(fieldName)) {
+                            deserializedArtifactManifestPlatform.architecture =
+                                    ArtifactArchitecture.fromString(reader.getString());
+                        } else if ("os".equals(fieldName)) {
+                            deserializedArtifactManifestPlatform.operatingSystem =
+                                    ArtifactOperatingSystem.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedArtifactManifestPlatform;
-        });
+                    return deserializedArtifactManifestPlatform;
+                });
     }
 }

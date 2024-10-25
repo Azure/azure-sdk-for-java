@@ -15,7 +15,7 @@ import java.util.Objects;
 /** The PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema model. */
 @Fluent
 public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-    implements JsonSerializable<PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
+        implements JsonSerializable<PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
     /*
      * Indicates the name of your Azure container registry.
      */
@@ -38,8 +38,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
 
     /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
-    }
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {}
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.
@@ -98,8 +97,8 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param acrRefreshToken the acrRefreshToken value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setAcrRefreshToken(String acrRefreshToken) {
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAcrRefreshToken(
+            String acrRefreshToken) {
         this.acrRefreshToken = acrRefreshToken;
         return this;
     }
@@ -119,8 +118,8 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @param grantType the grantType value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        setGrantType(TokenGrantType grantType) {
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setGrantType(
+            TokenGrantType grantType) {
         this.grantType = grantType;
         return this;
     }
@@ -146,33 +145,39 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * @throws IOException If an error occurs while reading the
      *     PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
      */
-    public static PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-        fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
-                = new PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    public static PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema fromJson(
+            JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema =
+                                    new PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("service".equals(fieldName)) {
-                    deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.service
-                        = reader.getString();
-                } else if ("scope".equals(fieldName)) {
-                    deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.scope
-                        = reader.getString();
-                } else if ("refresh_token".equals(fieldName)) {
-                    deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.acrRefreshToken
-                        = reader.getString();
-                } else if ("grant_type".equals(fieldName)) {
-                    deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema.grantType
-                        = TokenGrantType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("service".equals(fieldName)) {
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .service =
+                                    reader.getString();
+                        } else if ("scope".equals(fieldName)) {
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .scope =
+                                    reader.getString();
+                        } else if ("refresh_token".equals(fieldName)) {
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .acrRefreshToken =
+                                    reader.getString();
+                        } else if ("grant_type".equals(fieldName)) {
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .grantType =
+                                    TokenGrantType.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
-        });
+                    return deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
+                });
     }
 }

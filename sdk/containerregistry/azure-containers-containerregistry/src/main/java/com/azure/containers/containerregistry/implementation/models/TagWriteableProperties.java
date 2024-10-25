@@ -35,8 +35,7 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
     private Boolean readEnabled;
 
     /** Creates an instance of TagWriteableProperties class. */
-    public TagWriteableProperties() {
-    }
+    public TagWriteableProperties() {}
 
     /**
      * Get the deleteEnabled property: Delete enabled.
@@ -137,26 +136,29 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
      * @throws IOException If an error occurs while reading the TagWriteableProperties.
      */
     public static TagWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TagWriteableProperties deserializedTagWriteableProperties = new TagWriteableProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    TagWriteableProperties deserializedTagWriteableProperties = new TagWriteableProperties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("deleteEnabled".equals(fieldName)) {
-                    deserializedTagWriteableProperties.deleteEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("writeEnabled".equals(fieldName)) {
-                    deserializedTagWriteableProperties.writeEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("listEnabled".equals(fieldName)) {
-                    deserializedTagWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("readEnabled".equals(fieldName)) {
-                    deserializedTagWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("deleteEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("writeEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("listEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("readEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedTagWriteableProperties;
-        });
+                    return deserializedTagWriteableProperties;
+                });
     }
 }
