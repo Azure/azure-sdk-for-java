@@ -69,8 +69,8 @@ public class FileBinaryData extends BinaryData {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(
-                new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.logThrowableAsError(
+                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
         }
 
         return file;
@@ -78,8 +78,8 @@ public class FileBinaryData extends BinaryData {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
         }
 
         return chunkSize;

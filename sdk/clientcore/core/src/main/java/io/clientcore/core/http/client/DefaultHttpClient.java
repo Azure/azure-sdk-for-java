@@ -104,11 +104,10 @@ class DefaultHttpClient implements HttpClient {
             final String host = requestUri.getHost();
             final int port = requestUri.getPort();
 
-            socketConnection = SOCKET_CONNECTION_CACHE.get(
-                new SocketConnection.SocketConnectionProperties(protocol, host, port, getSslSocketFactory(), (int) readTimeout));
+            socketConnection = SOCKET_CONNECTION_CACHE.get(new SocketConnection.SocketConnectionProperties(protocol,
+                host, port, getSslSocketFactory(), (int) readTimeout));
 
-            Response<?> response
-                = SocketClient.sendPatchRequest(httpRequest, socketConnection.getSocketInputStream(),
+            Response<?> response = SocketClient.sendPatchRequest(httpRequest, socketConnection.getSocketInputStream(),
                 socketConnection.getSocketOutputStream());
 
             // Handle connection reusing
@@ -294,6 +293,7 @@ class DefaultHttpClient implements HttpClient {
                 connection.getInputStream().close();
 
                 break;
+
             case STREAM:
                 if (isTextEventStream(responseHeaders)) {
                     HttpResponseAccessHelper.setBody(httpResponse, createBodyFromServerSentResult(serverSentResult));
@@ -301,6 +301,7 @@ class DefaultHttpClient implements HttpClient {
                     streamResponseBody(httpResponse, connection);
                 }
                 break;
+
             case BUFFER:
             case DESERIALIZE:
                 // Deserialization will occur at a later point in HttpResponseBodyDecoder.
@@ -310,6 +311,7 @@ class DefaultHttpClient implements HttpClient {
                     eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
                 }
                 break;
+
             default:
                 eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
                 break;
@@ -343,8 +345,7 @@ class DefaultHttpClient implements HttpClient {
         HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
     }
 
-    private static void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, InputStream stream)
-        throws IOException {
+    private static void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, InputStream stream) throws IOException {
         int contentLength = speculateContentLength(httpResponse.getHeaders());
         AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(stream, contentLength);
 
@@ -392,13 +393,15 @@ class DefaultHttpClient implements HttpClient {
             return -1;
         }
     }
+
     private ResponseBodyMode determineResponseBodyMode(HttpRequest httpRequest, HttpHeaders responseHeaders) {
         HttpHeader contentType = responseHeaders.get(CONTENT_TYPE);
 
         if (httpRequest.getHttpMethod() == HEAD) {
             return IGNORE;
-        } else if (contentType != null && APPLICATION_OCTET_STREAM
-            .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
+        } else if (contentType != null
+            && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType.getValue(), 0,
+                APPLICATION_OCTET_STREAM.length())) {
 
             return STREAM;
         } else {
@@ -433,8 +436,7 @@ class DefaultHttpClient implements HttpClient {
                 if (redirectLocation.startsWith("http")) {
                     httpRequest.setUri(redirectLocation);
                 } else {
-                    UriBuilder uriBuilder = UriBuilder.parse(httpRequest.getUri())
-                        .setPath(redirectLocation);
+                    UriBuilder uriBuilder = UriBuilder.parse(httpRequest.getUri()).setPath(redirectLocation);
                     try {
                         httpRequest.setUri(uriBuilder.toUri());
                     } catch (URISyntaxException e) {

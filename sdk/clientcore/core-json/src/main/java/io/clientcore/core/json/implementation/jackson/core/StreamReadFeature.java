@@ -12,8 +12,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.10
  */
-public enum StreamReadFeature
-    implements JacksonFeature // since 2.12
+public enum StreamReadFeature implements JacksonFeature // since 2.12
 {
     // // // Low-level I/O handling features:
 
@@ -120,8 +119,7 @@ public enum StreamReadFeature
      *
      * @return Bit mask of all features that are enabled by default
      */
-    public static int collectDefaults()
-    {
+    public static int collectDefaults() {
         int flags = 0;
         for (StreamReadFeature f : values()) {
             if (f.enabledByDefault()) {
@@ -132,11 +130,21 @@ public enum StreamReadFeature
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
-    @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
-    @Override
-    public int getMask() { return _mask; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
 
-    public JsonParser.Feature mappedFeature() { return _mappedFeature; }
+    @Override
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
+    @Override
+    public int getMask() {
+        return _mask;
+    }
+
+    public JsonParser.Feature mappedFeature() {
+        return _mappedFeature;
+    }
 }

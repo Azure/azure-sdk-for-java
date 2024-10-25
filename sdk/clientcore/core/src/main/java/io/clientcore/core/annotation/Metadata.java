@@ -16,14 +16,14 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * Annotation that defines the characteristics of a class.
  */
 @Retention(SOURCE)
-@Target({TYPE, METHOD, CONSTRUCTOR, FIELD})
+@Target({ TYPE, METHOD, CONSTRUCTOR, FIELD })
 public @interface Metadata {
     /**
      * The conditions that apply to the annotated class.
      *
      * @return The conditions that apply to the annotated class.
      */
-    TypeConditions[] conditions() default {};
+    TypeConditions[] conditions() default { };
 
     /**
      * Indicates whether the class was automatically generated.
