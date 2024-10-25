@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelProperties model =
-            BinaryData
-                .fromString(
-                    "{\"schemaName\":\"sbzkf\",\"tableName\":\"eyvpnqicvinvkj\",\"columnName\":\"dxrbuukzcle\",\"labelName\":\"hmlwpaztzpo\",\"labelId\":\"cckwyfzqwhxxbu\",\"informationType\":\"a\",\"informationTypeId\":\"feqztppriol\",\"isDisabled\":true,\"rank\":\"High\"}")
-                .toObject(SensitivityLabelProperties.class);
+        SensitivityLabelProperties model = BinaryData.fromString(
+            "{\"schemaName\":\"sbzkf\",\"tableName\":\"eyvpnqicvinvkj\",\"columnName\":\"dxrbuukzcle\",\"labelName\":\"hmlwpaztzpo\",\"labelId\":\"cckwyfzqwhxxbu\",\"informationType\":\"a\",\"informationTypeId\":\"feqztppriol\",\"isDisabled\":true,\"rank\":\"High\"}")
+            .toObject(SensitivityLabelProperties.class);
         Assertions.assertEquals("hmlwpaztzpo", model.labelName());
         Assertions.assertEquals("cckwyfzqwhxxbu", model.labelId());
         Assertions.assertEquals("a", model.informationType());
@@ -26,13 +24,11 @@ public final class SensitivityLabelPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelProperties model =
-            new SensitivityLabelProperties()
-                .withLabelName("hmlwpaztzpo")
-                .withLabelId("cckwyfzqwhxxbu")
-                .withInformationType("a")
-                .withInformationTypeId("feqztppriol")
-                .withRank(SensitivityLabelRank.HIGH);
+        SensitivityLabelProperties model = new SensitivityLabelProperties().withLabelName("hmlwpaztzpo")
+            .withLabelId("cckwyfzqwhxxbu")
+            .withInformationType("a")
+            .withInformationTypeId("feqztppriol")
+            .withRank(SensitivityLabelRank.HIGH);
         model = BinaryData.fromObject(model).toObject(SensitivityLabelProperties.class);
         Assertions.assertEquals("hmlwpaztzpo", model.labelName());
         Assertions.assertEquals("cckwyfzqwhxxbu", model.labelId());

@@ -36,66 +36,43 @@ public final class KustoPoolsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"Storage optimized\",\"capacity\":1921573518,\"size\":\"Extra"
-                + " small\"},\"properties\":{\"state\":\"Running\",\"provisioningState\":\"Succeeded\",\"uri\":\"gzb\",\"dataIngestionUri\":\"qfbifo\",\"stateReason\":\"jxdwdrpazqjkr\",\"optimizedAutoscale\":{\"version\":1166812452,\"isEnabled\":false,\"minimum\":1534601140,\"maximum\":178824260},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"jigpgayiawohfmh\"},\"etag\":\"zmecjjkmqenhai\",\"location\":\"rpvsgloiovs\",\"tags\":{\"suvw\":\"v\",\"i\":\"enbg\",\"oa\":\"pkhc\"},\"id\":\"xukuicjuftekio\",\"name\":\"anduew\",\"type\":\"hvpxjhxz\"}";
+        String responseStr = "{\"sku\":{\"name\":\"Storage optimized\",\"capacity\":1921573518,\"size\":\"Extra"
+            + " small\"},\"properties\":{\"state\":\"Running\",\"provisioningState\":\"Succeeded\",\"uri\":\"gzb\",\"dataIngestionUri\":\"qfbifo\",\"stateReason\":\"jxdwdrpazqjkr\",\"optimizedAutoscale\":{\"version\":1166812452,\"isEnabled\":false,\"minimum\":1534601140,\"maximum\":178824260},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"jigpgayiawohfmh\"},\"etag\":\"zmecjjkmqenhai\",\"location\":\"rpvsgloiovs\",\"tags\":{\"suvw\":\"v\",\"i\":\"enbg\",\"oa\":\"pkhc\"},\"id\":\"xukuicjuftekio\",\"name\":\"anduew\",\"type\":\"hvpxjhxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        KustoPool response =
-            manager
-                .kustoPools()
-                .define("kwopswnyinxupr")
-                .withRegion("gvp")
-                .withExistingWorkspace("pjwkosnyxigf", "ujjcxgdqmrlhn")
-                .withSku(
-                    new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(1081669809).withSize(SkuSize.LARGE))
-                .withTags(
-                    mapOf(
-                        "ulwkq",
-                        "gjjktfinfhoksmm",
-                        "okr",
-                        "cru",
-                        "tqpqsdoctpzpujzf",
-                        "flsgaoj",
-                        "lu",
-                        "mcdsgxcelujisw"))
-                .withOptimizedAutoscale(
-                    new OptimizedAutoscale()
-                        .withVersion(918352946)
-                        .withIsEnabled(false)
-                        .withMinimum(482333072)
-                        .withMaximum(1912292720))
-                .withEnableStreamingIngest(true)
-                .withEnablePurge(true)
-                .withWorkspaceUid("m")
-                .withIfMatch("yt")
-                .withIfNoneMatch("pdz")
-                .create();
+        KustoPool response = manager.kustoPools()
+            .define("kwopswnyinxupr")
+            .withRegion("gvp")
+            .withExistingWorkspace("pjwkosnyxigf", "ujjcxgdqmrlhn")
+            .withSku(
+                new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(1081669809).withSize(SkuSize.LARGE))
+            .withTags(
+                mapOf("ulwkq", "gjjktfinfhoksmm", "okr", "cru", "tqpqsdoctpzpujzf", "flsgaoj", "lu", "mcdsgxcelujisw"))
+            .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(918352946)
+                .withIsEnabled(false)
+                .withMinimum(482333072)
+                .withMaximum(1912292720))
+            .withEnableStreamingIngest(true)
+            .withEnablePurge(true)
+            .withWorkspaceUid("m")
+            .withIfMatch("yt")
+            .withIfNoneMatch("pdz")
+            .create();
 
         Assertions.assertEquals("rpvsgloiovs", response.location());
         Assertions.assertEquals("v", response.tags().get("suvw"));

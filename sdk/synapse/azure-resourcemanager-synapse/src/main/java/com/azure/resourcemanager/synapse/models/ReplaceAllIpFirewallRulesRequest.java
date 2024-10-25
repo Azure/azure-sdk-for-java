@@ -51,14 +51,11 @@ public final class ReplaceAllIpFirewallRulesRequest {
      */
     public void validate() {
         if (ipFirewallRules() != null) {
-            ipFirewallRules()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            ipFirewallRules().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -47,8 +47,8 @@ public interface SqlPoolRestorePointsClient {
      * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorePointInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Creates a restore point for a data warehouse.
@@ -63,11 +63,8 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
@@ -83,12 +80,8 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Creates a restore point for a data warehouse.
@@ -103,10 +96,7 @@ public interface SqlPoolRestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters);
 
     /**
@@ -123,12 +113,8 @@ public interface SqlPoolRestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Gets a restore point.
@@ -144,8 +130,8 @@ public interface SqlPoolRestorePointsClient {
      * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RestorePointInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<RestorePointInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Gets a restore point.
@@ -176,8 +162,8 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Deletes a restore point.

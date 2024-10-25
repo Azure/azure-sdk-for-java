@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisEnvironmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisEnvironment model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Environment\",\"folderId\":293197962792845943,\"variables\":[{\"id\":1447837022418760517,\"name\":\"bgvopemt\",\"description\":\"qujlyegqa\",\"dataType\":\"igflqqbtnyjp\",\"sensitive\":false,\"value\":\"bf\",\"sensitiveValue\":\"bmvmsxba\"}],\"id\":484983659590178245,\"name\":\"nkottlwuhv\",\"description\":\"mailfemjj\"}")
-                .toObject(SsisEnvironment.class);
+        SsisEnvironment model = BinaryData.fromString(
+            "{\"type\":\"Environment\",\"folderId\":293197962792845943,\"variables\":[{\"id\":1447837022418760517,\"name\":\"bgvopemt\",\"description\":\"qujlyegqa\",\"dataType\":\"igflqqbtnyjp\",\"sensitive\":false,\"value\":\"bf\",\"sensitiveValue\":\"bmvmsxba\"}],\"id\":484983659590178245,\"name\":\"nkottlwuhv\",\"description\":\"mailfemjj\"}")
+            .toObject(SsisEnvironment.class);
         Assertions.assertEquals(484983659590178245L, model.id());
         Assertions.assertEquals("nkottlwuhv", model.name());
         Assertions.assertEquals("mailfemjj", model.description());
@@ -33,23 +31,17 @@ public final class SsisEnvironmentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisEnvironment model =
-            new SsisEnvironment()
-                .withId(484983659590178245L)
-                .withName("nkottlwuhv")
-                .withDescription("mailfemjj")
-                .withFolderId(293197962792845943L)
-                .withVariables(
-                    Arrays
-                        .asList(
-                            new SsisVariable()
-                                .withId(1447837022418760517L)
-                                .withName("bgvopemt")
-                                .withDescription("qujlyegqa")
-                                .withDataType("igflqqbtnyjp")
-                                .withSensitive(false)
-                                .withValue("bf")
-                                .withSensitiveValue("bmvmsxba")));
+        SsisEnvironment model = new SsisEnvironment().withId(484983659590178245L)
+            .withName("nkottlwuhv")
+            .withDescription("mailfemjj")
+            .withFolderId(293197962792845943L)
+            .withVariables(Arrays.asList(new SsisVariable().withId(1447837022418760517L)
+                .withName("bgvopemt")
+                .withDescription("qujlyegqa")
+                .withDataType("igflqqbtnyjp")
+                .withSensitive(false)
+                .withValue("bf")
+                .withSensitiveValue("bmvmsxba")));
         model = BinaryData.fromObject(model).toObject(SsisEnvironment.class);
         Assertions.assertEquals(484983659590178245L, model.id());
         Assertions.assertEquals("nkottlwuhv", model.name());

@@ -14,52 +14,41 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDatabaseConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDatabaseConfigurationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"ptsoqfyiase\",\"properties\":{\"provisioningState\":\"Failed\",\"databaseName\":\"rttzrazisgykiu\",\"clusterResourceId\":\"mvanbwzo\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"None\"},\"id\":\"xbsojkli\",\"name\":\"hmdp\",\"type\":\"ysprq\"},{\"location\":\"nzxojpslsvjgpli\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"woyxqvapcohhou\",\"clusterResourceId\":\"qpqojxcxzrzd\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Replace\"},\"id\":\"enribc\",\"name\":\"wetzqddtjwfljh\",\"type\":\"namtuatmzw\"},{\"location\":\"jncqtjzmi\",\"properties\":{\"provisioningState\":\"Failed\",\"databaseName\":\"gat\",\"clusterResourceId\":\"uuvbx\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Union\"},\"id\":\"wggahttzlswvaj\",\"name\":\"fu\",\"type\":\"lx\"},{\"location\":\"qzasunwqrjzfrgqh\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"mbuocnjrohmbp\",\"clusterResourceId\":\"ryxameblydyvkfkm\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Union\"},\"id\":\"e\",\"name\":\"v\",\"type\":\"mtodl\"}]}")
-                .toObject(AttachedDatabaseConfigurationListResult.class);
+        AttachedDatabaseConfigurationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"ptsoqfyiase\",\"properties\":{\"provisioningState\":\"Failed\",\"databaseName\":\"rttzrazisgykiu\",\"clusterResourceId\":\"mvanbwzo\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"None\"},\"id\":\"xbsojkli\",\"name\":\"hmdp\",\"type\":\"ysprq\"},{\"location\":\"nzxojpslsvjgpli\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"woyxqvapcohhou\",\"clusterResourceId\":\"qpqojxcxzrzd\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Replace\"},\"id\":\"enribc\",\"name\":\"wetzqddtjwfljh\",\"type\":\"namtuatmzw\"},{\"location\":\"jncqtjzmi\",\"properties\":{\"provisioningState\":\"Failed\",\"databaseName\":\"gat\",\"clusterResourceId\":\"uuvbx\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Union\"},\"id\":\"wggahttzlswvaj\",\"name\":\"fu\",\"type\":\"lx\"},{\"location\":\"qzasunwqrjzfrgqh\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"mbuocnjrohmbp\",\"clusterResourceId\":\"ryxameblydyvkfkm\",\"attachedDatabaseNames\":[],\"defaultPrincipalsModificationKind\":\"Union\"},\"id\":\"e\",\"name\":\"v\",\"type\":\"mtodl\"}]}")
+            .toObject(AttachedDatabaseConfigurationListResult.class);
         Assertions.assertEquals("ptsoqfyiase", model.value().get(0).location());
         Assertions.assertEquals("rttzrazisgykiu", model.value().get(0).databaseName());
         Assertions.assertEquals("mvanbwzo", model.value().get(0).kustoPoolResourceId());
-        Assertions
-            .assertEquals(
-                DefaultPrincipalsModificationKind.NONE, model.value().get(0).defaultPrincipalsModificationKind());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE,
+            model.value().get(0).defaultPrincipalsModificationKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDatabaseConfigurationListResult model =
-            new AttachedDatabaseConfigurationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AttachedDatabaseConfigurationInner()
-                                .withLocation("ptsoqfyiase")
-                                .withDatabaseName("rttzrazisgykiu")
-                                .withKustoPoolResourceId("mvanbwzo")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE),
-                            new AttachedDatabaseConfigurationInner()
-                                .withLocation("nzxojpslsvjgpli")
-                                .withDatabaseName("woyxqvapcohhou")
-                                .withKustoPoolResourceId("qpqojxcxzrzd")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.REPLACE),
-                            new AttachedDatabaseConfigurationInner()
-                                .withLocation("jncqtjzmi")
-                                .withDatabaseName("gat")
-                                .withKustoPoolResourceId("uuvbx")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION),
-                            new AttachedDatabaseConfigurationInner()
-                                .withLocation("qzasunwqrjzfrgqh")
-                                .withDatabaseName("mbuocnjrohmbp")
-                                .withKustoPoolResourceId("ryxameblydyvkfkm")
-                                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)));
+        AttachedDatabaseConfigurationListResult model
+            = new AttachedDatabaseConfigurationListResult().withValue(Arrays.asList(
+                new AttachedDatabaseConfigurationInner().withLocation("ptsoqfyiase")
+                    .withDatabaseName("rttzrazisgykiu")
+                    .withKustoPoolResourceId("mvanbwzo")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.NONE),
+                new AttachedDatabaseConfigurationInner().withLocation("nzxojpslsvjgpli")
+                    .withDatabaseName("woyxqvapcohhou")
+                    .withKustoPoolResourceId("qpqojxcxzrzd")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.REPLACE),
+                new AttachedDatabaseConfigurationInner().withLocation("jncqtjzmi")
+                    .withDatabaseName("gat")
+                    .withKustoPoolResourceId("uuvbx")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION),
+                new AttachedDatabaseConfigurationInner().withLocation("qzasunwqrjzfrgqh")
+                    .withDatabaseName("mbuocnjrohmbp")
+                    .withKustoPoolResourceId("ryxameblydyvkfkm")
+                    .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)));
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationListResult.class);
         Assertions.assertEquals("ptsoqfyiase", model.value().get(0).location());
         Assertions.assertEquals("rttzrazisgykiu", model.value().get(0).databaseName());
         Assertions.assertEquals("mvanbwzo", model.value().get(0).kustoPoolResourceId());
-        Assertions
-            .assertEquals(
-                DefaultPrincipalsModificationKind.NONE, model.value().get(0).defaultPrincipalsModificationKind());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE,
+            model.value().get(0).defaultPrincipalsModificationKind());
     }
 }

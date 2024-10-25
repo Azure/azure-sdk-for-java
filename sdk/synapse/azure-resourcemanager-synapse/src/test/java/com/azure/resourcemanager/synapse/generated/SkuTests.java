@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString("{\"tier\":\"spnqzahmgkb\",\"name\":\"yydhibnuqqk\",\"capacity\":1850827957}")
-                .toObject(Sku.class);
+        Sku model = BinaryData.fromString("{\"tier\":\"spnqzahmgkb\",\"name\":\"yydhibnuqqk\",\"capacity\":1850827957}")
+            .toObject(Sku.class);
         Assertions.assertEquals("spnqzahmgkb", model.tier());
         Assertions.assertEquals("yydhibnuqqk", model.name());
         Assertions.assertEquals(1850827957, model.capacity());

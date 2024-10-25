@@ -42,8 +42,8 @@ public final class OperationMetaServiceSpecification {
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationMetaServiceSpecification object itself.
      */
-    public OperationMetaServiceSpecification withMetricSpecifications(
-        List<OperationMetaMetricSpecification> metricSpecifications) {
+    public OperationMetaServiceSpecification
+        withMetricSpecifications(List<OperationMetaMetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
@@ -63,8 +63,8 @@ public final class OperationMetaServiceSpecification {
      * @param logSpecifications the logSpecifications value to set.
      * @return the OperationMetaServiceSpecification object itself.
      */
-    public OperationMetaServiceSpecification withLogSpecifications(
-        List<OperationMetaLogSpecification> logSpecifications) {
+    public OperationMetaServiceSpecification
+        withLogSpecifications(List<OperationMetaLogSpecification> logSpecifications) {
         this.logSpecifications = logSpecifications;
         return this;
     }

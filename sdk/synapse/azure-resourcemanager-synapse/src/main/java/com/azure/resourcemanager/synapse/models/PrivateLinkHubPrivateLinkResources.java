@@ -53,8 +53,8 @@ public interface PrivateLinkHubPrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource in private link hub along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Hub Private Link Resource

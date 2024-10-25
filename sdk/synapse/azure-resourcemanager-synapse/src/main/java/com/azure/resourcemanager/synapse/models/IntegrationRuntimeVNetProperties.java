@@ -43,7 +43,8 @@ public final class IntegrationRuntimeVNetProperties {
     /*
      * VNet properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeVNetProperties class. */
     public IntegrationRuntimeVNetProperties() {

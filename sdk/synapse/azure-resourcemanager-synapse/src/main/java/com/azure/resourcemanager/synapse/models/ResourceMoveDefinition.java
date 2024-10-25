@@ -48,9 +48,8 @@ public final class ResourceMoveDefinition {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
         }
     }
 

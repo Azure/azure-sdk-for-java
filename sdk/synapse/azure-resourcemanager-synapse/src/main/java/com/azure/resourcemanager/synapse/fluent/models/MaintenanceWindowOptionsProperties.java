@@ -95,8 +95,8 @@ public final class MaintenanceWindowOptionsProperties {
      * @param maintenanceWindowCycles the maintenanceWindowCycles value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
-    public MaintenanceWindowOptionsProperties withMaintenanceWindowCycles(
-        List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
+    public MaintenanceWindowOptionsProperties
+        withMaintenanceWindowCycles(List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
         this.maintenanceWindowCycles = maintenanceWindowCycles;
         return this;
     }
@@ -198,8 +198,8 @@ public final class MaintenanceWindowOptionsProperties {
      * @param allowMultipleMaintenanceWindowsPerCycle the allowMultipleMaintenanceWindowsPerCycle value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
-    public MaintenanceWindowOptionsProperties withAllowMultipleMaintenanceWindowsPerCycle(
-        Boolean allowMultipleMaintenanceWindowsPerCycle) {
+    public MaintenanceWindowOptionsProperties
+        withAllowMultipleMaintenanceWindowsPerCycle(Boolean allowMultipleMaintenanceWindowsPerCycle) {
         this.allowMultipleMaintenanceWindowsPerCycle = allowMultipleMaintenanceWindowsPerCycle;
         return this;
     }

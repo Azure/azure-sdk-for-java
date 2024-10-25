@@ -164,10 +164,8 @@ public final class LibraryResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LibraryResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LibraryResourceInner"));
         } else {
             innerProperties().validate();
         }

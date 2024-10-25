@@ -23,8 +23,8 @@ public interface IntegrationRuntimeStatusOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime status along with {@link Response}.
      */
-    Response<IntegrationRuntimeStatusResponse> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeStatusResponse> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime status

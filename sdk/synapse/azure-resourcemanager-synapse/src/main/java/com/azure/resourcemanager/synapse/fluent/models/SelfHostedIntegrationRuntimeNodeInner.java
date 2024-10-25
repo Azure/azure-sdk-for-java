@@ -131,7 +131,8 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
     /*
      * Properties of Self-hosted integration runtime node.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of SelfHostedIntegrationRuntimeNodeInner class. */
     public SelfHostedIntegrationRuntimeNodeInner() {

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDatabaseConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDatabaseConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"databaseName\":\"aclkiexhajlfnt\",\"clusterResourceId\":\"iqfyuttdi\",\"attachedDatabaseNames\":[\"pvn\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"xkyctwwgzwx\",\"l\",\"ecvo\",\"ygzyvneezaifght\"],\"tablesToExclude\":[\"qtlffhzbk\",\"kjj\",\"avfqnvhnqoewdogi\",\"etesypvidbztjhqt\"],\"externalTablesToInclude\":[\"vnynkb\",\"etnjuhpsprkz\",\"aupia\",\"cxnafbwqrooh\"],\"externalTablesToExclude\":[\"vmaonurjt\",\"mghihp\",\"ecmslclbl\"],\"materializedViewsToInclude\":[\"lt\",\"sjuscvsfxigctmg\",\"uupb\"],\"materializedViewsToExclude\":[\"ccyd\",\"tce\",\"kdqkkyihzt\",\"eq\"]}}")
-                .toObject(AttachedDatabaseConfigurationProperties.class);
+        AttachedDatabaseConfigurationProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"databaseName\":\"aclkiexhajlfnt\",\"clusterResourceId\":\"iqfyuttdi\",\"attachedDatabaseNames\":[\"pvn\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"xkyctwwgzwx\",\"l\",\"ecvo\",\"ygzyvneezaifght\"],\"tablesToExclude\":[\"qtlffhzbk\",\"kjj\",\"avfqnvhnqoewdogi\",\"etesypvidbztjhqt\"],\"externalTablesToInclude\":[\"vnynkb\",\"etnjuhpsprkz\",\"aupia\",\"cxnafbwqrooh\"],\"externalTablesToExclude\":[\"vmaonurjt\",\"mghihp\",\"ecmslclbl\"],\"materializedViewsToInclude\":[\"lt\",\"sjuscvsfxigctmg\",\"uupb\"],\"materializedViewsToExclude\":[\"ccyd\",\"tce\",\"kdqkkyihzt\",\"eq\"]}}")
+            .toObject(AttachedDatabaseConfigurationProperties.class);
         Assertions.assertEquals("aclkiexhajlfnt", model.databaseName());
         Assertions.assertEquals("iqfyuttdi", model.kustoPoolResourceId());
         Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION, model.defaultPrincipalsModificationKind());
@@ -32,19 +30,17 @@ public final class AttachedDatabaseConfigurationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDatabaseConfigurationProperties model =
-            new AttachedDatabaseConfigurationProperties()
-                .withDatabaseName("aclkiexhajlfnt")
+        AttachedDatabaseConfigurationProperties model
+            = new AttachedDatabaseConfigurationProperties().withDatabaseName("aclkiexhajlfnt")
                 .withKustoPoolResourceId("iqfyuttdi")
                 .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("xkyctwwgzwx", "l", "ecvo", "ygzyvneezaifght"))
-                        .withTablesToExclude(Arrays.asList("qtlffhzbk", "kjj", "avfqnvhnqoewdogi", "etesypvidbztjhqt"))
-                        .withExternalTablesToInclude(Arrays.asList("vnynkb", "etnjuhpsprkz", "aupia", "cxnafbwqrooh"))
-                        .withExternalTablesToExclude(Arrays.asList("vmaonurjt", "mghihp", "ecmslclbl"))
-                        .withMaterializedViewsToInclude(Arrays.asList("lt", "sjuscvsfxigctmg", "uupb"))
-                        .withMaterializedViewsToExclude(Arrays.asList("ccyd", "tce", "kdqkkyihzt", "eq")));
+                .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                    .withTablesToInclude(Arrays.asList("xkyctwwgzwx", "l", "ecvo", "ygzyvneezaifght"))
+                    .withTablesToExclude(Arrays.asList("qtlffhzbk", "kjj", "avfqnvhnqoewdogi", "etesypvidbztjhqt"))
+                    .withExternalTablesToInclude(Arrays.asList("vnynkb", "etnjuhpsprkz", "aupia", "cxnafbwqrooh"))
+                    .withExternalTablesToExclude(Arrays.asList("vmaonurjt", "mghihp", "ecmslclbl"))
+                    .withMaterializedViewsToInclude(Arrays.asList("lt", "sjuscvsfxigctmg", "uupb"))
+                    .withMaterializedViewsToExclude(Arrays.asList("ccyd", "tce", "kdqkkyihzt", "eq")));
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationProperties.class);
         Assertions.assertEquals("aclkiexhajlfnt", model.databaseName());
         Assertions.assertEquals("iqfyuttdi", model.kustoPoolResourceId());

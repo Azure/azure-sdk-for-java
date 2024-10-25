@@ -43,8 +43,8 @@ public final class ManagedIntegrationRuntimeTypeProperties {
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withComputeProperties(
-        IntegrationRuntimeComputeProperties computeProperties) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
         this.computeProperties = computeProperties;
         return this;
     }
