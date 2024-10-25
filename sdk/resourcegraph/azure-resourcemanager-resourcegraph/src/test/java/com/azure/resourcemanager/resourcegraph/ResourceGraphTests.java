@@ -8,11 +8,13 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequestOptions;
 import com.azure.resourcemanager.resourcegraph.models.QueryResponse;
 import com.azure.resourcemanager.resourcegraph.models.ResultFormat;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +30,14 @@ public class ResourceGraphTests extends TestProxyTestBase {
         // requires a Azure Subscription
         String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
+        ResourceManager resourceManager = ResourceManager.configure()
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .withDefaultSubscription();
+
         ResourceGraphManager manager = ResourceGraphManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         // @embedmeStart
         QueryRequest queryRequest = new QueryRequest()
