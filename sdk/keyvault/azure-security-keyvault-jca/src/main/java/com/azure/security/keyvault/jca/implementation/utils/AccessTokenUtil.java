@@ -118,7 +118,7 @@ public final class AccessTokenUtil {
      * @return The authorization token.
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
-                                             String clientId, String clientSecret) {
+        String clientId, String clientSecret) {
         LOGGER.entering("AccessTokenUtil", "getAccessToken",
             new Object[] { resource, tenantId, clientId, clientSecret });
         LOGGER.info("Getting access token using client ID / client secret");
@@ -421,7 +421,8 @@ public final class AccessTokenUtil {
             throw new IllegalStateException("The challenge scope " + scope + " is not a valid URI.", e);
         }
 
-        boolean isValid = resourceUri.getHost().toLowerCase(Locale.ROOT)
+        boolean isValid = resourceUri.getHost()
+            .toLowerCase(Locale.ROOT)
             .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
 
         LOGGER.exiting("AccessTokenUtil", "isChallengeResourceValid", isValid);

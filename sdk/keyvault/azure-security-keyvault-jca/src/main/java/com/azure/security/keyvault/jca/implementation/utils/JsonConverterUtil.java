@@ -37,7 +37,7 @@ public final class JsonConverterUtil {
      * @throws Error If an error occurs during deserialization.
      */
     public static <T extends JsonSerializable<T>> T fromJson(ReadValueCallback<JsonReader, T> deserializationFunction,
-                                                             String json) throws IOException {
+        String json) throws IOException {
 
         LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { deserializationFunction, json });
 
@@ -64,7 +64,7 @@ public final class JsonConverterUtil {
         }
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
 
             jsonWriter.writeUntyped(jsonSerializable);
             jsonWriter.flush();
