@@ -16,11 +16,8 @@ import reactor.core.publisher.Mono;
 
 /** An client-side representation of a network peering. */
 @Fluent()
-public interface NetworkPeering
-    extends IndependentChild<NetworkManager>,
-        HasInnerModel<VirtualNetworkPeeringInner>,
-        Refreshable<NetworkPeering>,
-        Updatable<NetworkPeering.Update> {
+public interface NetworkPeering extends IndependentChild<NetworkManager>, HasInnerModel<VirtualNetworkPeeringInner>,
+    Refreshable<NetworkPeering>, Updatable<NetworkPeering.Update> {
 
     /** @return the local virtual network's ID */
     String networkId();
@@ -226,11 +223,8 @@ public interface NetworkPeering
     }
 
     /** The template for a network peering update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<NetworkPeering>,
-            UpdateStages.WithTrafficForwarding,
-            UpdateStages.WithAccess,
-            UpdateStages.WithGatewayUse {
+    interface Update extends Appliable<NetworkPeering>, UpdateStages.WithTrafficForwarding, UpdateStages.WithAccess,
+        UpdateStages.WithGatewayUse {
     }
 
     /** Grouping of all the network peering update stages. */

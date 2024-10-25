@@ -46,7 +46,6 @@ public class ETagState {
         return this;
     }
 
-
     /**
      * Clears the stored values in ETag state
      * @return the ETag state.

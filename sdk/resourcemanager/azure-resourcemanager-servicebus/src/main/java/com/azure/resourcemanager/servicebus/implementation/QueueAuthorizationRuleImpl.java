@@ -13,23 +13,13 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for QueueAuthorizationRule.
  */
-class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthorizationRule,
-        QueueImpl,
-        SBAuthorizationRuleInner,
-        QueueAuthorizationRuleImpl,
-        ServiceBusManager>
-    implements
-        QueueAuthorizationRule,
-        QueueAuthorizationRule.Definition,
-        QueueAuthorizationRule.Update {
+class QueueAuthorizationRuleImpl extends
+    AuthorizationRuleBaseImpl<QueueAuthorizationRule, QueueImpl, SBAuthorizationRuleInner, QueueAuthorizationRuleImpl, ServiceBusManager>
+    implements QueueAuthorizationRule, QueueAuthorizationRule.Definition, QueueAuthorizationRule.Update {
     private final String namespaceName;
 
-    QueueAuthorizationRuleImpl(String resourceGroupName,
-                               String namespaceName,
-                               String queueName,
-                               String name,
-                               SBAuthorizationRuleInner inner,
-                               ServiceBusManager manager) {
+    QueueAuthorizationRuleImpl(String resourceGroupName, String namespaceName, String queueName, String name,
+        SBAuthorizationRuleInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
         this.withExistingParentResource(resourceGroupName, queueName);
@@ -47,21 +37,20 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
 
     @Override
     protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
-        return this.manager().serviceClient().getQueues()
-                .getAuthorizationRuleAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.queueName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getQueues()
+            .getAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.queueName(), this.name());
     }
 
     @Override
     protected Mono<QueueAuthorizationRule> createChildResourceAsync() {
         final QueueAuthorizationRule self = this;
-        return this.manager().serviceClient().getQueues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
-                this.namespaceName(),
-                this.queueName(),
-                this.name(),
-                this.innerModel())
+        return this.manager()
+            .serviceClient()
+            .getQueues()
+            .createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.queueName(),
+                this.name(), this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -70,20 +59,19 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager().serviceClient().getQueues()
-                .listKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.queueName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getQueues()
+            .listKeysAsync(this.resourceGroupName(), this.namespaceName(), this.queueName(), this.name());
     }
 
     @Override
-    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
-        return this.manager().serviceClient().getQueues()
-                .regenerateKeysAsync(this.resourceGroupName(),
-                    this.namespaceName(),
-                    this.queueName(),
-                    this.name(),
-                    regenerateAccessKeyParameters);
+    protected Mono<AccessKeysInner>
+        regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return this.manager()
+            .serviceClient()
+            .getQueues()
+            .regenerateKeysAsync(this.resourceGroupName(), this.namespaceName(), this.queueName(), this.name(),
+                regenerateAccessKeyParameters);
     }
 }

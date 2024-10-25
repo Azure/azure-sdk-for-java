@@ -20,11 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Implementation for AutoscaleProfile. */
-class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
-    implements AutoscaleProfile,
-        AutoscaleProfile.Definition,
-        AutoscaleProfile.UpdateDefinition,
-        AutoscaleProfile.Update {
+class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner> implements AutoscaleProfile,
+    AutoscaleProfile.Definition, AutoscaleProfile.UpdateDefinition, AutoscaleProfile.Update {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -103,8 +100,8 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
     }
 
     @Override
-    public AutoscaleProfileImpl withMetricBasedScale(
-        int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount) {
+    public AutoscaleProfileImpl withMetricBasedScale(int minimumInstanceCount, int maximumInstanceCount,
+        int defaultInstanceCount) {
         this.innerModel().capacity().withMinimum(Integer.toString(minimumInstanceCount));
         this.innerModel().capacity().withMaximum(Integer.toString(maximumInstanceCount));
         this.innerModel().capacity().withDefaultProperty(Integer.toString(defaultInstanceCount));

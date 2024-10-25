@@ -21,13 +21,8 @@ import java.util.List;
 /** An immutable client-side representation of an Azure diagnostic settings. */
 @Fluent
 public interface DiagnosticSetting
-    extends Indexable,
-        HasId,
-        HasName,
-        HasManager<MonitorManager>,
-        HasInnerModel<DiagnosticSettingsResourceInner>,
-        Refreshable<DiagnosticSetting>,
-        Updatable<DiagnosticSetting.Update> {
+    extends Indexable, HasId, HasName, HasManager<MonitorManager>, HasInnerModel<DiagnosticSettingsResourceInner>,
+    Refreshable<DiagnosticSetting>, Updatable<DiagnosticSetting.Update> {
     /**
      * Get the associated resource Id value.
      *
@@ -172,8 +167,8 @@ public interface DiagnosticSetting
              *     indefinitely.
              * @return the stage of creating Diagnostic Settings.
              */
-            WithCreate withLogsAndMetrics(
-                List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays);
+            WithCreate withLogsAndMetrics(List<DiagnosticSettingsCategory> categories, Duration timeGrain,
+                int retentionDays);
         }
     }
 
@@ -279,8 +274,8 @@ public interface DiagnosticSetting
              *     indefinitely.
              * @return the next stage of the Diagnostic Settings update.
              */
-            Update withLogsAndMetrics(
-                List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays);
+            Update withLogsAndMetrics(List<DiagnosticSettingsCategory> categories, Duration timeGrain,
+                int retentionDays);
 
             /**
              * Removes the Metric Setting from the Diagnostic Setting.
@@ -315,11 +310,7 @@ public interface DiagnosticSetting
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<DiagnosticSetting>,
-            UpdateStages.WithStorageAccount,
-            UpdateStages.WithEventHub,
-            UpdateStages.WithLogAnalytics,
-            UpdateStages.WithMetricAndLogs {
+    interface Update extends Appliable<DiagnosticSetting>, UpdateStages.WithStorageAccount, UpdateStages.WithEventHub,
+        UpdateStages.WithLogAnalytics, UpdateStages.WithMetricAndLogs {
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationKey}.
  */
-class DisasterRecoveryPairingAuthorizationKeyImpl
-        extends WrapperImpl<AccessKeysInner>
-        implements DisasterRecoveryPairingAuthorizationKey {
+class DisasterRecoveryPairingAuthorizationKeyImpl extends WrapperImpl<AccessKeysInner>
+    implements DisasterRecoveryPairingAuthorizationKey {
 
     DisasterRecoveryPairingAuthorizationKeyImpl(AccessKeysInner inner) {
         super(inner);

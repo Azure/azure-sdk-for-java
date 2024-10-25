@@ -8,15 +8,13 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
 /** A representation of the Azure SQL Firewall rule operations. */
 @Fluent
-public interface SqlFirewallRuleOperations
-    extends SupportsCreating<SqlFirewallRuleOperations.DefinitionStages.WithSqlServer>,
-        SqlChildrenOperations<SqlFirewallRule> {
+public interface SqlFirewallRuleOperations extends
+    SupportsCreating<SqlFirewallRuleOperations.DefinitionStages.WithSqlServer>, SqlChildrenOperations<SqlFirewallRule> {
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlFirewallRuleOperationsDefinition
-        extends SqlFirewallRuleOperations.DefinitionStages.WithSqlServer,
-            SqlFirewallRuleOperations.DefinitionStages.WithIpAddressRange,
-            SqlFirewallRuleOperations.DefinitionStages.WithCreate {
+    interface SqlFirewallRuleOperationsDefinition extends SqlFirewallRuleOperations.DefinitionStages.WithSqlServer,
+        SqlFirewallRuleOperations.DefinitionStages.WithIpAddressRange,
+        SqlFirewallRuleOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Firewall rule definition stages. */
