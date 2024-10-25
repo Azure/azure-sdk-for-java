@@ -20,65 +20,56 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsDeleteOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsDeleteRelationshipOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentHeaders;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetRelationshipByIdHeaders;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetRelationshipByIdOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetRelationshipByIdResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsListIncomingRelationshipsOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsListRelationshipsOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendComponentTelemetryOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsSendTelemetryOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateComponentHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateComponentOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateHeaders;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateComponentResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateOptions;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateResponse;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in DigitalTwins.
- */
+/** An instance of this class provides access to all the operations defined in DigitalTwins. */
 public final class DigitalTwinsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final DigitalTwinsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureDigitalTwinsAPIImpl client;
 
     /**
      * Initializes an instance of DigitalTwinsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DigitalTwinsImpl(AzureDigitalTwinsAPIImpl client) {
-        this.service
-            = RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -90,277 +81,231 @@ public final class DigitalTwinsImpl {
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
     public interface DigitalTwinsService {
         @Get("/digitaltwins/{id}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getById(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/digitaltwins/{id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getByIdNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsGetByIdResponse> getById(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Put("/digitaltwins/{id}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> add(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object twin,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Put("/digitaltwins/{id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> addNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object twin,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsAddResponse> add(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") Object twin,
+                Context context);
 
         @Delete("/digitaltwins/{id}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
-            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @HeaderParam("If-Match") String ifMatch,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Patch("/digitaltwins/{id}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsUpdateHeaders, Void>> update(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Patch("/digitaltwins/{id}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> updateNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsUpdateResponse> update(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @HeaderParam("If-Match") String ifMatch,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
+                Context context);
 
         @Get("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipById(
-            @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
-            @PathParam("relationshipId") String relationshipId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getRelationshipByIdNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsGetRelationshipByIdResponse> getRelationshipById(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("relationshipId") String relationshipId,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Put("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationship(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") Object relationship, @HeaderParam("Accept") String accept, Context context);
-
-        @Put("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> addRelationshipNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") Object relationship, @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsAddRelationshipResponse> addRelationship(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("relationshipId") String relationshipId,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") Object relationship,
+                Context context);
 
         @Delete("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> deleteRelationship(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> deleteRelationship(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("relationshipId") String relationshipId,
+                @HeaderParam("If-Match") String ifMatch,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Patch("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsUpdateRelationshipHeaders, Void>> updateRelationship(
-            @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
-            @PathParam("relationshipId") String relationshipId, @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Patch("/digitaltwins/{id}/relationships/{relationshipId}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> updateRelationshipNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("relationshipId") String relationshipId,
-            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsUpdateRelationshipResponse> updateRelationship(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("relationshipId") String relationshipId,
+                @HeaderParam("If-Match") String ifMatch,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
+                Context context);
 
         @Get("/digitaltwins/{id}/relationships")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<RelationshipCollection>> listRelationships(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @QueryParam("relationshipName") String relationshipName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RelationshipCollection>> listRelationships(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @QueryParam("relationshipName") String relationshipName,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Get("/digitaltwins/{id}/incomingrelationships")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<IncomingRelationshipCollection>> listIncomingRelationships(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IncomingRelationshipCollection>> listIncomingRelationships(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Post("/digitaltwins/{id}/telemetry")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> sendTelemetry(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @HeaderParam("Message-Id") String messageId,
-            @HeaderParam("Telemetry-Source-Time") String telemetrySourceTime,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object telemetry,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> sendTelemetry(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @HeaderParam("Message-Id") String messageId,
+                @HeaderParam("Telemetry-Source-Time") String telemetrySourceTime,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") Object telemetry,
+                Context context);
 
         @Post("/digitaltwins/{id}/components/{componentPath}/telemetry")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> sendComponentTelemetry(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @HeaderParam("Message-Id") String messageId,
-            @HeaderParam("Telemetry-Source-Time") String telemetrySourceTime,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object telemetry,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> sendComponentTelemetry(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("componentPath") String componentPath,
+                @HeaderParam("Message-Id") String messageId,
+                @HeaderParam("Telemetry-Source-Time") String telemetrySourceTime,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") Object telemetry,
+                Context context);
 
         @Get("/digitaltwins/{id}/components/{componentPath}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponent(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/digitaltwins/{id}/components/{componentPath}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Object>> getComponentNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsGetComponentResponse> getComponent(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("componentPath") String componentPath,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Patch("/digitaltwins/{id}/components/{componentPath}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DigitalTwinsUpdateComponentHeaders, Void>> updateComponent(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Patch("/digitaltwins/{id}/components/{componentPath}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> updateComponentNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @PathParam("id") String id, @PathParam("componentPath") String componentPath,
-            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<DigitalTwinsUpdateComponentResponse> updateComponent(
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @PathParam("id") String id,
+                @PathParam("componentPath") String componentPath,
+                @HeaderParam("If-Match") String ifMatch,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json-patch+json") JsonPatchDocument patchDocument,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RelationshipCollection>> listRelationshipsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<IncomingRelationshipCollection>> listIncomingRelationshipsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String host,
-            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                Context context);
     }
 
     /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsGetByIdOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getByIdWithResponseAsync(String id,
-        DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getById(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
+     * Retrieves a digital twin. Status codes: * 200 OK * 400 Bad Request * InvalidArgument - The digital twin id is
+     * invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param digitalTwinsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetByIdHeaders, Object>> getByIdWithResponseAsync(String id,
-        DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions, Context context) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsGetByIdResponse> getByIdWithResponseAsync(
+            String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (digitalTwinsGetByIdOptions != null) {
+            digitalTwinsGetByIdOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsGetByIdOptions != null) {
             traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
@@ -371,149 +316,42 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return service.getById(this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), accept,
-            context);
+        return service.getById(
+                this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), context);
     }
 
     /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
+     * Adds or replaces a digital twin. Status codes: * 200 OK * 400 Bad Request * InvalidArgument - The digital twin id
+     * or payload is invalid. * ModelDecommissioned - The model for the digital twin is decommissioned. *
+     * TwinLimitReached - The maximum number of digital twins allowed has been reached. * ValidationFailed - The digital
+     * twin payload is not valid. * 412 Precondition Failed * PreconditionFailed - The precondition check (If-Match or
+     * If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsGetByIdOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
-        return getByIdWithResponseAsync(id, digitalTwinsGetByIdOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsGetByIdOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getByIdAsync(String id, DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions,
-        Context context) {
-        return getByIdWithResponseAsync(id, digitalTwinsGetByIdOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsGetByIdOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getByIdNoCustomHeadersWithResponseAsync(String id,
-        DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getByIdNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Retrieves a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsGetByIdOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getByIdNoCustomHeadersWithResponseAsync(String id,
-        DigitalTwinsGetByIdOptions digitalTwinsGetByIdOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.getByIdNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
+     * @param twin Any object.
      * @param digitalTwinsAddOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> addWithResponseAsync(String id, Object twin,
-        DigitalTwinsAddOptions digitalTwinsAddOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsAddResponse> addWithResponseAsync(
+            String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (twin == null) {
+            return Mono.error(new IllegalArgumentException("Parameter twin is required and cannot be null."));
+        }
+        if (digitalTwinsAddOptions != null) {
+            digitalTwinsAddOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsAddOptions != null) {
             traceparentInternal = digitalTwinsAddOptions.getTraceparent();
@@ -529,217 +367,44 @@ public final class DigitalTwinsImpl {
             ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
         }
         String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.add(this.client.getHost(), traceparent, tracestate, id,
-            ifNoneMatch, this.client.getApiVersion(), twin, accept, context));
+        return service.add(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                twin,
+                context);
     }
 
     /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
-     * @param digitalTwinsAddOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, Object>> addWithResponseAsync(String id, Object twin,
-        DigitalTwinsAddOptions digitalTwinsAddOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            traceparentInternal = digitalTwinsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            tracestateInternal = digitalTwinsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.add(this.client.getHost(), traceparent, tracestate, id, ifNoneMatch, this.client.getApiVersion(),
-            twin, accept, context);
-    }
-
-    /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
-     * @param digitalTwinsAddOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions) {
-        return addWithResponseAsync(id, twin, digitalTwinsAddOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
-     * @param digitalTwinsAddOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addAsync(String id, Object twin, DigitalTwinsAddOptions digitalTwinsAddOptions,
-        Context context) {
-        return addWithResponseAsync(id, twin, digitalTwinsAddOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
-     * @param digitalTwinsAddOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
-        DigitalTwinsAddOptions digitalTwinsAddOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            traceparentInternal = digitalTwinsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            tracestateInternal = digitalTwinsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.addNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, ifNoneMatch, this.client.getApiVersion(), twin, accept, context));
-    }
-
-    /**
-     * Adds or replaces a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * ModelDecommissioned - The model for the digital twin is decommissioned.
-     * * TwinLimitReached - The maximum number of digital twins allowed has been reached.
-     * * ValidationFailed - The digital twin payload is not valid.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param twin The digital twin instance being added. If provided, the $dtId property is ignored.
-     * @param digitalTwinsAddOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addNoCustomHeadersWithResponseAsync(String id, Object twin,
-        DigitalTwinsAddOptions digitalTwinsAddOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            traceparentInternal = digitalTwinsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            tracestateInternal = digitalTwinsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.addNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id, ifNoneMatch,
-            this.client.getApiVersion(), twin, accept, context);
-    }
-
-    /**
-     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * RelationshipsNotDeleted - The digital twin contains relationships.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
+     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted. Status codes: *
+     * 204 No Content * 400 Bad Request * InvalidArgument - The digital twin id is invalid. * RelationshipsNotDeleted -
+     * The digital twin contains relationships. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found.
+     * * 412 Precondition Failed * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param digitalTwinsDeleteOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id,
-        DigitalTwinsDeleteOptions digitalTwinsDeleteOptions) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String id, DigitalTwinsDeleteOptions digitalTwinsDeleteOptions, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (digitalTwinsDeleteOptions != null) {
+            digitalTwinsDeleteOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsDeleteOptions != null) {
             traceparentInternal = digitalTwinsDeleteOptions.getTraceparent();
@@ -755,127 +420,44 @@ public final class DigitalTwinsImpl {
             ifMatchInternal = digitalTwinsDeleteOptions.getIfMatch();
         }
         String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), traceparent, tracestate, id,
-            ifMatch, this.client.getApiVersion(), accept, context));
+        return service.delete(
+                this.client.getHost(), traceparent, tracestate, id, ifMatch, this.client.getApiVersion(), context);
     }
 
     /**
-     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * RelationshipsNotDeleted - The digital twin contains relationships.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
+     * Updates a digital twin. Status codes: * 204 No Content * 400 Bad Request * InvalidArgument - The digital twin id
+     * or payload is invalid. * JsonPatchInvalid - The JSON Patch provided is invalid. * ValidationFailed - Applying the
+     * patch results in an invalid digital twin. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found.
+     * * 412 Precondition Failed * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsDeleteOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, DigitalTwinsDeleteOptions digitalTwinsDeleteOptions,
-        Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            traceparentInternal = digitalTwinsDeleteOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            tracestateInternal = digitalTwinsDeleteOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsDeleteOptions != null) {
-            ifMatchInternal = digitalTwinsDeleteOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.delete(this.client.getHost(), traceparent, tracestate, id, ifMatch, this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * RelationshipsNotDeleted - The digital twin contains relationships.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsDeleteOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String id, DigitalTwinsDeleteOptions digitalTwinsDeleteOptions) {
-        return deleteWithResponseAsync(id, digitalTwinsDeleteOptions).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * RelationshipsNotDeleted - The digital twin contains relationships.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsDeleteOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String id, DigitalTwinsDeleteOptions digitalTwinsDeleteOptions, Context context) {
-        return deleteWithResponseAsync(id, digitalTwinsDeleteOptions, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument Array of any.
      * @param digitalTwinsUpdateOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateHeaders, Void>> updateWithResponseAsync(String id,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateOptions digitalTwinsUpdateOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsUpdateResponse> updateWithResponseAsync(
+            String id,
+            JsonPatchDocument patchDocument,
+            DigitalTwinsUpdateOptions digitalTwinsUpdateOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (patchDocument == null) {
+            return Mono.error(new IllegalArgumentException("Parameter patchDocument is required and cannot be null."));
+        }
+        if (digitalTwinsUpdateOptions != null) {
+            digitalTwinsUpdateOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsUpdateOptions != null) {
             traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
@@ -891,223 +473,50 @@ public final class DigitalTwinsImpl {
             ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
         }
         String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.update(this.client.getHost(), traceparent, tracestate, id,
-            ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return service.update(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                ifMatch,
+                this.client.getApiVersion(),
+                patchDocument,
+                context);
     }
 
     /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateHeaders, Void>> updateWithResponseAsync(String id,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateOptions digitalTwinsUpdateOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            tracestateInternal = digitalTwinsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.update(this.client.getHost(), traceparent, tracestate, id, ifMatch, this.client.getApiVersion(),
-            patchDocument, accept, context);
-    }
-
-    /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String id, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateOptions digitalTwinsUpdateOptions) {
-        return updateWithResponseAsync(id, patchDocument, digitalTwinsUpdateOptions).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String id, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateOptions digitalTwinsUpdateOptions, Context context) {
-        return updateWithResponseAsync(id, patchDocument, digitalTwinsUpdateOptions, context)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(String id, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateOptions digitalTwinsUpdateOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            tracestateInternal = digitalTwinsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
-    }
-
-    /**
-     * Updates a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(String id, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateOptions digitalTwinsUpdateOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            traceparentInternal = digitalTwinsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            tracestateInternal = digitalTwinsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.updateNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id, ifMatch,
-            this.client.getApiVersion(), patchDocument, accept, context);
-    }
-
-    /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
+     * Retrieves a relationship between two digital twins. Status codes: * 200 OK * 400 Bad Request * InvalidArgument -
+     * The digital twin id or relationship id is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was
+     * not found. * RelationshipNotFound - The relationship was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
      * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipByIdWithResponseAsync(
-        String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsGetRelationshipByIdResponse> getRelationshipByIdWithResponseAsync(
+            String id,
+            String relationshipId,
+            DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
+        if (digitalTwinsGetRelationshipByIdOptions != null) {
+            digitalTwinsGetRelationshipByIdOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsGetRelationshipByIdOptions != null) {
             traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
@@ -1118,201 +527,57 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getRelationshipById(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, this.client.getApiVersion(), accept, context));
+        return service.getRelationshipById(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                relationshipId,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
+     * Adds a relationship between two digital twins. Status codes: * 200 OK * 400 Bad Request * InvalidArgument - The
+     * digital twin id, relationship id, or payload is invalid. * InvalidRelationship - The relationship is invalid. *
+     * OperationNotAllowed - The relationship cannot connect to the same digital twin. * ValidationFailed - The
+     * relationship content is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found. *
+     * TargetTwinNotFound - The digital twin target of the relationship was not found. * 412 Precondition Failed *
+     * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetRelationshipByIdHeaders, Object>> getRelationshipByIdWithResponseAsync(
-        String id, String relationshipId, DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions,
-        Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.getRelationshipById(this.client.getHost(), traceparent, tracestate, id, relationshipId,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getRelationshipByIdAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
-        return getRelationshipByIdWithResponseAsync(id, relationshipId, digitalTwinsGetRelationshipByIdOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getRelationshipByIdAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions, Context context) {
-        return getRelationshipByIdWithResponseAsync(id, relationshipId, digitalTwinsGetRelationshipByIdOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getRelationshipByIdNoCustomHeaders(this.client.getHost(),
-            traceparent, tracestate, id, relationshipId, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Retrieves a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsGetRelationshipByIdOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getRelationshipByIdNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsGetRelationshipByIdOptions digitalTwinsGetRelationshipByIdOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            traceparentInternal = digitalTwinsGetRelationshipByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetRelationshipByIdOptions != null) {
-            tracestateInternal = digitalTwinsGetRelationshipByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.getRelationshipByIdNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-            relationshipId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
+     * @param relationship Any object.
      * @param digitalTwinsAddRelationshipOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationshipWithResponseAsync(String id,
-        String relationshipId, Object relationship,
-        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsAddRelationshipResponse> addRelationshipWithResponseAsync(
+            String id,
+            String relationshipId,
+            Object relationship,
+            DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
+        if (relationship == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationship is required and cannot be null."));
+        }
+        if (digitalTwinsAddRelationshipOptions != null) {
+            digitalTwinsAddRelationshipOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsAddRelationshipOptions != null) {
             traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
@@ -1328,242 +593,52 @@ public final class DigitalTwinsImpl {
             ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
         }
         String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(context -> service.addRelationship(this.client.getHost(), traceparent, tracestate,
-            id, relationshipId, ifNoneMatch, this.client.getApiVersion(), relationship, accept, context));
+        return service.addRelationship(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                relationshipId,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                relationship,
+                context);
     }
 
     /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
-     * @param digitalTwinsAddRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddRelationshipHeaders, Object>> addRelationshipWithResponseAsync(String id,
-        String relationshipId, Object relationship,
-        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.addRelationship(this.client.getHost(), traceparent, tracestate, id, relationshipId, ifNoneMatch,
-            this.client.getApiVersion(), relationship, accept, context);
-    }
-
-    /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
-     * @param digitalTwinsAddRelationshipOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addRelationshipAsync(String id, String relationshipId, Object relationship,
-        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
-        return addRelationshipWithResponseAsync(id, relationshipId, relationship, digitalTwinsAddRelationshipOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
-     * @param digitalTwinsAddRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> addRelationshipAsync(String id, String relationshipId, Object relationship,
-        DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
-        return addRelationshipWithResponseAsync(id, relationshipId, relationship, digitalTwinsAddRelationshipOptions,
-            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
-     * @param digitalTwinsAddRelationshipOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        Object relationship, DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(
-            context -> service.addRelationshipNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-                relationshipId, ifNoneMatch, this.client.getApiVersion(), relationship, accept, context));
-    }
-
-    /**
-     * Adds a relationship between two digital twins.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, relationship id, or payload is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * OperationNotAllowed - The relationship cannot connect to the same digital twin.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * TargetTwinNotFound - The digital twin target of the relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param relationship The data for the relationship.
-     * @param digitalTwinsAddRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> addRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        Object relationship, DigitalTwinsAddRelationshipOptions digitalTwinsAddRelationshipOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsAddRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsAddRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifNoneMatchInternal = null;
-        if (digitalTwinsAddRelationshipOptions != null) {
-            ifNoneMatchInternal = digitalTwinsAddRelationshipOptions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.addRelationshipNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-            relationshipId, ifNoneMatch, this.client.getApiVersion(), relationship, accept, context);
-    }
-
-    /**
-     * Deletes a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
+     * Deletes a relationship between two digital twins. Status codes: * 204 No Content * 400 Bad Request *
+     * InvalidArgument - The digital twin id or relationship id is invalid. * 404 Not Found * DigitalTwinNotFound - The
+     * digital twin was not found. * RelationshipNotFound - The relationship was not found. * 412 Precondition Failed *
+     * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
      * @param digitalTwinsDeleteRelationshipOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRelationshipWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> deleteRelationshipWithResponseAsync(
+            String id,
+            String relationshipId,
+            DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
+        if (digitalTwinsDeleteRelationshipOptions != null) {
+            digitalTwinsDeleteRelationshipOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsDeleteRelationshipOptions != null) {
             traceparentInternal = digitalTwinsDeleteRelationshipOptions.getTraceparent();
@@ -1579,140 +654,59 @@ public final class DigitalTwinsImpl {
             ifMatchInternal = digitalTwinsDeleteRelationshipOptions.getIfMatch();
         }
         String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.deleteRelationship(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), accept, context));
+        return service.deleteRelationship(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                relationshipId,
+                ifMatch,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
-     * Deletes a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
+     * Updates the properties on a relationship between two digital twins. Status codes: * 204 No Content * 400 Bad
+     * Request * InvalidArgument - The digital twin id or relationship id is invalid. * InvalidRelationship - The
+     * relationship is invalid. * JsonPatchInvalid - The JSON Patch provided is invalid. * ValidationFailed - The
+     * relationship content is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found. *
+     * RelationshipNotFound - The relationship was not found. * 409 Conflict * RelationshipAlreadyExists - The
+     * relationship already exists. * 412 Precondition Failed * PreconditionFailed - The precondition check (If-Match or
+     * If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsDeleteRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRelationshipWithResponseAsync(String id, String relationshipId,
-        DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsDeleteRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsDeleteRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsDeleteRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsDeleteRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.deleteRelationship(this.client.getHost(), traceparent, tracestate, id, relationshipId, ifMatch,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsDeleteRelationshipOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRelationshipAsync(String id, String relationshipId,
-        DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions) {
-        return deleteRelationshipWithResponseAsync(id, relationshipId, digitalTwinsDeleteRelationshipOptions)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param digitalTwinsDeleteRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRelationshipAsync(String id, String relationshipId,
-        DigitalTwinsDeleteRelationshipOptions digitalTwinsDeleteRelationshipOptions, Context context) {
-        return deleteRelationshipWithResponseAsync(id, relationshipId, digitalTwinsDeleteRelationshipOptions, context)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument Array of any.
      * @param digitalTwinsUpdateRelationshipOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateRelationshipHeaders, Void>> updateRelationshipWithResponseAsync(
-        String id, String relationshipId, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsUpdateRelationshipResponse> updateRelationshipWithResponseAsync(
+            String id,
+            String relationshipId,
+            JsonPatchDocument patchDocument,
+            DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (relationshipId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter relationshipId is required and cannot be null."));
+        }
+        if (patchDocument == null) {
+            return Mono.error(new IllegalArgumentException("Parameter patchDocument is required and cannot be null."));
+        }
+        if (digitalTwinsUpdateRelationshipOptions != null) {
+            digitalTwinsUpdateRelationshipOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsUpdateRelationshipOptions != null) {
             traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
@@ -1728,238 +722,22 @@ public final class DigitalTwinsImpl {
             ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
         }
         String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateRelationship(this.client.getHost(), traceparent,
-            tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
+        return service.updateRelationship(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                relationshipId,
+                ifMatch,
+                this.client.getApiVersion(),
+                patchDocument,
+                context);
     }
 
     /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateRelationshipHeaders, Void>> updateRelationshipWithResponseAsync(
-        String id, String relationshipId, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsUpdateRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.updateRelationship(this.client.getHost(), traceparent, tracestate, id, relationshipId, ifMatch,
-            this.client.getApiVersion(), patchDocument, accept, context);
-    }
-
-    /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateRelationshipOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateRelationshipAsync(String id, String relationshipId, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions) {
-        return updateRelationshipWithResponseAsync(id, relationshipId, patchDocument,
-            digitalTwinsUpdateRelationshipOptions).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateRelationshipAsync(String id, String relationshipId, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions, Context context) {
-        return updateRelationshipWithResponseAsync(id, relationshipId, patchDocument,
-            digitalTwinsUpdateRelationshipOptions, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateRelationshipOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsUpdateRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil
-            .withContext(context -> service.updateRelationshipNoCustomHeaders(this.client.getHost(), traceparent,
-                tracestate, id, relationshipId, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
-    }
-
-    /**
-     * Updates the properties on a relationship between two digital twins.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or relationship id is invalid.
-     * * InvalidRelationship - The relationship is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - The relationship content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * RelationshipNotFound - The relationship was not found.
-     * * 409 Conflict
-     * * RelationshipAlreadyExists - The relationship already exists.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateRelationshipOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateRelationshipNoCustomHeadersWithResponseAsync(String id, String relationshipId,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateRelationshipOptions digitalTwinsUpdateRelationshipOptions,
-        Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            traceparentInternal = digitalTwinsUpdateRelationshipOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            tracestateInternal = digitalTwinsUpdateRelationshipOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateRelationshipOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateRelationshipOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.updateRelationshipNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id,
-            relationshipId, ifMatch, this.client.getApiVersion(), patchDocument, accept, context);
-    }
-
-    /**
-     * Retrieves the relationships from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
+     * Retrieves the relationships from a digital twin. Status codes: * 200 OK * 400 Bad Request * InvalidArgument - The
+     * digital twin id is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipName The name of the relationship.
      * @param digitalTwinsListRelationshipsOptions Parameter group.
@@ -1967,13 +745,24 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of relationships which relate digital twins together along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a collection of relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Object>> listRelationshipsSinglePageAsync(String id, String relationshipName,
-        DigitalTwinsListRelationshipsOptions digitalTwinsListRelationshipsOptions, Context context) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<Object>> listRelationshipsSinglePageAsync(
+            String id,
+            String relationshipName,
+            DigitalTwinsListRelationshipsOptions digitalTwinsListRelationshipsOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (digitalTwinsListRelationshipsOptions != null) {
+            digitalTwinsListRelationshipsOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsListRelationshipsOptions != null) {
             traceparentInternal = digitalTwinsListRelationshipsOptions.getTraceparent();
@@ -1984,62 +773,53 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsListRelationshipsOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return service
-            .listRelationships(this.client.getHost(), traceparent, tracestate, id, relationshipName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return service.listRelationships(
+                        this.client.getHost(),
+                        traceparent,
+                        tracestate,
+                        id,
+                        relationshipName,
+                        this.client.getApiVersion(),
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
-     * Retrieves the relationships from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param relationshipName The name of the relationship.
-     * @param digitalTwinsListRelationshipsOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of relationships which relate digital twins together as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Object> listRelationshipsAsync(String id, String relationshipName,
-        DigitalTwinsListRelationshipsOptions digitalTwinsListRelationshipsOptions, Context context) {
-        return new PagedFlux<>(
-            () -> listRelationshipsSinglePageAsync(id, relationshipName, digitalTwinsListRelationshipsOptions, context),
-            nextLink -> listRelationshipsNextSinglePageAsync(nextLink, digitalTwinsListRelationshipsOptions, context));
-    }
-
-    /**
-     * Retrieves all incoming relationship for a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
+     * Retrieves all incoming relationship for a digital twin. Status codes: * 200 OK * 400 Bad Request *
+     * InvalidArgument - The digital twin id is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was
+     * not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param digitalTwinsListIncomingRelationshipsOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of incoming relationships which relate digital twins together along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a collection of incoming relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsSinglePageAsync(String id,
-        DigitalTwinsListIncomingRelationshipsOptions digitalTwinsListIncomingRelationshipsOptions, Context context) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsSinglePageAsync(
+            String id,
+            DigitalTwinsListIncomingRelationshipsOptions digitalTwinsListIncomingRelationshipsOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (digitalTwinsListIncomingRelationshipsOptions != null) {
+            digitalTwinsListIncomingRelationshipsOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsListIncomingRelationshipsOptions != null) {
             traceparentInternal = digitalTwinsListIncomingRelationshipsOptions.getTraceparent();
@@ -2050,65 +830,60 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsListIncomingRelationshipsOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return service
-            .listIncomingRelationships(this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(),
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return service.listIncomingRelationships(
+                        this.client.getHost(), traceparent, tracestate, id, this.client.getApiVersion(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
-     * Retrieves all incoming relationship for a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
+     * Sends telemetry on behalf of a digital twin. Status codes: * 204 No Content * 400 Bad Request * InvalidArgument -
+     * The digital twin id or message id is invalid. * ValidationFailed - The telemetry content is invalid. * 404 Not
+     * Found * DigitalTwinNotFound - The digital twin was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param digitalTwinsListIncomingRelationshipsOptions Parameter group.
+     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
+     *     de-duplicating messages.
+     * @param telemetry Any object.
+     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
+     * @param digitalTwinsSendTelemetryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of incoming relationships which relate digital twins together as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IncomingRelationship> listIncomingRelationshipsAsync(String id,
-        DigitalTwinsListIncomingRelationshipsOptions digitalTwinsListIncomingRelationshipsOptions, Context context) {
-        return new PagedFlux<>(
-            () -> listIncomingRelationshipsSinglePageAsync(id, digitalTwinsListIncomingRelationshipsOptions, context),
-            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink,
-                digitalTwinsListIncomingRelationshipsOptions, context));
-    }
-
-    /**
-     * Sends telemetry on behalf of a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or message id is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendTelemetryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTelemetryWithResponseAsync(String id, String messageId, Object telemetry,
-        String telemetrySourceTime, DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> sendTelemetryWithResponseAsync(
+            String id,
+            String messageId,
+            Object telemetry,
+            String telemetrySourceTime,
+            DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (messageId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter messageId is required and cannot be null."));
+        }
+        if (telemetry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter telemetry is required and cannot be null."));
+        }
+        if (digitalTwinsSendTelemetryOptions != null) {
+            digitalTwinsSendTelemetryOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsSendTelemetryOptions != null) {
             traceparentInternal = digitalTwinsSendTelemetryOptions.getTraceparent();
@@ -2119,136 +894,65 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsSendTelemetryOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.sendTelemetry(this.client.getHost(), traceparent, tracestate, id,
-            messageId, telemetrySourceTime, this.client.getApiVersion(), telemetry, accept, context));
+        return service.sendTelemetry(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                messageId,
+                telemetrySourceTime,
+                this.client.getApiVersion(),
+                telemetry,
+                context);
     }
 
     /**
-     * Sends telemetry on behalf of a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or message id is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendTelemetryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTelemetryWithResponseAsync(String id, String messageId, Object telemetry,
-        String telemetrySourceTime, DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions,
-        Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsSendTelemetryOptions != null) {
-            traceparentInternal = digitalTwinsSendTelemetryOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsSendTelemetryOptions != null) {
-            tracestateInternal = digitalTwinsSendTelemetryOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.sendTelemetry(this.client.getHost(), traceparent, tracestate, id, messageId, telemetrySourceTime,
-            this.client.getApiVersion(), telemetry, accept, context);
-    }
-
-    /**
-     * Sends telemetry on behalf of a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or message id is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendTelemetryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTelemetryAsync(String id, String messageId, Object telemetry, String telemetrySourceTime,
-        DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions) {
-        return sendTelemetryWithResponseAsync(id, messageId, telemetry, telemetrySourceTime,
-            digitalTwinsSendTelemetryOptions).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Sends telemetry on behalf of a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or message id is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendTelemetryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTelemetryAsync(String id, String messageId, Object telemetry, String telemetrySourceTime,
-        DigitalTwinsSendTelemetryOptions digitalTwinsSendTelemetryOptions, Context context) {
-        return sendTelemetryWithResponseAsync(id, messageId, telemetry, telemetrySourceTime,
-            digitalTwinsSendTelemetryOptions, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Sends telemetry on behalf of a component in a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, message id, or component path is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
+     * Sends telemetry on behalf of a component in a digital twin. Status codes: * 204 No Content * 400 Bad Request *
+     * InvalidArgument - The digital twin id, message id, or component path is invalid. * ValidationFailed - The
+     * telemetry content is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not found. *
+     * ComponentNotFound - The component path was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
      * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin's component.
+     *     de-duplicating messages.
+     * @param telemetry Any object.
      * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
      * @param digitalTwinsSendComponentTelemetryOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(String id, String componentPath,
-        String messageId, Object telemetry, String telemetrySourceTime,
-        DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(
+            String id,
+            String componentPath,
+            String messageId,
+            Object telemetry,
+            String telemetrySourceTime,
+            DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
+        if (messageId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter messageId is required and cannot be null."));
+        }
+        if (telemetry == null) {
+            return Mono.error(new IllegalArgumentException("Parameter telemetry is required and cannot be null."));
+        }
+        if (digitalTwinsSendComponentTelemetryOptions != null) {
+            digitalTwinsSendComponentTelemetryOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsSendComponentTelemetryOptions != null) {
             traceparentInternal = digitalTwinsSendComponentTelemetryOptions.getTraceparent();
@@ -2259,139 +963,52 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsSendComponentTelemetryOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return FluxUtil.withContext(
-            context -> service.sendComponentTelemetry(this.client.getHost(), traceparent, tracestate, id, componentPath,
-                messageId, telemetrySourceTime, this.client.getApiVersion(), telemetry, accept, context));
+        return service.sendComponentTelemetry(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                componentPath,
+                messageId,
+                telemetrySourceTime,
+                this.client.getApiVersion(),
+                telemetry,
+                context);
     }
 
     /**
-     * Sends telemetry on behalf of a component in a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, message id, or component path is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin's component.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendComponentTelemetryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(String id, String componentPath,
-        String messageId, Object telemetry, String telemetrySourceTime,
-        DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsSendComponentTelemetryOptions != null) {
-            traceparentInternal = digitalTwinsSendComponentTelemetryOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsSendComponentTelemetryOptions != null) {
-            tracestateInternal = digitalTwinsSendComponentTelemetryOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.sendComponentTelemetry(this.client.getHost(), traceparent, tracestate, id, componentPath,
-            messageId, telemetrySourceTime, this.client.getApiVersion(), telemetry, accept, context);
-    }
-
-    /**
-     * Sends telemetry on behalf of a component in a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, message id, or component path is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin's component.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendComponentTelemetryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendComponentTelemetryAsync(String id, String componentPath, String messageId, Object telemetry,
-        String telemetrySourceTime,
-        DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions) {
-        return sendComponentTelemetryWithResponseAsync(id, componentPath, messageId, telemetry, telemetrySourceTime,
-            digitalTwinsSendComponentTelemetryOptions).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Sends telemetry on behalf of a component in a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, message id, or component path is invalid.
-     * * ValidationFailed - The telemetry content is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param messageId A unique message identifier (in the scope of the digital twin id) that is commonly used for
-     * de-duplicating messages.
-     * @param telemetry The telemetry measurements to send from the digital twin's component.
-     * @param telemetrySourceTime An RFC 3339 timestamp that identifies the time the telemetry was measured.
-     * @param digitalTwinsSendComponentTelemetryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendComponentTelemetryAsync(String id, String componentPath, String messageId, Object telemetry,
-        String telemetrySourceTime, DigitalTwinsSendComponentTelemetryOptions digitalTwinsSendComponentTelemetryOptions,
-        Context context) {
-        return sendComponentTelemetryWithResponseAsync(id, componentPath, messageId, telemetry, telemetrySourceTime,
-            digitalTwinsSendComponentTelemetryOptions, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
+     * Retrieves a component from a digital twin. Status codes: * 200 OK * 400 Bad Request * InvalidArgument - The
+     * digital twin id or component path is invalid. * 404 Not Found * DigitalTwinNotFound - The digital twin was not
+     * found. * ComponentNotFound - The component path was not found.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
      * @param digitalTwinsGetComponentOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponentWithResponseAsync(String id,
-        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsGetComponentResponse> getComponentWithResponseAsync(
+            String id,
+            String componentPath,
+            DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
+        if (digitalTwinsGetComponentOptions != null) {
+            digitalTwinsGetComponentOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsGetComponentOptions != null) {
             traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
@@ -2402,198 +1019,56 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getComponent(this.client.getHost(), traceparent, tracestate, id,
-            componentPath, this.client.getApiVersion(), accept, context));
+        return service.getComponent(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                componentPath,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
+     * Updates a component on a digital twin. Status codes: * 204 No Content * 400 Bad Request * InvalidArgument - The
+     * digital twin id, component path, or payload is invalid. * JsonPatchInvalid - The JSON Patch provided is invalid.
+     * * ValidationFailed - Applying the patch results in an invalid digital twin. * 404 Not Found * DigitalTwinNotFound
+     * - The digital twin was not found. * 412 Precondition Failed * PreconditionFailed - The precondition check
+     * (If-Match or If-None-Match) failed.
+     *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
-     * @param digitalTwinsGetComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsGetComponentHeaders, Object>> getComponentWithResponseAsync(String id,
-        String componentPath, DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.getComponent(this.client.getHost(), traceparent, tracestate, id, componentPath,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param digitalTwinsGetComponentOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getComponentAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
-        return getComponentWithResponseAsync(id, componentPath, digitalTwinsGetComponentOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param digitalTwinsGetComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getComponentAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
-        return getComponentWithResponseAsync(id, componentPath, digitalTwinsGetComponentOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param digitalTwinsGetComponentOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getComponentNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, id, componentPath, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Retrieves a component from a digital twin.
-     * Status codes:
-     * * 200 OK
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id or component path is invalid.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * ComponentNotFound - The component path was not found.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param digitalTwinsGetComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        DigitalTwinsGetComponentOptions digitalTwinsGetComponentOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            traceparentInternal = digitalTwinsGetComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsGetComponentOptions != null) {
-            tracestateInternal = digitalTwinsGetComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return service.getComponentNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id, componentPath,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
+     * @param patchDocument Array of any.
      * @param digitalTwinsUpdateComponentOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateComponentHeaders, Void>> updateComponentWithResponseAsync(String id,
-        String componentPath, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions) {
-        final String accept = "application/json";
+    public Mono<DigitalTwinsUpdateComponentResponse> updateComponentWithResponseAsync(
+            String id,
+            String componentPath,
+            JsonPatchDocument patchDocument,
+            DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (componentPath == null) {
+            return Mono.error(new IllegalArgumentException("Parameter componentPath is required and cannot be null."));
+        }
+        if (patchDocument == null) {
+            return Mono.error(new IllegalArgumentException("Parameter patchDocument is required and cannot be null."));
+        }
+        if (digitalTwinsUpdateComponentOptions != null) {
+            digitalTwinsUpdateComponentOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsUpdateComponentOptions != null) {
             traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
@@ -2609,227 +1084,44 @@ public final class DigitalTwinsImpl {
             ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
         }
         String ifMatch = ifMatchInternal;
-        return FluxUtil.withContext(context -> service.updateComponent(this.client.getHost(), traceparent, tracestate,
-            id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsUpdateComponentHeaders, Void>> updateComponentWithResponseAsync(String id,
-        String componentPath, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions, Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            tracestateInternal = digitalTwinsUpdateComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.updateComponent(this.client.getHost(), traceparent, tracestate, id, componentPath, ifMatch,
-            this.client.getApiVersion(), patchDocument, accept, context);
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateComponentOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateComponentAsync(String id, String componentPath, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions) {
-        return updateComponentWithResponseAsync(id, componentPath, patchDocument, digitalTwinsUpdateComponentOptions)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateComponentAsync(String id, String componentPath, JsonPatchDocument patchDocument,
-        DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions, Context context) {
-        return updateComponentWithResponseAsync(id, componentPath, patchDocument, digitalTwinsUpdateComponentOptions,
-            context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateComponentOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            tracestateInternal = digitalTwinsUpdateComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return FluxUtil
-            .withContext(context -> service.updateComponentNoCustomHeaders(this.client.getHost(), traceparent,
-                tracestate, id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, accept, context));
-    }
-
-    /**
-     * Updates a component on a digital twin.
-     * Status codes:
-     * * 204 No Content
-     * * 400 Bad Request
-     * * InvalidArgument - The digital twin id, component path, or payload is invalid.
-     * * JsonPatchInvalid - The JSON Patch provided is invalid.
-     * * ValidationFailed - Applying the patch results in an invalid digital twin.
-     * * 404 Not Found
-     * * DigitalTwinNotFound - The digital twin was not found.
-     * * 412 Precondition Failed
-     * * PreconditionFailed - The precondition check (If-Match or If-None-Match) failed.
-     * 
-     * @param id The id of the digital twin. The id is unique within the service and case sensitive.
-     * @param componentPath The name of the DTDL component.
-     * @param patchDocument Array of AnyObject.
-     * @param digitalTwinsUpdateComponentOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateComponentNoCustomHeadersWithResponseAsync(String id, String componentPath,
-        JsonPatchDocument patchDocument, DigitalTwinsUpdateComponentOptions digitalTwinsUpdateComponentOptions,
-        Context context) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            traceparentInternal = digitalTwinsUpdateComponentOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            tracestateInternal = digitalTwinsUpdateComponentOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        String ifMatchInternal = null;
-        if (digitalTwinsUpdateComponentOptions != null) {
-            ifMatchInternal = digitalTwinsUpdateComponentOptions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        return service.updateComponentNoCustomHeaders(this.client.getHost(), traceparent, tracestate, id, componentPath,
-            ifMatch, this.client.getApiVersion(), patchDocument, accept, context);
+        return service.updateComponent(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                id,
+                componentPath,
+                ifMatch,
+                this.client.getApiVersion(),
+                patchDocument,
+                context);
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The nextLink parameter.
      * @param digitalTwinsListRelationshipsOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of relationships which relate digital twins together along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a collection of relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Object>> listRelationshipsNextSinglePageAsync(String nextLink,
-        DigitalTwinsListRelationshipsOptions digitalTwinsListRelationshipsOptions, Context context) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<Object>> listRelationshipsNextSinglePageAsync(
+            String nextLink,
+            DigitalTwinsListRelationshipsOptions digitalTwinsListRelationshipsOptions,
+            Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinsListRelationshipsOptions != null) {
+            digitalTwinsListRelationshipsOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsListRelationshipsOptions != null) {
             traceparentInternal = digitalTwinsListRelationshipsOptions.getTraceparent();
@@ -2840,29 +1132,44 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsListRelationshipsOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return service.listRelationshipsNext(nextLink, this.client.getHost(), traceparent, tracestate, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return service.listRelationshipsNext(nextLink, this.client.getHost(), traceparent, tracestate, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The nextLink parameter.
      * @param digitalTwinsListIncomingRelationshipsOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of incoming relationships which relate digital twins together along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a collection of incoming relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink,
-        DigitalTwinsListIncomingRelationshipsOptions digitalTwinsListIncomingRelationshipsOptions, Context context) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(
+            String nextLink,
+            DigitalTwinsListIncomingRelationshipsOptions digitalTwinsListIncomingRelationshipsOptions,
+            Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinsListIncomingRelationshipsOptions != null) {
+            digitalTwinsListIncomingRelationshipsOptions.validate();
+        }
         String traceparentInternal = null;
         if (digitalTwinsListIncomingRelationshipsOptions != null) {
             traceparentInternal = digitalTwinsListIncomingRelationshipsOptions.getTraceparent();
@@ -2873,9 +1180,15 @@ public final class DigitalTwinsImpl {
             tracestateInternal = digitalTwinsListIncomingRelationshipsOptions.getTracestate();
         }
         String tracestate = tracestateInternal;
-        return service
-            .listIncomingRelationshipsNext(nextLink, this.client.getHost(), traceparent, tracestate, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return service.listIncomingRelationshipsNext(nextLink, this.client.getHost(), traceparent, tracestate, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

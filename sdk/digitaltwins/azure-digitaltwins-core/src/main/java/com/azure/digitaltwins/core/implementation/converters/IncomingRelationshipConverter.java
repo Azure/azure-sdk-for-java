@@ -15,13 +15,15 @@ public final class IncomingRelationshipConverter {
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.IncomingRelationship} to
      * {@link IncomingRelationship}. If the input is null, then the output will be null as well.
      */
-    public static IncomingRelationship
-        map(com.azure.digitaltwins.core.implementation.models.IncomingRelationship input) {
+    public static IncomingRelationship map(com.azure.digitaltwins.core.implementation.models.IncomingRelationship input) {
         if (input == null) {
             return null;
         }
 
-        return new IncomingRelationship(input.getRelationshipId(), input.getSourceId(), input.getRelationshipName(),
+        return new IncomingRelationship(
+            input.getRelationshipId(),
+            input.getSourceId(),
+            input.getRelationshipName(),
             input.getRelationshipLink());
     }
 
@@ -29,14 +31,12 @@ public final class IncomingRelationshipConverter {
      * Maps from {@link IncomingRelationship} to
      * {@link com.azure.digitaltwins.core.implementation.models.IncomingRelationship}. If the input is null, then the output will be null as well.
      */
-    public static com.azure.digitaltwins.core.implementation.models.IncomingRelationship
-        map(IncomingRelationship input) {
+    public static com.azure.digitaltwins.core.implementation.models.IncomingRelationship map(IncomingRelationship input) {
         if (input == null) {
             return null;
         }
 
-        com.azure.digitaltwins.core.implementation.models.IncomingRelationship mappedIncomingRelationship
-            = new com.azure.digitaltwins.core.implementation.models.IncomingRelationship();
+        com.azure.digitaltwins.core.implementation.models.IncomingRelationship mappedIncomingRelationship = new com.azure.digitaltwins.core.implementation.models.IncomingRelationship();
         mappedIncomingRelationship.setRelationshipId(input.getRelationshipId());
         mappedIncomingRelationship.setSourceId(input.getSourceId());
         mappedIncomingRelationship.setRelationshipName(input.getRelationshipName());
@@ -44,6 +44,5 @@ public final class IncomingRelationshipConverter {
         return mappedIncomingRelationship;
     }
 
-    private IncomingRelationshipConverter() {
-    }
+    private IncomingRelationshipConverter() { }
 }

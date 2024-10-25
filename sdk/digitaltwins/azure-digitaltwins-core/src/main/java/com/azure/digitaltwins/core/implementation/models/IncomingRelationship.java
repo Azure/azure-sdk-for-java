@@ -5,47 +5,41 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An incoming relationship.
- */
+/** An incoming relationship. */
 @Fluent
-public final class IncomingRelationship implements JsonSerializable<IncomingRelationship> {
+public final class IncomingRelationship {
     /*
-     * A user-provided string representing the id of this relationship, unique in the context of the source digital twin, i.e. sourceId + relationshipId is unique in the context of the service.
+     * A user-provided string representing the id of this relationship, unique
+     * in the context of the source digital twin, i.e. sourceId +
+     * relationshipId is unique in the context of the service.
      */
+    @JsonProperty(value = "$relationshipId")
     private String relationshipId;
 
     /*
      * The id of the source digital twin.
      */
+    @JsonProperty(value = "$sourceId")
     private String sourceId;
 
     /*
      * The name of the relationship.
      */
+    @JsonProperty(value = "$relationshipName")
     private String relationshipName;
 
     /*
      * Link to the relationship, to be used for deletion.
      */
+    @JsonProperty(value = "$relationshipLink")
     private String relationshipLink;
-
-    /**
-     * Creates an instance of IncomingRelationship class.
-     */
-    public IncomingRelationship() {
-    }
 
     /**
      * Get the relationshipId property: A user-provided string representing the id of this relationship, unique in the
      * context of the source digital twin, i.e. sourceId + relationshipId is unique in the context of the service.
-     * 
+     *
      * @return the relationshipId value.
      */
     public String getRelationshipId() {
@@ -55,7 +49,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
     /**
      * Set the relationshipId property: A user-provided string representing the id of this relationship, unique in the
      * context of the source digital twin, i.e. sourceId + relationshipId is unique in the context of the service.
-     * 
+     *
      * @param relationshipId the relationshipId value to set.
      * @return the IncomingRelationship object itself.
      */
@@ -66,7 +60,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Get the sourceId property: The id of the source digital twin.
-     * 
+     *
      * @return the sourceId value.
      */
     public String getSourceId() {
@@ -75,7 +69,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Set the sourceId property: The id of the source digital twin.
-     * 
+     *
      * @param sourceId the sourceId value to set.
      * @return the IncomingRelationship object itself.
      */
@@ -86,7 +80,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Get the relationshipName property: The name of the relationship.
-     * 
+     *
      * @return the relationshipName value.
      */
     public String getRelationshipName() {
@@ -95,7 +89,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Set the relationshipName property: The name of the relationship.
-     * 
+     *
      * @param relationshipName the relationshipName value to set.
      * @return the IncomingRelationship object itself.
      */
@@ -106,7 +100,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Get the relationshipLink property: Link to the relationship, to be used for deletion.
-     * 
+     *
      * @return the relationshipLink value.
      */
     public String getRelationshipLink() {
@@ -115,7 +109,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
 
     /**
      * Set the relationshipLink property: Link to the relationship, to be used for deletion.
-     * 
+     *
      * @param relationshipLink the relationshipLink value to set.
      * @return the IncomingRelationship object itself.
      */
@@ -125,47 +119,9 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
     }
 
     /**
-     * {@inheritDoc}
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("$relationshipId", this.relationshipId);
-        jsonWriter.writeStringField("$sourceId", this.sourceId);
-        jsonWriter.writeStringField("$relationshipName", this.relationshipName);
-        jsonWriter.writeStringField("$relationshipLink", this.relationshipLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of IncomingRelationship from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IncomingRelationship if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the IncomingRelationship.
-     */
-    public static IncomingRelationship fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            IncomingRelationship deserializedIncomingRelationship = new IncomingRelationship();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("$relationshipId".equals(fieldName)) {
-                    deserializedIncomingRelationship.relationshipId = reader.getString();
-                } else if ("$sourceId".equals(fieldName)) {
-                    deserializedIncomingRelationship.sourceId = reader.getString();
-                } else if ("$relationshipName".equals(fieldName)) {
-                    deserializedIncomingRelationship.relationshipName = reader.getString();
-                } else if ("$relationshipLink".equals(fieldName)) {
-                    deserializedIncomingRelationship.relationshipLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedIncomingRelationship;
-        });
-    }
+    public void validate() {}
 }
