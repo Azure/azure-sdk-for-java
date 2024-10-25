@@ -207,10 +207,6 @@ public class ModelHelper {
         properties.setPaidBurstingEnabled(sharePropertiesInternal.isPaidBurstingEnabled());
         properties.setPaidBurstingMaxIops(sharePropertiesInternal.getPaidBurstingMaxIops());
         properties.setPaidBurstingMaxBandwidthMibps(sharePropertiesInternal.getPaidBurstingMaxBandwidthMibps());
-        properties.setIncludedBurstIops(sharePropertiesInternal.getIncludedBurstIops());
-        properties.setMaxBurstCreditsForIops(sharePropertiesInternal.getMaxBurstCreditsForIops());
-        properties.setNextAllowedProvisionedIopsDowngradeTime(sharePropertiesInternal.getNextAllowedProvisionedIopsDowngradeTime());
-        properties.setNextAllowedProvisionedBandwidthDowngradeTime(sharePropertiesInternal.getNextAllowedProvisionedBandwidthDowngradeTime());
 
         return properties;
     }
@@ -472,11 +468,7 @@ public class ModelHelper {
             .setPaidBurstingEnabled(headers.isXMsSharePaidBurstingEnabled())
             .setPaidBurstingMaxIops(headers.getXMsSharePaidBurstingMaxIops())
             .setPaidBurstingMaxBandwidthMibps(headers.getXMsSharePaidBurstingMaxBandwidthMibps())
-            .setRootSquash(headers.getXMsRootSquash())
-            .setIncludedBurstIops(headers.getXMsShareIncludedBurstIops())
-            .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
-            .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
-            .setNextAllowedProvisionedBandwidthDowngradeTime(headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+            .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);
     }

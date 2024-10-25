@@ -366,8 +366,7 @@ public class ShareClient {
             .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
                 finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
-                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(),
-                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), finalContext);
+                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -892,8 +891,7 @@ public class ShareClient {
             .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
                 requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), finalContext);
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }

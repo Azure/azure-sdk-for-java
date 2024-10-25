@@ -50,11 +50,6 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-    protected static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS = HttpHeaderName
-        .fromString("x-ms-share-provisioned-iops");
-    protected static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS = HttpHeaderName
-        .fromString("x-ms-share-provisioned-bandwidth-mibps");
-
 
     protected String prefix;
 

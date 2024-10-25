@@ -689,8 +689,7 @@ public class ShareFileClient {
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
-     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * SyncPoller&lt;ShareFileCopyInfo, Void&gt; poller = fileClient.beginCopy&#40;
      *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
@@ -767,10 +766,9 @@ public class ShareFileClient {
         Function<PollingContext<ShareFileCopyInfo>, PollResponse<ShareFileCopyInfo>> syncActivationOperation =
             (pollingContext) -> {
                 ResponseBase<FilesStartCopyHeaders, Void> response = azureFileStorageClient.getFiles()
-                    .startCopyWithResponse(shareName, filePath, copySource, null,
-                        options.getMetadata(), options.getFilePermission(), options.getFilePermissionFormat(),
-                        tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(), copyFileSmbInfo,
-                        null);
+                    .startCopyWithResponse(shareName, filePath, copySource, null, options.getMetadata(),
+                        options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
+                        finalRequestConditions.getLeaseId(), copyFileSmbInfo, null);
 
                 FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                 copyId.set(headers.getXMsCopyId());
@@ -2385,8 +2383,7 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .uploadRangeWithResponse(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR, 0L, null,
-                null, finalRequestConditions.getLeaseId(), null, null,
-                null, null, finalContext);
+                null, finalRequestConditions.getLeaseId(), null, null, finalContext);
 
         return ModelHelper.transformUploadResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
