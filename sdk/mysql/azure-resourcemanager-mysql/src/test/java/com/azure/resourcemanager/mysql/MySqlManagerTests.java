@@ -27,11 +27,13 @@ import com.azure.resourcemanager.mysql.models.SkuTier;
 import com.azure.resourcemanager.mysql.models.SslEnforcementEnum;
 import com.azure.resourcemanager.mysql.models.StorageProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.Provider;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.UUID;
 
@@ -57,8 +59,9 @@ public class MySqlManagerTests extends TestProxyTestBase {
         mysqlManager = MySqlManager
             .configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
+
+        registerProvider(resourceManager, "Microsoft.DBforMySQL");
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -127,5 +130,24 @@ public class MySqlManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    /**
+     * The provided server type value 'Azure Database for MySQL - Single Server' is invalid.
+     * So add function for registration provider.
+     *
+     * @param resourceManager the resource manager
+     * @param resourceProviderNamespace the namespace of resource provider
+     */
+    private static void registerProvider(ResourceManager resourceManager, String resourceProviderNamespace) {
+        Provider provider = resourceManager.providers().getByName(resourceProviderNamespace);
+        if (!"Registered".equalsIgnoreCase(provider.registrationState())
+            && !"Registering".equalsIgnoreCase(provider.registrationState())) {
+            provider = resourceManager.providers().register(resourceProviderNamespace);
+        }
+        while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+            provider = resourceManager.providers().getByName(resourceProviderNamespace);
+        }
     }
 }
