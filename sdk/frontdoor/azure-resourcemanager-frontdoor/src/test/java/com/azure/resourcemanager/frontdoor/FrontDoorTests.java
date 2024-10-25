@@ -52,15 +52,15 @@ public class FrontDoorTests extends TestProxyTestBase {
     public void frontDoorTest() {
         TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-
+        
         ResourceManager resourceManager = ResourceManager.configure()
             .authenticate(credential, profile)
             .withDefaultSubscription();
-
+        
         StorageManager storageManager = StorageManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-
+        
         FrontDoorManager manager = FrontDoorManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
