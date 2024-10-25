@@ -57,80 +57,70 @@ public final class ManageVirtualMachine {
 
             // Prepare a creatable data disk for VM
             //
-            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(100);
+            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(100);
 
             // Create a data disk to attach to VM
             //
             Disk dataDisk = azureResourceManager.disks()
-                    .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                        .withRegion(region)
-                        .withNewResourceGroup(rgName)
-                        .withData()
-                        .withSizeInGB(50)
-                        .create();
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(50)
+                .create();
 
             System.out.println("Creating a Windows VM");
 
             Date t1 = new Date();
 
             VirtualMachine windowsVM = azureResourceManager.virtualMachines()
-                    .define(windowsVMName)
-                        .withRegion(region)
-                        .withNewResourceGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUsername(userName)
-                        .withAdminPassword(password)
-                        .withNewDataDisk(10)
-                        .withNewDataDisk(dataDiskCreatable)
-                        .withExistingDataDisk(dataDisk)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .create();
+                .define(windowsVMName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(userName)
+                .withAdminPassword(password)
+                .withNewDataDisk(10)
+                .withNewDataDisk(dataDiskCreatable)
+                .withExistingDataDisk(dataDisk)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
+            System.out
+                .println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
             // Print virtual machine details
             Utils.print(windowsVM);
-
 
             //=============================================================
             // Update - Tag the virtual machine
 
-            windowsVM.update()
-                    .withTag("who-rocks", "java")
-                    .withTag("where", "on azure")
-                    .apply();
+            windowsVM.update().withTag("who-rocks", "java").withTag("where", "on azure").apply();
 
             System.out.println("Tagged VM: " + windowsVM.id());
-
 
             //=============================================================
             // Update - Add data disk
 
-            windowsVM.update()
-                    .withNewDataDisk(10)
-                    .apply();
-
+            windowsVM.update().withNewDataDisk(10).apply();
 
             System.out.println("Added a data disk to VM" + windowsVM.id());
             Utils.print(windowsVM);
 
-
             //=============================================================
             // Update - detach data disk
 
-            windowsVM.update()
-                    .withoutDataDisk(0)
-                    .apply();
+            windowsVM.update().withoutDataDisk(0).apply();
 
             System.out.println("Detached data disk at lun 0 from VM " + windowsVM.id());
-
 
             //=============================================================
             // Restart the virtual machine
@@ -140,7 +130,6 @@ public final class ManageVirtualMachine {
             windowsVM.restart();
 
             System.out.println("Restarted VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
-
 
             //=============================================================
             // Stop (powerOff) the virtual machine
@@ -154,25 +143,24 @@ public final class ManageVirtualMachine {
             // Get the network where Windows VM is hosted
             Network network = windowsVM.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
-
             //=============================================================
             // Create a Linux VM in the same virtual network
 
             System.out.println("Creating a Linux VM in the network");
 
             VirtualMachine linuxVM = azureResourceManager.virtualMachines()
-                    .define(linuxVMName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withSsh(sshPublicKey)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .create();
+                .define(linuxVMName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());
             Utils.print(linuxVM);
@@ -184,7 +172,8 @@ public final class ManageVirtualMachine {
 
             System.out.println("Printing list of VMs =======");
 
-            for (VirtualMachine virtualMachine : azureResourceManager.virtualMachines().listByResourceGroup(resourceGroupName)) {
+            for (VirtualMachine virtualMachine : azureResourceManager.virtualMachines()
+                .listByResourceGroup(resourceGroupName)) {
                 Utils.print(virtualMachine);
             }
 
@@ -225,8 +214,7 @@ public final class ManageVirtualMachine {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -16,10 +16,8 @@ class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachine
     private final VirtualMachineExtensionImagesClient client;
     private final VirtualMachineExtensionImageType type;
 
-    VirtualMachineExtensionImageVersionImpl(
-        VirtualMachineExtensionImagesClient client,
-        VirtualMachineExtensionImageType extensionImageType,
-        VirtualMachineExtensionImageInner inner) {
+    VirtualMachineExtensionImageVersionImpl(VirtualMachineExtensionImagesClient client,
+        VirtualMachineExtensionImageType extensionImageType, VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.client = client;
         this.type = extensionImageType;
@@ -47,8 +45,8 @@ class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachine
 
     @Override
     public VirtualMachineExtensionImage getImage() {
-        VirtualMachineExtensionImageInner inner =
-            this.client.get(this.regionName(), this.type().publisher().name(), this.type().name(), this.name());
+        VirtualMachineExtensionImageInner inner
+            = this.client.get(this.regionName(), this.type().publisher().name(), this.type().name(), this.name());
         if (inner == null) {
             return null;
         }
@@ -58,8 +56,7 @@ class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachine
     @Override
     public Mono<VirtualMachineExtensionImage> getImageAsync() {
         final VirtualMachineExtensionImageVersionImpl self = this;
-        return client
-            .getAsync(regionName(), type().publisher().name(), type().name(), name())
+        return client.getAsync(regionName(), type().publisher().name(), type().name(), name())
             .map(inner -> new VirtualMachineExtensionImageImpl(self, inner));
     }
 }

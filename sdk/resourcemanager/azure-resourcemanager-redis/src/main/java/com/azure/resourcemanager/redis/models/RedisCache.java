@@ -23,10 +23,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure Redis Cache. */
 @Fluent
-public interface RedisCache
-    extends GroupableResource<RedisManager, RedisResourceInner>, Refreshable<RedisCache>, Updatable<RedisCache.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
+public interface RedisCache extends GroupableResource<RedisManager, RedisResourceInner>, Refreshable<RedisCache>,
+    Updatable<RedisCache.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection,
     SupportsUpdatingPrivateEndpointConnection {
 
     /** @return exposes features available only to Premium Sku Redis Cache instances. */
@@ -116,12 +114,8 @@ public interface RedisCache
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithPremiumSkuCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithCreate, DefinitionStages.WithPremiumSkuCreate {
     }
 
     /** Grouping of all the Redis Cache definition stages. */
@@ -458,7 +452,6 @@ public interface RedisCache
             Update withoutRedisConfiguration(String key);
         }
 
-
         /** The stage of redis cache update allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
@@ -467,6 +460,7 @@ public interface RedisCache
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the redis cache.
              *
@@ -477,13 +471,8 @@ public interface RedisCache
     }
 
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<RedisCache>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithNonSslPort,
-            UpdateStages.WithRedisConfiguration,
-            UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Appliable<RedisCache>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess {
         /**
          * The number of shards to be created on a Premium Cluster Cache.
          *

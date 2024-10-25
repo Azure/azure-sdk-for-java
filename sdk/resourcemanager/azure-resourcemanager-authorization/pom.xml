@@ -48,6 +48,7 @@
     </javaModulesSurefireArgLine>
     <javadoc.excludePackageNames>com.azure.json,com.azure.core.*,*.fluent:,*.fluent*:</javadoc.excludePackageNames>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

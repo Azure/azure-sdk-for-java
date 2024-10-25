@@ -25,18 +25,16 @@ public class SourceControlTests extends AppServiceTest {
     @Test
     public void canDeploySourceControl() throws Exception {
         // Create web app
-        WebApp webApp =
-            appServiceManager
-                .webApps()
-                .define(webappName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .defineSourceControl()
-                .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                .withBranch("master")
-                .attach()
-                .create();
+        WebApp webApp = appServiceManager.webApps()
+            .define(webappName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.STANDARD_S1)
+            .defineSourceControl()
+            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+            .withBranch("master")
+            .attach()
+            .create();
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");

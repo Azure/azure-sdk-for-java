@@ -16,8 +16,7 @@ import java.util.UUID;
 /**
  * An index-able TaskItem with a TaskGroup.
  */
-public abstract class IndexableTaskItem
-        implements Indexable, TaskItem, TaskGroup.HasTaskGroup {
+public abstract class IndexableTaskItem implements Indexable, TaskItem, TaskGroup.HasTaskGroup {
     /**
      * The key that is unique to this TaskItem which is used to index this
      * TaskItem.
@@ -83,8 +82,8 @@ public abstract class IndexableTaskItem
      * @param internalContext the internal runtime context
      * @return IndexableTaskItem
      */
-    public static IndexableTaskItem create(
-        final FunctionalTaskItem taskItem, ResourceManagerUtils.InternalRuntimeContext internalContext) {
+    public static IndexableTaskItem create(final FunctionalTaskItem taskItem,
+        ResourceManagerUtils.InternalRuntimeContext internalContext) {
         return new IndexableTaskItem(internalContext) {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
@@ -274,11 +273,11 @@ public abstract class IndexableTaskItem
     @Override
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         return this.invokeTaskAsync(context)
-                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                .map(result -> {
-                    taskResult = result;
-                    return result;
-                });
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+            .map(result -> {
+                taskResult = result;
+                return result;
+            });
     }
 
     @Override

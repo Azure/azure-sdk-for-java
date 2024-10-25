@@ -27,8 +27,8 @@ public class PacketCaptureImpl
     private final PacketCaptureInner createParameters;
     private final NetworkWatcher parent;
 
-    PacketCaptureImpl(
-        String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject, PacketCapturesClient client) {
+    PacketCaptureImpl(String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject,
+        PacketCapturesClient client) {
         super(name, innerObject);
         this.client = client;
         this.parent = parent;
@@ -57,9 +57,7 @@ public class PacketCaptureImpl
 
     @Override
     public Mono<PacketCaptureStatus> getStatusAsync() {
-        return this
-            .client
-            .getStatusAsync(parent.resourceGroupName(), parent.name(), name())
+        return this.client.getStatusAsync(parent.resourceGroupName(), parent.name(), name())
             .map(inner -> new PacketCaptureStatusImpl(inner));
     }
 
@@ -132,9 +130,7 @@ public class PacketCaptureImpl
 
     @Override
     public Mono<PacketCapture> createResourceAsync() {
-        return this
-            .client
-            .createAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
+        return this.client.createAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
             .map(innerToFluentMap(this));
     }
 

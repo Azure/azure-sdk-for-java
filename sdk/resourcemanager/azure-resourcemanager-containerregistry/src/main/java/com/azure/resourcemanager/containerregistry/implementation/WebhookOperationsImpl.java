@@ -32,8 +32,8 @@ public class WebhookOperationsImpl implements WebhookOperations {
         if (this.containerRegistry == null) {
             return null;
         }
-        return webhooksClient
-            .getAsync(this.containerRegistry.resourceGroupName(), this.containerRegistry.name(), webhookName);
+        return webhooksClient.getAsync(this.containerRegistry.resourceGroupName(), this.containerRegistry.name(),
+            webhookName);
     }
 
     @Override
@@ -41,9 +41,8 @@ public class WebhookOperationsImpl implements WebhookOperations {
         if (this.containerRegistry == null) {
             return;
         }
-        this
-            .webhooksClient
-            .delete(this.containerRegistry.resourceGroupName(), this.containerRegistry.name(), webhookName);
+        this.webhooksClient.delete(this.containerRegistry.resourceGroupName(), this.containerRegistry.name(),
+            webhookName);
     }
 
     @Override
@@ -51,9 +50,8 @@ public class WebhookOperationsImpl implements WebhookOperations {
         if (this.containerRegistry == null) {
             return null;
         }
-        return this
-            .webhooksClient
-            .deleteAsync(this.containerRegistry.resourceGroupName(), this.containerRegistry.name(), webhookName);
+        return this.webhooksClient.deleteAsync(this.containerRegistry.resourceGroupName(),
+            this.containerRegistry.name(), webhookName);
     }
 
     @Override

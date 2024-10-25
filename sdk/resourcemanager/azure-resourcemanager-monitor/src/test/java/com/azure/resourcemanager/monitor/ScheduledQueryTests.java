@@ -42,25 +42,22 @@ public class ScheduledQueryTests extends MonitorManagementTest {
     public void createScheduledQuery() {
         Region region = Region.AUSTRALIA_SOUTHEAST;
         String actionGroupName = generateRandomResourceName("ag", 15);
-        ActionGroup ag =
-            monitorManager
-                .actionGroups()
-                .define(actionGroupName)
-                .withNewResourceGroup(rgName, region)
-                .defineReceiver("first")
-                .withPushNotification("azurepush@outlook.com")
-                .withEmail("justemail@outlook.com")
-                .withSms("1", "4255655665")
-                .withVoice("1", "2062066050")
-                .withWebhook("https://www.rate.am")
-                .attach()
-                .defineReceiver("second")
-                .withEmail("secondemail@outlook.com")
-                .withWebhook("https://www.spyur.am")
-                .attach()
-                .create();
-        ScheduledQueryRuleResourceInner resourceInner = monitorManager
-            .serviceClient()
+        ActionGroup ag = monitorManager.actionGroups()
+            .define(actionGroupName)
+            .withNewResourceGroup(rgName, region)
+            .defineReceiver("first")
+            .withPushNotification("azurepush@outlook.com")
+            .withEmail("justemail@outlook.com")
+            .withSms("1", "4255655665")
+            .withVoice("1", "2062066050")
+            .withWebhook("https://www.rate.am")
+            .attach()
+            .defineReceiver("second")
+            .withEmail("secondemail@outlook.com")
+            .withWebhook("https://www.spyur.am")
+            .attach()
+            .create();
+        ScheduledQueryRuleResourceInner resourceInner = monitorManager.serviceClient()
             .getScheduledQueryRules()
             .createOrUpdateWithResponse(rgName, generateRandomResourceName("perf", 15),
                 new ScheduledQueryRuleResourceInner().withLocation(region.name())
@@ -92,8 +89,10 @@ public class ScheduledQueryTests extends MonitorManagementTest {
                     .withCheckWorkspaceAlertsStorageConfigured(false)
                     .withSkipQueryValidation(true)
                     .withAutoMitigate(false),
-                com.azure.core.util.Context.NONE).getValue();
-        resourceInner = monitorManager.serviceClient().getScheduledQueryRules().getByResourceGroup(rgName, resourceInner.name());
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resourceInner
+            = monitorManager.serviceClient().getScheduledQueryRules().getByResourceGroup(rgName, resourceInner.name());
         Assertions.assertEquals(AlertSeverity.FOUR, resourceInner.severity());
     }
 }

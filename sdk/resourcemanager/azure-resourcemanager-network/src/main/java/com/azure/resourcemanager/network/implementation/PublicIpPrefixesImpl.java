@@ -9,9 +9,8 @@ import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-public class PublicIpPrefixesImpl
-    extends TopLevelModifiableResourcesImpl<
-        PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
+public class PublicIpPrefixesImpl extends
+    TopLevelModifiableResourcesImpl<PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
     implements PublicIpPrefixes {
 
     public PublicIpPrefixesImpl(final NetworkManager networkManager) {

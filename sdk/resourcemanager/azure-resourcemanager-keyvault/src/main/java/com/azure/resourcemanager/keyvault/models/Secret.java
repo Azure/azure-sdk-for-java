@@ -165,11 +165,7 @@ public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasI
     }
 
     /** The template for a secret update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Secret>,
-            UpdateStages.WithValue,
-            UpdateStages.WithAttributes,
-            UpdateStages.WithContentType,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<Secret>, UpdateStages.WithValue, UpdateStages.WithAttributes,
+        UpdateStages.WithContentType, UpdateStages.WithTags {
     }
 }

@@ -38,8 +38,8 @@ public interface RegistryTasks extends SupportsCreating<RegistryTask.DefinitionS
      * @param includeSecrets whether to include secrets or not.
      * @return the task
      */
-    Mono<RegistryTask> getByRegistryAsync(
-        String resourceGroupName, String registryName, String taskName, boolean includeSecrets);
+    Mono<RegistryTask> getByRegistryAsync(String resourceGroupName, String registryName, String taskName,
+        boolean includeSecrets);
 
     /**
      * Gets a task in a registry.

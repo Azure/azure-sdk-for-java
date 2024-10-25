@@ -11,10 +11,13 @@ import reactor.core.publisher.Mono;
 public interface DiskVolumeEncryptionMonitor extends Refreshable<DiskVolumeEncryptionMonitor> {
     /** @return operating system type of the virtual machine */
     OperatingSystemTypes osType();
+
     /** @return the encryption progress message */
     String progressMessage();
+
     /** @return operating system disk encryption status */
     EncryptionStatus osDiskStatus();
+
     /** @return data disks encryption status */
     EncryptionStatus dataDiskStatus();
 
