@@ -22,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.class),
     @JsonSubTypes.Type(
         name = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier",
-        value = ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class)
-})
+        value = ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class) })
 @Immutable
 public class ContentKeyPolicyPlayReadyContentKeyLocation {
     /** Creates an instance of ContentKeyPolicyPlayReadyContentKeyLocation class. */

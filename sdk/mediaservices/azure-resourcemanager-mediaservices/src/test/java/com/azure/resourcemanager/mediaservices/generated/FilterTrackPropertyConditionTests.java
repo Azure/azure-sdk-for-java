@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterTrackPropertyConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilterTrackPropertyCondition model =
-            BinaryData
-                .fromString("{\"property\":\"FourCC\",\"value\":\"smy\",\"operation\":\"Equal\"}")
+        FilterTrackPropertyCondition model
+            = BinaryData.fromString("{\"property\":\"FourCC\",\"value\":\"smy\",\"operation\":\"Equal\"}")
                 .toObject(FilterTrackPropertyCondition.class);
         Assertions.assertEquals(FilterTrackPropertyType.FOUR_CC, model.property());
         Assertions.assertEquals("smy", model.value());
@@ -24,9 +23,8 @@ public final class FilterTrackPropertyConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterTrackPropertyCondition model =
-            new FilterTrackPropertyCondition()
-                .withProperty(FilterTrackPropertyType.FOUR_CC)
+        FilterTrackPropertyCondition model
+            = new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
                 .withValue("smy")
                 .withOperation(FilterTrackPropertyCompareOperation.EQUAL);
         model = BinaryData.fromObject(model).toObject(FilterTrackPropertyCondition.class);

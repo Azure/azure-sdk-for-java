@@ -33,8 +33,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body);
+    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body);
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
@@ -52,12 +52,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        InternalNetworkInner body,
-        Context context);
+    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body, Context context);
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
@@ -74,8 +70,8 @@ public interface InternalNetworksClient {
      * @return defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternalNetworkInner create(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, InternalNetworkInner body);
+    InternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
+        InternalNetworkInner body);
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
@@ -93,12 +89,8 @@ public interface InternalNetworksClient {
      * @return defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternalNetworkInner create(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        InternalNetworkInner body,
-        Context context);
+    InternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
+        InternalNetworkInner body, Context context);
 
     /**
      * Retrieves details of InternalNetworks using GET method.
@@ -115,8 +107,8 @@ public interface InternalNetworksClient {
      * @return a InternalNetworks along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InternalNetworkInner> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, Context context);
+    Response<InternalNetworkInner> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String internalNetworkName, Context context);
 
     /**
      * Retrieves details of InternalNetworks using GET method.
@@ -149,8 +141,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body);
+    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body);
 
     /**
      * API to update certain properties of the InternalNetworks resources.
@@ -168,12 +160,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        InternalNetworkPatch body,
-        Context context);
+    SyncPoller<PollResult<InternalNetworkInner>, InternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body, Context context);
 
     /**
      * API to update certain properties of the InternalNetworks resources.
@@ -190,8 +178,8 @@ public interface InternalNetworksClient {
      * @return defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternalNetworkInner update(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, InternalNetworkPatch body);
+    InternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
+        InternalNetworkPatch body);
 
     /**
      * API to update certain properties of the InternalNetworks resources.
@@ -209,12 +197,8 @@ public interface InternalNetworksClient {
      * @return defines the Internal Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternalNetworkInner update(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        InternalNetworkPatch body,
-        Context context);
+    InternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName, String internalNetworkName,
+        InternalNetworkPatch body, Context context);
 
     /**
      * Deletes a InternalNetworks.
@@ -230,8 +214,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String internalNetworkName);
 
     /**
      * Deletes a InternalNetworks.
@@ -248,8 +232,8 @@ public interface InternalNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String internalNetworkName, Context context);
 
     /**
      * Deletes a InternalNetworks.
@@ -311,100 +295,86 @@ public interface InternalNetworksClient {
      * @return list of Internal Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InternalNetworkInner> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
-
-    /**
-     * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body);
-
-    /**
-     * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body,
-            Context context);
-
-    /**
-     * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param internalNetworkName Name of the Internal Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
+    PagedIterable<InternalNetworkInner> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName,
         Context context);
 
     /**
+     * Executes the operation to the underlying resources.
+     *
+     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param internalNetworkName Name of the Internal Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body);
+
+    /**
+     * Executes the operation to the underlying resources.
+     *
+     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param internalNetworkName Name of the Internal Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Executes the operation to the underlying resources.
+     *
+     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param internalNetworkName Name of the Internal Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
+
+    /**
+     * Executes the operation to the underlying resources.
+     *
+     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param internalNetworkName Name of the Internal Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
+
+    /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
      *
      * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
@@ -420,11 +390,8 @@ public interface InternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateBgpAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body);
+        beginUpdateBgpAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -443,12 +410,8 @@ public interface InternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateBgpAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateBgpAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -465,11 +428,8 @@ public interface InternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateBgpAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -487,12 +447,8 @@ public interface InternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdateInner updateBgpAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -510,11 +466,8 @@ public interface InternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body);
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -533,12 +486,8 @@ public interface InternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String internalNetworkName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -555,11 +504,8 @@ public interface InternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -577,10 +523,6 @@ public interface InternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
 }

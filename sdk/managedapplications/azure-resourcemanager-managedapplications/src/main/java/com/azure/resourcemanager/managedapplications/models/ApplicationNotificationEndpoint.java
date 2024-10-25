@@ -48,10 +48,8 @@ public final class ApplicationNotificationEndpoint {
      */
     public void validate() {
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property uri in model ApplicationNotificationEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uri in model ApplicationNotificationEndpoint"));
         }
     }
 

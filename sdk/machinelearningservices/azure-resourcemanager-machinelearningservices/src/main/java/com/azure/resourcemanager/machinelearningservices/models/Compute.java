@@ -31,11 +31,11 @@ import java.util.List;
     @JsonSubTypes.Type(name = "DataFactory", value = DataFactory.class),
     @JsonSubTypes.Type(name = "Databricks", value = Databricks.class),
     @JsonSubTypes.Type(name = "DataLakeAnalytics", value = DataLakeAnalytics.class),
-    @JsonSubTypes.Type(name = "SynapseSpark", value = SynapseSpark.class)
-})
+    @JsonSubTypes.Type(name = "SynapseSpark", value = SynapseSpark.class) })
 @Fluent
 public class Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Compute.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Compute.class);
 
     /*
      * Location for the underlying compute

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JitSchedulingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitSchedulingPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Recurring\",\"duration\":\"PT138H46M31S\",\"startTime\":\"2021-04-25T05:09:53Z\"}")
-                .toObject(JitSchedulingPolicy.class);
+        JitSchedulingPolicy model = BinaryData
+            .fromString("{\"type\":\"Recurring\",\"duration\":\"PT138H46M31S\",\"startTime\":\"2021-04-25T05:09:53Z\"}")
+            .toObject(JitSchedulingPolicy.class);
         Assertions.assertEquals(JitSchedulingType.RECURRING, model.type());
         Assertions.assertEquals(Duration.parse("PT138H46M31S"), model.duration());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T05:09:53Z"), model.startTime());
@@ -26,11 +24,9 @@ public final class JitSchedulingPolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitSchedulingPolicy model =
-            new JitSchedulingPolicy()
-                .withType(JitSchedulingType.RECURRING)
-                .withDuration(Duration.parse("PT138H46M31S"))
-                .withStartTime(OffsetDateTime.parse("2021-04-25T05:09:53Z"));
+        JitSchedulingPolicy model = new JitSchedulingPolicy().withType(JitSchedulingType.RECURRING)
+            .withDuration(Duration.parse("PT138H46M31S"))
+            .withStartTime(OffsetDateTime.parse("2021-04-25T05:09:53Z"));
         model = BinaryData.fromObject(model).toObject(JitSchedulingPolicy.class);
         Assertions.assertEquals(JitSchedulingType.RECURRING, model.type());
         Assertions.assertEquals(Duration.parse("PT138H46M31S"), model.duration());

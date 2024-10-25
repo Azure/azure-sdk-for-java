@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TransformInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransformInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"created\":\"2020-12-27T06:38:54Z\",\"description\":\"mkh\",\"lastModified\":\"2021-08-19T13:39:55Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"}]},\"id\":\"bpbewtghfgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}")
-                .toObject(TransformInner.class);
+        TransformInner model = BinaryData.fromString(
+            "{\"properties\":{\"created\":\"2020-12-27T06:38:54Z\",\"description\":\"mkh\",\"lastModified\":\"2021-08-19T13:39:55Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"}]},\"id\":\"bpbewtghfgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}")
+            .toObject(TransformInner.class);
         Assertions.assertEquals("mkh", model.description());
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.outputs().get(0).onError());
         Assertions.assertEquals(Priority.LOW, model.outputs().get(0).relativePriority());
@@ -27,21 +25,11 @@ public final class TransformInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformInner model =
-            new TransformInner()
-                .withDescription("mkh")
-                .withOutputs(
-                    Arrays
-                        .asList(
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.LOW),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL)));
+        TransformInner model = new TransformInner().withDescription("mkh")
+            .withOutputs(Arrays.asList(
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB).withRelativePriority(Priority.LOW),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB).withRelativePriority(Priority.NORMAL),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB).withRelativePriority(Priority.NORMAL)));
         model = BinaryData.fromObject(model).toObject(TransformInner.class);
         Assertions.assertEquals("mkh", model.description());
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.outputs().get(0).onError());

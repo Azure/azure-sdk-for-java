@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateAccessDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateAccessDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"approver\":\"zydagfuaxbezyiuo\",\"metadata\":{\"originRequestId\":\"twhrdxwzywqsm\",\"requestorId\":\"ureximoryocfs\",\"tenantDisplayName\":\"s\",\"subjectDisplayName\":\"ddystkiiuxhqy\"},\"status\":\"Elevate\",\"subStatus\":\"Failed\"}")
-                .toObject(UpdateAccessDefinitionInner.class);
+        UpdateAccessDefinitionInner model = BinaryData.fromString(
+            "{\"approver\":\"zydagfuaxbezyiuo\",\"metadata\":{\"originRequestId\":\"twhrdxwzywqsm\",\"requestorId\":\"ureximoryocfs\",\"tenantDisplayName\":\"s\",\"subjectDisplayName\":\"ddystkiiuxhqy\"},\"status\":\"Elevate\",\"subStatus\":\"Failed\"}")
+            .toObject(UpdateAccessDefinitionInner.class);
         Assertions.assertEquals("zydagfuaxbezyiuo", model.approver());
         Assertions.assertEquals("twhrdxwzywqsm", model.metadata().originRequestId());
         Assertions.assertEquals("ureximoryocfs", model.metadata().requestorId());
@@ -30,17 +28,13 @@ public final class UpdateAccessDefinitionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateAccessDefinitionInner model =
-            new UpdateAccessDefinitionInner()
-                .withApprover("zydagfuaxbezyiuo")
-                .withMetadata(
-                    new JitRequestMetadata()
-                        .withOriginRequestId("twhrdxwzywqsm")
-                        .withRequestorId("ureximoryocfs")
-                        .withTenantDisplayName("s")
-                        .withSubjectDisplayName("ddystkiiuxhqy"))
-                .withStatus(Status.ELEVATE)
-                .withSubStatus(Substatus.FAILED);
+        UpdateAccessDefinitionInner model = new UpdateAccessDefinitionInner().withApprover("zydagfuaxbezyiuo")
+            .withMetadata(new JitRequestMetadata().withOriginRequestId("twhrdxwzywqsm")
+                .withRequestorId("ureximoryocfs")
+                .withTenantDisplayName("s")
+                .withSubjectDisplayName("ddystkiiuxhqy"))
+            .withStatus(Status.ELEVATE)
+            .withSubStatus(Substatus.FAILED);
         model = BinaryData.fromObject(model).toObject(UpdateAccessDefinitionInner.class);
         Assertions.assertEquals("zydagfuaxbezyiuo", model.approver());
         Assertions.assertEquals("twhrdxwzywqsm", model.metadata().originRequestId());

@@ -55,10 +55,8 @@ public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPol
     public void validate() {
         super.validate();
         if (rawBody() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rawBody in model ContentKeyPolicyX509CertificateTokenKey"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rawBody in model ContentKeyPolicyX509CertificateTokenKey"));
         }
     }
 

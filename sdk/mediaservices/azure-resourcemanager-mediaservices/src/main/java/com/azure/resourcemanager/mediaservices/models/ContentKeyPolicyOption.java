@@ -116,18 +116,14 @@ public final class ContentKeyPolicyOption {
      */
     public void validate() {
         if (configuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property configuration in model ContentKeyPolicyOption"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property configuration in model ContentKeyPolicyOption"));
         } else {
             configuration().validate();
         }
         if (restriction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restriction in model ContentKeyPolicyOption"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property restriction in model ContentKeyPolicyOption"));
         } else {
             restriction().validate();
         }

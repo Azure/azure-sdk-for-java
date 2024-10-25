@@ -31,8 +31,8 @@ public interface AccountsClient {
      * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MapsAccountInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, MapsAccountInner mapsAccount, Context context);
+    Response<MapsAccountInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        MapsAccountInner mapsAccount, Context context);
 
     /**
      * Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
@@ -62,11 +62,8 @@ public interface AccountsClient {
      * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MapsAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        MapsAccountUpdateParameters mapsAccountUpdateParameters,
-        Context context);
+    Response<MapsAccountInner> updateWithResponse(String resourceGroupName, String accountName,
+        MapsAccountUpdateParameters mapsAccountUpdateParameters, Context context);
 
     /**
      * Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags,
@@ -81,8 +78,8 @@ public interface AccountsClient {
      * @return an Azure resource which represents access to a suite of Maps REST APIs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MapsAccountInner update(
-        String resourceGroupName, String accountName, MapsAccountUpdateParameters mapsAccountUpdateParameters);
+    MapsAccountInner update(String resourceGroupName, String accountName,
+        MapsAccountUpdateParameters mapsAccountUpdateParameters);
 
     /**
      * Delete a Maps Account.
@@ -122,8 +119,8 @@ public interface AccountsClient {
      * @return a Maps Account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MapsAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<MapsAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get a Maps Account.
@@ -204,8 +201,8 @@ public interface AccountsClient {
      *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MapsAccountSasTokenInner> listSasWithResponse(
-        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters, Context context);
+    Response<MapsAccountSasTokenInner> listSasWithResponse(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters, Context context);
 
     /**
      * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
@@ -225,8 +222,8 @@ public interface AccountsClient {
      *     identity permissions on Azure (IAM) Role Based Access Control.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MapsAccountSasTokenInner listSas(
-        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters);
+    MapsAccountSasTokenInner listSas(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters);
 
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
@@ -271,8 +268,8 @@ public interface AccountsClient {
      * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MapsAccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context);
+    Response<MapsAccountKeysInner> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        MapsKeySpecification keySpecification, Context context);
 
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
@@ -287,6 +284,6 @@ public interface AccountsClient {
      * @return the set of keys which can be used to access the Maps REST APIs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MapsAccountKeysInner regenerateKeys(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification);
+    MapsAccountKeysInner regenerateKeys(String resourceGroupName, String accountName,
+        MapsKeySpecification keySpecification);
 }

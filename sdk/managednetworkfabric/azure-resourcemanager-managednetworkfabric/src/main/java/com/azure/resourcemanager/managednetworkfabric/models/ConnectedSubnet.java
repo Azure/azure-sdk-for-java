@@ -57,9 +57,8 @@ public final class ConnectedSubnet extends AnnotationResource {
     public void validate() {
         super.validate();
         if (prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property prefix in model ConnectedSubnet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property prefix in model ConnectedSubnet"));
         }
     }
 

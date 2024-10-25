@@ -62,8 +62,8 @@ public interface MediaservicesClient {
      * @return the details of a Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<MediaServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get a Media Services account
@@ -94,8 +94,8 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, MediaServiceInner parameters);
 
     /**
      * Create or update a Media Services account
@@ -112,8 +112,8 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, MediaServiceInner parameters, Context context);
 
     /**
      * Create or update a Media Services account
@@ -146,8 +146,8 @@ public interface MediaservicesClient {
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceInner createOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
+    MediaServiceInner createOrUpdate(String resourceGroupName, String accountName, MediaServiceInner parameters,
+        Context context);
 
     /**
      * Delete a Media Services account.
@@ -193,8 +193,8 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(String resourceGroupName,
+        String accountName, MediaServiceUpdate parameters);
 
     /**
      * Update a Media Services account
@@ -211,8 +211,8 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(String resourceGroupName,
+        String accountName, MediaServiceUpdate parameters, Context context);
 
     /**
      * Update a Media Services account
@@ -245,8 +245,8 @@ public interface MediaservicesClient {
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceInner update(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
+    MediaServiceInner update(String resourceGroupName, String accountName, MediaServiceUpdate parameters,
+        Context context);
 
     /**
      * Synchronizes Storage Account Keys
@@ -263,8 +263,8 @@ public interface MediaservicesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
+    Response<Void> syncStorageKeysWithResponse(String resourceGroupName, String accountName,
+        SyncStorageKeysInput parameters, Context context);
 
     /**
      * Synchronizes Storage Account Keys
@@ -296,8 +296,8 @@ public interface MediaservicesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EdgePoliciesInner> listEdgePoliciesWithResponse(
-        String resourceGroupName, String accountName, ListEdgePoliciesInput parameters, Context context);
+    Response<EdgePoliciesInner> listEdgePoliciesWithResponse(String resourceGroupName, String accountName,
+        ListEdgePoliciesInput parameters, Context context);
 
     /**
      * List the media edge policies associated with the Media Services account.

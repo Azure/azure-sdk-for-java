@@ -24,8 +24,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response}.
      */
-    Response<NetworkToNetworkInterconnect> getWithResponse(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    Response<NetworkToNetworkInterconnect> getWithResponse(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
@@ -40,8 +40,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition.
      */
-    NetworkToNetworkInterconnect get(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName);
+    NetworkToNetworkInterconnect get(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
@@ -70,8 +70,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
+        Context context);
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
@@ -100,8 +100,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(
-        String resourceGroupName, String networkFabricName, Context context);
+    PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -117,11 +117,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -138,11 +135,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context);
 
     /**
@@ -159,11 +153,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -180,12 +171,8 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, UpdateAdministrativeState body, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.

@@ -94,8 +94,8 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
      * @param secondaryIpv4Prefix the secondaryIpv4Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
-    public NetworkFabricPatchablePropertiesTerminalServerConfiguration withSecondaryIpv4Prefix(
-        String secondaryIpv4Prefix) {
+    public NetworkFabricPatchablePropertiesTerminalServerConfiguration
+        withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
         this.secondaryIpv4Prefix = secondaryIpv4Prefix;
         return this;
     }
@@ -115,8 +115,8 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
      * @param secondaryIpv6Prefix the secondaryIpv6Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
-    public NetworkFabricPatchablePropertiesTerminalServerConfiguration withSecondaryIpv6Prefix(
-        String secondaryIpv6Prefix) {
+    public NetworkFabricPatchablePropertiesTerminalServerConfiguration
+        withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
         this.secondaryIpv6Prefix = secondaryIpv6Prefix;
         return this;
     }

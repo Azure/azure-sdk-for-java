@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3ConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration model =
-            BinaryData
-                .fromString(
-                    "{\"peerASN\":8932988459385064197,\"vlanId\":1349785118,\"fabricASN\":9052438089668649681,\"primaryIpv4Prefix\":\"mbrwg\",\"primaryIpv6Prefix\":\"xljbkhxsd\",\"secondaryIpv4Prefix\":\"au\",\"secondaryIpv6Prefix\":\"dmhweqjfyxydgto\"}")
-                .toObject(NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.class);
+        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration model = BinaryData.fromString(
+            "{\"peerASN\":8932988459385064197,\"vlanId\":1349785118,\"fabricASN\":9052438089668649681,\"primaryIpv4Prefix\":\"mbrwg\",\"primaryIpv6Prefix\":\"xljbkhxsd\",\"secondaryIpv4Prefix\":\"au\",\"secondaryIpv6Prefix\":\"dmhweqjfyxydgto\"}")
+            .toObject(NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.class);
         Assertions.assertEquals("mbrwg", model.primaryIpv4Prefix());
         Assertions.assertEquals("xljbkhxsd", model.primaryIpv6Prefix());
         Assertions.assertEquals("au", model.secondaryIpv4Prefix());
@@ -26,18 +24,15 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration model =
-            new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration()
-                .withPrimaryIpv4Prefix("mbrwg")
+        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration model
+            = new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration().withPrimaryIpv4Prefix("mbrwg")
                 .withPrimaryIpv6Prefix("xljbkhxsd")
                 .withSecondaryIpv4Prefix("au")
                 .withSecondaryIpv6Prefix("dmhweqjfyxydgto")
                 .withPeerAsn(8932988459385064197L)
                 .withVlanId(1349785118);
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.class);
+        model = BinaryData.fromObject(model)
+            .toObject(NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.class);
         Assertions.assertEquals("mbrwg", model.primaryIpv4Prefix());
         Assertions.assertEquals("xljbkhxsd", model.primaryIpv6Prefix());
         Assertions.assertEquals("au", model.secondaryIpv4Prefix());

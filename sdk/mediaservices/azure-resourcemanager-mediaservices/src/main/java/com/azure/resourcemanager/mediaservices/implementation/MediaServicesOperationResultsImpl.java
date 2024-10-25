@@ -21,21 +21,17 @@ public final class MediaServicesOperationResultsImpl implements MediaServicesOpe
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public MediaServicesOperationResultsImpl(
-        MediaServicesOperationResultsClient innerClient,
+    public MediaServicesOperationResultsImpl(MediaServicesOperationResultsClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<MediaService> getWithResponse(String locationName, String operationId, Context context) {
-        MediaServicesOperationResultsGetResponse inner =
-            this.serviceClient().getWithResponse(locationName, operationId, context);
+        MediaServicesOperationResultsGetResponse inner
+            = this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MediaServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -21,8 +21,8 @@ public final class ContentKeyPolicyPlayReadyContentType
     public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_DOWNLOAD = fromString("UltraVioletDownload");
 
     /** Static value UltraVioletStreaming for ContentKeyPolicyPlayReadyContentType. */
-    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING =
-        fromString("UltraVioletStreaming");
+    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING
+        = fromString("UltraVioletStreaming");
 
     /**
      * Creates a new instance of ContentKeyPolicyPlayReadyContentType value.

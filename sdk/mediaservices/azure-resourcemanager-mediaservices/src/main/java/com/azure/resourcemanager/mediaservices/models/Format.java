@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Format")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class) })
 @Fluent
 public class Format {
     /*
@@ -87,9 +86,8 @@ public class Format {
      */
     public void validate() {
         if (filenamePattern() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filenamePattern in model Format"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filenamePattern in model Format"));
         }
     }
 

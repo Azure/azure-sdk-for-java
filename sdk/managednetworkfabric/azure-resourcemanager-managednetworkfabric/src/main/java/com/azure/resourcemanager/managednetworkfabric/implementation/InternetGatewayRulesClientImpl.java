@@ -54,9 +54,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @param client the instance of the service client containing this operation class.
      */
     InternetGatewayRulesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(InternetGatewayRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(InternetGatewayRulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,107 +66,80 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface InternetGatewayRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("internetGatewayRuleName") String internetGatewayRuleName,
-            @BodyParam("application/json") InternetGatewayRuleInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InternetGatewayRuleInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewayRuleInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InternetGatewayRuleInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("internetGatewayRuleName") String internetGatewayRuleName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("internetGatewayRuleName") String internetGatewayRuleName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InternetGatewayRulePatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("internetGatewayRuleName") String internetGatewayRuleName,
-            @BodyParam("application/json") InternetGatewayRulePatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("internetGatewayRuleName") String internetGatewayRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<InternetGatewayRulesListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("internetGatewayRuleName") String internetGatewayRuleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewayRulesListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InternetGatewayRulesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InternetGatewayRulesListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InternetGatewayRulesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InternetGatewayRulesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -185,28 +157,23 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRuleInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -215,18 +182,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayRuleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayRuleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,28 +203,23 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRuleInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -276,16 +228,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayRuleName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayRuleName, body, accept, context);
     }
 
     /**
@@ -302,18 +246,13 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link PollerFlux} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreateAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, internetGatewayRuleName, body);
-        return this
-            .client
-            .<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayRuleInner.class,
-                InternetGatewayRuleInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner>
+        beginCreateAsync(String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, internetGatewayRuleName, body);
+        return this.client.<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InternetGatewayRuleInner.class, InternetGatewayRuleInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -334,16 +273,10 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreateAsync(
         String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, internetGatewayRuleName, body, context);
-        return this
-            .client
-            .<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayRuleInner.class,
-                InternetGatewayRuleInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, internetGatewayRuleName, body, context);
+        return this.client.<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InternetGatewayRuleInner.class, InternetGatewayRuleInner.class, context);
     }
 
     /**
@@ -360,8 +293,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
+    public SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner>
+        beginCreate(String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
         return this.beginCreateAsync(resourceGroupName, internetGatewayRuleName, body).getSyncPoller();
     }
 
@@ -399,10 +332,9 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayRuleInner> createAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
-        return beginCreateAsync(resourceGroupName, internetGatewayRuleName, body)
-            .last()
+    private Mono<InternetGatewayRuleInner> createAsync(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body) {
+        return beginCreateAsync(resourceGroupName, internetGatewayRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -421,10 +353,9 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayRuleInner> createAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, internetGatewayRuleName, body, context)
-            .last()
+    private Mono<InternetGatewayRuleInner> createAsync(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, internetGatewayRuleName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -442,8 +373,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayRuleInner create(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body) {
+    public InternetGatewayRuleInner create(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body) {
         return createAsync(resourceGroupName, internetGatewayRuleName, body).block();
     }
 
@@ -462,8 +393,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayRuleInner create(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context) {
+    public InternetGatewayRuleInner create(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body, Context context) {
         return createAsync(resourceGroupName, internetGatewayRuleName, body, context).block();
     }
 
@@ -480,42 +411,29 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return an Internet Gateway Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InternetGatewayRuleInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName) {
+    private Mono<Response<InternetGatewayRuleInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayRuleName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), internetGatewayRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -533,40 +451,28 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return an Internet Gateway Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InternetGatewayRuleInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, Context context) {
+    private Mono<Response<InternetGatewayRuleInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayRuleName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayRuleName, accept, context);
     }
 
     /**
@@ -582,8 +488,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return an Internet Gateway Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayRuleInner> getByResourceGroupAsync(
-        String resourceGroupName, String internetGatewayRuleName) {
+    private Mono<InternetGatewayRuleInner> getByResourceGroupAsync(String resourceGroupName,
+        String internetGatewayRuleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, internetGatewayRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -602,8 +508,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return an Internet Gateway Rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InternetGatewayRuleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayRuleName, Context context) {
+    public Response<InternetGatewayRuleInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayRuleName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, internetGatewayRuleName, context).block();
     }
 
@@ -639,28 +545,23 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRulePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -669,18 +570,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayRuleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayRuleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -700,28 +591,23 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRulePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -730,16 +616,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayRuleName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayRuleName, body, accept, context);
     }
 
     /**
@@ -756,18 +634,13 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link PollerFlux} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdateAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, internetGatewayRuleName, body);
-        return this
-            .client
-            .<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayRuleInner.class,
-                InternetGatewayRuleInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner>
+        beginUpdateAsync(String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, internetGatewayRuleName, body);
+        return this.client.<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InternetGatewayRuleInner.class, InternetGatewayRuleInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -788,16 +661,10 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     private PollerFlux<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdateAsync(
         String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, internetGatewayRuleName, body, context);
-        return this
-            .client
-            .<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InternetGatewayRuleInner.class,
-                InternetGatewayRuleInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, internetGatewayRuleName, body, context);
+        return this.client.<InternetGatewayRuleInner, InternetGatewayRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InternetGatewayRuleInner.class, InternetGatewayRuleInner.class, context);
     }
 
     /**
@@ -814,8 +681,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
+    public SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner>
+        beginUpdate(String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
         return this.beginUpdateAsync(resourceGroupName, internetGatewayRuleName, body).getSyncPoller();
     }
 
@@ -853,10 +720,9 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayRuleInner> updateAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
-        return beginUpdateAsync(resourceGroupName, internetGatewayRuleName, body)
-            .last()
+    private Mono<InternetGatewayRuleInner> updateAsync(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body) {
+        return beginUpdateAsync(resourceGroupName, internetGatewayRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -875,10 +741,9 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InternetGatewayRuleInner> updateAsync(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, internetGatewayRuleName, body, context)
-            .last()
+    private Mono<InternetGatewayRuleInner> updateAsync(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, internetGatewayRuleName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -896,8 +761,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayRuleInner update(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body) {
+    public InternetGatewayRuleInner update(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body) {
         return updateAsync(resourceGroupName, internetGatewayRuleName, body).block();
     }
 
@@ -916,8 +781,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InternetGatewayRuleInner update(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context) {
+    public InternetGatewayRuleInner update(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body, Context context) {
         return updateAsync(resourceGroupName, internetGatewayRuleName, body, context).block();
     }
 
@@ -934,42 +799,28 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            internetGatewayRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), internetGatewayRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -987,40 +838,28 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String internetGatewayRuleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String internetGatewayRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (internetGatewayRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter internetGatewayRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                internetGatewayRuleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), internetGatewayRuleName, accept, context);
     }
 
     /**
@@ -1036,13 +875,11 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String internetGatewayRuleName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String internetGatewayRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, internetGatewayRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1059,14 +896,13 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String internetGatewayRuleName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String internetGatewayRuleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, internetGatewayRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, internetGatewayRuleName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1100,8 +936,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String internetGatewayRuleName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayRuleName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, internetGatewayRuleName, context).getSyncPoller();
     }
 
@@ -1119,8 +955,7 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String internetGatewayRuleName) {
-        return beginDeleteAsync(resourceGroupName, internetGatewayRuleName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, internetGatewayRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1139,8 +974,7 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String internetGatewayRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, internetGatewayRuleName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, internetGatewayRuleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1191,16 +1025,12 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayRuleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1208,25 +1038,10 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<InternetGatewayRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<InternetGatewayRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1243,19 +1058,15 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return list of Internet Gateway Rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayRuleInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<InternetGatewayRuleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1264,22 +1075,10 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1295,8 +1094,7 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayRuleInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1314,8 +1112,7 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayRuleInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1364,37 +1161,19 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayRuleInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<InternetGatewayRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<InternetGatewayRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1412,35 +1191,20 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InternetGatewayRuleInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1454,8 +1218,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayRuleInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1471,8 +1235,8 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InternetGatewayRuleInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1521,24 +1285,15 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InternetGatewayRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InternetGatewayRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1554,30 +1309,20 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return list of Internet Gateway Rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayRuleInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<InternetGatewayRuleInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1596,24 +1341,15 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InternetGatewayRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InternetGatewayRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1629,29 +1365,19 @@ public final class InternetGatewayRulesClientImpl implements InternetGatewayRule
      * @return list of Internet Gateway Rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InternetGatewayRuleInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<InternetGatewayRuleInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

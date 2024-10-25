@@ -13,7 +13,8 @@ import java.util.List;
 /** The ModelSparkSection model. */
 @Fluent
 public class ModelSparkSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelSparkSection.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelSparkSection.class);
 
     /*
      * The list of spark repositories.

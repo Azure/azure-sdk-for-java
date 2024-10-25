@@ -21,8 +21,8 @@ public final class EntitiesImpl implements Entities {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    public EntitiesImpl(
-        EntitiesClient innerClient, com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
+    public EntitiesImpl(EntitiesClient innerClient,
+        com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,21 +32,11 @@ public final class EntitiesImpl implements Entities {
         return Utils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EntityInfo> list(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    public PagedIterable<EntityInfo> list(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context) {
-        PagedIterable<EntityInfoInner> inner =
-            this
-                .serviceClient()
-                .list(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context);
+        PagedIterable<EntityInfoInner> inner = this.serviceClient()
+            .list(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context);
         return Utils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
     }
 

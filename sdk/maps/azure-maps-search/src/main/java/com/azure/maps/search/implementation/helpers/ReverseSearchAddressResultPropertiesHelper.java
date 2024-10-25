@@ -16,6 +16,7 @@ public final class ReverseSearchAddressResultPropertiesHelper {
 
     public interface ReverseSearchAddressResultAccessor {
         void setSummary(ReverseSearchAddressResult reverseSearchAddressResult, SearchSummary summary);
+
         void setAddresses(ReverseSearchAddressResult reverseSearchAddressResult,
             List<ReverseSearchAddressResultItem> results);
     }

@@ -28,7 +28,8 @@ public class Utility {
         SERIALIZER.serialize(baos, geometry);
 
         // deserialize into GeoPolygon
-        final TypeReference<GeoPolygon> typeReference = new TypeReference<GeoPolygon>(){};
+        final TypeReference<GeoPolygon> typeReference = new TypeReference<GeoPolygon>() {
+        };
         return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 }

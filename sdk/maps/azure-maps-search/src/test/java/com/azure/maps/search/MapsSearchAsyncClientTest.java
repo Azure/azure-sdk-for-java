@@ -48,8 +48,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncGetMultiPolygons(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        List<String> geometryIds = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5",
-            "00005858-5800-1200-0000-0000773694ca");
+        List<String> geometryIds
+            = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5", "00005858-5800-1200-0000-0000773694ca");
         StepVerifier.create(client.getPolygons(geometryIds))
             .assertNext(actualResults -> validateGetPolygons(TestUtils.getMultiPolygonsResults(), actualResults))
             .expectComplete()
@@ -62,8 +62,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncGetPolygonsWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        List<String> geometryIds = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5",
-            "00005858-5800-1200-0000-0000773694ca");
+        List<String> geometryIds
+            = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5", "00005858-5800-1200-0000-0000773694ca");
         StepVerifier.create(client.getPolygonsWithResponse(geometryIds, Context.NONE))
             .assertNext(response -> validateGetPolygonsWithResponse(TestUtils.getMultiPolygonsResults(), response))
             .expectComplete()
@@ -127,11 +127,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterest(
+        StepVerifier
+            .create(client.searchPointOfInterest(
                 new SearchPointOfInterestOptions("caviar lobster pasta", new GeoPosition(-121.97483, 36.98844))))
-            .assertNext(
-                actualResults -> validateSearchPointOfInterest(TestUtils.getExpectedSearchPointOfInterestResults(),
-                    actualResults))
+            .assertNext(actualResults -> validateSearchPointOfInterest(
+                TestUtils.getExpectedSearchPointOfInterestResults(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -144,7 +144,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchPointOfInterestWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterestWithResponse(
+        StepVerifier
+            .create(client.searchPointOfInterestWithResponse(
                 new SearchPointOfInterestOptions("caviar lobster pasta", new GeoPosition(-121.97483, 36.98844)),
                 Context.NONE))
             .assertNext(response -> validateSearchPointOfInterestWithResponse(
@@ -159,7 +160,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchPointOfInterestWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterestWithResponse(
+        StepVerifier
+            .create(client.searchPointOfInterestWithResponse(
                 new SearchPointOfInterestOptions("", new GeoPosition(-121.97483, 36.98844)), Context.NONE))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -173,7 +175,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchNearbyPointsOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchNearbyPointsOfInterest(
+        StepVerifier
+            .create(client.searchNearbyPointsOfInterest(
                 new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))))
             .assertNext(actualResults -> validateSearchNearbyPointOfInterest(
                 TestUtils.getExpectedSearchNearbyPointOfInterestResults(), actualResults))
@@ -188,7 +191,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchNearbyPointsOfInterestWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchNearbyPointsOfInterestWithResponse(
+        StepVerifier
+            .create(client.searchNearbyPointsOfInterestWithResponse(
                 new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270)), Context.NONE))
             .assertNext(response -> validateSearchNearbyPointOfInterestWithResponse(
                 TestUtils.getExpectedSearchNearbyPointOfInterestResults(), response))
@@ -202,7 +206,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchNearbyPointsOfInterestWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchNearbyPointsOfInterestWithResponse(
+        StepVerifier
+            .create(client.searchNearbyPointsOfInterestWithResponse(
                 new SearchNearbyPointsOfInterestOptions(new GeoPosition(-100, -100)), Context.NONE))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -216,7 +221,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterestCategory(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterestCategory(
+        StepVerifier
+            .create(client.searchPointOfInterestCategory(
                 new SearchPointOfInterestCategoryOptions("atm", new GeoPosition(-74.011454, 40.706270))))
             .assertNext(actualResults -> validateSearchPointOfInterestCategory(
                 TestUtils.getExpectedSearchPointOfInterestCategoryResults(), actualResults))
@@ -231,7 +237,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchPointOfInterestCategoryWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterestCategoryWithResponse(
+        StepVerifier
+            .create(client.searchPointOfInterestCategoryWithResponse(
                 new SearchPointOfInterestCategoryOptions("atm", new GeoPosition(-74.011454, 40.706270)), Context.NONE))
             .assertNext(response -> validateSearchPointOfInterestCategoryWithResponse(
                 TestUtils.getExpectedSearchPointOfInterestCategoryResults(), response))
@@ -245,7 +252,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchPointOfInterestCategoryWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterestCategoryWithResponse(
+        StepVerifier
+            .create(client.searchPointOfInterestCategoryWithResponse(
                 new SearchPointOfInterestCategoryOptions("", new GeoPosition(-100, -100)), Context.NONE))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -298,9 +306,9 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAddressWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(
-                client.searchAddressWithResponse(new SearchAddressOptions("NE 24th Street, Redmond, WA 98052"),
-                    Context.NONE))
+        StepVerifier
+            .create(client.searchAddressWithResponse(new SearchAddressOptions("NE 24th Street, Redmond, WA 98052"),
+                Context.NONE))
             .assertNext(
                 response -> validateSearchAddressWithResponse(TestUtils.getExpectedSearchAddressResults(), response))
             .expectComplete()
@@ -326,11 +334,10 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncReverseSearchAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(
-                client.reverseSearchAddress(new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))))
-            .assertNext(
-                actualResults -> validateReverseSearchAddress(TestUtils.getExpectedReverseSearchAddressResults(),
-                    actualResults))
+        StepVerifier
+            .create(client.reverseSearchAddress(new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))))
+            .assertNext(actualResults -> validateReverseSearchAddress(
+                TestUtils.getExpectedReverseSearchAddressResults(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -342,12 +349,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncReverseSearchAddressWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(
-                client.reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)),
-                    Context.NONE))
-            .assertNext(
-                response -> validateReverseSearchAddressWithResponse(TestUtils.getExpectedReverseSearchAddressResults(),
-                    response))
+        StepVerifier
+            .create(client.reverseSearchAddressWithResponse(
+                new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)), Context.NONE))
+            .assertNext(response -> validateReverseSearchAddressWithResponse(
+                TestUtils.getExpectedReverseSearchAddressResults(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -358,13 +364,14 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidReverseSearchAddressWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(
-            client.reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(new GeoPosition(-121.89, -100)),
-                Context.NONE))
+        StepVerifier
+            .create(client.reverseSearchAddressWithResponse(
+                new ReverseSearchAddressOptions(new GeoPosition(-121.89, -100)), Context.NONE))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            }).verify(DEFAULT_TIMEOUT);
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search cross street address
@@ -373,7 +380,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncReverseSearchCrossStreetAddress(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchCrossStreetAddress(
+        StepVerifier
+            .create(client.reverseSearchCrossStreetAddress(
                 new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337))))
             .assertNext(actualResults -> validateReverseSearchCrossStreetAddress(
                 TestUtils.getExpectedReverseSearchCrossStreetAddressResults(), actualResults))
@@ -388,7 +396,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncReverseSearchCrossStreetAddressWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchCrossStreetAddressWithResponse(
+        StepVerifier
+            .create(client.reverseSearchCrossStreetAddressWithResponse(
                 new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337)), Context.NONE))
             .assertNext(response -> validateReverseSearchCrossStreetAddressWithResponse(
                 TestUtils.getExpectedReverseSearchCrossStreetAddressResults(), response))
@@ -402,7 +411,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidReverseSearchCrossStreetAddressWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchCrossStreetAddressWithResponse(
+        StepVerifier
+            .create(client.reverseSearchCrossStreetAddressWithResponse(
                 new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, -100)), Context.NONE))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -430,11 +440,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchStructuredAddressWithResponse(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchStructuredAddressWithResponse(new StructuredAddress("US"),
+        StepVerifier
+            .create(client.searchStructuredAddressWithResponse(new StructuredAddress("US"),
                 new SearchStructuredAddressOptions(), null))
-            .assertNext(
-                response -> validateSearchStructuredAddressWithResponse(TestUtils.getExpectedSearchStructuredAddress(),
-                    response))
+            .assertNext(response -> validateSearchStructuredAddressWithResponse(
+                TestUtils.getExpectedSearchStructuredAddress(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -476,11 +486,10 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geoobjectone.json");
         GeoObject obj = TestUtils.getGeoObject(file);
-        StepVerifier.create(
-                client.searchInsideGeometryWithResponse(new SearchInsideGeometryOptions("pizza", obj), null))
-            .assertNext(
-                response -> validateSearchInsideGeometryWithResponse(TestUtils.getExpectedSearchInsideGeometry(),
-                    response))
+        StepVerifier
+            .create(client.searchInsideGeometryWithResponse(new SearchInsideGeometryOptions("pizza", obj), null))
+            .assertNext(response -> validateSearchInsideGeometryWithResponse(
+                TestUtils.getExpectedSearchInsideGeometry(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -557,10 +566,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         fuzzyOptionsList.add(
             new FuzzySearchOptions("atm", new GeoPosition(-122.128362, 47.639769)).setRadiusInMeters(5000).setTop(5));
         fuzzyOptionsList.add(new FuzzySearchOptions("Statue of Liberty").setTop(2));
-        fuzzyOptionsList.add(
-            new FuzzySearchOptions("Starbucks", new GeoPosition(-122.128362, 47.639769)).setRadiusInMeters(5000));
+        fuzzyOptionsList
+            .add(new FuzzySearchOptions("Starbucks", new GeoPosition(-122.128362, 47.639769)).setRadiusInMeters(5000));
 
-        StepVerifier.create(client.beginFuzzySearchBatch(fuzzyOptionsList)
+        StepVerifier
+            .create(client.beginFuzzySearchBatch(fuzzyOptionsList)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -580,7 +590,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         searchAddressOptionsList.add(new SearchAddressOptions("350 5th Ave, New York, NY 10118").setTop(3));
         searchAddressOptionsList.add(new SearchAddressOptions("1 Main Street"));
 
-        StepVerifier.create(client.beginSearchAddressBatch(searchAddressOptionsList)
+        StepVerifier
+            .create(client.beginSearchAddressBatch(searchAddressOptionsList)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -596,17 +607,17 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         List<ReverseSearchAddressOptions> reverseOptionsList = new ArrayList<>();
         reverseOptionsList.add(new ReverseSearchAddressOptions(new GeoPosition(2.294911, 48.858561)));
-        reverseOptionsList.add(
-            new ReverseSearchAddressOptions(new GeoPosition(-122.127896, 47.639765)).setRadiusInMeters(5000));
+        reverseOptionsList
+            .add(new ReverseSearchAddressOptions(new GeoPosition(-122.127896, 47.639765)).setRadiusInMeters(5000));
         reverseOptionsList.add(new ReverseSearchAddressOptions(new GeoPosition(-122.348170, 47.621028)));
 
-        StepVerifier.create(client.beginReverseSearchAddressBatch(reverseOptionsList)
+        StepVerifier
+            .create(client.beginReverseSearchAddressBatch(reverseOptionsList)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
-            .assertNext(
-                actualResult -> validateBeginReverseSearchAddressBatch(TestUtils.getExpectedReverseSearchAddressBatch(),
-                    actualResult))
+            .assertNext(actualResult -> validateBeginReverseSearchAddressBatch(
+                TestUtils.getExpectedReverseSearchAddressBatch(), actualResult))
             .verifyComplete();
     }
 }

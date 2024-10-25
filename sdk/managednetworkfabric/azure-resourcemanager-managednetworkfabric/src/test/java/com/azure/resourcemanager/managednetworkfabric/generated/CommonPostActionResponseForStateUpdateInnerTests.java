@@ -10,9 +10,8 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostAc
 public final class CommonPostActionResponseForStateUpdateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommonPostActionResponseForStateUpdateInner model =
-            BinaryData
-                .fromString("{\"configurationState\":\"ErrorDeprovisioning\"}")
+        CommonPostActionResponseForStateUpdateInner model
+            = BinaryData.fromString("{\"configurationState\":\"ErrorDeprovisioning\"}")
                 .toObject(CommonPostActionResponseForStateUpdateInner.class);
     }
 

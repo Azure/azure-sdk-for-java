@@ -28,6 +28,6 @@ public interface StorageAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<ListStorageAccountKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListStorageAccountKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

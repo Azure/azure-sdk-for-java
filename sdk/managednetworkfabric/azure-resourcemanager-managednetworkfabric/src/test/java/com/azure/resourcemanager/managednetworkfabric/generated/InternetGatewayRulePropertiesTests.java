@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayRuleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"xaonwivkcqh\",\"xhxknlc\",\"rmmkyupiju\"]},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"kakfqfr\"],\"annotation\":\"myildudxjasc\"}")
-                .toObject(InternetGatewayRuleProperties.class);
+        InternetGatewayRuleProperties model = BinaryData.fromString(
+            "{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"xaonwivkcqh\",\"xhxknlc\",\"rmmkyupiju\"]},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"kakfqfr\"],\"annotation\":\"myildudxjasc\"}")
+            .toObject(InternetGatewayRuleProperties.class);
         Assertions.assertEquals("myildudxjasc", model.annotation());
         Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
         Assertions.assertEquals("xaonwivkcqh", model.ruleProperties().addressList().get(0));
@@ -26,13 +24,9 @@ public final class InternetGatewayRulePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRuleProperties model =
-            new InternetGatewayRuleProperties()
-                .withAnnotation("myildudxjasc")
-                .withRuleProperties(
-                    new RuleProperties()
-                        .withAction(Action.ALLOW)
-                        .withAddressList(Arrays.asList("xaonwivkcqh", "xhxknlc", "rmmkyupiju")));
+        InternetGatewayRuleProperties model = new InternetGatewayRuleProperties().withAnnotation("myildudxjasc")
+            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
+                .withAddressList(Arrays.asList("xaonwivkcqh", "xhxknlc", "rmmkyupiju")));
         model = BinaryData.fromObject(model).toObject(InternetGatewayRuleProperties.class);
         Assertions.assertEquals("myildudxjasc", model.annotation());
         Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());

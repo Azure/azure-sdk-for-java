@@ -108,9 +108,8 @@ public final class TransformProperties {
      */
     public void validate() {
         if (outputs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property outputs in model TransformProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property outputs in model TransformProperties"));
         } else {
             outputs().forEach(e -> e.validate());
         }

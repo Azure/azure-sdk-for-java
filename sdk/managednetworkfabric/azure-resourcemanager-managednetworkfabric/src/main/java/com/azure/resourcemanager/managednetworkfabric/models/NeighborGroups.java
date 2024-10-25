@@ -23,8 +23,8 @@ public interface NeighborGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Neighbor Group along with {@link Response}.
      */
-    Response<NeighborGroup> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context);
+    Response<NeighborGroup> getByResourceGroupWithResponse(String resourceGroupName, String neighborGroupName,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.

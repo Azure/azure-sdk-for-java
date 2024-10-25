@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HierarchySettingsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HierarchySettingsListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"tpngjcrcczsqpjh\",\"type\":\"daj\",\"name\":\"ysou\",\"properties\":{\"tenantId\":\"canoaeupf\",\"requireAuthorizationForGroupCreation\":true,\"defaultManagementGroup\":\"trpmo\"}},{\"id\":\"mcmatuokthfuiu\",\"type\":\"dsfcpkvxodpuoz\",\"name\":\"zydagfuaxbezyiuo\",\"properties\":{\"tenantId\":\"whrdxwzywqsmbsu\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"moryocfsfksym\"}},{\"id\":\"ys\",\"type\":\"i\",\"name\":\"xhqyudxorrqnb\",\"properties\":{\"tenantId\":\"zvyifqrvkdvj\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"mvvd\"}},{\"id\":\"atkpnp\",\"type\":\"exxbczwtr\",\"name\":\"iqzbq\",\"properties\":{\"tenantId\":\"ovm\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"cspkwlhzdobpxjmf\"}}],\"@nextLink\":\"vvnchrkcc\"}")
-                .toObject(HierarchySettingsListInner.class);
+        HierarchySettingsListInner model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"tpngjcrcczsqpjh\",\"type\":\"daj\",\"name\":\"ysou\",\"properties\":{\"tenantId\":\"canoaeupf\",\"requireAuthorizationForGroupCreation\":true,\"defaultManagementGroup\":\"trpmo\"}},{\"id\":\"mcmatuokthfuiu\",\"type\":\"dsfcpkvxodpuoz\",\"name\":\"zydagfuaxbezyiuo\",\"properties\":{\"tenantId\":\"whrdxwzywqsmbsu\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"moryocfsfksym\"}},{\"id\":\"ys\",\"type\":\"i\",\"name\":\"xhqyudxorrqnb\",\"properties\":{\"tenantId\":\"zvyifqrvkdvj\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"mvvd\"}},{\"id\":\"atkpnp\",\"type\":\"exxbczwtr\",\"name\":\"iqzbq\",\"properties\":{\"tenantId\":\"ovm\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"cspkwlhzdobpxjmf\"}}],\"@nextLink\":\"vvnchrkcc\"}")
+            .toObject(HierarchySettingsListInner.class);
         Assertions.assertEquals("canoaeupf", model.value().get(0).tenantId());
         Assertions.assertEquals(true, model.value().get(0).requireAuthorizationForGroupCreation());
         Assertions.assertEquals("trpmo", model.value().get(0).defaultManagementGroup());
@@ -25,27 +23,19 @@ public final class HierarchySettingsListInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HierarchySettingsListInner model =
-            new HierarchySettingsListInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new HierarchySettingsInfo()
-                                .withTenantId("canoaeupf")
-                                .withRequireAuthorizationForGroupCreation(true)
-                                .withDefaultManagementGroup("trpmo"),
-                            new HierarchySettingsInfo()
-                                .withTenantId("whrdxwzywqsmbsu")
-                                .withRequireAuthorizationForGroupCreation(false)
-                                .withDefaultManagementGroup("moryocfsfksym"),
-                            new HierarchySettingsInfo()
-                                .withTenantId("zvyifqrvkdvj")
-                                .withRequireAuthorizationForGroupCreation(false)
-                                .withDefaultManagementGroup("mvvd"),
-                            new HierarchySettingsInfo()
-                                .withTenantId("ovm")
-                                .withRequireAuthorizationForGroupCreation(false)
-                                .withDefaultManagementGroup("cspkwlhzdobpxjmf")));
+        HierarchySettingsListInner model = new HierarchySettingsListInner().withValue(Arrays.asList(
+            new HierarchySettingsInfo().withTenantId("canoaeupf")
+                .withRequireAuthorizationForGroupCreation(true)
+                .withDefaultManagementGroup("trpmo"),
+            new HierarchySettingsInfo().withTenantId("whrdxwzywqsmbsu")
+                .withRequireAuthorizationForGroupCreation(false)
+                .withDefaultManagementGroup("moryocfsfksym"),
+            new HierarchySettingsInfo().withTenantId("zvyifqrvkdvj")
+                .withRequireAuthorizationForGroupCreation(false)
+                .withDefaultManagementGroup("mvvd"),
+            new HierarchySettingsInfo().withTenantId("ovm")
+                .withRequireAuthorizationForGroupCreation(false)
+                .withDefaultManagementGroup("cspkwlhzdobpxjmf")));
         model = BinaryData.fromObject(model).toObject(HierarchySettingsListInner.class);
         Assertions.assertEquals("canoaeupf", model.value().get(0).tenantId());
         Assertions.assertEquals(true, model.value().get(0).requireAuthorizationForGroupCreation());

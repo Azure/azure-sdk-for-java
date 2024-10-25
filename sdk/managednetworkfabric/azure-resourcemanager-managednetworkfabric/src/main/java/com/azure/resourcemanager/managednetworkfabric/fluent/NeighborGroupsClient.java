@@ -30,8 +30,8 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body);
 
     /**
      * Creates the Neighbor Group.
@@ -48,8 +48,8 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body, Context context);
 
     /**
      * Creates the Neighbor Group.
@@ -82,8 +82,8 @@ public interface NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NeighborGroupInner create(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context);
+    NeighborGroupInner create(String resourceGroupName, String neighborGroupName, NeighborGroupInner body,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.
@@ -99,8 +99,8 @@ public interface NeighborGroupsClient {
      * @return the Neighbor Group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NeighborGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context);
+    Response<NeighborGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String neighborGroupName,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.
@@ -131,8 +131,8 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body);
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
@@ -149,8 +149,8 @@ public interface NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context);
+    SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body, Context context);
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
@@ -183,8 +183,8 @@ public interface NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NeighborGroupInner update(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context);
+    NeighborGroupInner update(String resourceGroupName, String neighborGroupName, NeighborGroupPatch body,
+        Context context);
 
     /**
      * Deletes a Neighbor Group.

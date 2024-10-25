@@ -86,10 +86,8 @@ public final class BuiltInStandardEncoderPreset extends Preset {
             configurations().validate();
         }
         if (presetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property presetName in model BuiltInStandardEncoderPreset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property presetName in model BuiltInStandardEncoderPreset"));
         }
     }
 

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoOverlayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoOverlay model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.VideoOverlay\",\"position\":{\"left\":\"zmegnitgvk\",\"top\":\"zyqdrfegcealzx\",\"width\":\"cansymoyqhlwigd\",\"height\":\"bkbxgomfa\"},\"opacity\":67.37119600885748,\"cropRectangle\":{\"left\":\"vdaeyyguxakjsq\",\"top\":\"zbezkgimsidxasic\",\"width\":\"yvvjskgfmo\",\"height\":\"ah\"},\"inputLabel\":\"qgatjeaahhvjhhn\",\"start\":\"PT193H41M36S\",\"end\":\"PT205H48M20S\",\"fadeInDuration\":\"PT38H59M39S\",\"fadeOutDuration\":\"PT83H32M15S\",\"audioGainLevel\":15.81435793256083}")
-                .toObject(VideoOverlay.class);
+        VideoOverlay model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.VideoOverlay\",\"position\":{\"left\":\"zmegnitgvk\",\"top\":\"zyqdrfegcealzx\",\"width\":\"cansymoyqhlwigd\",\"height\":\"bkbxgomfa\"},\"opacity\":67.37119600885748,\"cropRectangle\":{\"left\":\"vdaeyyguxakjsq\",\"top\":\"zbezkgimsidxasic\",\"width\":\"yvvjskgfmo\",\"height\":\"ah\"},\"inputLabel\":\"qgatjeaahhvjhhn\",\"start\":\"PT193H41M36S\",\"end\":\"PT205H48M20S\",\"fadeInDuration\":\"PT38H59M39S\",\"fadeOutDuration\":\"PT83H32M15S\",\"audioGainLevel\":15.81435793256083}")
+            .toObject(VideoOverlay.class);
         Assertions.assertEquals("qgatjeaahhvjhhn", model.inputLabel());
         Assertions.assertEquals(Duration.parse("PT193H41M36S"), model.start());
         Assertions.assertEquals(Duration.parse("PT205H48M20S"), model.end());
@@ -37,27 +35,21 @@ public final class VideoOverlayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VideoOverlay model =
-            new VideoOverlay()
-                .withInputLabel("qgatjeaahhvjhhn")
-                .withStart(Duration.parse("PT193H41M36S"))
-                .withEnd(Duration.parse("PT205H48M20S"))
-                .withFadeInDuration(Duration.parse("PT38H59M39S"))
-                .withFadeOutDuration(Duration.parse("PT83H32M15S"))
-                .withAudioGainLevel(15.81435793256083D)
-                .withPosition(
-                    new Rectangle()
-                        .withLeft("zmegnitgvk")
-                        .withTop("zyqdrfegcealzx")
-                        .withWidth("cansymoyqhlwigd")
-                        .withHeight("bkbxgomfa"))
-                .withOpacity(67.37119600885748D)
-                .withCropRectangle(
-                    new Rectangle()
-                        .withLeft("vdaeyyguxakjsq")
-                        .withTop("zbezkgimsidxasic")
-                        .withWidth("yvvjskgfmo")
-                        .withHeight("ah"));
+        VideoOverlay model = new VideoOverlay().withInputLabel("qgatjeaahhvjhhn")
+            .withStart(Duration.parse("PT193H41M36S"))
+            .withEnd(Duration.parse("PT205H48M20S"))
+            .withFadeInDuration(Duration.parse("PT38H59M39S"))
+            .withFadeOutDuration(Duration.parse("PT83H32M15S"))
+            .withAudioGainLevel(15.81435793256083D)
+            .withPosition(new Rectangle().withLeft("zmegnitgvk")
+                .withTop("zyqdrfegcealzx")
+                .withWidth("cansymoyqhlwigd")
+                .withHeight("bkbxgomfa"))
+            .withOpacity(67.37119600885748D)
+            .withCropRectangle(new Rectangle().withLeft("vdaeyyguxakjsq")
+                .withTop("zbezkgimsidxasic")
+                .withWidth("yvvjskgfmo")
+                .withHeight("ah"));
         model = BinaryData.fromObject(model).toObject(VideoOverlay.class);
         Assertions.assertEquals("qgatjeaahhvjhhn", model.inputLabel());
         Assertions.assertEquals(Duration.parse("PT193H41M36S"), model.start());

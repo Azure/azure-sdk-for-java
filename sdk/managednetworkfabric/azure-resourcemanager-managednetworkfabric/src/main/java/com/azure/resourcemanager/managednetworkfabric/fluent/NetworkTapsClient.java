@@ -33,8 +33,8 @@ public interface NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(
-        String resourceGroupName, String networkTapName, NetworkTapInner body);
+    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
+        String networkTapName, NetworkTapInner body);
 
     /**
      * Create Network Tap.
@@ -51,8 +51,8 @@ public interface NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context);
+    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
+        String networkTapName, NetworkTapInner body, Context context);
 
     /**
      * Create Network Tap.
@@ -101,8 +101,8 @@ public interface NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkTapInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapName, Context context);
+    Response<NetworkTapInner> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
+        Context context);
 
     /**
      * Gets a Network Tap.
@@ -133,8 +133,8 @@ public interface NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body);
+    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body);
 
     /**
      * Updates the Network Taps.
@@ -151,8 +151,8 @@ public interface NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context);
+    SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body, Context context);
 
     /**
      * Updates the Network Taps.
@@ -335,8 +335,8 @@ public interface NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapName, UpdateAdministrativeState body,
+            Context context);
 
     /**
      * Updates administrative state of Network Tap.
@@ -352,8 +352,8 @@ public interface NetworkTapsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap.
@@ -370,8 +370,8 @@ public interface NetworkTapsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Network Tap.
@@ -435,6 +435,6 @@ public interface NetworkTapsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String networkTapName, Context context);
+    CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String networkTapName,
+        Context context);
 }

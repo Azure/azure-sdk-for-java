@@ -135,8 +135,8 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
      * @param rentalAndLeaseKeyType the rentalAndLeaseKeyType value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayConfiguration withRentalAndLeaseKeyType(
-        ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType) {
+    public ContentKeyPolicyFairPlayConfiguration
+        withRentalAndLeaseKeyType(ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType) {
         this.rentalAndLeaseKeyType = rentalAndLeaseKeyType;
         return this;
     }
@@ -176,8 +176,8 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
      * @param offlineRentalConfiguration the offlineRentalConfiguration value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayConfiguration withOfflineRentalConfiguration(
-        ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration) {
+    public ContentKeyPolicyFairPlayConfiguration
+        withOfflineRentalConfiguration(ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration) {
         this.offlineRentalConfiguration = offlineRentalConfiguration;
         return this;
     }
@@ -191,30 +191,20 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     public void validate() {
         super.validate();
         if (ask() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ask in model ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ask in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfxPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fairPlayPfxPassword in model"
-                            + " ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fairPlayPfxPassword in model" + " ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfx() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fairPlayPfx in model ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fairPlayPfx in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (rentalAndLeaseKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rentalAndLeaseKeyType in model"
-                            + " ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rentalAndLeaseKeyType in model" + " ContentKeyPolicyFairPlayConfiguration"));
         }
         if (offlineRentalConfiguration() != null) {
             offlineRentalConfiguration().validate();

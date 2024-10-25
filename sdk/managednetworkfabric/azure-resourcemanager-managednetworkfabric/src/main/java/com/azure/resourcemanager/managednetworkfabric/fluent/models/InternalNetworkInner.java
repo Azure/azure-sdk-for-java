@@ -119,8 +119,8 @@ public final class InternalNetworkInner extends ProxyResource {
      * @param staticRouteConfiguration the staticRouteConfiguration value to set.
      * @return the InternalNetworkInner object itself.
      */
-    public InternalNetworkInner withStaticRouteConfiguration(
-        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+    public InternalNetworkInner
+        withStaticRouteConfiguration(InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new InternalNetworkProperties();
         }
@@ -442,10 +442,8 @@ public final class InternalNetworkInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model InternalNetworkInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model InternalNetworkInner"));
         } else {
             innerProperties().validate();
         }

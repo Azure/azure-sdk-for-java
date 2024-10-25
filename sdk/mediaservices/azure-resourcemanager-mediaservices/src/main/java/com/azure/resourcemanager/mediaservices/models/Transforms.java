@@ -39,8 +39,8 @@ public interface Transforms {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Transform items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Transform> list(
-        String resourceGroupName, String accountName, String filter, String orderby, Context context);
+    PagedIterable<Transform> list(String resourceGroupName, String accountName, String filter, String orderby,
+        Context context);
 
     /**
      * Get Transform
@@ -56,8 +56,8 @@ public interface Transforms {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform along with {@link Response}.
      */
-    Response<Transform> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, Context context);
+    Response<Transform> getWithResponse(String resourceGroupName, String accountName, String transformName,
+        Context context);
 
     /**
      * Get Transform
@@ -88,8 +88,8 @@ public interface Transforms {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String transformName,
+        Context context);
 
     /**
      * Delete Transform

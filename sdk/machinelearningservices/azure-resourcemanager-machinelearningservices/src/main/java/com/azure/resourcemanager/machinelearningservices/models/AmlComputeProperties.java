@@ -15,7 +15,8 @@ import java.util.List;
 /** AML Compute properties. */
 @Fluent
 public final class AmlComputeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlComputeProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AmlComputeProperties.class);
 
     /*
      * Compute OS Type
@@ -319,8 +320,8 @@ public final class AmlComputeProperties {
      * @param remoteLoginPortPublicAccess the remoteLoginPortPublicAccess value to set.
      * @return the AmlComputeProperties object itself.
      */
-    public AmlComputeProperties withRemoteLoginPortPublicAccess(
-        RemoteLoginPortPublicAccess remoteLoginPortPublicAccess) {
+    public AmlComputeProperties
+        withRemoteLoginPortPublicAccess(RemoteLoginPortPublicAccess remoteLoginPortPublicAccess) {
         this.remoteLoginPortPublicAccess = remoteLoginPortPublicAccess;
         return this;
     }

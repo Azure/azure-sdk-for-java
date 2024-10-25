@@ -50,8 +50,8 @@ public interface Mediaservices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Media Services account along with {@link Response}.
      */
-    Response<MediaService> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<MediaService> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get a Media Services account
@@ -109,8 +109,8 @@ public interface Mediaservices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
+    Response<Void> syncStorageKeysWithResponse(String resourceGroupName, String accountName,
+        SyncStorageKeysInput parameters, Context context);
 
     /**
      * Synchronizes Storage Account Keys
@@ -140,8 +140,8 @@ public interface Mediaservices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<EdgePolicies> listEdgePoliciesWithResponse(
-        String resourceGroupName, String accountName, ListEdgePoliciesInput parameters, Context context);
+    Response<EdgePolicies> listEdgePoliciesWithResponse(String resourceGroupName, String accountName,
+        ListEdgePoliciesInput parameters, Context context);
 
     /**
      * List the media edge policies associated with the Media Services account.

@@ -204,8 +204,8 @@ public final class NetworkTapRuleProperties extends AnnotationResource {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the NetworkTapRuleProperties object itself.
      */
-    public NetworkTapRuleProperties withMatchConfigurations(
-        List<NetworkTapRuleMatchConfiguration> matchConfigurations) {
+    public NetworkTapRuleProperties
+        withMatchConfigurations(List<NetworkTapRuleMatchConfiguration> matchConfigurations) {
         this.matchConfigurations = matchConfigurations;
         return this;
     }
@@ -225,8 +225,8 @@ public final class NetworkTapRuleProperties extends AnnotationResource {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRuleProperties object itself.
      */
-    public NetworkTapRuleProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRuleProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         this.dynamicMatchConfigurations = dynamicMatchConfigurations;
         return this;
     }

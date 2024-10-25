@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The auto scaler properties. */
 @Immutable
 public final class AksServiceResponseAutoScaler extends AutoScaler {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseAutoScaler.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksServiceResponseAutoScaler.class);
 
     /** {@inheritDoc} */
     @Override

@@ -43,8 +43,8 @@ public interface WorkspacesClient {
      * @return the properties of the specified machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Creates or updates a workspace with the specified parameters.
@@ -58,8 +58,8 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters);
 
     /**
      * Creates or updates a workspace with the specified parameters.
@@ -74,8 +74,8 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters, Context context);
 
     /**
      * Creates or updates a workspace with the specified parameters.
@@ -104,8 +104,8 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner parameters,
+        Context context);
 
     /**
      * Deletes a machine learning workspace.
@@ -186,8 +186,8 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> updateWithResponse(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters, Context context);
+    Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceUpdateParameters parameters, Context context);
 
     /**
      * Lists all the available machine learning workspaces under the specified resource group.
@@ -242,8 +242,8 @@ public interface WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListWorkspaceKeysResultInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListWorkspaceKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
@@ -349,6 +349,6 @@ public interface WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotebookAccessTokenResultInner> listNotebookAccessTokenWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<NotebookAccessTokenResultInner> listNotebookAccessTokenWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 }

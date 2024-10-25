@@ -91,17 +91,15 @@ public final class MachineLearningServicesManager {
 
     private final AzureMachineLearningWorkspaces clientObject;
 
-    private MachineLearningServicesManager(
-        HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private MachineLearningServicesManager(HttpPipeline httpPipeline, AzureProfile profile,
+        Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureMachineLearningWorkspacesBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureMachineLearningWorkspacesBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -210,15 +208,13 @@ public final class MachineLearningServicesManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.machinelearningservices")
                 .append("/")
                 .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -238,18 +234,14 @@ public final class MachineLearningServicesManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                profile.getEnvironment().getManagementEndpoint() + "/.default"));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new MachineLearningServicesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -305,8 +297,8 @@ public final class MachineLearningServicesManager {
     /** @return Resource collection API of MachineLearningComputes. */
     public MachineLearningComputes machineLearningComputes() {
         if (this.machineLearningComputes == null) {
-            this.machineLearningComputes =
-                new MachineLearningComputesImpl(clientObject.getMachineLearningComputes(), this);
+            this.machineLearningComputes
+                = new MachineLearningComputesImpl(clientObject.getMachineLearningComputes(), this);
         }
         return machineLearningComputes;
     }
@@ -322,8 +314,8 @@ public final class MachineLearningServicesManager {
     /** @return Resource collection API of PrivateEndpointConnections. */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
@@ -339,8 +331,8 @@ public final class MachineLearningServicesManager {
     /** @return Resource collection API of MachineLearningServices. */
     public MachineLearningServices machineLearningServices() {
         if (this.machineLearningServices == null) {
-            this.machineLearningServices =
-                new MachineLearningServicesImpl(clientObject.getMachineLearningServices(), this);
+            this.machineLearningServices
+                = new MachineLearningServicesImpl(clientObject.getMachineLearningServices(), this);
         }
         return machineLearningServices;
     }

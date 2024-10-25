@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The EnvironmentReference model. */
 @Fluent
 public class EnvironmentReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnvironmentReference.class);
 
     /*
      * Name of the environment.

@@ -25,7 +25,8 @@ public final class DataFeedIngestionProgress {
     private OffsetDateTime latestActiveTimestamp;
 
     /** Creates an instance of DataFeedIngestionProgress class. */
-    public DataFeedIngestionProgress() {}
+    public DataFeedIngestionProgress() {
+    }
 
     /**
      * Get the latestSuccessTimestamp property: the timestamp of latest success ingestion job. null indicates not
@@ -51,19 +52,23 @@ public final class DataFeedIngestionProgress {
         DataFeedIngestionProgressHelper
             .setAccessor(new DataFeedIngestionProgressHelper.DataFeedIngestionProgressAccessor() {
                 @Override
-                public void setLatestActiveTimestamp(DataFeedIngestionProgress ingestionStatus, OffsetDateTime offsetDateTime) {
+                public void setLatestActiveTimestamp(DataFeedIngestionProgress ingestionStatus,
+                    OffsetDateTime offsetDateTime) {
                     ingestionStatus.setLatestActiveTimestamp(offsetDateTime);
                 }
 
                 @Override
-                public void setLatestSuccessTimestamp(DataFeedIngestionProgress ingestionStatus, OffsetDateTime offsetDateTime) {
+                public void setLatestSuccessTimestamp(DataFeedIngestionProgress ingestionStatus,
+                    OffsetDateTime offsetDateTime) {
                     ingestionStatus.setLatestSuccessTimestamp(offsetDateTime);
                 }
             });
     }
+
     void setLatestActiveTimestamp(OffsetDateTime timestamp) {
         this.latestActiveTimestamp = timestamp;
     }
+
     void setLatestSuccessTimestamp(OffsetDateTime timestamp) {
         this.latestSuccessTimestamp = timestamp;
     }

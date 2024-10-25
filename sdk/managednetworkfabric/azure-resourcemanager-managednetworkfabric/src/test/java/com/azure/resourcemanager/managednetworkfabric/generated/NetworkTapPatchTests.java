@@ -19,18 +19,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTapPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkTapPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"pollingType\":\"Push\",\"destinations\":[{\"name\":\"mbzquu\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"hbtqyzy\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"y\",\"vxjdqosxzmdz\",\"ybqfufkekzfkicxh\",\"evmnk\"]},\"destinationTapRuleId\":\"hvsr\"},{\"name\":\"ok\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"bjsarxsvmfpa\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"fgqpud\",\"gxgieabbfp\",\"xavlozukgs\",\"uhwyxjsfmaxcebn\"]},\"destinationTapRuleId\":\"oskemq\"}],\"annotation\":\"rwqxpjpvem\"},\"tags\":{\"mhyt\":\"httuobrx\"}}")
-                .toObject(NetworkTapPatch.class);
+        NetworkTapPatch model = BinaryData.fromString(
+            "{\"properties\":{\"pollingType\":\"Push\",\"destinations\":[{\"name\":\"mbzquu\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"hbtqyzy\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"y\",\"vxjdqosxzmdz\",\"ybqfufkekzfkicxh\",\"evmnk\"]},\"destinationTapRuleId\":\"hvsr\"},{\"name\":\"ok\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"bjsarxsvmfpa\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"fgqpud\",\"gxgieabbfp\",\"xavlozukgs\",\"uhwyxjsfmaxcebn\"]},\"destinationTapRuleId\":\"oskemq\"}],\"annotation\":\"rwqxpjpvem\"},\"tags\":{\"mhyt\":\"httuobrx\"}}")
+            .toObject(NetworkTapPatch.class);
         Assertions.assertEquals("httuobrx", model.tags().get("mhyt"));
         Assertions.assertEquals(PollingType.PUSH, model.pollingType());
         Assertions.assertEquals("mbzquu", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
         Assertions.assertEquals("hbtqyzy", model.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(Encapsulation.NONE, model.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals(Encapsulation.NONE,
+            model.destinations().get(0).isolationDomainProperties().encapsulation());
         Assertions.assertEquals("y", model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
         Assertions.assertEquals("hvsr", model.destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals("rwqxpjpvem", model.annotation());
@@ -38,42 +36,30 @@ public final class NetworkTapPatchTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapPatch model =
-            new NetworkTapPatch()
-                .withTags(mapOf("mhyt", "httuobrx"))
-                .withPollingType(PollingType.PUSH)
-                .withDestinations(
-                    Arrays
-                        .asList(
-                            new NetworkTapPatchableParametersDestinationsItem()
-                                .withName("mbzquu")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("hbtqyzy")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(
-                                            Arrays.asList("y", "vxjdqosxzmdz", "ybqfufkekzfkicxh", "evmnk")))
-                                .withDestinationTapRuleId("hvsr"),
-                            new NetworkTapPatchableParametersDestinationsItem()
-                                .withName("ok")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("bjsarxsvmfpa")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.GRE)
-                                        .withNeighborGroupIds(
-                                            Arrays.asList("fgqpud", "gxgieabbfp", "xavlozukgs", "uhwyxjsfmaxcebn")))
-                                .withDestinationTapRuleId("oskemq")))
-                .withAnnotation("rwqxpjpvem");
+        NetworkTapPatch model = new NetworkTapPatch().withTags(mapOf("mhyt", "httuobrx"))
+            .withPollingType(PollingType.PUSH)
+            .withDestinations(Arrays.asList(
+                new NetworkTapPatchableParametersDestinationsItem().withName("mbzquu")
+                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                    .withDestinationId("hbtqyzy")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("y", "vxjdqosxzmdz", "ybqfufkekzfkicxh", "evmnk")))
+                    .withDestinationTapRuleId("hvsr"),
+                new NetworkTapPatchableParametersDestinationsItem().withName("ok")
+                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                    .withDestinationId("bjsarxsvmfpa")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("fgqpud", "gxgieabbfp", "xavlozukgs", "uhwyxjsfmaxcebn")))
+                    .withDestinationTapRuleId("oskemq")))
+            .withAnnotation("rwqxpjpvem");
         model = BinaryData.fromObject(model).toObject(NetworkTapPatch.class);
         Assertions.assertEquals("httuobrx", model.tags().get("mhyt"));
         Assertions.assertEquals(PollingType.PUSH, model.pollingType());
         Assertions.assertEquals("mbzquu", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
         Assertions.assertEquals("hbtqyzy", model.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(Encapsulation.NONE, model.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals(Encapsulation.NONE,
+            model.destinations().get(0).isolationDomainProperties().encapsulation());
         Assertions.assertEquals("y", model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
         Assertions.assertEquals("hvsr", model.destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals("rwqxpjpvem", model.annotation());

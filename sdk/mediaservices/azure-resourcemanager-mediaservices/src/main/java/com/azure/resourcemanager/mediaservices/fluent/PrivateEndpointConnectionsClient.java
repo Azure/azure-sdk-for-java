@@ -28,8 +28,8 @@ public interface PrivateEndpointConnectionsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * List private endpoint connections.
@@ -61,8 +61,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Get private endpoint connection.
@@ -96,12 +96,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String name,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String name, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Update a private endpoint connection.
@@ -118,8 +114,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName, String name,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete a private endpoint connection.

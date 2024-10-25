@@ -78,8 +78,8 @@ public final class HierarchySettingsInner extends ProxyResource {
      * @param requireAuthorizationForGroupCreation the requireAuthorizationForGroupCreation value to set.
      * @return the HierarchySettingsInner object itself.
      */
-    public HierarchySettingsInner withRequireAuthorizationForGroupCreation(
-        Boolean requireAuthorizationForGroupCreation) {
+    public HierarchySettingsInner
+        withRequireAuthorizationForGroupCreation(Boolean requireAuthorizationForGroupCreation) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HierarchySettingsProperties();
         }

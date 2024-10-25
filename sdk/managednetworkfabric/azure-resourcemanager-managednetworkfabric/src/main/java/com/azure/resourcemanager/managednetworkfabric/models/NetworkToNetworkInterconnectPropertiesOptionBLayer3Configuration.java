@@ -29,32 +29,32 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
 
     /** {@inheritDoc} */
     @Override
-    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withPrimaryIpv4Prefix(
-        String primaryIpv4Prefix) {
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+        withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
         super.withPrimaryIpv4Prefix(primaryIpv4Prefix);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withPrimaryIpv6Prefix(
-        String primaryIpv6Prefix) {
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+        withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
         super.withPrimaryIpv6Prefix(primaryIpv6Prefix);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withSecondaryIpv4Prefix(
-        String secondaryIpv4Prefix) {
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+        withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
         super.withSecondaryIpv4Prefix(secondaryIpv4Prefix);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withSecondaryIpv6Prefix(
-        String secondaryIpv6Prefix) {
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+        withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
         super.withSecondaryIpv6Prefix(secondaryIpv6Prefix);
         return this;
     }

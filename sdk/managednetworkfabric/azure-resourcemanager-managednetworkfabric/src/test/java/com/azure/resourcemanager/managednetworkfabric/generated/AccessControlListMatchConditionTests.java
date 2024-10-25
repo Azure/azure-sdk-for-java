@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlListMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControlListMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"etherTypes\":[\"pmdtz\"],\"fragments\":[\"tfvnz\",\"yj\"],\"ipLengths\":[\"p\",\"opv\",\"bdb\"],\"ttlValues\":[\"qqihedsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\"],\"dscpMarkings\":[\"dxbzlmcmuap\",\"vhdbevwqqxey\"],\"portCondition\":{\"flags\":[\"qzinkfkbg\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"eqocljmygvk\",\"qkjjeokbz\"],\"portGroupNames\":[\"zrxcczurt\",\"e\",\"pqxbkwvzgnzvdf\",\"zdix\"]},\"protocolTypes\":[\"pnodawopqhe\"],\"vlanMatchCondition\":{\"vlans\":[\"mcgsbostzelnd\"],\"innerVlans\":[\"utmzlbiojlvfhrbb\",\"neqvcwwyyurmo\"],\"vlanGroupNames\":[\"prprsnmokay\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"pbzpcpiljhahz\"],\"ipGroupNames\":[\"h\",\"dbn\",\"ieholewjwi\"]}}")
-                .toObject(AccessControlListMatchCondition.class);
+        AccessControlListMatchCondition model = BinaryData.fromString(
+            "{\"etherTypes\":[\"pmdtz\"],\"fragments\":[\"tfvnz\",\"yj\"],\"ipLengths\":[\"p\",\"opv\",\"bdb\"],\"ttlValues\":[\"qqihedsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\"],\"dscpMarkings\":[\"dxbzlmcmuap\",\"vhdbevwqqxey\"],\"portCondition\":{\"flags\":[\"qzinkfkbg\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"eqocljmygvk\",\"qkjjeokbz\"],\"portGroupNames\":[\"zrxcczurt\",\"e\",\"pqxbkwvzgnzvdf\",\"zdix\"]},\"protocolTypes\":[\"pnodawopqhe\"],\"vlanMatchCondition\":{\"vlans\":[\"mcgsbostzelnd\"],\"innerVlans\":[\"utmzlbiojlvfhrbb\",\"neqvcwwyyurmo\"],\"vlanGroupNames\":[\"prprsnmokay\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"pbzpcpiljhahz\"],\"ipGroupNames\":[\"h\",\"dbn\",\"ieholewjwi\"]}}")
+            .toObject(AccessControlListMatchCondition.class);
         Assertions.assertEquals("pnodawopqhe", model.protocolTypes().get(0));
         Assertions.assertEquals("mcgsbostzelnd", model.vlanMatchCondition().vlans().get(0));
         Assertions.assertEquals("utmzlbiojlvfhrbb", model.vlanMatchCondition().innerVlans().get(0));
@@ -46,32 +44,25 @@ public final class AccessControlListMatchConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListMatchCondition model =
-            new AccessControlListMatchCondition()
-                .withProtocolTypes(Arrays.asList("pnodawopqhe"))
-                .withVlanMatchCondition(
-                    new VlanMatchCondition()
-                        .withVlans(Arrays.asList("mcgsbostzelnd"))
-                        .withInnerVlans(Arrays.asList("utmzlbiojlvfhrbb", "neqvcwwyyurmo"))
-                        .withVlanGroupNames(Arrays.asList("prprsnmokay")))
-                .withIpCondition(
-                    new IpMatchCondition()
-                        .withType(SourceDestinationType.SOURCE_IP)
-                        .withPrefixType(PrefixType.PREFIX)
-                        .withIpPrefixValues(Arrays.asList("pbzpcpiljhahz"))
-                        .withIpGroupNames(Arrays.asList("h", "dbn", "ieholewjwi")))
+        AccessControlListMatchCondition model
+            = new AccessControlListMatchCondition().withProtocolTypes(Arrays.asList("pnodawopqhe"))
+                .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("mcgsbostzelnd"))
+                    .withInnerVlans(Arrays.asList("utmzlbiojlvfhrbb", "neqvcwwyyurmo"))
+                    .withVlanGroupNames(Arrays.asList("prprsnmokay")))
+                .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+                    .withPrefixType(PrefixType.PREFIX)
+                    .withIpPrefixValues(Arrays.asList("pbzpcpiljhahz"))
+                    .withIpGroupNames(Arrays.asList("h", "dbn", "ieholewjwi")))
                 .withEtherTypes(Arrays.asList("pmdtz"))
                 .withFragments(Arrays.asList("tfvnz", "yj"))
                 .withIpLengths(Arrays.asList("p", "opv", "bdb"))
                 .withTtlValues(Arrays.asList("qqihedsvqwthmk", "ibcysihsgqc", "dhohsdtmcdzsuf"))
                 .withDscpMarkings(Arrays.asList("dxbzlmcmuap", "vhdbevwqqxey"))
-                .withPortCondition(
-                    new AccessControlListPortCondition()
-                        .withPortType(PortType.SOURCE_PORT)
-                        .withLayer4Protocol(Layer4Protocol.UDP)
-                        .withPorts(Arrays.asList("eqocljmygvk", "qkjjeokbz"))
-                        .withPortGroupNames(Arrays.asList("zrxcczurt", "e", "pqxbkwvzgnzvdf", "zdix"))
-                        .withFlags(Arrays.asList("qzinkfkbg")));
+                .withPortCondition(new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
+                    .withLayer4Protocol(Layer4Protocol.UDP)
+                    .withPorts(Arrays.asList("eqocljmygvk", "qkjjeokbz"))
+                    .withPortGroupNames(Arrays.asList("zrxcczurt", "e", "pqxbkwvzgnzvdf", "zdix"))
+                    .withFlags(Arrays.asList("qzinkfkbg")));
         model = BinaryData.fromObject(model).toObject(AccessControlListMatchCondition.class);
         Assertions.assertEquals("pnodawopqhe", model.protocolTypes().get(0));
         Assertions.assertEquals("mcgsbostzelnd", model.vlanMatchCondition().vlans().get(0));

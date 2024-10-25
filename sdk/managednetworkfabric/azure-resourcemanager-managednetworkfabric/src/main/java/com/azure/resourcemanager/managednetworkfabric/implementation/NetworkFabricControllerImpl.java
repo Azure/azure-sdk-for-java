@@ -163,25 +163,21 @@ public final class NetworkFabricControllerImpl
     }
 
     public NetworkFabricController create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .create(resourceGroupName, networkFabricControllerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .create(resourceGroupName, networkFabricControllerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkFabricController create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .create(resourceGroupName, networkFabricControllerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .create(resourceGroupName, networkFabricControllerName, this.innerModel(), context);
         return this;
     }
 
-    NetworkFabricControllerImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkFabricControllerImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkFabricControllerInner();
         this.serviceManager = serviceManager;
         this.networkFabricControllerName = name;
@@ -193,25 +189,20 @@ public final class NetworkFabricControllerImpl
     }
 
     public NetworkFabricController apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .update(resourceGroupName, networkFabricControllerName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .update(resourceGroupName, networkFabricControllerName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkFabricController apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .update(resourceGroupName, networkFabricControllerName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .update(resourceGroupName, networkFabricControllerName, updateBody, context);
         return this;
     }
 
-    NetworkFabricControllerImpl(
-        NetworkFabricControllerInner innerObject,
+    NetworkFabricControllerImpl(NetworkFabricControllerInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -220,22 +211,18 @@ public final class NetworkFabricControllerImpl
     }
 
     public NetworkFabricController refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, networkFabricControllerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFabricControllerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkFabricController refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabricControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, networkFabricControllerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabricControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFabricControllerName, context)
+            .getValue();
         return this;
     }
 
@@ -259,14 +246,14 @@ public final class NetworkFabricControllerImpl
         }
     }
 
-    public NetworkFabricControllerImpl withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public NetworkFabricControllerImpl
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.innerModel().withManagedResourceGroupConfiguration(managedResourceGroupConfiguration);
         return this;
     }
 
-    public NetworkFabricControllerImpl withIsWorkloadManagementNetworkEnabled(
-        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+    public NetworkFabricControllerImpl
+        withIsWorkloadManagementNetworkEnabled(IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
         this.innerModel().withIsWorkloadManagementNetworkEnabled(isWorkloadManagementNetworkEnabled);
         return this;
     }
@@ -297,8 +284,8 @@ public final class NetworkFabricControllerImpl
         }
     }
 
-    public NetworkFabricControllerImpl withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerImpl
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         if (isInCreateMode()) {
             this.innerModel().withWorkloadExpressRouteConnections(workloadExpressRouteConnections);
             return this;

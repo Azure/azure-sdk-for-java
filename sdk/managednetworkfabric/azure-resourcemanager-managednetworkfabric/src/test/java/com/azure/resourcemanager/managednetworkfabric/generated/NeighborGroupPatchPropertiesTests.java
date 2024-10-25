@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupPatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"destination\":{\"ipv4Addresses\":[\"peg\",\"wdabalfdxaglzfyt\"],\"ipv6Addresses\":[\"lqhopxouvmrs\"]},\"annotation\":\"likyypzkgxfxfmyr\"}")
-                .toObject(NeighborGroupPatchProperties.class);
+        NeighborGroupPatchProperties model = BinaryData.fromString(
+            "{\"destination\":{\"ipv4Addresses\":[\"peg\",\"wdabalfdxaglzfyt\"],\"ipv6Addresses\":[\"lqhopxouvmrs\"]},\"annotation\":\"likyypzkgxfxfmyr\"}")
+            .toObject(NeighborGroupPatchProperties.class);
         Assertions.assertEquals("likyypzkgxfxfmyr", model.annotation());
         Assertions.assertEquals("peg", model.destination().ipv4Addresses().get(0));
         Assertions.assertEquals("lqhopxouvmrs", model.destination().ipv6Addresses().get(0));
@@ -25,13 +23,9 @@ public final class NeighborGroupPatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupPatchProperties model =
-            new NeighborGroupPatchProperties()
-                .withAnnotation("likyypzkgxfxfmyr")
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("peg", "wdabalfdxaglzfyt"))
-                        .withIpv6Addresses(Arrays.asList("lqhopxouvmrs")));
+        NeighborGroupPatchProperties model = new NeighborGroupPatchProperties().withAnnotation("likyypzkgxfxfmyr")
+            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("peg", "wdabalfdxaglzfyt"))
+                .withIpv6Addresses(Arrays.asList("lqhopxouvmrs")));
         model = BinaryData.fromObject(model).toObject(NeighborGroupPatchProperties.class);
         Assertions.assertEquals("likyypzkgxfxfmyr", model.annotation());
         Assertions.assertEquals("peg", model.destination().ipv4Addresses().get(0));

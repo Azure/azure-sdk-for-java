@@ -81,8 +81,8 @@ public final class HierarchySettingsProperties {
      * @param requireAuthorizationForGroupCreation the requireAuthorizationForGroupCreation value to set.
      * @return the HierarchySettingsProperties object itself.
      */
-    public HierarchySettingsProperties withRequireAuthorizationForGroupCreation(
-        Boolean requireAuthorizationForGroupCreation) {
+    public HierarchySettingsProperties
+        withRequireAuthorizationForGroupCreation(Boolean requireAuthorizationForGroupCreation) {
         this.requireAuthorizationForGroupCreation = requireAuthorizationForGroupCreation;
         return this;
     }

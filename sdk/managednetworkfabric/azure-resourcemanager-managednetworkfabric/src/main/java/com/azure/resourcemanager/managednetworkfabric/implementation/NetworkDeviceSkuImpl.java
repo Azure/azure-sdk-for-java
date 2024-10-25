@@ -18,8 +18,7 @@ public final class NetworkDeviceSkuImpl implements NetworkDeviceSku {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    NetworkDeviceSkuImpl(
-        NetworkDeviceSkuInner innerObject,
+    NetworkDeviceSkuImpl(NetworkDeviceSkuInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

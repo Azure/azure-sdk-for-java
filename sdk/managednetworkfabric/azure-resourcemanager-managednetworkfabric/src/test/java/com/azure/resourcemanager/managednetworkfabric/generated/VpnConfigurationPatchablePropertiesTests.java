@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VpnConfigurationPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VpnConfigurationPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkToNetworkInterconnectId\":\"gzrujlqc\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"eiqbcbgvsbts\"],\"exportRouteTargets\":[\"oxa\",\"hxuvjhxm\",\"rqstjcme\",\"wmlgicvnpv\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"jnaqyq\",\"pslzmvcds\",\"mwbitekdtfo\"],\"importIpv6RouteTargets\":[\"iy\",\"x\",\"ich\"],\"exportIpv4RouteTargets\":[\"fzdqekiv\",\"cpzcvdizul\",\"qtbhtr\"],\"exportIpv6RouteTargets\":[\"zlp\"]}},\"optionAProperties\":{\"primaryIpv4Prefix\":\"mxmdutzfkgilnou\",\"primaryIpv6Prefix\":\"cgndjgdp\",\"secondaryIpv4Prefix\":\"ggqqyeqfcb\",\"secondaryIpv6Prefix\":\"lpyuflqjf\",\"mtu\":1679929434,\"vlanId\":446521105,\"peerASN\":4335062738283435533,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1471378108,\"multiplier\":373324841}}}")
-                .toObject(VpnConfigurationPatchableProperties.class);
+        VpnConfigurationPatchableProperties model = BinaryData.fromString(
+            "{\"networkToNetworkInterconnectId\":\"gzrujlqc\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"eiqbcbgvsbts\"],\"exportRouteTargets\":[\"oxa\",\"hxuvjhxm\",\"rqstjcme\",\"wmlgicvnpv\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"jnaqyq\",\"pslzmvcds\",\"mwbitekdtfo\"],\"importIpv6RouteTargets\":[\"iy\",\"x\",\"ich\"],\"exportIpv4RouteTargets\":[\"fzdqekiv\",\"cpzcvdizul\",\"qtbhtr\"],\"exportIpv6RouteTargets\":[\"zlp\"]}},\"optionAProperties\":{\"primaryIpv4Prefix\":\"mxmdutzfkgilnou\",\"primaryIpv6Prefix\":\"cgndjgdp\",\"secondaryIpv4Prefix\":\"ggqqyeqfcb\",\"secondaryIpv6Prefix\":\"lpyuflqjf\",\"mtu\":1679929434,\"vlanId\":446521105,\"peerASN\":4335062738283435533,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1471378108,\"multiplier\":373324841}}}")
+            .toObject(VpnConfigurationPatchableProperties.class);
         Assertions.assertEquals("gzrujlqc", model.networkToNetworkInterconnectId());
         Assertions.assertEquals(PeeringOption.OPTIONB, model.peeringOption());
         Assertions.assertEquals("eiqbcbgvsbts", model.optionBProperties().importRouteTargets().get(0));
@@ -43,31 +41,25 @@ public final class VpnConfigurationPatchablePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VpnConfigurationPatchableProperties model =
-            new VpnConfigurationPatchableProperties()
-                .withNetworkToNetworkInterconnectId("gzrujlqc")
+        VpnConfigurationPatchableProperties model
+            = new VpnConfigurationPatchableProperties().withNetworkToNetworkInterconnectId("gzrujlqc")
                 .withPeeringOption(PeeringOption.OPTIONB)
-                .withOptionBProperties(
-                    new OptionBProperties()
-                        .withImportRouteTargets(Arrays.asList("eiqbcbgvsbts"))
-                        .withExportRouteTargets(Arrays.asList("oxa", "hxuvjhxm", "rqstjcme", "wmlgicvnpv"))
-                        .withRouteTargets(
-                            new RouteTargetInformation()
-                                .withImportIpv4RouteTargets(Arrays.asList("jnaqyq", "pslzmvcds", "mwbitekdtfo"))
-                                .withImportIpv6RouteTargets(Arrays.asList("iy", "x", "ich"))
-                                .withExportIpv4RouteTargets(Arrays.asList("fzdqekiv", "cpzcvdizul", "qtbhtr"))
-                                .withExportIpv6RouteTargets(Arrays.asList("zlp"))))
-                .withOptionAProperties(
-                    new VpnConfigurationPatchablePropertiesOptionAProperties()
-                        .withMtu(1679929434)
-                        .withVlanId(446521105)
-                        .withPeerAsn(4335062738283435533L)
-                        .withBfdConfiguration(
-                            new BfdConfiguration().withIntervalInMilliSeconds(1471378108).withMultiplier(373324841))
-                        .withPrimaryIpv4Prefix("mxmdutzfkgilnou")
-                        .withPrimaryIpv6Prefix("cgndjgdp")
-                        .withSecondaryIpv4Prefix("ggqqyeqfcb")
-                        .withSecondaryIpv6Prefix("lpyuflqjf"));
+                .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("eiqbcbgvsbts"))
+                    .withExportRouteTargets(Arrays.asList("oxa", "hxuvjhxm", "rqstjcme", "wmlgicvnpv"))
+                    .withRouteTargets(new RouteTargetInformation()
+                        .withImportIpv4RouteTargets(Arrays.asList("jnaqyq", "pslzmvcds", "mwbitekdtfo"))
+                        .withImportIpv6RouteTargets(Arrays.asList("iy", "x", "ich"))
+                        .withExportIpv4RouteTargets(Arrays.asList("fzdqekiv", "cpzcvdizul", "qtbhtr"))
+                        .withExportIpv6RouteTargets(Arrays.asList("zlp"))))
+                .withOptionAProperties(new VpnConfigurationPatchablePropertiesOptionAProperties().withMtu(1679929434)
+                    .withVlanId(446521105)
+                    .withPeerAsn(4335062738283435533L)
+                    .withBfdConfiguration(
+                        new BfdConfiguration().withIntervalInMilliSeconds(1471378108).withMultiplier(373324841))
+                    .withPrimaryIpv4Prefix("mxmdutzfkgilnou")
+                    .withPrimaryIpv6Prefix("cgndjgdp")
+                    .withSecondaryIpv4Prefix("ggqqyeqfcb")
+                    .withSecondaryIpv6Prefix("lpyuflqjf"));
         model = BinaryData.fromObject(model).toObject(VpnConfigurationPatchableProperties.class);
         Assertions.assertEquals("gzrujlqc", model.networkToNetworkInterconnectId());
         Assertions.assertEquals(PeeringOption.OPTIONB, model.peeringOption());

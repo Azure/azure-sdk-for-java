@@ -41,8 +41,8 @@ public interface StreamingLocators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingLocator items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StreamingLocator> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<StreamingLocator> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get a Streaming Locator
@@ -58,8 +58,8 @@ public interface StreamingLocators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Locator in the Media Services account along with {@link Response}.
      */
-    Response<StreamingLocator> getWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<StreamingLocator> getWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * Get a Streaming Locator
@@ -90,8 +90,8 @@ public interface StreamingLocators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingLocatorName,
+        Context context);
 
     /**
      * Delete a Streaming Locator
@@ -121,8 +121,8 @@ public interface StreamingLocators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class of response for listContentKeys action along with {@link Response}.
      */
-    Response<ListContentKeysResponse> listContentKeysWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<ListContentKeysResponse> listContentKeysWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * List Content Keys
@@ -153,8 +153,8 @@ public interface StreamingLocators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class of response for listPaths action along with {@link Response}.
      */
-    Response<ListPathsResponse> listPathsWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<ListPathsResponse> listPathsWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * List Paths

@@ -109,25 +109,21 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .create(resourceGroupName, ipCommunityName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .create(resourceGroupName, ipCommunityName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IpCommunity create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .create(resourceGroupName, ipCommunityName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .create(resourceGroupName, ipCommunityName, this.innerModel(), context);
         return this;
     }
 
-    IpCommunityImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    IpCommunityImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new IpCommunityInner();
         this.serviceManager = serviceManager;
         this.ipCommunityName = name;
@@ -139,25 +135,20 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .update(resourceGroupName, ipCommunityName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .update(resourceGroupName, ipCommunityName, updateBody, Context.NONE);
         return this;
     }
 
     public IpCommunity apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .update(resourceGroupName, ipCommunityName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .update(resourceGroupName, ipCommunityName, updateBody, context);
         return this;
     }
 
-    IpCommunityImpl(
-        IpCommunityInner innerObject,
+    IpCommunityImpl(IpCommunityInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -166,22 +157,18 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IpCommunity refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpCommunities()
-                .getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpCommunities()
+            .getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, context)
+            .getValue();
         return this;
     }
 

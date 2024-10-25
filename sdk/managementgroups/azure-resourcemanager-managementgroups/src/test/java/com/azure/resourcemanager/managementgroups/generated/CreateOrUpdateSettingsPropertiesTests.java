@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateOrUpdateSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrUpdateSettingsProperties model =
-            BinaryData
-                .fromString("{\"requireAuthorizationForGroupCreation\":true,\"defaultManagementGroup\":\"bldngkpoc\"}")
-                .toObject(CreateOrUpdateSettingsProperties.class);
+        CreateOrUpdateSettingsProperties model = BinaryData
+            .fromString("{\"requireAuthorizationForGroupCreation\":true,\"defaultManagementGroup\":\"bldngkpoc\"}")
+            .toObject(CreateOrUpdateSettingsProperties.class);
         Assertions.assertEquals(true, model.requireAuthorizationForGroupCreation());
         Assertions.assertEquals("bldngkpoc", model.defaultManagementGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateOrUpdateSettingsProperties model =
-            new CreateOrUpdateSettingsProperties()
-                .withRequireAuthorizationForGroupCreation(true)
+        CreateOrUpdateSettingsProperties model
+            = new CreateOrUpdateSettingsProperties().withRequireAuthorizationForGroupCreation(true)
                 .withDefaultManagementGroup("bldngkpoc");
         model = BinaryData.fromObject(model).toObject(CreateOrUpdateSettingsProperties.class);
         Assertions.assertEquals(true, model.requireAuthorizationForGroupCreation());

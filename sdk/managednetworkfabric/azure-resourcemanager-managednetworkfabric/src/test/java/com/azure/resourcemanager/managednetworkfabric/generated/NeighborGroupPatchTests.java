@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"destination\":{\"ipv4Addresses\":[\"lciichgjs\",\"smvxodgw\",\"f\",\"zsifcuvbdujgcwx\"],\"ipv6Addresses\":[\"bbwjtrdxrizagb\",\"giarksykpgdqxw\",\"b\"]},\"annotation\":\"wiqrxhaclcdosq\"},\"tags\":{\"xkpbqwun\":\"jqgkifmmainwhe\",\"elwgvydjufbnkl\":\"obuizaz\"}}")
-                .toObject(NeighborGroupPatch.class);
+        NeighborGroupPatch model = BinaryData.fromString(
+            "{\"properties\":{\"destination\":{\"ipv4Addresses\":[\"lciichgjs\",\"smvxodgw\",\"f\",\"zsifcuvbdujgcwx\"],\"ipv6Addresses\":[\"bbwjtrdxrizagb\",\"giarksykpgdqxw\",\"b\"]},\"annotation\":\"wiqrxhaclcdosq\"},\"tags\":{\"xkpbqwun\":\"jqgkifmmainwhe\",\"elwgvydjufbnkl\":\"obuizaz\"}}")
+            .toObject(NeighborGroupPatch.class);
         Assertions.assertEquals("jqgkifmmainwhe", model.tags().get("xkpbqwun"));
         Assertions.assertEquals("lciichgjs", model.destination().ipv4Addresses().get(0));
         Assertions.assertEquals("bbwjtrdxrizagb", model.destination().ipv6Addresses().get(0));
@@ -28,13 +26,11 @@ public final class NeighborGroupPatchTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupPatch model =
-            new NeighborGroupPatch()
-                .withTags(mapOf("xkpbqwun", "jqgkifmmainwhe", "elwgvydjufbnkl", "obuizaz"))
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("lciichgjs", "smvxodgw", "f", "zsifcuvbdujgcwx"))
-                        .withIpv6Addresses(Arrays.asList("bbwjtrdxrizagb", "giarksykpgdqxw", "b")))
+        NeighborGroupPatch model
+            = new NeighborGroupPatch().withTags(mapOf("xkpbqwun", "jqgkifmmainwhe", "elwgvydjufbnkl", "obuizaz"))
+                .withDestination(new NeighborGroupDestination()
+                    .withIpv4Addresses(Arrays.asList("lciichgjs", "smvxodgw", "f", "zsifcuvbdujgcwx"))
+                    .withIpv6Addresses(Arrays.asList("bbwjtrdxrizagb", "giarksykpgdqxw", "b")))
                 .withAnnotation("wiqrxhaclcdosq");
         model = BinaryData.fromObject(model).toObject(NeighborGroupPatch.class);
         Assertions.assertEquals("jqgkifmmainwhe", model.tags().get("xkpbqwun"));

@@ -41,8 +41,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ManagementGroupsApiImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,36 +53,28 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiR")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequest checkNameAvailabilityRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/startTenantBackfill")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantBackfillStatusResultInner>> startTenantBackfill(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TenantBackfillStatusResultInner>> startTenantBackfill(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/tenantBackfillStatus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantBackfillStatusResultInner>> tenantBackfillStatus(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TenantBackfillStatusResultInner>> tenantBackfillStatus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -96,33 +88,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+    private Mono<Response<CheckNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityRequest is required and cannot be null."));
         } else {
             checkNameAvailabilityRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), checkNameAvailabilityRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -141,24 +122,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityRequest is required and cannot be null."));
         } else {
             checkNameAvailabilityRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(), this.client.getApiVersion(), checkNameAvailabilityRequest, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            checkNameAvailabilityRequest, accept, context);
     }
 
     /**
@@ -172,8 +148,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+    private Mono<CheckNameAvailabilityResultInner>
+        checkNameAvailabilityAsync(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -190,8 +166,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+    public Response<CheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequest, context).block();
     }
 
@@ -205,8 +181,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return describes the result of the request to check management group name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+    public CheckNameAvailabilityResultInner
+        checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         return checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, Context.NONE).getValue();
     }
 
@@ -220,17 +196,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantBackfillStatusResultInner>> startTenantBackfillWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .startTenantBackfill(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.startTenantBackfill(this.client.getEndpoint(), this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,10 +218,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantBackfillStatusResultInner>> startTenantBackfillWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -304,17 +274,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantBackfillStatusResultInner>> tenantBackfillStatusWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .tenantBackfillStatus(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.tenantBackfillStatus(this.client.getEndpoint(), this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -330,10 +296,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantBackfillStatusResultInner>> tenantBackfillStatusWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

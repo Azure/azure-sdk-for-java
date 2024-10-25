@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AKS")
 @Fluent
 public final class Aks extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Aks.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Aks.class);
 
     /*
      * AKS properties

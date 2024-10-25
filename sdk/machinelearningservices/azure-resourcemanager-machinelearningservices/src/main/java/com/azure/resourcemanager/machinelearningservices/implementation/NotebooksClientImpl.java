@@ -48,8 +48,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @param client the instance of the service client containing this operation class.
      */
     NotebooksClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy.create(NotebooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NotebooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,35 +60,25 @@ public final class NotebooksClientImpl implements NotebooksClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     private interface NotebooksService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/prepareNotebook")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/prepareNotebook")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> prepare(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> prepare(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListNotebookKeysResultInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListNotebookKeysResultInner>> listKeys(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -102,16 +92,12 @@ public final class NotebooksClientImpl implements NotebooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -122,17 +108,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .prepare(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.prepare(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -146,19 +123,15 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(String resourceGroupName, String workspaceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,15 +142,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .prepare(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context);
+        return service.prepare(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, accept, context);
     }
 
     /**
@@ -189,17 +155,12 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareAsync(
-        String resourceGroupName, String workspaceName) {
+    private PollerFlux<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepareAsync(String resourceGroupName, String workspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, workspaceName);
-        return this
-            .client
-            .<NotebookResourceInfoInner, NotebookResourceInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NotebookResourceInfoInner.class,
-                NotebookResourceInfoInner.class,
-                Context.NONE);
+        return this.client.<NotebookResourceInfoInner, NotebookResourceInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NotebookResourceInfoInner.class, NotebookResourceInfoInner.class,
+            Context.NONE);
     }
 
     /**
@@ -212,18 +173,12 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private PollerFlux<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepareAsync(String resourceGroupName, String workspaceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, workspaceName, context);
-        return this
-            .client
-            .<NotebookResourceInfoInner, NotebookResourceInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NotebookResourceInfoInner.class,
-                NotebookResourceInfoInner.class,
-                context);
+        return this.client.<NotebookResourceInfoInner, NotebookResourceInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NotebookResourceInfoInner.class, NotebookResourceInfoInner.class, context);
     }
 
     /**
@@ -235,8 +190,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(
-        String resourceGroupName, String workspaceName) {
+    public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepare(String resourceGroupName, String workspaceName) {
         return beginPrepareAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
 
@@ -250,8 +205,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(
-        String resourceGroupName, String workspaceName, Context context) {
+    public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepare(String resourceGroupName, String workspaceName, Context context) {
         return beginPrepareAsync(resourceGroupName, workspaceName, context).getSyncPoller();
     }
 
@@ -265,8 +220,7 @@ public final class NotebooksClientImpl implements NotebooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NotebookResourceInfoInner> prepareAsync(String resourceGroupName, String workspaceName) {
-        return beginPrepareAsync(resourceGroupName, workspaceName)
-            .last()
+        return beginPrepareAsync(resourceGroupName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -280,10 +234,9 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NotebookResourceInfoInner> prepareAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return beginPrepareAsync(resourceGroupName, workspaceName, context)
-            .last()
+    private Mono<NotebookResourceInfoInner> prepareAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return beginPrepareAsync(resourceGroupName, workspaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -323,19 +276,15 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListNotebookKeysResultInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<ListNotebookKeysResultInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -346,17 +295,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -370,19 +310,15 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListNotebookKeysResultInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<ListNotebookKeysResultInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -393,15 +329,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, accept, context);
     }
 
     /**
@@ -415,14 +344,13 @@ public final class NotebooksClientImpl implements NotebooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ListNotebookKeysResultInner> listKeysAsync(String resourceGroupName, String workspaceName) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<ListNotebookKeysResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ListNotebookKeysResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -448,8 +376,8 @@ public final class NotebooksClientImpl implements NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListNotebookKeysResultInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<ListNotebookKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 }

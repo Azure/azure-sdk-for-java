@@ -19,8 +19,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

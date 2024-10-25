@@ -19,23 +19,23 @@ public final class SearchAddressBatchItem implements JsonSerializable<SearchAddr
     private SearchAddressResult result;
 
     static {
-        SearchAddressBatchItemPropertiesHelper.setAccessor(new SearchAddressBatchItemPropertiesHelper
-            .SearchAddressBatchItemAccessor() {
-            @Override
-            public void setErrorDetail(SearchAddressBatchItem item, ResponseError detail) {
-                item.setErrorDetail(detail);
-            }
+        SearchAddressBatchItemPropertiesHelper
+            .setAccessor(new SearchAddressBatchItemPropertiesHelper.SearchAddressBatchItemAccessor() {
+                @Override
+                public void setErrorDetail(SearchAddressBatchItem item, ResponseError detail) {
+                    item.setErrorDetail(detail);
+                }
 
-            @Override
-            public void setSearchAddressResult(SearchAddressBatchItem item, SearchAddressResult result) {
-                item.setSearchAddressResult(result);
-            }
+                @Override
+                public void setSearchAddressResult(SearchAddressBatchItem item, SearchAddressResult result) {
+                    item.setSearchAddressResult(result);
+                }
 
-            @Override
-            public void setStatusCode(SearchAddressBatchItem item, Integer statusCode) {
-                item.setStatusCode(statusCode);
-            }
-        });
+                @Override
+                public void setStatusCode(SearchAddressBatchItem item, Integer statusCode) {
+                    item.setStatusCode(statusCode);
+                }
+            });
     }
 
     /**

@@ -18,7 +18,8 @@ import java.util.Map;
 /** Machine Learning service object wrapped into ARM resource envelope. */
 @Fluent
 public final class ServiceResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServiceResourceInner.class);
 
     /*
      * Service properties

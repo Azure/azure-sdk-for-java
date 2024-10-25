@@ -17,26 +17,26 @@ public final class LiveEventStreamEventType extends ExpandableStringEnum<LiveEve
     public static final LiveEventStreamEventType STREAM_EVENT_END_INGEST = fromString("StreamEvent/EndIngest");
 
     /** Static value StreamEvent/FirstChunkReceived for LiveEventStreamEventType. */
-    public static final LiveEventStreamEventType STREAM_EVENT_FIRST_CHUNK_RECEIVED =
-        fromString("StreamEvent/FirstChunkReceived");
+    public static final LiveEventStreamEventType STREAM_EVENT_FIRST_CHUNK_RECEIVED
+        = fromString("StreamEvent/FirstChunkReceived");
 
     /** Static value StreamEvent/ChunkDropped for LiveEventStreamEventType. */
     public static final LiveEventStreamEventType STREAM_EVENT_CHUNK_DROPPED = fromString("StreamEvent/ChunkDropped");
 
     /** Static value StreamEvent/UnalignedKeyFrames for LiveEventStreamEventType. */
-    public static final LiveEventStreamEventType STREAM_EVENT_UNALIGNED_KEY_FRAMES =
-        fromString("StreamEvent/UnalignedKeyFrames");
+    public static final LiveEventStreamEventType STREAM_EVENT_UNALIGNED_KEY_FRAMES
+        = fromString("StreamEvent/UnalignedKeyFrames");
 
     /** Static value StreamEvent/UnalignedPresentation for LiveEventStreamEventType. */
-    public static final LiveEventStreamEventType STREAM_EVENT_UNALIGNED_PRESENTATION =
-        fromString("StreamEvent/UnalignedPresentation");
+    public static final LiveEventStreamEventType STREAM_EVENT_UNALIGNED_PRESENTATION
+        = fromString("StreamEvent/UnalignedPresentation");
 
     /** Static value StreamEvent/Discontinuity for LiveEventStreamEventType. */
     public static final LiveEventStreamEventType STREAM_EVENT_DISCONTINUITY = fromString("StreamEvent/Discontinuity");
 
     /** Static value StreamEvent/InvalidConnection for LiveEventStreamEventType. */
-    public static final LiveEventStreamEventType STREAM_EVENT_INVALID_CONNECTION =
-        fromString("StreamEvent/InvalidConnection");
+    public static final LiveEventStreamEventType STREAM_EVENT_INVALID_CONNECTION
+        = fromString("StreamEvent/InvalidConnection");
 
     /**
      * Creates a new instance of LiveEventStreamEventType value.

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The KeyVaultProperties model. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
 
     /*
      * The ArmId of the keyVault where the customer owned encryption key is
@@ -103,16 +104,12 @@ public final class KeyVaultProperties {
      */
     public void validate() {
         if (keyVaultArmId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultArmId in model KeyVaultProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyVaultArmId in model KeyVaultProperties"));
         }
         if (keyIdentifier() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyIdentifier in model KeyVaultProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyIdentifier in model KeyVaultProperties"));
         }
     }
 }

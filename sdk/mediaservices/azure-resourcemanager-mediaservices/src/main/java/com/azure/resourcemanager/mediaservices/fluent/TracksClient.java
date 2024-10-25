@@ -46,8 +46,8 @@ public interface TracksClient {
      * @return a collection of AssetTrack items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AssetTrackInner> list(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    PagedIterable<AssetTrackInner> list(String resourceGroupName, String accountName, String assetName,
+        Context context);
 
     /**
      * Get a Track
@@ -65,8 +65,8 @@ public interface TracksClient {
      * @return the details of a Track in the Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetTrackInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    Response<AssetTrackInner> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context);
 
     /**
      * Get a Track
@@ -101,8 +101,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
+    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters);
 
     /**
      * Create or update a Track
@@ -121,13 +121,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context);
+    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context);
 
     /**
      * Create or update a Track
@@ -145,8 +140,8 @@ public interface TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner createOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
+    AssetTrackInner createOrUpdate(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters);
 
     /**
      * Create or update a Track
@@ -165,13 +160,8 @@ public interface TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context);
+    AssetTrackInner createOrUpdate(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters, Context context);
 
     /**
      * Delete a Track
@@ -188,8 +178,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String assetName, String trackName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String assetName,
+        String trackName);
 
     /**
      * Delete a Track
@@ -207,8 +197,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context);
 
     /**
      * Delete a Track
@@ -259,8 +249,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
+    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(String resourceGroupName, String accountName,
+        String assetName, String trackName, AssetTrackInner parameters);
 
     /**
      * Update an Track
@@ -279,13 +269,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context);
+    SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(String resourceGroupName, String accountName,
+        String assetName, String trackName, AssetTrackInner parameters, Context context);
 
     /**
      * Update an Track
@@ -303,8 +288,8 @@ public interface TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner update(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
+    AssetTrackInner update(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters);
 
     /**
      * Update an Track
@@ -323,13 +308,8 @@ public interface TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner update(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context);
+    AssetTrackInner update(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters, Context context);
 
     /**
      * Update the track data
@@ -349,8 +329,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName);
+    SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(String resourceGroupName, String accountName,
+        String assetName, String trackName);
 
     /**
      * Update the track data
@@ -371,8 +351,8 @@ public interface TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context);
 
     /**
      * Update the track data
@@ -411,6 +391,6 @@ public interface TracksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context);
 }

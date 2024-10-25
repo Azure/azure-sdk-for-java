@@ -159,10 +159,8 @@ public final class NetworkRackInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkRackInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model NetworkRackInner"));
         } else {
             innerProperties().validate();
         }

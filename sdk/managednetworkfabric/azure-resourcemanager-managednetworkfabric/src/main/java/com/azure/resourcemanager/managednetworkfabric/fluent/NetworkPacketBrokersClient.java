@@ -30,8 +30,8 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body);
 
     /**
      * Create Network Packet Broker.
@@ -48,8 +48,8 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
 
     /**
      * Create Network Packet Broker.
@@ -65,8 +65,8 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body);
+    NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body);
 
     /**
      * Create Network Packet Broker.
@@ -83,8 +83,8 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context);
+    NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body, Context context);
 
     /**
      * Gets a Network Packet Broker.
@@ -100,8 +100,8 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkPacketBrokerName, Context context);
 
     /**
      * Gets a Network Packet Broker.
@@ -132,8 +132,8 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body);
 
     /**
      * Updates the Network Packet Broker.
@@ -150,8 +150,8 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
+    SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
 
     /**
      * Updates the Network Packet Broker.
@@ -167,8 +167,8 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body);
+    NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body);
 
     /**
      * Updates the Network Packet Broker.
@@ -185,8 +185,8 @@ public interface NetworkPacketBrokersClient {
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context);
+    NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body, Context context);
 
     /**
      * Deletes a Network Packet Broker.
@@ -217,8 +217,8 @@ public interface NetworkPacketBrokersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkPacketBrokerName,
+        Context context);
 
     /**
      * Deletes a Network Packet Broker.

@@ -71,37 +71,36 @@ public final class Utility {
         return obj != null ? obj.toString() : null;
     }
 
-    public static List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
-        return ingestionStatusList
-            .stream()
-            .map(ingestionStatus -> {
-                DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
-                DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
-                DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
-                DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
-                return dataFeedIngestionStatus;
-            })
-            .collect(Collectors.toList());
+    public static List<DataFeedIngestionStatus> toDataFeedIngestionStatus(
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
+        return ingestionStatusList.stream().map(ingestionStatus -> {
+            DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
+            DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
+            DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus,
+                IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
+            DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
+            return dataFeedIngestionStatus;
+        }).collect(Collectors.toList());
     }
 
     public static DataFeedIngestionProgress toDataFeedIngestionProgress(
         com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress dataFeedIngestionProgressResponse) {
         DataFeedIngestionProgress dataFeedIngestionProgress = new DataFeedIngestionProgress();
-        DataFeedIngestionProgressHelper.setLatestActiveTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestActiveTimestamp());
-        DataFeedIngestionProgressHelper.setLatestSuccessTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestSuccessTimestamp());
+        DataFeedIngestionProgressHelper.setLatestActiveTimestamp(dataFeedIngestionProgress,
+            dataFeedIngestionProgressResponse.getLatestActiveTimestamp());
+        DataFeedIngestionProgressHelper.setLatestSuccessTimestamp(dataFeedIngestionProgress,
+            dataFeedIngestionProgressResponse.getLatestSuccessTimestamp());
         return dataFeedIngestionProgress;
     }
 
     public static ListAnomaliesDetectedOptions getListAnomaliesDetectedOptions(ListAnomaliesDetectedOptions options,
-                                                                        DetectionAnomalyResultQuery query,
-                                                                        ClientLogger logger) {
+        DetectionAnomalyResultQuery query, ClientLogger logger) {
         if (options == null) {
             options = new ListAnomaliesDetectedOptions();
         }
 
         if (options.getFilter() != null) {
-            DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
-                logger);
+            DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(), logger);
             if (innerFilter != null) {
                 query.setFilter(innerFilter);
             }
@@ -110,80 +109,75 @@ public final class Utility {
     }
 
     public static ListIncidentsDetectedOptions getListIncidentsDetectedOptions(ListIncidentsDetectedOptions options,
-                                                                                DetectionIncidentResultQuery query) {
+        DetectionIncidentResultQuery query) {
         if (options == null) {
             options = new ListIncidentsDetectedOptions();
         }
         if (options.getDimensionsToFilter() != null) {
             List<DimensionGroupIdentity> innerDimensionsToFilter = new ArrayList<>();
             for (DimensionKey dimensionToFilter : options.getDimensionsToFilter()) {
-                innerDimensionsToFilter.add(new DimensionGroupIdentity()
-                    .setDimension(dimensionToFilter.asMap()));
+                innerDimensionsToFilter.add(new DimensionGroupIdentity().setDimension(dimensionToFilter.asMap()));
             }
             if (!innerDimensionsToFilter.isEmpty()) {
-                query.setFilter(new DetectionIncidentFilterCondition()
-                    .setDimensionFilter(innerDimensionsToFilter));
+                query.setFilter(new DetectionIncidentFilterCondition().setDimensionFilter(innerDimensionsToFilter));
             }
         }
         return options;
     }
 
-    public static ListAnomalyDimensionValuesOptions getListAnomalyDimensionValuesOptions(
-        ListAnomalyDimensionValuesOptions options, AnomalyDimensionQuery query) {
+    public static ListAnomalyDimensionValuesOptions
+        getListAnomalyDimensionValuesOptions(ListAnomalyDimensionValuesOptions options, AnomalyDimensionQuery query) {
         if (options == null) {
             options = new ListAnomalyDimensionValuesOptions();
         }
         if (options.getDimensionToFilter() != null) {
-            query.setDimensionFilter(new DimensionGroupIdentity()
-                .setDimension(options.getDimensionToFilter().asMap()));
+            query.setDimensionFilter(new DimensionGroupIdentity().setDimension(options.getDimensionToFilter().asMap()));
         }
         return options;
     }
 
     public static MetricDimensionQueryOptions getMetricDimensionQueryOptions(String dimensionName,
-                                                                              ListMetricDimensionValuesOptions options) {
+        ListMetricDimensionValuesOptions options) {
         if (options == null) {
             options = new ListMetricDimensionValuesOptions();
         }
-        return new MetricDimensionQueryOptions()
-            .setDimensionName(dimensionName).setDimensionValueFilter(options.getDimensionValueToFilter());
+        return new MetricDimensionQueryOptions().setDimensionName(dimensionName)
+            .setDimensionValueFilter(options.getDimensionValueToFilter());
     }
 
     public static MetricDataQueryOptions getMetricDataQueryOptions(OffsetDateTime startTime,
-                                                                    List<Map<String, String>> dimensionList) {
+        List<Map<String, String>> dimensionList) {
         final MetricDataQueryOptions metricDataQueryOptions
-            = new MetricDataQueryOptions()
-            .setStartTime(startTime)
-            .setEndTime(startTime)
-            .setSeries(dimensionList);
+            = new MetricDataQueryOptions().setStartTime(startTime).setEndTime(startTime).setSeries(dimensionList);
         return metricDataQueryOptions;
     }
 
     public static MetricSeriesQueryOptions getMetricSeriesQueryOptions(OffsetDateTime activeSince,
-                                                                        ListMetricSeriesDefinitionOptions options) {
-        final MetricSeriesQueryOptions metricSeriesQueryOptions = new MetricSeriesQueryOptions()
-            .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
+        ListMetricSeriesDefinitionOptions options) {
+        final MetricSeriesQueryOptions metricSeriesQueryOptions
+            = new MetricSeriesQueryOptions().setActiveSince(activeSince)
+                .setDimensionFilter(options.getDimensionCombinationsToFilter());
         return metricSeriesQueryOptions;
     }
+
     public static EnrichmentStatusQueryOption getEnrichmentStatusQueryOptions(OffsetDateTime startTime,
-                                                                              OffsetDateTime endTime) {
-        final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
-            new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
+        OffsetDateTime endTime) {
+        final EnrichmentStatusQueryOption enrichmentStatusQueryOption
+            = new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
         return enrichmentStatusQueryOption;
     }
 
-    public static void validateMetricEnrichedSeriesInputs(String detectionConfigurationId, List<DimensionKey> seriesKeys, OffsetDateTime startTime,
-                                                          OffsetDateTime endTime, ClientLogger logger) {
+    public static void validateMetricEnrichedSeriesInputs(String detectionConfigurationId,
+        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime, ClientLogger logger) {
         Objects.requireNonNull(seriesKeys, "'seriesKeys' is required.");
         if (seriesKeys.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'seriesKeys' cannot be empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'seriesKeys' cannot be empty."));
         }
         validateIncidentsForDetectionConfigInputs(detectionConfigurationId, startTime, endTime);
     }
 
-    public static void validateIncidentsForDetectionConfigInputs(String detectionConfigurationId, OffsetDateTime startTime,
-                                                          OffsetDateTime endTime) {
+    public static void validateIncidentsForDetectionConfigInputs(String detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
         validateStartEndTime(startTime, endTime);
     }
@@ -197,20 +191,22 @@ public final class Utility {
         Objects.requireNonNull(anomalyIncident.getId(), "'anomalyIncident.id' is required");
     }
 
-    public static void validateAnomalyDimensionValuesInputs(String detectionConfigurationId, String dimensionName, OffsetDateTime startTime,
-                                                             OffsetDateTime endTime) {
+    public static void validateAnomalyDimensionValuesInputs(String detectionConfigurationId, String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
         Objects.requireNonNull(dimensionName, "'dimensionName' is required.");
         validateIncidentsForDetectionConfigInputs(detectionConfigurationId, startTime, endTime);
     }
 
-    public static void validateListAlertsInputs(String alertConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public static void validateListAlertsInputs(String alertConfigurationId, OffsetDateTime startTime,
+        OffsetDateTime endTime) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         validateStartEndTime(startTime, endTime);
     }
 
     public static void validateActiveSinceInput(OffsetDateTime activeSince, ClientLogger logger) {
         if (activeSince == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'activeSince' is required and cannot be null."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'activeSince' is required and cannot be null."));
         }
     }
 
@@ -222,21 +218,20 @@ public final class Utility {
     public static void validateAddFeedbackInputs(String metricId, MetricFeedback metricFeedback) {
         Objects.requireNonNull(metricId, "'metricId' is required.");
         Objects.requireNonNull(metricFeedback, "'metricFeedback' is required.");
-        Objects.requireNonNull(metricFeedback.getDimensionFilter(),
-            "'metricFeedback.dimensionFilter' is required.");
+        Objects.requireNonNull(metricFeedback.getDimensionFilter(), "'metricFeedback.dimensionFilter' is required.");
     }
 
-    public static void validateMetricSeriesInputs(String metricId, List<DimensionKey> seriesKeys, OffsetDateTime startTime,
-                                            OffsetDateTime endTime, ClientLogger logger) {
+    public static void validateMetricSeriesInputs(String metricId, List<DimensionKey> seriesKeys,
+        OffsetDateTime startTime, OffsetDateTime endTime, ClientLogger logger) {
         Objects.requireNonNull(metricId, "'metricId' cannot be null.");
         validateStartEndTime(startTime, endTime);
         if (CoreUtils.isNullOrEmpty(seriesKeys)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'seriesKeys' cannot be null or empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'seriesKeys' cannot be null or empty."));
         }
     }
 
-    public static void validateMetricEnrichmentStatusInputs(String metricId, String message, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public static void validateMetricEnrichmentStatusInputs(String metricId, String message, OffsetDateTime startTime,
+        OffsetDateTime endTime) {
         Objects.requireNonNull(metricId, message);
         validateStartEndTime(startTime, endTime);
     }

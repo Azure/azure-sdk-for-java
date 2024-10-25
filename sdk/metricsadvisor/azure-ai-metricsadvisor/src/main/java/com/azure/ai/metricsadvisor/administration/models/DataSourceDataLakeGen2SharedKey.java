@@ -17,18 +17,17 @@ public final class DataSourceDataLakeGen2SharedKey extends DataSourceCredentialE
     private String sharedKey;
 
     static {
-        DataSourceDataLakeGen2SharedKeyAccessor.setAccessor(
-            new DataSourceDataLakeGen2SharedKeyAccessor.Accessor() {
-                @Override
-                public void setId(DataSourceDataLakeGen2SharedKey entity, String id) {
-                    entity.setId(id);
-                }
+        DataSourceDataLakeGen2SharedKeyAccessor.setAccessor(new DataSourceDataLakeGen2SharedKeyAccessor.Accessor() {
+            @Override
+            public void setId(DataSourceDataLakeGen2SharedKey entity, String id) {
+                entity.setId(id);
+            }
 
-                @Override
-                public String getSharedKey(DataSourceDataLakeGen2SharedKey entity) {
-                    return entity.getSharedKey();
-                }
-            });
+            @Override
+            public String getSharedKey(DataSourceDataLakeGen2SharedKey entity) {
+                return entity.getSharedKey();
+            }
+        });
     }
 
     @Override

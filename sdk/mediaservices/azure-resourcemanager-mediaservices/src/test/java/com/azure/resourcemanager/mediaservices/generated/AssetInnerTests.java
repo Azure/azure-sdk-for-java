@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"assetId\":\"1eee949d-1a90-4095-b6ba-1b60aba807e0\",\"created\":\"2021-04-29T18:24:08Z\",\"lastModified\":\"2021-06-15T22:18:20Z\",\"alternateId\":\"ebfqkkrbm\",\"description\":\"kgriwflzlfbx\",\"container\":\"uzycispnqza\",\"storageAccountName\":\"gkbrpyyd\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"uqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}")
-                .toObject(AssetInner.class);
+        AssetInner model = BinaryData.fromString(
+            "{\"properties\":{\"assetId\":\"1eee949d-1a90-4095-b6ba-1b60aba807e0\",\"created\":\"2021-04-29T18:24:08Z\",\"lastModified\":\"2021-06-15T22:18:20Z\",\"alternateId\":\"ebfqkkrbm\",\"description\":\"kgriwflzlfbx\",\"container\":\"uzycispnqza\",\"storageAccountName\":\"gkbrpyyd\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"uqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}")
+            .toObject(AssetInner.class);
         Assertions.assertEquals("ebfqkkrbm", model.alternateId());
         Assertions.assertEquals("kgriwflzlfbx", model.description());
         Assertions.assertEquals("uzycispnqza", model.container());
@@ -24,12 +22,10 @@ public final class AssetInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetInner model =
-            new AssetInner()
-                .withAlternateId("ebfqkkrbm")
-                .withDescription("kgriwflzlfbx")
-                .withContainer("uzycispnqza")
-                .withStorageAccountName("gkbrpyyd");
+        AssetInner model = new AssetInner().withAlternateId("ebfqkkrbm")
+            .withDescription("kgriwflzlfbx")
+            .withContainer("uzycispnqza")
+            .withStorageAccountName("gkbrpyyd");
         model = BinaryData.fromObject(model).toObject(AssetInner.class);
         Assertions.assertEquals("ebfqkkrbm", model.alternateId());
         Assertions.assertEquals("kgriwflzlfbx", model.description());

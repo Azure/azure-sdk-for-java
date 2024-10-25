@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
         name = "#Microsoft.Media.SelectAudioTrackByAttribute",
         value = SelectAudioTrackByAttribute.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectAudioTrackById", value = SelectAudioTrackById.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectAudioTrackById", value = SelectAudioTrackById.class) })
 @Fluent
 public class AudioTrackDescriptor extends TrackDescriptor {
     /*

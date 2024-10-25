@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PngFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PngFormat model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.PngFormat\",\"filenamePattern\":\"g\"}")
+        PngFormat model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.PngFormat\",\"filenamePattern\":\"g\"}")
                 .toObject(PngFormat.class);
         Assertions.assertEquals("g", model.filenamePattern());
     }

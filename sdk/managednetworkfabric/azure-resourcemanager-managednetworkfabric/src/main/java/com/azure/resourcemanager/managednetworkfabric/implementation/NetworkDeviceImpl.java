@@ -135,25 +135,21 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .create(resourceGroupName, networkDeviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .create(resourceGroupName, networkDeviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkDevice create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .create(resourceGroupName, networkDeviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .create(resourceGroupName, networkDeviceName, this.innerModel(), context);
         return this;
     }
 
-    NetworkDeviceImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkDeviceImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkDeviceInner();
         this.serviceManager = serviceManager;
         this.networkDeviceName = name;
@@ -165,25 +161,20 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .update(resourceGroupName, networkDeviceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .update(resourceGroupName, networkDeviceName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkDevice apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .update(resourceGroupName, networkDeviceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .update(resourceGroupName, networkDeviceName, updateBody, context);
         return this;
     }
 
-    NetworkDeviceImpl(
-        NetworkDeviceInner innerObject,
+    NetworkDeviceImpl(NetworkDeviceInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -192,22 +183,18 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkDevice refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkDevices()
-                .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkDevices()
+            .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, context)
+            .getValue();
         return this;
     }
 
@@ -231,10 +218,9 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         return serviceManager.networkDevices().updateAdministrativeState(resourceGroupName, networkDeviceName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateDeviceAdministrativeState body, Context context) {
-        return serviceManager
-            .networkDevices()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateDeviceAdministrativeState body,
+        Context context) {
+        return serviceManager.networkDevices()
             .updateAdministrativeState(resourceGroupName, networkDeviceName, body, context);
     }
 

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Defines an Aml Instance application and its connectivity endpoint URI. */
 @Fluent
 public final class ComputeInstanceApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceApplication.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceApplication.class);
 
     /*
      * Name of the ComputeInstance application.

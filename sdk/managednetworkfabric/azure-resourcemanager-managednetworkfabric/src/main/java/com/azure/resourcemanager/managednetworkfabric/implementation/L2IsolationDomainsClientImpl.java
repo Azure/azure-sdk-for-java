@@ -59,8 +59,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @param client the instance of the service client containing this operation class.
      */
     L2IsolationDomainsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(L2IsolationDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(L2IsolationDomainsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,150 +71,111 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface L2IsolationDomainsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @BodyParam("application/json") L2IsolationDomainInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") L2IsolationDomainInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<L2IsolationDomainInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<L2IsolationDomainInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l2IsolationDomainName") String l2IsolationDomainName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") L2IsolationDomainPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l2IsolationDomainName") String l2IsolationDomainName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/updateAdministrativeState")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @BodyParam("application/json") L2IsolationDomainPatch body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/validateConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l2IsolationDomainName") String l2IsolationDomainName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/updateAdministrativeState")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/commitConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("l2IsolationDomainName") String l2IsolationDomainName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/validateConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<L2IsolationDomainsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/commitConfiguration")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<L2IsolationDomainsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<L2IsolationDomainsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<L2IsolationDomainsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L2IsolationDomainsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L2IsolationDomainsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -233,19 +194,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -262,18 +219,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -294,19 +241,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -323,16 +266,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l2IsolationDomainName, body, accept, context);
     }
 
     /**
@@ -350,17 +285,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreateAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
+    private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner>
+        beginCreateAsync(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
-        return this
-            .client
-            .<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                L2IsolationDomainInner.class,
-                L2IsolationDomainInner.class,
-                this.client.getContext());
+        return this.client.<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(mono,
+            this.client.getHttpPipeline(), L2IsolationDomainInner.class, L2IsolationDomainInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -382,16 +312,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreateAsync(
         String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
-        return this
-            .client
-            .<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                L2IsolationDomainInner.class,
-                L2IsolationDomainInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
+        return this.client.<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(mono,
+            this.client.getHttpPipeline(), L2IsolationDomainInner.class, L2IsolationDomainInner.class, context);
     }
 
     /**
@@ -409,8 +333,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
+    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body) {
         return this.beginCreateAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
     }
 
@@ -430,8 +354,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
+    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, l2IsolationDomainName, body, context).getSyncPoller();
     }
 
@@ -450,10 +374,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L2IsolationDomainInner> createAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
-        return beginCreateAsync(resourceGroupName, l2IsolationDomainName, body)
-            .last()
+    private Mono<L2IsolationDomainInner> createAsync(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainInner body) {
+        return beginCreateAsync(resourceGroupName, l2IsolationDomainName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -473,10 +396,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L2IsolationDomainInner> createAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .last()
+    private Mono<L2IsolationDomainInner> createAsync(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, l2IsolationDomainName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -495,8 +417,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public L2IsolationDomainInner create(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body) {
+    public L2IsolationDomainInner create(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainInner body) {
         return createAsync(resourceGroupName, l2IsolationDomainName, body).block();
     }
 
@@ -516,8 +438,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public L2IsolationDomainInner create(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context) {
+    public L2IsolationDomainInner create(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainInner body, Context context) {
         return createAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
     }
 
@@ -535,19 +457,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -560,16 +478,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -588,19 +498,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -612,15 +518,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l2IsolationDomainName, accept, context);
     }
 
     /**
@@ -636,8 +535,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L2IsolationDomainInner> getByResourceGroupAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private Mono<L2IsolationDomainInner> getByResourceGroupAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, l2IsolationDomainName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -656,8 +555,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<L2IsolationDomainInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    public Response<L2IsolationDomainInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, l2IsolationDomainName, context).block();
     }
 
@@ -693,19 +592,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -722,18 +617,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -753,19 +638,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -782,16 +663,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l2IsolationDomainName, body, accept, context);
     }
 
     /**
@@ -808,17 +681,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdateAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
+    private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner>
+        beginUpdateAsync(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
-        return this
-            .client
-            .<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                L2IsolationDomainInner.class,
-                L2IsolationDomainInner.class,
-                this.client.getContext());
+        return this.client.<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(mono,
+            this.client.getHttpPipeline(), L2IsolationDomainInner.class, L2IsolationDomainInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -839,16 +707,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdateAsync(
         String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
-        return this
-            .client
-            .<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                L2IsolationDomainInner.class,
-                L2IsolationDomainInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
+        return this.client.<L2IsolationDomainInner, L2IsolationDomainInner>getLroResult(mono,
+            this.client.getHttpPipeline(), L2IsolationDomainInner.class, L2IsolationDomainInner.class, context);
     }
 
     /**
@@ -865,8 +727,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
+    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body) {
         return this.beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
     }
 
@@ -885,8 +747,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
+    public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body, context).getSyncPoller();
     }
 
@@ -904,10 +766,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L2IsolationDomainInner> updateAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
-        return beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body)
-            .last()
+    private Mono<L2IsolationDomainInner> updateAsync(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainPatch body) {
+        return beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -926,10 +787,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L2IsolationDomainInner> updateAsync(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .last()
+    private Mono<L2IsolationDomainInner> updateAsync(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, l2IsolationDomainName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -947,8 +807,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public L2IsolationDomainInner update(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body) {
+    public L2IsolationDomainInner update(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainPatch body) {
         return updateAsync(resourceGroupName, l2IsolationDomainName, body).block();
     }
 
@@ -967,8 +827,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public L2IsolationDomainInner update(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context) {
+    public L2IsolationDomainInner update(String resourceGroupName, String l2IsolationDomainName,
+        L2IsolationDomainPatch body, Context context) {
         return updateAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
     }
 
@@ -985,19 +845,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1009,17 +865,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1037,19 +884,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1061,15 +904,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), l2IsolationDomainName, accept, context);
     }
 
     /**
@@ -1085,13 +921,11 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, l2IsolationDomainName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1108,14 +942,13 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String l2IsolationDomainName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1149,8 +982,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2IsolationDomainName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, l2IsolationDomainName, context).getSyncPoller();
     }
 
@@ -1168,8 +1001,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String l2IsolationDomainName) {
-        return beginDeleteAsync(resourceGroupName, l2IsolationDomainName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, l2IsolationDomainName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1188,8 +1020,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, l2IsolationDomainName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, l2IsolationDomainName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1240,19 +1071,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1270,17 +1097,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .updateAdministrativeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            body,
-                            accept,
-                            context))
+                context -> service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1299,19 +1117,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1328,16 +1142,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAdministrativeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                body,
-                accept,
-                context);
+        return service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, body, accept, context);
     }
 
     /**
@@ -1354,20 +1160,16 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, this.client.getContext());
     }
 
     /**
@@ -1385,21 +1187,17 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, context);
     }
 
     /**
@@ -1416,10 +1214,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body) {
         return this.beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
     }
 
@@ -1438,12 +1236,11 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        return this
-            .beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body, Context context) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context)
             .getSyncPoller();
     }
 
@@ -1461,10 +1258,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1483,10 +1279,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1504,8 +1299,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body) {
         return updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).block();
     }
 
@@ -1524,8 +1319,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
         return updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
     }
 
@@ -1541,19 +1336,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1566,16 +1357,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .validateConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            accept,
-                            context))
+                context -> service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1592,19 +1375,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1616,15 +1395,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                accept,
-                context);
+        return service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context);
     }
 
     /**
@@ -1640,16 +1412,11 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfigurationAsync(String resourceGroupName, String l2IsolationDomainName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
     /**
@@ -1667,16 +1434,11 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfigurationAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, context);
     }
 
     /**
@@ -1723,10 +1485,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
-        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
+        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1742,10 +1503,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1760,8 +1520,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+        String l2IsolationDomainName) {
         return validateConfigurationAsync(resourceGroupName, l2IsolationDomainName).block();
     }
 
@@ -1777,8 +1537,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         return validateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).block();
     }
 
@@ -1796,19 +1556,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1821,16 +1577,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .commitConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            accept,
-                            context))
+                context -> service.commitConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1849,19 +1597,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1873,15 +1617,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .commitConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                accept,
-                context);
+        return service.commitConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), l2IsolationDomainName, accept, context);
     }
 
     /**
@@ -1897,19 +1634,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfigurationAsync(String resourceGroupName, String l2IsolationDomainName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
@@ -1926,20 +1659,16 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfigurationAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
@@ -1955,8 +1684,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName) {
         return this.beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName).getSyncPoller();
     }
@@ -1975,8 +1704,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context) {
         return this.beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).getSyncPoller();
     }
@@ -1994,10 +1723,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
-        String resourceGroupName, String l2IsolationDomainName) {
-        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(String resourceGroupName,
+        String l2IsolationDomainName) {
+        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2015,10 +1743,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
+        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2035,8 +1762,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName) {
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName) {
         return commitConfigurationAsync(resourceGroupName, l2IsolationDomainName).block();
     }
 
@@ -2054,8 +1781,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName, Context context) {
         return commitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).block();
     }
 
@@ -2073,16 +1800,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2090,25 +1813,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<L2IsolationDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<L2IsolationDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2125,19 +1833,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2146,22 +1850,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2177,8 +1869,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -2196,8 +1887,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -2246,37 +1936,19 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<L2IsolationDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<L2IsolationDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2294,35 +1966,20 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2336,8 +1993,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2353,8 +2010,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2403,24 +2060,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<L2IsolationDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<L2IsolationDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2436,30 +2084,20 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2478,24 +2116,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<L2IsolationDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<L2IsolationDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2511,29 +2140,19 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L2IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<L2IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

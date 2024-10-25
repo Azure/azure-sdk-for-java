@@ -109,8 +109,7 @@ public final class DataFeedTransforms {
         }
 
         final DataFeed dataFeed = setDataFeedSourceType(dataFeedDetail);
-        dataFeed
-            .setName(dataFeedDetail.getDataFeedName())
+        dataFeed.setName(dataFeedDetail.getDataFeedName())
             .setSchema(new DataFeedSchema(fromInnerMetricList(dataFeedDetail.getMetrics()))
                 .setDimensions(fromInnerDimensionList(dataFeedDetail.getDimension()))
                 .setTimestampColumn(dataFeedDetail.getTimestampColumn()))
@@ -120,19 +119,18 @@ public final class DataFeedTransforms {
                 .setIngestionRetryDelay(Duration.ofSeconds(dataFeedDetail.getMinRetryIntervalInSeconds()))
                 .setIngestionStartOffset(Duration.ofSeconds(dataFeedDetail.getStartOffsetInSeconds()))
                 .setStopRetryAfter(Duration.ofSeconds(dataFeedDetail.getStopRetryAfterInSeconds())))
-            .setOptions(new DataFeedOptions()
-                .setDescription(dataFeedDetail.getDataFeedDescription())
+            .setOptions(new DataFeedOptions().setDescription(dataFeedDetail.getDataFeedDescription())
                 .setMissingDataPointFillSettings(new DataFeedMissingDataPointFillSettings()
                     .setCustomFillValue(dataFeedDetail.getFillMissingPointValue())
-                    .setFillType(DataFeedMissingDataPointFillType.fromString(
-                        dataFeedDetail.getFillMissingPointType().toString())))
+                    .setFillType(DataFeedMissingDataPointFillType
+                        .fromString(dataFeedDetail.getFillMissingPointType().toString())))
                 .setAccessMode(DataFeedAccessMode.fromString(dataFeedDetail.getViewMode().toString()))
                 .setAdmins(dataFeedDetail.getAdmins())
-                .setRollupSettings(new DataFeedRollupSettings()
-                    .setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
-                    .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
-                        dataFeedDetail.getRollUpColumns())
-                    .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
+                .setRollupSettings(
+                    new DataFeedRollupSettings().setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
+                        .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
+                            dataFeedDetail.getRollUpColumns())
+                        .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
                 .setViewers(dataFeedDetail.getViewers()));
 
@@ -142,7 +140,8 @@ public final class DataFeedTransforms {
         DataFeedHelper.setCreator(dataFeed, dataFeedDetail.getCreator());
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
-            dataFeedDetail.getMetrics().stream()
+            dataFeedDetail.getMetrics()
+                .stream()
                 .collect(Collectors.toMap(com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getMetricId,
                     com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getMetricName)));
         return dataFeed;
@@ -160,214 +159,167 @@ public final class DataFeedTransforms {
         final DataFeed dataFeed = new DataFeed();
 
         if (dataFeedDetail instanceof AzureApplicationInsightsDataFeed) {
-            final AzureApplicationInsightsParameter dataSourceParameter =
-                ((AzureApplicationInsightsDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureAppInsightsDataFeedSource(
-                dataSourceParameter.getApplicationId(),
-                dataSourceParameter.getApiKey(), dataSourceParameter.getAzureCloud(),
-                dataSourceParameter.getQuery()));
+            final AzureApplicationInsightsParameter dataSourceParameter
+                = ((AzureApplicationInsightsDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureAppInsightsDataFeedSource(dataSourceParameter.getApplicationId(),
+                dataSourceParameter.getApiKey(), dataSourceParameter.getAzureCloud(), dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.AZURE_APP_INSIGHTS;
         } else if (dataFeedDetail instanceof AzureBlobDataFeed) {
-            final AzureBlobParameter dataSourceParameter = ((AzureBlobDataFeed) dataFeedDetail)
-                .getDataSourceParameter();
+            final AzureBlobParameter dataSourceParameter
+                = ((AzureBlobDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureBlobDataFeedSource.fromBasicCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getContainer(),
-                    dataSourceParameter.getBlobTemplate()));
+                dataFeed
+                    .setSource(AzureBlobDataFeedSource.fromBasicCredential(dataSourceParameter.getConnectionString(),
+                        dataSourceParameter.getContainer(), dataSourceParameter.getBlobTemplate()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
-                dataFeed.setSource(AzureBlobDataFeedSource.fromManagedIdentityCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getContainer(),
-                    dataSourceParameter.getBlobTemplate()));
+                dataFeed.setSource(
+                    AzureBlobDataFeedSource.fromManagedIdentityCredential(dataSourceParameter.getConnectionString(),
+                        dataSourceParameter.getContainer(), dataSourceParameter.getBlobTemplate()));
             } else {
                 throw LOGGER.logExceptionAsError(new RuntimeException(
                     String.format("AuthType %s not supported for Blob", dataFeedDetail.getAuthenticationType())));
             }
             dataFeedSourceType = DataFeedSourceType.AZURE_BLOB;
         } else if (dataFeedDetail instanceof AzureCosmosDBDataFeed) {
-            final AzureCosmosDBParameter dataSourceParameter =
-                ((AzureCosmosDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureCosmosDbDataFeedSource(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getSqlQuery(),
-                dataSourceParameter.getDatabase(),
-                dataSourceParameter.getCollectionId()
-            ));
+            final AzureCosmosDBParameter dataSourceParameter
+                = ((AzureCosmosDBDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureCosmosDbDataFeedSource(dataSourceParameter.getConnectionString(),
+                dataSourceParameter.getSqlQuery(), dataSourceParameter.getDatabase(),
+                dataSourceParameter.getCollectionId()));
             dataFeedSourceType = DataFeedSourceType.AZURE_COSMOS_DB;
         } else if (dataFeedDetail instanceof AzureDataExplorerDataFeed) {
-            final SqlSourceParameter dataSourceParameter =
-                ((AzureDataExplorerDataFeed) dataFeedDetail).getDataSourceParameter();
+            final SqlSourceParameter dataSourceParameter
+                = ((AzureDataExplorerDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery()
-                ));
+                dataFeed.setSource(AzureDataExplorerDataFeedSource
+                    .fromBasicCredential(dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
                 dataFeed.setSource(AzureDataExplorerDataFeedSource.fromManagedIdentityCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery()
-                ));
+                    dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
                 dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery(),
-                    dataFeedDetail.getCredentialId()
-                ));
+                    dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
                 dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery(),
-                    dataFeedDetail.getCredentialId()
-                ));
+                    dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()));
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("AuthType %s not supported for AzureDataExplorer",
-                        dataFeedDetail.getAuthenticationType())));
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                    "AuthType %s not supported for AzureDataExplorer", dataFeedDetail.getAuthenticationType())));
             }
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_EXPLORER;
         } else if (dataFeedDetail instanceof AzureEventHubsDataFeed) {
-            final AzureEventHubsParameter azureEventHubsParameter =
-                ((AzureEventHubsDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureEventHubsDataFeedSource(
-                azureEventHubsParameter.getConnectionString(),
+            final AzureEventHubsParameter azureEventHubsParameter
+                = ((AzureEventHubsDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureEventHubsDataFeedSource(azureEventHubsParameter.getConnectionString(),
                 azureEventHubsParameter.getConsumerGroup()));
             dataFeedSourceType = DataFeedSourceType.AZURE_EVENT_HUBS;
         } else if (dataFeedDetail instanceof AzureTableDataFeed) {
-            final AzureTableParameter dataSourceParameter = ((AzureTableDataFeed) dataFeedDetail)
-                .getDataSourceParameter();
+            final AzureTableParameter dataSourceParameter
+                = ((AzureTableDataFeed) dataFeedDetail).getDataSourceParameter();
             dataFeed.setSource(new AzureTableDataFeedSource(dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getQuery(), dataSourceParameter.getTable()));
             dataFeedSourceType = DataFeedSourceType.AZURE_TABLE;
         } else if (dataFeedDetail instanceof InfluxDBDataFeed) {
             final InfluxDBParameter dataSourceParameter = ((InfluxDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new InfluxDbDataFeedSource(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getDatabase(),
-                dataSourceParameter.getUserName(),
-                dataSourceParameter.getPassword(),
-                dataSourceParameter.getQuery()
-            ));
+            dataFeed.setSource(new InfluxDbDataFeedSource(dataSourceParameter.getConnectionString(),
+                dataSourceParameter.getDatabase(), dataSourceParameter.getUserName(), dataSourceParameter.getPassword(),
+                dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.INFLUX_DB;
         } else if (dataFeedDetail instanceof MySqlDataFeed) {
             final SqlSourceParameter dataSourceParameter = ((MySqlDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new MySqlDataFeedSource(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getQuery()
-            ));
+            dataFeed.setSource(
+                new MySqlDataFeedSource(dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.MYSQL_DB;
         } else if (dataFeedDetail instanceof PostgreSqlDataFeed) {
-            final SqlSourceParameter dataSourceParameter =
-                ((PostgreSqlDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new PostgreSqlDataFeedSource(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getQuery()
-            ));
+            final SqlSourceParameter dataSourceParameter
+                = ((PostgreSqlDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new PostgreSqlDataFeedSource(dataSourceParameter.getConnectionString(),
+                dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.POSTGRE_SQL_DB;
         } else if (dataFeedDetail instanceof SQLServerDataFeed) {
-            final SqlSourceParameter dataSourceParameter = ((SQLServerDataFeed) dataFeedDetail)
-                .getDataSourceParameter();
+            final SqlSourceParameter dataSourceParameter
+                = ((SQLServerDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(SqlServerDataFeedSource.fromBasicCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery()));
+                dataFeed.setSource(SqlServerDataFeedSource
+                    .fromBasicCredential(dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
                 dataFeed.setSource(SqlServerDataFeedSource.fromManagedIdentityCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery()));
+                    dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.AZURE_SQLCONNECTION_STRING) {
-                dataFeed.setSource(SqlServerDataFeedSource.fromConnectionStringCredential(
-                    dataSourceParameter.getQuery(),
-                    dataFeedDetail.getCredentialId()));
+                dataFeed.setSource(SqlServerDataFeedSource
+                    .fromConnectionStringCredential(dataSourceParameter.getQuery(), dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
-                dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery(),
-                    dataFeedDetail.getCredentialId()));
+                dataFeed.setSource(
+                    SqlServerDataFeedSource.fromServicePrincipalCredential(dataSourceParameter.getConnectionString(),
+                        dataSourceParameter.getQuery(), dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
                 dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
-                    dataSourceParameter.getConnectionString(),
-                    dataSourceParameter.getQuery(),
+                    dataSourceParameter.getConnectionString(), dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("AuthType %s not supported for AzureSqlServer",
-                        dataFeedDetail.getAuthenticationType())));
+                throw LOGGER.logExceptionAsError(new RuntimeException(String
+                    .format("AuthType %s not supported for AzureSqlServer", dataFeedDetail.getAuthenticationType())));
             }
             dataFeedSourceType = DataFeedSourceType.SQL_SERVER_DB;
         } else if (dataFeedDetail instanceof MongoDBDataFeed) {
             final MongoDBParameter dataSourceParameter = ((MongoDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new MongoDbDataFeedSource(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getDatabase(),
-                dataSourceParameter.getCommand()
-            ));
+            dataFeed.setSource(new MongoDbDataFeedSource(dataSourceParameter.getConnectionString(),
+                dataSourceParameter.getDatabase(), dataSourceParameter.getCommand()));
             dataFeedSourceType = DataFeedSourceType.MONGO_DB;
         } else if (dataFeedDetail instanceof AzureDataLakeStorageGen2DataFeed) {
-            final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter =
-                ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
+            final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter
+                = ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
                 dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getAccountKey(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
-                    azureDataLakeStorageGen2Parameter.getFileTemplate()
-                ));
+                    azureDataLakeStorageGen2Parameter.getFileTemplate()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.DATA_LAKE_GEN2SHARED_KEY) {
                 dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromSharedKeyCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
-                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
-                    dataFeedDetail.getCredentialId()
-                ));
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(), dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
                 dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
-                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
-                    dataFeedDetail.getCredentialId()
-                ));
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(), dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
                 dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalInKeyVaultCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
-                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
-                    dataFeedDetail.getCredentialId()
-                ));
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(), dataFeedDetail.getCredentialId()));
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("AuthType %s not supported for AzureDataLakeStorageGen2",
-                        dataFeedDetail.getAuthenticationType())));
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                    "AuthType %s not supported for AzureDataLakeStorageGen2", dataFeedDetail.getAuthenticationType())));
             }
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
         } else if (dataFeedDetail instanceof AzureLogAnalyticsDataFeed) {
-            final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed =
-                ((AzureLogAnalyticsDataFeed) dataFeedDetail).getDataSourceParameter();
+            final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed
+                = ((AzureLogAnalyticsDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromBasicCredential(
-                    azureLogAnalyticsDataFeed.getTenantId(),
-                    azureLogAnalyticsDataFeed.getClientId(),
-                    azureLogAnalyticsDataFeed.getClientSecret(),
-                    azureLogAnalyticsDataFeed.getWorkspaceId(),
-                    azureLogAnalyticsDataFeed.getQuery()));
+                dataFeed.setSource(
+                    AzureLogAnalyticsDataFeedSource.fromBasicCredential(azureLogAnalyticsDataFeed.getTenantId(),
+                        azureLogAnalyticsDataFeed.getClientId(), azureLogAnalyticsDataFeed.getClientSecret(),
+                        azureLogAnalyticsDataFeed.getWorkspaceId(), azureLogAnalyticsDataFeed.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
                 dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromServicePrincipalCredential(
-                    azureLogAnalyticsDataFeed.getWorkspaceId(),
-                    azureLogAnalyticsDataFeed.getQuery(),
+                    azureLogAnalyticsDataFeed.getWorkspaceId(), azureLogAnalyticsDataFeed.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
                 dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromServicePrincipalInKeyVaultCredential(
-                    azureLogAnalyticsDataFeed.getWorkspaceId(),
-                    azureLogAnalyticsDataFeed.getQuery(),
+                    azureLogAnalyticsDataFeed.getWorkspaceId(), azureLogAnalyticsDataFeed.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("AuthType %s not supported for AzureLogAnalytics",
-                        dataFeedDetail.getAuthenticationType())));
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                    "AuthType %s not supported for AzureLogAnalytics", dataFeedDetail.getAuthenticationType())));
             }
             dataFeedSourceType = DataFeedSourceType.AZURE_LOG_ANALYTICS;
         } else {
@@ -388,99 +340,96 @@ public final class DataFeedTransforms {
     public static DataFeedDetail toDataFeedDetailSource(final DataFeedSource dataFeedSource) {
         final DataFeedDetail dataFeedDetail;
         if (dataFeedSource instanceof AzureAppInsightsDataFeedSource) {
-            final AzureAppInsightsDataFeedSource azureAppInsightsDataFeedSource =
-                ((AzureAppInsightsDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureApplicationInsightsDataFeed()
-                .setDataSourceParameter(new AzureApplicationInsightsParameter()
-                    .setApiKey(azureAppInsightsDataFeedSource.getApiKey())
+            final AzureAppInsightsDataFeedSource azureAppInsightsDataFeedSource
+                = ((AzureAppInsightsDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureApplicationInsightsDataFeed().setDataSourceParameter(
+                new AzureApplicationInsightsParameter().setApiKey(azureAppInsightsDataFeedSource.getApiKey())
                     .setApplicationId(azureAppInsightsDataFeedSource.getApplicationId())
                     .setAzureCloud(azureAppInsightsDataFeedSource.getAzureCloud())
                     .setQuery(azureAppInsightsDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof AzureBlobDataFeedSource) {
             final AzureBlobDataFeedSource azureBlobDataFeedSource = ((AzureBlobDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureBlobDataFeed()
-                .setDataSourceParameter(new AzureBlobParameter()
-                    .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
-                    .setContainer(azureBlobDataFeedSource.getContainer())
-                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
+            dataFeedDetail
+                = new AzureBlobDataFeed()
+                    .setDataSourceParameter(new AzureBlobParameter()
+                        .setConnectionString(
+                            AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
+                        .setContainer(azureBlobDataFeedSource.getContainer())
+                        .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
+                    .setAuthenticationType(
+                        AuthenticationTypeEnum.fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
         } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
-            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureCosmosDBDataFeed()
-                .setDataSourceParameter(new AzureCosmosDBParameter()
-                    .setConnectionString(AzureCosmosDbDataFeedSourceAccessor
-                        .getConnectionString(azureCosmosDbDataFeedSource))
-                    .setCollectionId(azureCosmosDbDataFeedSource.getCollectionId())
-                    .setDatabase(azureCosmosDbDataFeedSource.getDatabase())
-                    .setSqlQuery(azureCosmosDbDataFeedSource.getSqlQuery()));
+            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource
+                = ((AzureCosmosDbDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureCosmosDBDataFeed().setDataSourceParameter(new AzureCosmosDBParameter()
+                .setConnectionString(
+                    AzureCosmosDbDataFeedSourceAccessor.getConnectionString(azureCosmosDbDataFeedSource))
+                .setCollectionId(azureCosmosDbDataFeedSource.getCollectionId())
+                .setDatabase(azureCosmosDbDataFeedSource.getDatabase())
+                .setSqlQuery(azureCosmosDbDataFeedSource.getSqlQuery()));
         } else if (dataFeedSource instanceof AzureDataExplorerDataFeedSource) {
-            final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource =
-                ((AzureDataExplorerDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureDataExplorerDataFeed()
-                .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(
-                        AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
-                    .setQuery(azureDataExplorerDataFeedSource.getQuery()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
-                .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
+            final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource
+                = ((AzureDataExplorerDataFeedSource) dataFeedSource);
+            dataFeedDetail
+                = new AzureDataExplorerDataFeed()
+                    .setDataSourceParameter(new SqlSourceParameter()
+                        .setConnectionString(AzureDataExplorerDataFeedSourceAccessor
+                            .getConnectionString(azureDataExplorerDataFeedSource))
+                        .setQuery(azureDataExplorerDataFeedSource.getQuery()))
+                    .setAuthenticationType(AuthenticationTypeEnum
+                        .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
+                    .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
-            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
-                ((AzureEventHubsDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureEventHubsDataFeed()
-                .setDataSourceParameter(new AzureEventHubsParameter()
-                    .setConnectionString(AzureEventHubsDataFeedSourceAccessor.
-                        getConnectionString(azureEventHubsDataFeedSource))
-                    .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource
+                = ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureEventHubsDataFeed().setDataSourceParameter(new AzureEventHubsParameter()
+                .setConnectionString(
+                    AzureEventHubsDataFeedSourceAccessor.getConnectionString(azureEventHubsDataFeedSource))
+                .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
-            dataFeedDetail = new AzureTableDataFeed()
-                .setDataSourceParameter(new AzureTableParameter()
-                    .setConnectionString(AzureTableDataFeedSourceAccessor
-                        .getConnectionString(azureTableDataFeedSource))
-                    .setTable(azureTableDataFeedSource.getTableName())
-                    .setQuery(azureTableDataFeedSource.getQueryScript()));
+            dataFeedDetail = new AzureTableDataFeed().setDataSourceParameter(new AzureTableParameter()
+                .setConnectionString(AzureTableDataFeedSourceAccessor.getConnectionString(azureTableDataFeedSource))
+                .setTable(azureTableDataFeedSource.getTableName())
+                .setQuery(azureTableDataFeedSource.getQueryScript()));
         } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
             final InfluxDbDataFeedSource influxDBDataFeedSource = ((InfluxDbDataFeedSource) dataFeedSource);
-            dataFeedDetail = new InfluxDBDataFeed()
-                .setDataSourceParameter(new InfluxDBParameter()
-                    .setConnectionString(influxDBDataFeedSource.getConnectionString())
+            dataFeedDetail = new InfluxDBDataFeed().setDataSourceParameter(
+                new InfluxDBParameter().setConnectionString(influxDBDataFeedSource.getConnectionString())
                     .setDatabase(influxDBDataFeedSource.getDatabase())
                     .setQuery(influxDBDataFeedSource.getQuery())
                     .setPassword(InfluxDbDataFeedSourceAccessor.getPassword(influxDBDataFeedSource))
                     .setUserName(influxDBDataFeedSource.getUserName()));
         } else if (dataFeedSource instanceof MySqlDataFeedSource) {
             final MySqlDataFeedSource mySqlDataFeedSource = ((MySqlDataFeedSource) dataFeedSource);
-            dataFeedDetail = new MySqlDataFeed()
-                .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
-                    .setQuery(mySqlDataFeedSource.getQuery()));
+            dataFeedDetail = new MySqlDataFeed().setDataSourceParameter(new SqlSourceParameter()
+                .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
+                .setQuery(mySqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof PostgreSqlDataFeedSource) {
             final PostgreSqlDataFeedSource postgreSqlDataFeedSource = ((PostgreSqlDataFeedSource) dataFeedSource);
-            dataFeedDetail = new PostgreSqlDataFeed()
-                .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
-                    .setQuery(postgreSqlDataFeedSource.getQuery()));
+            dataFeedDetail = new PostgreSqlDataFeed().setDataSourceParameter(new SqlSourceParameter()
+                .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
+                .setQuery(postgreSqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
             final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
-            dataFeedDetail = new SQLServerDataFeed()
-                .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
-                    .setQuery(sqlServerDataFeedSource.getQuery()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
-                .setCredentialId(sqlServerDataFeedSource.getCredentialId());
+            dataFeedDetail
+                = new SQLServerDataFeed()
+                    .setDataSourceParameter(new SqlSourceParameter()
+                        .setConnectionString(
+                            SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
+                        .setQuery(sqlServerDataFeedSource.getQuery()))
+                    .setAuthenticationType(
+                        AuthenticationTypeEnum.fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
+                    .setCredentialId(sqlServerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
             final MongoDbDataFeedSource mongoDbDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
-            dataFeedDetail = new MongoDBDataFeed()
-                .setDataSourceParameter(new MongoDBParameter()
-                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
-                    .setCommand(mongoDbDataFeedSource.getCommand())
-                    .setDatabase(mongoDbDataFeedSource.getDatabase()));
+            dataFeedDetail = new MongoDBDataFeed().setDataSourceParameter(new MongoDBParameter()
+                .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
+                .setCommand(mongoDbDataFeedSource.getCommand())
+                .setDatabase(mongoDbDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
-            final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource =
-                ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
+            final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource
+                = ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureDataLakeStorageGen2DataFeed()
                 .setDataSourceParameter(new AzureDataLakeStorageGen2Parameter()
                     .setAccountKey(AzureDataLakeStorageGen2DataFeedSourceAccessor
@@ -493,16 +442,16 @@ public final class DataFeedTransforms {
                     .fromString(azureDataLakeStorageGen2DataFeedSource.getAuthenticationType().toString()))
                 .setCredentialId(azureDataLakeStorageGen2DataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
-            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource =
-                ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
+            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource
+                = ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureLogAnalyticsDataFeed()
-                .setDataSourceParameter(new AzureLogAnalyticsParameter()
-                    .setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
-                    .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
-                    .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
-                        .getClientSecret(azureLogAnalyticsDataFeedSource))
-                    .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
-                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
+                .setDataSourceParameter(
+                    new AzureLogAnalyticsParameter().setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
+                        .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
+                        .setClientSecret(
+                            AzureLogAnalyticsDataFeedSourceAccessor.getClientSecret(azureLogAnalyticsDataFeedSource))
+                        .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
+                        .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
                 .setAuthenticationType(AuthenticationTypeEnum
                     .fromString(azureLogAnalyticsDataFeedSource.getAuthenticationType().toString()))
                 .setCredentialId(azureLogAnalyticsDataFeedSource.getCredentialId());
@@ -523,98 +472,98 @@ public final class DataFeedTransforms {
     public static DataFeedDetailPatch toInnerForUpdate(final DataFeedSource dataFeedSource) {
         final DataFeedDetailPatch dataFeedDetailPatch;
         if (dataFeedSource instanceof AzureAppInsightsDataFeedSource) {
-            final AzureAppInsightsDataFeedSource azureAppInsightsDataFeedSource =
-                ((AzureAppInsightsDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureApplicationInsightsDataFeedPatch()
-                .setDataSourceParameter(new AzureApplicationInsightsParameterPatch()
-                    .setApiKey(azureAppInsightsDataFeedSource.getApiKey())
+            final AzureAppInsightsDataFeedSource azureAppInsightsDataFeedSource
+                = ((AzureAppInsightsDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch = new AzureApplicationInsightsDataFeedPatch().setDataSourceParameter(
+                new AzureApplicationInsightsParameterPatch().setApiKey(azureAppInsightsDataFeedSource.getApiKey())
                     .setApplicationId(azureAppInsightsDataFeedSource.getApplicationId())
                     .setAzureCloud(azureAppInsightsDataFeedSource.getAzureCloud())
                     .setQuery(azureAppInsightsDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof AzureBlobDataFeedSource) {
             final AzureBlobDataFeedSource azureBlobDataFeedSource = ((AzureBlobDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureBlobDataFeedPatch()
-                .setDataSourceParameter(new AzureBlobParameterPatch()
-                    .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
-                    .setContainer(azureBlobDataFeedSource.getContainer())
-                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
+            dataFeedDetailPatch
+                = new AzureBlobDataFeedPatch()
+                    .setDataSourceParameter(new AzureBlobParameterPatch()
+                        .setConnectionString(
+                            AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
+                        .setContainer(azureBlobDataFeedSource.getContainer())
+                        .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
+                    .setAuthenticationType(
+                        AuthenticationTypeEnum.fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
         } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
-            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureCosmosDBDataFeedPatch()
-                .setDataSourceParameter(new AzureCosmosDBParameterPatch()
-                    .setConnectionString(AzureCosmosDbDataFeedSourceAccessor
-                        .getConnectionString(azureCosmosDbDataFeedSource))
+            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource
+                = ((AzureCosmosDbDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch
+                = new AzureCosmosDBDataFeedPatch().setDataSourceParameter(new AzureCosmosDBParameterPatch()
+                    .setConnectionString(
+                        AzureCosmosDbDataFeedSourceAccessor.getConnectionString(azureCosmosDbDataFeedSource))
                     .setCollectionId(azureCosmosDbDataFeedSource.getCollectionId())
                     .setDatabase(azureCosmosDbDataFeedSource.getDatabase())
                     .setSqlQuery(azureCosmosDbDataFeedSource.getSqlQuery()));
         } else if (dataFeedSource instanceof AzureDataExplorerDataFeedSource) {
-            final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource =
-                ((AzureDataExplorerDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureDataExplorerDataFeedPatch()
-                .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(
-                        AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
-                    .setQuery(azureDataExplorerDataFeedSource.getQuery()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
-                .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
+            final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource
+                = ((AzureDataExplorerDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch
+                = new AzureDataExplorerDataFeedPatch()
+                    .setDataSourceParameter(new SQLSourceParameterPatch()
+                        .setConnectionString(AzureDataExplorerDataFeedSourceAccessor
+                            .getConnectionString(azureDataExplorerDataFeedSource))
+                        .setQuery(azureDataExplorerDataFeedSource.getQuery()))
+                    .setAuthenticationType(AuthenticationTypeEnum
+                        .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
+                    .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
-            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
-                ((AzureEventHubsDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureEventHubsDataFeedPatch()
-                .setDataSourceParameter(new AzureEventHubsParameterPatch()
-                    .setConnectionString(AzureEventHubsDataFeedSourceAccessor
-                        .getConnectionString(azureEventHubsDataFeedSource))
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource
+                = ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch
+                = new AzureEventHubsDataFeedPatch().setDataSourceParameter(new AzureEventHubsParameterPatch()
+                    .setConnectionString(
+                        AzureEventHubsDataFeedSourceAccessor.getConnectionString(azureEventHubsDataFeedSource))
                     .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new AzureTableDataFeedPatch()
-                .setDataSourceParameter(new AzureTableParameterPatch()
-                    .setConnectionString(AzureTableDataFeedSourceAccessor.getConnectionString(azureTableDataFeedSource))
-                    .setTable(azureTableDataFeedSource.getTableName())
-                    .setQuery(azureTableDataFeedSource.getQueryScript()));
+            dataFeedDetailPatch = new AzureTableDataFeedPatch().setDataSourceParameter(new AzureTableParameterPatch()
+                .setConnectionString(AzureTableDataFeedSourceAccessor.getConnectionString(azureTableDataFeedSource))
+                .setTable(azureTableDataFeedSource.getTableName())
+                .setQuery(azureTableDataFeedSource.getQueryScript()));
         } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
             final InfluxDbDataFeedSource influxDBDataFeedSource = ((InfluxDbDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new InfluxDBDataFeedPatch()
-                .setDataSourceParameter(new InfluxDBParameterPatch()
-                    .setConnectionString(influxDBDataFeedSource.getConnectionString())
+            dataFeedDetailPatch = new InfluxDBDataFeedPatch().setDataSourceParameter(
+                new InfluxDBParameterPatch().setConnectionString(influxDBDataFeedSource.getConnectionString())
                     .setDatabase(influxDBDataFeedSource.getDatabase())
                     .setQuery(influxDBDataFeedSource.getQuery())
                     .setPassword(InfluxDbDataFeedSourceAccessor.getPassword(influxDBDataFeedSource))
                     .setUserName(influxDBDataFeedSource.getUserName()));
         } else if (dataFeedSource instanceof MySqlDataFeedSource) {
             final MySqlDataFeedSource mySqlDataFeedSource = ((MySqlDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new MySqlDataFeedPatch()
-                .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
-                    .setQuery(mySqlDataFeedSource.getQuery()));
+            dataFeedDetailPatch = new MySqlDataFeedPatch().setDataSourceParameter(new SQLSourceParameterPatch()
+                .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
+                .setQuery(mySqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof PostgreSqlDataFeedSource) {
             final PostgreSqlDataFeedSource postgreSqlDataFeedSource = ((PostgreSqlDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new PostgreSqlDataFeedPatch()
-                .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
-                    .setQuery(postgreSqlDataFeedSource.getQuery()));
+            dataFeedDetailPatch = new PostgreSqlDataFeedPatch().setDataSourceParameter(new SQLSourceParameterPatch()
+                .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
+                .setQuery(postgreSqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
             final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new SQLServerDataFeedPatch()
-                .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
-                    .setQuery(sqlServerDataFeedSource.getQuery()))
-                .setAuthenticationType(AuthenticationTypeEnum
-                    .fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
-                .setCredentialId(sqlServerDataFeedSource.getCredentialId());
+            dataFeedDetailPatch
+                = new SQLServerDataFeedPatch()
+                    .setDataSourceParameter(new SQLSourceParameterPatch()
+                        .setConnectionString(
+                            SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
+                        .setQuery(sqlServerDataFeedSource.getQuery()))
+                    .setAuthenticationType(
+                        AuthenticationTypeEnum.fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
+                    .setCredentialId(sqlServerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
             final MongoDbDataFeedSource mongoDbDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new MongoDBDataFeedPatch()
-                .setDataSourceParameter(new MongoDBParameterPatch()
-                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
-                    .setCommand(mongoDbDataFeedSource.getCommand())
-                    .setDatabase(mongoDbDataFeedSource.getDatabase()));
+            dataFeedDetailPatch = new MongoDBDataFeedPatch().setDataSourceParameter(new MongoDBParameterPatch()
+                .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
+                .setCommand(mongoDbDataFeedSource.getCommand())
+                .setDatabase(mongoDbDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
-            final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource =
-                ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
+            final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource
+                = ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureDataLakeStorageGen2DataFeedPatch()
                 .setDataSourceParameter(new AzureDataLakeStorageGen2ParameterPatch()
                     .setAccountKey(AzureDataLakeStorageGen2DataFeedSourceAccessor
@@ -627,23 +576,22 @@ public final class DataFeedTransforms {
                     .fromString(azureDataLakeStorageGen2DataFeedSource.getAuthenticationType().toString()))
                 .setCredentialId(azureDataLakeStorageGen2DataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
-            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource =
-                ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
+            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource
+                = ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureLogAnalyticsDataFeedPatch()
-                .setDataSourceParameter(new AzureLogAnalyticsParameterPatch()
-                    .setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
-                    .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
-                    .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
-                        .getClientSecret(azureLogAnalyticsDataFeedSource))
-                    .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
-                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
+                .setDataSourceParameter(
+                    new AzureLogAnalyticsParameterPatch().setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
+                        .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
+                        .setClientSecret(
+                            AzureLogAnalyticsDataFeedSourceAccessor.getClientSecret(azureLogAnalyticsDataFeedSource))
+                        .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
+                        .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
                 .setAuthenticationType(AuthenticationTypeEnum
                     .fromString(azureLogAnalyticsDataFeedSource.getAuthenticationType().toString()))
                 .setCredentialId(azureLogAnalyticsDataFeedSource.getCredentialId());
         } else {
-            throw LOGGER.logExceptionAsError(new RuntimeException(
-                String.format("Data feed source type %s not supported.",
-                    dataFeedSource.getClass().getCanonicalName())));
+            throw LOGGER.logExceptionAsError(new RuntimeException(String
+                .format("Data feed source type %s not supported.", dataFeedSource.getClass().getCanonicalName())));
         }
 
         return dataFeedDetailPatch;
@@ -656,7 +604,8 @@ public final class DataFeedTransforms {
             innerDimensions = new ArrayList<>();
             for (DataFeedDimension dimension : dimensions) {
                 innerDimensions.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension()
-                    .setDimensionName(dimension.getName()).setDimensionDisplayName(dimension.getDisplayName()));
+                    .setDimensionName(dimension.getName())
+                    .setDimensionDisplayName(dimension.getDisplayName()));
             }
         }
         return innerDimensions;
@@ -684,22 +633,23 @@ public final class DataFeedTransforms {
         } else {
             List<DataFeedDimension> dimensions = new ArrayList<>();
             for (com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension inner : innerList) {
-                dimensions.add(new DataFeedDimension(inner.getDimensionName()).setDisplayName(inner.getDimensionDisplayName()));
+                dimensions.add(
+                    new DataFeedDimension(inner.getDimensionName()).setDisplayName(inner.getDimensionDisplayName()));
             }
             return dimensions;
         }
     }
 
-    private static List<DataFeedMetric> fromInnerMetricList(
-        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerList) {
+    private static List<DataFeedMetric>
+        fromInnerMetricList(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerList) {
         if (innerList == null) {
             return null;
         } else {
             List<DataFeedMetric> metrics = new ArrayList<>();
             for (com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric inner : innerList) {
-                DataFeedMetric metric = new DataFeedMetric(inner.getMetricName())
-                    .setDisplayName(inner.getMetricDisplayName())
-                    .setDescription(inner.getMetricDescription());
+                DataFeedMetric metric
+                    = new DataFeedMetric(inner.getMetricName()).setDisplayName(inner.getMetricDisplayName())
+                        .setDescription(inner.getMetricDescription());
                 DataFeedMetricAccessor.setId(metric, inner.getMetricId());
                 metrics.add(metric);
             }

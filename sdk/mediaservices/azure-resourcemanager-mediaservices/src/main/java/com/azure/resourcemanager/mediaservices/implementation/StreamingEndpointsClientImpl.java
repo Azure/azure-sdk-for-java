@@ -57,8 +57,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @param client the instance of the service client containing this operation class.
      */
     StreamingEndpointsClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(StreamingEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(StreamingEndpointsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,195 +69,140 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesSt")
     public interface StreamingEndpointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingEndpointListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StreamingEndpointListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingEndpointInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("autoStart") Boolean autoStart,
+            @BodyParam("application/json") StreamingEndpointInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingEndpointInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingEndpointName") String streamingEndpointName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StreamingEndpointInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}/skus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingEndpointSkuInfoListResultInner>> skus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}/start")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}/stop")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}/scale")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> scale(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingEndpointName") String streamingEndpointName,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("autoStart") Boolean autoStart,
-            @BodyParam("application/json") StreamingEndpointInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StreamingEntityScaleUnit parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpointOperations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AsyncOperationResultInner>> asyncOperation(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/streamingEndpoints/{streamingEndpointName}/operationLocations/{operationId}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingEndpointInner>> operationLocation(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StreamingEndpointInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/skus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingEndpointSkuInfoListResultInner>> skus(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/start")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/stop")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/scale")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> scale(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StreamingEntityScaleUnit parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpointOperations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AsyncOperationResultInner>> asyncOperation(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/operationLocations/{operationId}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingEndpointInner>> operationLocation(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingEndpointName") String streamingEndpointName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingEndpointListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -273,19 +218,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -297,26 +238,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<StreamingEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, apiVersion, accept, context))
+            .<PagedResponse<StreamingEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -334,19 +259,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -359,23 +280,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
@@ -392,8 +300,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingEndpointInner> listAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -411,8 +319,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingEndpointInner> listAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -465,19 +372,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -493,18 +396,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -523,19 +416,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -551,16 +440,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingEndpointName, apiVersion, accept, context);
     }
 
     /**
@@ -577,8 +458,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> getAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<StreamingEndpointInner> getAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -598,8 +479,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingEndpointInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    public Response<StreamingEndpointInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context).block();
     }
 
@@ -637,23 +518,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,19 +548,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            autoStart,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, streamingEndpointName, apiVersion, autoStart, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -708,24 +570,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,18 +599,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                autoStart,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingEndpointName, apiVersion, autoStart, parameters, accept, context);
     }
 
     /**
@@ -777,21 +620,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
+        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters,
         Boolean autoStart) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart);
-        return this
-            .client
-            .<StreamingEndpointInner, StreamingEndpointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StreamingEndpointInner.class,
-                StreamingEndpointInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart);
+        return this.client.<StreamingEndpointInner, StreamingEndpointInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StreamingEndpointInner.class, StreamingEndpointInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -812,16 +647,11 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreateAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
         final Boolean autoStart = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart);
-        return this
-            .client
-            .<StreamingEndpointInner, StreamingEndpointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StreamingEndpointInner.class,
-                StreamingEndpointInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart);
+        return this.client.<StreamingEndpointInner, StreamingEndpointInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StreamingEndpointInner.class, StreamingEndpointInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -842,24 +672,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
-        Context context) {
+        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters,
+        Boolean autoStart, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, accountName, streamingEndpointName, parameters, autoStart, context);
-        return this
-            .client
-            .<StreamingEndpointInner, StreamingEndpointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StreamingEndpointInner.class,
-                StreamingEndpointInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName,
+            streamingEndpointName, parameters, autoStart, context);
+        return this.client.<StreamingEndpointInner, StreamingEndpointInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StreamingEndpointInner.class, StreamingEndpointInner.class, context);
     }
 
     /**
@@ -877,11 +696,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
         final Boolean autoStart = null;
-        return this
-            .beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart)
+        return this.beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart)
             .getSyncPoller();
     }
 
@@ -902,12 +720,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
+    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart,
         Context context) {
         return this
             .beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart, context)
@@ -930,14 +744,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart) {
-        return beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart)
-            .last()
+    private Mono<StreamingEndpointInner> createAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart) {
+        return beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -956,11 +765,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> createAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    private Mono<StreamingEndpointInner> createAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters) {
         final Boolean autoStart = null;
-        return beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart)
-            .last()
+        return beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -981,13 +789,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
-        Context context) {
+    private Mono<StreamingEndpointInner> createAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1008,8 +811,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner create(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    public StreamingEndpointInner create(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters) {
         final Boolean autoStart = null;
         return createAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart).block();
     }
@@ -1031,13 +834,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner create(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
-        Context context) {
+    public StreamingEndpointInner create(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters, Boolean autoStart, Context context) {
         return createAsync(resourceGroupName, accountName, streamingEndpointName, parameters, autoStart, context)
             .block();
     }
@@ -1057,19 +855,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1090,19 +884,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1122,23 +905,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1159,17 +934,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingEndpointName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1189,16 +955,11 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters);
-        return this
-            .client
-            .<StreamingEndpointInner, StreamingEndpointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StreamingEndpointInner.class,
-                StreamingEndpointInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters);
+        return this.client.<StreamingEndpointInner, StreamingEndpointInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StreamingEndpointInner.class, StreamingEndpointInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1218,22 +979,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
+        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context);
-        return this
-            .client
-            .<StreamingEndpointInner, StreamingEndpointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StreamingEndpointInner.class,
-                StreamingEndpointInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context);
+        return this.client.<StreamingEndpointInner, StreamingEndpointInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StreamingEndpointInner.class, StreamingEndpointInner.class, context);
     }
 
     /**
@@ -1251,8 +1003,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters).getSyncPoller();
     }
 
@@ -1272,14 +1024,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
+    public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1298,10 +1045,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> updateAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters)
-            .last()
+    private Mono<StreamingEndpointInner> updateAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1321,14 +1067,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
-            .last()
+    private Mono<StreamingEndpointInner> updateAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEndpointInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1347,8 +1088,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner update(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
+    public StreamingEndpointInner update(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters) {
         return updateAsync(resourceGroupName, accountName, streamingEndpointName, parameters).block();
     }
 
@@ -1368,12 +1109,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner update(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context) {
+    public StreamingEndpointInner update(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters, Context context) {
         return updateAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context).block();
     }
 
@@ -1391,19 +1128,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1419,18 +1152,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1449,19 +1172,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1477,16 +1196,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingEndpointName, apiVersion, accept, context);
     }
 
     /**
@@ -1503,14 +1214,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1528,14 +1237,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1552,8 +1260,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
@@ -1572,8 +1280,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
@@ -1592,8 +1300,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
-        return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1612,10 +1319,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingEndpointName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1668,19 +1374,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1696,18 +1398,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .skus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.skus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1726,19 +1418,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1754,16 +1442,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .skus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.skus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingEndpointName, apiVersion, accept, context);
     }
 
     /**
@@ -1780,8 +1460,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointSkuInfoListResultInner> skusAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<StreamingEndpointSkuInfoListResultInner> skusAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1801,8 +1481,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    public Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(String resourceGroupName,
+        String accountName, String streamingEndpointName, Context context) {
         return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context).block();
     }
 
@@ -1820,8 +1500,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointSkuInfoListResultInner skus(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    public StreamingEndpointSkuInfoListResultInner skus(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return skusWithResponse(resourceGroupName, accountName, streamingEndpointName, Context.NONE).getValue();
     }
 
@@ -1839,19 +1519,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1867,18 +1543,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1897,19 +1563,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1925,16 +1587,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingEndpointName, apiVersion, accept, context);
     }
 
     /**
@@ -1951,14 +1605,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1976,14 +1628,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2000,8 +1651,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return this.beginStartAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
@@ -2020,8 +1671,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         return this.beginStartAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
@@ -2040,8 +1691,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
-        return beginStartAsync(resourceGroupName, accountName, streamingEndpointName)
-            .last()
+        return beginStartAsync(resourceGroupName, accountName, streamingEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2060,10 +1710,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
-        return beginStartAsync(resourceGroupName, accountName, streamingEndpointName, context)
-            .last()
+    private Mono<Void> startAsync(String resourceGroupName, String accountName, String streamingEndpointName,
+        Context context) {
+        return beginStartAsync(resourceGroupName, accountName, streamingEndpointName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2116,19 +1765,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2144,18 +1789,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2174,19 +1809,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2202,16 +1833,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingEndpointName, apiVersion, accept, context);
     }
 
     /**
@@ -2228,14 +1851,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2253,14 +1874,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2277,8 +1897,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
+        String streamingEndpointName) {
         return this.beginStopAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
@@ -2297,8 +1917,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context) {
         return this.beginStopAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
@@ -2317,8 +1937,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
-        return beginStopAsync(resourceGroupName, accountName, streamingEndpointName)
-            .last()
+        return beginStopAsync(resourceGroupName, accountName, streamingEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2337,10 +1956,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
-        return beginStopAsync(resourceGroupName, accountName, streamingEndpointName, context)
-            .last()
+    private Mono<Void> stopAsync(String resourceGroupName, String accountName, String streamingEndpointName,
+        Context context) {
+        return beginStopAsync(resourceGroupName, accountName, streamingEndpointName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2394,22 +2012,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2430,19 +2041,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .scale(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.scale(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingEndpointName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2462,23 +2062,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2499,17 +2091,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .scale(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.scale(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingEndpointName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -2527,17 +2110,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            scaleWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scaleWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2556,18 +2134,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            scaleWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scaleWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2585,11 +2158,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters) {
         return this.beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters).getSyncPoller();
     }
 
@@ -2609,14 +2179,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context) {
-        return this
-            .beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
+    public SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters, Context context) {
+        return this.beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2635,13 +2200,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> scaleAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
+    private Mono<Void> scaleAsync(String resourceGroupName, String accountName, String streamingEndpointName,
         StreamingEntityScaleUnit parameters) {
-        return beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters)
-            .last()
+        return beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2661,14 +2222,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> scaleAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context) {
-        return beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context)
-            .last()
+    private Mono<Void> scaleAsync(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEntityScaleUnit parameters, Context context) {
+        return beginScaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2686,10 +2242,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
+    public void scale(String resourceGroupName, String accountName, String streamingEndpointName,
         StreamingEntityScaleUnit parameters) {
         scaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters).block();
     }
@@ -2709,12 +2262,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context) {
+    public void scale(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEntityScaleUnit parameters, Context context) {
         scaleAsync(resourceGroupName, accountName, streamingEndpointName, parameters, context).block();
     }
 
@@ -2733,19 +2282,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
-        String resourceGroupName, String accountName, String operationId) {
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(String resourceGroupName,
+        String accountName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2760,18 +2305,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .asyncOperation(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            operationId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.asyncOperation(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, operationId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2791,19 +2326,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
-        String resourceGroupName, String accountName, String operationId, Context context) {
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(String resourceGroupName,
+        String accountName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2818,16 +2349,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .asyncOperation(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                operationId,
-                apiVersion,
-                accept,
-                context);
+        return service.asyncOperation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, operationId, apiVersion, accept, context);
     }
 
     /**
@@ -2844,8 +2367,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationResultInner> asyncOperationAsync(
-        String resourceGroupName, String accountName, String operationId) {
+    private Mono<AsyncOperationResultInner> asyncOperationAsync(String resourceGroupName, String accountName,
+        String operationId) {
         return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2865,8 +2388,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AsyncOperationResultInner> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context) {
+    public Response<AsyncOperationResultInner> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context) {
         return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
     }
 
@@ -2904,19 +2427,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingEndpointName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2936,18 +2455,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .operationLocation(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingEndpointName,
-                            operationId,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.operationLocation(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, streamingEndpointName, operationId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2968,23 +2477,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        String operationId,
-        Context context) {
+    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingEndpointName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3003,17 +2504,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .operationLocation(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingEndpointName,
-                operationId,
-                apiVersion,
-                accept,
-                context);
+        return service.operationLocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingEndpointName, operationId, apiVersion, accept, context);
     }
 
     /**
@@ -3031,8 +2523,8 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingEndpointInner> operationLocationAsync(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+    private Mono<StreamingEndpointInner> operationLocationAsync(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId) {
         return operationLocationWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -3053,15 +2545,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingEndpointInner> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        String operationId,
-        Context context) {
-        return operationLocationWithResponseAsync(
-                resourceGroupName, accountName, streamingEndpointName, operationId, context)
-            .block();
+    public Response<StreamingEndpointInner> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId, Context context) {
+        return operationLocationWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, operationId,
+            context).block();
     }
 
     /**
@@ -3079,11 +2566,10 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @return a streaming endpoint operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner operationLocation(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
-        return operationLocationWithResponse(
-                resourceGroupName, accountName, streamingEndpointName, operationId, Context.NONE)
-            .getValue();
+    public StreamingEndpointInner operationLocation(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId) {
+        return operationLocationWithResponse(resourceGroupName, accountName, streamingEndpointName, operationId,
+            Context.NONE).getValue();
     }
 
     /**
@@ -3102,23 +2588,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StreamingEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StreamingEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3139,23 +2615,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

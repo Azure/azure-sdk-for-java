@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRackInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"jpytp\",\"networkDevices\":[\"dnogehlufbor\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kk\"},\"location\":\"xzsvbxxyji\",\"tags\":{\"qocl\":\"o\",\"oewyhxessmvrkd\":\"l\",\"bdxmd\":\"sqeq\"},\"id\":\"esbrujbjpppktl\",\"name\":\"dibfmthi\",\"type\":\"at\"}")
-                .toObject(NetworkRackInner.class);
+        NetworkRackInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"jpytp\",\"networkDevices\":[\"dnogehlufbor\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kk\"},\"location\":\"xzsvbxxyji\",\"tags\":{\"qocl\":\"o\",\"oewyhxessmvrkd\":\"l\",\"bdxmd\":\"sqeq\"},\"id\":\"esbrujbjpppktl\",\"name\":\"dibfmthi\",\"type\":\"at\"}")
+            .toObject(NetworkRackInner.class);
         Assertions.assertEquals("xzsvbxxyji", model.location());
         Assertions.assertEquals("o", model.tags().get("qocl"));
         Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
@@ -28,13 +26,11 @@ public final class NetworkRackInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackInner model =
-            new NetworkRackInner()
-                .withLocation("xzsvbxxyji")
-                .withTags(mapOf("qocl", "o", "oewyhxessmvrkd", "l", "bdxmd", "sqeq"))
-                .withNetworkRackType(NetworkRackType.AGGREGATE)
-                .withNetworkFabricId("jpytp")
-                .withAnnotation("kk");
+        NetworkRackInner model = new NetworkRackInner().withLocation("xzsvbxxyji")
+            .withTags(mapOf("qocl", "o", "oewyhxessmvrkd", "l", "bdxmd", "sqeq"))
+            .withNetworkRackType(NetworkRackType.AGGREGATE)
+            .withNetworkFabricId("jpytp")
+            .withAnnotation("kk");
         model = BinaryData.fromObject(model).toObject(NetworkRackInner.class);
         Assertions.assertEquals("xzsvbxxyji", model.location());
         Assertions.assertEquals("o", model.tags().get("qocl"));

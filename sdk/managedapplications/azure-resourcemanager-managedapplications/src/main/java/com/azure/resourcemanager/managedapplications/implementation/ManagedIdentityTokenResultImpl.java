@@ -15,8 +15,7 @@ public final class ManagedIdentityTokenResultImpl implements ManagedIdentityToke
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    ManagedIdentityTokenResultImpl(
-        ManagedIdentityTokenResultInner innerObject,
+    ManagedIdentityTokenResultImpl(ManagedIdentityTokenResultInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

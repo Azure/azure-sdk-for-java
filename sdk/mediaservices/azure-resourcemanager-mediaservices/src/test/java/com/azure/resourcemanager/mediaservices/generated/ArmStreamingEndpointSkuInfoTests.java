@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmStreamingEndpointSkuInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmStreamingEndpointSkuInfo model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"ywrckp\",\"capacity\":{\"scaleType\":\"yhpluodpvruudlgz\",\"default\":1325865791,\"minimum\":1621588970,\"maximum\":777690092},\"sku\":{\"name\":\"tstvdxeclzedq\"}}")
-                .toObject(ArmStreamingEndpointSkuInfo.class);
+        ArmStreamingEndpointSkuInfo model = BinaryData.fromString(
+            "{\"resourceType\":\"ywrckp\",\"capacity\":{\"scaleType\":\"yhpluodpvruudlgz\",\"default\":1325865791,\"minimum\":1621588970,\"maximum\":777690092},\"sku\":{\"name\":\"tstvdxeclzedq\"}}")
+            .toObject(ArmStreamingEndpointSkuInfo.class);
         Assertions.assertEquals("ywrckp", model.resourceType());
         Assertions.assertEquals(1325865791, model.capacity().defaultProperty());
         Assertions.assertEquals(1621588970, model.capacity().minimum());
@@ -26,15 +24,11 @@ public final class ArmStreamingEndpointSkuInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmStreamingEndpointSkuInfo model =
-            new ArmStreamingEndpointSkuInfo()
-                .withResourceType("ywrckp")
-                .withCapacity(
-                    new ArmStreamingEndpointCapacity()
-                        .withDefaultProperty(1325865791)
-                        .withMinimum(1621588970)
-                        .withMaximum(777690092))
-                .withSku(new ArmStreamingEndpointSku());
+        ArmStreamingEndpointSkuInfo model = new ArmStreamingEndpointSkuInfo().withResourceType("ywrckp")
+            .withCapacity(new ArmStreamingEndpointCapacity().withDefaultProperty(1325865791)
+                .withMinimum(1621588970)
+                .withMaximum(777690092))
+            .withSku(new ArmStreamingEndpointSku());
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointSkuInfo.class);
         Assertions.assertEquals("ywrckp", model.resourceType());
         Assertions.assertEquals(1325865791, model.capacity().defaultProperty());

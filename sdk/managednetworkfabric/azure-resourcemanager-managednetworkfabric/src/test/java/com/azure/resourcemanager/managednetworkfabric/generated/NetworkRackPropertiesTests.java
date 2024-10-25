@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRackProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"rnminzqplgtkih\",\"networkDevices\":[\"kzsrz\",\"ffjilzfbpnt\",\"gkensckhbmcarmo\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kwykuqdndxl\"}")
-                .toObject(NetworkRackProperties.class);
+        NetworkRackProperties model = BinaryData.fromString(
+            "{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"rnminzqplgtkih\",\"networkDevices\":[\"kzsrz\",\"ffjilzfbpnt\",\"gkensckhbmcarmo\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kwykuqdndxl\"}")
+            .toObject(NetworkRackProperties.class);
         Assertions.assertEquals("kwykuqdndxl", model.annotation());
         Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
         Assertions.assertEquals("rnminzqplgtkih", model.networkFabricId());
@@ -24,11 +22,9 @@ public final class NetworkRackPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackProperties model =
-            new NetworkRackProperties()
-                .withAnnotation("kwykuqdndxl")
-                .withNetworkRackType(NetworkRackType.AGGREGATE)
-                .withNetworkFabricId("rnminzqplgtkih");
+        NetworkRackProperties model = new NetworkRackProperties().withAnnotation("kwykuqdndxl")
+            .withNetworkRackType(NetworkRackType.AGGREGATE)
+            .withNetworkFabricId("rnminzqplgtkih");
         model = BinaryData.fromObject(model).toObject(NetworkRackProperties.class);
         Assertions.assertEquals("kwykuqdndxl", model.annotation());
         Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());

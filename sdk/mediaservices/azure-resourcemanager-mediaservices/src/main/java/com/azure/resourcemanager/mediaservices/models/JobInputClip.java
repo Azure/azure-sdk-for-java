@@ -20,8 +20,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Media.JobInputClip")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputAsset", value = JobInputAsset.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputHttp", value = JobInputHttp.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputHttp", value = JobInputHttp.class) })
 @Fluent
 public class JobInputClip extends JobInput {
     /*

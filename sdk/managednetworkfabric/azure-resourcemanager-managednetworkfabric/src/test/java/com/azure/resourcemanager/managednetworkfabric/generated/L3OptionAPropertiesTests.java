@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L3OptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3OptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":707174583,\"vlanId\":1454825474,\"fabricASN\":5238881792700138972,\"peerASN\":8845842496565245250,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1894816551,\"multiplier\":935663672},\"ingressAclId\":\"nasd\",\"egressAclId\":\"enz\"}")
-                .toObject(L3OptionAProperties.class);
+        L3OptionAProperties model = BinaryData.fromString(
+            "{\"mtu\":707174583,\"vlanId\":1454825474,\"fabricASN\":5238881792700138972,\"peerASN\":8845842496565245250,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1894816551,\"multiplier\":935663672},\"ingressAclId\":\"nasd\",\"egressAclId\":\"enz\"}")
+            .toObject(L3OptionAProperties.class);
         Assertions.assertEquals(707174583, model.mtu());
         Assertions.assertEquals(1454825474, model.vlanId());
         Assertions.assertEquals(8845842496565245250L, model.peerAsn());
@@ -28,15 +26,13 @@ public final class L3OptionAPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3OptionAProperties model =
-            new L3OptionAProperties()
-                .withMtu(707174583)
-                .withVlanId(1454825474)
-                .withPeerAsn(8845842496565245250L)
-                .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(1894816551).withMultiplier(935663672))
-                .withIngressAclId("nasd")
-                .withEgressAclId("enz");
+        L3OptionAProperties model = new L3OptionAProperties().withMtu(707174583)
+            .withVlanId(1454825474)
+            .withPeerAsn(8845842496565245250L)
+            .withBfdConfiguration(
+                new BfdConfiguration().withIntervalInMilliSeconds(1894816551).withMultiplier(935663672))
+            .withIngressAclId("nasd")
+            .withEgressAclId("enz");
         model = BinaryData.fromObject(model).toObject(L3OptionAProperties.class);
         Assertions.assertEquals(707174583, model.mtu());
         Assertions.assertEquals(1454825474, model.vlanId());

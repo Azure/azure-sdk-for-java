@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupPathElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupPathElement model =
-            BinaryData
-                .fromString("{\"name\":\"sgcbac\",\"displayName\":\"ejk\"}")
-                .toObject(ManagementGroupPathElement.class);
+        ManagementGroupPathElement model = BinaryData.fromString("{\"name\":\"sgcbac\",\"displayName\":\"ejk\"}")
+            .toObject(ManagementGroupPathElement.class);
         Assertions.assertEquals("sgcbac", model.name());
         Assertions.assertEquals("ejk", model.displayName());
     }

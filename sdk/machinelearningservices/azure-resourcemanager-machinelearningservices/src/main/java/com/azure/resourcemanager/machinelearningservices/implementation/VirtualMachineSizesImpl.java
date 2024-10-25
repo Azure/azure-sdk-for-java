@@ -15,14 +15,14 @@ import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineSi
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineSizesImpl.class);
 
     private final VirtualMachineSizesClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public VirtualMachineSizesImpl(
-        VirtualMachineSizesClient innerClient,
+    public VirtualMachineSizesImpl(VirtualMachineSizesClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -40,10 +40,7 @@ public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
     public Response<VirtualMachineSizeListResult> listWithResponse(String location, Context context) {
         Response<VirtualMachineSizeListResultInner> inner = this.serviceClient().listWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineSizeListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

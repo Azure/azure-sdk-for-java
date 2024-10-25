@@ -15,14 +15,14 @@ import com.azure.resourcemanager.machinelearningservices.models.StorageAccounts;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageAccountsImpl implements StorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(StorageAccountsImpl.class);
 
     private final StorageAccountsClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public StorageAccountsImpl(
-        StorageAccountsClient innerClient,
+    public StorageAccountsImpl(StorageAccountsClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -37,15 +37,12 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
     }
 
-    public Response<ListStorageAccountKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<ListStorageAccountKeysResultInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, context);
+    public Response<ListStorageAccountKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<ListStorageAccountKeysResultInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ListStorageAccountKeysResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

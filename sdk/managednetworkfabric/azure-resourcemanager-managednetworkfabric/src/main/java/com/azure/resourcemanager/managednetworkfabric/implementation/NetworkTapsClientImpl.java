@@ -58,8 +58,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @param client the instance of the service client containing this operation class.
      */
     NetworkTapsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(NetworkTapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkTapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,136 +70,96 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkTapsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapName") String networkTapName,
-            @BodyParam("application/json") NetworkTapInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapName") String networkTapName, @BodyParam("application/json") NetworkTapInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkTapInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapName") String networkTapName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapName") String networkTapName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapName") String networkTapName,
-            @BodyParam("application/json") NetworkTapPatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapName") String networkTapName, @BodyParam("application/json") NetworkTapPatch body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapName") String networkTapName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapName") String networkTapName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkTapsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkTaps")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkTapsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}/updateAdministrativeState")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}/updateAdministrativeState")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkTapName") String networkTapName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}/resync")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTaps/{networkTapName}/resync")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resync(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapName") String networkTapName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapName") String networkTapName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkTapsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkTapsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -216,19 +176,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkTapName, NetworkTapInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkTapName,
+        NetworkTapInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -244,18 +200,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -274,19 +220,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkTapName,
+        NetworkTapInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -302,16 +244,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapName, body, accept, context);
     }
 
     /**
@@ -328,17 +262,11 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginCreateAsync(
-        String resourceGroupName, String networkTapName, NetworkTapInner body) {
+    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginCreateAsync(String resourceGroupName,
+        String networkTapName, NetworkTapInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, networkTapName, body);
-        return this
-            .client
-            .<NetworkTapInner, NetworkTapInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkTapInner.class,
-                NetworkTapInner.class,
-                this.client.getContext());
+        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapInner.class, NetworkTapInner.class, this.client.getContext());
     }
 
     /**
@@ -356,15 +284,13 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginCreateAsync(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context) {
+    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginCreateAsync(String resourceGroupName,
+        String networkTapName, NetworkTapInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkTapName, body, context);
-        return this
-            .client
-            .<NetworkTapInner, NetworkTapInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkTapInner.class, NetworkTapInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkTapName, body, context);
+        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapInner.class, NetworkTapInner.class, context);
     }
 
     /**
@@ -381,8 +307,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(
-        String resourceGroupName, String networkTapName, NetworkTapInner body) {
+    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
+        String networkTapName, NetworkTapInner body) {
         return this.beginCreateAsync(resourceGroupName, networkTapName, body).getSyncPoller();
     }
 
@@ -401,8 +327,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context) {
+    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
+        String networkTapName, NetworkTapInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, networkTapName, body, context).getSyncPoller();
     }
 
@@ -421,8 +347,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkTapInner> createAsync(String resourceGroupName, String networkTapName, NetworkTapInner body) {
-        return beginCreateAsync(resourceGroupName, networkTapName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, networkTapName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -441,10 +366,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapInner> createAsync(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, networkTapName, body, context)
-            .last()
+    private Mono<NetworkTapInner> createAsync(String resourceGroupName, String networkTapName, NetworkTapInner body,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, networkTapName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -481,8 +405,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkTapInner create(
-        String resourceGroupName, String networkTapName, NetworkTapInner body, Context context) {
+    public NetworkTapInner create(String resourceGroupName, String networkTapName, NetworkTapInner body,
+        Context context) {
         return createAsync(resourceGroupName, networkTapName, body, context).block();
     }
 
@@ -499,19 +423,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkTapInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkTapName) {
+    private Mono<Response<NetworkTapInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkTapName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,16 +443,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkTapName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -550,19 +462,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkTapInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkTapName, Context context) {
+    private Mono<Response<NetworkTapInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkTapName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -573,15 +481,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapName, accept, context);
     }
 
     /**
@@ -616,8 +517,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkTapInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapName, Context context) {
+    public Response<NetworkTapInner> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkTapName, context).block();
     }
 
@@ -652,19 +553,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkTapName,
+        NetworkTapPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,18 +577,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -710,19 +597,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkTapName,
+        NetworkTapPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -738,16 +621,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapName, body, accept, context);
     }
 
     /**
@@ -764,17 +639,11 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdateAsync(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body) {
+    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdateAsync(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, networkTapName, body);
-        return this
-            .client
-            .<NetworkTapInner, NetworkTapInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkTapInner.class,
-                NetworkTapInner.class,
-                this.client.getContext());
+        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapInner.class, NetworkTapInner.class, this.client.getContext());
     }
 
     /**
@@ -792,15 +661,13 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdateAsync(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context) {
+    private PollerFlux<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdateAsync(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkTapName, body, context);
-        return this
-            .client
-            .<NetworkTapInner, NetworkTapInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkTapInner.class, NetworkTapInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkTapName, body, context);
+        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapInner.class, NetworkTapInner.class, context);
     }
 
     /**
@@ -817,8 +684,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body) {
+    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body) {
         return this.beginUpdateAsync(resourceGroupName, networkTapName, body).getSyncPoller();
     }
 
@@ -837,8 +704,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context) {
+    public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
+        String networkTapName, NetworkTapPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkTapName, body, context).getSyncPoller();
     }
 
@@ -857,8 +724,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkTapInner> updateAsync(String resourceGroupName, String networkTapName, NetworkTapPatch body) {
-        return beginUpdateAsync(resourceGroupName, networkTapName, body)
-            .last()
+        return beginUpdateAsync(resourceGroupName, networkTapName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -877,10 +743,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapInner> updateAsync(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkTapName, body, context)
-            .last()
+    private Mono<NetworkTapInner> updateAsync(String resourceGroupName, String networkTapName, NetworkTapPatch body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, networkTapName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -917,8 +782,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the Network Tap resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkTapInner update(
-        String resourceGroupName, String networkTapName, NetworkTapPatch body, Context context) {
+    public NetworkTapInner update(String resourceGroupName, String networkTapName, NetworkTapPatch body,
+        Context context) {
         return updateAsync(resourceGroupName, networkTapName, body, context).block();
     }
 
@@ -937,16 +802,12 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkTapName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -957,17 +818,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -985,19 +837,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkTapName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkTapName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1008,15 +856,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapName, accept, context);
     }
 
     /**
@@ -1034,10 +875,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkTapName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkTapName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1054,13 +893,12 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkTapName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkTapName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkTapName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1094,8 +932,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkTapName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkTapName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkTapName, context).getSyncPoller();
     }
 
@@ -1113,8 +951,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkTapName) {
-        return beginDeleteAsync(resourceGroupName, networkTapName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkTapName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1133,8 +970,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkTapName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkTapName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkTapName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1185,16 +1021,12 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1202,25 +1034,10 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkTapInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkTapInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1237,19 +1054,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return list of NetworkTaps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkTapInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1258,22 +1071,10 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1289,8 +1090,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1308,8 +1108,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1358,37 +1157,19 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkTapInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkTapInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1406,35 +1187,20 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1448,8 +1214,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1465,8 +1231,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1513,19 +1279,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1542,17 +1304,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .updateAdministrativeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            body,
-                            accept,
-                            context))
+                context -> service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkTapName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1571,19 +1324,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1599,16 +1348,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAdministrativeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                body,
-                accept,
-                context);
+        return service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkTapName, body, accept, context);
     }
 
     /**
@@ -1625,20 +1366,16 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String networkTapName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapName, body);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, this.client.getContext());
     }
 
     /**
@@ -1656,21 +1393,17 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String networkTapName,
+            UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapName, body, context);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, context);
     }
 
     /**
@@ -1687,10 +1420,10 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapName,
+            UpdateAdministrativeState body) {
         return this.beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body).getSyncPoller();
     }
 
@@ -1709,12 +1442,11 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
-        return this
-            .beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body, context)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapName, UpdateAdministrativeState body,
+            Context context) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body, context)
             .getSyncPoller();
     }
 
@@ -1732,10 +1464,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1754,10 +1485,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body, context)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1775,8 +1505,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body) {
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body) {
         return updateAdministrativeStateAsync(resourceGroupName, networkTapName, body).block();
     }
 
@@ -1795,8 +1525,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context) {
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapName, UpdateAdministrativeState body, Context context) {
         return updateAdministrativeStateAsync(resourceGroupName, networkTapName, body, context).block();
     }
 
@@ -1816,16 +1546,12 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String networkTapName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1836,17 +1562,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resync(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapName,
-                            accept,
-                            context))
+            .withContext(context -> service.resync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1865,19 +1582,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(
-        String resourceGroupName, String networkTapName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String networkTapName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1888,15 +1601,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resync(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapName,
-                accept,
-                context);
+        return service.resync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapName, accept, context);
     }
 
     /**
@@ -1912,18 +1618,14 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResyncAsync(String resourceGroupName, String networkTapName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, networkTapName);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
@@ -1940,19 +1642,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResyncAsync(String resourceGroupName, String networkTapName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, networkTapName, context);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
@@ -1968,8 +1666,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResync(String resourceGroupName, String networkTapName) {
         return this.beginResyncAsync(resourceGroupName, networkTapName).getSyncPoller();
     }
@@ -1988,8 +1686,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResync(String resourceGroupName, String networkTapName, Context context) {
         return this.beginResyncAsync(resourceGroupName, networkTapName, context).getSyncPoller();
     }
@@ -2007,10 +1705,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
-        String resourceGroupName, String networkTapName) {
-        return beginResyncAsync(resourceGroupName, networkTapName)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(String resourceGroupName,
+        String networkTapName) {
+        return beginResyncAsync(resourceGroupName, networkTapName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2028,10 +1725,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
-        String resourceGroupName, String networkTapName, Context context) {
-        return beginResyncAsync(resourceGroupName, networkTapName, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(String resourceGroupName,
+        String networkTapName, Context context) {
+        return beginResyncAsync(resourceGroupName, networkTapName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2066,8 +1762,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String networkTapName, Context context) {
+    public CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String networkTapName,
+        Context context) {
         return resyncAsync(resourceGroupName, networkTapName, context).block();
     }
 
@@ -2087,24 +1783,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkTapInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkTapInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2120,30 +1807,20 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return list of NetworkTaps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkTapInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2162,24 +1839,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkTapInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkTapInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2195,29 +1863,19 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      * @return list of NetworkTaps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkTapInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -168,11 +168,8 @@ public interface NetworkDevice {
     NetworkDeviceInner innerModel();
 
     /** The entirety of the NetworkDevice definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The NetworkDevice definition stages. */
@@ -215,12 +212,8 @@ public interface NetworkDevice {
          * The stage of the NetworkDevice definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithNetworkDeviceSku,
-                DefinitionStages.WithHostname,
-                DefinitionStages.WithSerialNumber,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNetworkDeviceSku,
+            DefinitionStages.WithHostname, DefinitionStages.WithSerialNumber, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -303,11 +296,8 @@ public interface NetworkDevice {
     NetworkDevice.Update update();
 
     /** The template for NetworkDevice update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithHostname,
-            UpdateStages.WithSerialNumber,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithHostname, UpdateStages.WithSerialNumber,
+        UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -464,8 +454,8 @@ public interface NetworkDevice {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateDeviceAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateDeviceAdministrativeState body,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.

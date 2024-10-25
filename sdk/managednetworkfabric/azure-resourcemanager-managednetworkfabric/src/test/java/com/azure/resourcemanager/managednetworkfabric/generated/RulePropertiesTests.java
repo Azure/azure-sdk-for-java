@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuleProperties model =
-            BinaryData
-                .fromString("{\"action\":\"Deny\",\"addressList\":[\"f\",\"jkpdxphlkksnm\",\"zvyfijdkzuqnwsi\"]}")
-                .toObject(RuleProperties.class);
+        RuleProperties model = BinaryData
+            .fromString("{\"action\":\"Deny\",\"addressList\":[\"f\",\"jkpdxphlkksnm\",\"zvyfijdkzuqnwsi\"]}")
+            .toObject(RuleProperties.class);
         Assertions.assertEquals(Action.DENY, model.action());
         Assertions.assertEquals("f", model.addressList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleProperties model =
-            new RuleProperties()
-                .withAction(Action.DENY)
-                .withAddressList(Arrays.asList("f", "jkpdxphlkksnm", "zvyfijdkzuqnwsi"));
+        RuleProperties model = new RuleProperties().withAction(Action.DENY)
+            .withAddressList(Arrays.asList("f", "jkpdxphlkksnm", "zvyfijdkzuqnwsi"));
         model = BinaryData.fromObject(model).toObject(RuleProperties.class);
         Assertions.assertEquals(Action.DENY, model.action());
         Assertions.assertEquals("f", model.addressList().get(0));

@@ -40,8 +40,8 @@ public interface QuotasClient {
      * @return the result of update workspace quota.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(
-        String location, QuotaUpdateParameters parameters, Context context);
+    Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(String location, QuotaUpdateParameters parameters,
+        Context context);
 
     /**
      * Gets the currently assigned Workspace Quotas based on VMFamily.

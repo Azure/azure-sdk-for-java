@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JpgLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JpgLayer model =
-            BinaryData
-                .fromString(
-                    "{\"quality\":1880007503,\"width\":\"cbtgnhnz\",\"height\":\"qxtjjfzqlqhyca\",\"label\":\"dggxdbeesmi\"}")
-                .toObject(JpgLayer.class);
+        JpgLayer model = BinaryData.fromString(
+            "{\"quality\":1880007503,\"width\":\"cbtgnhnz\",\"height\":\"qxtjjfzqlqhyca\",\"label\":\"dggxdbeesmi\"}")
+            .toObject(JpgLayer.class);
         Assertions.assertEquals("cbtgnhnz", model.width());
         Assertions.assertEquals("qxtjjfzqlqhyca", model.height());
         Assertions.assertEquals("dggxdbeesmi", model.label());
@@ -24,12 +22,10 @@ public final class JpgLayerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JpgLayer model =
-            new JpgLayer()
-                .withWidth("cbtgnhnz")
-                .withHeight("qxtjjfzqlqhyca")
-                .withLabel("dggxdbeesmi")
-                .withQuality(1880007503);
+        JpgLayer model = new JpgLayer().withWidth("cbtgnhnz")
+            .withHeight("qxtjjfzqlqhyca")
+            .withLabel("dggxdbeesmi")
+            .withQuality(1880007503);
         model = BinaryData.fromObject(model).toObject(JpgLayer.class);
         Assertions.assertEquals("cbtgnhnz", model.width());
         Assertions.assertEquals("qxtjjfzqlqhyca", model.height());

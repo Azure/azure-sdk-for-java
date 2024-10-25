@@ -100,14 +100,12 @@ public final class ApplicationPackageContact {
      */
     public void validate() {
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property email in model ApplicationPackageContact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property email in model ApplicationPackageContact"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ApplicationPackageContact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property phone in model ApplicationPackageContact"));
         }
     }
 

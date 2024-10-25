@@ -41,7 +41,8 @@ public final class SapDiscoverySitesDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        MigrationDiscoverySapManager manager = MigrationDiscoverySapManager.configure().withHttpClient(httpClient)
+        MigrationDiscoverySapManager manager = MigrationDiscoverySapManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 

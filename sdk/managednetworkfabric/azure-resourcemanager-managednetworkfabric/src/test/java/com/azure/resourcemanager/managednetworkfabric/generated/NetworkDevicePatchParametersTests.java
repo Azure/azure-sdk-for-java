@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkDevicePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkDevicePatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"hostName\":\"awkikcdgfh\",\"serialNumber\":\"sd\",\"annotation\":\"ey\"},\"tags\":{\"gxsur\":\"dedecfiwh\",\"bgullc\":\"jqrshz\"}}")
-                .toObject(NetworkDevicePatchParameters.class);
+        NetworkDevicePatchParameters model = BinaryData.fromString(
+            "{\"properties\":{\"hostName\":\"awkikcdgfh\",\"serialNumber\":\"sd\",\"annotation\":\"ey\"},\"tags\":{\"gxsur\":\"dedecfiwh\",\"bgullc\":\"jqrshz\"}}")
+            .toObject(NetworkDevicePatchParameters.class);
         Assertions.assertEquals("dedecfiwh", model.tags().get("gxsur"));
         Assertions.assertEquals("awkikcdgfh", model.hostname());
         Assertions.assertEquals("sd", model.serialNumber());
@@ -26,9 +24,8 @@ public final class NetworkDevicePatchParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDevicePatchParameters model =
-            new NetworkDevicePatchParameters()
-                .withTags(mapOf("gxsur", "dedecfiwh", "bgullc", "jqrshz"))
+        NetworkDevicePatchParameters model
+            = new NetworkDevicePatchParameters().withTags(mapOf("gxsur", "dedecfiwh", "bgullc", "jqrshz"))
                 .withHostname("awkikcdgfh")
                 .withSerialNumber("sd")
                 .withAnnotation("ey");

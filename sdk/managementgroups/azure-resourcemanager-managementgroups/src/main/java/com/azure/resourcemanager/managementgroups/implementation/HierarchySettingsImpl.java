@@ -12,8 +12,7 @@ public final class HierarchySettingsImpl implements HierarchySettings {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    HierarchySettingsImpl(
-        HierarchySettingsInner innerObject,
+    HierarchySettingsImpl(HierarchySettingsInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

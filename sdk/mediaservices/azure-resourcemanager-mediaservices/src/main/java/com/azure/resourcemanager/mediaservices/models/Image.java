@@ -21,8 +21,7 @@ import java.time.Duration;
 @JsonTypeName("#Microsoft.Media.Image")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JpgImage", value = JpgImage.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.PngImage", value = PngImage.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.PngImage", value = PngImage.class) })
 @Fluent
 public class Image extends Video {
     /*

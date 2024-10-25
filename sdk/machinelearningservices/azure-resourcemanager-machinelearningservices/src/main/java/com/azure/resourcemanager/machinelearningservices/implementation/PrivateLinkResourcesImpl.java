@@ -15,22 +15,22 @@ import com.azure.resourcemanager.machinelearningservices.models.PrivateLinkResou
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PrivateLinkResourceListResult listByWorkspace(String resourceGroupName, String workspaceName) {
-        PrivateLinkResourceListResultInner inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        PrivateLinkResourceListResultInner inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         if (inner != null) {
             return new PrivateLinkResourceListResultImpl(inner, this.manager());
         } else {
@@ -38,15 +38,12 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public Response<PrivateLinkResourceListResult> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<PrivateLinkResourceListResultInner> inner =
-            this.serviceClient().listByWorkspaceWithResponse(resourceGroupName, workspaceName, context);
+    public Response<PrivateLinkResourceListResult> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
+        Response<PrivateLinkResourceListResultInner> inner
+            = this.serviceClient().listByWorkspaceWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

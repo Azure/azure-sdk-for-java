@@ -30,8 +30,8 @@ public interface IpPrefixesClient {
      * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
-        String resourceGroupName, String ipPrefixName, IpPrefixInner body);
+    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(String resourceGroupName, String ipPrefixName,
+        IpPrefixInner body);
 
     /**
      * Create an IP Prefix.
@@ -48,8 +48,8 @@ public interface IpPrefixesClient {
      * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
-        String resourceGroupName, String ipPrefixName, IpPrefixInner body, Context context);
+    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(String resourceGroupName, String ipPrefixName,
+        IpPrefixInner body, Context context);
 
     /**
      * Create an IP Prefix.
@@ -98,8 +98,8 @@ public interface IpPrefixesClient {
      * @return the IP Prefix resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpPrefixInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipPrefixName, Context context);
+    Response<IpPrefixInner> getByResourceGroupWithResponse(String resourceGroupName, String ipPrefixName,
+        Context context);
 
     /**
      * Gets an IP Prefix.
@@ -130,8 +130,8 @@ public interface IpPrefixesClient {
      * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
-        String resourceGroupName, String ipPrefixName, IpPrefixPatch body);
+    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(String resourceGroupName, String ipPrefixName,
+        IpPrefixPatch body);
 
     /**
      * Updates the IP Prefix.
@@ -148,8 +148,8 @@ public interface IpPrefixesClient {
      * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
-        String resourceGroupName, String ipPrefixName, IpPrefixPatch body, Context context);
+    SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(String resourceGroupName, String ipPrefixName,
+        IpPrefixPatch body, Context context);
 
     /**
      * Updates the IP Prefix.

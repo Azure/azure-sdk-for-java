@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InternalNetworkPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternalNetworkPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":1826528390,\"connectedIPv4Subnets\":[{\"prefix\":\"cayer\",\"annotation\":\"ransyby\"},{\"prefix\":\"polwzrghsrlei\",\"annotation\":\"fscjfn\"},{\"prefix\":\"jwvuag\",\"annotation\":\"wtltngvmreuptrk\"},{\"prefix\":\"zmijajwo\",\"annotation\":\"fsvagh\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"nwlslrcigtzjcvbx\",\"annotation\":\"a\"},{\"prefix\":\"snsso\",\"annotation\":\"xpavid\"},{\"prefix\":\"ievw\",\"annotation\":\"cvvy\"},{\"prefix\":\"zslp\",\"annotation\":\"gcbdsvalpnptw\"}],\"importRoutePolicyId\":\"kx\",\"exportRoutePolicyId\":\"azwu\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"qvn\",\"importIpv6RoutePolicyId\":\"bfe\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"diuhzzgql\",\"exportIpv6RoutePolicyId\":\"aewzgiudjp\"},\"ingressAclId\":\"qhttqhnmhkre\",\"egressAclId\":\"dsuxheqdgcrux\",\"isMonitoringEnabled\":\"False\"}")
-                .toObject(InternalNetworkPatchableProperties.class);
+        InternalNetworkPatchableProperties model = BinaryData.fromString(
+            "{\"mtu\":1826528390,\"connectedIPv4Subnets\":[{\"prefix\":\"cayer\",\"annotation\":\"ransyby\"},{\"prefix\":\"polwzrghsrlei\",\"annotation\":\"fscjfn\"},{\"prefix\":\"jwvuag\",\"annotation\":\"wtltngvmreuptrk\"},{\"prefix\":\"zmijajwo\",\"annotation\":\"fsvagh\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"nwlslrcigtzjcvbx\",\"annotation\":\"a\"},{\"prefix\":\"snsso\",\"annotation\":\"xpavid\"},{\"prefix\":\"ievw\",\"annotation\":\"cvvy\"},{\"prefix\":\"zslp\",\"annotation\":\"gcbdsvalpnptw\"}],\"importRoutePolicyId\":\"kx\",\"exportRoutePolicyId\":\"azwu\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"qvn\",\"importIpv6RoutePolicyId\":\"bfe\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"diuhzzgql\",\"exportIpv6RoutePolicyId\":\"aewzgiudjp\"},\"ingressAclId\":\"qhttqhnmhkre\",\"egressAclId\":\"dsuxheqdgcrux\",\"isMonitoringEnabled\":\"False\"}")
+            .toObject(InternalNetworkPatchableProperties.class);
         Assertions.assertEquals(1826528390, model.mtu());
         Assertions.assertEquals("ransyby", model.connectedIPv4Subnets().get(0).annotation());
         Assertions.assertEquals("cayer", model.connectedIPv4Subnets().get(0).prefix());
@@ -39,34 +37,25 @@ public final class InternalNetworkPatchablePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternalNetworkPatchableProperties model =
-            new InternalNetworkPatchableProperties()
-                .withMtu(1826528390)
-                .withConnectedIPv4Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("ransyby").withPrefix("cayer"),
-                            new ConnectedSubnet().withAnnotation("fscjfn").withPrefix("polwzrghsrlei"),
-                            new ConnectedSubnet().withAnnotation("wtltngvmreuptrk").withPrefix("jwvuag"),
-                            new ConnectedSubnet().withAnnotation("fsvagh").withPrefix("zmijajwo")))
-                .withConnectedIPv6Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("a").withPrefix("nwlslrcigtzjcvbx"),
-                            new ConnectedSubnet().withAnnotation("xpavid").withPrefix("snsso"),
-                            new ConnectedSubnet().withAnnotation("cvvy").withPrefix("ievw"),
-                            new ConnectedSubnet().withAnnotation("gcbdsvalpnptw").withPrefix("zslp")))
-                .withImportRoutePolicyId("kx")
-                .withExportRoutePolicyId("azwu")
-                .withImportRoutePolicy(
-                    new ImportRoutePolicy().withImportIpv4RoutePolicyId("qvn").withImportIpv6RoutePolicyId("bfe"))
-                .withExportRoutePolicy(
-                    new ExportRoutePolicy()
-                        .withExportIpv4RoutePolicyId("diuhzzgql")
-                        .withExportIpv6RoutePolicyId("aewzgiudjp"))
-                .withIngressAclId("qhttqhnmhkre")
-                .withEgressAclId("dsuxheqdgcrux")
-                .withIsMonitoringEnabled(IsMonitoringEnabled.FALSE);
+        InternalNetworkPatchableProperties model = new InternalNetworkPatchableProperties().withMtu(1826528390)
+            .withConnectedIPv4Subnets(Arrays.asList(new ConnectedSubnet().withAnnotation("ransyby").withPrefix("cayer"),
+                new ConnectedSubnet().withAnnotation("fscjfn").withPrefix("polwzrghsrlei"),
+                new ConnectedSubnet().withAnnotation("wtltngvmreuptrk").withPrefix("jwvuag"),
+                new ConnectedSubnet().withAnnotation("fsvagh").withPrefix("zmijajwo")))
+            .withConnectedIPv6Subnets(
+                Arrays.asList(new ConnectedSubnet().withAnnotation("a").withPrefix("nwlslrcigtzjcvbx"),
+                    new ConnectedSubnet().withAnnotation("xpavid").withPrefix("snsso"),
+                    new ConnectedSubnet().withAnnotation("cvvy").withPrefix("ievw"),
+                    new ConnectedSubnet().withAnnotation("gcbdsvalpnptw").withPrefix("zslp")))
+            .withImportRoutePolicyId("kx")
+            .withExportRoutePolicyId("azwu")
+            .withImportRoutePolicy(
+                new ImportRoutePolicy().withImportIpv4RoutePolicyId("qvn").withImportIpv6RoutePolicyId("bfe"))
+            .withExportRoutePolicy(new ExportRoutePolicy().withExportIpv4RoutePolicyId("diuhzzgql")
+                .withExportIpv6RoutePolicyId("aewzgiudjp"))
+            .withIngressAclId("qhttqhnmhkre")
+            .withEgressAclId("dsuxheqdgcrux")
+            .withIsMonitoringEnabled(IsMonitoringEnabled.FALSE);
         model = BinaryData.fromObject(model).toObject(InternalNetworkPatchableProperties.class);
         Assertions.assertEquals(1826528390, model.mtu());
         Assertions.assertEquals("ransyby", model.connectedIPv4Subnets().get(0).annotation());

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobInputAssetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobInputAsset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputAsset\",\"assetName\":\"feycxcktp\",\"files\":[\"erteeammxqiekk\",\"zddrt\",\"g\",\"ojbmxv\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"fdeesvecuijpxtx\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
-                .toObject(JobInputAsset.class);
+        JobInputAsset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.JobInputAsset\",\"assetName\":\"feycxcktp\",\"files\":[\"erteeammxqiekk\",\"zddrt\",\"g\",\"ojbmxv\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"fdeesvecuijpxtx\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
+            .toObject(JobInputAsset.class);
         Assertions.assertEquals("erteeammxqiekk", model.files().get(0));
         Assertions.assertEquals("fdeesvecuijpxtx", model.label());
         Assertions.assertEquals("feycxcktp", model.assetName());
@@ -26,18 +24,13 @@ public final class JobInputAssetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobInputAsset model =
-            new JobInputAsset()
-                .withFiles(Arrays.asList("erteeammxqiekk", "zddrt", "g", "ojbmxv"))
-                .withStart(new ClipTime())
-                .withEnd(new ClipTime())
-                .withLabel("fdeesvecuijpxtx")
-                .withInputDefinitions(
-                    Arrays
-                        .asList(
-                            new InputDefinition().withIncludedTracks(Arrays.asList()),
-                            new InputDefinition().withIncludedTracks(Arrays.asList())))
-                .withAssetName("feycxcktp");
+        JobInputAsset model = new JobInputAsset().withFiles(Arrays.asList("erteeammxqiekk", "zddrt", "g", "ojbmxv"))
+            .withStart(new ClipTime())
+            .withEnd(new ClipTime())
+            .withLabel("fdeesvecuijpxtx")
+            .withInputDefinitions(Arrays.asList(new InputDefinition().withIncludedTracks(Arrays.asList()),
+                new InputDefinition().withIncludedTracks(Arrays.asList())))
+            .withAssetName("feycxcktp");
         model = BinaryData.fromObject(model).toObject(JobInputAsset.class);
         Assertions.assertEquals("erteeammxqiekk", model.files().get(0));
         Assertions.assertEquals("fdeesvecuijpxtx", model.label());

@@ -19,24 +19,24 @@ public final class ReverseSearchAddressBatchItem implements JsonSerializable<Rev
     private ReverseSearchAddressResult result;
 
     static {
-        ReverseSearchAddressBatchItemPropertiesHelper.setAccessor(
-                new ReverseSearchAddressBatchItemPropertiesHelper.ReverseSearchAddressBatchItemAccessor() {
-                    @Override
-                    public void setErrorDetail(ReverseSearchAddressBatchItem item, ResponseError detail) {
-                        item.setErrorDetail(detail);
-                    }
+        ReverseSearchAddressBatchItemPropertiesHelper
+            .setAccessor(new ReverseSearchAddressBatchItemPropertiesHelper.ReverseSearchAddressBatchItemAccessor() {
+                @Override
+                public void setErrorDetail(ReverseSearchAddressBatchItem item, ResponseError detail) {
+                    item.setErrorDetail(detail);
+                }
 
-                    @Override
-                    public void setReverseSearchAddressResult(ReverseSearchAddressBatchItem item,
-                        ReverseSearchAddressResult result) {
-                        item.setReverseSearchAddressResult(result);
-                    }
+                @Override
+                public void setReverseSearchAddressResult(ReverseSearchAddressBatchItem item,
+                    ReverseSearchAddressResult result) {
+                    item.setReverseSearchAddressResult(result);
+                }
 
-                    @Override
-                    public void setStatusCode(ReverseSearchAddressBatchItem item, Integer statusCode) {
-                        item.setStatusCode(statusCode);
-                    }
-                });
+                @Override
+                public void setStatusCode(ReverseSearchAddressBatchItem item, Integer statusCode) {
+                    item.setStatusCode(statusCode);
+                }
+            });
     }
 
     /**

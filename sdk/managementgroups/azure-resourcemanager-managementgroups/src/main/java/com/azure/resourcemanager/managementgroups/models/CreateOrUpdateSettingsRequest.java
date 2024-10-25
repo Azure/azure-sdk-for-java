@@ -53,8 +53,8 @@ public final class CreateOrUpdateSettingsRequest {
      * @param requireAuthorizationForGroupCreation the requireAuthorizationForGroupCreation value to set.
      * @return the CreateOrUpdateSettingsRequest object itself.
      */
-    public CreateOrUpdateSettingsRequest withRequireAuthorizationForGroupCreation(
-        Boolean requireAuthorizationForGroupCreation) {
+    public CreateOrUpdateSettingsRequest
+        withRequireAuthorizationForGroupCreation(Boolean requireAuthorizationForGroupCreation) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CreateOrUpdateSettingsProperties();
         }

@@ -127,10 +127,8 @@ public final class NetworkInterfaceInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkInterfaceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkInterfaceInner"));
         } else {
             innerProperties().validate();
         }

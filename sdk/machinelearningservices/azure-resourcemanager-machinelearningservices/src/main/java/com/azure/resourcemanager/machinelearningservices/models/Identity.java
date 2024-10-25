@@ -13,7 +13,8 @@ import java.util.Map;
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
      * The principal ID of resource identity.
@@ -104,14 +105,11 @@ public class Identity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

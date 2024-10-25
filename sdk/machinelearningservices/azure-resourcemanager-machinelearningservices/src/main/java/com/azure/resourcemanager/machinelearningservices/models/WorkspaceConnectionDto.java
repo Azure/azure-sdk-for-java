@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class WorkspaceConnectionDto {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceConnectionDto.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceConnectionDto.class);
 
     /*
      * Friendly name of the workspace connection

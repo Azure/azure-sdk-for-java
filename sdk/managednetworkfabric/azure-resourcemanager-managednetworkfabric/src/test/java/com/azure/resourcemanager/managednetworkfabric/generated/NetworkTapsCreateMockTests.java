@@ -38,85 +38,59 @@ public final class NetworkTapsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"networkPacketBrokerId\":\"yq\",\"sourceTapRuleId\":\"aqjhokhijghpv\",\"destinations\":[{\"name\":\"x\",\"destinationType\":\"Direct\",\"destinationId\":\"atbwya\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"blh\",\"fqw\"]},\"destinationTapRuleId\":\"nxtpzdgyilwu\"},{\"name\":\"l\",\"destinationType\":\"Direct\",\"destinationId\":\"bxo\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"lgjfhviahokea\",\"madyoctmdauoscc\"]},\"destinationTapRuleId\":\"bestntoeteufg\"}],\"pollingType\":\"Push\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"annotation\":\"frfugthcdbzoxhoi\"},\"location\":\"pbogpbwefox\",\"tags\":{\"mzupqkrqeqjtzawe\":\"ijpkbr\",\"djixkepla\":\"rvgit\",\"yqvmhtyafcv\":\"ohnizvvekpq\",\"ooqekzxqrzsng\":\"osovxm\"},\"id\":\"tlbsnlfplxjrhkwh\",\"name\":\"orhwuujymyjvkoy\",\"type\":\"gtou\"}";
+        String responseStr
+            = "{\"properties\":{\"networkPacketBrokerId\":\"yq\",\"sourceTapRuleId\":\"aqjhokhijghpv\",\"destinations\":[{\"name\":\"x\",\"destinationType\":\"Direct\",\"destinationId\":\"atbwya\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"blh\",\"fqw\"]},\"destinationTapRuleId\":\"nxtpzdgyilwu\"},{\"name\":\"l\",\"destinationType\":\"Direct\",\"destinationId\":\"bxo\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"lgjfhviahokea\",\"madyoctmdauoscc\"]},\"destinationTapRuleId\":\"bestntoeteufg\"}],\"pollingType\":\"Push\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"annotation\":\"frfugthcdbzoxhoi\"},\"location\":\"pbogpbwefox\",\"tags\":{\"mzupqkrqeqjtzawe\":\"ijpkbr\",\"djixkepla\":\"rvgit\",\"yqvmhtyafcv\":\"ohnizvvekpq\",\"ooqekzxqrzsng\":\"osovxm\"},\"id\":\"tlbsnlfplxjrhkwh\",\"name\":\"orhwuujymyjvkoy\",\"type\":\"gtou\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkTap response =
-            manager
-                .networkTaps()
-                .define("ncxje")
-                .withRegion("wcpqkpgbssjq")
-                .withExistingResourceGroup("y")
-                .withNetworkPacketBrokerId("mawxrg")
-                .withDestinations(
-                    Arrays
-                        .asList(
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("kxzcvuttyihpsr")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("ojwjanzolqqp")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(Arrays.asList("ojupqlu", "xkzdnotg")))
-                                .withDestinationTapRuleId("wisqfif"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("tqvypki")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("ezbceimscoty")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(Arrays.asList("wqmraih")))
-                                .withDestinationTapRuleId("cjvzlgclia"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("wxvihyi")
-                                .withDestinationType(DestinationType.DIRECT)
-                                .withDestinationId("xex")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.GRE)
-                                        .withNeighborGroupIds(Arrays.asList("ymgkirfzvtzrq", "ilipmuu")))
-                                .withDestinationTapRuleId("ekzspufhwpkpejf"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("wrq")
-                                .withDestinationType(DestinationType.DIRECT)
-                                .withDestinationId("rsm")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(Arrays.asList("fajptjhwr", "wrakappafj")))
-                                .withDestinationTapRuleId("ccqjaefrzqwyt")))
-                .withTags(mapOf("pbko", "cvdzytsd", "p", "pujcr", "wyppnularnuppr", "jzbuvmfsfruenqfn"))
-                .withPollingType(PollingType.PUSH)
-                .withAnnotation("jchz")
-                .create();
+        NetworkTap response = manager.networkTaps()
+            .define("ncxje")
+            .withRegion("wcpqkpgbssjq")
+            .withExistingResourceGroup("y")
+            .withNetworkPacketBrokerId("mawxrg")
+            .withDestinations(Arrays.asList(
+                new NetworkTapPropertiesDestinationsItem().withName("kxzcvuttyihpsr")
+                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                    .withDestinationId("ojwjanzolqqp")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("ojupqlu", "xkzdnotg")))
+                    .withDestinationTapRuleId("wisqfif"),
+                new NetworkTapPropertiesDestinationsItem().withName("tqvypki")
+                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                    .withDestinationId("ezbceimscoty")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("wqmraih")))
+                    .withDestinationTapRuleId("cjvzlgclia"),
+                new NetworkTapPropertiesDestinationsItem().withName("wxvihyi")
+                    .withDestinationType(DestinationType.DIRECT)
+                    .withDestinationId("xex")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("ymgkirfzvtzrq", "ilipmuu")))
+                    .withDestinationTapRuleId("ekzspufhwpkpejf"),
+                new NetworkTapPropertiesDestinationsItem().withName("wrq")
+                    .withDestinationType(DestinationType.DIRECT)
+                    .withDestinationId("rsm")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("fajptjhwr", "wrakappafj")))
+                    .withDestinationTapRuleId("ccqjaefrzqwyt")))
+            .withTags(mapOf("pbko", "cvdzytsd", "p", "pujcr", "wyppnularnuppr", "jzbuvmfsfruenqfn"))
+            .withPollingType(PollingType.PUSH)
+            .withAnnotation("jchz")
+            .create();
 
         Assertions.assertEquals("pbogpbwefox", response.location());
         Assertions.assertEquals("ijpkbr", response.tags().get("mzupqkrqeqjtzawe"));
@@ -124,11 +98,10 @@ public final class NetworkTapsCreateMockTests {
         Assertions.assertEquals("x", response.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.DIRECT, response.destinations().get(0).destinationType());
         Assertions.assertEquals("atbwya", response.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(
-                Encapsulation.NONE, response.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals("blh", response.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.NONE,
+            response.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("blh",
+            response.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
         Assertions.assertEquals("nxtpzdgyilwu", response.destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PUSH, response.pollingType());
         Assertions.assertEquals("frfugthcdbzoxhoi", response.annotation());

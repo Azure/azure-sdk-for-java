@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPacketBrokerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPacketBrokerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkFabricId\":\"ujqbbgsimwejl\",\"networkDeviceIds\":[\"bpjzobdwbcpraswk\",\"hydt\",\"aczkf\",\"fatgawphnski\"],\"sourceInterfaceIds\":[\"gtqcumecsaaqgoq\",\"diuycsbskowkrbhz\"],\"networkTapIds\":[\"k\",\"tmqowiuasfgqg\",\"cyhfaimqvdru\"],\"neighborGroupIds\":[\"gyfpeoehgfmqmsk\",\"ixvlz\",\"xplhpeva\",\"yntvzjyielbq\"],\"provisioningState\":\"Deleting\"}")
-                .toObject(NetworkPacketBrokerProperties.class);
+        NetworkPacketBrokerProperties model = BinaryData.fromString(
+            "{\"networkFabricId\":\"ujqbbgsimwejl\",\"networkDeviceIds\":[\"bpjzobdwbcpraswk\",\"hydt\",\"aczkf\",\"fatgawphnski\"],\"sourceInterfaceIds\":[\"gtqcumecsaaqgoq\",\"diuycsbskowkrbhz\"],\"networkTapIds\":[\"k\",\"tmqowiuasfgqg\",\"cyhfaimqvdru\"],\"neighborGroupIds\":[\"gyfpeoehgfmqmsk\",\"ixvlz\",\"xplhpeva\",\"yntvzjyielbq\"],\"provisioningState\":\"Deleting\"}")
+            .toObject(NetworkPacketBrokerProperties.class);
         Assertions.assertEquals("ujqbbgsimwejl", model.networkFabricId());
     }
 

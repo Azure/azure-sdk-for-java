@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The DataLakeAnalyticsProperties model. */
 @Fluent
 public final class DataLakeAnalyticsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsProperties.class);
 
     /*
      * DataLake Store Account Name

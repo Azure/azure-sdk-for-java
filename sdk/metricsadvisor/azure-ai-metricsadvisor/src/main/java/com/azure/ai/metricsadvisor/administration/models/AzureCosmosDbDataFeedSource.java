@@ -32,13 +32,12 @@ public final class AzureCosmosDbDataFeedSource extends DataFeedSource {
     private final String collectionId;
 
     static {
-        AzureCosmosDbDataFeedSourceAccessor.setAccessor(
-            new AzureCosmosDbDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getConnectionString(AzureCosmosDbDataFeedSource feedSource) {
-                    return feedSource.getConnectionString();
-                }
-            });
+        AzureCosmosDbDataFeedSourceAccessor.setAccessor(new AzureCosmosDbDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getConnectionString(AzureCosmosDbDataFeedSource feedSource) {
+                return feedSource.getConnectionString();
+            }
+        });
     }
 
     /**
@@ -49,10 +48,8 @@ public final class AzureCosmosDbDataFeedSource extends DataFeedSource {
      * @param database the database name.
      * @param collectionId the collection Id value.
      */
-    public AzureCosmosDbDataFeedSource(final String connectionString,
-                                       final String sqlQuery,
-                                       final String database,
-                                       final String collectionId) {
+    public AzureCosmosDbDataFeedSource(final String connectionString, final String sqlQuery, final String database,
+        final String collectionId) {
         this.connectionString = connectionString;
         this.sqlQuery = sqlQuery;
         this.database = database;
@@ -68,7 +65,6 @@ public final class AzureCosmosDbDataFeedSource extends DataFeedSource {
         return this.sqlQuery;
     }
 
-
     /**
      * Get the database property: Database name.
      *
@@ -77,7 +73,6 @@ public final class AzureCosmosDbDataFeedSource extends DataFeedSource {
     public String getDatabase() {
         return this.database;
     }
-
 
     /**
      * Get the collectionId property: Collection id.

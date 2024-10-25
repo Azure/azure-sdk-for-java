@@ -158,10 +158,8 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model L2IsolationDomainProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricId in model L2IsolationDomainProperties"));
         }
     }
 

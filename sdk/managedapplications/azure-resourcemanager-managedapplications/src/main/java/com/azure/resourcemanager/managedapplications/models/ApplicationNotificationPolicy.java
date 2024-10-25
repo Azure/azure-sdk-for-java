@@ -37,8 +37,8 @@ public final class ApplicationNotificationPolicy {
      * @param notificationEndpoints the notificationEndpoints value to set.
      * @return the ApplicationNotificationPolicy object itself.
      */
-    public ApplicationNotificationPolicy withNotificationEndpoints(
-        List<ApplicationNotificationEndpoint> notificationEndpoints) {
+    public ApplicationNotificationPolicy
+        withNotificationEndpoints(List<ApplicationNotificationEndpoint> notificationEndpoints) {
         this.notificationEndpoints = notificationEndpoints;
         return this;
     }
@@ -50,10 +50,8 @@ public final class ApplicationNotificationPolicy {
      */
     public void validate() {
         if (notificationEndpoints() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property notificationEndpoints in model ApplicationNotificationPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property notificationEndpoints in model ApplicationNotificationPolicy"));
         } else {
             notificationEndpoints().forEach(e -> e.validate());
         }

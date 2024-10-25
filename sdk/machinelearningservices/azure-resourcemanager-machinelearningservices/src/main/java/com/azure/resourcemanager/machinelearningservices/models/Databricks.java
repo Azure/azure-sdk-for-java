@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Databricks")
 @Fluent
 public final class Databricks extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Databricks.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Databricks.class);
 
     /*
      * The properties property.

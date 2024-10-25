@@ -26,8 +26,8 @@ public interface ResourceProvidersClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks if the specified management group name is valid and unique.

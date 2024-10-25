@@ -61,9 +61,8 @@ public final class AbsoluteClipTime extends ClipTime {
     public void validate() {
         super.validate();
         if (time() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property time in model AbsoluteClipTime"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property time in model AbsoluteClipTime"));
         }
     }
 

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CopyVideoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyVideo model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"vbalxlllc\"}")
+        CopyVideo model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"vbalxlllc\"}")
                 .toObject(CopyVideo.class);
         Assertions.assertEquals("vbalxlllc", model.label());
     }

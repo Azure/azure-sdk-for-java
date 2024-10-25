@@ -23,8 +23,8 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Tap resource definition along with {@link Response}.
      */
-    Response<NetworkTap> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapName, Context context);
+    Response<NetworkTap> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
+        Context context);
 
     /**
      * Gets a Network Tap.
@@ -131,8 +131,8 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String networkTapName,
+        UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap.
@@ -148,8 +148,8 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String networkTapName,
+        UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Network Tap.

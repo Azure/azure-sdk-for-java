@@ -141,16 +141,14 @@ public final class StandardEncoderPreset extends Preset {
             filters().validate();
         }
         if (codecs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property codecs in model StandardEncoderPreset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property codecs in model StandardEncoderPreset"));
         } else {
             codecs().forEach(e -> e.validate());
         }
         if (formats() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property formats in model StandardEncoderPreset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property formats in model StandardEncoderPreset"));
         } else {
             formats().forEach(e -> e.validate());
         }

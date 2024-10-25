@@ -47,8 +47,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesData(METRIC_ID,
-            Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
+        StepVerifier.create(
+            client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
                 TIME_SERIES_START_TIME, TIME_SERIES_END_TIME))
             .assertNext(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
@@ -68,8 +68,9 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null)
-            .take(LISTING_SERIES_DEFINITIONS_LIMIT))
+        StepVerifier
+            .create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null)
+                .take(LISTING_SERIES_DEFINITIONS_LIMIT))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
             .expectComplete()
@@ -81,12 +82,14 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions = new ArrayList<>();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-            new ListMetricSeriesDefinitionOptions()
-                .setDimensionCombinationToFilter(Collections.singletonMap("Dim1", Collections.singletonList("JPN")))))
+        StepVerifier
+            .create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+                new ListMetricSeriesDefinitionOptions().setDimensionCombinationToFilter(
+                    Collections.singletonMap("Dim1", Collections.singletonList("JPN")))))
             .thenConsumeWhile(actualMetricSeriesDefinitions::add)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -106,8 +109,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricEnrichmentStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
-        StepVerifier.create(
-            client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
+        StepVerifier
+            .create(client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
                 OffsetDateTime.parse("2021-10-01T00:00:00Z"), OffsetDateTime.parse("2021-10-30T00:00:00Z"),
                 ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)

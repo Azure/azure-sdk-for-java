@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A system service running on a compute. */
 @Immutable
 public final class SystemService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemService.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SystemService.class);
 
     /*
      * The type of this system service.

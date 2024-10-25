@@ -64,8 +64,8 @@ public interface StreamingEndpointsClient {
      * @return a streaming endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingEndpointInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpointInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Get StreamingEndpoint
@@ -98,8 +98,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
+    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
 
     /**
      * Create StreamingEndpoint
@@ -118,12 +118,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
+    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters, Boolean autoStart,
         Context context);
 
     /**
@@ -141,8 +137,8 @@ public interface StreamingEndpointsClient {
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointInner create(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
+    StreamingEndpointInner create(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters);
 
     /**
      * Create StreamingEndpoint
@@ -161,13 +157,8 @@ public interface StreamingEndpointsClient {
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointInner create(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Boolean autoStart,
-        Context context);
+    StreamingEndpointInner create(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters, Boolean autoStart, Context context);
 
     /**
      * Update StreamingEndpoint
@@ -184,8 +175,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
+    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
 
     /**
      * Update StreamingEndpoint
@@ -203,12 +194,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context);
+    SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(String resourceGroupName,
+        String accountName, String streamingEndpointName, StreamingEndpointInner parameters, Context context);
 
     /**
      * Update StreamingEndpoint
@@ -225,8 +212,8 @@ public interface StreamingEndpointsClient {
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointInner update(
-        String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
+    StreamingEndpointInner update(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters);
 
     /**
      * Update StreamingEndpoint
@@ -244,12 +231,8 @@ public interface StreamingEndpointsClient {
      * @return the streaming endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointInner update(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEndpointInner parameters,
-        Context context);
+    StreamingEndpointInner update(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEndpointInner parameters, Context context);
 
     /**
      * Delete StreamingEndpoint
@@ -265,8 +248,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String streamingEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String streamingEndpointName);
 
     /**
      * Delete StreamingEndpoint
@@ -283,8 +266,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Delete StreamingEndpoint
@@ -332,8 +315,8 @@ public interface StreamingEndpointsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * List StreamingEndpoint skus
@@ -349,8 +332,8 @@ public interface StreamingEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointSkuInfoListResultInner skus(
-        String resourceGroupName, String accountName, String streamingEndpointName);
+    StreamingEndpointSkuInfoListResultInner skus(String resourceGroupName, String accountName,
+        String streamingEndpointName);
 
     /**
      * Start StreamingEndpoint
@@ -366,8 +349,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String accountName, String streamingEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
+        String streamingEndpointName);
 
     /**
      * Start StreamingEndpoint
@@ -384,8 +367,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Start StreamingEndpoint
@@ -432,8 +415,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String accountName, String streamingEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
+        String streamingEndpointName);
 
     /**
      * Stop StreamingEndpoint
@@ -450,8 +433,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Stop StreamingEndpoint
@@ -499,11 +482,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters);
+    SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters);
 
     /**
      * Scale StreamingEndpoint
@@ -521,12 +501,8 @@ public interface StreamingEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String accountName,
+        String streamingEndpointName, StreamingEntityScaleUnit parameters, Context context);
 
     /**
      * Scale StreamingEndpoint
@@ -542,10 +518,7 @@ public interface StreamingEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
         StreamingEntityScaleUnit parameters);
 
     /**
@@ -563,12 +536,8 @@ public interface StreamingEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context);
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEntityScaleUnit parameters, Context context);
 
     /**
      * Get operation status.
@@ -585,8 +554,8 @@ public interface StreamingEndpointsClient {
      * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResultInner> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -620,12 +589,8 @@ public interface StreamingEndpointsClient {
      * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingEndpointInner> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        String operationId,
-        Context context);
+    Response<StreamingEndpointInner> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -642,6 +607,6 @@ public interface StreamingEndpointsClient {
      * @return a streaming endpoint operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingEndpointInner operationLocation(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId);
+    StreamingEndpointInner operationLocation(String resourceGroupName, String accountName, String streamingEndpointName,
+        String operationId);
 }

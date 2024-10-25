@@ -33,60 +33,43 @@ public final class L3IsolationDomainsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"networkFabricId\":\"leuo\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"jtoudode\"},{\"prefix\":\"wmv\"},{\"prefix\":\"sr\"},{\"prefix\":\"ciexu\"}],\"ipv6Routes\":[{\"prefix\":\"tgtg\"},{\"prefix\":\"bymmcgsksc\"},{\"prefix\":\"sxehaxi\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"jxolknshgwa\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"bhmbglmnlbnat\",\"exportIpv6RoutePolicyId\":\"chzzcdkxort\"}},\"annotation\":\"zvhbujk\"},\"location\":\"ophqwojdzccqtw\",\"tags\":{\"exr\":\"fbsdiicdzfb\"},\"id\":\"nhhmfsnqpv\",\"name\":\"tsh\",\"type\":\"wvrsksdz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"networkFabricId\":\"leuo\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"jtoudode\"},{\"prefix\":\"wmv\"},{\"prefix\":\"sr\"},{\"prefix\":\"ciexu\"}],\"ipv6Routes\":[{\"prefix\":\"tgtg\"},{\"prefix\":\"bymmcgsksc\"},{\"prefix\":\"sxehaxi\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"jxolknshgwa\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"bhmbglmnlbnat\",\"exportIpv6RoutePolicyId\":\"chzzcdkxort\"}},\"annotation\":\"zvhbujk\"},\"location\":\"ophqwojdzccqtw\",\"tags\":{\"exr\":\"fbsdiicdzfb\"},\"id\":\"nhhmfsnqpv\",\"name\":\"tsh\",\"type\":\"wvrsksdz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<L3IsolationDomain> response = manager.l3IsolationDomains().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ophqwojdzccqtw", response.iterator().next().location());
         Assertions.assertEquals("fbsdiicdzfb", response.iterator().next().tags().get("exr"));
         Assertions.assertEquals("leuo", response.iterator().next().networkFabricId());
-        Assertions
-            .assertEquals(
-                RedistributeConnectedSubnets.FALSE, response.iterator().next().redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeConnectedSubnets.FALSE,
+            response.iterator().next().redistributeConnectedSubnets());
         Assertions.assertEquals(RedistributeStaticRoutes.TRUE, response.iterator().next().redistributeStaticRoutes());
-        Assertions
-            .assertEquals(
-                "jtoudode", response.iterator().next().aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions
-            .assertEquals(
-                "tgtg", response.iterator().next().aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions
-            .assertEquals("jxolknshgwa", response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions
-            .assertEquals(
-                "bhmbglmnlbnat",
-                response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions
-            .assertEquals(
-                "chzzcdkxort",
-                response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("jtoudode",
+            response.iterator().next().aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("tgtg",
+            response.iterator().next().aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("jxolknshgwa",
+            response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions.assertEquals("bhmbglmnlbnat",
+            response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("chzzcdkxort",
+            response.iterator().next().connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
         Assertions.assertEquals("zvhbujk", response.iterator().next().annotation());
     }
 }

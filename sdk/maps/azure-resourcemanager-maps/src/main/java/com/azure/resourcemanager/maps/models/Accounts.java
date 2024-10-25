@@ -120,8 +120,8 @@ public interface Accounts {
      * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
      *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
      */
-    Response<MapsAccountSasToken> listSasWithResponse(
-        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters, Context context);
+    Response<MapsAccountSasToken> listSasWithResponse(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters, Context context);
 
     /**
      * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
@@ -140,8 +140,8 @@ public interface Accounts {
      * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
      *     identity permissions on Azure (IAM) Role Based Access Control.
      */
-    MapsAccountSasToken listSas(
-        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters);
+    MapsAccountSasToken listSas(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters);
 
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
@@ -183,8 +183,8 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response}.
      */
-    Response<MapsAccountKeys> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context);
+    Response<MapsAccountKeys> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        MapsKeySpecification keySpecification, Context context);
 
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working

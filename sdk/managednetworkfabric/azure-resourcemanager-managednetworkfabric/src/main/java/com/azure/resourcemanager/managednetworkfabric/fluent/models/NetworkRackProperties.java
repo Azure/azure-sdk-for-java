@@ -117,10 +117,8 @@ public final class NetworkRackProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model NetworkRackProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricId in model NetworkRackProperties"));
         }
     }
 

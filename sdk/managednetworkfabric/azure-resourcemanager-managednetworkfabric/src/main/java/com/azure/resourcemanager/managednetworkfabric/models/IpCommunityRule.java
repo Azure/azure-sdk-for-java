@@ -133,15 +133,12 @@ public final class IpCommunityRule {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpCommunityRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model IpCommunityRule"));
         }
         if (communityMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property communityMembers in model IpCommunityRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property communityMembers in model IpCommunityRule"));
         }
     }
 

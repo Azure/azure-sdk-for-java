@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupInfoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupInfoProperties model =
-            BinaryData
-                .fromString("{\"tenantId\":\"kdtmlxhekuk\",\"displayName\":\"txukcdmp\"}")
+        ManagementGroupInfoProperties model
+            = BinaryData.fromString("{\"tenantId\":\"kdtmlxhekuk\",\"displayName\":\"txukcdmp\"}")
                 .toObject(ManagementGroupInfoProperties.class);
         Assertions.assertEquals("kdtmlxhekuk", model.tenantId());
         Assertions.assertEquals("txukcdmp", model.displayName());
@@ -21,8 +20,8 @@ public final class ManagementGroupInfoPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupInfoProperties model =
-            new ManagementGroupInfoProperties().withTenantId("kdtmlxhekuk").withDisplayName("txukcdmp");
+        ManagementGroupInfoProperties model
+            = new ManagementGroupInfoProperties().withTenantId("kdtmlxhekuk").withDisplayName("txukcdmp");
         model = BinaryData.fromObject(model).toObject(ManagementGroupInfoProperties.class);
         Assertions.assertEquals("kdtmlxhekuk", model.tenantId());
         Assertions.assertEquals("txukcdmp", model.displayName());

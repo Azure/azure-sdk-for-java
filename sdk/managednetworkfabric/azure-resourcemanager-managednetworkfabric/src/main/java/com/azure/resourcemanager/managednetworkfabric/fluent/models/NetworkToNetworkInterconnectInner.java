@@ -173,8 +173,8 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectInner object itself.
      */
-    public NetworkToNetworkInterconnectInner withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectInner
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkToNetworkInterconnectProperties();
         }
@@ -308,10 +308,8 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkToNetworkInterconnectInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkToNetworkInterconnectInner"));
         } else {
             innerProperties().validate();
         }

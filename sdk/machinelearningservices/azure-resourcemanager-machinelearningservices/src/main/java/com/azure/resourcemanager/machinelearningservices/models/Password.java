@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The Password model. */
 @Immutable
 public final class Password {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Password.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Password.class);
 
     /*
      * The name property.

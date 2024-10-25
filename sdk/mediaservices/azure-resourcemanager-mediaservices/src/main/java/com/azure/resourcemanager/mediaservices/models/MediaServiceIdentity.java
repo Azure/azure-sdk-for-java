@@ -96,8 +96,8 @@ public class MediaServiceIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the MediaServiceIdentity object itself.
      */
-    public MediaServiceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
+    public MediaServiceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -109,19 +109,15 @@ public class MediaServiceIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model MediaServiceIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model MediaServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

@@ -13,7 +13,8 @@ import java.util.List;
 /** The RegistryListCredentialsResult model. */
 @Fluent
 public final class RegistryListCredentialsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryListCredentialsResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RegistryListCredentialsResult.class);
 
     /*
      * The location property.

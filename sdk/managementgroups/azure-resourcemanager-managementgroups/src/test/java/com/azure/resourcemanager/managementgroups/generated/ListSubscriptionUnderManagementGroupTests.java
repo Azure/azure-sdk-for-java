@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ListSubscriptionUnderManagementGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListSubscriptionUnderManagementGroup model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tenant\":\"wxdndnvowgujjug\",\"displayName\":\"kcglhslaz\",\"state\":\"ggd\"},\"id\":\"jixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"},{\"properties\":{\"tenant\":\"sit\",\"displayName\":\"naamde\",\"state\":\"hfiqscjeypvhe\"},\"id\":\"rkgqhcjrefo\",\"name\":\"gm\",\"type\":\"qsl\"}],\"nextLink\":\"yvxyqjp\"}")
-                .toObject(ListSubscriptionUnderManagementGroup.class);
+        ListSubscriptionUnderManagementGroup model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tenant\":\"wxdndnvowgujjug\",\"displayName\":\"kcglhslaz\",\"state\":\"ggd\"},\"id\":\"jixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"},{\"properties\":{\"tenant\":\"sit\",\"displayName\":\"naamde\",\"state\":\"hfiqscjeypvhe\"},\"id\":\"rkgqhcjrefo\",\"name\":\"gm\",\"type\":\"qsl\"}],\"nextLink\":\"yvxyqjp\"}")
+            .toObject(ListSubscriptionUnderManagementGroup.class);
         Assertions.assertEquals("wxdndnvowgujjug", model.value().get(0).tenant());
         Assertions.assertEquals("kcglhslaz", model.value().get(0).displayName());
         Assertions.assertEquals("ggd", model.value().get(0).state());
@@ -25,19 +23,13 @@ public final class ListSubscriptionUnderManagementGroupTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListSubscriptionUnderManagementGroup model =
-            new ListSubscriptionUnderManagementGroup()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SubscriptionUnderManagementGroupInner()
-                                .withTenant("wxdndnvowgujjug")
-                                .withDisplayName("kcglhslaz")
-                                .withState("ggd"),
-                            new SubscriptionUnderManagementGroupInner()
-                                .withTenant("sit")
-                                .withDisplayName("naamde")
-                                .withState("hfiqscjeypvhe")));
+        ListSubscriptionUnderManagementGroup model = new ListSubscriptionUnderManagementGroup().withValue(Arrays.asList(
+            new SubscriptionUnderManagementGroupInner().withTenant("wxdndnvowgujjug")
+                .withDisplayName("kcglhslaz")
+                .withState("ggd"),
+            new SubscriptionUnderManagementGroupInner().withTenant("sit")
+                .withDisplayName("naamde")
+                .withState("hfiqscjeypvhe")));
         model = BinaryData.fromObject(model).toObject(ListSubscriptionUnderManagementGroup.class);
         Assertions.assertEquals("wxdndnvowgujjug", model.value().get(0).tenant());
         Assertions.assertEquals("kcglhslaz", model.value().get(0).displayName());

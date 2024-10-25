@@ -55,8 +55,8 @@ public class Utility {
      * @param response
      * @return
      */
-    public static SimpleResponse<BatchSearchResult> createBatchSearchResponse(
-            Response<SearchAddressBatchResult> response) {
+    public static SimpleResponse<BatchSearchResult>
+        createBatchSearchResponse(Response<SearchAddressBatchResult> response) {
         BatchSearchResult result = (response.getValue() == null) ? null : toBatchSearchResult(response.getValue());
 
         return new SimpleResponse<>(response, result);
@@ -67,9 +67,10 @@ public class Utility {
      * @param response
      * @return
      */
-    public static SimpleResponse<BatchReverseSearchResult> createBatchReverseSearchResponse(
-            Response<ReverseSearchAddressBatchResult> response) {
-        BatchReverseSearchResult result = (response.getValue() == null) ? null : toBatchReverseSearchResult(response.getValue());
+    public static SimpleResponse<BatchReverseSearchResult>
+        createBatchReverseSearchResponse(Response<ReverseSearchAddressBatchResult> response) {
+        BatchReverseSearchResult result
+            = (response.getValue() == null) ? null : toBatchReverseSearchResult(response.getValue());
 
         return new SimpleResponse<>(response, result);
     }
@@ -136,8 +137,8 @@ public class Utility {
         final GeoPosition topRight = stringToCoordinate(northEastString);
         final GeoPosition bottomLeft = stringToCoordinate(southWestString);
 
-        return new GeoBoundingBox(bottomLeft.getLongitude(), bottomLeft.getLatitude(),
-            topRight.getLongitude(), topRight.getLatitude());
+        return new GeoBoundingBox(bottomLeft.getLongitude(), bottomLeft.getLatitude(), topRight.getLongitude(),
+            topRight.getLatitude());
     }
 
     /**
@@ -150,8 +151,7 @@ public class Utility {
         final String[] coordinateString = s.split(",");
 
         if (coordinateString.length == 2) {
-            return new GeoPosition(Double.parseDouble(coordinateString[1]),
-                Double.parseDouble(coordinateString[0]));
+            return new GeoPosition(Double.parseDouble(coordinateString[1]), Double.parseDouble(coordinateString[0]));
         }
 
         return null;
@@ -169,15 +169,14 @@ public class Utility {
 
     public static BatchSearchResult toBatchSearchResult(SearchAddressBatchResult result) {
         BatchResultSummary summary = result.getBatchSummary();
-        List<SearchAddressBatchItem> items = result.getBatchItems().stream()
-            .map(Utility::toSearchAddressBatchItem)
-            .collect(Collectors.toList());
+        List<SearchAddressBatchItem> items
+            = result.getBatchItems().stream().map(Utility::toSearchAddressBatchItem).collect(Collectors.toList());
 
         return new BatchSearchResult(summary, items);
     }
 
-    public static ReverseSearchAddressBatchItem toReverseSearchAddressBatchItem(
-            ReverseSearchAddressBatchItemPrivate item) {
+    public static ReverseSearchAddressBatchItem
+        toReverseSearchAddressBatchItem(ReverseSearchAddressBatchItemPrivate item) {
         ReverseSearchAddressBatchItem resultItem = new ReverseSearchAddressBatchItem();
         ReverseSearchAddressBatchItemPropertiesHelper.setErrorDetail(resultItem, item.getResponse().getError());
         ReverseSearchAddressBatchItemPropertiesHelper.setStatusCode(resultItem, item.getStatusCode());
@@ -189,7 +188,8 @@ public class Utility {
 
     public static BatchReverseSearchResult toBatchReverseSearchResult(ReverseSearchAddressBatchResult result) {
         BatchResultSummary summary = result.getBatchSummary();
-        List<ReverseSearchAddressBatchItem> items = result.getBatchItems().stream()
+        List<ReverseSearchAddressBatchItem> items = result.getBatchItems()
+            .stream()
             .map(Utility::toReverseSearchAddressBatchItem)
             .collect(Collectors.toList());
 
@@ -202,7 +202,8 @@ public class Utility {
         SERIALIZER.serialize(baos, object);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonObject> typeReference = new TypeReference<GeoJsonObject>() { };
+        final TypeReference<GeoJsonObject> typeReference = new TypeReference<GeoJsonObject>() {
+        };
         return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
@@ -214,7 +215,8 @@ public class Utility {
             SERIALIZER.serialize(baos, fc.getFeatures().get(0).getGeometry());
 
             // deserialize into GeoObject
-            final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>() { };
+            final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>() {
+            };
             return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
         }
 
@@ -232,7 +234,8 @@ public class Utility {
 
         // comma separated parameters
         addQueryParameterToUrl(urlBuilder, "countrySet", listToCommaSeparatedString(options.getCountryFilter()));
-        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor", listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
+        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor",
+            listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
 
         // double parameters
         addQueryParameterToUrl(urlBuilder, "lat", options.getCoordinates().map(GeoPosition::getLatitude).orElse(null));
@@ -256,9 +259,11 @@ public class Utility {
 
         // comma separated parameters
         addQueryParameterToUrl(urlBuilder, "countrySet", listToCommaSeparatedString(options.getCountryFilter()));
-        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor", listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
+        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor",
+            listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
         addQueryParameterToUrl(urlBuilder, "idxSet", listToCommaSeparatedString(options.getIndexFilter()));
-        addQueryParameterToUrl(urlBuilder, "connectorSet", listToCommaSeparatedString(options.getElectricVehicleConnectorFilter()));
+        addQueryParameterToUrl(urlBuilder, "connectorSet",
+            listToCommaSeparatedString(options.getElectricVehicleConnectorFilter()));
         addQueryParameterToUrl(urlBuilder, "categorySet", listToCommaSeparatedString(options.getCategoryFilter()));
         addQueryParameterToUrl(urlBuilder, "brandSet", listToCommaSeparatedString(options.getBrandFilter()));
 
@@ -298,10 +303,16 @@ public class Utility {
         addQueryParameterToUrl(urlBuilder, "language", options.getLanguage());
         addQueryParameterToUrl(urlBuilder, "radius", options.getRadiusInMeters());
         addQueryParameterToUrl(urlBuilder, "view", options.getLocalizedMapView());
-        addQueryParameterToUrl(urlBuilder, "topLeft", options.getBoundingBox()
-            .map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null));
-        addQueryParameterToUrl(urlBuilder, "btmRight", options.getBoundingBox()
-            .map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null));
+        addQueryParameterToUrl(urlBuilder, "topLeft",
+            options.getBoundingBox()
+                .map(item -> new GeoPosition(item.getWest(), item.getNorth()))
+                .map(Utility::positionToString)
+                .orElse(null));
+        addQueryParameterToUrl(urlBuilder, "btmRight",
+            options.getBoundingBox()
+                .map(item -> new GeoPosition(item.getEast(), item.getSouth()))
+                .map(Utility::positionToString)
+                .orElse(null));
     }
 
     private static <T> String listToCommaSeparatedString(List<T> list) {

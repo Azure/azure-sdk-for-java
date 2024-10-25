@@ -27,8 +27,8 @@ public interface LocationsClient {
      * @return the response from the check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityInput parameters, Context context);
+    Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityInput parameters, Context context);
 
     /**
      * Check Name Availability
@@ -43,6 +43,6 @@ public interface LocationsClient {
      * @return the response from the check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EntityNameAvailabilityCheckOutputInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityInput parameters);
+    EntityNameAvailabilityCheckOutputInner checkNameAvailability(String locationName,
+        CheckNameAvailabilityInput parameters);
 }

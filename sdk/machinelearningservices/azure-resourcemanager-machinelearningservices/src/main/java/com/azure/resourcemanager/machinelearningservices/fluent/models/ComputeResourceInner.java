@@ -18,7 +18,8 @@ import java.util.Map;
 /** Machine Learning compute object wrapped into ARM resource envelope. */
 @Fluent
 public final class ComputeResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeResourceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeResourceInner.class);
 
     /*
      * Compute properties

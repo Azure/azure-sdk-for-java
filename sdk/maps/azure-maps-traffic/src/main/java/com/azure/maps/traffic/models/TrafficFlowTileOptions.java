@@ -84,7 +84,7 @@ public final class TrafficFlowTileOptions {
         this.zoom = zoom;
         return this;
     }
-    
+
     /**
      * gets tileindex
      * @return TileIndex

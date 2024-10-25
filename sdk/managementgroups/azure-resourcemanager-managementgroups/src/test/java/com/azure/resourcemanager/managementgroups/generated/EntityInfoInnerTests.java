@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"jggmebfsiarbu\",\"type\":\"cvpnazzmhjrunmpx\",\"name\":\"dbhrbnlankxm\",\"properties\":{\"tenantId\":\"pbh\",\"displayName\":\"btkcxywnytnrsyn\",\"parent\":{\"id\":\"dybyxczfclhaa\"},\"permissions\":\"edit\",\"inheritedPermissions\":\"noaccess\",\"numberOfDescendants\":393084907,\"numberOfChildren\":1346758763,\"numberOfChildGroups\":77204722,\"parentDisplayNameChain\":[\"ktsthsucocmny\"],\"parentNameChain\":[\"t\"]}}")
-                .toObject(EntityInfoInner.class);
+        EntityInfoInner model = BinaryData.fromString(
+            "{\"id\":\"jggmebfsiarbu\",\"type\":\"cvpnazzmhjrunmpx\",\"name\":\"dbhrbnlankxm\",\"properties\":{\"tenantId\":\"pbh\",\"displayName\":\"btkcxywnytnrsyn\",\"parent\":{\"id\":\"dybyxczfclhaa\"},\"permissions\":\"edit\",\"inheritedPermissions\":\"noaccess\",\"numberOfDescendants\":393084907,\"numberOfChildren\":1346758763,\"numberOfChildGroups\":77204722,\"parentDisplayNameChain\":[\"ktsthsucocmny\"],\"parentNameChain\":[\"t\"]}}")
+            .toObject(EntityInfoInner.class);
         Assertions.assertEquals("pbh", model.tenantId());
         Assertions.assertEquals("btkcxywnytnrsyn", model.displayName());
         Assertions.assertEquals("dybyxczfclhaa", model.parent().id());
@@ -33,18 +31,16 @@ public final class EntityInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityInfoInner model =
-            new EntityInfoInner()
-                .withTenantId("pbh")
-                .withDisplayName("btkcxywnytnrsyn")
-                .withParent(new EntityParentGroupInfo().withId("dybyxczfclhaa"))
-                .withPermissions(Permissions.EDIT)
-                .withInheritedPermissions(Permissions.NOACCESS)
-                .withNumberOfDescendants(393084907)
-                .withNumberOfChildren(1346758763)
-                .withNumberOfChildGroups(77204722)
-                .withParentDisplayNameChain(Arrays.asList("ktsthsucocmny"))
-                .withParentNameChain(Arrays.asList("t"));
+        EntityInfoInner model = new EntityInfoInner().withTenantId("pbh")
+            .withDisplayName("btkcxywnytnrsyn")
+            .withParent(new EntityParentGroupInfo().withId("dybyxczfclhaa"))
+            .withPermissions(Permissions.EDIT)
+            .withInheritedPermissions(Permissions.NOACCESS)
+            .withNumberOfDescendants(393084907)
+            .withNumberOfChildren(1346758763)
+            .withNumberOfChildGroups(77204722)
+            .withParentDisplayNameChain(Arrays.asList("ktsthsucocmny"))
+            .withParentNameChain(Arrays.asList("t"));
         model = BinaryData.fromObject(model).toObject(EntityInfoInner.class);
         Assertions.assertEquals("pbh", model.tenantId());
         Assertions.assertEquals("btkcxywnytnrsyn", model.displayName());

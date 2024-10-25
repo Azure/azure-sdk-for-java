@@ -49,8 +49,8 @@ public final class StreamingPolicyWidevineConfiguration {
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set.
      * @return the StreamingPolicyWidevineConfiguration object itself.
      */
-    public StreamingPolicyWidevineConfiguration withCustomLicenseAcquisitionUrlTemplate(
-        String customLicenseAcquisitionUrlTemplate) {
+    public StreamingPolicyWidevineConfiguration
+        withCustomLicenseAcquisitionUrlTemplate(String customLicenseAcquisitionUrlTemplate) {
         this.customLicenseAcquisitionUrlTemplate = customLicenseAcquisitionUrlTemplate;
         return this;
     }

@@ -23,8 +23,8 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
-    Response<L3IsolationDomain> getByResourceGroupWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    Response<L3IsolationDomain> getByResourceGroupWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Gets a L3 Isolation Domain.
@@ -131,8 +131,8 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * executes enable operation to the underlying resources.
@@ -148,8 +148,8 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -174,8 +174,8 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -204,8 +204,8 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Gets a L3 Isolation Domain.

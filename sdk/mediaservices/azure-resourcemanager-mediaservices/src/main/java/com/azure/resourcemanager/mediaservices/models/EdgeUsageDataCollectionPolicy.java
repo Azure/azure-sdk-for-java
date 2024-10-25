@@ -99,8 +99,8 @@ public final class EdgeUsageDataCollectionPolicy {
      * @param maxAllowedUnreportedUsageDuration the maxAllowedUnreportedUsageDuration value to set.
      * @return the EdgeUsageDataCollectionPolicy object itself.
      */
-    public EdgeUsageDataCollectionPolicy withMaxAllowedUnreportedUsageDuration(
-        String maxAllowedUnreportedUsageDuration) {
+    public EdgeUsageDataCollectionPolicy
+        withMaxAllowedUnreportedUsageDuration(String maxAllowedUnreportedUsageDuration) {
         this.maxAllowedUnreportedUsageDuration = maxAllowedUnreportedUsageDuration;
         return this;
     }

@@ -23,8 +23,8 @@ public interface IpCommunities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Community resource definition along with {@link Response}.
      */
-    Response<IpCommunity> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipCommunityName, Context context);
+    Response<IpCommunity> getByResourceGroupWithResponse(String resourceGroupName, String ipCommunityName,
+        Context context);
 
     /**
      * Gets an IP Community.

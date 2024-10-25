@@ -434,10 +434,8 @@ public final class ApplicationDefinitionProperties {
      */
     public void validate() {
         if (lockLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lockLevel in model ApplicationDefinitionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property lockLevel in model ApplicationDefinitionProperties"));
         }
         if (authorizations() != null) {
             authorizations().forEach(e -> e.validate());

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ssl configuration for scoring. */
 @Fluent
 public final class SslConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SslConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SslConfiguration.class);
 
     /*
      * Enable or disable ssl for scoring

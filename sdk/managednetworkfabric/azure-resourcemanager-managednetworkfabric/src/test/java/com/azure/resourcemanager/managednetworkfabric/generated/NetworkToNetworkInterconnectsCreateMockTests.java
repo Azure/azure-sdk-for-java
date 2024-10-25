@@ -41,91 +41,60 @@ public final class NetworkToNetworkInterconnectsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"nniType\":\"NPB\",\"isManagementType\":\"True\",\"useOptionB\":\"False\",\"layer2Configuration\":{\"mtu\":1968483512,\"interfaces\":[\"jteqlujmmkn\"]},\"optionBLayer3Configuration\":{\"peerASN\":4438901580001692200,\"vlanId\":924454791,\"fabricASN\":6960325120499186636,\"primaryIpv4Prefix\":\"ztasflgme\",\"primaryIpv6Prefix\":\"eohlerptjwvzap\",\"secondaryIpv4Prefix\":\"deeagigbpabacpl\",\"secondaryIpv6Prefix\":\"rjr\"},\"npbStaticRouteConfiguration\":{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":2014985311,\"multiplier\":14274432},\"ipv4Routes\":[{\"prefix\":\"zlxlbdu\",\"nextHop\":[\"d\",\"qeyqrlgpkypb\",\"kpardo\",\"dtedxz\"]},{\"prefix\":\"yhbzmgzsyt\",\"nextHop\":[\"fslrxvsqsbqrqb\",\"iqfstkd\"]},{\"prefix\":\"yjzijxefyd\",\"nextHop\":[\"ffkzlchrkiwp\"]},{\"prefix\":\"dnhflxnnitru\",\"nextHop\":[\"tfrdlfewexbrvb\",\"yriyraybi\",\"ksnijclfdprez\"]}],\"ipv6Routes\":[{\"prefix\":\"xeigyddp\",\"nextHop\":[\"mbxerz\"]},{\"prefix\":\"pcr\",\"nextHop\":[\"wvcnmrbizxqldm\",\"zbcujdz\"]}]},\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"ermjemnyuhoqpbf\",\"importIpv6RoutePolicyId\":\"cbweab\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"mkuquvcgvn\",\"exportIpv6RoutePolicyId\":\"lcldoyohu\"},\"egressAclId\":\"uclopn\",\"ingressAclId\":\"sylwsmdo\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\"},\"id\":\"bgbhtpo\",\"name\":\"iustkqywab\",\"type\":\"lgrrsk\"}";
+        String responseStr
+            = "{\"properties\":{\"nniType\":\"NPB\",\"isManagementType\":\"True\",\"useOptionB\":\"False\",\"layer2Configuration\":{\"mtu\":1968483512,\"interfaces\":[\"jteqlujmmkn\"]},\"optionBLayer3Configuration\":{\"peerASN\":4438901580001692200,\"vlanId\":924454791,\"fabricASN\":6960325120499186636,\"primaryIpv4Prefix\":\"ztasflgme\",\"primaryIpv6Prefix\":\"eohlerptjwvzap\",\"secondaryIpv4Prefix\":\"deeagigbpabacpl\",\"secondaryIpv6Prefix\":\"rjr\"},\"npbStaticRouteConfiguration\":{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":2014985311,\"multiplier\":14274432},\"ipv4Routes\":[{\"prefix\":\"zlxlbdu\",\"nextHop\":[\"d\",\"qeyqrlgpkypb\",\"kpardo\",\"dtedxz\"]},{\"prefix\":\"yhbzmgzsyt\",\"nextHop\":[\"fslrxvsqsbqrqb\",\"iqfstkd\"]},{\"prefix\":\"yjzijxefyd\",\"nextHop\":[\"ffkzlchrkiwp\"]},{\"prefix\":\"dnhflxnnitru\",\"nextHop\":[\"tfrdlfewexbrvb\",\"yriyraybi\",\"ksnijclfdprez\"]}],\"ipv6Routes\":[{\"prefix\":\"xeigyddp\",\"nextHop\":[\"mbxerz\"]},{\"prefix\":\"pcr\",\"nextHop\":[\"wvcnmrbizxqldm\",\"zbcujdz\"]}]},\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"ermjemnyuhoqpbf\",\"importIpv6RoutePolicyId\":\"cbweab\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"mkuquvcgvn\",\"exportIpv6RoutePolicyId\":\"lcldoyohu\"},\"egressAclId\":\"uclopn\",\"ingressAclId\":\"sylwsmdo\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\"},\"id\":\"bgbhtpo\",\"name\":\"iustkqywab\",\"type\":\"lgrrsk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkToNetworkInterconnect response =
-            manager
-                .networkToNetworkInterconnects()
-                .define("tvucyackgkavpmgt")
-                .withExistingNetworkFabric("djeepukuofz", "i")
-                .withUseOptionB(BooleanEnumProperty.TRUE)
-                .withNniType(NniType.NPB)
-                .withIsManagementType(IsManagementType.TRUE)
-                .withLayer2Configuration(
-                    new Layer2Configuration()
-                        .withMtu(398547649)
-                        .withInterfaces(Arrays.asList("kpcesmurj", "bpnxohagcoj", "my")))
-                .withOptionBLayer3Configuration(
-                    new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration()
-                        .withPrimaryIpv4Prefix("gd")
-                        .withPrimaryIpv6Prefix("b")
-                        .withSecondaryIpv4Prefix("iweyuigyzsebk")
-                        .withSecondaryIpv6Prefix("ykg")
-                        .withPeerAsn(8015179779925025737L)
-                        .withVlanId(1032326080))
-                .withNpbStaticRouteConfiguration(
-                    new NpbStaticRouteConfiguration()
-                        .withBfdConfiguration(
-                            new BfdConfiguration().withIntervalInMilliSeconds(1164527855).withMultiplier(1602290007))
-                        .withIpv4Routes(
-                            Arrays
-                                .asList(
-                                    new StaticRouteProperties()
-                                        .withPrefix("unypfkvjg")
-                                        .withNextHop(Arrays.asList("bbncjxrwaqgmztlr", "b")),
-                                    new StaticRouteProperties()
-                                        .withPrefix("kwoupmqffgjsqq")
-                                        .withNextHop(Arrays.asList("irooglwujobdq", "uppavqo")),
-                                    new StaticRouteProperties()
-                                        .withPrefix("ijpmegnkrv")
-                                        .withNextHop(Arrays.asList("bibtrwg")),
-                                    new StaticRouteProperties()
-                                        .withPrefix("jfat")
-                                        .withNextHop(Arrays.asList("dxqhje", "hg", "myomjeflgnieeq"))))
-                        .withIpv6Routes(
-                            Arrays
-                                .asList(
-                                    new StaticRouteProperties()
-                                        .withPrefix("xxxnnduxkepga")
-                                        .withNextHop(Arrays.asList("ijbiterqfuterrca", "l", "fqddwwpgc")))))
-                .withImportRoutePolicy(
-                    new ImportRoutePolicyInformation()
-                        .withImportIpv4RoutePolicyId("upqkvmyguee")
-                        .withImportIpv6RoutePolicyId("xzwvcvtjdq"))
-                .withExportRoutePolicy(
-                    new ExportRoutePolicyInformation()
-                        .withExportIpv4RoutePolicyId("wxjafb")
-                        .withExportIpv6RoutePolicyId("p"))
-                .withEgressAclId("zdbjzxrpx")
-                .withIngressAclId("raupirvdonka")
-                .create();
+        NetworkToNetworkInterconnect response = manager.networkToNetworkInterconnects()
+            .define("tvucyackgkavpmgt")
+            .withExistingNetworkFabric("djeepukuofz", "i")
+            .withUseOptionB(BooleanEnumProperty.TRUE)
+            .withNniType(NniType.NPB)
+            .withIsManagementType(IsManagementType.TRUE)
+            .withLayer2Configuration(new Layer2Configuration().withMtu(398547649)
+                .withInterfaces(Arrays.asList("kpcesmurj", "bpnxohagcoj", "my")))
+            .withOptionBLayer3Configuration(
+                new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration().withPrimaryIpv4Prefix("gd")
+                    .withPrimaryIpv6Prefix("b")
+                    .withSecondaryIpv4Prefix("iweyuigyzsebk")
+                    .withSecondaryIpv6Prefix("ykg")
+                    .withPeerAsn(8015179779925025737L)
+                    .withVlanId(1032326080))
+            .withNpbStaticRouteConfiguration(new NpbStaticRouteConfiguration()
+                .withBfdConfiguration(
+                    new BfdConfiguration().withIntervalInMilliSeconds(1164527855).withMultiplier(1602290007))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("unypfkvjg")
+                        .withNextHop(Arrays.asList("bbncjxrwaqgmztlr", "b")),
+                    new StaticRouteProperties().withPrefix("kwoupmqffgjsqq")
+                        .withNextHop(Arrays.asList("irooglwujobdq", "uppavqo")),
+                    new StaticRouteProperties().withPrefix("ijpmegnkrv").withNextHop(Arrays.asList("bibtrwg")),
+                    new StaticRouteProperties().withPrefix("jfat")
+                        .withNextHop(Arrays.asList("dxqhje", "hg", "myomjeflgnieeq"))))
+                .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("xxxnnduxkepga")
+                    .withNextHop(Arrays.asList("ijbiterqfuterrca", "l", "fqddwwpgc")))))
+            .withImportRoutePolicy(new ImportRoutePolicyInformation().withImportIpv4RoutePolicyId("upqkvmyguee")
+                .withImportIpv6RoutePolicyId("xzwvcvtjdq"))
+            .withExportRoutePolicy(new ExportRoutePolicyInformation().withExportIpv4RoutePolicyId("wxjafb")
+                .withExportIpv6RoutePolicyId("p"))
+            .withEgressAclId("zdbjzxrpx")
+            .withIngressAclId("raupirvdonka")
+            .create();
 
         Assertions.assertEquals(NniType.NPB, response.nniType());
         Assertions.assertEquals(IsManagementType.TRUE, response.isManagementType());
@@ -138,9 +107,8 @@ public final class NetworkToNetworkInterconnectsCreateMockTests {
         Assertions.assertEquals("rjr", response.optionBLayer3Configuration().secondaryIpv6Prefix());
         Assertions.assertEquals(4438901580001692200L, response.optionBLayer3Configuration().peerAsn());
         Assertions.assertEquals(924454791, response.optionBLayer3Configuration().vlanId());
-        Assertions
-            .assertEquals(
-                2014985311, response.npbStaticRouteConfiguration().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(2014985311,
+            response.npbStaticRouteConfiguration().bfdConfiguration().intervalInMilliSeconds());
         Assertions.assertEquals(14274432, response.npbStaticRouteConfiguration().bfdConfiguration().multiplier());
         Assertions.assertEquals("zlxlbdu", response.npbStaticRouteConfiguration().ipv4Routes().get(0).prefix());
         Assertions.assertEquals("d", response.npbStaticRouteConfiguration().ipv4Routes().get(0).nextHop().get(0));

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ModelDockerSection model. */
 @Fluent
 public class ModelDockerSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelDockerSection.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelDockerSection.class);
 
     /*
      * Base image used for Docker-based runs. Mutually exclusive with

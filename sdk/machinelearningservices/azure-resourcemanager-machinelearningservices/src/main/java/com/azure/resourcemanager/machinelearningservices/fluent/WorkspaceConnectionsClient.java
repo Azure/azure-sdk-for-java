@@ -41,8 +41,8 @@ public interface WorkspaceConnectionsClient {
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkspaceConnectionInner> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context);
+    PagedIterable<WorkspaceConnectionInner> list(String resourceGroupName, String workspaceName, String target,
+        String category, Context context);
 
     /**
      * Add a new workspace connection.
@@ -57,8 +57,8 @@ public interface WorkspaceConnectionsClient {
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceConnectionInner create(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters);
+    WorkspaceConnectionInner create(String resourceGroupName, String workspaceName, String connectionName,
+        WorkspaceConnectionDto parameters);
 
     /**
      * Add a new workspace connection.
@@ -74,12 +74,8 @@ public interface WorkspaceConnectionsClient {
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceConnectionInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String connectionName,
-        WorkspaceConnectionDto parameters,
-        Context context);
+    Response<WorkspaceConnectionInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String connectionName, WorkspaceConnectionDto parameters, Context context);
 
     /**
      * Get the detail of a workspace connection.
@@ -108,8 +104,8 @@ public interface WorkspaceConnectionsClient {
      * @return the detail of a workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceConnectionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<WorkspaceConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String connectionName, Context context);
 
     /**
      * Delete a workspace connection.
@@ -137,6 +133,6 @@ public interface WorkspaceConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context);
 }

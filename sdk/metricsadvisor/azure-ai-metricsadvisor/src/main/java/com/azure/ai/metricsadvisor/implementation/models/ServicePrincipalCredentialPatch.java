@@ -67,8 +67,10 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceCredentialType", DataSourceCredentialType.SERVICE_PRINCIPAL == null
-            ? null : DataSourceCredentialType.SERVICE_PRINCIPAL.toString());
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.SERVICE_PRINCIPAL == null
+                ? null
+                : DataSourceCredentialType.SERVICE_PRINCIPAL.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);

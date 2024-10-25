@@ -132,13 +132,9 @@ public interface InternetGateway {
     InternetGatewayInner innerModel();
 
     /** The entirety of the InternetGateway definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithTypePropertiesType,
-            DefinitionStages.WithNetworkFabricControllerId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithTypePropertiesType,
+        DefinitionStages.WithNetworkFabricControllerId, DefinitionStages.WithCreate {
     }
 
     /** The InternetGateway definition stages. */
@@ -203,10 +199,8 @@ public interface InternetGateway {
          * The stage of the InternetGateway definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithInternetGatewayRuleId,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithInternetGatewayRuleId,
+            DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *

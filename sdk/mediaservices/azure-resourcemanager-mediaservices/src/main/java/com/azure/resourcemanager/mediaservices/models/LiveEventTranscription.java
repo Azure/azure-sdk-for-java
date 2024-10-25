@@ -110,8 +110,8 @@ public final class LiveEventTranscription {
      * @param outputTranscriptionTrack the outputTranscriptionTrack value to set.
      * @return the LiveEventTranscription object itself.
      */
-    public LiveEventTranscription withOutputTranscriptionTrack(
-        LiveEventOutputTranscriptionTrack outputTranscriptionTrack) {
+    public LiveEventTranscription
+        withOutputTranscriptionTrack(LiveEventOutputTranscriptionTrack outputTranscriptionTrack) {
         this.outputTranscriptionTrack = outputTranscriptionTrack;
         return this;
     }

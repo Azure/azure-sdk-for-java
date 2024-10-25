@@ -30,40 +30,28 @@ public final class ContentKeyPoliciesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"policyId\":\"81cfcc82-40c3-4a4b-8e16-12cf9a6416de\",\"created\":\"2021-03-20T14:50:38Z\",\"lastModified\":\"2021-11-17T11:32:04Z\",\"description\":\"smfcttuxuuyilfl\",\"options\":[]},\"id\":\"quvre\",\"name\":\"mrnjh\",\"type\":\"sujz\"}";
+        String responseStr
+            = "{\"properties\":{\"policyId\":\"81cfcc82-40c3-4a4b-8e16-12cf9a6416de\",\"created\":\"2021-03-20T14:50:38Z\",\"lastModified\":\"2021-11-17T11:32:04Z\",\"description\":\"smfcttuxuuyilfl\",\"options\":[]},\"id\":\"quvre\",\"name\":\"mrnjh\",\"type\":\"sujz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ContentKeyPolicy response =
-            manager
-                .contentKeyPolicies()
-                .getWithResponse("rgxffmshkw", "bkgozxwopdbydpi", "qaclnapxbiy", com.azure.core.util.Context.NONE)
-                .getValue();
+        ContentKeyPolicy response = manager.contentKeyPolicies()
+            .getWithResponse("rgxffmshkw", "bkgozxwopdbydpi", "qaclnapxbiy", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("smfcttuxuuyilfl", response.description());
     }

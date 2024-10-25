@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The AksReplicaStatus model. */
 @Fluent
 public class AksReplicaStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksReplicaStatus.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksReplicaStatus.class);
 
     /*
      * The desired number of replicas.

@@ -24,8 +24,8 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Interface resource details along with {@link Response}.
      */
-    Response<NetworkInterface> getWithResponse(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
+    Response<NetworkInterface> getWithResponse(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, Context context);
 
     /**
      * Gets a NetworkInterface.
@@ -98,8 +98,8 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NetworkInterface> listByNetworkDevice(
-        String resourceGroupName, String networkDeviceName, Context context);
+    PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Updates the admin state of the network interface.
@@ -115,11 +115,8 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, UpdateAdministrativeState body);
 
     /**
      * Updates the admin state of the network interface.
@@ -136,12 +133,8 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, UpdateAdministrativeState body, Context context);
 
     /**
      * Gets a NetworkInterface.

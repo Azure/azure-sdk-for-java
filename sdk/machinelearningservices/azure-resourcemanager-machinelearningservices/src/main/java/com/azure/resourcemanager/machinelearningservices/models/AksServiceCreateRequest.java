@@ -17,7 +17,8 @@ import java.util.Map;
 @JsonTypeName("AKS")
 @Fluent
 public final class AksServiceCreateRequest extends CreateEndpointVariantRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceCreateRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksServiceCreateRequest.class);
 
     /*
      * The number of replicas on the cluster.
@@ -213,8 +214,8 @@ public final class AksServiceCreateRequest extends CreateEndpointVariantRequest 
      * @param containerResourceRequirements the containerResourceRequirements value to set.
      * @return the AksServiceCreateRequest object itself.
      */
-    public AksServiceCreateRequest withContainerResourceRequirements(
-        ContainerResourceRequirements containerResourceRequirements) {
+    public AksServiceCreateRequest
+        withContainerResourceRequirements(ContainerResourceRequirements containerResourceRequirements) {
         this.containerResourceRequirements = containerResourceRequirements;
         return this;
     }
@@ -336,8 +337,8 @@ public final class AksServiceCreateRequest extends CreateEndpointVariantRequest 
      * @param livenessProbeRequirements the livenessProbeRequirements value to set.
      * @return the AksServiceCreateRequest object itself.
      */
-    public AksServiceCreateRequest withLivenessProbeRequirements(
-        AksServiceCreateRequestLivenessProbeRequirements livenessProbeRequirements) {
+    public AksServiceCreateRequest
+        withLivenessProbeRequirements(AksServiceCreateRequestLivenessProbeRequirements livenessProbeRequirements) {
         this.livenessProbeRequirements = livenessProbeRequirements;
         return this;
     }
@@ -413,8 +414,8 @@ public final class AksServiceCreateRequest extends CreateEndpointVariantRequest 
 
     /** {@inheritDoc} */
     @Override
-    public AksServiceCreateRequest withEnvironmentImageRequest(
-        CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
+    public AksServiceCreateRequest
+        withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
         super.withEnvironmentImageRequest(environmentImageRequest);
         return this;
     }

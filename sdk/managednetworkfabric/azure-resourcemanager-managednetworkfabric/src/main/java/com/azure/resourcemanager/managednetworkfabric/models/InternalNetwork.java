@@ -182,11 +182,8 @@ public interface InternalNetwork {
     InternalNetworkInner innerModel();
 
     /** The entirety of the InternalNetwork definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithVlanId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithVlanId, DefinitionStages.WithCreate {
     }
 
     /** The InternalNetwork definition stages. */
@@ -223,20 +220,12 @@ public interface InternalNetwork {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithBgpConfiguration,
-                DefinitionStages.WithStaticRouteConfiguration,
-                DefinitionStages.WithMtu,
-                DefinitionStages.WithConnectedIPv4Subnets,
-                DefinitionStages.WithConnectedIPv6Subnets,
-                DefinitionStages.WithImportRoutePolicyId,
-                DefinitionStages.WithExportRoutePolicyId,
-                DefinitionStages.WithImportRoutePolicy,
-                DefinitionStages.WithExportRoutePolicy,
-                DefinitionStages.WithIngressAclId,
-                DefinitionStages.WithEgressAclId,
-                DefinitionStages.WithIsMonitoringEnabled,
-                DefinitionStages.WithExtension,
-                DefinitionStages.WithAnnotation {
+            extends DefinitionStages.WithBgpConfiguration, DefinitionStages.WithStaticRouteConfiguration,
+            DefinitionStages.WithMtu, DefinitionStages.WithConnectedIPv4Subnets,
+            DefinitionStages.WithConnectedIPv6Subnets, DefinitionStages.WithImportRoutePolicyId,
+            DefinitionStages.WithExportRoutePolicyId, DefinitionStages.WithImportRoutePolicy,
+            DefinitionStages.WithExportRoutePolicy, DefinitionStages.WithIngressAclId, DefinitionStages.WithEgressAclId,
+            DefinitionStages.WithIsMonitoringEnabled, DefinitionStages.WithExtension, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -422,20 +411,11 @@ public interface InternalNetwork {
     InternalNetwork.Update update();
 
     /** The template for InternalNetwork update. */
-    interface Update
-        extends UpdateStages.WithBgpConfiguration,
-            UpdateStages.WithStaticRouteConfiguration,
-            UpdateStages.WithMtu,
-            UpdateStages.WithConnectedIPv4Subnets,
-            UpdateStages.WithConnectedIPv6Subnets,
-            UpdateStages.WithImportRoutePolicyId,
-            UpdateStages.WithExportRoutePolicyId,
-            UpdateStages.WithImportRoutePolicy,
-            UpdateStages.WithExportRoutePolicy,
-            UpdateStages.WithIngressAclId,
-            UpdateStages.WithEgressAclId,
-            UpdateStages.WithIsMonitoringEnabled,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithBgpConfiguration, UpdateStages.WithStaticRouteConfiguration,
+        UpdateStages.WithMtu, UpdateStages.WithConnectedIPv4Subnets, UpdateStages.WithConnectedIPv6Subnets,
+        UpdateStages.WithImportRoutePolicyId, UpdateStages.WithExportRoutePolicyId, UpdateStages.WithImportRoutePolicy,
+        UpdateStages.WithExportRoutePolicy, UpdateStages.WithIngressAclId, UpdateStages.WithEgressAclId,
+        UpdateStages.WithIsMonitoringEnabled, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -670,8 +650,8 @@ public interface InternalNetwork {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(UpdateAdministrativeState body,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -698,6 +678,6 @@ public interface InternalNetwork {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body,
+        Context context);
 }

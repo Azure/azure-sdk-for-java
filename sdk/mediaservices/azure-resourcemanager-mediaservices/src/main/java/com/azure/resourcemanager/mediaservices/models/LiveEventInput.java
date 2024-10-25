@@ -190,10 +190,8 @@ public final class LiveEventInput {
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property streamingProtocol in model LiveEventInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property streamingProtocol in model LiveEventInput"));
         }
         if (accessControl() != null) {
             accessControl().validate();

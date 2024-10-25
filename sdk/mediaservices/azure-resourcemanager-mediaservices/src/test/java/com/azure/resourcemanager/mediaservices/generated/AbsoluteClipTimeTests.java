@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AbsoluteClipTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AbsoluteClipTime model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.AbsoluteClipTime\",\"time\":\"PT86H5M17S\"}")
+        AbsoluteClipTime model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.AbsoluteClipTime\",\"time\":\"PT86H5M17S\"}")
                 .toObject(AbsoluteClipTime.class);
         Assertions.assertEquals(Duration.parse("PT86H5M17S"), model.time());
     }

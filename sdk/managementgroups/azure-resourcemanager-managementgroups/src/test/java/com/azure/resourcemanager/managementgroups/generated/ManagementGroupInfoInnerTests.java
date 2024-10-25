@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"psqucmpoyf\",\"type\":\"fogknygjofjdde\",\"name\":\"rd\",\"properties\":{\"tenantId\":\"ewnwreitjzyfl\",\"displayName\":\"arhmofcqhsmy\"}}")
-                .toObject(ManagementGroupInfoInner.class);
+        ManagementGroupInfoInner model = BinaryData.fromString(
+            "{\"id\":\"psqucmpoyf\",\"type\":\"fogknygjofjdde\",\"name\":\"rd\",\"properties\":{\"tenantId\":\"ewnwreitjzyfl\",\"displayName\":\"arhmofcqhsmy\"}}")
+            .toObject(ManagementGroupInfoInner.class);
         Assertions.assertEquals("ewnwreitjzyfl", model.tenantId());
         Assertions.assertEquals("arhmofcqhsmy", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupInfoInner model =
-            new ManagementGroupInfoInner().withTenantId("ewnwreitjzyfl").withDisplayName("arhmofcqhsmy");
+        ManagementGroupInfoInner model
+            = new ManagementGroupInfoInner().withTenantId("ewnwreitjzyfl").withDisplayName("arhmofcqhsmy");
         model = BinaryData.fromObject(model).toObject(ManagementGroupInfoInner.class);
         Assertions.assertEquals("ewnwreitjzyfl", model.tenantId());
         Assertions.assertEquals("arhmofcqhsmy", model.displayName());

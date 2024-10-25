@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The error details. */
 @Immutable
 public final class AksReplicaStatusError extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksReplicaStatusError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksReplicaStatusError.class);
 
     /**
      * Validates the instance.

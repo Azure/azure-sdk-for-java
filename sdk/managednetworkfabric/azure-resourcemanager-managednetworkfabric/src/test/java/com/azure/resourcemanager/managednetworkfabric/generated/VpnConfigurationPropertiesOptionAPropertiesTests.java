@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VpnConfigurationPropertiesOptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VpnConfigurationPropertiesOptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"primaryIpv4Prefix\":\"fdrld\",\"primaryIpv6Prefix\":\"ehi\",\"secondaryIpv4Prefix\":\"ttugyu\",\"secondaryIpv6Prefix\":\"rldaxurfqa\",\"mtu\":1770378356,\"vlanId\":270505616,\"peerASN\":8741394680932832379,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1911629165,\"multiplier\":833458664}}")
-                .toObject(VpnConfigurationPropertiesOptionAProperties.class);
+        VpnConfigurationPropertiesOptionAProperties model = BinaryData.fromString(
+            "{\"primaryIpv4Prefix\":\"fdrld\",\"primaryIpv6Prefix\":\"ehi\",\"secondaryIpv4Prefix\":\"ttugyu\",\"secondaryIpv6Prefix\":\"rldaxurfqa\",\"mtu\":1770378356,\"vlanId\":270505616,\"peerASN\":8741394680932832379,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1911629165,\"multiplier\":833458664}}")
+            .toObject(VpnConfigurationPropertiesOptionAProperties.class);
         Assertions.assertEquals(1770378356, model.mtu());
         Assertions.assertEquals(270505616, model.vlanId());
         Assertions.assertEquals(8741394680932832379L, model.peerAsn());
@@ -30,9 +28,8 @@ public final class VpnConfigurationPropertiesOptionAPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VpnConfigurationPropertiesOptionAProperties model =
-            new VpnConfigurationPropertiesOptionAProperties()
-                .withMtu(1770378356)
+        VpnConfigurationPropertiesOptionAProperties model
+            = new VpnConfigurationPropertiesOptionAProperties().withMtu(1770378356)
                 .withVlanId(270505616)
                 .withPeerAsn(8741394680932832379L)
                 .withBfdConfiguration(

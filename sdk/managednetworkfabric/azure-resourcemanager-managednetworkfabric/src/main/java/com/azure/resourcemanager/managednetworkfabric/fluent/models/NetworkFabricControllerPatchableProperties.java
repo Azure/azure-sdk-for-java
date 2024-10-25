@@ -74,8 +74,8 @@ public class NetworkFabricControllerPatchableProperties {
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerPatchableProperties object itself.
      */
-    public NetworkFabricControllerPatchableProperties withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerPatchableProperties
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         this.workloadExpressRouteConnections = workloadExpressRouteConnections;
         return this;
     }

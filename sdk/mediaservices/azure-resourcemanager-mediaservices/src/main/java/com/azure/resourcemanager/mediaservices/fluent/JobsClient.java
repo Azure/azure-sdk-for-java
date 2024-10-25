@@ -46,13 +46,8 @@ public interface JobsClient {
      * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobInner> list(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String filter,
-        String orderby,
-        Context context);
+    PagedIterable<JobInner> list(String resourceGroupName, String accountName, String transformName, String filter,
+        String orderby, Context context);
 
     /**
      * Get Job
@@ -70,8 +65,8 @@ public interface JobsClient {
      * @return a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobInner> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<JobInner> getWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context);
 
     /**
      * Get Job
@@ -107,13 +102,8 @@ public interface JobsClient {
      * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context);
+    Response<JobInner> createWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters, Context context);
 
     /**
      * Create Job
@@ -131,8 +121,8 @@ public interface JobsClient {
      * @return a Job resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner create(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
+    JobInner create(String resourceGroupName, String accountName, String transformName, String jobName,
+        JobInner parameters);
 
     /**
      * Delete Job
@@ -150,8 +140,8 @@ public interface JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context);
 
     /**
      * Delete Job
@@ -187,13 +177,8 @@ public interface JobsClient {
      * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context);
+    Response<JobInner> updateWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters, Context context);
 
     /**
      * Update Job
@@ -212,8 +197,8 @@ public interface JobsClient {
      * @return a Job resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner update(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
+    JobInner update(String resourceGroupName, String accountName, String transformName, String jobName,
+        JobInner parameters);
 
     /**
      * Cancel Job
@@ -231,8 +216,8 @@ public interface JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelJobWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<Void> cancelJobWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context);
 
     /**
      * Cancel Job

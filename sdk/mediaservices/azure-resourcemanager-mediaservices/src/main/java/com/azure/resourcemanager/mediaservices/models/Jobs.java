@@ -41,13 +41,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Job> list(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String filter,
-        String orderby,
-        Context context);
+    PagedIterable<Job> list(String resourceGroupName, String accountName, String transformName, String filter,
+        String orderby, Context context);
 
     /**
      * Get Job
@@ -64,8 +59,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job along with {@link Response}.
      */
-    Response<Job> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<Job> getWithResponse(String resourceGroupName, String accountName, String transformName, String jobName,
+        Context context);
 
     /**
      * Get Job
@@ -98,8 +93,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context);
 
     /**
      * Delete Job
@@ -131,8 +126,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> cancelJobWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+    Response<Void> cancelJobWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context);
 
     /**
      * Cancel Job

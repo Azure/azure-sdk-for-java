@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoLayer model =
-            BinaryData
-                .fromString(
-                    "{\"bitrate\":1713301534,\"maxBitrate\":1058689711,\"bFrames\":698504930,\"frameRate\":\"wchpxlk\",\"slices\":17628020,\"adaptiveBFrame\":true,\"width\":\"ycslevufuztcktyh\",\"height\":\"qedcgzulwm\",\"label\":\"qzz\"}")
-                .toObject(VideoLayer.class);
+        VideoLayer model = BinaryData.fromString(
+            "{\"bitrate\":1713301534,\"maxBitrate\":1058689711,\"bFrames\":698504930,\"frameRate\":\"wchpxlk\",\"slices\":17628020,\"adaptiveBFrame\":true,\"width\":\"ycslevufuztcktyh\",\"height\":\"qedcgzulwm\",\"label\":\"qzz\"}")
+            .toObject(VideoLayer.class);
         Assertions.assertEquals("ycslevufuztcktyh", model.width());
         Assertions.assertEquals("qedcgzulwm", model.height());
         Assertions.assertEquals("qzz", model.label());
@@ -29,17 +27,15 @@ public final class VideoLayerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VideoLayer model =
-            new VideoLayer()
-                .withWidth("ycslevufuztcktyh")
-                .withHeight("qedcgzulwm")
-                .withLabel("qzz")
-                .withBitrate(1713301534)
-                .withMaxBitrate(1058689711)
-                .withBFrames(698504930)
-                .withFrameRate("wchpxlk")
-                .withSlices(17628020)
-                .withAdaptiveBFrame(true);
+        VideoLayer model = new VideoLayer().withWidth("ycslevufuztcktyh")
+            .withHeight("qedcgzulwm")
+            .withLabel("qzz")
+            .withBitrate(1713301534)
+            .withMaxBitrate(1058689711)
+            .withBFrames(698504930)
+            .withFrameRate("wchpxlk")
+            .withSlices(17628020)
+            .withAdaptiveBFrame(true);
         model = BinaryData.fromObject(model).toObject(VideoLayer.class);
         Assertions.assertEquals("ycslevufuztcktyh", model.width());
         Assertions.assertEquals("qedcgzulwm", model.height());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L2IsolationDomainPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2IsolationDomainPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"mtu\":1649679831,\"annotation\":\"jzacvumepjpbibn\"},\"tags\":{\"fexleqirccjcly\":\"hep\",\"vczuodacpune\":\"cgxvrpj\",\"oy\":\"tepdjxqes\",\"aewse\":\"uiylpc\"}}")
-                .toObject(L2IsolationDomainPatch.class);
+        L2IsolationDomainPatch model = BinaryData.fromString(
+            "{\"properties\":{\"mtu\":1649679831,\"annotation\":\"jzacvumepjpbibn\"},\"tags\":{\"fexleqirccjcly\":\"hep\",\"vczuodacpune\":\"cgxvrpj\",\"oy\":\"tepdjxqes\",\"aewse\":\"uiylpc\"}}")
+            .toObject(L2IsolationDomainPatch.class);
         Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
         Assertions.assertEquals(1649679831, model.mtu());
         Assertions.assertEquals("jzacvumepjpbibn", model.annotation());
@@ -25,12 +23,10 @@ public final class L2IsolationDomainPatchTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainPatch model =
-            new L2IsolationDomainPatch()
-                .withTags(
-                    mapOf("fexleqirccjcly", "hep", "vczuodacpune", "cgxvrpj", "oy", "tepdjxqes", "aewse", "uiylpc"))
-                .withMtu(1649679831)
-                .withAnnotation("jzacvumepjpbibn");
+        L2IsolationDomainPatch model = new L2IsolationDomainPatch()
+            .withTags(mapOf("fexleqirccjcly", "hep", "vczuodacpune", "cgxvrpj", "oy", "tepdjxqes", "aewse", "uiylpc"))
+            .withMtu(1649679831)
+            .withAnnotation("jzacvumepjpbibn");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatch.class);
         Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
         Assertions.assertEquals(1649679831, model.mtu());

@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class AssetFilterCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetFilterCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"klbb\",\"name\":\"vplwzbhv\",\"type\":\"yuguosvmkfssx\"}],\"@odata.nextLink\":\"kkfpl\"}")
-                .toObject(AssetFilterCollection.class);
+        AssetFilterCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"klbb\",\"name\":\"vplwzbhv\",\"type\":\"yuguosvmkfssx\"}],\"@odata.nextLink\":\"kkfpl\"}")
+            .toObject(AssetFilterCollection.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetFilterCollection model =
-            new AssetFilterCollection().withValue(Arrays.asList(new AssetFilterInner().withTracks(Arrays.asList())));
+        AssetFilterCollection model
+            = new AssetFilterCollection().withValue(Arrays.asList(new AssetFilterInner().withTracks(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(AssetFilterCollection.class);
     }
 }

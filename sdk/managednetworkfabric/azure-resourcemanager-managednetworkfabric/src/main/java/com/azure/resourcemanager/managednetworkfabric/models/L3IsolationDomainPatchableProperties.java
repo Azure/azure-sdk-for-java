@@ -53,8 +53,8 @@ public class L3IsolationDomainPatchableProperties {
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
-    public L3IsolationDomainPatchableProperties withRedistributeConnectedSubnets(
-        RedistributeConnectedSubnets redistributeConnectedSubnets) {
+    public L3IsolationDomainPatchableProperties
+        withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets) {
         this.redistributeConnectedSubnets = redistributeConnectedSubnets;
         return this;
     }
@@ -74,8 +74,8 @@ public class L3IsolationDomainPatchableProperties {
      * @param redistributeStaticRoutes the redistributeStaticRoutes value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
-    public L3IsolationDomainPatchableProperties withRedistributeStaticRoutes(
-        RedistributeStaticRoutes redistributeStaticRoutes) {
+    public L3IsolationDomainPatchableProperties
+        withRedistributeStaticRoutes(RedistributeStaticRoutes redistributeStaticRoutes) {
         this.redistributeStaticRoutes = redistributeStaticRoutes;
         return this;
     }
@@ -95,8 +95,8 @@ public class L3IsolationDomainPatchableProperties {
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
-    public L3IsolationDomainPatchableProperties withAggregateRouteConfiguration(
-        AggregateRouteConfiguration aggregateRouteConfiguration) {
+    public L3IsolationDomainPatchableProperties
+        withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration) {
         this.aggregateRouteConfiguration = aggregateRouteConfiguration;
         return this;
     }
@@ -116,8 +116,8 @@ public class L3IsolationDomainPatchableProperties {
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
-    public L3IsolationDomainPatchableProperties withConnectedSubnetRoutePolicy(
-        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+    public L3IsolationDomainPatchableProperties
+        withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         this.connectedSubnetRoutePolicy = connectedSubnetRoutePolicy;
         return this;
     }

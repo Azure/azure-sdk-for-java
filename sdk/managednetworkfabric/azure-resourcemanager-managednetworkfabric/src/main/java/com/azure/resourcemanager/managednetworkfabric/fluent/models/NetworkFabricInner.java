@@ -293,8 +293,8 @@ public final class NetworkFabricInner extends Resource {
      * @param managementNetworkConfiguration the managementNetworkConfiguration value to set.
      * @return the NetworkFabricInner object itself.
      */
-    public NetworkFabricInner withManagementNetworkConfiguration(
-        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
+    public NetworkFabricInner
+        withManagementNetworkConfiguration(ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricProperties();
         }
@@ -389,10 +389,8 @@ public final class NetworkFabricInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkFabricInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model NetworkFabricInner"));
         } else {
             innerProperties().validate();
         }

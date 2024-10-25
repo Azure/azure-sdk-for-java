@@ -45,8 +45,8 @@ public class GeolocationClientTest extends GeolocationClientTestBase {
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
     public void testInvalidGetLocationWithResponse(HttpClient httpClient, GeolocationServiceVersion serviceVersion) {
         client = getGeoLocationClient(httpClient, serviceVersion);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getLocationWithResponse("0000000asdfsdf", null));
+        final HttpResponseException httpResponseException
+            = assertThrows(HttpResponseException.class, () -> client.getLocationWithResponse("0000000asdfsdf", null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 }

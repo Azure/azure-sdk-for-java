@@ -112,25 +112,21 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
     }
 
     public NeighborGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .create(resourceGroupName, neighborGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .create(resourceGroupName, neighborGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NeighborGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .create(resourceGroupName, neighborGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .create(resourceGroupName, neighborGroupName, this.innerModel(), context);
         return this;
     }
 
-    NeighborGroupImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NeighborGroupImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NeighborGroupInner();
         this.serviceManager = serviceManager;
         this.neighborGroupName = name;
@@ -142,25 +138,20 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
     }
 
     public NeighborGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .update(resourceGroupName, neighborGroupName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .update(resourceGroupName, neighborGroupName, updateBody, Context.NONE);
         return this;
     }
 
     public NeighborGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .update(resourceGroupName, neighborGroupName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .update(resourceGroupName, neighborGroupName, updateBody, context);
         return this;
     }
 
-    NeighborGroupImpl(
-        NeighborGroupInner innerObject,
+    NeighborGroupImpl(NeighborGroupInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -169,22 +160,18 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
     }
 
     public NeighborGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NeighborGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNeighborGroups()
-                .getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNeighborGroups()
+            .getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context)
+            .getValue();
         return this;
     }
 

@@ -54,7 +54,7 @@ public final class BatchResponseSerializer implements JsonSerializer {
                 TypeReference<ReverseSearchAddressBatchResult> interimType = new ReverseSearchTypeReference();
                 ReverseSearchAddressBatchResult interimResult
                     = jacksonAdapter.<ReverseSearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
-                    SerializerEncoding.JSON);
+                        SerializerEncoding.JSON);
                 BatchReverseSearchResult result = Utility.toBatchReverseSearchResult(interimResult);
                 return (T) result;
             } else {

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.managednetworkfabric.models.OperationListResult
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"bnmcvaqycd\",\"isDataAction\":true,\"display\":{\"provider\":\"esdyvf\",\"resource\":\"z\",\"operation\":\"df\",\"description\":\"ktwpd\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"ytabvb\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"bnmcvaqycd\",\"isDataAction\":true,\"display\":{\"provider\":\"esdyvf\",\"resource\":\"z\",\"operation\":\"df\",\"description\":\"ktwpd\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"ytabvb\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

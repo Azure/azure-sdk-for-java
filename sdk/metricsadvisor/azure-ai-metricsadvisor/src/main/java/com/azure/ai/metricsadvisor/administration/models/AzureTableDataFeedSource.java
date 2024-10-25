@@ -27,13 +27,12 @@ public final class AzureTableDataFeedSource extends DataFeedSource {
     private final String table;
 
     static {
-        AzureTableDataFeedSourceAccessor.setAccessor(
-            new AzureTableDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getConnectionString(AzureTableDataFeedSource feedSource) {
-                    return feedSource.getConnectionString();
-                }
-            });
+        AzureTableDataFeedSourceAccessor.setAccessor(new AzureTableDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getConnectionString(AzureTableDataFeedSource feedSource) {
+                return feedSource.getConnectionString();
+            }
+        });
     }
 
     /**

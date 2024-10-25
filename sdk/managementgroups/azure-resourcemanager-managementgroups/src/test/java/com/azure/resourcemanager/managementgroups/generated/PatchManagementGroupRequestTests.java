@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchManagementGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchManagementGroupRequest model =
-            BinaryData
-                .fromString("{\"displayName\":\"utqxlngx\",\"parentGroupId\":\"fgugnxkrxdqmid\"}")
+        PatchManagementGroupRequest model
+            = BinaryData.fromString("{\"displayName\":\"utqxlngx\",\"parentGroupId\":\"fgugnxkrxdqmid\"}")
                 .toObject(PatchManagementGroupRequest.class);
         Assertions.assertEquals("utqxlngx", model.displayName());
         Assertions.assertEquals("fgugnxkrxdqmid", model.parentGroupId());
@@ -21,8 +20,8 @@ public final class PatchManagementGroupRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchManagementGroupRequest model =
-            new PatchManagementGroupRequest().withDisplayName("utqxlngx").withParentGroupId("fgugnxkrxdqmid");
+        PatchManagementGroupRequest model
+            = new PatchManagementGroupRequest().withDisplayName("utqxlngx").withParentGroupId("fgugnxkrxdqmid");
         model = BinaryData.fromObject(model).toObject(PatchManagementGroupRequest.class);
         Assertions.assertEquals("utqxlngx", model.displayName());
         Assertions.assertEquals("fgugnxkrxdqmid", model.parentGroupId());

@@ -131,11 +131,8 @@ public interface ExternalNetwork {
     ExternalNetworkInner innerModel();
 
     /** The entirety of the ExternalNetwork definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithPeeringOption,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithPeeringOption, DefinitionStages.WithCreate {
     }
 
     /** The ExternalNetwork definition stages. */
@@ -171,14 +168,10 @@ public interface ExternalNetwork {
          * The stage of the ExternalNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithOptionBProperties,
-                DefinitionStages.WithOptionAProperties,
-                DefinitionStages.WithImportRoutePolicyId,
-                DefinitionStages.WithExportRoutePolicyId,
-                DefinitionStages.WithImportRoutePolicy,
-                DefinitionStages.WithExportRoutePolicy,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithOptionBProperties, DefinitionStages.WithOptionAProperties,
+            DefinitionStages.WithImportRoutePolicyId, DefinitionStages.WithExportRoutePolicyId,
+            DefinitionStages.WithImportRoutePolicy, DefinitionStages.WithExportRoutePolicy,
+            DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -285,15 +278,9 @@ public interface ExternalNetwork {
     ExternalNetwork.Update update();
 
     /** The template for ExternalNetwork update. */
-    interface Update
-        extends UpdateStages.WithPeeringOption,
-            UpdateStages.WithOptionBProperties,
-            UpdateStages.WithOptionAProperties,
-            UpdateStages.WithImportRoutePolicyId,
-            UpdateStages.WithExportRoutePolicyId,
-            UpdateStages.WithImportRoutePolicy,
-            UpdateStages.WithExportRoutePolicy,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithPeeringOption, UpdateStages.WithOptionBProperties,
+        UpdateStages.WithOptionAProperties, UpdateStages.WithImportRoutePolicyId, UpdateStages.WithExportRoutePolicyId,
+        UpdateStages.WithImportRoutePolicy, UpdateStages.WithExportRoutePolicy, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -472,6 +459,6 @@ public interface ExternalNetwork {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body,
+        Context context);
 }

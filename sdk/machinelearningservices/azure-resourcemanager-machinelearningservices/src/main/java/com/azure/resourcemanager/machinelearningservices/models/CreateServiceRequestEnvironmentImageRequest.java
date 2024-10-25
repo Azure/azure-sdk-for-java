@@ -12,7 +12,8 @@ import java.util.List;
 /** The Environment, models and assets needed for inferencing. */
 @Immutable
 public final class CreateServiceRequestEnvironmentImageRequest extends EnvironmentImageRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateServiceRequestEnvironmentImageRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CreateServiceRequestEnvironmentImageRequest.class);
 
     /** {@inheritDoc} */
     @Override
@@ -51,8 +52,8 @@ public final class CreateServiceRequestEnvironmentImageRequest extends Environme
 
     /** {@inheritDoc} */
     @Override
-    public CreateServiceRequestEnvironmentImageRequest withEnvironmentReference(
-        EnvironmentImageRequestEnvironmentReference environmentReference) {
+    public CreateServiceRequestEnvironmentImageRequest
+        withEnvironmentReference(EnvironmentImageRequestEnvironmentReference environmentReference) {
         super.withEnvironmentReference(environmentReference);
         return this;
     }

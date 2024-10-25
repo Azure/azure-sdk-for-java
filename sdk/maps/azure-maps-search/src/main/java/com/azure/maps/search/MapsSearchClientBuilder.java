@@ -59,7 +59,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.maps.search.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {MapsSearchClient.class, MapsSearchAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { MapsSearchClient.class, MapsSearchAsyncClient.class })
 public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<MapsSearchClientBuilder>,
     TokenCredentialTrait<MapsSearchClientBuilder>, HttpTrait<MapsSearchClientBuilder>,
     ConfigurationTrait<MapsSearchClientBuilder>, EndpointTrait<MapsSearchClientBuilder> {
@@ -74,7 +74,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     //subscription-key
     static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // instance fields
 
@@ -101,6 +101,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsSearchClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
+
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
@@ -256,7 +257,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public MapsSearchClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public MapsSearchClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -300,8 +301,8 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -325,8 +326,8 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -352,8 +353,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }

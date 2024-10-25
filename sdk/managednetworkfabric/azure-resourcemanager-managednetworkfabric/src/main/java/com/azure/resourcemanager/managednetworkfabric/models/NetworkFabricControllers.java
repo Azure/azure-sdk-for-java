@@ -23,8 +23,8 @@ public interface NetworkFabricControllers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
-    Response<NetworkFabricController> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricControllerName, Context context);
+    Response<NetworkFabricController> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkFabricControllerName, Context context);
 
     /**
      * Gets a Network Fabric Controller.

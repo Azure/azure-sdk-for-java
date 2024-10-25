@@ -210,8 +210,8 @@ public final class WeatherAsyncClient {
     Mono<Response<HourlyForecastResult>> getHourlyForecastWithResponse(GeoPosition position, WeatherDataUnit unit,
         Integer duration, String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getHourlyForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration,
-                language, context)
+        return this.serviceClient
+            .getHourlyForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration, language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -326,8 +326,8 @@ public final class WeatherAsyncClient {
     Mono<Response<MinuteForecastResult>> getMinuteForecastWithResponse(GeoPosition position, Integer interval,
         String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getMinuteForecastWithResponseAsync(JsonFormat.JSON, coordinates, interval, language,
-                context)
+        return this.serviceClient
+            .getMinuteForecastWithResponseAsync(JsonFormat.JSON, coordinates, interval, language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -446,8 +446,8 @@ public final class WeatherAsyncClient {
     Mono<Response<QuarterDayForecastResult>> getQuarterDayForecastWithResponse(GeoPosition position,
         WeatherDataUnit unit, Integer duration, String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getQuarterDayForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration,
-                language, context)
+        return this.serviceClient
+            .getQuarterDayForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration, language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -588,8 +588,9 @@ public final class WeatherAsyncClient {
     Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponse(GeoPosition position, WeatherDataUnit unit,
         String details, Integer duration, String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getCurrentConditionsWithResponseAsync(JsonFormat.JSON, coordinates, unit, details,
-                duration, language, context)
+        return this.serviceClient
+            .getCurrentConditionsWithResponseAsync(JsonFormat.JSON, coordinates, unit, details, duration, language,
+                context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -717,8 +718,8 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyForecastResult>> getDailyForecastWithResponse(GeoPosition position, WeatherDataUnit unit,
         Integer duration, String language, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getDailyForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration,
-                language, context)
+        return this.serviceClient
+            .getDailyForecastWithResponseAsync(JsonFormat.JSON, coordinates, unit, duration, language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -938,8 +939,8 @@ public final class WeatherAsyncClient {
     Mono<Response<WeatherAlongRouteResult>> getWeatherAlongRouteWithResponse(List<Waypoint> waypoints, String language,
         Context context) {
         final String waypointsAsString = waypoints.stream().map(Waypoint::toString).collect(Collectors.joining(":"));
-        return this.serviceClient.getWeatherAlongRouteWithResponseAsync(JsonFormat.JSON, waypointsAsString, language,
-                context)
+        return this.serviceClient
+            .getWeatherAlongRouteWithResponseAsync(JsonFormat.JSON, waypointsAsString, language, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1067,7 +1068,8 @@ public final class WeatherAsyncClient {
     Mono<Response<SevereWeatherAlertsResult>> getSevereWeatherAlertsWithResponse(GeoPosition position, String language,
         Boolean includeDetails, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getSevereWeatherAlertsWithResponseAsync(JsonFormat.JSON, coordinates, language,
+        return this.serviceClient
+            .getSevereWeatherAlertsWithResponseAsync(JsonFormat.JSON, coordinates, language,
                 String.valueOf(includeDetails), context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
@@ -1222,8 +1224,9 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyIndicesResult>> getDailyIndicesWithResponse(GeoPosition position, String language,
         Integer duration, Integer indexId, Integer indexGroupId, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getDailyIndicesWithResponseAsync(JsonFormat.JSON, coordinates, language, duration,
-                indexId, indexGroupId, context)
+        return this.serviceClient
+            .getDailyIndicesWithResponseAsync(JsonFormat.JSON, coordinates, language, duration, indexId, indexGroupId,
+                context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1377,8 +1380,8 @@ public final class WeatherAsyncClient {
     @Generated
     Mono<Response<StormSearchResult>> searchTropicalStormWithResponse(Integer year, BasinId basinId,
         Integer governmentStormId, Context context) {
-        return this.serviceClient.searchTropicalStormWithResponseAsync(JsonFormat.JSON, year, basinId,
-                governmentStormId, context)
+        return this.serviceClient
+            .searchTropicalStormWithResponseAsync(JsonFormat.JSON, year, basinId, governmentStormId, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1444,8 +1447,8 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StormForecastResult>> getTropicalStormForecastWithResponse(
-        TropicalStormForecastOptions options) {
+    public Mono<Response<StormForecastResult>>
+        getTropicalStormForecastWithResponse(TropicalStormForecastOptions options) {
         return withContext(context -> getTropicalStormForecastWithResponse(options, context));
     }
 
@@ -1479,8 +1482,9 @@ public final class WeatherAsyncClient {
     @Generated
     Mono<Response<StormForecastResult>> getTropicalStormForecastWithResponse(TropicalStormForecastOptions options,
         Context context) {
-        return this.serviceClient.getTropicalStormForecastWithResponseAsync(JsonFormat.JSON, options.getYear(),
-                options.getBasinId(), options.getGovernmentStormId(), options.getUnit(), options.getIncludeDetails(),
+        return this.serviceClient
+            .getTropicalStormForecastWithResponseAsync(JsonFormat.JSON, options.getYear(), options.getBasinId(),
+                options.getGovernmentStormId(), options.getUnit(), options.getIncludeDetails(),
                 options.getIncludeGeometricDetails(), options.getIncludeWindowGeometry(), context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
@@ -1545,8 +1549,8 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StormLocationsResult>> getTropicalStormLocationsWithResponse(
-        TropicalStormLocationOptions options) {
+    public Mono<Response<StormLocationsResult>>
+        getTropicalStormLocationsWithResponse(TropicalStormLocationOptions options) {
         return withContext(context -> getTropicalStormLocationsWithResponse(options, context));
     }
 
@@ -1579,9 +1583,10 @@ public final class WeatherAsyncClient {
     @Generated
     Mono<Response<StormLocationsResult>> getTropicalStormLocationsWithResponse(TropicalStormLocationOptions options,
         Context context) {
-        return this.serviceClient.getTropicalStormLocationsWithResponseAsync(JsonFormat.JSON, options.getYear(),
-                options.getBasinId(), options.getGovernmentStormId(), options.getIncludeDetails(),
-                options.getIncludeGeometricDetails(), options.getUnit(), options.getIncludeCurrentStorm(), context)
+        return this.serviceClient
+            .getTropicalStormLocationsWithResponseAsync(JsonFormat.JSON, options.getYear(), options.getBasinId(),
+                options.getGovernmentStormId(), options.getIncludeDetails(), options.getIncludeGeometricDetails(),
+                options.getUnit(), options.getIncludeCurrentStorm(), context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1695,8 +1700,9 @@ public final class WeatherAsyncClient {
     Mono<Response<AirQualityResult>> getCurrentAirQualityWithResponse(GeoPosition position, String language,
         Boolean includePollutantDetails, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getCurrentAirQualityWithResponseAsync(JsonFormat.JSON, coordinates, language,
-                includePollutantDetails, context)
+        return this.serviceClient
+            .getCurrentAirQualityWithResponseAsync(JsonFormat.JSON, coordinates, language, includePollutantDetails,
+                context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1812,8 +1818,8 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyAirQualityForecastResult>> getAirQualityDailyForecastsWithResponse(GeoPosition position,
         String language, DailyDuration duration, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getAirQualityDailyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language,
-            duration, context)
+        return this.serviceClient
+            .getAirQualityDailyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language, duration, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -1937,8 +1943,9 @@ public final class WeatherAsyncClient {
     Mono<Response<AirQualityResult>> getAirQualityHourlyForecastsWithResponse(GeoPosition position, String language,
         HourlyDuration duration, Boolean includePollutantDetails, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getAirQualityHourlyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language,
-                duration, includePollutantDetails, context)
+        return this.serviceClient
+            .getAirQualityHourlyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language, duration,
+                includePollutantDetails, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -2058,8 +2065,8 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyHistoricalActualsResult>> getDailyHistoricalActualsWithResponse(GeoPosition position,
         LocalDate startDate, LocalDate endDate, WeatherDataUnit unit, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getDailyHistoricalActualsWithResponseAsync(JsonFormat.JSON, coordinates, startDate,
-                endDate, unit, context)
+        return this.serviceClient
+            .getDailyHistoricalActualsWithResponseAsync(JsonFormat.JSON, coordinates, startDate, endDate, unit, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -2176,8 +2183,8 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyHistoricalRecordsResult>> getDailyHistoricalRecordsWithResponse(GeoPosition position,
         LocalDate startDate, LocalDate endDate, WeatherDataUnit unit, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getDailyHistoricalRecordsWithResponseAsync(JsonFormat.JSON, coordinates, startDate,
-                endDate, unit)
+        return this.serviceClient
+            .getDailyHistoricalRecordsWithResponseAsync(JsonFormat.JSON, coordinates, startDate, endDate, unit)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -2303,8 +2310,8 @@ public final class WeatherAsyncClient {
     Mono<Response<DailyHistoricalNormalsResult>> getDailyHistoricalNormalsWithResponse(GeoPosition position,
         LocalDate startDate, LocalDate endDate, WeatherDataUnit unit, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
-        return this.serviceClient.getDailyHistoricalNormalsWithResponseAsync(JsonFormat.JSON, coordinates, startDate,
-                endDate, unit, context)
+        return this.serviceClient
+            .getDailyHistoricalNormalsWithResponseAsync(JsonFormat.JSON, coordinates, startDate, endDate, unit, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 

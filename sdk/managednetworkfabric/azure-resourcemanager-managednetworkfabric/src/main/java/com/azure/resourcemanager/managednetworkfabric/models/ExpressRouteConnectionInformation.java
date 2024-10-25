@@ -80,17 +80,13 @@ public final class ExpressRouteConnectionInformation {
      */
     public void validate() {
         if (expressRouteCircuitId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expressRouteCircuitId in model ExpressRouteConnectionInformation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expressRouteCircuitId in model ExpressRouteConnectionInformation"));
         }
         if (expressRouteAuthorizationKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expressRouteAuthorizationKey in model"
-                            + " ExpressRouteConnectionInformation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expressRouteAuthorizationKey in model"
+                    + " ExpressRouteConnectionInformation"));
         }
     }
 

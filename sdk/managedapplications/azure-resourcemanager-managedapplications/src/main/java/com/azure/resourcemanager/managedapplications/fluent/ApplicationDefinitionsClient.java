@@ -26,8 +26,8 @@ public interface ApplicationDefinitionsClient {
      * @return the managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String applicationDefinitionName, Context context);
 
     /**
      * Gets the managed application definition.
@@ -81,11 +81,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionInner parameters,
-        Context context);
+    Response<ApplicationDefinitionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String applicationDefinitionName, ApplicationDefinitionInner parameters, Context context);
 
     /**
      * Creates or updates a managed application definition.
@@ -99,8 +96,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationDefinitionInner createOrUpdate(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
+    ApplicationDefinitionInner createOrUpdate(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionInner parameters);
 
     /**
      * Updates the managed application definition.
@@ -115,11 +112,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> updateWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionPatchable parameters,
-        Context context);
+    Response<ApplicationDefinitionInner> updateWithResponse(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters, Context context);
 
     /**
      * Updates the managed application definition.
@@ -133,8 +127,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationDefinitionInner update(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionPatchable parameters);
+    ApplicationDefinitionInner update(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters);
 
     /**
      * Lists the managed application definitions in a resource group.
@@ -195,8 +189,8 @@ public interface ApplicationDefinitionsClient {
      * @return the managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> getByIdWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<ApplicationDefinitionInner> getByIdWithResponse(String resourceGroupName, String applicationDefinitionName,
+        Context context);
 
     /**
      * Gets the managed application definition.
@@ -250,11 +244,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> createOrUpdateByIdWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionInner parameters,
-        Context context);
+    Response<ApplicationDefinitionInner> createOrUpdateByIdWithResponse(String resourceGroupName,
+        String applicationDefinitionName, ApplicationDefinitionInner parameters, Context context);
 
     /**
      * Creates or updates a managed application definition.
@@ -268,8 +259,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationDefinitionInner createOrUpdateById(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
+    ApplicationDefinitionInner createOrUpdateById(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionInner parameters);
 
     /**
      * Updates the managed application definition.
@@ -284,11 +275,8 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationDefinitionInner> updateByIdWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionPatchable parameters,
-        Context context);
+    Response<ApplicationDefinitionInner> updateByIdWithResponse(String resourceGroupName,
+        String applicationDefinitionName, ApplicationDefinitionPatchable parameters, Context context);
 
     /**
      * Updates the managed application definition.
@@ -302,6 +290,6 @@ public interface ApplicationDefinitionsClient {
      * @return information about managed application definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationDefinitionInner updateById(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionPatchable parameters);
+    ApplicationDefinitionInner updateById(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters);
 }

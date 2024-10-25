@@ -24,22 +24,18 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkInterfacesImpl(
-        NetworkInterfacesClient innerClient,
+    public NetworkInterfacesImpl(NetworkInterfacesClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NetworkInterface> getWithResponse(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        Response<NetworkInterfaceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context);
+    public Response<NetworkInterface> getWithResponse(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, Context context) {
+        Response<NetworkInterfaceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkInterfaceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -47,8 +43,8 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public NetworkInterface get(String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        NetworkInterfaceInner inner =
-            this.serviceClient().get(resourceGroupName, networkDeviceName, networkInterfaceName);
+        NetworkInterfaceInner inner
+            = this.serviceClient().get(resourceGroupName, networkDeviceName, networkInterfaceName);
         if (inner != null) {
             return new NetworkInterfaceImpl(inner, this.manager());
         } else {
@@ -60,33 +56,28 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
         this.serviceClient().delete(resourceGroupName, networkDeviceName, networkInterfaceName);
     }
 
-    public void delete(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
+    public void delete(String resourceGroupName, String networkDeviceName, String networkInterfaceName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }
 
     public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName) {
-        PagedIterable<NetworkInterfaceInner> inner =
-            this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName);
+        PagedIterable<NetworkInterfaceInner> inner
+            = this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName);
         return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NetworkInterface> listByNetworkDevice(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        PagedIterable<NetworkInterfaceInner> inner =
-            this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName, context);
+    public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
+        Context context) {
+        PagedIterable<NetworkInterfaceInner> inner
+            = this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName, context);
         return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this
-                .serviceClient()
-                .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner = this.serviceClient()
+            .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -94,16 +85,10 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this
-                .serviceClient()
-                .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, String networkInterfaceName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner = this.serviceClient()
+            .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -114,59 +99,38 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     public NetworkInterface getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
         String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
             .getValue();
     }
 
     public Response<NetworkInterface> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
         String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
         }
         return this.getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }
@@ -174,28 +138,18 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
         String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
         }
         this.delete(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE);
     }
@@ -203,28 +157,18 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
         String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
         }
         this.delete(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }

@@ -16,14 +16,14 @@ import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnect
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceConnectionsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceConnectionsImpl.class);
 
     private final WorkspaceConnectionsClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public WorkspaceConnectionsImpl(
-        WorkspaceConnectionsClient innerClient,
+    public WorkspaceConnectionsImpl(WorkspaceConnectionsClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,10 +34,10 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         return Utils.mapPage(inner, inner1 -> new WorkspaceConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkspaceConnection> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context) {
-        PagedIterable<WorkspaceConnectionInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, target, category, context);
+    public PagedIterable<WorkspaceConnection> list(String resourceGroupName, String workspaceName, String target,
+        String category, Context context) {
+        PagedIterable<WorkspaceConnectionInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, target, category, context);
         return Utils.mapPage(inner, inner1 -> new WorkspaceConnectionImpl(inner1, this.manager()));
     }
 
@@ -50,15 +50,12 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         }
     }
 
-    public Response<WorkspaceConnection> getWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
-        Response<WorkspaceConnectionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, connectionName, context);
+    public Response<WorkspaceConnection> getWithResponse(String resourceGroupName, String workspaceName,
+        String connectionName, Context context) {
+        Response<WorkspaceConnectionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, connectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkspaceConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,33 +66,26 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         this.serviceClient().delete(resourceGroupName, workspaceName, connectionName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, connectionName, context);
     }
 
     public WorkspaceConnection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE).getValue();
     }
@@ -103,25 +93,18 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public Response<WorkspaceConnection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, connectionName, context);
     }
@@ -129,25 +112,18 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE).getValue();
     }
@@ -155,25 +131,18 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, connectionName, context);
     }

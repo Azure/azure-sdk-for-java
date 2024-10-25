@@ -94,8 +94,8 @@ public class NetworkTapRulePatchableProperties {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the NetworkTapRulePatchableProperties object itself.
      */
-    public NetworkTapRulePatchableProperties withMatchConfigurations(
-        List<NetworkTapRuleMatchConfiguration> matchConfigurations) {
+    public NetworkTapRulePatchableProperties
+        withMatchConfigurations(List<NetworkTapRuleMatchConfiguration> matchConfigurations) {
         this.matchConfigurations = matchConfigurations;
         return this;
     }
@@ -115,8 +115,8 @@ public class NetworkTapRulePatchableProperties {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRulePatchableProperties object itself.
      */
-    public NetworkTapRulePatchableProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRulePatchableProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         this.dynamicMatchConfigurations = dynamicMatchConfigurations;
         return this;
     }

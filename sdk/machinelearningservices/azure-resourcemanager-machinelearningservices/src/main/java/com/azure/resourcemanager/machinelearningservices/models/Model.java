@@ -15,7 +15,8 @@ import java.util.Map;
 /** An Azure Machine Learning Model. */
 @Fluent
 public final class Model {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Model.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Model.class);
 
     /*
      * The Model Id.

@@ -42,9 +42,9 @@ import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
  */
 @ServiceClient(builder = TrafficClientBuilder.class)
 public final class TrafficClient {
-     /**
-     * Initializes an instance of TrafficClient client.
-     */
+    /**
+    * Initializes an instance of TrafficClient client.
+    */
     private final TrafficAsyncClient asyncClient;
 
     private static final ClientLogger LOGGER = new ClientLogger(TrafficClient.class);
@@ -419,8 +419,8 @@ public final class TrafficClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficIncidentViewport> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options, Context context) {
+    public Response<TrafficIncidentViewport>
+        getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options, Context context) {
         return this.asyncClient.getTrafficIncidentViewportWithResponse(options, context).block();
     }
 }

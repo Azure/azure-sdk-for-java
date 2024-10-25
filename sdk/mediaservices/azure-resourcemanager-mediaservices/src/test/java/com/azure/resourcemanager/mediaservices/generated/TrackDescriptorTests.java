@@ -10,8 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.TrackDescriptor;
 public final class TrackDescriptorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrackDescriptor model =
-            BinaryData.fromString("{\"@odata.type\":\"TrackDescriptor\"}").toObject(TrackDescriptor.class);
+        TrackDescriptor model
+            = BinaryData.fromString("{\"@odata.type\":\"TrackDescriptor\"}").toObject(TrackDescriptor.class);
     }
 
     @org.junit.jupiter.api.Test

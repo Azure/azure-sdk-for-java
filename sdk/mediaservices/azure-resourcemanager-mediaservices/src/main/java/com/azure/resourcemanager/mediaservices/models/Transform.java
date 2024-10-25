@@ -88,11 +88,13 @@ public interface Transform {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Transform definition stages. */
     interface DefinitionStages {
         /** The first stage of the Transform definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Transform definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -104,6 +106,7 @@ public interface Transform {
              */
             WithCreate withExistingMediaService(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Transform definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -124,6 +127,7 @@ public interface Transform {
              */
             Transform create(Context context);
         }
+
         /** The stage of the Transform definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -134,6 +138,7 @@ public interface Transform {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Transform definition allowing to specify outputs. */
         interface WithOutputs {
             /**
@@ -146,6 +151,7 @@ public interface Transform {
             WithCreate withOutputs(List<TransformOutput> outputs);
         }
     }
+
     /**
      * Begins update for the Transform resource.
      *
@@ -170,6 +176,7 @@ public interface Transform {
          */
         Transform apply(Context context);
     }
+
     /** The Transform update stages. */
     interface UpdateStages {
         /** The stage of the Transform update allowing to specify description. */
@@ -182,6 +189,7 @@ public interface Transform {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the Transform update allowing to specify outputs. */
         interface WithOutputs {
             /**
@@ -194,6 +202,7 @@ public interface Transform {
             Update withOutputs(List<TransformOutput> outputs);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

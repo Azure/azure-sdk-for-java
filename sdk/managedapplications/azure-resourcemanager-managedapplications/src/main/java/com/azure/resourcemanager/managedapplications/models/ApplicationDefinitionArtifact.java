@@ -100,22 +100,16 @@ public final class ApplicationDefinitionArtifact {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApplicationDefinitionArtifact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ApplicationDefinitionArtifact"));
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property uri in model ApplicationDefinitionArtifact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uri in model ApplicationDefinitionArtifact"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model ApplicationDefinitionArtifact"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ApplicationDefinitionArtifact"));
         }
     }
 

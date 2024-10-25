@@ -154,8 +154,8 @@ public final class ExternalNetworkProperties extends AnnotationResource {
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkProperties object itself.
      */
-    public ExternalNetworkProperties withOptionAProperties(
-        ExternalNetworkPropertiesOptionAProperties optionAProperties) {
+    public ExternalNetworkProperties
+        withOptionAProperties(ExternalNetworkPropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }
@@ -287,10 +287,8 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (peeringOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property peeringOption in model ExternalNetworkProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property peeringOption in model ExternalNetworkProperties"));
         }
         if (optionBProperties() != null) {
             optionBProperties().validate();

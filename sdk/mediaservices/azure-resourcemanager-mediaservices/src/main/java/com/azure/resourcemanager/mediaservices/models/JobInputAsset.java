@@ -90,9 +90,8 @@ public final class JobInputAsset extends JobInputClip {
     public void validate() {
         super.validate();
         if (assetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property assetName in model JobInputAsset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property assetName in model JobInputAsset"));
         }
     }
 

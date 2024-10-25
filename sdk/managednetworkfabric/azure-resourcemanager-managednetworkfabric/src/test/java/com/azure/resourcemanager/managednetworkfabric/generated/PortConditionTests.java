@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PortConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortCondition model =
-            BinaryData
-                .fromString(
-                    "{\"portType\":\"DestinationPort\",\"layer4Protocol\":\"TCP\",\"ports\":[\"zqdqxt\",\"jw\",\"nyfusfzsvtuikzh\"],\"portGroupNames\":[\"glcfhmlrqryxyn\",\"nzrdpsovwxz\",\"ptgoeiybbabp\",\"hv\"]}")
-                .toObject(PortCondition.class);
+        PortCondition model = BinaryData.fromString(
+            "{\"portType\":\"DestinationPort\",\"layer4Protocol\":\"TCP\",\"ports\":[\"zqdqxt\",\"jw\",\"nyfusfzsvtuikzh\"],\"portGroupNames\":[\"glcfhmlrqryxyn\",\"nzrdpsovwxz\",\"ptgoeiybbabp\",\"hv\"]}")
+            .toObject(PortCondition.class);
         Assertions.assertEquals(PortType.DESTINATION_PORT, model.portType());
         Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());
         Assertions.assertEquals("zqdqxt", model.ports().get(0));
@@ -27,12 +25,10 @@ public final class PortConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortCondition model =
-            new PortCondition()
-                .withPortType(PortType.DESTINATION_PORT)
-                .withLayer4Protocol(Layer4Protocol.TCP)
-                .withPorts(Arrays.asList("zqdqxt", "jw", "nyfusfzsvtuikzh"))
-                .withPortGroupNames(Arrays.asList("glcfhmlrqryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv"));
+        PortCondition model = new PortCondition().withPortType(PortType.DESTINATION_PORT)
+            .withLayer4Protocol(Layer4Protocol.TCP)
+            .withPorts(Arrays.asList("zqdqxt", "jw", "nyfusfzsvtuikzh"))
+            .withPortGroupNames(Arrays.asList("glcfhmlrqryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv"));
         model = BinaryData.fromObject(model).toObject(PortCondition.class);
         Assertions.assertEquals(PortType.DESTINATION_PORT, model.portType());
         Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());

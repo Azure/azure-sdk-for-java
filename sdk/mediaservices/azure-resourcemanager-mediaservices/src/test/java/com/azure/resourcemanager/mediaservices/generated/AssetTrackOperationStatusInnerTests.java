@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetTrackOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetTrackOperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"vce\",\"id\":\"eil\",\"startTime\":\"2021-09-20T14:02:55Z\",\"endTime\":\"2021-03-19T14:05:15Z\",\"status\":\"fj\"}")
-                .toObject(AssetTrackOperationStatusInner.class);
+        AssetTrackOperationStatusInner model = BinaryData.fromString(
+            "{\"name\":\"vce\",\"id\":\"eil\",\"startTime\":\"2021-09-20T14:02:55Z\",\"endTime\":\"2021-03-19T14:05:15Z\",\"status\":\"fj\"}")
+            .toObject(AssetTrackOperationStatusInner.class);
         Assertions.assertEquals("vce", model.name());
         Assertions.assertEquals("eil", model.id());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T14:02:55Z"), model.startTime());
@@ -26,13 +24,11 @@ public final class AssetTrackOperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetTrackOperationStatusInner model =
-            new AssetTrackOperationStatusInner()
-                .withName("vce")
-                .withId("eil")
-                .withStartTime(OffsetDateTime.parse("2021-09-20T14:02:55Z"))
-                .withEndTime(OffsetDateTime.parse("2021-03-19T14:05:15Z"))
-                .withStatus("fj");
+        AssetTrackOperationStatusInner model = new AssetTrackOperationStatusInner().withName("vce")
+            .withId("eil")
+            .withStartTime(OffsetDateTime.parse("2021-09-20T14:02:55Z"))
+            .withEndTime(OffsetDateTime.parse("2021-03-19T14:05:15Z"))
+            .withStatus("fj");
         model = BinaryData.fromObject(model).toObject(AssetTrackOperationStatusInner.class);
         Assertions.assertEquals("vce", model.name());
         Assertions.assertEquals("eil", model.id());

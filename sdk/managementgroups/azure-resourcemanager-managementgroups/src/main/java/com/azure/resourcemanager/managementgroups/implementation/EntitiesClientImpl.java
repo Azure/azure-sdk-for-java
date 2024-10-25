@@ -58,35 +58,24 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiE")
     public interface EntitiesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/getEntities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EntityListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$select") String select,
-            @QueryParam("$search") EntitySearchType search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$view") EntityViewParameterType view,
-            @QueryParam("groupName") String groupName,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntityListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @QueryParam("$select") String select,
+            @QueryParam("$search") EntitySearchType search, @QueryParam("$filter") String filter,
+            @QueryParam("$view") EntityViewParameterType view, @QueryParam("groupName") String groupName,
+            @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EntityListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntityListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Cache-Control") String cacheControl,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -129,50 +118,19 @@ public final class EntitiesClientImpl implements EntitiesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
+    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(String skiptoken, Integer skip, Integer top,
+        String select, EntitySearchType search, String filter, EntityViewParameterType view, String groupName,
         String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            skip,
-                            top,
-                            select,
-                            search,
-                            filter,
-                            view,
-                            groupName,
-                            cacheControl,
-                            accept,
-                            context))
-            .<PagedResponse<EntityInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), skiptoken,
+                skip, top, select, search, filter, view, groupName, cacheControl, accept, context))
+            .<PagedResponse<EntityInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -217,49 +175,20 @@ public final class EntitiesClientImpl implements EntitiesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
-        Context context) {
+    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(String skiptoken, Integer skip, Integer top,
+        String select, EntitySearchType search, String filter, EntityViewParameterType view, String groupName,
+        String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                skiptoken,
-                skip,
-                top,
-                select,
-                search,
-                filter,
-                view,
-                groupName,
-                cacheControl,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), skiptoken, skip, top, select, search, filter,
+                view, groupName, cacheControl, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -301,16 +230,8 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EntityInfoInner> listAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl) {
+    private PagedFlux<EntityInfoInner> listAsync(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl),
             nextLink -> listNextSinglePageAsync(nextLink, cacheControl));
@@ -379,22 +300,11 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EntityInfoInner> listAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    private PagedFlux<EntityInfoInner> listAsync(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context),
-            nextLink -> listNextSinglePageAsync(nextLink, cacheControl, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(skiptoken, skip, top, select, search, filter, view, groupName,
+            cacheControl, context), nextLink -> listNextSinglePageAsync(nextLink, cacheControl, context));
     }
 
     /**
@@ -459,16 +369,8 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EntityInfoInner> list(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    public PagedIterable<EntityInfoInner> list(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context) {
         return new PagedIterable<>(
             listAsync(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context));
@@ -493,24 +395,15 @@ public final class EntitiesClientImpl implements EntitiesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context))
-            .<PagedResponse<EntityInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EntityInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -529,29 +422,19 @@ public final class EntitiesClientImpl implements EntitiesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listNextSinglePageAsync(
-        String nextLink, String cacheControl, Context context) {
+    private Mono<PagedResponse<EntityInfoInner>> listNextSinglePageAsync(String nextLink, String cacheControl,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

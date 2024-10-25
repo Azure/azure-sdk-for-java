@@ -81,10 +81,8 @@ public final class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPoli
     public void validate() {
         super.validate();
         if (licenses() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property licenses in model ContentKeyPolicyPlayReadyConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property licenses in model ContentKeyPolicyPlayReadyConfiguration"));
         } else {
             licenses().forEach(e -> e.validate());
         }

@@ -33,48 +33,37 @@ public final class IpPrefixesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationState\":\"Failed\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5376347157026383231,\"networkPrefix\":\"urxrjwyz\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"tqmlzuwtbdzqa\"}],\"annotation\":\"kmpebfhlgeehb\"},\"location\":\"gplnl\",\"tags\":{\"afm\":\"eszunb\",\"vequzytapgzdhz\":\"ubukqmierzrnob\",\"v\":\"jecdsysxnku\"},\"id\":\"nlsevzcrrwnkk\",\"name\":\"dwqymxsfqe\",\"type\":\"xdqeluvmsaq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"configurationState\":\"Failed\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5376347157026383231,\"networkPrefix\":\"urxrjwyz\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"tqmlzuwtbdzqa\"}],\"annotation\":\"kmpebfhlgeehb\"},\"location\":\"gplnl\",\"tags\":{\"afm\":\"eszunb\",\"vequzytapgzdhz\":\"ubukqmierzrnob\",\"v\":\"jecdsysxnku\"},\"id\":\"nlsevzcrrwnkk\",\"name\":\"dwqymxsfqe\",\"type\":\"xdqeluvmsaq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IpPrefix> response =
-            manager.ipPrefixes().listByResourceGroup("jzrfx", com.azure.core.util.Context.NONE);
+        PagedIterable<IpPrefix> response
+            = manager.ipPrefixes().listByResourceGroup("jzrfx", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("gplnl", response.iterator().next().location());
         Assertions.assertEquals("eszunb", response.iterator().next().tags().get("afm"));
-        Assertions
-            .assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().ipPrefixRules().get(0).action());
-        Assertions
-            .assertEquals(5376347157026383231L, response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT,
+            response.iterator().next().ipPrefixRules().get(0).action());
+        Assertions.assertEquals(5376347157026383231L,
+            response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
         Assertions.assertEquals("urxrjwyz", response.iterator().next().ipPrefixRules().get(0).networkPrefix());
-        Assertions
-            .assertEquals(
-                Condition.GREATER_THAN_OR_EQUAL_TO, response.iterator().next().ipPrefixRules().get(0).condition());
+        Assertions.assertEquals(Condition.GREATER_THAN_OR_EQUAL_TO,
+            response.iterator().next().ipPrefixRules().get(0).condition());
         Assertions.assertEquals("tqmlzuwtbdzqa", response.iterator().next().ipPrefixRules().get(0).subnetMaskLength());
         Assertions.assertEquals("kmpebfhlgeehb", response.iterator().next().annotation());
     }

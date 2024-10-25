@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAccessControlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAccessControl model =
-            BinaryData
-                .fromString(
-                    "{\"allow\":[{\"name\":\"vksgplsaknynfsy\",\"address\":\"jphuopxodlqi\",\"subnetPrefixLength\":1587464346},{\"name\":\"rz\",\"address\":\"leosjswsrms\",\"subnetPrefixLength\":1326847440}]}")
-                .toObject(IpAccessControl.class);
+        IpAccessControl model = BinaryData.fromString(
+            "{\"allow\":[{\"name\":\"vksgplsaknynfsy\",\"address\":\"jphuopxodlqi\",\"subnetPrefixLength\":1587464346},{\"name\":\"rz\",\"address\":\"leosjswsrms\",\"subnetPrefixLength\":1326847440}]}")
+            .toObject(IpAccessControl.class);
         Assertions.assertEquals("vksgplsaknynfsy", model.allow().get(0).name());
         Assertions.assertEquals("jphuopxodlqi", model.allow().get(0).address());
         Assertions.assertEquals(1587464346, model.allow().get(0).subnetPrefixLength());
@@ -25,19 +23,9 @@ public final class IpAccessControlTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAccessControl model =
-            new IpAccessControl()
-                .withAllow(
-                    Arrays
-                        .asList(
-                            new IpRange()
-                                .withName("vksgplsaknynfsy")
-                                .withAddress("jphuopxodlqi")
-                                .withSubnetPrefixLength(1587464346),
-                            new IpRange()
-                                .withName("rz")
-                                .withAddress("leosjswsrms")
-                                .withSubnetPrefixLength(1326847440)));
+        IpAccessControl model = new IpAccessControl().withAllow(Arrays.asList(
+            new IpRange().withName("vksgplsaknynfsy").withAddress("jphuopxodlqi").withSubnetPrefixLength(1587464346),
+            new IpRange().withName("rz").withAddress("leosjswsrms").withSubnetPrefixLength(1326847440)));
         model = BinaryData.fromObject(model).toObject(IpAccessControl.class);
         Assertions.assertEquals("vksgplsaknynfsy", model.allow().get(0).name());
         Assertions.assertEquals("jphuopxodlqi", model.allow().get(0).address());

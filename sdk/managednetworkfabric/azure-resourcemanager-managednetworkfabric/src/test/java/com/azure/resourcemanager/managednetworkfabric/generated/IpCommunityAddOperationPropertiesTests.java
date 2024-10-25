@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IpCommunityAddOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpCommunityAddOperationProperties model =
-            BinaryData
-                .fromString("{\"add\":{\"ipCommunityIds\":[\"bkqynlzx\",\"melupjckiehd\",\"vfoy\"]}}")
+        IpCommunityAddOperationProperties model
+            = BinaryData.fromString("{\"add\":{\"ipCommunityIds\":[\"bkqynlzx\",\"melupjckiehd\",\"vfoy\"]}}")
                 .toObject(IpCommunityAddOperationProperties.class);
         Assertions.assertEquals("bkqynlzx", model.add().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityAddOperationProperties model =
-            new IpCommunityAddOperationProperties()
-                .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("bkqynlzx", "melupjckiehd", "vfoy")));
+        IpCommunityAddOperationProperties model = new IpCommunityAddOperationProperties()
+            .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("bkqynlzx", "melupjckiehd", "vfoy")));
         model = BinaryData.fromObject(model).toObject(IpCommunityAddOperationProperties.class);
         Assertions.assertEquals("bkqynlzx", model.add().ipCommunityIds().get(0));
     }

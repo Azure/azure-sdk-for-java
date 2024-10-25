@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
     property = "@odata.type",
     defaultImpl = JobOutput.class)
 @JsonTypeName("JobOutput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = JobOutputAsset.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = JobOutputAsset.class) })
 @Fluent
 public class JobOutput {
     /*

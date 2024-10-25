@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetFileEncryptionMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetFileEncryptionMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"initializationVector\":\"sucocmnyyazttbtw\",\"assetFileName\":\"qpuedckzywbiex\",\"assetFileId\":\"028a7ece-09bc-4d14-83ec-dceeb5a9710f\"}")
-                .toObject(AssetFileEncryptionMetadata.class);
+        AssetFileEncryptionMetadata model = BinaryData.fromString(
+            "{\"initializationVector\":\"sucocmnyyazttbtw\",\"assetFileName\":\"qpuedckzywbiex\",\"assetFileId\":\"028a7ece-09bc-4d14-83ec-dceeb5a9710f\"}")
+            .toObject(AssetFileEncryptionMetadata.class);
         Assertions.assertEquals("sucocmnyyazttbtw", model.initializationVector());
         Assertions.assertEquals("qpuedckzywbiex", model.assetFileName());
         Assertions.assertEquals(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"), model.assetFileId());
@@ -24,9 +22,8 @@ public final class AssetFileEncryptionMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetFileEncryptionMetadata model =
-            new AssetFileEncryptionMetadata()
-                .withInitializationVector("sucocmnyyazttbtw")
+        AssetFileEncryptionMetadata model
+            = new AssetFileEncryptionMetadata().withInitializationVector("sucocmnyyazttbtw")
                 .withAssetFileName("qpuedckzywbiex")
                 .withAssetFileId(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"));
         model = BinaryData.fromObject(model).toObject(AssetFileEncryptionMetadata.class);

@@ -91,12 +91,8 @@ public interface Creator {
     CreatorInner innerModel();
 
     /** The entirety of the Creator definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The Creator definition stages. */

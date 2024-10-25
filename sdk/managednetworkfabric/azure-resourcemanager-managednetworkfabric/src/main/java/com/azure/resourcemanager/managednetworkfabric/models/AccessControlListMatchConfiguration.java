@@ -120,8 +120,8 @@ public final class AccessControlListMatchConfiguration {
      * @param matchConditions the matchConditions value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
-    public AccessControlListMatchConfiguration withMatchConditions(
-        List<AccessControlListMatchCondition> matchConditions) {
+    public AccessControlListMatchConfiguration
+        withMatchConditions(List<AccessControlListMatchCondition> matchConditions) {
         this.matchConditions = matchConditions;
         return this;
     }

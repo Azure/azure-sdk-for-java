@@ -24,8 +24,8 @@ public final class AnomalyAlertConfiguration {
     private List<String> splitAlertByDimensions;
 
     static {
-        AnomalyAlertConfigurationHelper.setAccessor(
-            new AnomalyAlertConfigurationHelper.AnomalyAlertConfigurationAccessor() {
+        AnomalyAlertConfigurationHelper
+            .setAccessor(new AnomalyAlertConfigurationHelper.AnomalyAlertConfigurationAccessor() {
                 @Override
                 public void setId(AnomalyAlertConfiguration configuration, String id) {
                     configuration.setId(id);
@@ -59,8 +59,7 @@ public final class AnomalyAlertConfiguration {
      * @param crossMetricsOperator The logical operator to apply across multiple
      * metric level {@link MetricAlertConfiguration} in the alert configuration.
      */
-    public AnomalyAlertConfiguration(String name,
-        MetricAlertConfigurationsOperator crossMetricsOperator) {
+    public AnomalyAlertConfiguration(String name, MetricAlertConfigurationsOperator crossMetricsOperator) {
         this.name = name;
         this.crossMetricsOperator = crossMetricsOperator;
         this.metricAnomalyAlertConfigurations = new ArrayList<>();
@@ -152,8 +151,7 @@ public final class AnomalyAlertConfiguration {
      *
      * @return The AnomalyAlertConfiguration object itself.
      */
-    public AnomalyAlertConfiguration setCrossMetricsOperator(
-        MetricAlertConfigurationsOperator crossMetricsOperator) {
+    public AnomalyAlertConfiguration setCrossMetricsOperator(MetricAlertConfigurationsOperator crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
         return this;
     }
@@ -177,8 +175,7 @@ public final class AnomalyAlertConfiguration {
      *
      * @return The AnomalyAlertConfiguration object itself.
      */
-    public AnomalyAlertConfiguration setMetricAlertConfigurations(
-        List<MetricAlertConfiguration> configurations) {
+    public AnomalyAlertConfiguration setMetricAlertConfigurations(List<MetricAlertConfiguration> configurations) {
         if (configurations == null) {
             this.metricAnomalyAlertConfigurations = new ArrayList<>();
         } else {

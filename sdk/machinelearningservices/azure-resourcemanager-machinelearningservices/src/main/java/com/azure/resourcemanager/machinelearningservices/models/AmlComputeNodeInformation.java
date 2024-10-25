@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Compute node information related to a AmlCompute. */
 @Immutable
 public final class AmlComputeNodeInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlComputeNodeInformation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AmlComputeNodeInformation.class);
 
     /*
      * ID of the compute node.

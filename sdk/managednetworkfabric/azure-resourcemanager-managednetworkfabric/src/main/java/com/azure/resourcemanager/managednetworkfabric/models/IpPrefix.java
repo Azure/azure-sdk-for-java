@@ -119,11 +119,8 @@ public interface IpPrefix {
     IpPrefixInner innerModel();
 
     /** The entirety of the IpPrefix definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The IpPrefix definition stages. */

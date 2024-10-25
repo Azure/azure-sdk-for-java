@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NpbStaticRouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NpbStaticRouteConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":171013724,\"multiplier\":1206192752},\"ipv4Routes\":[{\"prefix\":\"b\",\"nextHop\":[\"bispglqjoxtdah\",\"eaoo\"]}],\"ipv6Routes\":[{\"prefix\":\"jztivfwjlofzek\",\"nextHop\":[\"rmauklaj\",\"cfocz\"]}]}")
-                .toObject(NpbStaticRouteConfiguration.class);
+        NpbStaticRouteConfiguration model = BinaryData.fromString(
+            "{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":171013724,\"multiplier\":1206192752},\"ipv4Routes\":[{\"prefix\":\"b\",\"nextHop\":[\"bispglqjoxtdah\",\"eaoo\"]}],\"ipv6Routes\":[{\"prefix\":\"jztivfwjlofzek\",\"nextHop\":[\"rmauklaj\",\"cfocz\"]}]}")
+            .toObject(NpbStaticRouteConfiguration.class);
         Assertions.assertEquals(171013724, model.bfdConfiguration().intervalInMilliSeconds());
         Assertions.assertEquals(1206192752, model.bfdConfiguration().multiplier());
         Assertions.assertEquals("b", model.ipv4Routes().get(0).prefix());
@@ -29,22 +27,13 @@ public final class NpbStaticRouteConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NpbStaticRouteConfiguration model =
-            new NpbStaticRouteConfiguration()
-                .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(171013724).withMultiplier(1206192752))
-                .withIpv4Routes(
-                    Arrays
-                        .asList(
-                            new StaticRouteProperties()
-                                .withPrefix("b")
-                                .withNextHop(Arrays.asList("bispglqjoxtdah", "eaoo"))))
-                .withIpv6Routes(
-                    Arrays
-                        .asList(
-                            new StaticRouteProperties()
-                                .withPrefix("jztivfwjlofzek")
-                                .withNextHop(Arrays.asList("rmauklaj", "cfocz"))));
+        NpbStaticRouteConfiguration model = new NpbStaticRouteConfiguration()
+            .withBfdConfiguration(
+                new BfdConfiguration().withIntervalInMilliSeconds(171013724).withMultiplier(1206192752))
+            .withIpv4Routes(Arrays.asList(
+                new StaticRouteProperties().withPrefix("b").withNextHop(Arrays.asList("bispglqjoxtdah", "eaoo"))))
+            .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("jztivfwjlofzek")
+                .withNextHop(Arrays.asList("rmauklaj", "cfocz"))));
         model = BinaryData.fromObject(model).toObject(NpbStaticRouteConfiguration.class);
         Assertions.assertEquals(171013724, model.bfdConfiguration().intervalInMilliSeconds());
         Assertions.assertEquals(1206192752, model.bfdConfiguration().multiplier());

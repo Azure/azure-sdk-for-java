@@ -146,12 +146,8 @@ public interface L3IsolationDomain {
     L3IsolationDomainInner innerModel();
 
     /** The entirety of the L3IsolationDomain definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
     /** The L3IsolationDomain definition stages. */
@@ -205,13 +201,9 @@ public interface L3IsolationDomain {
          * The stage of the L3IsolationDomain definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithRedistributeConnectedSubnets,
-                DefinitionStages.WithRedistributeStaticRoutes,
-                DefinitionStages.WithAggregateRouteConfiguration,
-                DefinitionStages.WithConnectedSubnetRoutePolicy,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithRedistributeConnectedSubnets,
+            DefinitionStages.WithRedistributeStaticRoutes, DefinitionStages.WithAggregateRouteConfiguration,
+            DefinitionStages.WithConnectedSubnetRoutePolicy, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -303,13 +295,9 @@ public interface L3IsolationDomain {
     L3IsolationDomain.Update update();
 
     /** The template for L3IsolationDomain update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithRedistributeConnectedSubnets,
-            UpdateStages.WithRedistributeStaticRoutes,
-            UpdateStages.WithAggregateRouteConfiguration,
-            UpdateStages.WithConnectedSubnetRoutePolicy,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithRedistributeConnectedSubnets,
+        UpdateStages.WithRedistributeStaticRoutes, UpdateStages.WithAggregateRouteConfiguration,
+        UpdateStages.WithConnectedSubnetRoutePolicy, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *

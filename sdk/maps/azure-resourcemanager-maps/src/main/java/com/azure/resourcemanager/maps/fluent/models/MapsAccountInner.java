@@ -161,9 +161,8 @@ public final class MapsAccountInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
         } else {
             sku().validate();
         }

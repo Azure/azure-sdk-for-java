@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyConfigurat
 public final class ContentKeyPolicyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyConfiguration model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"ContentKeyPolicyConfiguration\"}")
+        ContentKeyPolicyConfiguration model
+            = BinaryData.fromString("{\"@odata.type\":\"ContentKeyPolicyConfiguration\"}")
                 .toObject(ContentKeyPolicyConfiguration.class);
     }
 

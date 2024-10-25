@@ -18,7 +18,8 @@ import java.util.Map;
 @JsonTypeName("AKS")
 @Fluent
 public final class AksServiceResponse extends AksVariantResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksServiceResponse.class);
 
     /*
      * The list of models.
@@ -170,8 +171,8 @@ public final class AksServiceResponse extends AksVariantResponse {
      * @param containerResourceRequirements the containerResourceRequirements value to set.
      * @return the AksServiceResponse object itself.
      */
-    public AksServiceResponse withContainerResourceRequirements(
-        ContainerResourceRequirements containerResourceRequirements) {
+    public AksServiceResponse
+        withContainerResourceRequirements(ContainerResourceRequirements containerResourceRequirements) {
         this.containerResourceRequirements = containerResourceRequirements;
         return this;
     }
@@ -391,8 +392,8 @@ public final class AksServiceResponse extends AksVariantResponse {
      * @param livenessProbeRequirements the livenessProbeRequirements value to set.
      * @return the AksServiceResponse object itself.
      */
-    public AksServiceResponse withLivenessProbeRequirements(
-        AksServiceResponseLivenessProbeRequirements livenessProbeRequirements) {
+    public AksServiceResponse
+        withLivenessProbeRequirements(AksServiceResponseLivenessProbeRequirements livenessProbeRequirements) {
         this.livenessProbeRequirements = livenessProbeRequirements;
         return this;
     }
@@ -470,8 +471,8 @@ public final class AksServiceResponse extends AksVariantResponse {
      * @param environmentImageRequest the environmentImageRequest value to set.
      * @return the AksServiceResponse object itself.
      */
-    public AksServiceResponse withEnvironmentImageRequest(
-        AksServiceResponseEnvironmentImageRequest environmentImageRequest) {
+    public AksServiceResponse
+        withEnvironmentImageRequest(AksServiceResponseEnvironmentImageRequest environmentImageRequest) {
         this.environmentImageRequest = environmentImageRequest;
         return this;
     }

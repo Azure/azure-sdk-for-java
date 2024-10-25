@@ -43,8 +43,8 @@ public final class ServerInstancesImpl implements ServerInstances {
 
     public Response<ServerInstance> getWithResponse(String resourceGroupName, String sapDiscoverySiteName,
         String sapInstanceName, String serverInstanceName, Context context) {
-        Response<ServerInstanceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, serverInstanceName, context);
+        Response<ServerInstanceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerInstanceImpl(inner.getValue(), this.manager()));
@@ -71,8 +71,8 @@ public final class ServerInstancesImpl implements ServerInstances {
 
     public void delete(String resourceGroupName, String sapDiscoverySiteName, String sapInstanceName,
         String serverInstanceName, Context context) {
-        this.serviceClient().delete(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName,
-            context);
+        this.serviceClient()
+            .delete(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, context);
     }
 
     public ServerInstance getById(String id) {

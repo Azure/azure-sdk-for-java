@@ -24,8 +24,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed application along with {@link Response}.
      */
-    Response<Application> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationName, Context context);
+    Response<Application> getByResourceGroupWithResponse(String resourceGroupName, String applicationName,
+        Context context);
 
     /**
      * Gets the managed application.
@@ -86,8 +86,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application.
      */
-    ApplicationPatchable update(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context);
+    ApplicationPatchable update(String resourceGroupName, String applicationName, ApplicationPatchableInner parameters,
+        Context context);
 
     /**
      * Lists all the applications within a resource group.
@@ -275,8 +275,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the array of plan along with {@link Response}.
      */
-    Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(
-        String resourceGroupName, String applicationName, Context context);
+    Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(String resourceGroupName,
+        String applicationName, Context context);
 
     /**
      * List allowed upgrade plans for application.
@@ -301,8 +301,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    UpdateAccessDefinition updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters);
+    UpdateAccessDefinition updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters);
 
     /**
      * Update access for application.
@@ -316,8 +316,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    UpdateAccessDefinition updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context);
+    UpdateAccessDefinition updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters, Context context);
 
     /**
      * List tokens for application.
@@ -331,8 +331,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the array of managed identity tokens along with {@link Response}.
      */
-    Response<ManagedIdentityTokenResult> listTokensWithResponse(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters, Context context);
+    Response<ManagedIdentityTokenResult> listTokensWithResponse(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters, Context context);
 
     /**
      * List tokens for application.
@@ -345,8 +345,8 @@ public interface Applications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the array of managed identity tokens.
      */
-    ManagedIdentityTokenResult listTokens(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters);
+    ManagedIdentityTokenResult listTokens(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters);
 
     /**
      * Begins definition for a new Application resource.

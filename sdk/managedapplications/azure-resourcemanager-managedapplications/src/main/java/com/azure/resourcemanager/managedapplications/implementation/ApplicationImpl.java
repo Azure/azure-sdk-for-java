@@ -185,20 +185,16 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Application create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), context);
         return this;
     }
 
@@ -213,25 +209,21 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Application apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), context);
         return this;
     }
 
-    ApplicationImpl(
-        ApplicationInner innerObject, com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
+    ApplicationImpl(ApplicationInner innerObject,
+        com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -239,22 +231,18 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationName, context)
+            .getValue();
         return this;
     }
 
@@ -267,8 +255,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(Context context) {
-        return serviceManager
-            .applications()
+        return serviceManager.applications()
             .listAllowedUpgradePlansWithResponse(resourceGroupName, applicationName, context);
     }
 
@@ -285,8 +272,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Response<ManagedIdentityTokenResult> listTokensWithResponse(ListTokenRequest parameters, Context context) {
-        return serviceManager
-            .applications()
+        return serviceManager.applications()
             .listTokensWithResponse(resourceGroupName, applicationName, parameters, context);
     }
 

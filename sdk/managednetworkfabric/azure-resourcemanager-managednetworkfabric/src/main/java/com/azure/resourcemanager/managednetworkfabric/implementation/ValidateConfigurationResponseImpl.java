@@ -14,8 +14,7 @@ public final class ValidateConfigurationResponseImpl implements ValidateConfigur
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    ValidateConfigurationResponseImpl(
-        ValidateConfigurationResponseInner innerObject,
+    ValidateConfigurationResponseImpl(ValidateConfigurationResponseInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

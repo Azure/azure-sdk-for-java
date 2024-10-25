@@ -91,8 +91,8 @@ public final class ExternalNetworkPatch {
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkPatch object itself.
      */
-    public ExternalNetworkPatch withOptionAProperties(
-        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
+    public ExternalNetworkPatch
+        withOptionAProperties(ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExternalNetworkPatchProperties();
         }

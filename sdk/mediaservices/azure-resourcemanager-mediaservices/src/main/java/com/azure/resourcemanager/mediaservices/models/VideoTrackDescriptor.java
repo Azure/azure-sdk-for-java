@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
         name = "#Microsoft.Media.SelectVideoTrackByAttribute",
         value = SelectVideoTrackByAttribute.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectVideoTrackById", value = SelectVideoTrackById.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectVideoTrackById", value = SelectVideoTrackById.class) })
 @Immutable
 public class VideoTrackDescriptor extends TrackDescriptor {
     /** Creates an instance of VideoTrackDescriptor class. */

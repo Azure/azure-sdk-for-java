@@ -115,25 +115,21 @@ public final class L2IsolationDomainImpl
     }
 
     public L2IsolationDomain create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .create(resourceGroupName, l2IsolationDomainName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .create(resourceGroupName, l2IsolationDomainName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public L2IsolationDomain create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .create(resourceGroupName, l2IsolationDomainName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .create(resourceGroupName, l2IsolationDomainName, this.innerModel(), context);
         return this;
     }
 
-    L2IsolationDomainImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    L2IsolationDomainImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new L2IsolationDomainInner();
         this.serviceManager = serviceManager;
         this.l2IsolationDomainName = name;
@@ -145,25 +141,20 @@ public final class L2IsolationDomainImpl
     }
 
     public L2IsolationDomain apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .update(resourceGroupName, l2IsolationDomainName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .update(resourceGroupName, l2IsolationDomainName, updateBody, Context.NONE);
         return this;
     }
 
     public L2IsolationDomain apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .update(resourceGroupName, l2IsolationDomainName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .update(resourceGroupName, l2IsolationDomainName, updateBody, context);
         return this;
     }
 
-    L2IsolationDomainImpl(
-        L2IsolationDomainInner innerObject,
+    L2IsolationDomainImpl(L2IsolationDomainInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -172,35 +163,29 @@ public final class L2IsolationDomainImpl
     }
 
     public L2IsolationDomain refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .getByResourceGroupWithResponse(resourceGroupName, l2IsolationDomainName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .getByResourceGroupWithResponse(resourceGroupName, l2IsolationDomainName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public L2IsolationDomain refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2IsolationDomains()
-                .getByResourceGroupWithResponse(resourceGroupName, l2IsolationDomainName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2IsolationDomains()
+            .getByResourceGroupWithResponse(resourceGroupName, l2IsolationDomainName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .l2IsolationDomains()
+        return serviceManager.l2IsolationDomains()
             .updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body);
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .l2IsolationDomains()
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.l2IsolationDomains()
             .updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body, context);
     }
 
@@ -209,8 +194,7 @@ public final class L2IsolationDomainImpl
     }
 
     public ValidateConfigurationResponse validateConfiguration(Context context) {
-        return serviceManager
-            .l2IsolationDomains()
+        return serviceManager.l2IsolationDomains()
             .validateConfiguration(resourceGroupName, l2IsolationDomainName, context);
     }
 
@@ -219,8 +203,7 @@ public final class L2IsolationDomainImpl
     }
 
     public CommonPostActionResponseForStateUpdate commitConfiguration(Context context) {
-        return serviceManager
-            .l2IsolationDomains()
+        return serviceManager.l2IsolationDomains()
             .commitConfiguration(resourceGroupName, l2IsolationDomainName, context);
     }
 

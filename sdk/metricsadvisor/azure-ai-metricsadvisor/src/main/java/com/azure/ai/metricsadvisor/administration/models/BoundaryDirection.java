@@ -23,15 +23,15 @@ public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirect
     /**
      * Defines the lower boundary in a boundary condition.
      */
-    public static final  BoundaryDirection LOWER = fromString("LOWER");
+    public static final BoundaryDirection LOWER = fromString("LOWER");
     /**
      * Defines the upper boundary in a boundary condition.
      */
-    public static final  BoundaryDirection UPPER = fromString("UPPER");
+    public static final BoundaryDirection UPPER = fromString("UPPER");
     /**
      * Defines both lower and upper boundary in a boundary condition.
      */
-    public static final  BoundaryDirection BOTH = fromString("BOTH");
+    public static final BoundaryDirection BOTH = fromString("BOTH");
 
     /**
      * Creates or finds a BoundaryDirection from its string representation.

@@ -119,8 +119,8 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
      * @param primaryVerificationKey the primaryVerificationKey value to set.
      * @return the ContentKeyPolicyTokenRestriction object itself.
      */
-    public ContentKeyPolicyTokenRestriction withPrimaryVerificationKey(
-        ContentKeyPolicyRestrictionTokenKey primaryVerificationKey) {
+    public ContentKeyPolicyTokenRestriction
+        withPrimaryVerificationKey(ContentKeyPolicyRestrictionTokenKey primaryVerificationKey) {
         this.primaryVerificationKey = primaryVerificationKey;
         return this;
     }
@@ -140,8 +140,8 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
      * @param alternateVerificationKeys the alternateVerificationKeys value to set.
      * @return the ContentKeyPolicyTokenRestriction object itself.
      */
-    public ContentKeyPolicyTokenRestriction withAlternateVerificationKeys(
-        List<ContentKeyPolicyRestrictionTokenKey> alternateVerificationKeys) {
+    public ContentKeyPolicyTokenRestriction
+        withAlternateVerificationKeys(List<ContentKeyPolicyRestrictionTokenKey> alternateVerificationKeys) {
         this.alternateVerificationKeys = alternateVerificationKeys;
         return this;
     }
@@ -181,8 +181,8 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
      * @param restrictionTokenType the restrictionTokenType value to set.
      * @return the ContentKeyPolicyTokenRestriction object itself.
      */
-    public ContentKeyPolicyTokenRestriction withRestrictionTokenType(
-        ContentKeyPolicyRestrictionTokenType restrictionTokenType) {
+    public ContentKeyPolicyTokenRestriction
+        withRestrictionTokenType(ContentKeyPolicyRestrictionTokenType restrictionTokenType) {
         this.restrictionTokenType = restrictionTokenType;
         return this;
     }
@@ -216,22 +216,16 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
     public void validate() {
         super.validate();
         if (issuer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property issuer in model ContentKeyPolicyTokenRestriction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property issuer in model ContentKeyPolicyTokenRestriction"));
         }
         if (audience() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property audience in model ContentKeyPolicyTokenRestriction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property audience in model ContentKeyPolicyTokenRestriction"));
         }
         if (primaryVerificationKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryVerificationKey in model ContentKeyPolicyTokenRestriction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryVerificationKey in model ContentKeyPolicyTokenRestriction"));
         } else {
             primaryVerificationKey().validate();
         }
@@ -242,10 +236,8 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
             requiredClaims().forEach(e -> e.validate());
         }
         if (restrictionTokenType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restrictionTokenType in model ContentKeyPolicyTokenRestriction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restrictionTokenType in model ContentKeyPolicyTokenRestriction"));
         }
     }
 

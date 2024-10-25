@@ -88,8 +88,8 @@ public final class Waypoint {
      */
     @Override
     public String toString() {
-        String parameters = String.format("%f,%f,%f", this.position.getLatitude(),
-            this.position.getLongitude(), this.estimatedTimeInMinutes);
+        String parameters = String.format("%f,%f,%f", this.position.getLatitude(), this.position.getLongitude(),
+            this.estimatedTimeInMinutes);
 
         // heading is optional so we have to check if it's present to not break the string
         if (heading != null) {

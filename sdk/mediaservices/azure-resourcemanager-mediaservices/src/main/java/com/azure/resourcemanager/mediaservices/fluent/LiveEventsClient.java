@@ -66,8 +66,8 @@ public interface LiveEventsClient {
      * @return properties of a live event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveEventInner> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    Response<LiveEventInner> getWithResponse(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Get Live Event
@@ -100,8 +100,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of the live event.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginCreate(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters);
+    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, LiveEventInner parameters);
 
     /**
      * Create Live Event
@@ -120,13 +120,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of the live event.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventInner parameters,
-        Boolean autoStart,
-        Context context);
+    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, LiveEventInner parameters, Boolean autoStart, Context context);
 
     /**
      * Create Live Event
@@ -143,8 +138,8 @@ public interface LiveEventsClient {
      * @return the live event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveEventInner create(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters);
+    LiveEventInner create(String resourceGroupName, String accountName, String liveEventName,
+        LiveEventInner parameters);
 
     /**
      * Create Live Event
@@ -163,79 +158,74 @@ public interface LiveEventsClient {
      * @return the live event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveEventInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventInner parameters,
-        Boolean autoStart,
+    LiveEventInner create(String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters,
+        Boolean autoStart, Context context);
+
+    /**
+     * Updates settings on an existing live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param parameters Live event properties needed for patch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the live event.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginUpdate(String resourceGroupName, String accountName,
+        String liveEventName, LiveEventInner parameters);
+
+    /**
+     * Updates settings on an existing live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param parameters Live event properties needed for patch.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the live event.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginUpdate(String resourceGroupName, String accountName,
+        String liveEventName, LiveEventInner parameters, Context context);
+
+    /**
+     * Updates settings on an existing live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param parameters Live event properties needed for patch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the live event.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LiveEventInner update(String resourceGroupName, String accountName, String liveEventName,
+        LiveEventInner parameters);
+
+    /**
+     * Updates settings on an existing live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param parameters Live event properties needed for patch.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the live event.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LiveEventInner update(String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters,
         Context context);
-
-    /**
-     * Updates settings on an existing live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param parameters Live event properties needed for patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the live event.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginUpdate(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters);
-
-    /**
-     * Updates settings on an existing live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param parameters Live event properties needed for patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the live event.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginUpdate(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters, Context context);
-
-    /**
-     * Updates settings on an existing live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param parameters Live event properties needed for patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the live event.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveEventInner update(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters);
-
-    /**
-     * Updates settings on an existing live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param parameters Live event properties needed for patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the live event.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveEventInner update(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters, Context context);
 
     /**
      * Delete Live Event
@@ -268,8 +258,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Delete Live Event
@@ -316,8 +306,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAllocate(
-        String resourceGroupName, String accountName, String liveEventName);
+    SyncPoller<PollResult<Void>, Void> beginAllocate(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Allocate resources for a live event
@@ -334,8 +324,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAllocate(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginAllocate(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Allocate resources for a live event
@@ -399,8 +389,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Start Live Event
@@ -448,8 +438,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String accountName, String liveEventName, LiveEventActionInput parameters);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName, String liveEventName,
+        LiveEventActionInput parameters);
 
     /**
      * Stop Live Event
@@ -467,12 +457,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventActionInput parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName, String liveEventName,
+        LiveEventActionInput parameters, Context context);
 
     /**
      * Stop Live Event
@@ -505,11 +491,7 @@ public interface LiveEventsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stop(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventActionInput parameters,
+    void stop(String resourceGroupName, String accountName, String liveEventName, LiveEventActionInput parameters,
         Context context);
 
     /**
@@ -547,8 +529,8 @@ public interface LiveEventsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReset(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginReset(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Reset Live Event
@@ -599,8 +581,8 @@ public interface LiveEventsClient {
      * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventStatusInner> listGetStatus(
-        String resourceGroupName, String accountName, String liveEventName);
+    PagedIterable<LiveEventStatusInner> listGetStatus(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Get status of one live event
@@ -617,8 +599,8 @@ public interface LiveEventsClient {
      * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventStatusInner> listGetStatus(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventStatusInner> listGetStatus(String resourceGroupName, String accountName,
+        String liveEventName, Context context);
 
     /**
      * Get stream events of one live event
@@ -634,8 +616,8 @@ public interface LiveEventsClient {
      * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
-        String resourceGroupName, String accountName, String liveEventName);
+    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Get stream events of one live event
@@ -652,8 +634,8 @@ public interface LiveEventsClient {
      * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(String resourceGroupName, String accountName,
+        String liveEventName, Context context);
 
     /**
      * Get track events of one live event
@@ -669,8 +651,8 @@ public interface LiveEventsClient {
      * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
-        String resourceGroupName, String accountName, String liveEventName);
+    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Get track events of one live event
@@ -687,8 +669,8 @@ public interface LiveEventsClient {
      * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(String resourceGroupName, String accountName,
+        String liveEventName, Context context);
 
     /**
      * Get operation status.
@@ -705,8 +687,8 @@ public interface LiveEventsClient {
      * @return a live event operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResultInner> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -740,8 +722,8 @@ public interface LiveEventsClient {
      * @return a live event operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveEventInner> operationLocationWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context);
+    Response<LiveEventInner> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String liveEventName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -758,6 +740,6 @@ public interface LiveEventsClient {
      * @return a live event operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveEventInner operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String operationId);
+    LiveEventInner operationLocation(String resourceGroupName, String accountName, String liveEventName,
+        String operationId);
 }

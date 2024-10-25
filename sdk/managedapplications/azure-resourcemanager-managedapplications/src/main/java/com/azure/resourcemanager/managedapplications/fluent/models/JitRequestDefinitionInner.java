@@ -114,8 +114,8 @@ public final class JitRequestDefinitionInner extends Resource {
      * @param jitAuthorizationPolicies the jitAuthorizationPolicies value to set.
      * @return the JitRequestDefinitionInner object itself.
      */
-    public JitRequestDefinitionInner withJitAuthorizationPolicies(
-        List<JitAuthorizationPolicies> jitAuthorizationPolicies) {
+    public JitRequestDefinitionInner
+        withJitAuthorizationPolicies(List<JitAuthorizationPolicies> jitAuthorizationPolicies) {
         if (this.innerProperties() == null) {
             this.innerProperties = new JitRequestProperties();
         }

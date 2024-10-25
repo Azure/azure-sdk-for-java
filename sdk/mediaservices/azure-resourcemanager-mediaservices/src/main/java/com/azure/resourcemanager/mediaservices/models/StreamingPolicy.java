@@ -92,11 +92,13 @@ public interface StreamingPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The StreamingPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the StreamingPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -108,16 +110,14 @@ public interface StreamingPolicy {
              */
             WithCreate withExistingMediaService(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the StreamingPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDefaultContentKeyPolicyName,
-                DefinitionStages.WithEnvelopeEncryption,
-                DefinitionStages.WithCommonEncryptionCenc,
-                DefinitionStages.WithCommonEncryptionCbcs,
-                DefinitionStages.WithNoEncryption {
+        interface WithCreate extends DefinitionStages.WithDefaultContentKeyPolicyName,
+            DefinitionStages.WithEnvelopeEncryption, DefinitionStages.WithCommonEncryptionCenc,
+            DefinitionStages.WithCommonEncryptionCbcs, DefinitionStages.WithNoEncryption {
             /**
              * Executes the create request.
              *
@@ -133,6 +133,7 @@ public interface StreamingPolicy {
              */
             StreamingPolicy create(Context context);
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify defaultContentKeyPolicyName. */
         interface WithDefaultContentKeyPolicyName {
             /**
@@ -143,6 +144,7 @@ public interface StreamingPolicy {
              */
             WithCreate withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName);
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify envelopeEncryption. */
         interface WithEnvelopeEncryption {
             /**
@@ -153,6 +155,7 @@ public interface StreamingPolicy {
              */
             WithCreate withEnvelopeEncryption(EnvelopeEncryption envelopeEncryption);
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify commonEncryptionCenc. */
         interface WithCommonEncryptionCenc {
             /**
@@ -163,6 +166,7 @@ public interface StreamingPolicy {
              */
             WithCreate withCommonEncryptionCenc(CommonEncryptionCenc commonEncryptionCenc);
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify commonEncryptionCbcs. */
         interface WithCommonEncryptionCbcs {
             /**
@@ -173,6 +177,7 @@ public interface StreamingPolicy {
              */
             WithCreate withCommonEncryptionCbcs(CommonEncryptionCbcs commonEncryptionCbcs);
         }
+
         /** The stage of the StreamingPolicy definition allowing to specify noEncryption. */
         interface WithNoEncryption {
             /**
@@ -184,6 +189,7 @@ public interface StreamingPolicy {
             WithCreate withNoEncryption(NoEncryption noEncryption);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -23,8 +23,8 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RoutePolicy resource definition along with {@link Response}.
      */
-    Response<RoutePolicy> getByResourceGroupWithResponse(
-        String resourceGroupName, String routePolicyName, Context context);
+    Response<RoutePolicy> getByResourceGroupWithResponse(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Gets a Route Policy.
@@ -131,8 +131,8 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String routePolicyName,
+        UpdateAdministrativeState body);
 
     /**
      * Executes enable operation to the underlying resources.
@@ -148,8 +148,8 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String routePolicyName,
+        UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -174,8 +174,8 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -204,8 +204,8 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Gets a Route Policy.

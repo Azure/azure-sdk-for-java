@@ -117,8 +117,8 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkPatchProperties object itself.
      */
-    public ExternalNetworkPatchProperties withOptionAProperties(
-        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
+    public ExternalNetworkPatchProperties
+        withOptionAProperties(ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }

@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FiltersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Filters model =
-            BinaryData
-                .fromString(
-                    "{\"deinterlace\":{\"parity\":\"TopFieldFirst\",\"mode\":\"Off\"},\"rotation\":\"Auto\",\"crop\":{\"left\":\"n\",\"top\":\"b\",\"width\":\"ajlyjtlvofqzhv\",\"height\":\"ibyfmo\"},\"fadeIn\":{\"duration\":\"PT43H27M36S\",\"fadeColor\":\"rkjpvdwxfzwii\",\"start\":\"zjb\"},\"fadeOut\":{\"duration\":\"PT179H3M48S\",\"fadeColor\":\"sxjrk\",\"start\":\"btrnegvm\"},\"overlays\":[{\"@odata.type\":\"Overlay\",\"inputLabel\":\"q\",\"start\":\"PT195H49M26S\",\"end\":\"PT87H42M49S\",\"fadeInDuration\":\"PT56H46M12S\",\"fadeOutDuration\":\"PT100H47M46S\",\"audioGainLevel\":92.57189513687753},{\"@odata.type\":\"Overlay\",\"inputLabel\":\"kkdmfl\",\"start\":\"PT69H46M52S\",\"end\":\"PT61H27M7S\",\"fadeInDuration\":\"PT42H3M53S\",\"fadeOutDuration\":\"PT36H32M49S\",\"audioGainLevel\":92.17159130081457}]}")
-                .toObject(Filters.class);
+        Filters model = BinaryData.fromString(
+            "{\"deinterlace\":{\"parity\":\"TopFieldFirst\",\"mode\":\"Off\"},\"rotation\":\"Auto\",\"crop\":{\"left\":\"n\",\"top\":\"b\",\"width\":\"ajlyjtlvofqzhv\",\"height\":\"ibyfmo\"},\"fadeIn\":{\"duration\":\"PT43H27M36S\",\"fadeColor\":\"rkjpvdwxfzwii\",\"start\":\"zjb\"},\"fadeOut\":{\"duration\":\"PT179H3M48S\",\"fadeColor\":\"sxjrk\",\"start\":\"btrnegvm\"},\"overlays\":[{\"@odata.type\":\"Overlay\",\"inputLabel\":\"q\",\"start\":\"PT195H49M26S\",\"end\":\"PT87H42M49S\",\"fadeInDuration\":\"PT56H46M12S\",\"fadeOutDuration\":\"PT100H47M46S\",\"audioGainLevel\":92.57189513687753},{\"@odata.type\":\"Overlay\",\"inputLabel\":\"kkdmfl\",\"start\":\"PT69H46M52S\",\"end\":\"PT61H27M7S\",\"fadeInDuration\":\"PT42H3M53S\",\"fadeOutDuration\":\"PT36H32M49S\",\"audioGainLevel\":92.17159130081457}]}")
+            .toObject(Filters.class);
         Assertions.assertEquals(DeinterlaceParity.TOP_FIELD_FIRST, model.deinterlace().parity());
         Assertions.assertEquals(DeinterlaceMode.OFF, model.deinterlace().mode());
         Assertions.assertEquals(Rotation.AUTO, model.rotation());
@@ -48,36 +46,28 @@ public final class FiltersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Filters model =
-            new Filters()
-                .withDeinterlace(
-                    new Deinterlace().withParity(DeinterlaceParity.TOP_FIELD_FIRST).withMode(DeinterlaceMode.OFF))
-                .withRotation(Rotation.AUTO)
-                .withCrop(new Rectangle().withLeft("n").withTop("b").withWidth("ajlyjtlvofqzhv").withHeight("ibyfmo"))
-                .withFadeIn(
-                    new Fade()
-                        .withDuration(Duration.parse("PT43H27M36S"))
-                        .withFadeColor("rkjpvdwxfzwii")
-                        .withStart("zjb"))
-                .withFadeOut(
-                    new Fade().withDuration(Duration.parse("PT179H3M48S")).withFadeColor("sxjrk").withStart("btrnegvm"))
-                .withOverlays(
-                    Arrays
-                        .asList(
-                            new Overlay()
-                                .withInputLabel("q")
-                                .withStart(Duration.parse("PT195H49M26S"))
-                                .withEnd(Duration.parse("PT87H42M49S"))
-                                .withFadeInDuration(Duration.parse("PT56H46M12S"))
-                                .withFadeOutDuration(Duration.parse("PT100H47M46S"))
-                                .withAudioGainLevel(92.57189513687753D),
-                            new Overlay()
-                                .withInputLabel("kkdmfl")
-                                .withStart(Duration.parse("PT69H46M52S"))
-                                .withEnd(Duration.parse("PT61H27M7S"))
-                                .withFadeInDuration(Duration.parse("PT42H3M53S"))
-                                .withFadeOutDuration(Duration.parse("PT36H32M49S"))
-                                .withAudioGainLevel(92.17159130081457D)));
+        Filters model = new Filters()
+            .withDeinterlace(
+                new Deinterlace().withParity(DeinterlaceParity.TOP_FIELD_FIRST).withMode(DeinterlaceMode.OFF))
+            .withRotation(Rotation.AUTO)
+            .withCrop(new Rectangle().withLeft("n").withTop("b").withWidth("ajlyjtlvofqzhv").withHeight("ibyfmo"))
+            .withFadeIn(
+                new Fade().withDuration(Duration.parse("PT43H27M36S")).withFadeColor("rkjpvdwxfzwii").withStart("zjb"))
+            .withFadeOut(
+                new Fade().withDuration(Duration.parse("PT179H3M48S")).withFadeColor("sxjrk").withStart("btrnegvm"))
+            .withOverlays(Arrays.asList(
+                new Overlay().withInputLabel("q")
+                    .withStart(Duration.parse("PT195H49M26S"))
+                    .withEnd(Duration.parse("PT87H42M49S"))
+                    .withFadeInDuration(Duration.parse("PT56H46M12S"))
+                    .withFadeOutDuration(Duration.parse("PT100H47M46S"))
+                    .withAudioGainLevel(92.57189513687753D),
+                new Overlay().withInputLabel("kkdmfl")
+                    .withStart(Duration.parse("PT69H46M52S"))
+                    .withEnd(Duration.parse("PT61H27M7S"))
+                    .withFadeInDuration(Duration.parse("PT42H3M53S"))
+                    .withFadeOutDuration(Duration.parse("PT36H32M49S"))
+                    .withAudioGainLevel(92.17159130081457D)));
         model = BinaryData.fromObject(model).toObject(Filters.class);
         Assertions.assertEquals(DeinterlaceParity.TOP_FIELD_FIRST, model.deinterlace().parity());
         Assertions.assertEquals(DeinterlaceMode.OFF, model.deinterlace().mode());

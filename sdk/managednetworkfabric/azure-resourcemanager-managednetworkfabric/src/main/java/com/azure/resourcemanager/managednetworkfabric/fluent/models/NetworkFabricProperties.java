@@ -309,8 +309,8 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * @param terminalServerConfiguration the terminalServerConfiguration value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withTerminalServerConfiguration(
-        TerminalServerConfiguration terminalServerConfiguration) {
+    public NetworkFabricProperties
+        withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration) {
         this.terminalServerConfiguration = terminalServerConfiguration;
         return this;
     }
@@ -330,8 +330,8 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * @param managementNetworkConfiguration the managementNetworkConfiguration value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withManagementNetworkConfiguration(
-        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
+    public NetworkFabricProperties
+        withManagementNetworkConfiguration(ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         this.managementNetworkConfiguration = managementNetworkConfiguration;
         return this;
     }
@@ -409,36 +409,26 @@ public final class NetworkFabricProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkFabricSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricSku in model NetworkFabricProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricSku in model NetworkFabricProperties"));
         }
         if (networkFabricControllerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricControllerId in model NetworkFabricProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricControllerId in model NetworkFabricProperties"));
         }
         if (ipv4Prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipv4Prefix in model NetworkFabricProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipv4Prefix in model NetworkFabricProperties"));
         }
         if (terminalServerConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property terminalServerConfiguration in model NetworkFabricProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property terminalServerConfiguration in model NetworkFabricProperties"));
         } else {
             terminalServerConfiguration().validate();
         }
         if (managementNetworkConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementNetworkConfiguration in model NetworkFabricProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managementNetworkConfiguration in model NetworkFabricProperties"));
         } else {
             managementNetworkConfiguration().validate();
         }

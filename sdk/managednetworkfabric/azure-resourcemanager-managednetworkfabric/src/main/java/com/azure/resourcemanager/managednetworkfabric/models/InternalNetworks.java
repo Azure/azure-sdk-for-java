@@ -24,8 +24,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a InternalNetworks along with {@link Response}.
      */
-    Response<InternalNetwork> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String internalNetworkName, Context context);
+    Response<InternalNetwork> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String internalNetworkName, Context context);
 
     /**
      * Retrieves details of InternalNetworks using GET method.
@@ -98,8 +98,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Internal Networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<InternalNetwork> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    PagedIterable<InternalNetwork> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Executes the operation to the underlying resources.
@@ -115,11 +115,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources.
@@ -136,12 +133,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -157,11 +150,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -178,12 +168,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -199,11 +185,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -220,12 +203,8 @@ public interface InternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String internalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String internalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Retrieves details of InternalNetworks using GET method.

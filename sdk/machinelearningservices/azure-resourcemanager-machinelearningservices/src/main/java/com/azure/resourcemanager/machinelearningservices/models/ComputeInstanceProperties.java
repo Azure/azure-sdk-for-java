@@ -14,7 +14,8 @@ import java.util.List;
 /** Compute Instance properties. */
 @Fluent
 public final class ComputeInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceProperties.class);
 
     /*
      * Virtual Machine Size
@@ -245,8 +246,8 @@ public final class ComputeInstanceProperties {
      * @param computeInstanceAuthorizationType the computeInstanceAuthorizationType value to set.
      * @return the ComputeInstanceProperties object itself.
      */
-    public ComputeInstanceProperties withComputeInstanceAuthorizationType(
-        ComputeInstanceAuthorizationType computeInstanceAuthorizationType) {
+    public ComputeInstanceProperties
+        withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType computeInstanceAuthorizationType) {
         this.computeInstanceAuthorizationType = computeInstanceAuthorizationType;
         return this;
     }
@@ -266,8 +267,8 @@ public final class ComputeInstanceProperties {
      * @param personalComputeInstanceSettings the personalComputeInstanceSettings value to set.
      * @return the ComputeInstanceProperties object itself.
      */
-    public ComputeInstanceProperties withPersonalComputeInstanceSettings(
-        PersonalComputeInstanceSettings personalComputeInstanceSettings) {
+    public ComputeInstanceProperties
+        withPersonalComputeInstanceSettings(PersonalComputeInstanceSettings personalComputeInstanceSettings) {
         this.personalComputeInstanceSettings = personalComputeInstanceSettings;
         return this;
     }

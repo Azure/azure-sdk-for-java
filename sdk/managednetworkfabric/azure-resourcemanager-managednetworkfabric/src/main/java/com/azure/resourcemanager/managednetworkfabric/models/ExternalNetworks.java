@@ -24,8 +24,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the External Network resource along with {@link Response}.
      */
-    Response<ExternalNetwork> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context);
+    Response<ExternalNetwork> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.
@@ -98,8 +98,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExternalNetwork> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    PagedIterable<ExternalNetwork> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -115,11 +115,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -136,12 +133,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
@@ -157,11 +150,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
@@ -178,12 +168,8 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.

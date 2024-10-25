@@ -167,8 +167,8 @@ public final class AccessControlListInner extends Resource {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListInner object itself.
      */
-    public AccessControlListInner withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListInner
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccessControlListProperties();
         }
@@ -191,8 +191,8 @@ public final class AccessControlListInner extends Resource {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListInner object itself.
      */
-    public AccessControlListInner withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListInner
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccessControlListProperties();
         }
@@ -230,10 +230,8 @@ public final class AccessControlListInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AccessControlListInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AccessControlListInner"));
         } else {
             innerProperties().validate();
         }

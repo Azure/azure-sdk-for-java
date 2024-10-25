@@ -148,11 +148,8 @@ public interface AccessControlList {
     AccessControlListInner innerModel();
 
     /** The entirety of the AccessControlList definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The AccessControlList definition stages. */
@@ -195,13 +192,9 @@ public interface AccessControlList {
          * The stage of the AccessControlList definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithConfigurationType,
-                DefinitionStages.WithAclsUrl,
-                DefinitionStages.WithMatchConfigurations,
-                DefinitionStages.WithDynamicMatchConfigurations,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithConfigurationType,
+            DefinitionStages.WithAclsUrl, DefinitionStages.WithMatchConfigurations,
+            DefinitionStages.WithDynamicMatchConfigurations, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -293,13 +286,8 @@ public interface AccessControlList {
     AccessControlList.Update update();
 
     /** The template for AccessControlList update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithAnnotation,
-            UpdateStages.WithConfigurationType,
-            UpdateStages.WithAclsUrl,
-            UpdateStages.WithMatchConfigurations,
-            UpdateStages.WithDynamicMatchConfigurations {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAnnotation, UpdateStages.WithConfigurationType,
+        UpdateStages.WithAclsUrl, UpdateStages.WithMatchConfigurations, UpdateStages.WithDynamicMatchConfigurations {
         /**
          * Executes the update request.
          *

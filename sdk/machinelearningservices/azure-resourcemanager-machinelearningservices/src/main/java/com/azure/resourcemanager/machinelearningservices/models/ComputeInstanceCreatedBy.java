@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Describes information on user who created this ComputeInstance. */
 @Immutable
 public final class ComputeInstanceCreatedBy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceCreatedBy.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceCreatedBy.class);
 
     /*
      * Name of the user.

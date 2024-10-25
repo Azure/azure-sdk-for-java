@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ListStorageAccountKeysResult model. */
 @Immutable
 public final class ListStorageAccountKeysResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListStorageAccountKeysResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListStorageAccountKeysResultInner.class);
 
     /*
      * The userStorageKey property.

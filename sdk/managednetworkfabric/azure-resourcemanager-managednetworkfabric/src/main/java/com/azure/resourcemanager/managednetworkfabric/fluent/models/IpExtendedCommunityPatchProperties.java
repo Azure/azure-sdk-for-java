@@ -45,8 +45,8 @@ public final class IpExtendedCommunityPatchProperties extends IpExtendedCommunit
 
     /** {@inheritDoc} */
     @Override
-    public IpExtendedCommunityPatchProperties withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityPatchProperties
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         super.withIpExtendedCommunityRules(ipExtendedCommunityRules);
         return this;
     }

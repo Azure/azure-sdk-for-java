@@ -22,7 +22,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
      * The resource of private end point.
@@ -98,8 +99,8 @@ public class PrivateEndpointConnectionInner extends Resource {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }

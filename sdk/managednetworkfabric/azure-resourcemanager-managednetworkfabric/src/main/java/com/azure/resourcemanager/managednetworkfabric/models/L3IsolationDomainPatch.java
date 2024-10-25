@@ -53,8 +53,8 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
-    public L3IsolationDomainPatch withRedistributeConnectedSubnets(
-        RedistributeConnectedSubnets redistributeConnectedSubnets) {
+    public L3IsolationDomainPatch
+        withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainPatchProperties();
         }
@@ -100,8 +100,8 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
-    public L3IsolationDomainPatch withAggregateRouteConfiguration(
-        AggregateRouteConfiguration aggregateRouteConfiguration) {
+    public L3IsolationDomainPatch
+        withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainPatchProperties();
         }
@@ -124,8 +124,8 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
-    public L3IsolationDomainPatch withConnectedSubnetRoutePolicy(
-        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+    public L3IsolationDomainPatch
+        withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainPatchProperties();
         }

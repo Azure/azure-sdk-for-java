@@ -13,23 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DescendantListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DescendantListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"rvqdra\",\"type\":\"jybige\",\"name\":\"qfbow\",\"properties\":{\"displayName\":\"nyktzlcuiy\"}},{\"id\":\"ywgndrv\",\"type\":\"hzgpphrcgyncocpe\",\"name\":\"vmmcoofs\",\"properties\":{\"displayName\":\"evgbmqjq\"}}],\"nextLink\":\"y\"}")
-                .toObject(DescendantListResult.class);
+        DescendantListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"rvqdra\",\"type\":\"jybige\",\"name\":\"qfbow\",\"properties\":{\"displayName\":\"nyktzlcuiy\"}},{\"id\":\"ywgndrv\",\"type\":\"hzgpphrcgyncocpe\",\"name\":\"vmmcoofs\",\"properties\":{\"displayName\":\"evgbmqjq\"}}],\"nextLink\":\"y\"}")
+            .toObject(DescendantListResult.class);
         Assertions.assertEquals("nyktzlcuiy", model.value().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DescendantListResult model =
-            new DescendantListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DescendantInfoInner().withDisplayName("nyktzlcuiy"),
-                            new DescendantInfoInner().withDisplayName("evgbmqjq")));
+        DescendantListResult model = new DescendantListResult()
+            .withValue(Arrays.asList(new DescendantInfoInner().withDisplayName("nyktzlcuiy"),
+                new DescendantInfoInner().withDisplayName("evgbmqjq")));
         model = BinaryData.fromObject(model).toObject(DescendantListResult.class);
         Assertions.assertEquals("nyktzlcuiy", model.value().get(0).displayName());
     }

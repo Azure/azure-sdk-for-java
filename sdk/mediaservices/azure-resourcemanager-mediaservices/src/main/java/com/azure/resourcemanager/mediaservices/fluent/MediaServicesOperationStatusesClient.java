@@ -26,8 +26,8 @@ public interface MediaServicesOperationStatusesClient {
      * @return media service operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<MediaServiceOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context);
 
     /**
      * Get operation status.

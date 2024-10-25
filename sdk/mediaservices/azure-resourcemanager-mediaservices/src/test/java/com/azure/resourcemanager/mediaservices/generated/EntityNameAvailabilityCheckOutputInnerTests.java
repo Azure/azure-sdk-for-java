@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityNameAvailabilityCheckOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityNameAvailabilityCheckOutputInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"reason\":\"icwifsjtt\",\"message\":\"fbishcbkha\"}")
+        EntityNameAvailabilityCheckOutputInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"icwifsjtt\",\"message\":\"fbishcbkha\"}")
                 .toObject(EntityNameAvailabilityCheckOutputInner.class);
         Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals("icwifsjtt", model.reason());
@@ -22,9 +21,8 @@ public final class EntityNameAvailabilityCheckOutputInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityNameAvailabilityCheckOutputInner model =
-            new EntityNameAvailabilityCheckOutputInner()
-                .withNameAvailable(true)
+        EntityNameAvailabilityCheckOutputInner model
+            = new EntityNameAvailabilityCheckOutputInner().withNameAvailable(true)
                 .withReason("icwifsjtt")
                 .withMessage("fbishcbkha");
         model = BinaryData.fromObject(model).toObject(EntityNameAvailabilityCheckOutputInner.class);

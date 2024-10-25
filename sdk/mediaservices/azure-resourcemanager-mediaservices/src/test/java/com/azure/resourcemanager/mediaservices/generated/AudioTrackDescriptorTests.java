@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioTrackDescriptorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AudioTrackDescriptor model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.AudioTrackDescriptor\",\"channelMapping\":\"Center\"}")
-                .toObject(AudioTrackDescriptor.class);
+        AudioTrackDescriptor model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.AudioTrackDescriptor\",\"channelMapping\":\"Center\"}")
+            .toObject(AudioTrackDescriptor.class);
         Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
     }
 

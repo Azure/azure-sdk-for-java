@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The resource requirements for the container (cpu and memory). */
 @Fluent
 public final class ContainerResourceRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerResourceRequirements.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerResourceRequirements.class);
 
     /*
      * The minimum amount of CPU cores to be used by the container. More info:

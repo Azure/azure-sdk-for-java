@@ -34,8 +34,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return computes in specified workspace.
      */
-    PagedIterable<ComputeResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, String skip, Context context);
+    PagedIterable<ComputeResource> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        Context context);
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
@@ -64,8 +64,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return compute definition by its name.
      */
-    Response<ComputeResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    Response<ComputeResource> getWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 
     /**
      * Deletes specified Machine Learning compute.
@@ -79,10 +79,7 @@ public interface MachineLearningComputes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction);
 
     /**
@@ -98,12 +95,8 @@ public interface MachineLearningComputes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context);
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
@@ -116,8 +109,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.
      */
-    PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName);
+    PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName);
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
@@ -131,8 +124,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.
      */
-    PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName, Context context);
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
@@ -159,8 +152,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
      */
-    Response<ComputeSecrets> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    Response<ComputeSecrets> listKeysWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 
     /**
      * Posts a start action to a compute instance.
@@ -236,8 +229,8 @@ public interface MachineLearningComputes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> restartWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context);
+    Response<Void> restartWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context);
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use

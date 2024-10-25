@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class HlsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HlsSettings model =
-            BinaryData
-                .fromString("{\"default\":false,\"forced\":true,\"characteristics\":\"kxtrq\"}")
-                .toObject(HlsSettings.class);
+        HlsSettings model = BinaryData.fromString("{\"default\":false,\"forced\":true,\"characteristics\":\"kxtrq\"}")
+            .toObject(HlsSettings.class);
         Assertions.assertEquals(false, model.defaultProperty());
         Assertions.assertEquals(true, model.forced());
         Assertions.assertEquals("kxtrq", model.characteristics());

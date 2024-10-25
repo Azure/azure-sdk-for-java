@@ -12,23 +12,16 @@ import java.util.Arrays;
 public final class AccountFilterCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountFilterCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"jxpybczmeh\",\"name\":\"tzopbsphrupidgsy\",\"type\":\"bejhphoycmsxa\"},{\"properties\":{\"tracks\":[]},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"},{\"properties\":{\"tracks\":[]},\"id\":\"wlrxyb\",\"name\":\"soqijg\",\"type\":\"dmbpazlobcufpdz\"}],\"@odata.nextLink\":\"btcqq\"}")
-                .toObject(AccountFilterCollection.class);
+        AccountFilterCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"jxpybczmeh\",\"name\":\"tzopbsphrupidgsy\",\"type\":\"bejhphoycmsxa\"},{\"properties\":{\"tracks\":[]},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"},{\"properties\":{\"tracks\":[]},\"id\":\"wlrxyb\",\"name\":\"soqijg\",\"type\":\"dmbpazlobcufpdz\"}],\"@odata.nextLink\":\"btcqq\"}")
+            .toObject(AccountFilterCollection.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountFilterCollection model =
-            new AccountFilterCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountFilterInner().withTracks(Arrays.asList()),
-                            new AccountFilterInner().withTracks(Arrays.asList()),
-                            new AccountFilterInner().withTracks(Arrays.asList())));
+        AccountFilterCollection model = new AccountFilterCollection().withValue(Arrays.asList(
+            new AccountFilterInner().withTracks(Arrays.asList()), new AccountFilterInner().withTracks(Arrays.asList()),
+            new AccountFilterInner().withTracks(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(AccountFilterCollection.class);
     }
 }

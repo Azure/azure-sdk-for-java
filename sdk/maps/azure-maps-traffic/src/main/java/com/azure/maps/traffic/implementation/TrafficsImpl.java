@@ -913,7 +913,7 @@ public final class TrafficsImpl {
         Boolean originalPosition) {
         return getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox, boundingZoom, trafficmodelid,
             language, projection, geometries, expandCluster, originalPosition)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -972,7 +972,7 @@ public final class TrafficsImpl {
         Context context) {
         return getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox, boundingZoom, trafficmodelid,
             language, projection, geometries, expandCluster, originalPosition, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -114,12 +114,8 @@ public interface MapsAccount {
     MapsAccountInner innerModel();
 
     /** The entirety of the MapsAccount definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /** The MapsAccount definition stages. */
@@ -173,11 +169,8 @@ public interface MapsAccount {
          * The stage of the MapsAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithKind,
+            DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -248,15 +241,9 @@ public interface MapsAccount {
     MapsAccount.Update update();
 
     /** The template for MapsAccount update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithKind,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithLinkedResources,
-            UpdateStages.WithCors,
-            UpdateStages.WithEncryption {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithSku,
+        UpdateStages.WithIdentity, UpdateStages.WithDisableLocalAuth, UpdateStages.WithLinkedResources,
+        UpdateStages.WithCors, UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *

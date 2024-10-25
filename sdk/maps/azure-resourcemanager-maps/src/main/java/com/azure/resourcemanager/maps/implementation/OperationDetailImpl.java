@@ -14,8 +14,8 @@ public final class OperationDetailImpl implements OperationDetail {
 
     private final com.azure.resourcemanager.maps.AzureMapsManager serviceManager;
 
-    OperationDetailImpl(
-        OperationDetailInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
+    OperationDetailImpl(OperationDetailInner innerObject,
+        com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** Image registry that contains the base image. */
 @Immutable
 public final class ModelDockerSectionBaseImageRegistry extends ContainerRegistry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelDockerSectionBaseImageRegistry.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelDockerSectionBaseImageRegistry.class);
 
     /** {@inheritDoc} */
     @Override

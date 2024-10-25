@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpPrefixPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpPrefixProperties model =
-            BinaryData
-                .fromString(
-                    "{\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Deny\",\"sequenceNumber\":1091451108549371592,\"networkPrefix\":\"ipfohykfkx\",\"condition\":\"Range\",\"subnetMaskLength\":\"r\"}],\"annotation\":\"iutgnjizbeewoiy\"}")
-                .toObject(IpPrefixProperties.class);
+        IpPrefixProperties model = BinaryData.fromString(
+            "{\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Deny\",\"sequenceNumber\":1091451108549371592,\"networkPrefix\":\"ipfohykfkx\",\"condition\":\"Range\",\"subnetMaskLength\":\"r\"}],\"annotation\":\"iutgnjizbeewoiy\"}")
+            .toObject(IpPrefixProperties.class);
         Assertions.assertEquals("iutgnjizbeewoiy", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipPrefixRules().get(0).action());
         Assertions.assertEquals(1091451108549371592L, model.ipPrefixRules().get(0).sequenceNumber());
@@ -30,18 +28,12 @@ public final class IpPrefixPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPrefixProperties model =
-            new IpPrefixProperties()
-                .withAnnotation("iutgnjizbeewoiy")
-                .withIpPrefixRules(
-                    Arrays
-                        .asList(
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(1091451108549371592L)
-                                .withNetworkPrefix("ipfohykfkx")
-                                .withCondition(Condition.RANGE)
-                                .withSubnetMaskLength("r")));
+        IpPrefixProperties model = new IpPrefixProperties().withAnnotation("iutgnjizbeewoiy")
+            .withIpPrefixRules(Arrays.asList(new IpPrefixRule().withAction(CommunityActionTypes.DENY)
+                .withSequenceNumber(1091451108549371592L)
+                .withNetworkPrefix("ipfohykfkx")
+                .withCondition(Condition.RANGE)
+                .withSubnetMaskLength("r")));
         model = BinaryData.fromObject(model).toObject(IpPrefixProperties.class);
         Assertions.assertEquals("iutgnjizbeewoiy", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipPrefixRules().get(0).action());

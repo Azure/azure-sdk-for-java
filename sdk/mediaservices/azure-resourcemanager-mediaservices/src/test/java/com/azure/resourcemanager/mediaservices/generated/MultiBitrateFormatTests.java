@@ -13,28 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class MultiBitrateFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MultiBitrateFormat model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.MultiBitrateFormat\",\"outputFiles\":[{\"labels\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"]},{\"labels\":[\"gtcojocqwo\"]},{\"labels\":[\"nzjvusfzldm\",\"zuxylfsbtkadpyso\",\"nbtgkbugrjqctoj\"]},{\"labels\":[\"isofieypefojyqd\"]}],\"filenamePattern\":\"cuplcplcwkhih\"}")
-                .toObject(MultiBitrateFormat.class);
+        MultiBitrateFormat model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.MultiBitrateFormat\",\"outputFiles\":[{\"labels\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"]},{\"labels\":[\"gtcojocqwo\"]},{\"labels\":[\"nzjvusfzldm\",\"zuxylfsbtkadpyso\",\"nbtgkbugrjqctoj\"]},{\"labels\":[\"isofieypefojyqd\"]}],\"filenamePattern\":\"cuplcplcwkhih\"}")
+            .toObject(MultiBitrateFormat.class);
         Assertions.assertEquals("cuplcplcwkhih", model.filenamePattern());
         Assertions.assertEquals("ra", model.outputFiles().get(0).labels().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MultiBitrateFormat model =
-            new MultiBitrateFormat()
-                .withFilenamePattern("cuplcplcwkhih")
-                .withOutputFiles(
-                    Arrays
-                        .asList(
-                            new OutputFile().withLabels(Arrays.asList("ra", "iaa", "iuagydwqfbylyrfg")),
-                            new OutputFile().withLabels(Arrays.asList("gtcojocqwo")),
-                            new OutputFile()
-                                .withLabels(Arrays.asList("nzjvusfzldm", "zuxylfsbtkadpyso", "nbtgkbugrjqctoj")),
-                            new OutputFile().withLabels(Arrays.asList("isofieypefojyqd"))));
+        MultiBitrateFormat model = new MultiBitrateFormat().withFilenamePattern("cuplcplcwkhih")
+            .withOutputFiles(Arrays.asList(new OutputFile().withLabels(Arrays.asList("ra", "iaa", "iuagydwqfbylyrfg")),
+                new OutputFile().withLabels(Arrays.asList("gtcojocqwo")),
+                new OutputFile().withLabels(Arrays.asList("nzjvusfzldm", "zuxylfsbtkadpyso", "nbtgkbugrjqctoj")),
+                new OutputFile().withLabels(Arrays.asList("isofieypefojyqd"))));
         model = BinaryData.fromObject(model).toObject(MultiBitrateFormat.class);
         Assertions.assertEquals("cuplcplcwkhih", model.filenamePattern());
         Assertions.assertEquals("ra", model.outputFiles().get(0).labels().get(0));

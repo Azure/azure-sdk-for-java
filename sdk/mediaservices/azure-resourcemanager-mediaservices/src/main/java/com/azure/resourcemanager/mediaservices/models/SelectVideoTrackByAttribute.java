@@ -114,16 +114,12 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     public void validate() {
         super.validate();
         if (attribute() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attribute in model SelectVideoTrackByAttribute"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property attribute in model SelectVideoTrackByAttribute"));
         }
         if (filter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filter in model SelectVideoTrackByAttribute"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filter in model SelectVideoTrackByAttribute"));
         }
     }
 

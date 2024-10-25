@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationManagementPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationManagementPolicy model =
-            BinaryData.fromString("{\"mode\":\"NotSpecified\"}").toObject(ApplicationManagementPolicy.class);
+        ApplicationManagementPolicy model
+            = BinaryData.fromString("{\"mode\":\"NotSpecified\"}").toObject(ApplicationManagementPolicy.class);
         Assertions.assertEquals(ApplicationManagementMode.NOT_SPECIFIED, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationManagementPolicy model =
-            new ApplicationManagementPolicy().withMode(ApplicationManagementMode.NOT_SPECIFIED);
+        ApplicationManagementPolicy model
+            = new ApplicationManagementPolicy().withMode(ApplicationManagementMode.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ApplicationManagementPolicy.class);
         Assertions.assertEquals(ApplicationManagementMode.NOT_SPECIFIED, model.mode());
     }

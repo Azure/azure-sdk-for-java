@@ -76,8 +76,8 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
      * @param layer2Configuration the layer2Configuration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
-    public NetworkToNetworkInterconnectPatchableProperties withLayer2Configuration(
-        Layer2Configuration layer2Configuration) {
+    public NetworkToNetworkInterconnectPatchableProperties
+        withLayer2Configuration(Layer2Configuration layer2Configuration) {
         this.layer2Configuration = layer2Configuration;
         return this;
     }
@@ -97,8 +97,8 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
      * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
-    public NetworkToNetworkInterconnectPatchableProperties withOptionBLayer3Configuration(
-        OptionBLayer3Configuration optionBLayer3Configuration) {
+    public NetworkToNetworkInterconnectPatchableProperties
+        withOptionBLayer3Configuration(OptionBLayer3Configuration optionBLayer3Configuration) {
         this.optionBLayer3Configuration = optionBLayer3Configuration;
         return this;
     }
@@ -118,8 +118,8 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
-    public NetworkToNetworkInterconnectPatchableProperties withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectPatchableProperties
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         this.npbStaticRouteConfiguration = npbStaticRouteConfiguration;
         return this;
     }
@@ -139,8 +139,8 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
-    public NetworkToNetworkInterconnectPatchableProperties withImportRoutePolicy(
-        ImportRoutePolicyInformation importRoutePolicy) {
+    public NetworkToNetworkInterconnectPatchableProperties
+        withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy) {
         this.importRoutePolicy = importRoutePolicy;
         return this;
     }
@@ -160,8 +160,8 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
-    public NetworkToNetworkInterconnectPatchableProperties withExportRoutePolicy(
-        ExportRoutePolicyInformation exportRoutePolicy) {
+    public NetworkToNetworkInterconnectPatchableProperties
+        withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy) {
         this.exportRoutePolicy = exportRoutePolicy;
         return this;
     }

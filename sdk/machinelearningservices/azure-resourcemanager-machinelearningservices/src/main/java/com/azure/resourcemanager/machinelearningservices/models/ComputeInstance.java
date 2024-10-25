@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ComputeInstance")
 @Fluent
 public final class ComputeInstance extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstance.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstance.class);
 
     /*
      * Compute Instance properties

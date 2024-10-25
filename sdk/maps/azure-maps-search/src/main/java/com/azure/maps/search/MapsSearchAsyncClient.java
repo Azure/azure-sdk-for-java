@@ -101,8 +101,11 @@ public final class MapsSearchAsyncClient {
     private static final String POLLING_BATCH_HEADER_KEY = "BatchId";
 
     // reference static classes
-    static class BatchSearchTypeReference extends TypeReference<BatchSearchResult> { };
-    static class ReverseBatchSearchTypeReference extends TypeReference<BatchReverseSearchResult> { };
+    static class BatchSearchTypeReference extends TypeReference<BatchSearchResult> {
+    };
+
+    static class ReverseBatchSearchTypeReference extends TypeReference<BatchReverseSearchResult> {
+    };
 
     // instance fields
     private final SearchesImpl serviceClient;
@@ -344,12 +347,19 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Fuzzy Search call.
      */
     Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options, Context context) {
-        return serviceClient.fuzzySearchWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
-                options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
+        return serviceClient
+            .fuzzySearchWithResponseAsync(ResponseFormat.JSON, options.getQuery(), options.isTypeAhead(),
+                options.getTop(), options.getSkip(), options.getCategoryFilter(), options.getCountryFilter(),
+                options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
                 options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getWest(), item.getNorth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getEast(), item.getSouth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
                 options.getLanguage(), options.getExtendedPostalCodesFor(), options.getMinFuzzyLevel(),
                 options.getMaxFuzzyLevel(), options.getIndexFilter(), options.getBrandFilter(),
                 options.getElectricVehicleConnectorFilter(), options.getEntityType(), options.getLocalizedMapView(),
@@ -496,12 +506,19 @@ public final class MapsSearchAsyncClient {
      */
     Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
         Context context) {
-        return serviceClient.searchPointOfInterestWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
-                options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
+        return serviceClient
+            .searchPointOfInterestWithResponseAsync(ResponseFormat.JSON, options.getQuery(), options.isTypeAhead(),
+                options.getTop(), options.getSkip(), options.getCategoryFilter(), options.getCountryFilter(),
+                options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
                 options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getWest(), item.getNorth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getEast(), item.getSouth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
                 options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
                 options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), options.getOperatingHours(),
                 context)
@@ -598,8 +615,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchNearbyPointsOfInterestWithResponse(
-        SearchNearbyPointsOfInterestOptions options) {
+    public Mono<Response<SearchAddressResult>>
+        searchNearbyPointsOfInterestWithResponse(SearchNearbyPointsOfInterestOptions options) {
         return withContext(context -> searchNearbyPointsOfInterestWithResponse(options, context));
     }
 
@@ -630,15 +647,16 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
-    Mono<Response<SearchAddressResult>> searchNearbyPointsOfInterestWithResponse(
-        SearchNearbyPointsOfInterestOptions options, Context context) {
+    Mono<Response<SearchAddressResult>>
+        searchNearbyPointsOfInterestWithResponse(SearchNearbyPointsOfInterestOptions options, Context context) {
         // this should throw an exception if the coordinates are null, as for
         // this method they are mandatory
         final GeoPosition coordinates = options.getCoordinates().get();
-        return serviceClient.searchNearbyPointOfInterestWithResponseAsync(ResponseFormat.JSON,
-                coordinates.getLatitude(), coordinates.getLongitude(), options.getTop(), options.getSkip(),
-                options.getCategoryFilter(), options.getCountryFilter(), options.getRadiusInMeters(),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
+        return serviceClient
+            .searchNearbyPointOfInterestWithResponseAsync(ResponseFormat.JSON, coordinates.getLatitude(),
+                coordinates.getLongitude(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
+                options.getCountryFilter(), options.getRadiusInMeters(), options.getLanguage(),
+                options.getExtendedPostalCodesFor(), options.getBrandFilter(),
                 options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
@@ -733,8 +751,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
-        SearchPointOfInterestCategoryOptions options) {
+    public Mono<Response<SearchAddressResult>>
+        searchPointOfInterestCategoryWithResponse(SearchPointOfInterestCategoryOptions options) {
         return withContext(context -> searchPointOfInterestCategoryWithResponse(options, context));
     }
 
@@ -765,14 +783,21 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
-    Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
-        SearchPointOfInterestCategoryOptions options, Context context) {
-        return serviceClient.searchPointOfInterestCategoryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
+    Mono<Response<SearchAddressResult>>
+        searchPointOfInterestCategoryWithResponse(SearchPointOfInterestCategoryOptions options, Context context) {
+        return serviceClient
+            .searchPointOfInterestCategoryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
                 options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
                 options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
                 options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getWest(), item.getNorth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getEast(), item.getSouth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
                 options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
                 options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), options.getOperatingHours(),
                 context)
@@ -819,8 +844,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful POI Category Tree call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PointOfInterestCategoryTreeResult>> getPointOfInterestCategoryTreeWithResponse(
-        String language) {
+    public Mono<Response<PointOfInterestCategoryTreeResult>>
+        getPointOfInterestCategoryTreeWithResponse(String language) {
         return withContext(context -> getPointOfInterestCategoryTreeWithResponse(language, context));
     }
 
@@ -995,12 +1020,19 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Address call.
      */
     Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options, Context context) {
-        return serviceClient.searchAddressWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCountryFilter(),
+        return serviceClient
+            .searchAddressWithResponseAsync(ResponseFormat.JSON, options.getQuery(), options.isTypeAhead(),
+                options.getTop(), options.getSkip(), options.getCountryFilter(),
                 options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
                 options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getWest(), item.getNorth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
+                options.getBoundingBox()
+                    .map(item -> new GeoPosition(item.getEast(), item.getSouth()))
+                    .map(Utility::positionToString)
+                    .orElse(null),
                 options.getLanguage(), options.getExtendedPostalCodesFor(), options.getEntityType(),
                 options.getLocalizedMapView(), context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
@@ -1119,8 +1151,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(
-        ReverseSearchAddressOptions options) {
+    public Mono<Response<ReverseSearchAddressResult>>
+        reverseSearchAddressWithResponse(ReverseSearchAddressOptions options) {
         return withContext(context -> reverseSearchAddressWithResponse(options, context));
     }
 
@@ -1161,7 +1193,8 @@ public final class MapsSearchAsyncClient {
      */
     Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(ReverseSearchAddressOptions options,
         Context context) {
-        return serviceClient.reverseSearchAddressWithResponseAsync(ResponseFormat.JSON,
+        return serviceClient
+            .reverseSearchAddressWithResponseAsync(ResponseFormat.JSON,
                 Arrays.asList(options.getCoordinates().getLatitude(), options.getCoordinates().getLongitude()),
                 options.getLanguage(), options.includeSpeedLimit(), options.getHeading(), options.getRadiusInMeters(),
                 options.getNumber(), options.includeRoadUse(), options.getRoadUse(), options.allowFreeformNewline(),
@@ -1200,8 +1233,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddress(
-        ReverseSearchCrossStreetAddressOptions options) {
+    public Mono<ReverseSearchCrossStreetAddressResult>
+        reverseSearchCrossStreetAddress(ReverseSearchCrossStreetAddressOptions options) {
         return reverseSearchCrossStreetAddressWithResponse(options, null).flatMap(FluxUtil::toMono);
     }
 
@@ -1272,8 +1305,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
-        ReverseSearchCrossStreetAddressOptions options) {
+    public Mono<Response<ReverseSearchCrossStreetAddressResult>>
+        reverseSearchCrossStreetAddressWithResponse(ReverseSearchCrossStreetAddressOptions options) {
         return withContext(context -> reverseSearchCrossStreetAddressWithResponse(options, context));
     }
 
@@ -1308,9 +1341,10 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Reverse Search Address call.
      */
-    Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
-        ReverseSearchCrossStreetAddressOptions options, Context context) {
-        return serviceClient.reverseSearchCrossStreetAddressWithResponseAsync(ResponseFormat.JSON,
+    Mono<Response<ReverseSearchCrossStreetAddressResult>>
+        reverseSearchCrossStreetAddressWithResponse(ReverseSearchCrossStreetAddressOptions options, Context context) {
+        return serviceClient
+            .reverseSearchCrossStreetAddressWithResponseAsync(ResponseFormat.JSON,
                 Arrays.asList(options.getCoordinates().getLatitude(), options.getCoordinates().getLongitude()),
                 options.getTop(), options.getHeading(), options.getRadiusInMeters(), options.getLanguage(),
                 options.getLocalizedMapView(), context)
@@ -1472,9 +1506,10 @@ public final class MapsSearchAsyncClient {
      */
     Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponse(StructuredAddress address,
         SearchStructuredAddressOptions options, Context context) {
-        final SearchStructuredAddressOptions param = Optional.ofNullable(options)
-            .orElse(new SearchStructuredAddressOptions());
-        return serviceClient.searchStructuredAddressWithResponseAsync(ResponseFormat.JSON, address.getCountryCode(),
+        final SearchStructuredAddressOptions param
+            = Optional.ofNullable(options).orElse(new SearchStructuredAddressOptions());
+        return serviceClient
+            .searchStructuredAddressWithResponseAsync(ResponseFormat.JSON, address.getCountryCode(),
                 param.getLanguage(), param.getTop(), param.getSkip(), address.getStreetNumber(),
                 address.getStreetName(), address.getCrossStreet(), address.getMunicipality(),
                 address.getMunicipalitySubdivision(), address.getCountryTertiarySubdivision(),
@@ -1650,11 +1685,12 @@ public final class MapsSearchAsyncClient {
     Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
         Context context) {
         GeoJsonObject geoJsonObject = Utility.toGeoJsonObject(options.getGeometry());
-        return serviceClient.searchInsideGeometryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
+        return serviceClient
+            .searchInsideGeometryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
                 new SearchInsideGeometryRequest().setGeometry(geoJsonObject), options.getTop(), options.getLanguage(),
                 options.getCategoryFilter(), options.getExtendedPostalCodesFor(), options.getIndexFilter(),
                 options.getLocalizedMapView(), options.getOperatingHours(), context)
-                .onErrorMap(MapsSearchAsyncClient::mapThrowable);
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
     /**
@@ -1829,10 +1865,11 @@ public final class MapsSearchAsyncClient {
      */
     Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options, Context context) {
         GeoJsonLineString geoJsonLineString = (GeoJsonLineString) Utility.toGeoJsonObject(options.getRoute());
-        return serviceClient.searchAlongRouteWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.getMaxDetourTime(), new SearchAlongRouteRequest().setRoute(geoJsonLineString), options.getTop(),
-                options.getBrandFilter(), options.getCategoryFilter(), options.getElectricVehicleConnectorFilter(),
-                options.getLocalizedMapView(), options.getOperatingHours(), context)
+        return serviceClient
+            .searchAlongRouteWithResponseAsync(ResponseFormat.JSON, options.getQuery(), options.getMaxDetourTime(),
+                new SearchAlongRouteRequest().setRoute(geoJsonLineString), options.getTop(), options.getBrandFilter(),
+                options.getCategoryFilter(), options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(),
+                options.getOperatingHours(), context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
@@ -1859,8 +1896,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Batch Fuzzy Search service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-        List<FuzzySearchOptions> optionsList) {
+    public PollerFlux<BatchSearchResult, BatchSearchResult>
+        beginFuzzySearchBatch(List<FuzzySearchOptions> optionsList) {
         return this.beginFuzzySearchBatch(optionsList, null);
     }
 
@@ -1887,26 +1924,27 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-            List<FuzzySearchOptions> optionsList, Context context) {
+    PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(List<FuzzySearchOptions> optionsList,
+        Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
 
         // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toFuzzySearchBatchRequestItem)
-            .collect(Collectors.toList());
+        List<BatchRequestItem> items
+            = optionsList.stream().map(Utility::toFuzzySearchBatchRequestItem).collect(Collectors.toList());
         BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
 
         if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
             return createPollerFlux(
                 () -> this.serviceClient.fuzzySearchBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
                     .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+                this.forwardStrategy);
         } else {
-            return createPollerFlux(
-                () -> this.serviceClient.fuzzySearchBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest,
-                    context)
-                    .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+            return createPollerFlux(() -> this.serviceClient
+                .fuzzySearchBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+                this.forwardStrategy);
         }
     }
 
@@ -1964,7 +2002,8 @@ public final class MapsSearchAsyncClient {
         return createPollerFlux(
             () -> this.serviceClient.getFuzzySearchBatchNoCustomHeadersWithResponseAsync(batchId, context)
                 .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+            this.forwardStrategy);
     }
 
     /**
@@ -1997,8 +2036,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Address Batch service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-        List<SearchAddressOptions> optionsList) {
+    public PollerFlux<BatchSearchResult, BatchSearchResult>
+        beginSearchAddressBatch(List<SearchAddressOptions> optionsList) {
         return this.beginSearchAddressBatch(optionsList, null);
     }
 
@@ -2032,30 +2071,30 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-            List<SearchAddressOptions> optionsList, Context context) {
+    PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(List<SearchAddressOptions> optionsList,
+        Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
 
         // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toSearchBatchRequestItem)
-            .collect(Collectors.toList());
+        List<BatchRequestItem> items
+            = optionsList.stream().map(Utility::toSearchBatchRequestItem).collect(Collectors.toList());
         BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
 
         // run
         if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
-            return createPollerFlux(() -> this.serviceClient.searchAddressBatchSyncWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context)
-                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
-        } else {
             return createPollerFlux(
-                () -> this.serviceClient.searchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context).flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+                () -> this.serviceClient.searchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                    .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
+                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+                this.forwardStrategy);
+        } else {
+            return createPollerFlux(() -> this.serviceClient
+                .searchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+                this.forwardStrategy);
         }
     }
-
-
 
     /**
      * Get Batch Search Id
@@ -2121,12 +2160,12 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(
-            String batchId, Context context) {
+    PollerFlux<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(String batchId, Context context) {
         return createPollerFlux(
             () -> this.serviceClient.getSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context)
                 .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+            this.forwardStrategy);
     }
 
     /**
@@ -2154,8 +2193,8 @@ public final class MapsSearchAsyncClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
-        List<ReverseSearchAddressOptions> optionsList) {
+    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
+        beginReverseSearchAddressBatch(List<ReverseSearchAddressOptions> optionsList) {
         return this.beginReverseSearchAddressBatch(optionsList, null);
     }
 
@@ -2184,27 +2223,26 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@code SyncPoller} wrapping the service call.
      */
-    PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
-        List<ReverseSearchAddressOptions> optionsList, Context context) {
+    PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
+        beginReverseSearchAddressBatch(List<ReverseSearchAddressOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
 
         // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toReverseSearchBatchRequestItem)
-            .collect(Collectors.toList());
+        List<BatchRequestItem> items
+            = optionsList.stream().map(Utility::toReverseSearchBatchRequestItem).collect(Collectors.toList());
         BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
 
         if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
-            return createReversePollerFlux(
-                () -> this.serviceClient.reverseSearchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest,
-                        context)
-                    .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.reverseStrategy);
+            return createReversePollerFlux(() -> this.serviceClient
+                .reverseSearchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+                this.reverseStrategy);
         } else {
-            return createReversePollerFlux(
-                () -> this.serviceClient.reverseSearchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context).flatMap(response ->
-                    Mono.just(Utility.createBatchReverseSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+            return createReversePollerFlux(() -> this.serviceClient
+                .reverseSearchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
                 this.reverseStrategy);
         }
     }
@@ -2234,8 +2272,8 @@ public final class MapsSearchAsyncClient {
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginGetReverseSearchAddressBatch(
-        String batchId) {
+    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
+        beginGetReverseSearchAddressBatch(String batchId) {
         return this.beginGetReverseSearchAddressBatch(batchId, null);
     }
 
@@ -2269,7 +2307,8 @@ public final class MapsSearchAsyncClient {
         return createReversePollerFlux(
             () -> this.serviceClient.getReverseSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context)
                 .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.reverseStrategy);
+                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
+            this.reverseStrategy);
     }
 
     // create a poller for a forward search operation
@@ -2281,21 +2320,20 @@ public final class MapsSearchAsyncClient {
         BatchSearchTypeReference reference = new BatchSearchTypeReference();
 
         // Create poller instance
-        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY), context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, reference);
-                })), context -> strategy.poll(context, reference), strategy::cancel,
-            context -> strategy.getResult(context, reference)
-                .flatMap(result -> {
-                    final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
-                    result.setBatchId(batchId);
-                    return Mono.just(result);
-                }));
+        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY),
+            context -> initialOperation.get().flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                if (!canPoll) {
+                    return Mono.error(
+                        new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName()));
+                }
+                context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
+                return strategy.onInitialResponse(response, context, reference);
+            })), context -> strategy.poll(context, reference), strategy::cancel,
+            context -> strategy.getResult(context, reference).flatMap(result -> {
+                final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
+                result.setBatchId(batchId);
+                return Mono.just(result);
+            }));
     }
 
     // create a poller for the reverse search operation
@@ -2307,21 +2345,20 @@ public final class MapsSearchAsyncClient {
         ReverseBatchSearchTypeReference reference = new ReverseBatchSearchTypeReference();
 
         // Create poller instance
-        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY), context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, reference);
-                })), context -> strategy.poll(context, reference), strategy::cancel,
-            context -> strategy.getResult(context, reference)
-                .flatMap(result -> {
-                    final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
-                    result.setBatchId(batchId);
-                    return Mono.just(result);
-                }));
+        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY),
+            context -> initialOperation.get().flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                if (!canPoll) {
+                    return Mono.error(
+                        new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName()));
+                }
+                context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
+                return strategy.onInitialResponse(response, context, reference);
+            })), context -> strategy.poll(context, reference), strategy::cancel,
+            context -> strategy.getResult(context, reference).flatMap(result -> {
+                final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
+                result.setBatchId(batchId);
+                return Mono.just(result);
+            }));
     }
 
     private static Throwable mapThrowable(Throwable throwable) {

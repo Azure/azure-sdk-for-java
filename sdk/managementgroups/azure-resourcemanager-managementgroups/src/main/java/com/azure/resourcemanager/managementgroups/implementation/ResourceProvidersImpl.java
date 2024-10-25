@@ -23,32 +23,28 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, context);
+    public Response<CheckNameAvailabilityResult>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        Response<CheckNameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityResult checkNameAvailability(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        CheckNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(checkNameAvailabilityRequest);
+    public CheckNameAvailabilityResult
+        checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        CheckNameAvailabilityResultInner inner
+            = this.serviceClient().checkNameAvailability(checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResultImpl(inner, this.manager());
         } else {
@@ -59,10 +55,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     public Response<TenantBackfillStatusResult> startTenantBackfillWithResponse(Context context) {
         Response<TenantBackfillStatusResultInner> inner = this.serviceClient().startTenantBackfillWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TenantBackfillStatusResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,13 +72,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public Response<TenantBackfillStatusResult> tenantBackfillStatusWithResponse(Context context) {
-        Response<TenantBackfillStatusResultInner> inner =
-            this.serviceClient().tenantBackfillStatusWithResponse(context);
+        Response<TenantBackfillStatusResultInner> inner
+            = this.serviceClient().tenantBackfillStatusWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TenantBackfillStatusResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

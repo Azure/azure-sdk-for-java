@@ -129,24 +129,18 @@ public final class UpdateAccessDefinitionInner {
      */
     public void validate() {
         if (metadata() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metadata in model UpdateAccessDefinitionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property metadata in model UpdateAccessDefinitionInner"));
         } else {
             metadata().validate();
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model UpdateAccessDefinitionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model UpdateAccessDefinitionInner"));
         }
         if (subStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subStatus in model UpdateAccessDefinitionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subStatus in model UpdateAccessDefinitionInner"));
         }
     }
 

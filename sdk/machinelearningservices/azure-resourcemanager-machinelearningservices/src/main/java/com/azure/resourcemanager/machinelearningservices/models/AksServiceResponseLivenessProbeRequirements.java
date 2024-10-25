@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The liveness probe requirements. */
 @Immutable
 public final class AksServiceResponseLivenessProbeRequirements extends LivenessProbeRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseLivenessProbeRequirements.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksServiceResponseLivenessProbeRequirements.class);
 
     /** {@inheritDoc} */
     @Override

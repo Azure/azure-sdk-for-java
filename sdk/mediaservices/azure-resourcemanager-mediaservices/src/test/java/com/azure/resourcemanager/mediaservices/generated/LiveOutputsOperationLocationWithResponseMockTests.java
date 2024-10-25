@@ -31,41 +31,29 @@ public final class LiveOutputsOperationLocationWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"zmtksjci\",\"assetName\":\"digsxcdgl\",\"archiveWindowLength\":\"PT200H1M7S\",\"rewindWindowLength\":\"PT39H56M9S\",\"manifestName\":\"ua\",\"hls\":{\"fragmentsPerTsSegment\":734144074},\"outputSnapTime\":3217232205937864406,\"created\":\"2021-03-19T13:19:35Z\",\"lastModified\":\"2021-09-29T06:45:15Z\",\"provisioningState\":\"fpfmdgycxnmskwh\",\"resourceState\":\"Running\"},\"id\":\"slurlpshhkvpe\",\"name\":\"wqslsrhmpqvw\",\"type\":\"skondcbrwimu\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"zmtksjci\",\"assetName\":\"digsxcdgl\",\"archiveWindowLength\":\"PT200H1M7S\",\"rewindWindowLength\":\"PT39H56M9S\",\"manifestName\":\"ua\",\"hls\":{\"fragmentsPerTsSegment\":734144074},\"outputSnapTime\":3217232205937864406,\"created\":\"2021-03-19T13:19:35Z\",\"lastModified\":\"2021-09-29T06:45:15Z\",\"provisioningState\":\"fpfmdgycxnmskwh\",\"resourceState\":\"Running\"},\"id\":\"slurlpshhkvpe\",\"name\":\"wqslsrhmpqvw\",\"type\":\"skondcbrwimu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LiveOutput response =
-            manager
-                .liveOutputs()
-                .operationLocationWithResponse(
-                    "bgj", "kglklbyulidwcw", "mzegjon", "hj", "rwgdnqzbrfks", com.azure.core.util.Context.NONE)
-                .getValue();
+        LiveOutput response = manager.liveOutputs()
+            .operationLocationWithResponse("bgj", "kglklbyulidwcw", "mzegjon", "hj", "rwgdnqzbrfks",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zmtksjci", response.description());
         Assertions.assertEquals("digsxcdgl", response.assetName());

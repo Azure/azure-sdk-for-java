@@ -355,10 +355,8 @@ public final class ApplicationInner extends GenericResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicationInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ApplicationInner"));
         } else {
             innerProperties().validate();
         }
@@ -366,9 +364,8 @@ public final class ApplicationInner extends GenericResource {
             plan().validate();
         }
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model ApplicationInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kind in model ApplicationInner"));
         }
         if (identity() != null) {
             identity().validate();

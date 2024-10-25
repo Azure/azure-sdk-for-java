@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"lc\"]},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"rhyzdf\",\"rsofpltdbmairrh\",\"hfnrac\",\"npq\"],\"annotation\":\"tuujwouh\"},\"location\":\"wsigrbjbxsj\",\"tags\":{\"vqkjyaznu\":\"i\",\"lv\":\"tggmuwdchozfnkfe\",\"oaiknaqlnuwig\":\"noakiz\"},\"id\":\"yxl\",\"name\":\"kwph\",\"type\":\"xzcwxhmpejt\"}")
-                .toObject(InternetGatewayRuleInner.class);
+        InternetGatewayRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"lc\"]},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"rhyzdf\",\"rsofpltdbmairrh\",\"hfnrac\",\"npq\"],\"annotation\":\"tuujwouh\"},\"location\":\"wsigrbjbxsj\",\"tags\":{\"vqkjyaznu\":\"i\",\"lv\":\"tggmuwdchozfnkfe\",\"oaiknaqlnuwig\":\"noakiz\"},\"id\":\"yxl\",\"name\":\"kwph\",\"type\":\"xzcwxhmpejt\"}")
+            .toObject(InternetGatewayRuleInner.class);
         Assertions.assertEquals("wsigrbjbxsj", model.location());
         Assertions.assertEquals("i", model.tags().get("vqkjyaznu"));
         Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
@@ -30,12 +28,10 @@ public final class InternetGatewayRuleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRuleInner model =
-            new InternetGatewayRuleInner()
-                .withLocation("wsigrbjbxsj")
-                .withTags(mapOf("vqkjyaznu", "i", "lv", "tggmuwdchozfnkfe", "oaiknaqlnuwig", "noakiz"))
-                .withRuleProperties(new RuleProperties().withAction(Action.ALLOW).withAddressList(Arrays.asList("lc")))
-                .withAnnotation("tuujwouh");
+        InternetGatewayRuleInner model = new InternetGatewayRuleInner().withLocation("wsigrbjbxsj")
+            .withTags(mapOf("vqkjyaznu", "i", "lv", "tggmuwdchozfnkfe", "oaiknaqlnuwig", "noakiz"))
+            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW).withAddressList(Arrays.asList("lc")))
+            .withAnnotation("tuujwouh");
         model = BinaryData.fromObject(model).toObject(InternetGatewayRuleInner.class);
         Assertions.assertEquals("wsigrbjbxsj", model.location());
         Assertions.assertEquals("i", model.tags().get("vqkjyaznu"));

@@ -13,7 +13,8 @@ import java.util.List;
 /** The RSectionResponse model. */
 @Fluent
 public class RSectionResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RSectionResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RSectionResponse.class);
 
     /*
      * The version of R to be installed

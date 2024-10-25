@@ -289,15 +289,12 @@ public final class LiveOutputProperties {
      */
     public void validate() {
         if (assetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property assetName in model LiveOutputProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property assetName in model LiveOutputProperties"));
         }
         if (archiveWindowLength() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property archiveWindowLength in model LiveOutputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property archiveWindowLength in model LiveOutputProperties"));
         }
         if (hls() != null) {
             hls().validate();

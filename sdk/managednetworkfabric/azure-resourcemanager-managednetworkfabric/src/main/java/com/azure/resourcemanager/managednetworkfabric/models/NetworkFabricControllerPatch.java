@@ -94,8 +94,8 @@ public final class NetworkFabricControllerPatch extends TagsUpdate {
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerPatch object itself.
      */
-    public NetworkFabricControllerPatch withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerPatch
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricControllerPatchableProperties();
         }

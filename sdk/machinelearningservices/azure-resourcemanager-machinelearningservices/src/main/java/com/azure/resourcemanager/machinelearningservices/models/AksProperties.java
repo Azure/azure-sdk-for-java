@@ -13,7 +13,8 @@ import java.util.List;
 /** AKS properties. */
 @Fluent
 public final class AksProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksProperties.class);
 
     /*
      * Cluster full qualified domain name

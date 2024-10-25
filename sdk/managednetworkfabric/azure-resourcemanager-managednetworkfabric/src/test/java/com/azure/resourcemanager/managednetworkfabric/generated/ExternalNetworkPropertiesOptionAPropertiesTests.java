@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalNetworkPropertiesOptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalNetworkPropertiesOptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":26197066,\"vlanId\":964103530,\"fabricASN\":3205216102887519977,\"peerASN\":6279545175956457599,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":273654247,\"multiplier\":1068309041},\"ingressAclId\":\"bsr\",\"egressAclId\":\"dylperpilttjzgc\",\"primaryIpv4Prefix\":\"cmfpfbodet\",\"primaryIpv6Prefix\":\"sr\",\"secondaryIpv4Prefix\":\"tshuvftwaivm\",\"secondaryIpv6Prefix\":\"kevz\"}")
-                .toObject(ExternalNetworkPropertiesOptionAProperties.class);
+        ExternalNetworkPropertiesOptionAProperties model = BinaryData.fromString(
+            "{\"mtu\":26197066,\"vlanId\":964103530,\"fabricASN\":3205216102887519977,\"peerASN\":6279545175956457599,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":273654247,\"multiplier\":1068309041},\"ingressAclId\":\"bsr\",\"egressAclId\":\"dylperpilttjzgc\",\"primaryIpv4Prefix\":\"cmfpfbodet\",\"primaryIpv6Prefix\":\"sr\",\"secondaryIpv4Prefix\":\"tshuvftwaivm\",\"secondaryIpv6Prefix\":\"kevz\"}")
+            .toObject(ExternalNetworkPropertiesOptionAProperties.class);
         Assertions.assertEquals("cmfpfbodet", model.primaryIpv4Prefix());
         Assertions.assertEquals("sr", model.primaryIpv6Prefix());
         Assertions.assertEquals("tshuvftwaivm", model.secondaryIpv4Prefix());
@@ -32,9 +30,8 @@ public final class ExternalNetworkPropertiesOptionAPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalNetworkPropertiesOptionAProperties model =
-            new ExternalNetworkPropertiesOptionAProperties()
-                .withPrimaryIpv4Prefix("cmfpfbodet")
+        ExternalNetworkPropertiesOptionAProperties model
+            = new ExternalNetworkPropertiesOptionAProperties().withPrimaryIpv4Prefix("cmfpfbodet")
                 .withPrimaryIpv6Prefix("sr")
                 .withSecondaryIpv4Prefix("tshuvftwaivm")
                 .withSecondaryIpv6Prefix("kevz")

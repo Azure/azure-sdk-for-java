@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionUnderManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionUnderManagementGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenant\":\"ftadehxnltyfs\",\"displayName\":\"pusuesn\",\"parent\":{\"id\":\"ej\"},\"state\":\"vorxzdmohct\"}")
-                .toObject(SubscriptionUnderManagementGroupProperties.class);
+        SubscriptionUnderManagementGroupProperties model = BinaryData.fromString(
+            "{\"tenant\":\"ftadehxnltyfs\",\"displayName\":\"pusuesn\",\"parent\":{\"id\":\"ej\"},\"state\":\"vorxzdmohct\"}")
+            .toObject(SubscriptionUnderManagementGroupProperties.class);
         Assertions.assertEquals("ftadehxnltyfs", model.tenant());
         Assertions.assertEquals("pusuesn", model.displayName());
         Assertions.assertEquals("ej", model.parent().id());
@@ -25,9 +23,8 @@ public final class SubscriptionUnderManagementGroupPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionUnderManagementGroupProperties model =
-            new SubscriptionUnderManagementGroupProperties()
-                .withTenant("ftadehxnltyfs")
+        SubscriptionUnderManagementGroupProperties model
+            = new SubscriptionUnderManagementGroupProperties().withTenant("ftadehxnltyfs")
                 .withDisplayName("pusuesn")
                 .withParent(new DescendantParentGroupInfo().withId("ej"))
                 .withState("vorxzdmohct");

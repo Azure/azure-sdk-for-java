@@ -3217,7 +3217,7 @@ public final class WeathersImpl {
         Boolean includeCurrentStorm, Context context) {
         return getTropicalStormLocationsWithResponseAsync(format, year, basinId, governmentStormId, includeDetails,
             includeGeometricDetails, unit, includeCurrentStorm, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

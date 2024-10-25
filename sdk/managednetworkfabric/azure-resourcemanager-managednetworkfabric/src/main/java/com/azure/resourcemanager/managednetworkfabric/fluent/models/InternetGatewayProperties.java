@@ -157,15 +157,12 @@ public final class InternetGatewayProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model InternetGatewayProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model InternetGatewayProperties"));
         }
         if (networkFabricControllerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricControllerId in model InternetGatewayProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricControllerId in model InternetGatewayProperties"));
         }
     }
 

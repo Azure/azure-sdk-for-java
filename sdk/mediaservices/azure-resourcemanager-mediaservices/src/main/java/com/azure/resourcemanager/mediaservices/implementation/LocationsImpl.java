@@ -21,31 +21,28 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<EntityNameAvailabilityCheckOutput> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityInput parameters, Context context) {
-        Response<EntityNameAvailabilityCheckOutputInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
+    public Response<EntityNameAvailabilityCheckOutput> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityInput parameters, Context context) {
+        Response<EntityNameAvailabilityCheckOutputInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EntityNameAvailabilityCheckOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EntityNameAvailabilityCheckOutput checkNameAvailability(
-        String locationName, CheckNameAvailabilityInput parameters) {
-        EntityNameAvailabilityCheckOutputInner inner =
-            this.serviceClient().checkNameAvailability(locationName, parameters);
+    public EntityNameAvailabilityCheckOutput checkNameAvailability(String locationName,
+        CheckNameAvailabilityInput parameters) {
+        EntityNameAvailabilityCheckOutputInner inner
+            = this.serviceClient().checkNameAvailability(locationName, parameters);
         if (inner != null) {
             return new EntityNameAvailabilityCheckOutputImpl(inner, this.manager());
         } else {

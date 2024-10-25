@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTapPatchableParametersDestinationsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkTapPatchableParametersDestinationsItem model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dnuehxwltssjdywb\",\"destinationType\":\"Direct\",\"destinationId\":\"erxa\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"xc\",\"mpt\"]},\"destinationTapRuleId\":\"rm\"}")
-                .toObject(NetworkTapPatchableParametersDestinationsItem.class);
+        NetworkTapPatchableParametersDestinationsItem model = BinaryData.fromString(
+            "{\"name\":\"dnuehxwltssjdywb\",\"destinationType\":\"Direct\",\"destinationId\":\"erxa\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"xc\",\"mpt\"]},\"destinationTapRuleId\":\"rm\"}")
+            .toObject(NetworkTapPatchableParametersDestinationsItem.class);
         Assertions.assertEquals("dnuehxwltssjdywb", model.name());
         Assertions.assertEquals(DestinationType.DIRECT, model.destinationType());
         Assertions.assertEquals("erxa", model.destinationId());
@@ -30,15 +28,12 @@ public final class NetworkTapPatchableParametersDestinationsItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapPatchableParametersDestinationsItem model =
-            new NetworkTapPatchableParametersDestinationsItem()
-                .withName("dnuehxwltssjdywb")
+        NetworkTapPatchableParametersDestinationsItem model
+            = new NetworkTapPatchableParametersDestinationsItem().withName("dnuehxwltssjdywb")
                 .withDestinationType(DestinationType.DIRECT)
                 .withDestinationId("erxa")
-                .withIsolationDomainProperties(
-                    new IsolationDomainProperties()
-                        .withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("xc", "mpt")))
+                .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                    .withNeighborGroupIds(Arrays.asList("xc", "mpt")))
                 .withDestinationTapRuleId("rm");
         model = BinaryData.fromObject(model).toObject(NetworkTapPatchableParametersDestinationsItem.class);
         Assertions.assertEquals("dnuehxwltssjdywb", model.name());

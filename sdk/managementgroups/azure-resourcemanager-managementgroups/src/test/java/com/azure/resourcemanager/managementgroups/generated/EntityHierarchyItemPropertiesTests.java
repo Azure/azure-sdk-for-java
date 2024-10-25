@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityHierarchyItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityHierarchyItemProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"dqmh\",\"permissions\":\"edit\",\"children\":[{\"properties\":{\"displayName\":\"wky\",\"permissions\":\"view\",\"children\":[]},\"id\":\"tkncwsc\",\"name\":\"svlxotogtwrup\",\"type\":\"sx\"},{\"properties\":{\"displayName\":\"i\",\"permissions\":\"delete\",\"children\":[]},\"id\":\"ceoveilovno\",\"name\":\"yfjfcnjbkcn\",\"type\":\"dhbt\"},{\"properties\":{\"displayName\":\"h\",\"permissions\":\"delete\",\"children\":[]},\"id\":\"vjtoqnermclfp\",\"name\":\"phoxus\",\"type\":\"rpabg\"}]}")
-                .toObject(EntityHierarchyItemProperties.class);
+        EntityHierarchyItemProperties model = BinaryData.fromString(
+            "{\"displayName\":\"dqmh\",\"permissions\":\"edit\",\"children\":[{\"properties\":{\"displayName\":\"wky\",\"permissions\":\"view\",\"children\":[]},\"id\":\"tkncwsc\",\"name\":\"svlxotogtwrup\",\"type\":\"sx\"},{\"properties\":{\"displayName\":\"i\",\"permissions\":\"delete\",\"children\":[]},\"id\":\"ceoveilovno\",\"name\":\"yfjfcnjbkcn\",\"type\":\"dhbt\"},{\"properties\":{\"displayName\":\"h\",\"permissions\":\"delete\",\"children\":[]},\"id\":\"vjtoqnermclfp\",\"name\":\"phoxus\",\"type\":\"rpabg\"}]}")
+            .toObject(EntityHierarchyItemProperties.class);
         Assertions.assertEquals("dqmh", model.displayName());
         Assertions.assertEquals(Permissions.EDIT, model.permissions());
         Assertions.assertEquals("wky", model.children().get(0).displayName());
@@ -27,25 +25,18 @@ public final class EntityHierarchyItemPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityHierarchyItemProperties model =
-            new EntityHierarchyItemProperties()
-                .withDisplayName("dqmh")
-                .withPermissions(Permissions.EDIT)
-                .withChildren(
-                    Arrays
-                        .asList(
-                            new EntityHierarchyItem()
-                                .withDisplayName("wky")
-                                .withPermissions(Permissions.VIEW)
-                                .withChildren(Arrays.asList()),
-                            new EntityHierarchyItem()
-                                .withDisplayName("i")
-                                .withPermissions(Permissions.DELETE)
-                                .withChildren(Arrays.asList()),
-                            new EntityHierarchyItem()
-                                .withDisplayName("h")
-                                .withPermissions(Permissions.DELETE)
-                                .withChildren(Arrays.asList())));
+        EntityHierarchyItemProperties model = new EntityHierarchyItemProperties().withDisplayName("dqmh")
+            .withPermissions(Permissions.EDIT)
+            .withChildren(Arrays.asList(
+                new EntityHierarchyItem().withDisplayName("wky")
+                    .withPermissions(Permissions.VIEW)
+                    .withChildren(Arrays.asList()),
+                new EntityHierarchyItem().withDisplayName("i")
+                    .withPermissions(Permissions.DELETE)
+                    .withChildren(Arrays.asList()),
+                new EntityHierarchyItem().withDisplayName("h")
+                    .withPermissions(Permissions.DELETE)
+                    .withChildren(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(EntityHierarchyItemProperties.class);
         Assertions.assertEquals("dqmh", model.displayName());
         Assertions.assertEquals(Permissions.EDIT, model.permissions());

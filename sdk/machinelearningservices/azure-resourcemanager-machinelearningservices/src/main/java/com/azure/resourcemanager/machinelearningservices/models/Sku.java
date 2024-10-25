@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Sku of the resource. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Sku.class);
 
     /*
      * Name of the sku

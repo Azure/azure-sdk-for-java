@@ -110,25 +110,21 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IpExtendedCommunity create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .create(resourceGroupName, ipExtendedCommunityName, this.innerModel(), context);
         return this;
     }
 
-    IpExtendedCommunityImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    IpExtendedCommunityImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new IpExtendedCommunityInner();
         this.serviceManager = serviceManager;
         this.ipExtendedCommunityName = name;
@@ -140,25 +136,20 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .update(resourceGroupName, ipExtendedCommunityName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .update(resourceGroupName, ipExtendedCommunityName, updateBody, Context.NONE);
         return this;
     }
 
     public IpExtendedCommunity apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .update(resourceGroupName, ipExtendedCommunityName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .update(resourceGroupName, ipExtendedCommunityName, updateBody, context);
         return this;
     }
 
-    IpExtendedCommunityImpl(
-        IpExtendedCommunityInner innerObject,
+    IpExtendedCommunityImpl(IpExtendedCommunityInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -167,22 +158,18 @@ public final class IpExtendedCommunityImpl
     }
 
     public IpExtendedCommunity refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IpExtendedCommunity refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpExtendedCommunities()
-                .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpExtendedCommunities()
+            .getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, context)
+            .getValue();
         return this;
     }
 
@@ -196,8 +183,8 @@ public final class IpExtendedCommunityImpl
         return this;
     }
 
-    public IpExtendedCommunityImpl withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityImpl
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         if (isInCreateMode()) {
             this.innerModel().withIpExtendedCommunityRules(ipExtendedCommunityRules);
             return this;

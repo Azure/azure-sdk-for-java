@@ -196,10 +196,8 @@ public final class RoutePolicyInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RoutePolicyInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model RoutePolicyInner"));
         } else {
             innerProperties().validate();
         }

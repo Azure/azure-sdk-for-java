@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"ilqu\",\"scaleUnits\":1776914172,\"availabilitySetName\":\"dxtqmieoxo\",\"accessControl\":{},\"maxCacheAge\":6726931432797365258,\"customHostNames\":[\"mtbghh\",\"vgrvkffo\",\"jzhpjbibgjmfx\",\"mv\"],\"hostName\":\"luyovwxnbkfezzx\",\"cdnEnabled\":true,\"cdnProvider\":\"wzdgirujbzbo\",\"cdnProfile\":\"zzbtdcqvpniyujvi\",\"provisioningState\":\"wdsh\",\"resourceState\":\"Running\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bgye\",\"crossDomainPolicy\":\"ymsgaojfmwnc\"},\"freeTrialEndTime\":\"2021-04-29T14:25:51Z\",\"created\":\"2021-07-03T18:59:53Z\",\"lastModified\":\"2021-11-17T23:30:45Z\"},\"sku\":{\"name\":\"ymoxoftpipiwyczu\",\"capacity\":148157875},\"location\":\"cpqjlihhyu\",\"tags\":{\"wdgzxulucv\":\"kasdvlm\",\"urisjnhnytxifqj\":\"amrsreuzv\",\"esutrgjupauutpw\":\"gxmrhublwp\",\"jqgwzp\":\"qhih\"},\"id\":\"fqntcyp\",\"name\":\"xjvfoimwksl\",\"type\":\"rcizjxvyd\"}")
-                .toObject(StreamingEndpointInner.class);
+        StreamingEndpointInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"ilqu\",\"scaleUnits\":1776914172,\"availabilitySetName\":\"dxtqmieoxo\",\"accessControl\":{},\"maxCacheAge\":6726931432797365258,\"customHostNames\":[\"mtbghh\",\"vgrvkffo\",\"jzhpjbibgjmfx\",\"mv\"],\"hostName\":\"luyovwxnbkfezzx\",\"cdnEnabled\":true,\"cdnProvider\":\"wzdgirujbzbo\",\"cdnProfile\":\"zzbtdcqvpniyujvi\",\"provisioningState\":\"wdsh\",\"resourceState\":\"Running\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bgye\",\"crossDomainPolicy\":\"ymsgaojfmwnc\"},\"freeTrialEndTime\":\"2021-04-29T14:25:51Z\",\"created\":\"2021-07-03T18:59:53Z\",\"lastModified\":\"2021-11-17T23:30:45Z\"},\"sku\":{\"name\":\"ymoxoftpipiwyczu\",\"capacity\":148157875},\"location\":\"cpqjlihhyu\",\"tags\":{\"wdgzxulucv\":\"kasdvlm\",\"urisjnhnytxifqj\":\"amrsreuzv\",\"esutrgjupauutpw\":\"gxmrhublwp\",\"jqgwzp\":\"qhih\"},\"id\":\"fqntcyp\",\"name\":\"xjvfoimwksl\",\"type\":\"rcizjxvyd\"}")
+            .toObject(StreamingEndpointInner.class);
         Assertions.assertEquals("cpqjlihhyu", model.location());
         Assertions.assertEquals("kasdvlm", model.tags().get("wdgzxulucv"));
         Assertions.assertEquals(148157875, model.sku().capacity());
@@ -39,31 +37,21 @@ public final class StreamingEndpointInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingEndpointInner model =
-            new StreamingEndpointInner()
-                .withLocation("cpqjlihhyu")
-                .withTags(
-                    mapOf(
-                        "wdgzxulucv",
-                        "kasdvlm",
-                        "urisjnhnytxifqj",
-                        "amrsreuzv",
-                        "esutrgjupauutpw",
-                        "gxmrhublwp",
-                        "jqgwzp",
-                        "qhih"))
-                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(148157875))
-                .withDescription("ilqu")
-                .withScaleUnits(1776914172)
-                .withAvailabilitySetName("dxtqmieoxo")
-                .withAccessControl(new StreamingEndpointAccessControl())
-                .withMaxCacheAge(6726931432797365258L)
-                .withCustomHostNames(Arrays.asList("mtbghh", "vgrvkffo", "jzhpjbibgjmfx", "mv"))
-                .withCdnEnabled(true)
-                .withCdnProvider("wzdgirujbzbo")
-                .withCdnProfile("zzbtdcqvpniyujvi")
-                .withCrossSiteAccessPolicies(
-                    new CrossSiteAccessPolicies().withClientAccessPolicy("bgye").withCrossDomainPolicy("ymsgaojfmwnc"));
+        StreamingEndpointInner model = new StreamingEndpointInner().withLocation("cpqjlihhyu")
+            .withTags(mapOf("wdgzxulucv", "kasdvlm", "urisjnhnytxifqj", "amrsreuzv", "esutrgjupauutpw", "gxmrhublwp",
+                "jqgwzp", "qhih"))
+            .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(148157875))
+            .withDescription("ilqu")
+            .withScaleUnits(1776914172)
+            .withAvailabilitySetName("dxtqmieoxo")
+            .withAccessControl(new StreamingEndpointAccessControl())
+            .withMaxCacheAge(6726931432797365258L)
+            .withCustomHostNames(Arrays.asList("mtbghh", "vgrvkffo", "jzhpjbibgjmfx", "mv"))
+            .withCdnEnabled(true)
+            .withCdnProvider("wzdgirujbzbo")
+            .withCdnProfile("zzbtdcqvpniyujvi")
+            .withCrossSiteAccessPolicies(
+                new CrossSiteAccessPolicies().withClientAccessPolicy("bgye").withCrossDomainPolicy("ymsgaojfmwnc"));
         model = BinaryData.fromObject(model).toObject(StreamingEndpointInner.class);
         Assertions.assertEquals("cpqjlihhyu", model.location());
         Assertions.assertEquals("kasdvlm", model.tags().get("wdgzxulucv"));

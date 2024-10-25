@@ -12,22 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateManagementGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateManagementGroupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"sdkf\",\"properties\":{\"tenantId\":\"bhtqqrolfpfpsa\",\"displayName\":\"bquxigjy\",\"details\":{\"version\":161079646,\"updatedTime\":\"2021-11-28T08:08:08Z\",\"updatedBy\":\"fhrtxilnerkujysv\"},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"awrlyx\",\"name\":\"kcprbnw\",\"displayName\":\"gjvtbv\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"dnrujqguhmuouqfp\",\"name\":\"zw\",\"displayName\":\"g\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"uizga\",\"name\":\"ufizuckyf\",\"displayName\":\"rfidfvzwdz\",\"children\":[]}]},\"id\":\"tymw\",\"type\":\"hwxmnteiwa\"}")
-                .toObject(CreateManagementGroupRequest.class);
+        CreateManagementGroupRequest model = BinaryData.fromString(
+            "{\"name\":\"sdkf\",\"properties\":{\"tenantId\":\"bhtqqrolfpfpsa\",\"displayName\":\"bquxigjy\",\"details\":{\"version\":161079646,\"updatedTime\":\"2021-11-28T08:08:08Z\",\"updatedBy\":\"fhrtxilnerkujysv\"},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"awrlyx\",\"name\":\"kcprbnw\",\"displayName\":\"gjvtbv\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"dnrujqguhmuouqfp\",\"name\":\"zw\",\"displayName\":\"g\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"uizga\",\"name\":\"ufizuckyf\",\"displayName\":\"rfidfvzwdz\",\"children\":[]}]},\"id\":\"tymw\",\"type\":\"hwxmnteiwa\"}")
+            .toObject(CreateManagementGroupRequest.class);
         Assertions.assertEquals("sdkf", model.name());
         Assertions.assertEquals("bquxigjy", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateManagementGroupRequest model =
-            new CreateManagementGroupRequest()
-                .withName("sdkf")
-                .withDisplayName("bquxigjy")
-                .withDetails(new CreateManagementGroupDetails());
+        CreateManagementGroupRequest model = new CreateManagementGroupRequest().withName("sdkf")
+            .withDisplayName("bquxigjy")
+            .withDetails(new CreateManagementGroupDetails());
         model = BinaryData.fromObject(model).toObject(CreateManagementGroupRequest.class);
         Assertions.assertEquals("sdkf", model.name());
         Assertions.assertEquals("bquxigjy", model.displayName());

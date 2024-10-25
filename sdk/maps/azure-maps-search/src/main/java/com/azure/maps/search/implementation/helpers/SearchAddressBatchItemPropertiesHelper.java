@@ -13,14 +13,17 @@ import com.azure.maps.search.models.SearchAddressResult;
 public final class SearchAddressBatchItemPropertiesHelper {
     private static SearchAddressBatchItemAccessor accessor;
 
-    private SearchAddressBatchItemPropertiesHelper() { }
+    private SearchAddressBatchItemPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SearchAddressBatchItem} instance.
      */
     public interface SearchAddressBatchItemAccessor {
         void setStatusCode(SearchAddressBatchItem item, Integer statusCode);
+
         void setErrorDetail(SearchAddressBatchItem item, ResponseError detail);
+
         void setSearchAddressResult(SearchAddressBatchItem item, SearchAddressResult result);
     }
 

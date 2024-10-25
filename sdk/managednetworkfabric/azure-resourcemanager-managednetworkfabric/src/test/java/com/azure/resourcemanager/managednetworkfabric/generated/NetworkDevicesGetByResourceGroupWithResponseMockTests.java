@@ -30,40 +30,28 @@ public final class NetworkDevicesGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"version\":\"dgktl\",\"networkDeviceSku\":\"fiqgpqcpen\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"sbeespqbvva\",\"managementIpv4Address\":\"szsu\",\"managementIpv6Address\":\"sautbri\",\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"ntzunhyyqxckdlx\",\"serialNumber\":\"isrdnowinc\",\"annotation\":\"sfvijnubxfiiy\"},\"location\":\"xewjsyutezl\",\"tags\":{\"gecyqoytwssb\":\"voxdporxkivbkut\",\"dwdmuvya\":\"qnp\",\"blzrmiukothyfjbp\":\"rbqpwx\",\"cjni\":\"hdhfrvsizfwgn\"},\"id\":\"ffwcgjjio\",\"name\":\"wuuogdkpnmwrfu\",\"type\":\"jdebyxqucnbgib\"}";
+        String responseStr
+            = "{\"properties\":{\"version\":\"dgktl\",\"networkDeviceSku\":\"fiqgpqcpen\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"sbeespqbvva\",\"managementIpv4Address\":\"szsu\",\"managementIpv6Address\":\"sautbri\",\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"ntzunhyyqxckdlx\",\"serialNumber\":\"isrdnowinc\",\"annotation\":\"sfvijnubxfiiy\"},\"location\":\"xewjsyutezl\",\"tags\":{\"gecyqoytwssb\":\"voxdporxkivbkut\",\"dwdmuvya\":\"qnp\",\"blzrmiukothyfjbp\":\"rbqpwx\",\"cjni\":\"hdhfrvsizfwgn\"},\"id\":\"ffwcgjjio\",\"name\":\"wuuogdkpnmwrfu\",\"type\":\"jdebyxqucnbgib\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkDevice response =
-            manager
-                .networkDevices()
-                .getByResourceGroupWithResponse("ccvufjqv", "cfsssmyaemkrh", com.azure.core.util.Context.NONE)
-                .getValue();
+        NetworkDevice response = manager.networkDevices()
+            .getByResourceGroupWithResponse("ccvufjqv", "cfsssmyaemkrh", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("xewjsyutezl", response.location());
         Assertions.assertEquals("voxdporxkivbkut", response.tags().get("gecyqoytwssb"));

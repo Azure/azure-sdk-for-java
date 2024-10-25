@@ -351,9 +351,8 @@ public final class LiveEventProperties {
      */
     public void validate() {
         if (input() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property input in model LiveEventProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property input in model LiveEventProperties"));
         } else {
             input().validate();
         }

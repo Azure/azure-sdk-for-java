@@ -32,48 +32,35 @@ public final class IpCommunitiesGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"configurationState\":\"Accepted\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1698670082647863989,\"wellKnownCommunities\":[\"LocalAS\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"loxtvq\",\"b\"]},{\"action\":\"Permit\",\"sequenceNumber\":6180676424023342132,\"wellKnownCommunities\":[\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"nben\",\"p\",\"vokkyankxvcpt\",\"gfb\"]}],\"annotation\":\"kxasomafe\"},\"location\":\"z\",\"tags\":{\"pautfz\":\"dxp\",\"cyuwenbqvpraw\":\"trcdzytrtffvpkd\",\"dp\":\"oqatdjka\",\"smxfzynfemqy\":\"e\"},\"id\":\"kkp\",\"name\":\"wgssdquupirnb\",\"type\":\"lqyvdsqxkjwdzp\"}";
+        String responseStr
+            = "{\"properties\":{\"configurationState\":\"Accepted\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1698670082647863989,\"wellKnownCommunities\":[\"LocalAS\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"loxtvq\",\"b\"]},{\"action\":\"Permit\",\"sequenceNumber\":6180676424023342132,\"wellKnownCommunities\":[\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"nben\",\"p\",\"vokkyankxvcpt\",\"gfb\"]}],\"annotation\":\"kxasomafe\"},\"location\":\"z\",\"tags\":{\"pautfz\":\"dxp\",\"cyuwenbqvpraw\":\"trcdzytrtffvpkd\",\"dp\":\"oqatdjka\",\"smxfzynfemqy\":\"e\"},\"id\":\"kkp\",\"name\":\"wgssdquupirnb\",\"type\":\"lqyvdsqxkjwdzp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IpCommunity response =
-            manager
-                .ipCommunities()
-                .getByResourceGroupWithResponse("qfudfyziruqv", "njxiakgyjmzb", com.azure.core.util.Context.NONE)
-                .getValue();
+        IpCommunity response = manager.ipCommunities()
+            .getByResourceGroupWithResponse("qfudfyziruqv", "njxiakgyjmzb", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("z", response.location());
         Assertions.assertEquals("dxp", response.tags().get("pautfz"));
         Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipCommunityRules().get(0).action());
         Assertions.assertEquals(1698670082647863989L, response.ipCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals(
-                WellKnownCommunities.LOCAL_AS, response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS,
+            response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
         Assertions.assertEquals("loxtvq", response.ipCommunityRules().get(0).communityMembers().get(0));
         Assertions.assertEquals("kxasomafe", response.annotation());
     }

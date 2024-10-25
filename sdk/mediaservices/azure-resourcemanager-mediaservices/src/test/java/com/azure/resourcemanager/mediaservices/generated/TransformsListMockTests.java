@@ -31,39 +31,27 @@ public final class TransformsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"created\":\"2021-01-24T13:41:17Z\",\"description\":\"bfrmbodthsqqgvri\",\"lastModified\":\"2021-03-11T16:35:03Z\",\"outputs\":[]},\"id\":\"lacjfrnxo\",\"name\":\"sxauzlwvsgmwohqf\",\"type\":\"izvu\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"created\":\"2021-01-24T13:41:17Z\",\"description\":\"bfrmbodthsqqgvri\",\"lastModified\":\"2021-03-11T16:35:03Z\",\"outputs\":[]},\"id\":\"lacjfrnxo\",\"name\":\"sxauzlwvsgmwohqf\",\"type\":\"izvu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Transform> response =
-            manager
-                .transforms()
-                .list("dhbemzqkzszu", "iwtglxxhljfpg", "icrmnzh", "gmqgjs", com.azure.core.util.Context.NONE);
+        PagedIterable<Transform> response = manager.transforms()
+            .list("dhbemzqkzszu", "iwtglxxhljfpg", "icrmnzh", "gmqgjs", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("bfrmbodthsqqgvri", response.iterator().next().description());
     }

@@ -126,25 +126,21 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .create(resourceGroupName, networkTapName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .create(resourceGroupName, networkTapName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkTap create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .create(resourceGroupName, networkTapName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .create(resourceGroupName, networkTapName, this.innerModel(), context);
         return this;
     }
 
-    NetworkTapImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkTapImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkTapInner();
         this.serviceManager = serviceManager;
         this.networkTapName = name;
@@ -156,25 +152,20 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .update(resourceGroupName, networkTapName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .update(resourceGroupName, networkTapName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkTap apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .update(resourceGroupName, networkTapName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .update(resourceGroupName, networkTapName, updateBody, context);
         return this;
     }
 
-    NetworkTapImpl(
-        NetworkTapInner innerObject,
+    NetworkTapImpl(NetworkTapInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -183,22 +174,18 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .getByResourceGroupWithResponse(resourceGroupName, networkTapName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .getByResourceGroupWithResponse(resourceGroupName, networkTapName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkTap refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTaps()
-                .getByResourceGroupWithResponse(resourceGroupName, networkTapName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTaps()
+            .getByResourceGroupWithResponse(resourceGroupName, networkTapName, context)
+            .getValue();
         return this;
     }
 
@@ -206,8 +193,8 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
         return serviceManager.networkTaps().updateAdministrativeState(resourceGroupName, networkTapName, body);
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
         return serviceManager.networkTaps().updateAdministrativeState(resourceGroupName, networkTapName, body, context);
     }
 

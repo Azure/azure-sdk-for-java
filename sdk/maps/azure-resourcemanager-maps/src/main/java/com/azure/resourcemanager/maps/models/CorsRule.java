@@ -52,9 +52,8 @@ public final class CorsRule {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
         }
     }
 

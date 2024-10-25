@@ -59,8 +59,8 @@ public interface AccountFiltersClient {
      * @return the details of an Account Filter in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountFilterInner> getWithResponse(
-        String resourceGroupName, String accountName, String filterName, Context context);
+    Response<AccountFilterInner> getWithResponse(String resourceGroupName, String accountName, String filterName,
+        Context context);
 
     /**
      * Get an Account Filter.
@@ -94,12 +94,8 @@ public interface AccountFiltersClient {
      * @return an Account Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountFilterInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String filterName,
-        AccountFilterInner parameters,
-        Context context);
+    Response<AccountFilterInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String filterName, AccountFilterInner parameters, Context context);
 
     /**
      * Create or update an Account Filter
@@ -116,8 +112,8 @@ public interface AccountFiltersClient {
      * @return an Account Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountFilterInner createOrUpdate(
-        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
+    AccountFilterInner createOrUpdate(String resourceGroupName, String accountName, String filterName,
+        AccountFilterInner parameters);
 
     /**
      * Delete an Account Filter.
@@ -167,12 +163,8 @@ public interface AccountFiltersClient {
      * @return an Account Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountFilterInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String filterName,
-        AccountFilterInner parameters,
-        Context context);
+    Response<AccountFilterInner> updateWithResponse(String resourceGroupName, String accountName, String filterName,
+        AccountFilterInner parameters, Context context);
 
     /**
      * Update an Account Filter
@@ -189,6 +181,6 @@ public interface AccountFiltersClient {
      * @return an Account Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountFilterInner update(
-        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
+    AccountFilterInner update(String resourceGroupName, String accountName, String filterName,
+        AccountFilterInner parameters);
 }

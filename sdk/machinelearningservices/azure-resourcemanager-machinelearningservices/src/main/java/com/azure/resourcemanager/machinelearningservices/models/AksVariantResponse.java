@@ -20,10 +20,11 @@ import java.util.Map;
     property = "computeType",
     defaultImpl = AksVariantResponse.class)
 @JsonTypeName("Custom")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AKS", value = AksServiceResponse.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AKS", value = AksServiceResponse.class) })
 @Fluent
 public class AksVariantResponse extends ServiceResponseBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksVariantResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksVariantResponse.class);
 
     /*
      * Is this the default variant.

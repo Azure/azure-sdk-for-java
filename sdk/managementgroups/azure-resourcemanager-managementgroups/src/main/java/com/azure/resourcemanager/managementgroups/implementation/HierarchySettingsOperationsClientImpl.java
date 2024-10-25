@@ -45,10 +45,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @param client the instance of the service client containing this operation class.
      */
     HierarchySettingsOperationsClientImpl(ManagementGroupsApiImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    HierarchySettingsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(HierarchySettingsOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,62 +57,46 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiH")
     public interface HierarchySettingsOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/settings")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HierarchySettingsListInner>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<HierarchySettingsListInner>> list(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/settings/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HierarchySettingsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<HierarchySettingsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{groupId}/settings/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HierarchySettingsInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<HierarchySettingsInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateOrUpdateSettingsRequest createTenantSettingsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/providers/Microsoft.Management/managementGroups/{groupId}/settings/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HierarchySettingsInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<HierarchySettingsInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateOrUpdateSettingsRequest createTenantSettingsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/managementGroups/{groupId}/settings/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -131,19 +113,15 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsListInner>> listWithResponseAsync(String groupId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(
+            context -> service.list(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -162,10 +140,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsListInner>> listWithResponseAsync(String groupId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -236,19 +212,15 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> getWithResponseAsync(String groupId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.get(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -267,10 +239,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> getWithResponseAsync(String groupId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -338,37 +308,25 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
+    private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createTenantSettingsRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createTenantSettingsRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createTenantSettingsRequest is required and cannot be null."));
         } else {
             createTenantSettingsRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            createTenantSettingsRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), groupId,
+                this.client.getApiVersion(), createTenantSettingsRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -385,35 +343,25 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+    private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createTenantSettingsRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createTenantSettingsRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createTenantSettingsRequest is required and cannot be null."));
         } else {
             createTenantSettingsRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                groupId,
-                this.client.getApiVersion(),
-                createTenantSettingsRequest,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+            createTenantSettingsRequest, accept, context);
     }
 
     /**
@@ -427,8 +375,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @return settings defined at the Management Group scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HierarchySettingsInner> createOrUpdateAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
+    private Mono<HierarchySettingsInner> createOrUpdateAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
         return createOrUpdateWithResponseAsync(groupId, createTenantSettingsRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -445,8 +393,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HierarchySettingsInner> createOrUpdateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+    public Response<HierarchySettingsInner> createOrUpdateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
         return createOrUpdateWithResponseAsync(groupId, createTenantSettingsRequest, context).block();
     }
 
@@ -461,8 +409,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @return settings defined at the Management Group scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public HierarchySettingsInner createOrUpdate(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
+    public HierarchySettingsInner createOrUpdate(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
         return createOrUpdateWithResponse(groupId, createTenantSettingsRequest, Context.NONE).getValue();
     }
 
@@ -478,37 +426,25 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
+    private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createTenantSettingsRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createTenantSettingsRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createTenantSettingsRequest is required and cannot be null."));
         } else {
             createTenantSettingsRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            createTenantSettingsRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+                createTenantSettingsRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -525,35 +461,25 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+    private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         if (createTenantSettingsRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createTenantSettingsRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter createTenantSettingsRequest is required and cannot be null."));
         } else {
             createTenantSettingsRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                groupId,
-                this.client.getApiVersion(),
-                createTenantSettingsRequest,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+            createTenantSettingsRequest, accept, context);
     }
 
     /**
@@ -567,8 +493,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @return settings defined at the Management Group scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HierarchySettingsInner> updateAsync(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
+    private Mono<HierarchySettingsInner> updateAsync(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest) {
         return updateWithResponseAsync(groupId, createTenantSettingsRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -585,8 +511,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HierarchySettingsInner> updateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
+    public Response<HierarchySettingsInner> updateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context) {
         return updateWithResponseAsync(groupId, createTenantSettingsRequest, context).block();
     }
 
@@ -617,19 +543,15 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String groupId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.delete(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(
+            context -> service.delete(this.client.getEndpoint(), groupId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -646,10 +568,8 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String groupId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));

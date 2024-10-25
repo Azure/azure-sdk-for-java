@@ -47,8 +47,8 @@ public interface ContentKeyPoliciesClient {
      * @return a collection of ContentKeyPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ContentKeyPolicyInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<ContentKeyPolicyInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get a Content Key Policy
@@ -65,8 +65,8 @@ public interface ContentKeyPoliciesClient {
      * @return the details of a Content Key Policy in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentKeyPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
+    Response<ContentKeyPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String contentKeyPolicyName, Context context);
 
     /**
      * Get a Content Key Policy
@@ -100,12 +100,8 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentKeyPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String contentKeyPolicyName,
-        ContentKeyPolicyInner parameters,
-        Context context);
+    Response<ContentKeyPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String contentKeyPolicyName, ContentKeyPolicyInner parameters, Context context);
 
     /**
      * Create or update an Content Key Policy
@@ -122,8 +118,8 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
+    ContentKeyPolicyInner createOrUpdate(String resourceGroupName, String accountName, String contentKeyPolicyName,
+        ContentKeyPolicyInner parameters);
 
     /**
      * Delete a Content Key Policy
@@ -140,8 +136,8 @@ public interface ContentKeyPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String contentKeyPolicyName,
+        Context context);
 
     /**
      * Delete a Content Key Policy
@@ -174,12 +170,8 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentKeyPolicyInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String contentKeyPolicyName,
-        ContentKeyPolicyInner parameters,
-        Context context);
+    Response<ContentKeyPolicyInner> updateWithResponse(String resourceGroupName, String accountName,
+        String contentKeyPolicyName, ContentKeyPolicyInner parameters, Context context);
 
     /**
      * Update a Content Key Policy
@@ -196,8 +188,8 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyInner update(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters);
+    ContentKeyPolicyInner update(String resourceGroupName, String accountName, String contentKeyPolicyName,
+        ContentKeyPolicyInner parameters);
 
     /**
      * Get a Content Key Policy with secrets
@@ -214,8 +206,8 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy including secret values along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentKeyPolicyPropertiesInner> getPolicyPropertiesWithSecretsWithResponse(
-        String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
+    Response<ContentKeyPolicyPropertiesInner> getPolicyPropertiesWithSecretsWithResponse(String resourceGroupName,
+        String accountName, String contentKeyPolicyName, Context context);
 
     /**
      * Get a Content Key Policy with secrets
@@ -231,6 +223,6 @@ public interface ContentKeyPoliciesClient {
      * @return a Content Key Policy including secret values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentKeyPolicyPropertiesInner getPolicyPropertiesWithSecrets(
-        String resourceGroupName, String accountName, String contentKeyPolicyName);
+    ContentKeyPolicyPropertiesInner getPolicyPropertiesWithSecrets(String resourceGroupName, String accountName,
+        String contentKeyPolicyName);
 }

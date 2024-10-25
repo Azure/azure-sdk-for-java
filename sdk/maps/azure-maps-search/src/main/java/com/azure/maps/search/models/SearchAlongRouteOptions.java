@@ -97,7 +97,8 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
      * @param electricVehicleConnectorFilter the electric vehicle connector filter.
      * @return a reference to this {@code SearchAlongRouteOptions}
      */
-    public SearchAlongRouteOptions setElectricVehicleConnectorFilter(List<ElectricVehicleConnector> electricVehicleConnectorFilter) {
+    public SearchAlongRouteOptions
+        setElectricVehicleConnectorFilter(List<ElectricVehicleConnector> electricVehicleConnectorFilter) {
         this.electricVehicleConnectorFilter = electricVehicleConnectorFilter;
         return this;
     }

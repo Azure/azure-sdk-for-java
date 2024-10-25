@@ -30,8 +30,8 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body);
 
     /**
      * Create a Network Fabric Service Internet Gateway.
@@ -48,8 +48,8 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body, Context context);
 
     /**
      * Create a Network Fabric Service Internet Gateway.
@@ -82,8 +82,8 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayInner create(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context);
+    InternetGatewayInner create(String resourceGroupName, String internetGatewayName, InternetGatewayInner body,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
@@ -99,8 +99,8 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InternetGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context);
+    Response<InternetGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
@@ -131,8 +131,8 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body);
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
@@ -149,8 +149,8 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body, Context context);
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
@@ -183,8 +183,8 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayInner update(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context);
+    InternetGatewayInner update(String resourceGroupName, String internetGatewayName, InternetGatewayPatch body,
+        Context context);
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
@@ -215,8 +215,8 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String internetGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.

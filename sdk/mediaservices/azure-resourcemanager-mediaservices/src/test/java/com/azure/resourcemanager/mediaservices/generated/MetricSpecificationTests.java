@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"erkujys\",\"displayName\":\"eju\",\"displayDescription\":\"qawrlyxwj\",\"unit\":\"Milliseconds\",\"aggregationType\":\"Total\",\"lockAggregationType\":\"Average\",\"supportedAggregationTypes\":[\"gjvtbv\",\"ysszdnrujqguh\"],\"dimensions\":[{\"name\":\"qfprwzwbn\",\"displayName\":\"itnwuizgazxufi\",\"toBeExportedForShoebox\":false},{\"name\":\"y\",\"displayName\":\"hr\",\"toBeExportedForShoebox\":true}],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"wdzuhtymwisd\",\"sourceMdmNamespace\":\"thwxmnteiwaopvkm\",\"supportedTimeGrainTypes\":[\"mmxdcu\"]}")
-                .toObject(MetricSpecification.class);
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"erkujys\",\"displayName\":\"eju\",\"displayDescription\":\"qawrlyxwj\",\"unit\":\"Milliseconds\",\"aggregationType\":\"Total\",\"lockAggregationType\":\"Average\",\"supportedAggregationTypes\":[\"gjvtbv\",\"ysszdnrujqguh\"],\"dimensions\":[{\"name\":\"qfprwzwbn\",\"displayName\":\"itnwuizgazxufi\",\"toBeExportedForShoebox\":false},{\"name\":\"y\",\"displayName\":\"hr\",\"toBeExportedForShoebox\":true}],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"wdzuhtymwisd\",\"sourceMdmNamespace\":\"thwxmnteiwaopvkm\",\"supportedTimeGrainTypes\":[\"mmxdcu\"]}")
+            .toObject(MetricSpecification.class);
         Assertions.assertEquals("gjvtbv", model.supportedAggregationTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification().withSupportedAggregationTypes(Arrays.asList("gjvtbv", "ysszdnrujqguh"));
+        MetricSpecification model
+            = new MetricSpecification().withSupportedAggregationTypes(Arrays.asList("gjvtbv", "ysszdnrujqguh"));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
         Assertions.assertEquals("gjvtbv", model.supportedAggregationTypes().get(0));
     }

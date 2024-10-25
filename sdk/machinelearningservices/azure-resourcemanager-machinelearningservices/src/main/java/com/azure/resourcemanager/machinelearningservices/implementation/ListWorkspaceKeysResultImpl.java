@@ -15,8 +15,7 @@ public final class ListWorkspaceKeysResultImpl implements ListWorkspaceKeysResul
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    ListWorkspaceKeysResultImpl(
-        ListWorkspaceKeysResultInner innerObject,
+    ListWorkspaceKeysResultImpl(ListWorkspaceKeysResultInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

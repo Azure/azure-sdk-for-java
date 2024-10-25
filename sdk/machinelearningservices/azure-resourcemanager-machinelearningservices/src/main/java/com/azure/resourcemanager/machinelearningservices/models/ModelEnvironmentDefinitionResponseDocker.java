@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The definition of a Docker container. */
 @Immutable
 public final class ModelEnvironmentDefinitionResponseDocker extends ModelDockerSectionResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionResponseDocker.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionResponseDocker.class);
 
     /** {@inheritDoc} */
     @Override
@@ -29,8 +30,8 @@ public final class ModelEnvironmentDefinitionResponseDocker extends ModelDockerS
 
     /** {@inheritDoc} */
     @Override
-    public ModelEnvironmentDefinitionResponseDocker withBaseImageRegistry(
-        ModelDockerSectionResponseBaseImageRegistry baseImageRegistry) {
+    public ModelEnvironmentDefinitionResponseDocker
+        withBaseImageRegistry(ModelDockerSectionResponseBaseImageRegistry baseImageRegistry) {
         super.withBaseImageRegistry(baseImageRegistry);
         return this;
     }

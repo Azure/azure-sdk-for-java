@@ -13,20 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateAdministrativeStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateAdministrativeState model =
-            BinaryData
-                .fromString("{\"state\":\"Enable\",\"resourceIds\":[\"rhvyeld\"]}")
-                .toObject(UpdateAdministrativeState.class);
+        UpdateAdministrativeState model = BinaryData.fromString("{\"state\":\"Enable\",\"resourceIds\":[\"rhvyeld\"]}")
+            .toObject(UpdateAdministrativeState.class);
         Assertions.assertEquals("rhvyeld", model.resourceIds().get(0));
         Assertions.assertEquals(EnableDisableState.ENABLE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateAdministrativeState model =
-            new UpdateAdministrativeState()
-                .withResourceIds(Arrays.asList("rhvyeld"))
-                .withState(EnableDisableState.ENABLE);
+        UpdateAdministrativeState model = new UpdateAdministrativeState().withResourceIds(Arrays.asList("rhvyeld"))
+            .withState(EnableDisableState.ENABLE);
         model = BinaryData.fromObject(model).toObject(UpdateAdministrativeState.class);
         Assertions.assertEquals("rhvyeld", model.resourceIds().get(0));
         Assertions.assertEquals(EnableDisableState.ENABLE, model.state());

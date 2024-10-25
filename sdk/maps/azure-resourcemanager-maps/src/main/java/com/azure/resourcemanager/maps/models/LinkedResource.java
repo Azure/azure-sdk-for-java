@@ -80,14 +80,12 @@ public final class LinkedResource {
      */
     public void validate() {
         if (uniqueName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uniqueName in model LinkedResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uniqueName in model LinkedResource"));
         }
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model LinkedResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model LinkedResource"));
         }
     }
 

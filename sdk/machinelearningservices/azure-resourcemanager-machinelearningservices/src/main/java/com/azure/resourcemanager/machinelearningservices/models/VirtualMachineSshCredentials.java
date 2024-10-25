@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Admin credentials for virtual machine. */
 @Fluent
 public final class VirtualMachineSshCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSshCredentials.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineSshCredentials.class);
 
     /*
      * Username of admin account

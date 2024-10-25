@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class H265LayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        H265Layer model =
-            BinaryData
-                .fromString(
-                    "{\"profile\":\"Auto\",\"level\":\"m\",\"bufferWindow\":\"PT125H53M2S\",\"crf\":40.36637,\"referenceFrames\":64895608,\"bitrate\":910650574,\"maxBitrate\":1947593422,\"bFrames\":1976070840,\"frameRate\":\"ywdxsmic\",\"slices\":1866560405,\"adaptiveBFrame\":true,\"width\":\"cj\",\"height\":\"ynszquji\",\"label\":\"voqyt\"}")
-                .toObject(H265Layer.class);
+        H265Layer model = BinaryData.fromString(
+            "{\"profile\":\"Auto\",\"level\":\"m\",\"bufferWindow\":\"PT125H53M2S\",\"crf\":40.36637,\"referenceFrames\":64895608,\"bitrate\":910650574,\"maxBitrate\":1947593422,\"bFrames\":1976070840,\"frameRate\":\"ywdxsmic\",\"slices\":1866560405,\"adaptiveBFrame\":true,\"width\":\"cj\",\"height\":\"ynszquji\",\"label\":\"voqyt\"}")
+            .toObject(H265Layer.class);
         Assertions.assertEquals("cj", model.width());
         Assertions.assertEquals("ynszquji", model.height());
         Assertions.assertEquals("voqyt", model.label());
@@ -36,22 +34,20 @@ public final class H265LayerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        H265Layer model =
-            new H265Layer()
-                .withWidth("cj")
-                .withHeight("ynszquji")
-                .withLabel("voqyt")
-                .withBitrate(910650574)
-                .withMaxBitrate(1947593422)
-                .withBFrames(1976070840)
-                .withFrameRate("ywdxsmic")
-                .withSlices(1866560405)
-                .withAdaptiveBFrame(true)
-                .withProfile(H265VideoProfile.AUTO)
-                .withLevel("m")
-                .withBufferWindow(Duration.parse("PT125H53M2S"))
-                .withCrf(40.36637F)
-                .withReferenceFrames(64895608);
+        H265Layer model = new H265Layer().withWidth("cj")
+            .withHeight("ynszquji")
+            .withLabel("voqyt")
+            .withBitrate(910650574)
+            .withMaxBitrate(1947593422)
+            .withBFrames(1976070840)
+            .withFrameRate("ywdxsmic")
+            .withSlices(1866560405)
+            .withAdaptiveBFrame(true)
+            .withProfile(H265VideoProfile.AUTO)
+            .withLevel("m")
+            .withBufferWindow(Duration.parse("PT125H53M2S"))
+            .withCrf(40.36637F)
+            .withReferenceFrames(64895608);
         model = BinaryData.fromObject(model).toObject(H265Layer.class);
         Assertions.assertEquals("cj", model.width());
         Assertions.assertEquals("ynszquji", model.height());

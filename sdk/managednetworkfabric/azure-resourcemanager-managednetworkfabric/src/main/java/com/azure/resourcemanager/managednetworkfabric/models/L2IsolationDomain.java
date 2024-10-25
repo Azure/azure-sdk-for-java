@@ -133,12 +133,8 @@ public interface L2IsolationDomain {
 
     /** The entirety of the L2IsolationDomain definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithVlanId,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithNetworkFabricId, DefinitionStages.WithVlanId, DefinitionStages.WithCreate {
     }
 
     /** The L2IsolationDomain definition stages. */

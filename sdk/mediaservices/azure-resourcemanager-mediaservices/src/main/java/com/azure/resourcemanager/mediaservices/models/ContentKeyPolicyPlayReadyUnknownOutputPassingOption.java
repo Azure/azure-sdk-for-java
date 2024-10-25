@@ -21,8 +21,8 @@ public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
     public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED = fromString("Allowed");
 
     /** Static value AllowedWithVideoConstriction for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
-    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION =
-        fromString("AllowedWithVideoConstriction");
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION
+        = fromString("AllowedWithVideoConstriction");
 
     /**
      * Creates a new instance of ContentKeyPolicyPlayReadyUnknownOutputPassingOption value.

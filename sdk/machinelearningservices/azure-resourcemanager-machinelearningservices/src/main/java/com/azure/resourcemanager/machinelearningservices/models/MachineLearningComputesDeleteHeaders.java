@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The MachineLearningComputesDeleteHeaders model. */
 @Fluent
 public final class MachineLearningComputesDeleteHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineLearningComputesDeleteHeaders.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MachineLearningComputesDeleteHeaders.class);
 
     /*
      * The Azure-AsyncOperation property.

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Customized setup scripts. */
 @Fluent
 public final class ScriptsToExecute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptsToExecute.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ScriptsToExecute.class);
 
     /*
      * Script that's run every time the machine starts.

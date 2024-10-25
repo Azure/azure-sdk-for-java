@@ -102,8 +102,8 @@ public final class NetworkFabricControllerInner extends Resource {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the NetworkFabricControllerInner object itself.
      */
-    public NetworkFabricControllerInner withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public NetworkFabricControllerInner
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricControllerProperties();
         }
@@ -151,8 +151,8 @@ public final class NetworkFabricControllerInner extends Resource {
      * @param isWorkloadManagementNetworkEnabled the isWorkloadManagementNetworkEnabled value to set.
      * @return the NetworkFabricControllerInner object itself.
      */
-    public NetworkFabricControllerInner withIsWorkloadManagementNetworkEnabled(
-        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+    public NetworkFabricControllerInner
+        withIsWorkloadManagementNetworkEnabled(IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricControllerProperties();
         }
@@ -296,8 +296,8 @@ public final class NetworkFabricControllerInner extends Resource {
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerInner object itself.
      */
-    public NetworkFabricControllerInner withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerInner
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricControllerProperties();
         }
@@ -335,10 +335,8 @@ public final class NetworkFabricControllerInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkFabricControllerInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkFabricControllerInner"));
         } else {
             innerProperties().validate();
         }

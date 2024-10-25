@@ -147,9 +147,8 @@ public final class IpPrefixInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model IpPrefixInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model IpPrefixInner"));
         } else {
             innerProperties().validate();
         }

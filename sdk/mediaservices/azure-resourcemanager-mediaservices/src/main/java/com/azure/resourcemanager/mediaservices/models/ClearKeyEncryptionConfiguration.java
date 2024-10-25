@@ -46,8 +46,8 @@ public final class ClearKeyEncryptionConfiguration {
      * @param customKeysAcquisitionUrlTemplate the customKeysAcquisitionUrlTemplate value to set.
      * @return the ClearKeyEncryptionConfiguration object itself.
      */
-    public ClearKeyEncryptionConfiguration withCustomKeysAcquisitionUrlTemplate(
-        String customKeysAcquisitionUrlTemplate) {
+    public ClearKeyEncryptionConfiguration
+        withCustomKeysAcquisitionUrlTemplate(String customKeysAcquisitionUrlTemplate) {
         this.customKeysAcquisitionUrlTemplate = customKeysAcquisitionUrlTemplate;
         return this;
     }

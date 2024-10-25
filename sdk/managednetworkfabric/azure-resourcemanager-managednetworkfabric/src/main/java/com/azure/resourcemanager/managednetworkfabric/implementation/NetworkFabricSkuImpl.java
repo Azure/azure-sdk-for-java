@@ -16,8 +16,7 @@ public final class NetworkFabricSkuImpl implements NetworkFabricSku {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    NetworkFabricSkuImpl(
-        NetworkFabricSkuInner innerObject,
+    NetworkFabricSkuImpl(NetworkFabricSkuInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

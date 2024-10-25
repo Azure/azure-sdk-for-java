@@ -56,14 +56,11 @@ public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifie
     public void validate() {
         super.validate();
         if (keyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyId in model"
-                            + " ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property keyId in model"
+                + " ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class);
 }

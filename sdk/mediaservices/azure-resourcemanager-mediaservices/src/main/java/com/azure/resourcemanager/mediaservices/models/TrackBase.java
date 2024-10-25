@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioTrack", value = AudioTrack.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrack", value = VideoTrack.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.TextTrack", value = TextTrack.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.TextTrack", value = TextTrack.class) })
 @Immutable
 public class TrackBase {
     /** Creates an instance of TrackBase class. */

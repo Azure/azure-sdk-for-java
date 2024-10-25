@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventOutputTranscriptionTrackTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventOutputTranscriptionTrack model =
-            BinaryData.fromString("{\"trackName\":\"tkl\"}").toObject(LiveEventOutputTranscriptionTrack.class);
+        LiveEventOutputTranscriptionTrack model
+            = BinaryData.fromString("{\"trackName\":\"tkl\"}").toObject(LiveEventOutputTranscriptionTrack.class);
         Assertions.assertEquals("tkl", model.trackName());
     }
 

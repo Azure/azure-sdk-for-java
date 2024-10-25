@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MediaServiceCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MediaServiceCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"mediaServiceId\":\"bc8caf84-beca-4093-94b1-76a9b6759cc5\",\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[],\"minimumTlsVersion\":\"Tls10\"},\"identity\":{\"type\":\"fqpte\",\"principalId\":\"fd1fb765-6619-41e2-baf6-40d06da56fae\",\"tenantId\":\"8657e53a-6d11-445c-9ecb-26919b4cc50d\",\"userAssignedIdentities\":{}},\"location\":\"vypyqrimzinpv\",\"tags\":{\"nohjt\":\"dkirsoodqxhcr\",\"soifiyipjxsqw\":\"kwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"}],\"@odata.nextLink\":\"qidtqajzyu\"}")
-                .toObject(MediaServiceCollection.class);
+        MediaServiceCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"mediaServiceId\":\"bc8caf84-beca-4093-94b1-76a9b6759cc5\",\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[],\"minimumTlsVersion\":\"Tls10\"},\"identity\":{\"type\":\"fqpte\",\"principalId\":\"fd1fb765-6619-41e2-baf6-40d06da56fae\",\"tenantId\":\"8657e53a-6d11-445c-9ecb-26919b4cc50d\",\"userAssignedIdentities\":{}},\"location\":\"vypyqrimzinpv\",\"tags\":{\"nohjt\":\"dkirsoodqxhcr\",\"soifiyipjxsqw\":\"kwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"}],\"@odata.nextLink\":\"qidtqajzyu\"}")
+            .toObject(MediaServiceCollection.class);
         Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
         Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));
         Assertions.assertEquals("fqpte", model.value().get(0).identity().type());
@@ -34,21 +32,14 @@ public final class MediaServiceCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MediaServiceCollection model =
-            new MediaServiceCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MediaServiceInner()
-                                .withLocation("vypyqrimzinpv")
-                                .withTags(
-                                    mapOf("nohjt", "dkirsoodqxhcr", "soifiyipjxsqw", "kwh", "bznorcjxvsnby", "gr"))
-                                .withIdentity(
-                                    new MediaServiceIdentity().withType("fqpte").withUserAssignedIdentities(mapOf()))
-                                .withStorageAccounts(Arrays.asList())
-                                .withStorageAuthentication(StorageAuthentication.MANAGED_IDENTITY)
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                                .withMinimumTlsVersion(MinimumTlsVersion.TLS10)));
+        MediaServiceCollection model
+            = new MediaServiceCollection().withValue(Arrays.asList(new MediaServiceInner().withLocation("vypyqrimzinpv")
+                .withTags(mapOf("nohjt", "dkirsoodqxhcr", "soifiyipjxsqw", "kwh", "bznorcjxvsnby", "gr"))
+                .withIdentity(new MediaServiceIdentity().withType("fqpte").withUserAssignedIdentities(mapOf()))
+                .withStorageAccounts(Arrays.asList())
+                .withStorageAuthentication(StorageAuthentication.MANAGED_IDENTITY)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withMinimumTlsVersion(MinimumTlsVersion.TLS10)));
         model = BinaryData.fromObject(model).toObject(MediaServiceCollection.class);
         Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
         Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));

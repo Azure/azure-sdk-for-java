@@ -55,10 +55,8 @@ public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRes
     public void validate() {
         super.validate();
         if (keyValue() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyValue in model ContentKeyPolicySymmetricTokenKey"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyValue in model ContentKeyPolicySymmetricTokenKey"));
         }
     }
 

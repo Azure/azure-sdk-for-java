@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** Details of the data collection options specified. */
 @Immutable
 public final class AciServiceCreateRequestDataCollection extends ModelDataCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestDataCollection.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestDataCollection.class);
 
     /** {@inheritDoc} */
     @Override

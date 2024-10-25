@@ -143,12 +143,8 @@ public interface NetworkTap {
 
     /** The entirety of the NetworkTap definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkPacketBrokerId,
-            DefinitionStages.WithDestinations,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithNetworkPacketBrokerId, DefinitionStages.WithDestinations, DefinitionStages.WithCreate {
     }
 
     /** The NetworkTap definition stages. */
@@ -273,11 +269,8 @@ public interface NetworkTap {
     NetworkTap.Update update();
 
     /** The template for NetworkTap update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithPollingType,
-            UpdateStages.WithDestinations,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithPollingType, UpdateStages.WithDestinations,
+        UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *

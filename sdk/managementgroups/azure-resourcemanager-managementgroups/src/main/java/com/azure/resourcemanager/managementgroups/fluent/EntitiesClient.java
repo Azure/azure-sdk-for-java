@@ -64,15 +64,7 @@ public interface EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EntityInfoInner> list(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    PagedIterable<EntityInfoInner> list(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context);
 }

@@ -21,12 +21,8 @@ public final class MachineLearningServicesCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MachineLearningServicesCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ServiceResourceInner value,
-        MachineLearningServicesCreateOrUpdateHeaders headers) {
+    public MachineLearningServicesCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ServiceResourceInner value, MachineLearningServicesCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

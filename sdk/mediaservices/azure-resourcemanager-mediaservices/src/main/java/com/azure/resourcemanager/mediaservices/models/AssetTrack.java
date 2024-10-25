@@ -62,11 +62,13 @@ public interface AssetTrack {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AssetTrack definition stages. */
     interface DefinitionStages {
         /** The first stage of the AssetTrack definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AssetTrack definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +81,7 @@ public interface AssetTrack {
              */
             WithCreate withExistingAsset(String resourceGroupName, String accountName, String assetName);
         }
+
         /**
          * The stage of the AssetTrack definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface AssetTrack {
              */
             AssetTrack create(Context context);
         }
+
         /** The stage of the AssetTrack definition allowing to specify track. */
         interface WithTrack {
             /**
@@ -110,6 +114,7 @@ public interface AssetTrack {
             WithCreate withTrack(TrackBase track);
         }
     }
+
     /**
      * Begins update for the AssetTrack resource.
      *
@@ -134,6 +139,7 @@ public interface AssetTrack {
          */
         AssetTrack apply(Context context);
     }
+
     /** The AssetTrack update stages. */
     interface UpdateStages {
         /** The stage of the AssetTrack update allowing to specify track. */
@@ -147,6 +153,7 @@ public interface AssetTrack {
             Update withTrack(TrackBase track);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

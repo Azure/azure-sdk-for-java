@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class L2IsolationDomainPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2IsolationDomainPatchProperties model =
-            BinaryData
-                .fromString("{\"mtu\":1799510846,\"annotation\":\"kwxe\"}")
-                .toObject(L2IsolationDomainPatchProperties.class);
+        L2IsolationDomainPatchProperties model = BinaryData.fromString("{\"mtu\":1799510846,\"annotation\":\"kwxe\"}")
+            .toObject(L2IsolationDomainPatchProperties.class);
         Assertions.assertEquals("kwxe", model.annotation());
         Assertions.assertEquals(1799510846, model.mtu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainPatchProperties model =
-            new L2IsolationDomainPatchProperties().withAnnotation("kwxe").withMtu(1799510846);
+        L2IsolationDomainPatchProperties model
+            = new L2IsolationDomainPatchProperties().withAnnotation("kwxe").withMtu(1799510846);
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatchProperties.class);
         Assertions.assertEquals("kwxe", model.annotation());
         Assertions.assertEquals(1799510846, model.mtu());

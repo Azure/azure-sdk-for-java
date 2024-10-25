@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Rejected\",\"description\":\"cpecfvmmcoofs\",\"actionsRequired\":\"zevgb\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Rejected\",\"description\":\"cpecfvmmcoofs\",\"actionsRequired\":\"zevgb\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
         Assertions.assertEquals("cpecfvmmcoofs", model.description());
         Assertions.assertEquals("zevgb", model.actionsRequired());
@@ -23,9 +22,8 @@ public final class PrivateLinkServiceConnectionStateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
                 .withDescription("cpecfvmmcoofs")
                 .withActionsRequired("zevgb");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);

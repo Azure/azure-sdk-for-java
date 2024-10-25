@@ -20,8 +20,7 @@ public abstract class IncidentForAlertTestBase extends MetricsAdvisorClientTestB
     // Pre-configured test resource.
     protected static class ListIncidentsForAlertInput {
         static final ListIncidentsForAlertInput INSTANCE = new ListIncidentsForAlertInput();
-        final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setMaxPageSize(10);
+        final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions().setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
         final String alertId = "17f9f794800";
     }

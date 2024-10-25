@@ -65,8 +65,8 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
      * @param destinations the destinations value to set.
      * @return the NetworkTapPatchableParameters object itself.
      */
-    public NetworkTapPatchableParameters withDestinations(
-        List<NetworkTapPatchableParametersDestinationsItem> destinations) {
+    public NetworkTapPatchableParameters
+        withDestinations(List<NetworkTapPatchableParametersDestinationsItem> destinations) {
         this.destinations = destinations;
         return this;
     }

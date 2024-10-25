@@ -210,25 +210,20 @@ public final class AccountSasParameters {
      */
     public void validate() {
         if (signingKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property signingKey in model AccountSasParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property signingKey in model AccountSasParameters"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model AccountSasParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property principalId in model AccountSasParameters"));
         }
         if (start() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property start in model AccountSasParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property start in model AccountSasParameters"));
         }
         if (expiry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expiry in model AccountSasParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expiry in model AccountSasParameters"));
         }
     }
 

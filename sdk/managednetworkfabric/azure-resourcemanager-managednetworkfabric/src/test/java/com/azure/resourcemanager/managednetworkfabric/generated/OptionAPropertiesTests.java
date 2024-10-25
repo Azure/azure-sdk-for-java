@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":341229695,\"vlanId\":1997920691,\"peerASN\":5808363193481084491,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":946572249,\"multiplier\":716093008}}")
-                .toObject(OptionAProperties.class);
+        OptionAProperties model = BinaryData.fromString(
+            "{\"mtu\":341229695,\"vlanId\":1997920691,\"peerASN\":5808363193481084491,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":946572249,\"multiplier\":716093008}}")
+            .toObject(OptionAProperties.class);
         Assertions.assertEquals(341229695, model.mtu());
         Assertions.assertEquals(1997920691, model.vlanId());
         Assertions.assertEquals(5808363193481084491L, model.peerAsn());
@@ -26,13 +24,11 @@ public final class OptionAPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptionAProperties model =
-            new OptionAProperties()
-                .withMtu(341229695)
-                .withVlanId(1997920691)
-                .withPeerAsn(5808363193481084491L)
-                .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(946572249).withMultiplier(716093008));
+        OptionAProperties model = new OptionAProperties().withMtu(341229695)
+            .withVlanId(1997920691)
+            .withPeerAsn(5808363193481084491L)
+            .withBfdConfiguration(
+                new BfdConfiguration().withIntervalInMilliSeconds(946572249).withMultiplier(716093008));
         model = BinaryData.fromObject(model).toObject(OptionAProperties.class);
         Assertions.assertEquals(341229695, model.mtu());
         Assertions.assertEquals(1997920691, model.vlanId());

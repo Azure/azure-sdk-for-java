@@ -83,7 +83,8 @@ public final class SearchPointOfInterestOptions extends BaseSearchPointOfInteres
      * @param extendedPostalCodesFor extended postal codes used for search
      * @return a reference to this {@code SearchPointOfInterestOptions}
      */
-    public SearchPointOfInterestOptions setExtendedPostalCodesFor(List<PointOfInterestExtendedPostalCodes> extendedPostalCodesFor) {
+    public SearchPointOfInterestOptions
+        setExtendedPostalCodesFor(List<PointOfInterestExtendedPostalCodes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
         return this;
     }

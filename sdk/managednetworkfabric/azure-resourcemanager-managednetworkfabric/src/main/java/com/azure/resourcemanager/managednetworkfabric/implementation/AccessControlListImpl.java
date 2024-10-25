@@ -137,25 +137,21 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AccessControlList create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .create(resourceGroupName, accessControlListName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .create(resourceGroupName, accessControlListName, this.innerModel(), context);
         return this;
     }
 
-    AccessControlListImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    AccessControlListImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new AccessControlListInner();
         this.serviceManager = serviceManager;
         this.accessControlListName = name;
@@ -167,25 +163,20 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
         return this;
     }
 
     public AccessControlList apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .update(resourceGroupName, accessControlListName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .update(resourceGroupName, accessControlListName, updateBody, context);
         return this;
     }
 
-    AccessControlListImpl(
-        AccessControlListInner innerObject,
+    AccessControlListImpl(AccessControlListInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -194,35 +185,29 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessControlList refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .accessControlLists()
+        return serviceManager.accessControlLists()
             .updateAdministrativeState(resourceGroupName, accessControlListName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .accessControlLists()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.accessControlLists()
             .updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
     }
 
@@ -239,8 +224,7 @@ public final class AccessControlListImpl
     }
 
     public ValidateConfigurationResponse validateConfiguration(Context context) {
-        return serviceManager
-            .accessControlLists()
+        return serviceManager.accessControlLists()
             .validateConfiguration(resourceGroupName, accessControlListName, context);
     }
 
@@ -284,8 +268,8 @@ public final class AccessControlListImpl
         }
     }
 
-    public AccessControlListImpl withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListImpl
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withMatchConfigurations(matchConfigurations);
             return this;
@@ -295,8 +279,8 @@ public final class AccessControlListImpl
         }
     }
 
-    public AccessControlListImpl withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListImpl
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withDynamicMatchConfigurations(dynamicMatchConfigurations);
             return this;

@@ -13,7 +13,8 @@ import java.util.List;
 /** Request to create a Docker image based on Environment. */
 @Fluent
 public class EnvironmentImageResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentImageResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnvironmentImageResponse.class);
 
     /*
      * The name of the driver file.
@@ -166,8 +167,8 @@ public class EnvironmentImageResponse {
      * @param environmentReference the environmentReference value to set.
      * @return the EnvironmentImageResponse object itself.
      */
-    public EnvironmentImageResponse withEnvironmentReference(
-        EnvironmentImageResponseEnvironmentReference environmentReference) {
+    public EnvironmentImageResponse
+        withEnvironmentReference(EnvironmentImageResponseEnvironmentReference environmentReference) {
         this.environmentReference = environmentReference;
         return this;
     }

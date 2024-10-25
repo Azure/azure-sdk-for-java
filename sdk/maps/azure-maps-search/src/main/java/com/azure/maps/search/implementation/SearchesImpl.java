@@ -1263,7 +1263,7 @@ public final class SearchesImpl {
         return fuzzySearchWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter, countryFilter, lat,
             lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, minFuzzyLevel, maxFuzzyLevel,
             indexFilter, brandFilter, electricVehicleConnectorFilter, entityType, localizedMapView, operatingHours)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2360,7 +2360,7 @@ public final class SearchesImpl {
         return searchPointOfInterestWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter,
             countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, brandFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2500,7 +2500,7 @@ public final class SearchesImpl {
         return searchPointOfInterestWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter,
             countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, brandFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4177,7 +4177,7 @@ public final class SearchesImpl {
         return searchPointOfInterestCategoryWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter,
             countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, brandFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4333,7 +4333,7 @@ public final class SearchesImpl {
         return searchPointOfInterestCategoryWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter,
             countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, brandFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5162,7 +5162,7 @@ public final class SearchesImpl {
         GeographicEntityType entityType, LocalizedMapView localizedMapView) {
         return searchAddressWithResponseAsync(format, query, isTypeAhead, top, skip, countryFilter, lat, lon,
             radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, entityType, localizedMapView)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5269,7 +5269,7 @@ public final class SearchesImpl {
         GeographicEntityType entityType, LocalizedMapView localizedMapView, Context context) {
         return searchAddressWithResponseAsync(format, query, isTypeAhead, top, skip, countryFilter, lat, lon,
             radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, entityType, localizedMapView, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5377,7 +5377,7 @@ public final class SearchesImpl {
         Context context) {
         return searchAddressWithResponseAsync(format, query, isTypeAhead, top, skip, countryFilter, lat, lon,
             radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, entityType, localizedMapView, context)
-            .block();
+                .block();
     }
 
     /**
@@ -6933,7 +6933,7 @@ public final class SearchesImpl {
         return searchStructuredAddressWithResponse(format, countryCode, language, top, skip, streetNumber, streetName,
             crossStreet, municipality, municipalitySubdivision, countryTertiarySubdivision, countrySecondarySubdivision,
             countrySubdivision, postalCode, extendedPostalCodesFor, entityType, localizedMapView, Context.NONE)
-            .getValue();
+                .getValue();
     }
 
     /**
@@ -7309,7 +7309,7 @@ public final class SearchesImpl {
         OperatingHoursRange operatingHours) {
         return searchInsideGeometryWithResponseAsync(format, query, geometry, top, language, categoryFilter,
             extendedPostalCodesFor, indexFilter, localizedMapView, operatingHours)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7425,7 +7425,7 @@ public final class SearchesImpl {
         OperatingHoursRange operatingHours, Context context) {
         return searchInsideGeometryWithResponseAsync(format, query, geometry, top, language, categoryFilter,
             extendedPostalCodesFor, indexFilter, localizedMapView, operatingHours, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -8017,7 +8017,7 @@ public final class SearchesImpl {
         OperatingHoursRange operatingHours) {
         return searchAlongRouteWithResponseAsync(format, query, maxDetourTime, route, top, brandFilter, categoryFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -8129,7 +8129,7 @@ public final class SearchesImpl {
         OperatingHoursRange operatingHours, Context context) {
         return searchAlongRouteWithResponseAsync(format, query, maxDetourTime, route, top, brandFilter, categoryFilter,
             electricVehicleConnectorFilter, localizedMapView, operatingHours, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

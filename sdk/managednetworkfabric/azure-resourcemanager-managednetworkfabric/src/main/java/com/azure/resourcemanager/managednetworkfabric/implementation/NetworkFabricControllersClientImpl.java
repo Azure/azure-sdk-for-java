@@ -54,9 +54,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @param client the instance of the service client containing this operation class.
      */
     NetworkFabricControllersClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(NetworkFabricControllersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkFabricControllersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,107 +66,80 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkFabricControllersService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @BodyParam("application/json") NetworkFabricControllerInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkFabricControllerInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricControllerInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkFabricControllerInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @BodyParam("application/json") NetworkFabricControllerPatch body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkFabricControllerPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricControllersListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkFabricControllersListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricControllersListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkFabricControllersListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkFabricControllersListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkFabricControllersListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -185,29 +157,23 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, NetworkFabricControllerInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -216,18 +182,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricControllerName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -247,32 +203,23 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, NetworkFabricControllerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -281,16 +228,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricControllerName, body, accept, context);
     }
 
     /**
@@ -309,16 +248,11 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreateAsync(
         String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkFabricControllerName, body);
-        return this
-            .client
-            .<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricControllerInner.class,
-                NetworkFabricControllerInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkFabricControllerName, body);
+        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkFabricControllerInner.class, NetworkFabricControllerInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -337,21 +271,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreateAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerInner body,
+        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkFabricControllerName, body, context);
-        return this
-            .client
-            .<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricControllerInner.class,
-                NetworkFabricControllerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkFabricControllerName, body, context);
+        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkFabricControllerInner.class, NetworkFabricControllerInner.class,
+            context);
     }
 
     /**
@@ -368,8 +295,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
+    public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner>
+        beginCreate(String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
         return this.beginCreateAsync(resourceGroupName, networkFabricControllerName, body).getSyncPoller();
     }
 
@@ -389,9 +316,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerInner body,
+        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body,
         Context context) {
         return this.beginCreateAsync(resourceGroupName, networkFabricControllerName, body, context).getSyncPoller();
     }
@@ -410,10 +335,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricControllerInner> createAsync(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
-        return beginCreateAsync(resourceGroupName, networkFabricControllerName, body)
-            .last()
+    private Mono<NetworkFabricControllerInner> createAsync(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerInner body) {
+        return beginCreateAsync(resourceGroupName, networkFabricControllerName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -432,13 +356,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricControllerInner> createAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, networkFabricControllerName, body, context)
-            .last()
+    private Mono<NetworkFabricControllerInner> createAsync(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, networkFabricControllerName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -456,8 +376,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricControllerInner create(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
+    public NetworkFabricControllerInner create(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerInner body) {
         return createAsync(resourceGroupName, networkFabricControllerName, body).block();
     }
 
@@ -476,11 +396,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricControllerInner create(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerInner body,
-        Context context) {
+    public NetworkFabricControllerInner create(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerInner body, Context context) {
         return createAsync(resourceGroupName, networkFabricControllerName, body, context).block();
     }
 
@@ -498,43 +415,29 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName) {
+    private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkFabricControllerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -553,41 +456,28 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
+    private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricControllerName, accept, context);
     }
 
     /**
@@ -603,8 +493,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricControllerInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkFabricControllerName) {
+    private Mono<NetworkFabricControllerInner> getByResourceGroupAsync(String resourceGroupName,
+        String networkFabricControllerName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkFabricControllerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -623,8 +513,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkFabricControllerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
+    public Response<NetworkFabricControllerInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkFabricControllerName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkFabricControllerName, context).block();
     }
 
@@ -641,8 +531,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricControllerInner getByResourceGroup(
-        String resourceGroupName, String networkFabricControllerName) {
+    public NetworkFabricControllerInner getByResourceGroup(String resourceGroupName,
+        String networkFabricControllerName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkFabricControllerName, Context.NONE).getValue();
     }
 
@@ -661,29 +551,23 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, NetworkFabricControllerPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -692,18 +576,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricControllerName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -723,32 +597,23 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerPatch body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, NetworkFabricControllerPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -757,16 +622,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricControllerName, body, accept, context);
     }
 
     /**
@@ -785,16 +642,11 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdateAsync(
         String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkFabricControllerName, body);
-        return this
-            .client
-            .<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricControllerInner.class,
-                NetworkFabricControllerInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkFabricControllerName, body);
+        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkFabricControllerInner.class, NetworkFabricControllerInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -813,21 +665,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdateAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerPatch body,
+        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkFabricControllerName, body, context);
-        return this
-            .client
-            .<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricControllerInner.class,
-                NetworkFabricControllerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkFabricControllerName, body, context);
+        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkFabricControllerInner.class, NetworkFabricControllerInner.class,
+            context);
     }
 
     /**
@@ -844,8 +689,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
+    public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner>
+        beginUpdate(String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
         return this.beginUpdateAsync(resourceGroupName, networkFabricControllerName, body).getSyncPoller();
     }
 
@@ -865,9 +710,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerPatch body,
+        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body,
         Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkFabricControllerName, body, context).getSyncPoller();
     }
@@ -886,10 +729,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricControllerInner> updateAsync(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
-        return beginUpdateAsync(resourceGroupName, networkFabricControllerName, body)
-            .last()
+    private Mono<NetworkFabricControllerInner> updateAsync(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerPatch body) {
+        return beginUpdateAsync(resourceGroupName, networkFabricControllerName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -908,13 +750,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricControllerInner> updateAsync(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerPatch body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, networkFabricControllerName, body, context)
-            .last()
+    private Mono<NetworkFabricControllerInner> updateAsync(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, networkFabricControllerName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -932,8 +770,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricControllerInner update(
-        String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
+    public NetworkFabricControllerInner update(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerPatch body) {
         return updateAsync(resourceGroupName, networkFabricControllerName, body).block();
     }
 
@@ -952,11 +790,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricControllerInner update(
-        String resourceGroupName,
-        String networkFabricControllerName,
-        NetworkFabricControllerPatch body,
-        Context context) {
+    public NetworkFabricControllerInner update(String resourceGroupName, String networkFabricControllerName,
+        NetworkFabricControllerPatch body, Context context) {
         return updateAsync(resourceGroupName, networkFabricControllerName, body, context).block();
     }
 
@@ -973,43 +808,28 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricControllerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1027,41 +847,28 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkFabricControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkFabricControllerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricControllerName, accept, context);
     }
 
     /**
@@ -1077,13 +884,11 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkFabricControllerName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String networkFabricControllerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkFabricControllerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1100,14 +905,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String networkFabricControllerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkFabricControllerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkFabricControllerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1123,8 +927,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFabricControllerName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+        String networkFabricControllerName) {
         return this.beginDeleteAsync(resourceGroupName, networkFabricControllerName).getSyncPoller();
     }
 
@@ -1142,8 +946,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricControllerName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkFabricControllerName, context).getSyncPoller();
     }
 
@@ -1161,8 +965,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFabricControllerName) {
-        return beginDeleteAsync(resourceGroupName, networkFabricControllerName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkFabricControllerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1181,8 +984,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFabricControllerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkFabricControllerName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkFabricControllerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1232,19 +1034,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<NetworkFabricControllerInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1252,25 +1050,10 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkFabricControllerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkFabricControllerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1288,19 +1071,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkFabricControllerInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1309,22 +1088,10 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1340,8 +1107,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1358,10 +1124,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkFabricControllerInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<NetworkFabricControllerInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1411,37 +1176,19 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkFabricControllerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkFabricControllerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1460,35 +1207,20 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1502,8 +1234,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1519,8 +1251,8 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1570,24 +1302,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkFabricControllerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkFabricControllerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1604,30 +1327,20 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1647,24 +1360,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkFabricControllerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkFabricControllerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1681,29 +1385,19 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricControllerInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkFabricControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

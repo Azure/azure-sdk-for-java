@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TransformPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransformProperties model =
-            BinaryData
-                .fromString(
-                    "{\"created\":\"2021-11-14T02:33:08Z\",\"description\":\"nmxiebwwaloayqc\",\"lastModified\":\"2021-09-09T06:40:06Z\",\"outputs\":[{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}}]}")
-                .toObject(TransformProperties.class);
+        TransformProperties model = BinaryData.fromString(
+            "{\"created\":\"2021-11-14T02:33:08Z\",\"description\":\"nmxiebwwaloayqc\",\"lastModified\":\"2021-09-09T06:40:06Z\",\"outputs\":[{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}}]}")
+            .toObject(TransformProperties.class);
         Assertions.assertEquals("nmxiebwwaloayqc", model.description());
         Assertions.assertEquals(OnErrorType.STOP_PROCESSING_JOB, model.outputs().get(0).onError());
         Assertions.assertEquals(Priority.NORMAL, model.outputs().get(0).relativePriority());
@@ -28,28 +26,20 @@ public final class TransformPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformProperties model =
-            new TransformProperties()
-                .withDescription("nmxiebwwaloayqc")
-                .withOutputs(
-                    Arrays
-                        .asList(
-                            new TransformOutput()
-                                .withOnError(OnErrorType.STOP_PROCESSING_JOB)
-                                .withRelativePriority(Priority.NORMAL)
-                                .withPreset(new Preset()),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL)
-                                .withPreset(new Preset()),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.HIGH)
-                                .withPreset(new Preset()),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL)
-                                .withPreset(new Preset())));
+        TransformProperties model = new TransformProperties().withDescription("nmxiebwwaloayqc")
+            .withOutputs(Arrays.asList(
+                new TransformOutput().withOnError(OnErrorType.STOP_PROCESSING_JOB)
+                    .withRelativePriority(Priority.NORMAL)
+                    .withPreset(new Preset()),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                    .withRelativePriority(Priority.NORMAL)
+                    .withPreset(new Preset()),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                    .withRelativePriority(Priority.HIGH)
+                    .withPreset(new Preset()),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                    .withRelativePriority(Priority.NORMAL)
+                    .withPreset(new Preset())));
         model = BinaryData.fromObject(model).toObject(TransformProperties.class);
         Assertions.assertEquals("nmxiebwwaloayqc", model.description());
         Assertions.assertEquals(OnErrorType.STOP_PROCESSING_JOB, model.outputs().get(0).onError());

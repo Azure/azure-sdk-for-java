@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"nljky\",\"type\":\"j\",\"name\":\"ujqgidok\",\"properties\":{\"tenantId\":\"jyoxgvclt\",\"displayName\":\"sncghkjeszz\",\"permissions\":\"delete\",\"inheritedPermissions\":\"view\",\"numberOfDescendants\":836032675,\"numberOfChildren\":502156658,\"numberOfChildGroups\":667929438,\"parentDisplayNameChain\":[],\"parentNameChain\":[]}},{\"id\":\"xnehmpvec\",\"type\":\"odebfqkkrbmpu\",\"name\":\"riwflzlfb\",\"properties\":{\"tenantId\":\"uzycispnqza\",\"displayName\":\"gkbrpyyd\",\"permissions\":\"delete\",\"inheritedPermissions\":\"edit\",\"numberOfDescendants\":486608625,\"numberOfChildren\":500953055,\"numberOfChildGroups\":35719444,\"parentDisplayNameChain\":[],\"parentNameChain\":[]}}],\"count\":627657952,\"nextLink\":\"qagnbuyn\"}")
-                .toObject(EntityListResult.class);
+        EntityListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"nljky\",\"type\":\"j\",\"name\":\"ujqgidok\",\"properties\":{\"tenantId\":\"jyoxgvclt\",\"displayName\":\"sncghkjeszz\",\"permissions\":\"delete\",\"inheritedPermissions\":\"view\",\"numberOfDescendants\":836032675,\"numberOfChildren\":502156658,\"numberOfChildGroups\":667929438,\"parentDisplayNameChain\":[],\"parentNameChain\":[]}},{\"id\":\"xnehmpvec\",\"type\":\"odebfqkkrbmpu\",\"name\":\"riwflzlfb\",\"properties\":{\"tenantId\":\"uzycispnqza\",\"displayName\":\"gkbrpyyd\",\"permissions\":\"delete\",\"inheritedPermissions\":\"edit\",\"numberOfDescendants\":486608625,\"numberOfChildren\":500953055,\"numberOfChildGroups\":35719444,\"parentDisplayNameChain\":[],\"parentNameChain\":[]}}],\"count\":627657952,\"nextLink\":\"qagnbuyn\"}")
+            .toObject(EntityListResult.class);
         Assertions.assertEquals("jyoxgvclt", model.value().get(0).tenantId());
         Assertions.assertEquals("sncghkjeszz", model.value().get(0).displayName());
         Assertions.assertEquals(Permissions.DELETE, model.value().get(0).permissions());
@@ -30,31 +28,25 @@ public final class EntityListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityListResult model =
-            new EntityListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EntityInfoInner()
-                                .withTenantId("jyoxgvclt")
-                                .withDisplayName("sncghkjeszz")
-                                .withPermissions(Permissions.DELETE)
-                                .withInheritedPermissions(Permissions.VIEW)
-                                .withNumberOfDescendants(836032675)
-                                .withNumberOfChildren(502156658)
-                                .withNumberOfChildGroups(667929438)
-                                .withParentDisplayNameChain(Arrays.asList())
-                                .withParentNameChain(Arrays.asList()),
-                            new EntityInfoInner()
-                                .withTenantId("uzycispnqza")
-                                .withDisplayName("gkbrpyyd")
-                                .withPermissions(Permissions.DELETE)
-                                .withInheritedPermissions(Permissions.EDIT)
-                                .withNumberOfDescendants(486608625)
-                                .withNumberOfChildren(500953055)
-                                .withNumberOfChildGroups(35719444)
-                                .withParentDisplayNameChain(Arrays.asList())
-                                .withParentNameChain(Arrays.asList())));
+        EntityListResult model = new EntityListResult().withValue(Arrays.asList(
+            new EntityInfoInner().withTenantId("jyoxgvclt")
+                .withDisplayName("sncghkjeszz")
+                .withPermissions(Permissions.DELETE)
+                .withInheritedPermissions(Permissions.VIEW)
+                .withNumberOfDescendants(836032675)
+                .withNumberOfChildren(502156658)
+                .withNumberOfChildGroups(667929438)
+                .withParentDisplayNameChain(Arrays.asList())
+                .withParentNameChain(Arrays.asList()),
+            new EntityInfoInner().withTenantId("uzycispnqza")
+                .withDisplayName("gkbrpyyd")
+                .withPermissions(Permissions.DELETE)
+                .withInheritedPermissions(Permissions.EDIT)
+                .withNumberOfDescendants(486608625)
+                .withNumberOfChildren(500953055)
+                .withNumberOfChildGroups(35719444)
+                .withParentDisplayNameChain(Arrays.asList())
+                .withParentNameChain(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(EntityListResult.class);
         Assertions.assertEquals("jyoxgvclt", model.value().get(0).tenantId());
         Assertions.assertEquals("sncghkjeszz", model.value().get(0).displayName());

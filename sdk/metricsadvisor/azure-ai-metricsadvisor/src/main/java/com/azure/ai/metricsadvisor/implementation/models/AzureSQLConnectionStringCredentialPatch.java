@@ -69,7 +69,8 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dataSourceCredentialType",
-            DataSourceCredentialType.AZURE_SQLCONNECTION_STRING == null ? null
+            DataSourceCredentialType.AZURE_SQLCONNECTION_STRING == null
+                ? null
                 : DataSourceCredentialType.AZURE_SQLCONNECTION_STRING.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());

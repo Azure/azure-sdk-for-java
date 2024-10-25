@@ -60,91 +60,60 @@ public final class CreatorsClientImpl implements CreatorsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureMapsManagementC")
     public interface CreatorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreatorList>> listByAccount(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CreatorList>> listByAccount(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreatorInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("creatorName") String creatorName,
-            @BodyParam("application/json") CreatorInner creatorResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CreatorInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("creatorName") String creatorName, @BodyParam("application/json") CreatorInner creatorResource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreatorInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+        Mono<Response<CreatorInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("creatorName") String creatorName,
             @BodyParam("application/json") CreatorUpdateParameters creatorUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("creatorName") String creatorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("creatorName") String creatorName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreatorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("creatorName") String creatorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CreatorInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("creatorName") String creatorName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreatorList>> listByAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CreatorList>> listByAccountNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -159,19 +128,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,26 +147,10 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            accept,
-                            context))
-            .<PagedResponse<CreatorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context))
+            .<PagedResponse<CreatorInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -218,19 +167,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -242,23 +187,10 @@ public final class CreatorsClientImpl implements CreatorsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAccount(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -273,8 +205,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CreatorInner> listByAccountAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName),
             nextLink -> listByAccountNextSinglePageAsync(nextLink));
     }
 
@@ -291,8 +222,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CreatorInner> listByAccountAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listByAccountNextSinglePageAsync(nextLink, context));
     }
 
@@ -342,19 +272,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource) {
+    private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, CreatorInner creatorResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -374,19 +300,9 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            creatorName,
-                            creatorResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, creatorName, creatorResource, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -406,23 +322,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorInner creatorResource,
-        Context context) {
+    private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, CreatorInner creatorResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -442,17 +350,9 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                creatorName,
-                creatorResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, creatorName, creatorResource, accept,
+            context);
     }
 
     /**
@@ -470,8 +370,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CreatorInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource) {
+    private Mono<CreatorInner> createOrUpdateAsync(String resourceGroupName, String accountName, String creatorName,
+        CreatorInner creatorResource) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorResource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -492,12 +392,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorInner creatorResource,
-        Context context) {
+    public Response<CreatorInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String creatorName, CreatorInner creatorResource, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorResource, context)
             .block();
     }
@@ -517,8 +413,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreatorInner createOrUpdate(
-        String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource) {
+    public CreatorInner createOrUpdate(String resourceGroupName, String accountName, String creatorName,
+        CreatorInner creatorResource) {
         return createOrUpdateWithResponse(resourceGroupName, accountName, creatorName, creatorResource, Context.NONE)
             .getValue();
     }
@@ -537,22 +433,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters) {
+    private Mono<Response<CreatorInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, CreatorUpdateParameters creatorUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,27 +454,16 @@ public final class CreatorsClientImpl implements CreatorsClient {
             return Mono.error(new IllegalArgumentException("Parameter creatorName is required and cannot be null."));
         }
         if (creatorUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter creatorUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter creatorUpdateParameters is required and cannot be null."));
         } else {
             creatorUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            creatorName,
-                            creatorUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, creatorName, creatorUpdateParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -604,23 +482,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters,
-        Context context) {
+    private Mono<Response<CreatorInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, CreatorUpdateParameters creatorUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -633,25 +503,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
             return Mono.error(new IllegalArgumentException("Parameter creatorName is required and cannot be null."));
         }
         if (creatorUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter creatorUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter creatorUpdateParameters is required and cannot be null."));
         } else {
             creatorUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                creatorName,
-                creatorUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, creatorName, creatorUpdateParameters, accept, context);
     }
 
     /**
@@ -668,10 +528,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CreatorInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
+    private Mono<CreatorInner> updateAsync(String resourceGroupName, String accountName, String creatorName,
         CreatorUpdateParameters creatorUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -692,12 +549,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters,
-        Context context) {
+    public Response<CreatorInner> updateWithResponse(String resourceGroupName, String accountName, String creatorName,
+        CreatorUpdateParameters creatorUpdateParameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters, context)
             .block();
     }
@@ -716,10 +569,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      *     data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreatorInner update(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
+    public CreatorInner update(String resourceGroupName, String accountName, String creatorName,
         CreatorUpdateParameters creatorUpdateParameters) {
         return updateWithResponse(resourceGroupName, accountName, creatorName, creatorUpdateParameters, Context.NONE)
             .getValue();
@@ -737,19 +587,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String creatorName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -763,18 +609,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            creatorName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, creatorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -791,19 +627,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -817,16 +649,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                creatorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, creatorName, accept, context);
     }
 
     /**
@@ -858,8 +682,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
     }
 
@@ -890,19 +714,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return a Maps Creator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String creatorName) {
+    private Mono<Response<CreatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -916,18 +736,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            creatorName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, creatorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -944,19 +754,15 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return a Maps Creator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreatorInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
+    private Mono<Response<CreatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String creatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -970,16 +776,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                creatorName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, creatorName, accept, context);
     }
 
     /**
@@ -1012,8 +810,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @return a Maps Creator resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
+    public Response<CreatorInner> getWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
     }
 
@@ -1049,23 +847,14 @@ public final class CreatorsClientImpl implements CreatorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CreatorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CreatorInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1086,23 +875,13 @@ public final class CreatorsClientImpl implements CreatorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

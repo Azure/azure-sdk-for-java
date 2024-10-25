@@ -56,8 +56,8 @@ public interface Tracks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Track in the Asset along with {@link Response}.
      */
-    Response<AssetTrack> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    Response<AssetTrack> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context);
 
     /**
      * Get a Track
@@ -141,8 +141,8 @@ public interface Tracks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context);
 
     /**
      * Get a Track

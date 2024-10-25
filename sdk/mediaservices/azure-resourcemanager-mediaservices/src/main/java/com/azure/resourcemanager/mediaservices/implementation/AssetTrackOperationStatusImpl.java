@@ -14,8 +14,7 @@ public final class AssetTrackOperationStatusImpl implements AssetTrackOperationS
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    AssetTrackOperationStatusImpl(
-        AssetTrackOperationStatusInner innerObject,
+    AssetTrackOperationStatusImpl(AssetTrackOperationStatusInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

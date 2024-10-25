@@ -36,91 +36,59 @@ public final class IpCommunitiesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1934573662126007624,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"xywabkitnipa\",\"tgvnaqyj\"]},{\"action\":\"Deny\",\"sequenceNumber\":5190929238437453512,\"wellKnownCommunities\":[\"GShut\",\"GShut\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"onopf\",\"emiwfhhawbabhzbf\",\"di\"]}],\"annotation\":\"nxydgzfoiqzsus\"},\"location\":\"y\",\"tags\":{\"af\":\"lqeronz\",\"uwdbvytqav\":\"xf\"},\"id\":\"uymkdeuqxlvzpfd\",\"name\":\"axgbiwpgop\",\"type\":\"lktthbmrrmtrxg\"}";
+        String responseStr
+            = "{\"properties\":{\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1934573662126007624,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"xywabkitnipa\",\"tgvnaqyj\"]},{\"action\":\"Deny\",\"sequenceNumber\":5190929238437453512,\"wellKnownCommunities\":[\"GShut\",\"GShut\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"onopf\",\"emiwfhhawbabhzbf\",\"di\"]}],\"annotation\":\"nxydgzfoiqzsus\"},\"location\":\"y\",\"tags\":{\"af\":\"lqeronz\",\"uwdbvytqav\":\"xf\"},\"id\":\"uymkdeuqxlvzpfd\",\"name\":\"axgbiwpgop\",\"type\":\"lktthbmrrmtrxg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IpCommunity response =
-            manager
-                .ipCommunities()
-                .define("envtol")
-                .withRegion("gikkmibnmdpi")
-                .withExistingResourceGroup("zrrwsciclhdw")
-                .withTags(
-                    mapOf(
-                        "loqavst",
-                        "wtgzwmzhcm",
-                        "bngzldvvd",
-                        "zavkyjjludnmbj",
-                        "pmq",
-                        "optythctoxo",
-                        "sfzsgzgus",
-                        "erwhemvids"))
-                .withIpCommunityRules(
-                    Arrays
-                        .asList(
-                            new IpCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(4795950063400188951L)
-                                .withWellKnownCommunities(
-                                    Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.NO_ADVERTISE))
-                                .withCommunityMembers(Arrays.asList("h", "wppvihbmwrv", "vdrohu")),
-                            new IpCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(4939402553869338194L)
-                                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
-                                .withCommunityMembers(Arrays.asList("xj", "a")),
-                            new IpCommunityRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(1871939289139657586L)
-                                .withWellKnownCommunities(
-                                    Arrays
-                                        .asList(
-                                            WellKnownCommunities.INTERNET,
-                                            WellKnownCommunities.GSHUT,
-                                            WellKnownCommunities.LOCAL_AS))
-                                .withCommunityMembers(Arrays.asList("tixkg", "obmkphvdlorxz")),
-                            new IpCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(3690161019255251039L)
-                                .withWellKnownCommunities(
-                                    Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET))
-                                .withCommunityMembers(Arrays.asList("tfcieil", "e"))))
-                .withAnnotation("tkehldopjsxvbb")
-                .create();
+        IpCommunity response = manager.ipCommunities()
+            .define("envtol")
+            .withRegion("gikkmibnmdpi")
+            .withExistingResourceGroup("zrrwsciclhdw")
+            .withTags(mapOf("loqavst", "wtgzwmzhcm", "bngzldvvd", "zavkyjjludnmbj", "pmq", "optythctoxo", "sfzsgzgus",
+                "erwhemvids"))
+            .withIpCommunityRules(Arrays.asList(
+                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(4795950063400188951L)
+                    .withWellKnownCommunities(
+                        Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.NO_ADVERTISE))
+                    .withCommunityMembers(Arrays.asList("h", "wppvihbmwrv", "vdrohu")),
+                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(4939402553869338194L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
+                    .withCommunityMembers(Arrays.asList("xj", "a")),
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(1871939289139657586L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET, WellKnownCommunities.GSHUT,
+                        WellKnownCommunities.LOCAL_AS))
+                    .withCommunityMembers(Arrays.asList("tixkg", "obmkphvdlorxz")),
+                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(3690161019255251039L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET))
+                    .withCommunityMembers(Arrays.asList("tfcieil", "e"))))
+            .withAnnotation("tkehldopjsxvbb")
+            .create();
 
         Assertions.assertEquals("y", response.location());
         Assertions.assertEquals("lqeronz", response.tags().get("af"));
         Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipCommunityRules().get(0).action());
         Assertions.assertEquals(1934573662126007624L, response.ipCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals(
-                WellKnownCommunities.NO_ADVERTISE, response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
+            response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
         Assertions.assertEquals("xywabkitnipa", response.ipCommunityRules().get(0).communityMembers().get(0));
         Assertions.assertEquals("nxydgzfoiqzsus", response.annotation());
     }

@@ -172,9 +172,10 @@ public final class MapsRenderAsyncClient {
             return monoError(LOGGER, new NullPointerException("Options is null"));
         }
 
-        return this.serviceClient.getMapTileNoCustomHeadersWithResponseAsync(options.getTilesetId(),
-                options.getTileIndex(), options.getTimestamp(), options.getMapTileSize(), options.getLanguage(),
-                options.getLocalizedMapView(), context)
+        return this.serviceClient
+            .getMapTileNoCustomHeadersWithResponseAsync(options.getTilesetId(), options.getTileIndex(),
+                options.getTimestamp(), options.getMapTileSize(), options.getLanguage(), options.getLocalizedMapView(),
+                context)
             .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
@@ -254,14 +255,13 @@ public final class MapsRenderAsyncClient {
      */
     Mono<Response<MapTileset>> getMapTilesetWithResponse(TilesetId tilesetId, Context context) {
         return this.serviceClient.getMapTilesetWithResponseAsync(tilesetId, context)
-            .flatMap(response -> Mono.just(response)
-                .onErrorMap(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException)) {
-                        return throwable;
-                    }
-                    ErrorResponseException exception = (ErrorResponseException) throwable;
-                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                }));
+            .flatMap(response -> Mono.just(response).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            }));
     }
 
     /**
@@ -598,12 +598,15 @@ public final class MapsRenderAsyncClient {
         GeoBoundingBox boundingBox = options.getBoundingBox();
         GeoPosition center = options.getCenter();
         List<Double> centerPrivate = (center != null)
-            ? Arrays.asList(center.getLatitude(), center.getLongitude(), center.getAltitude()) : null;
+            ? Arrays.asList(center.getLatitude(), center.getLongitude(), center.getAltitude())
+            : null;
         List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(),
             boundingBox.getNorth());
-        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(options.getTilesetId(), TrafficTilesetId.MICROSOFT_TRAFFIC_RELATIVE_MAIN, options.getZoom(), centerPrivate, bbox,
-            options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
-            options.getPins(), options.getPath(), context)
+        return this.serviceClient
+            .getMapStaticImageNoCustomHeadersWithResponseAsync(options.getTilesetId(),
+                TrafficTilesetId.MICROSOFT_TRAFFIC_RELATIVE_MAIN, options.getZoom(), centerPrivate, bbox,
+                options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
+                options.getPins(), options.getPath(), context)
             .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
@@ -694,8 +697,8 @@ public final class MapsRenderAsyncClient {
         BoundingBox bbox = new BoundingBox().setSouthWest(Arrays.asList(boundingBox.getSouth(), boundingBox.getWest()))
             .setNorthEast(Arrays.asList(boundingBox.getNorth(), boundingBox.getEast()));
         IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
-        return this.serviceClient.getCopyrightFromBoundingBoxWithResponseAsync(ResponseFormat.JSON, bbox,
-            includeTextValue, context)
+        return this.serviceClient
+            .getCopyrightFromBoundingBoxWithResponseAsync(ResponseFormat.JSON, bbox, includeTextValue, context)
             .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
@@ -786,8 +789,8 @@ public final class MapsRenderAsyncClient {
     Mono<Response<Copyright>> getCopyrightForTileWithResponse(TileIndex tileIndex, boolean includeText,
         Context context) {
         IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
-        return this.serviceClient.getCopyrightForTileWithResponseAsync(ResponseFormat.JSON, tileIndex, includeTextValue,
-            context)
+        return this.serviceClient
+            .getCopyrightForTileWithResponseAsync(ResponseFormat.JSON, tileIndex, includeTextValue, context)
             .onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;

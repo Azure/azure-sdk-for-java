@@ -91,10 +91,8 @@ public final class InternetGatewayRuleProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (ruleProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleProperties in model InternetGatewayRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleProperties in model InternetGatewayRuleProperties"));
         } else {
             ruleProperties().validate();
         }

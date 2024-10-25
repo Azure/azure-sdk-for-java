@@ -26,7 +26,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.UUID;
 
-
 /**
  * Expose transformation methods to transform {@link MetricFeedback} model to
  * REST API wire model and vice-versa.
@@ -44,19 +43,16 @@ public final class MetricFeedbackTransforms {
      *
      * @return The custom model instance.
      */
-    public static MetricFeedback fromInner(
-        com.azure.ai.metricsadvisor.implementation.models.MetricFeedback metricFeedbackValue) {
+    public static MetricFeedback
+        fromInner(com.azure.ai.metricsadvisor.implementation.models.MetricFeedback metricFeedbackValue) {
         MetricFeedback metricFeedback;
         if (metricFeedbackValue instanceof AnomalyFeedback) {
             final AnomalyFeedback anomalyFeedback = (AnomalyFeedback) metricFeedbackValue;
-            metricFeedback = new MetricAnomalyFeedback(
-                anomalyFeedback.getStartTime(),
-                anomalyFeedback.getEndTime(),
+            metricFeedback = new MetricAnomalyFeedback(anomalyFeedback.getStartTime(), anomalyFeedback.getEndTime(),
                 AnomalyValue.fromString(anomalyFeedback.getValue().getAnomalyValue().toString()))
-                .setDetectionConfigurationId(
-                    anomalyFeedback.getAnomalyDetectionConfigurationId() != null
-                    ? anomalyFeedback.getAnomalyDetectionConfigurationId().toString()
-                    : null);
+                    .setDetectionConfigurationId(anomalyFeedback.getAnomalyDetectionConfigurationId() != null
+                        ? anomalyFeedback.getAnomalyDetectionConfigurationId().toString()
+                        : null);
 
             if (anomalyFeedback.getAnomalyDetectionConfigurationSnapshot() != null) {
                 MetricAnomalyFeedbackHelper.setDetectionConfiguration((MetricAnomalyFeedback) metricFeedback,
@@ -66,22 +62,19 @@ public final class MetricFeedbackTransforms {
             MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.ANOMALY);
         } else if (metricFeedbackValue instanceof ChangePointFeedback) {
             final ChangePointFeedback changePointFeedback = (ChangePointFeedback) metricFeedbackValue;
-            metricFeedback = new MetricChangePointFeedback(
-                changePointFeedback.getStartTime(),
-                changePointFeedback.getEndTime(),
-                ChangePointValue.fromString(changePointFeedback.getValue().getChangePointValue().toString()));
+            metricFeedback
+                = new MetricChangePointFeedback(changePointFeedback.getStartTime(), changePointFeedback.getEndTime(),
+                    ChangePointValue.fromString(changePointFeedback.getValue().getChangePointValue().toString()));
             MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.CHANGE_POINT);
         } else if (metricFeedbackValue instanceof PeriodFeedback) {
             final PeriodFeedback periodFeedback = (PeriodFeedback) metricFeedbackValue;
-            metricFeedback = new MetricPeriodFeedback(
-                PeriodType.fromString(periodFeedback.getValue().getPeriodType().toString()),
-                periodFeedback.getValue().getPeriodValue());
+            metricFeedback
+                = new MetricPeriodFeedback(PeriodType.fromString(periodFeedback.getValue().getPeriodType().toString()),
+                    periodFeedback.getValue().getPeriodValue());
             MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.PERIOD);
         } else if (metricFeedbackValue instanceof CommentFeedback) {
             final CommentFeedback commentFeedback = (CommentFeedback) metricFeedbackValue;
-            metricFeedback = new MetricCommentFeedback(
-                commentFeedback.getStartTime(),
-                commentFeedback.getEndTime(),
+            metricFeedback = new MetricCommentFeedback(commentFeedback.getStartTime(), commentFeedback.getEndTime(),
                 commentFeedback.getValue().getCommentValue());
             MetricFeedbackHelper.setFeedbackType(metricFeedback, FeedbackType.COMMENT);
         } else {
@@ -103,22 +96,22 @@ public final class MetricFeedbackTransforms {
      *
      * @return the wire model instance.
      */
-    public static MetricFeedbackFilter toInnerFilter(String metricId,
-                                                     ListMetricFeedbackOptions options) {
-        final ListMetricFeedbackFilter listMetricFeedbackFilter =
-            options.getFilter() == null ? new ListMetricFeedbackFilter() : options.getFilter();
+    public static MetricFeedbackFilter toInnerFilter(String metricId, ListMetricFeedbackOptions options) {
+        final ListMetricFeedbackFilter listMetricFeedbackFilter
+            = options.getFilter() == null ? new ListMetricFeedbackFilter() : options.getFilter();
 
-        MetricFeedbackFilter metricFeedbackFilter = new MetricFeedbackFilter()
-            .setFeedbackType(listMetricFeedbackFilter.getFeedbackType())
-            .setMetricId(UUID.fromString(metricId))
-            .setStartTime(listMetricFeedbackFilter.getStartTime())
-            .setEndTime(listMetricFeedbackFilter.getEndTime())
-            .setTimeMode(listMetricFeedbackFilter.getTimeMode() == null
-                ? null : FeedbackQueryTimeMode.fromString(listMetricFeedbackFilter.getTimeMode().toString()));
+        MetricFeedbackFilter metricFeedbackFilter
+            = new MetricFeedbackFilter().setFeedbackType(listMetricFeedbackFilter.getFeedbackType())
+                .setMetricId(UUID.fromString(metricId))
+                .setStartTime(listMetricFeedbackFilter.getStartTime())
+                .setEndTime(listMetricFeedbackFilter.getEndTime())
+                .setTimeMode(listMetricFeedbackFilter.getTimeMode() == null
+                    ? null
+                    : FeedbackQueryTimeMode.fromString(listMetricFeedbackFilter.getTimeMode().toString()));
 
         if (listMetricFeedbackFilter.getDimensionFilter() != null) {
-            metricFeedbackFilter.setDimensionFilter(new FeedbackDimensionFilter()
-                .setDimension(listMetricFeedbackFilter.getDimensionFilter().asMap()));
+            metricFeedbackFilter.setDimensionFilter(
+                new FeedbackDimensionFilter().setDimension(listMetricFeedbackFilter.getDimensionFilter().asMap()));
         }
 
         return metricFeedbackFilter;

@@ -40,9 +40,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,36 +52,26 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesPr")
     public interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResultInner>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceListResultInner>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-                + "/{accountName}/privateLinkResources/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+            + "/{accountName}/privateLinkResources/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -98,19 +87,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -122,17 +107,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -150,19 +126,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,15 +146,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                apiVersion,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            apiVersion, accept, context);
     }
 
     /**
@@ -216,8 +181,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
@@ -252,19 +217,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return details of a group ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String name) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -279,18 +240,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            name,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, name, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -309,19 +260,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return details of a group ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String name, Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,16 +283,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                name,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            name, apiVersion, accept, context);
     }
 
     /**
@@ -382,8 +321,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return details of a group ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context) {
+    public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, name, context).block();
     }
 

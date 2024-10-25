@@ -25,8 +25,7 @@ public final class MetricChangePointFeedback extends MetricFeedback {
      * only one timestamp
      * @param changePointValue the value of the change point feedback.
      */
-    public MetricChangePointFeedback(OffsetDateTime startTime,
-        OffsetDateTime endTime,
+    public MetricChangePointFeedback(OffsetDateTime startTime, OffsetDateTime endTime,
         ChangePointValue changePointValue) {
         this.startTime = startTime;
         this.endTime = endTime;

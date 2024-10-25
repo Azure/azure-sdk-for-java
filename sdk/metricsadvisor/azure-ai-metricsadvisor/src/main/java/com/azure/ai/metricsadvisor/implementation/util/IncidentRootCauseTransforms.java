@@ -19,25 +19,15 @@ public class IncidentRootCauseTransforms {
     public static PagedResponse<IncidentRootCause> fromInnerResponse(Response<RootCauseList> innerResponse) {
         final RootCauseList innerRootCauseList = innerResponse.getValue();
         if (innerRootCauseList == null || innerRootCauseList.getValue() == null) {
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                new ArrayList<>(),
-                null,
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), new ArrayList<>(), null, null);
         } else {
             final List<IncidentRootCause> rootCauseList = innerRootCauseList.getValue()
                 .stream()
                 .map(inner -> IncidentRootCauseTransforms.fromInner(inner))
                 .collect(Collectors.toList());
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                rootCauseList,
-                null,
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), rootCauseList, null, null);
         }
     }
 

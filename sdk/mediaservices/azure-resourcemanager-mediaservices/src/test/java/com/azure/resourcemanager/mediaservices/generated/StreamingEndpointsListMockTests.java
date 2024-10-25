@@ -31,37 +31,27 @@ public final class StreamingEndpointsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"lwywae\",\"scaleUnits\":665085676,\"availabilitySetName\":\"gfbukklelss\",\"accessControl\":{},\"maxCacheAge\":2996960351334140021,\"customHostNames\":[\"jks\",\"lsmdesqplpvmjc\",\"oewbid\",\"vteo\"],\"hostName\":\"vgp\",\"cdnEnabled\":false,\"cdnProvider\":\"ugfsxzecpaxwk\",\"cdnProfile\":\"ykhv\",\"provisioningState\":\"xepmrut\",\"resourceState\":\"Scaling\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"obns\",\"crossDomainPolicy\":\"jdjltymkmvgui\"},\"freeTrialEndTime\":\"2021-11-13T17:45:06Z\",\"created\":\"2021-04-21T11:58:54Z\",\"lastModified\":\"2021-05-15T17:05:47Z\"},\"sku\":{\"name\":\"kixkykxdssjpemm\",\"capacity\":1510283924},\"location\":\"xhikkflrmymyin\",\"tags\":{\"s\":\"hr\",\"iiiovgqcgxuugq\":\"sl\"},\"id\":\"ctotiowlx\",\"name\":\"e\",\"type\":\"dptjgwdtgukranb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"lwywae\",\"scaleUnits\":665085676,\"availabilitySetName\":\"gfbukklelss\",\"accessControl\":{},\"maxCacheAge\":2996960351334140021,\"customHostNames\":[\"jks\",\"lsmdesqplpvmjc\",\"oewbid\",\"vteo\"],\"hostName\":\"vgp\",\"cdnEnabled\":false,\"cdnProvider\":\"ugfsxzecpaxwk\",\"cdnProfile\":\"ykhv\",\"provisioningState\":\"xepmrut\",\"resourceState\":\"Scaling\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"obns\",\"crossDomainPolicy\":\"jdjltymkmvgui\"},\"freeTrialEndTime\":\"2021-11-13T17:45:06Z\",\"created\":\"2021-04-21T11:58:54Z\",\"lastModified\":\"2021-05-15T17:05:47Z\"},\"sku\":{\"name\":\"kixkykxdssjpemm\",\"capacity\":1510283924},\"location\":\"xhikkflrmymyin\",\"tags\":{\"s\":\"hr\",\"iiiovgqcgxuugq\":\"sl\"},\"id\":\"ctotiowlx\",\"name\":\"e\",\"type\":\"dptjgwdtgukranb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<StreamingEndpoint> response =
-            manager.streamingEndpoints().list("roznnhdrlktgj", "sggux", com.azure.core.util.Context.NONE);
+        PagedIterable<StreamingEndpoint> response
+            = manager.streamingEndpoints().list("roznnhdrlktgj", "sggux", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xhikkflrmymyin", response.iterator().next().location());
         Assertions.assertEquals("hr", response.iterator().next().tags().get("s"));
@@ -75,7 +65,7 @@ public final class StreamingEndpointsListMockTests {
         Assertions.assertEquals("ugfsxzecpaxwk", response.iterator().next().cdnProvider());
         Assertions.assertEquals("ykhv", response.iterator().next().cdnProfile());
         Assertions.assertEquals("obns", response.iterator().next().crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions
-            .assertEquals("jdjltymkmvgui", response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("jdjltymkmvgui",
+            response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
     }
 }

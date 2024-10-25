@@ -57,12 +57,8 @@ public interface CreatorsClient {
      *     data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorInner creatorResource,
-        Context context);
+    Response<CreatorInner> createOrUpdateWithResponse(String resourceGroupName, String accountName, String creatorName,
+        CreatorInner creatorResource, Context context);
 
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
@@ -79,8 +75,8 @@ public interface CreatorsClient {
      *     data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreatorInner createOrUpdate(
-        String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource);
+    CreatorInner createOrUpdate(String resourceGroupName, String accountName, String creatorName,
+        CreatorInner creatorResource);
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
@@ -97,12 +93,8 @@ public interface CreatorsClient {
      *     data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters,
-        Context context);
+    Response<CreatorInner> updateWithResponse(String resourceGroupName, String accountName, String creatorName,
+        CreatorUpdateParameters creatorUpdateParameters, Context context);
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
@@ -118,10 +110,7 @@ public interface CreatorsClient {
      *     data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreatorInner update(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
+    CreatorInner update(String resourceGroupName, String accountName, String creatorName,
         CreatorUpdateParameters creatorUpdateParameters);
 
     /**
@@ -137,8 +126,8 @@ public interface CreatorsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
 
     /**
      * Delete a Maps Creator resource.
@@ -166,8 +155,8 @@ public interface CreatorsClient {
      * @return a Maps Creator resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
+    Response<CreatorInner> getWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
 
     /**
      * Get a Maps Creator resource.

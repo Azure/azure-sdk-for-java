@@ -87,8 +87,8 @@ public final class IpExtendedCommunityProperties extends AnnotationResource {
      * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
      * @return the IpExtendedCommunityProperties object itself.
      */
-    public IpExtendedCommunityProperties withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityProperties
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         this.ipExtendedCommunityRules = ipExtendedCommunityRules;
         return this;
     }
@@ -109,10 +109,8 @@ public final class IpExtendedCommunityProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (ipExtendedCommunityRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipExtendedCommunityRules in model IpExtendedCommunityProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ipExtendedCommunityRules in model IpExtendedCommunityProperties"));
         } else {
             ipExtendedCommunityRules().forEach(e -> e.validate());
         }

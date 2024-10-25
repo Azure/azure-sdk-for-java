@@ -64,8 +64,8 @@ public final class StorageEncryptedAssetDecryptionDataInner {
      * @param assetFileEncryptionMetadata the assetFileEncryptionMetadata value to set.
      * @return the StorageEncryptedAssetDecryptionDataInner object itself.
      */
-    public StorageEncryptedAssetDecryptionDataInner withAssetFileEncryptionMetadata(
-        List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata) {
+    public StorageEncryptedAssetDecryptionDataInner
+        withAssetFileEncryptionMetadata(List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata) {
         this.assetFileEncryptionMetadata = assetFileEncryptionMetadata;
         return this;
     }

@@ -119,12 +119,8 @@ public interface NetworkRack {
     NetworkRackInner innerModel();
 
     /** The entirety of the NetworkRack definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
     /** The NetworkRack definition stages. */

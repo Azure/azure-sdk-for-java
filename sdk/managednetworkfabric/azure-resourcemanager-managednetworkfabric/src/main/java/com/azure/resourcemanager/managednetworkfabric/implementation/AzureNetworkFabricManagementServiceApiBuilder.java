@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the AzureNetworkFabricManagementServiceApiImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureNetworkFabricManagementServiceApiImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureNetworkFabricManagementServiceApiImpl.class })
 public final class AzureNetworkFabricManagementServiceApiBuilder {
     /*
      * The ID of the target subscription. The value must be an UUID.
@@ -121,24 +121,17 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
     public AzureNetworkFabricManagementServiceApiImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureNetworkFabricManagementServiceApiImpl client =
-            new AzureNetworkFabricManagementServiceApiImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AzureNetworkFabricManagementServiceApiImpl client
+            = new AzureNetworkFabricManagementServiceApiImpl(localPipeline, localSerializerAdapter,
+                localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
         return client;
     }
 }

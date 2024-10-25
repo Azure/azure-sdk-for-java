@@ -76,32 +76,29 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             listDataFeedRunner(inputDataFeedList -> {
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
-                List<DataFeed> expectedDataFeedList =
-                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed))
-                        .collect(Collectors.toList());
+                List<DataFeed> expectedDataFeedList = inputDataFeedList.stream()
+                    .map(dataFeed -> client.createDataFeed(dataFeed))
+                    .collect(Collectors.toList());
 
                 // Act & Assert
-                client.listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedGranularityType(DAILY)
-                    .setName("java_")), Context.NONE)
+                client
+                    .listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(
+                        new ListDataFeedFilter().setDataFeedGranularityType(DAILY).setName("java_")), Context.NONE)
                     .forEach(actualDataFeedList::add);
 
-                expectedDataFeedIdList.set(expectedDataFeedList.stream()
-                    .map(DataFeed::getId)
-                    .collect(Collectors.toList()));
-                final List<DataFeed> actualList =
-                    actualDataFeedList.stream()
-                        .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
-                        .collect(Collectors.toList());
+                expectedDataFeedIdList
+                    .set(expectedDataFeedList.stream().map(DataFeed::getId).collect(Collectors.toList()));
+                final List<DataFeed> actualList = actualDataFeedList.stream()
+                    .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
+                    .collect(Collectors.toList());
 
                 assertEquals(inputDataFeedList.size(), actualList.size());
                 expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 final AtomicInteger i = new AtomicInteger(-1);
                 final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
-                expectedDataFeedList.forEach(expectedDataFeed ->
-                    validateDataFeedResult(expectedDataFeed,
-                        actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
+                expectedDataFeedList.forEach(expectedDataFeed -> validateDataFeedResult(expectedDataFeed,
+                    actualList.get(i.incrementAndGet()), dataFeedSourceTypes.get(i.get())));
             });
         } finally {
             if (!CoreUtils.isNullOrEmpty(expectedDataFeedIdList.get())) {
@@ -122,8 +119,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
         // Act & Assert
         int pageCount = 0;
-        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3),
-            Context.NONE)
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client
+            .listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3), Context.NONE)
             .iterableByPage()) {
             assertTrue(3 >= dataFeedPagedResponse.getValue().size());
             pageCount++;
@@ -144,7 +141,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            final int[] pageCount = {0};
+            final int[] pageCount = { 0 };
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -154,10 +151,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
-                            .setListDataFeedFilter(new ListDataFeedFilter()
-                            .setCreator(createdDataFeed.getCreator())),
-                    Context.NONE)
+                for (PagedResponse<DataFeed> dataFeedPagedResponse : client
+                    .listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(
+                        new ListDataFeedFilter().setCreator(createdDataFeed.getCreator())), Context.NONE)
                     .iterableByPage()) {
                     List<DataFeed> dataFeedList = dataFeedPagedResponse.getValue();
                     dataFeedList.forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
@@ -208,10 +204,12 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedSourceType(AZURE_BLOB)), Context.NONE)
-            .stream().iterator().forEachRemaining(dataFeed -> assertEquals(AZURE_BLOB, dataFeed.getSourceType()));
+        client
+            .listDataFeeds(new ListDataFeedOptions()
+                .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedSourceType(AZURE_BLOB)), Context.NONE)
+            .stream()
+            .iterator()
+            .forEachRemaining(dataFeed -> assertEquals(AZURE_BLOB, dataFeed.getSourceType()));
     }
 
     /**
@@ -226,8 +224,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
         // Act & Assert
         int pageCount = 0;
-        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client
+            .listDataFeeds(
+                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
                 Context.NONE)
             .iterableByPage()) {
             dataFeedPagedResponse.getValue().forEach((dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus())));
@@ -250,11 +249,11 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
-        int[] pageCount = new int[] {0};
+        int[] pageCount = new int[] { 0 };
 
-        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
-                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedGranularityType(DAILY)), Context.NONE)
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client
+            .listDataFeeds(new ListDataFeedOptions()
+                .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)), Context.NONE)
             .iterableByPage()) {
             dataFeedPagedResponse.getValue()
                 .forEach(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
@@ -273,10 +272,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
      */
     @Test
     @DoNotRecord
-    public void getDataFeedNullId()  {
+    public void getDataFeedNullId() {
         // Arrange
-        client = getNonRecordAdminClient()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         // Act & Assert
@@ -291,13 +289,11 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         // Act & Assert
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> client.getDataFeed(INCORRECT_UUID));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> client.getDataFeed(INCORRECT_UUID));
         assertEquals(INCORRECT_UUID_ERROR, exception.getMessage());
     }
 
@@ -318,8 +314,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                final Response<DataFeed> dataFeedResponse =
-                    client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE);
+                final Response<DataFeed> dataFeedResponse
+                    = client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE);
                 assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
                 validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
             }, SQL_SERVER_DB);
@@ -658,25 +654,21 @@ public class DataFeedClientTest extends DataFeedTestBase {
             Exception ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(null));
             assertEquals("'dataFeed' is required and cannot be null.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
-                new DataFeed().setName("name")));
+            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(new DataFeed().setName("name")));
             assertEquals("'dataFeedSource' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
-                new DataFeed().setName("name")
-                    .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))));
+                new DataFeed().setName("name").setSource(new PostgreSqlDataFeedSource("conn-string", "query"))));
             assertEquals("'dataFeedSchema.metrics' cannot be null or empty.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
-                new DataFeed()
-                    .setName("name")
+            ex = assertThrows(NullPointerException.class,
+                () -> client.createDataFeed(new DataFeed().setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
                     .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
-                new DataFeed()
-                    .setName("name")
+            ex = assertThrows(NullPointerException.class,
+                () -> client.createDataFeed(new DataFeed().setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
                     .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
@@ -695,13 +687,11 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void deleteIncorrectDataFeedId() {
         // Arrange
-        client = getNonRecordAdminClient()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         // Act & Assert
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.getDataFeed(INCORRECT_UUID));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> client.getDataFeed(INCORRECT_UUID));
         assertEquals(INCORRECT_UUID_ERROR, exception.getMessage());
     }
 
@@ -720,8 +710,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class, () ->
-                client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
+            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class,
+                () -> client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
             final MetricsAdvisorError errorCode = exception.getValue();
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
@@ -743,8 +733,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));
                 // Act & Assert
-                final MetricsAdvisorResponseException errorCodeException
-                    = assertThrows(MetricsAdvisorResponseException.class, () -> client.createDataFeed(expectedDataFeed));
+                final MetricsAdvisorResponseException errorCodeException = assertThrows(
+                    MetricsAdvisorResponseException.class, () -> client.createDataFeed(expectedDataFeed));
 
                 assertEquals("The metric name 'cost' is duplicate,please remove one.",
                     errorCodeException.getValue().getMessage());

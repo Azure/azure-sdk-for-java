@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"ipv4Address\":\"spkxkdt\",\"port\":908846418,\"type\":\"Workload\",\"networkFabricControllerId\":\"dlqvtwknvg\",\"provisioningState\":\"Accepted\",\"internetGatewayRuleId\":\"gtywatmqaqkue\",\"annotation\":\"groeshoyg\"},\"location\":\"byfqxkfaoy\",\"tags\":{\"mtdwcky\":\"qpuvjmv\"},\"id\":\"roejnndl\",\"name\":\"djus\",\"type\":\"br\"}")
-                .toObject(InternetGatewayInner.class);
+        InternetGatewayInner model = BinaryData.fromString(
+            "{\"properties\":{\"ipv4Address\":\"spkxkdt\",\"port\":908846418,\"type\":\"Workload\",\"networkFabricControllerId\":\"dlqvtwknvg\",\"provisioningState\":\"Accepted\",\"internetGatewayRuleId\":\"gtywatmqaqkue\",\"annotation\":\"groeshoyg\"},\"location\":\"byfqxkfaoy\",\"tags\":{\"mtdwcky\":\"qpuvjmv\"},\"id\":\"roejnndl\",\"name\":\"djus\",\"type\":\"br\"}")
+            .toObject(InternetGatewayInner.class);
         Assertions.assertEquals("byfqxkfaoy", model.location());
         Assertions.assertEquals("qpuvjmv", model.tags().get("mtdwcky"));
         Assertions.assertEquals(GatewayType.WORKLOAD, model.typePropertiesType());
@@ -29,14 +27,12 @@ public final class InternetGatewayInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayInner model =
-            new InternetGatewayInner()
-                .withLocation("byfqxkfaoy")
-                .withTags(mapOf("mtdwcky", "qpuvjmv"))
-                .withTypePropertiesType(GatewayType.WORKLOAD)
-                .withNetworkFabricControllerId("dlqvtwknvg")
-                .withInternetGatewayRuleId("gtywatmqaqkue")
-                .withAnnotation("groeshoyg");
+        InternetGatewayInner model = new InternetGatewayInner().withLocation("byfqxkfaoy")
+            .withTags(mapOf("mtdwcky", "qpuvjmv"))
+            .withTypePropertiesType(GatewayType.WORKLOAD)
+            .withNetworkFabricControllerId("dlqvtwknvg")
+            .withInternetGatewayRuleId("gtywatmqaqkue")
+            .withAnnotation("groeshoyg");
         model = BinaryData.fromObject(model).toObject(InternetGatewayInner.class);
         Assertions.assertEquals("byfqxkfaoy", model.location());
         Assertions.assertEquals("qpuvjmv", model.tags().get("mtdwcky"));

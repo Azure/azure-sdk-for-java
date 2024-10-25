@@ -80,23 +80,18 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
     }
 
     public Transform create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, transformName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Transform create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -111,27 +106,23 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
     }
 
     public Transform apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .updateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .updateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Transform apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .updateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .updateWithResponse(resourceGroupName, accountName, transformName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    TransformImpl(
-        TransformInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    TransformImpl(TransformInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -140,22 +131,18 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
     }
 
     public Transform refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .getWithResponse(resourceGroupName, accountName, transformName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .getWithResponse(resourceGroupName, accountName, transformName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Transform refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransforms()
-                .getWithResponse(resourceGroupName, accountName, transformName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTransforms()
+            .getWithResponse(resourceGroupName, accountName, transformName, context)
+            .getValue();
         return this;
     }
 

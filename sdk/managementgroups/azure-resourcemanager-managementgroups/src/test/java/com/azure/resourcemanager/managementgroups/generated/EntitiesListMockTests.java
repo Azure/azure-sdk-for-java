@@ -34,49 +34,29 @@ public final class EntitiesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"ievseotgqrllt\",\"type\":\"wlauwzizxbmpg\",\"name\":\"efuzmuvpbttd\",\"properties\":{\"tenantId\":\"rp\",\"displayName\":\"ebmnzbtbhjpglk\",\"parent\":{\"id\":\"hdneuelfph\"},\"permissions\":\"delete\",\"inheritedPermissions\":\"noaccess\",\"numberOfDescendants\":1295837012,\"numberOfChildren\":743689634,\"numberOfChildGroups\":1930922340,\"parentDisplayNameChain\":[\"wq\",\"uvxzxclvi\",\"hhqzonosgg\",\"hcohfwdsjnk\"],\"parentNameChain\":[\"utiiswacf\",\"gdkz\",\"ewkfvhqcrai\"]}}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"ievseotgqrllt\",\"type\":\"wlauwzizxbmpg\",\"name\":\"efuzmuvpbttd\",\"properties\":{\"tenantId\":\"rp\",\"displayName\":\"ebmnzbtbhjpglk\",\"parent\":{\"id\":\"hdneuelfph\"},\"permissions\":\"delete\",\"inheritedPermissions\":\"noaccess\",\"numberOfDescendants\":1295837012,\"numberOfChildren\":743689634,\"numberOfChildGroups\":1930922340,\"parentDisplayNameChain\":[\"wq\",\"uvxzxclvi\",\"hhqzonosgg\",\"hcohfwdsjnk\"],\"parentNameChain\":[\"utiiswacf\",\"gdkz\",\"ewkfvhqcrai\"]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagementGroupsManager manager =
-            ManagementGroupsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagementGroupsManager manager = ManagementGroupsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EntityInfo> response =
-            manager
-                .entities()
-                .list(
-                    "xmhhvhgureo",
-                    860424274,
-                    1245356368,
-                    "obdagxtibqdxb",
-                    EntitySearchType.PARENT_ONLY,
-                    "akbogqxndlkzgxh",
-                    EntityViewParameterType.FULL_HIERARCHY,
-                    "iplbpodxunkbebxm",
-                    "byyntwlrbqt",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<EntityInfo> response = manager.entities()
+            .list("xmhhvhgureo", 860424274, 1245356368, "obdagxtibqdxb", EntitySearchType.PARENT_ONLY,
+                "akbogqxndlkzgxh", EntityViewParameterType.FULL_HIERARCHY, "iplbpodxunkbebxm", "byyntwlrbqt",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rp", response.iterator().next().tenantId());
         Assertions.assertEquals("ebmnzbtbhjpglk", response.iterator().next().displayName());

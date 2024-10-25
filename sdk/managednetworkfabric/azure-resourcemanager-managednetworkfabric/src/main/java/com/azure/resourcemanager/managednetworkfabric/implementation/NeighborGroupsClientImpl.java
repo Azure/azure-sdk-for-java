@@ -54,8 +54,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @param client the instance of the service client containing this operation class.
      */
     NeighborGroupsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(NeighborGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NeighborGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,107 +66,80 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NeighborGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("neighborGroupName") String neighborGroupName,
-            @BodyParam("application/json") NeighborGroupInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NeighborGroupInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NeighborGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NeighborGroupInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("neighborGroupName") String neighborGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("neighborGroupName") String neighborGroupName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NeighborGroupPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("neighborGroupName") String neighborGroupName,
-            @BodyParam("application/json") NeighborGroupPatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("neighborGroupName") String neighborGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups/{neighborGroupName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NeighborGroupsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("neighborGroupName") String neighborGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/neighborGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NeighborGroupsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/neighborGroups")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NeighborGroupsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NeighborGroupsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NeighborGroupsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NeighborGroupsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -183,19 +156,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,18 +181,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            neighborGroupName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), neighborGroupName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -242,19 +201,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -271,16 +226,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                neighborGroupName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), neighborGroupName, body, accept, context);
     }
 
     /**
@@ -297,17 +244,11 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link PollerFlux} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body) {
+    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreateAsync(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, neighborGroupName, body);
-        return this
-            .client
-            .<NeighborGroupInner, NeighborGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NeighborGroupInner.class,
-                NeighborGroupInner.class,
-                this.client.getContext());
+        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NeighborGroupInner.class, NeighborGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -325,15 +266,13 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link PollerFlux} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context) {
+    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreateAsync(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, neighborGroupName, body, context);
-        return this
-            .client
-            .<NeighborGroupInner, NeighborGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NeighborGroupInner.class, NeighborGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, neighborGroupName, body, context);
+        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NeighborGroupInner.class, NeighborGroupInner.class, context);
     }
 
     /**
@@ -350,8 +289,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body) {
+    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body) {
         return this.beginCreateAsync(resourceGroupName, neighborGroupName, body).getSyncPoller();
     }
 
@@ -370,8 +309,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context) {
+    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginCreate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, neighborGroupName, body, context).getSyncPoller();
     }
 
@@ -389,10 +328,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeighborGroupInner> createAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body) {
-        return beginCreateAsync(resourceGroupName, neighborGroupName, body)
-            .last()
+    private Mono<NeighborGroupInner> createAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupInner body) {
+        return beginCreateAsync(resourceGroupName, neighborGroupName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -411,10 +349,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeighborGroupInner> createAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, neighborGroupName, body, context)
-            .last()
+    private Mono<NeighborGroupInner> createAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, neighborGroupName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -451,8 +388,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeighborGroupInner create(
-        String resourceGroupName, String neighborGroupName, NeighborGroupInner body, Context context) {
+    public NeighborGroupInner create(String resourceGroupName, String neighborGroupName, NeighborGroupInner body,
+        Context context) {
         return createAsync(resourceGroupName, neighborGroupName, body, context).block();
     }
 
@@ -469,19 +406,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NeighborGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String neighborGroupName) {
+    private Mono<Response<NeighborGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String neighborGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -494,16 +427,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            neighborGroupName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), neighborGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -521,19 +446,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NeighborGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, Context context) {
+    private Mono<Response<NeighborGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String neighborGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -545,15 +466,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                neighborGroupName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), neighborGroupName, accept, context);
     }
 
     /**
@@ -588,8 +502,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the Neighbor Group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NeighborGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context) {
+    public Response<NeighborGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String neighborGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, neighborGroupName, context).block();
     }
 
@@ -624,19 +538,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -653,18 +563,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            neighborGroupName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), neighborGroupName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -683,19 +583,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -712,16 +608,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                neighborGroupName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), neighborGroupName, body, accept, context);
     }
 
     /**
@@ -738,17 +626,11 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link PollerFlux} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body) {
+    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdateAsync(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, neighborGroupName, body);
-        return this
-            .client
-            .<NeighborGroupInner, NeighborGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NeighborGroupInner.class,
-                NeighborGroupInner.class,
-                this.client.getContext());
+        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NeighborGroupInner.class, NeighborGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -766,15 +648,13 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link PollerFlux} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context) {
+    private PollerFlux<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdateAsync(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, neighborGroupName, body, context);
-        return this
-            .client
-            .<NeighborGroupInner, NeighborGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NeighborGroupInner.class, NeighborGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, neighborGroupName, body, context);
+        return this.client.<NeighborGroupInner, NeighborGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NeighborGroupInner.class, NeighborGroupInner.class, context);
     }
 
     /**
@@ -791,8 +671,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body) {
+    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body) {
         return this.beginUpdateAsync(resourceGroupName, neighborGroupName, body).getSyncPoller();
     }
 
@@ -811,8 +691,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context) {
+    public SyncPoller<PollResult<NeighborGroupInner>, NeighborGroupInner> beginUpdate(String resourceGroupName,
+        String neighborGroupName, NeighborGroupPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, neighborGroupName, body, context).getSyncPoller();
     }
 
@@ -830,10 +710,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeighborGroupInner> updateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body) {
-        return beginUpdateAsync(resourceGroupName, neighborGroupName, body)
-            .last()
+    private Mono<NeighborGroupInner> updateAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupPatch body) {
+        return beginUpdateAsync(resourceGroupName, neighborGroupName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -852,10 +731,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NeighborGroupInner> updateAsync(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, neighborGroupName, body, context)
-            .last()
+    private Mono<NeighborGroupInner> updateAsync(String resourceGroupName, String neighborGroupName,
+        NeighborGroupPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, neighborGroupName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -892,8 +770,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return defines the Neighbor Group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NeighborGroupInner update(
-        String resourceGroupName, String neighborGroupName, NeighborGroupPatch body, Context context) {
+    public NeighborGroupInner update(String resourceGroupName, String neighborGroupName, NeighborGroupPatch body,
+        Context context) {
         return updateAsync(resourceGroupName, neighborGroupName, body, context).block();
     }
 
@@ -910,19 +788,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String neighborGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String neighborGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -934,17 +808,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            neighborGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), neighborGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -962,19 +827,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String neighborGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String neighborGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -986,15 +847,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                neighborGroupName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), neighborGroupName, accept, context);
     }
 
     /**
@@ -1012,10 +866,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String neighborGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, neighborGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1032,13 +884,12 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String neighborGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String neighborGroupName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, neighborGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1072,8 +923,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String neighborGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String neighborGroupName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, neighborGroupName, context).getSyncPoller();
     }
 
@@ -1091,8 +942,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String neighborGroupName) {
-        return beginDeleteAsync(resourceGroupName, neighborGroupName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, neighborGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1111,8 +961,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String neighborGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, neighborGroupName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, neighborGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1163,16 +1012,12 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeighborGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1180,25 +1025,10 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NeighborGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NeighborGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1215,19 +1045,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return list of Neighbor Group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NeighborGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NeighborGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1236,22 +1062,10 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1267,8 +1081,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NeighborGroupInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1286,8 +1099,7 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NeighborGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1336,37 +1148,19 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeighborGroupInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NeighborGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NeighborGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1384,35 +1178,20 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeighborGroupInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1426,8 +1205,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NeighborGroupInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1443,8 +1222,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NeighborGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1493,24 +1272,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NeighborGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NeighborGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1526,30 +1296,20 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return list of Neighbor Group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NeighborGroupInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NeighborGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1568,24 +1328,15 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NeighborGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NeighborGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1601,29 +1352,19 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
      * @return list of Neighbor Group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NeighborGroupInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NeighborGroupInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

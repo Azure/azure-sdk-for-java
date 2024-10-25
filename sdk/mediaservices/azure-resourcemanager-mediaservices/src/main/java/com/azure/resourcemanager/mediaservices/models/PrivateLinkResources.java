@@ -22,8 +22,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private link resources along with {@link Response}.
      */
-    Response<PrivateLinkResourceListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get list of group IDs.
@@ -53,8 +53,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a group ID along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Get group ID.

@@ -109,25 +109,21 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .create(resourceGroupName, internetGatewayName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .create(resourceGroupName, internetGatewayName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public InternetGateway create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .create(resourceGroupName, internetGatewayName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .create(resourceGroupName, internetGatewayName, this.innerModel(), context);
         return this;
     }
 
-    InternetGatewayImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    InternetGatewayImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new InternetGatewayInner();
         this.serviceManager = serviceManager;
         this.internetGatewayName = name;
@@ -139,25 +135,20 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .update(resourceGroupName, internetGatewayName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .update(resourceGroupName, internetGatewayName, updateBody, Context.NONE);
         return this;
     }
 
     public InternetGateway apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .update(resourceGroupName, internetGatewayName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .update(resourceGroupName, internetGatewayName, updateBody, context);
         return this;
     }
 
-    InternetGatewayImpl(
-        InternetGatewayInner innerObject,
+    InternetGatewayImpl(InternetGatewayInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -166,22 +157,18 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
     }
 
     public InternetGateway refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InternetGateway refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGateways()
-                .getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGateways()
+            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, context)
+            .getValue();
         return this;
     }
 

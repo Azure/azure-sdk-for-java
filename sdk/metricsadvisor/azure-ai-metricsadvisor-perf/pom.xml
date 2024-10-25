@@ -18,6 +18,7 @@
 
   <properties>
     <perf.test.mainClass>com.azure.ai.metricsadvisor.perf.App</perf.test.mainClass>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

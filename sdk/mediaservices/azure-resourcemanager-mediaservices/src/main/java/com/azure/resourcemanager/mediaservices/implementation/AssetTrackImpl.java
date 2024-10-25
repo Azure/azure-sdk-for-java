@@ -63,20 +63,16 @@ public final class AssetTrackImpl implements AssetTrack, AssetTrack.Definition, 
     }
 
     public AssetTrack create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .createOrUpdate(resourceGroupName, accountName, assetName, trackName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .createOrUpdate(resourceGroupName, accountName, assetName, trackName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AssetTrack create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .createOrUpdate(resourceGroupName, accountName, assetName, trackName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .createOrUpdate(resourceGroupName, accountName, assetName, trackName, this.innerModel(), context);
         return this;
     }
 
@@ -91,25 +87,21 @@ public final class AssetTrackImpl implements AssetTrack, AssetTrack.Definition, 
     }
 
     public AssetTrack apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .update(resourceGroupName, accountName, assetName, trackName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .update(resourceGroupName, accountName, assetName, trackName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AssetTrack apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .update(resourceGroupName, accountName, assetName, trackName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .update(resourceGroupName, accountName, assetName, trackName, this.innerModel(), context);
         return this;
     }
 
-    AssetTrackImpl(
-        AssetTrackInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    AssetTrackImpl(AssetTrackInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -119,22 +111,18 @@ public final class AssetTrackImpl implements AssetTrack, AssetTrack.Definition, 
     }
 
     public AssetTrack refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssetTrack refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTracks()
-                .getWithResponse(resourceGroupName, accountName, assetName, trackName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTracks()
+            .getWithResponse(resourceGroupName, accountName, assetName, trackName, context)
+            .getValue();
         return this;
     }
 

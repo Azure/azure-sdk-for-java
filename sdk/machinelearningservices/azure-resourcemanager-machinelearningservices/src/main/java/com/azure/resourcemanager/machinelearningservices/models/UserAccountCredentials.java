@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Settings for user account that gets created on each on the nodes of a compute. */
 @Fluent
 public final class UserAccountCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAccountCredentials.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UserAccountCredentials.class);
 
     /*
      * Name of the administrator user account which can be used to SSH to
@@ -100,10 +101,8 @@ public final class UserAccountCredentials {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminUsername in model UserAccountCredentials"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminUsername in model UserAccountCredentials"));
         }
     }
 }

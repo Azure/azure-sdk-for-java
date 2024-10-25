@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingLocatorContentKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingLocatorContentKey model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"3f672af9-ffd6-4688-835c-845126b962e5\",\"type\":\"CommonEncryptionCbcs\",\"labelReferenceInStreamingPolicy\":\"um\",\"value\":\"p\",\"policyName\":\"ebmnzbtbhjpglk\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
-                .toObject(StreamingLocatorContentKey.class);
+        StreamingLocatorContentKey model = BinaryData.fromString(
+            "{\"id\":\"3f672af9-ffd6-4688-835c-845126b962e5\",\"type\":\"CommonEncryptionCbcs\",\"labelReferenceInStreamingPolicy\":\"um\",\"value\":\"p\",\"policyName\":\"ebmnzbtbhjpglk\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
+            .toObject(StreamingLocatorContentKey.class);
         Assertions.assertEquals(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"), model.id());
         Assertions.assertEquals("um", model.labelReferenceInStreamingPolicy());
         Assertions.assertEquals("p", model.value());
@@ -24,9 +22,8 @@ public final class StreamingLocatorContentKeyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingLocatorContentKey model =
-            new StreamingLocatorContentKey()
-                .withId(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"))
+        StreamingLocatorContentKey model
+            = new StreamingLocatorContentKey().withId(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"))
                 .withLabelReferenceInStreamingPolicy("um")
                 .withValue("p");
         model = BinaryData.fromObject(model).toObject(StreamingLocatorContentKey.class);

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ActionIpExtendedCommunityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActionIpExtendedCommunityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"delete\":{\"ipExtendedCommunityIds\":[\"rlfqm\",\"j\"]},\"set\":{\"ipExtendedCommunityIds\":[\"bfvvcwvu\",\"kmjufav\",\"lnpbsotmynkln\",\"rznmtvrkkfcwxi\"]},\"add\":{\"ipExtendedCommunityIds\":[\"xneykeip\",\"utcbvriuvnfazx\",\"vsa\"]}}")
-                .toObject(ActionIpExtendedCommunityProperties.class);
+        ActionIpExtendedCommunityProperties model = BinaryData.fromString(
+            "{\"delete\":{\"ipExtendedCommunityIds\":[\"rlfqm\",\"j\"]},\"set\":{\"ipExtendedCommunityIds\":[\"bfvvcwvu\",\"kmjufav\",\"lnpbsotmynkln\",\"rznmtvrkkfcwxi\"]},\"add\":{\"ipExtendedCommunityIds\":[\"xneykeip\",\"utcbvriuvnfazx\",\"vsa\"]}}")
+            .toObject(ActionIpExtendedCommunityProperties.class);
         Assertions.assertEquals("xneykeip", model.add().ipExtendedCommunityIds().get(0));
         Assertions.assertEquals("rlfqm", model.delete().ipExtendedCommunityIds().get(0));
         Assertions.assertEquals("bfvvcwvu", model.set().ipExtendedCommunityIds().get(0));
@@ -25,16 +23,12 @@ public final class ActionIpExtendedCommunityPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActionIpExtendedCommunityProperties model =
-            new ActionIpExtendedCommunityProperties()
-                .withAdd(
-                    new IpExtendedCommunityIdList()
-                        .withIpExtendedCommunityIds(Arrays.asList("xneykeip", "utcbvriuvnfazx", "vsa")))
-                .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList("rlfqm", "j")))
-                .withSet(
-                    new IpExtendedCommunityIdList()
-                        .withIpExtendedCommunityIds(
-                            Arrays.asList("bfvvcwvu", "kmjufav", "lnpbsotmynkln", "rznmtvrkkfcwxi")));
+        ActionIpExtendedCommunityProperties model = new ActionIpExtendedCommunityProperties()
+            .withAdd(new IpExtendedCommunityIdList()
+                .withIpExtendedCommunityIds(Arrays.asList("xneykeip", "utcbvriuvnfazx", "vsa")))
+            .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList("rlfqm", "j")))
+            .withSet(new IpExtendedCommunityIdList()
+                .withIpExtendedCommunityIds(Arrays.asList("bfvvcwvu", "kmjufav", "lnpbsotmynkln", "rznmtvrkkfcwxi")));
         model = BinaryData.fromObject(model).toObject(ActionIpExtendedCommunityProperties.class);
         Assertions.assertEquals("xneykeip", model.add().ipExtendedCommunityIds().get(0));
         Assertions.assertEquals("rlfqm", model.delete().ipExtendedCommunityIds().get(0));

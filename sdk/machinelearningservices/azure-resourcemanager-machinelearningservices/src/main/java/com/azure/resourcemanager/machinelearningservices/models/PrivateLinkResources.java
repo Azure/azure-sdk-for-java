@@ -32,6 +32,6 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a workspace.
      */
-    Response<PrivateLinkResourceListResult> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<PrivateLinkResourceListResult> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

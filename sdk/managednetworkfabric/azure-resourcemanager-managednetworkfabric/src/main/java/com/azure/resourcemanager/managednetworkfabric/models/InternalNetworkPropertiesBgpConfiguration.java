@@ -23,8 +23,8 @@ public final class InternalNetworkPropertiesBgpConfiguration extends BgpConfigur
 
     /** {@inheritDoc} */
     @Override
-    public InternalNetworkPropertiesBgpConfiguration withDefaultRouteOriginate(
-        BooleanEnumProperty defaultRouteOriginate) {
+    public InternalNetworkPropertiesBgpConfiguration
+        withDefaultRouteOriginate(BooleanEnumProperty defaultRouteOriginate) {
         super.withDefaultRouteOriginate(defaultRouteOriginate);
         return this;
     }
@@ -66,16 +66,16 @@ public final class InternalNetworkPropertiesBgpConfiguration extends BgpConfigur
 
     /** {@inheritDoc} */
     @Override
-    public InternalNetworkPropertiesBgpConfiguration withIpv4NeighborAddress(
-        List<NeighborAddress> ipv4NeighborAddress) {
+    public InternalNetworkPropertiesBgpConfiguration
+        withIpv4NeighborAddress(List<NeighborAddress> ipv4NeighborAddress) {
         super.withIpv4NeighborAddress(ipv4NeighborAddress);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public InternalNetworkPropertiesBgpConfiguration withIpv6NeighborAddress(
-        List<NeighborAddress> ipv6NeighborAddress) {
+    public InternalNetworkPropertiesBgpConfiguration
+        withIpv6NeighborAddress(List<NeighborAddress> ipv6NeighborAddress) {
         super.withIpv6NeighborAddress(ipv6NeighborAddress);
         return this;
     }

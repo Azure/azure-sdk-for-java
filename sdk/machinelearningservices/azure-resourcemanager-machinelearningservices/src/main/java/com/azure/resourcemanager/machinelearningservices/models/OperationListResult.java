@@ -14,7 +14,8 @@ import java.util.List;
 /** An array of operations supported by the resource provider. */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationListResult.class);
 
     /*
      * List of AML workspace operations supported by the AML workspace resource

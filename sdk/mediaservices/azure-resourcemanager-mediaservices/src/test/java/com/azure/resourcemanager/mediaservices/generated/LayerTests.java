@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Layer model =
-            BinaryData
-                .fromString("{\"width\":\"ktalywjhhgdnhxms\",\"height\":\"fomiloxgg\",\"label\":\"fi\"}")
+        Layer model
+            = BinaryData.fromString("{\"width\":\"ktalywjhhgdnhxms\",\"height\":\"fomiloxgg\",\"label\":\"fi\"}")
                 .toObject(Layer.class);
         Assertions.assertEquals("ktalywjhhgdnhxms", model.width());
         Assertions.assertEquals("fomiloxgg", model.height());

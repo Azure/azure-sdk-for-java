@@ -47,8 +47,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @param client the instance of the service client containing this operation class.
      */
     StreamingPoliciesClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(StreamingPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(StreamingPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,82 +59,59 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesSt")
     public interface StreamingPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingPolicyCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StreamingPolicyCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$orderby") String orderby,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingPolicyName") String streamingPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingPolicyInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingPolicyName") String streamingPolicyName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StreamingPolicyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingPolicies/{streamingPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingPolicyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingPolicyName") String streamingPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingPolicyName") String streamingPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingPolicies/{streamingPolicyName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingPolicyInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingPolicyName") String streamingPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StreamingPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingPolicies/{streamingPolicyName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingPolicyName") String streamingPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingPolicyCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,19 +132,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+    private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,29 +152,10 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            apiVersion,
-                            filter,
-                            top,
-                            orderby,
-                            accept,
-                            context))
-            .<PagedResponse<StreamingPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, apiVersion, filter, top, orderby, accept, context))
+            .<PagedResponse<StreamingPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -224,19 +178,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+    private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,26 +199,10 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                apiVersion,
-                filter,
-                top,
-                orderby,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                apiVersion, filter, top, orderby, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
@@ -288,10 +222,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a collection of StreamingPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StreamingPolicyInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+    private PagedFlux<StreamingPolicyInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -312,8 +245,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -335,10 +267,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a collection of StreamingPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StreamingPolicyInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby, context),
+    private PagedFlux<StreamingPolicyInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -380,8 +311,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StreamingPolicyInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+    public PagedIterable<StreamingPolicyInner> list(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, orderby, context));
     }
 
@@ -400,19 +331,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName) {
+    private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -428,18 +355,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingPolicyName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingPolicyName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -459,19 +376,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
+    private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -487,16 +400,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingPolicyName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingPolicyName, apiVersion, accept, context);
     }
 
     /**
@@ -513,8 +418,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return the details of a Streaming Policy in the Media Services account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingPolicyInner> getAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName) {
+    private Mono<StreamingPolicyInner> getAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -534,8 +439,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
+    public Response<StreamingPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, context).block();
     }
 
@@ -572,19 +477,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a Streaming Policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
+    private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName, StreamingPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -605,19 +506,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingPolicyName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingPolicyName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -637,23 +527,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a Streaming Policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingPolicyName,
-        StreamingPolicyInner parameters,
-        Context context) {
+    private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName, StreamingPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -674,17 +556,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingPolicyName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingPolicyName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -702,8 +575,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a Streaming Policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingPolicyInner> createAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
+    private Mono<StreamingPolicyInner> createAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName, StreamingPolicyInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -724,12 +597,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a Streaming Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingPolicyInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingPolicyName,
-        StreamingPolicyInner parameters,
-        Context context) {
+    public Response<StreamingPolicyInner> createWithResponse(String resourceGroupName, String accountName,
+        String streamingPolicyName, StreamingPolicyInner parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, parameters, context)
             .block();
     }
@@ -749,8 +618,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return a Streaming Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingPolicyInner create(
-        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
+    public StreamingPolicyInner create(String resourceGroupName, String accountName, String streamingPolicyName,
+        StreamingPolicyInner parameters) {
         return createWithResponse(resourceGroupName, accountName, streamingPolicyName, parameters, Context.NONE)
             .getValue();
     }
@@ -769,19 +638,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -797,18 +662,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingPolicyName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingPolicyName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -827,19 +682,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,16 +706,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingPolicyName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingPolicyName, apiVersion, accept, context);
     }
 
     /**
@@ -901,8 +744,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingPolicyName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, context).block();
     }
 
@@ -940,23 +783,13 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StreamingPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StreamingPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -978,23 +811,13 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

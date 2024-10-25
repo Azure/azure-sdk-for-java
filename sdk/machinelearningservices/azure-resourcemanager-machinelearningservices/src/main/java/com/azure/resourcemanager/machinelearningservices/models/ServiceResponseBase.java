@@ -25,11 +25,11 @@ import java.util.Map;
 @JsonTypeName("ServiceResponseBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ACI", value = AciServiceResponse.class),
-    @JsonSubTypes.Type(name = "Custom", value = AksVariantResponse.class)
-})
+    @JsonSubTypes.Type(name = "Custom", value = AksVariantResponse.class) })
 @Fluent
 public class ServiceResponseBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResponseBase.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServiceResponseBase.class);
 
     /*
      * The service description.

@@ -17,7 +17,8 @@ import java.util.List;
 @JsonTypeName("AmlCompute")
 @Immutable
 public final class AmlComputeNodesInformation extends ComputeNodesInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlComputeNodesInformation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AmlComputeNodesInformation.class);
 
     /*
      * The collection of returned AmlCompute nodes details.

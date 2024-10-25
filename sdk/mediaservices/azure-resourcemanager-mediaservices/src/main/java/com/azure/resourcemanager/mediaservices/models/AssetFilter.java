@@ -78,11 +78,13 @@ public interface AssetFilter {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AssetFilter definition stages. */
     interface DefinitionStages {
         /** The first stage of the AssetFilter definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AssetFilter definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -95,14 +97,13 @@ public interface AssetFilter {
              */
             WithCreate withExistingAsset(String resourceGroupName, String accountName, String assetName);
         }
+
         /**
          * The stage of the AssetFilter definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPresentationTimeRange,
-                DefinitionStages.WithFirstQuality,
-                DefinitionStages.WithTracks {
+        interface WithCreate extends DefinitionStages.WithPresentationTimeRange, DefinitionStages.WithFirstQuality,
+            DefinitionStages.WithTracks {
             /**
              * Executes the create request.
              *
@@ -118,6 +119,7 @@ public interface AssetFilter {
              */
             AssetFilter create(Context context);
         }
+
         /** The stage of the AssetFilter definition allowing to specify presentationTimeRange. */
         interface WithPresentationTimeRange {
             /**
@@ -128,6 +130,7 @@ public interface AssetFilter {
              */
             WithCreate withPresentationTimeRange(PresentationTimeRange presentationTimeRange);
         }
+
         /** The stage of the AssetFilter definition allowing to specify firstQuality. */
         interface WithFirstQuality {
             /**
@@ -138,6 +141,7 @@ public interface AssetFilter {
              */
             WithCreate withFirstQuality(FirstQuality firstQuality);
         }
+
         /** The stage of the AssetFilter definition allowing to specify tracks. */
         interface WithTracks {
             /**
@@ -149,6 +153,7 @@ public interface AssetFilter {
             WithCreate withTracks(List<FilterTrackSelection> tracks);
         }
     }
+
     /**
      * Begins update for the AssetFilter resource.
      *
@@ -174,6 +179,7 @@ public interface AssetFilter {
          */
         AssetFilter apply(Context context);
     }
+
     /** The AssetFilter update stages. */
     interface UpdateStages {
         /** The stage of the AssetFilter update allowing to specify presentationTimeRange. */
@@ -186,6 +192,7 @@ public interface AssetFilter {
              */
             Update withPresentationTimeRange(PresentationTimeRange presentationTimeRange);
         }
+
         /** The stage of the AssetFilter update allowing to specify firstQuality. */
         interface WithFirstQuality {
             /**
@@ -196,6 +203,7 @@ public interface AssetFilter {
              */
             Update withFirstQuality(FirstQuality firstQuality);
         }
+
         /** The stage of the AssetFilter update allowing to specify tracks. */
         interface WithTracks {
             /**
@@ -207,6 +215,7 @@ public interface AssetFilter {
             Update withTracks(List<FilterTrackSelection> tracks);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

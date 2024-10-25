@@ -12,8 +12,7 @@ public final class ListNotebookKeysResultImpl implements ListNotebookKeysResult 
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    ListNotebookKeysResultImpl(
-        ListNotebookKeysResultInner innerObject,
+    ListNotebookKeysResultImpl(ListNotebookKeysResultInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

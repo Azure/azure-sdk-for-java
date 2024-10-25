@@ -69,8 +69,8 @@ public final class NetworkToNetworkInterconnectPatch extends ProxyResource {
      * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectPatch object itself.
      */
-    public NetworkToNetworkInterconnectPatch withOptionBLayer3Configuration(
-        OptionBLayer3Configuration optionBLayer3Configuration) {
+    public NetworkToNetworkInterconnectPatch
+        withOptionBLayer3Configuration(OptionBLayer3Configuration optionBLayer3Configuration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkToNetworkInterconnectPatchableProperties();
         }
@@ -93,8 +93,8 @@ public final class NetworkToNetworkInterconnectPatch extends ProxyResource {
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectPatch object itself.
      */
-    public NetworkToNetworkInterconnectPatch withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectPatch
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkToNetworkInterconnectPatchableProperties();
         }

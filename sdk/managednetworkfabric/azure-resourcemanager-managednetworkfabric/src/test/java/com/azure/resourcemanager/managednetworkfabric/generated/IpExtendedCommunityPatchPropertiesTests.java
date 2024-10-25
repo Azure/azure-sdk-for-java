@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityPatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"annotation\":\"njevhdlmydidw\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1554871438908340167,\"routeTargets\":[\"tjfdoesxxhmw\"]},{\"action\":\"Permit\",\"sequenceNumber\":338603123120374807,\"routeTargets\":[\"yo\"]}]}")
-                .toObject(IpExtendedCommunityPatchProperties.class);
+        IpExtendedCommunityPatchProperties model = BinaryData.fromString(
+            "{\"annotation\":\"njevhdlmydidw\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1554871438908340167,\"routeTargets\":[\"tjfdoesxxhmw\"]},{\"action\":\"Permit\",\"sequenceNumber\":338603123120374807,\"routeTargets\":[\"yo\"]}]}")
+            .toObject(IpExtendedCommunityPatchProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
         Assertions.assertEquals(1554871438908340167L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
         Assertions.assertEquals("tjfdoesxxhmw", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
@@ -27,19 +25,14 @@ public final class IpExtendedCommunityPatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityPatchProperties model =
-            new IpExtendedCommunityPatchProperties()
-                .withIpExtendedCommunityRules(
-                    Arrays
-                        .asList(
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(1554871438908340167L)
-                                .withRouteTargets(Arrays.asList("tjfdoesxxhmw")),
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(338603123120374807L)
-                                .withRouteTargets(Arrays.asList("yo"))))
+        IpExtendedCommunityPatchProperties model
+            = new IpExtendedCommunityPatchProperties().withIpExtendedCommunityRules(Arrays.asList(
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(1554871438908340167L)
+                    .withRouteTargets(Arrays.asList("tjfdoesxxhmw")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(338603123120374807L)
+                    .withRouteTargets(Arrays.asList("yo"))))
                 .withAnnotation("njevhdlmydidw");
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityPatchProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());

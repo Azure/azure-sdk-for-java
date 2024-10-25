@@ -33,40 +33,28 @@ public final class NetworkTapsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"networkPacketBrokerId\":\"zgwywyxbwuam\",\"sourceTapRuleId\":\"opqqiyjrehe\",\"destinations\":[{\"name\":\"engmxpjkuqbngrom\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"dzyyal\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"qfwuplfjkbaxv\",\"seimuipggt\"]},\"destinationTapRuleId\":\"xbfhb\"},{\"name\":\"ldziph\",\"destinationType\":\"Direct\",\"destinationId\":\"fz\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"amvritjjhqv\",\"pqgncgw\"]},\"destinationTapRuleId\":\"btkafcnfit\"},{\"name\":\"ck\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"yjdvyxxbawjgyn\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"ridqlynxbdisje\",\"vgcfhchgjo\"]},\"destinationTapRuleId\":\"hdibzvpdjy\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"nqonjbbhwsf\"},\"location\":\"zykz\",\"tags\":{\"pjjnblbkakni\":\"dslpbyejsg\",\"irttqils\":\"wbddnddctkjcqhx\",\"leiyemjips\":\"abqtjchxsfwe\",\"m\":\"ekdqqwcspfhrndq\"},\"id\":\"oslqgsdqnqqzq\",\"name\":\"vgno\",\"type\":\"tkgoyn\"}";
+        String responseStr
+            = "{\"properties\":{\"networkPacketBrokerId\":\"zgwywyxbwuam\",\"sourceTapRuleId\":\"opqqiyjrehe\",\"destinations\":[{\"name\":\"engmxpjkuqbngrom\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"dzyyal\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"qfwuplfjkbaxv\",\"seimuipggt\"]},\"destinationTapRuleId\":\"xbfhb\"},{\"name\":\"ldziph\",\"destinationType\":\"Direct\",\"destinationId\":\"fz\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"amvritjjhqv\",\"pqgncgw\"]},\"destinationTapRuleId\":\"btkafcnfit\"},{\"name\":\"ck\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"yjdvyxxbawjgyn\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"ridqlynxbdisje\",\"vgcfhchgjo\"]},\"destinationTapRuleId\":\"hdibzvpdjy\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"nqonjbbhwsf\"},\"location\":\"zykz\",\"tags\":{\"pjjnblbkakni\":\"dslpbyejsg\",\"irttqils\":\"wbddnddctkjcqhx\",\"leiyemjips\":\"abqtjchxsfwe\",\"m\":\"ekdqqwcspfhrndq\"},\"id\":\"oslqgsdqnqqzq\",\"name\":\"vgno\",\"type\":\"tkgoyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkTap response =
-            manager
-                .networkTaps()
-                .getByResourceGroupWithResponse("tvnlbkizebbrwlp", "qmisoiqge", com.azure.core.util.Context.NONE)
-                .getValue();
+        NetworkTap response = manager.networkTaps()
+            .getByResourceGroupWithResponse("tvnlbkizebbrwlp", "qmisoiqge", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zykz", response.location());
         Assertions.assertEquals("dslpbyejsg", response.tags().get("pjjnblbkakni"));
@@ -74,12 +62,10 @@ public final class NetworkTapsGetByResourceGroupWithResponseMockTests {
         Assertions.assertEquals("engmxpjkuqbngrom", response.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, response.destinations().get(0).destinationType());
         Assertions.assertEquals("dzyyal", response.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(
-                Encapsulation.NONE, response.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals(
-                "qfwuplfjkbaxv", response.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.NONE,
+            response.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("qfwuplfjkbaxv",
+            response.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
         Assertions.assertEquals("xbfhb", response.destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PUSH, response.pollingType());
         Assertions.assertEquals("nqonjbbhwsf", response.annotation());

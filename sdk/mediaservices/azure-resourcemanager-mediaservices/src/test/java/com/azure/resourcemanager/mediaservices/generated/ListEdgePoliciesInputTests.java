@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ListEdgePoliciesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListEdgePoliciesInput model =
-            BinaryData.fromString("{\"deviceId\":\"ftadehxnltyfs\"}").toObject(ListEdgePoliciesInput.class);
+        ListEdgePoliciesInput model
+            = BinaryData.fromString("{\"deviceId\":\"ftadehxnltyfs\"}").toObject(ListEdgePoliciesInput.class);
         Assertions.assertEquals("ftadehxnltyfs", model.deviceId());
     }
 

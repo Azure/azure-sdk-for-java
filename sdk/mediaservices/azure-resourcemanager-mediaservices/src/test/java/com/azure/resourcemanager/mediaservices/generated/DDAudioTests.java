@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DDAudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DDAudio model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":1224339207,\"samplingRate\":536315027,\"bitrate\":549450060,\"label\":\"sukokwbqplhl\"}")
-                .toObject(DDAudio.class);
+        DDAudio model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":1224339207,\"samplingRate\":536315027,\"bitrate\":549450060,\"label\":\"sukokwbqplhl\"}")
+            .toObject(DDAudio.class);
         Assertions.assertEquals("sukokwbqplhl", model.label());
         Assertions.assertEquals(1224339207, model.channels());
         Assertions.assertEquals(536315027, model.samplingRate());
@@ -24,12 +22,10 @@ public final class DDAudioTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DDAudio model =
-            new DDAudio()
-                .withLabel("sukokwbqplhl")
-                .withChannels(1224339207)
-                .withSamplingRate(536315027)
-                .withBitrate(549450060);
+        DDAudio model = new DDAudio().withLabel("sukokwbqplhl")
+            .withChannels(1224339207)
+            .withSamplingRate(536315027)
+            .withBitrate(549450060);
         model = BinaryData.fromObject(model).toObject(DDAudio.class);
         Assertions.assertEquals("sukokwbqplhl", model.label());
         Assertions.assertEquals(1224339207, model.channels());

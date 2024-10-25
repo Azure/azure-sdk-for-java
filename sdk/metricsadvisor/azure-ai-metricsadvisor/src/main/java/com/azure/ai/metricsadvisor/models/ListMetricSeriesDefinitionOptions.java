@@ -68,8 +68,8 @@ public final class ListMetricSeriesDefinitionOptions {
      *
      * @return ListMetricSeriesDefinitionOptions itself.
      */
-    public ListMetricSeriesDefinitionOptions setDimensionCombinationToFilter(
-        Map<String, List<String>> dimensionCombination) {
+    public ListMetricSeriesDefinitionOptions
+        setDimensionCombinationToFilter(Map<String, List<String>> dimensionCombination) {
         this.dimensionCombinations = dimensionCombination;
         return this;
     }

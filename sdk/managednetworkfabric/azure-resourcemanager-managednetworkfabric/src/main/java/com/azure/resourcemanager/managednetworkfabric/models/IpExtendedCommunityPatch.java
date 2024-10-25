@@ -77,8 +77,8 @@ public final class IpExtendedCommunityPatch extends TagsUpdate {
      * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
      * @return the IpExtendedCommunityPatch object itself.
      */
-    public IpExtendedCommunityPatch withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityPatch
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IpExtendedCommunityPatchProperties();
         }

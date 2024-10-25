@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The RCranPackage model. */
 @Fluent
 public final class RCranPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RCranPackage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RCranPackage.class);
 
     /*
      * The package name.

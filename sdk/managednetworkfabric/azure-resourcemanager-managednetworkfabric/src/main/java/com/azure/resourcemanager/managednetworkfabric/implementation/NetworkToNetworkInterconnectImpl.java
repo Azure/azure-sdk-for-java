@@ -23,10 +23,8 @@ import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3Config
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-public final class NetworkToNetworkInterconnectImpl
-    implements NetworkToNetworkInterconnect,
-        NetworkToNetworkInterconnect.Definition,
-        NetworkToNetworkInterconnect.Update {
+public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkInterconnect,
+    NetworkToNetworkInterconnect.Definition, NetworkToNetworkInterconnect.Update {
     private NetworkToNetworkInterconnectInner innerObject;
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
@@ -115,39 +113,30 @@ public final class NetworkToNetworkInterconnectImpl
 
     private NetworkToNetworkInterconnectPatch updateBody;
 
-    public NetworkToNetworkInterconnectImpl withExistingNetworkFabric(
-        String resourceGroupName, String networkFabricName) {
+    public NetworkToNetworkInterconnectImpl withExistingNetworkFabric(String resourceGroupName,
+        String networkFabricName) {
         this.resourceGroupName = resourceGroupName;
         this.networkFabricName = networkFabricName;
         return this;
     }
 
     public NetworkToNetworkInterconnect create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .create(
-                    resourceGroupName,
-                    networkFabricName,
-                    networkToNetworkInterconnectName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .create(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public NetworkToNetworkInterconnect create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .create(
-                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .create(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, this.innerModel(), context);
         return this;
     }
 
-    NetworkToNetworkInterconnectImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkToNetworkInterconnectImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkToNetworkInterconnectInner();
         this.serviceManager = serviceManager;
         this.networkToNetworkInterconnectName = name;
@@ -159,83 +148,69 @@ public final class NetworkToNetworkInterconnectImpl
     }
 
     public NetworkToNetworkInterconnect apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .update(
-                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .update(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkToNetworkInterconnect apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .update(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .update(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, updateBody, context);
         return this;
     }
 
-    NetworkToNetworkInterconnectImpl(
-        NetworkToNetworkInterconnectInner innerObject,
+    NetworkToNetworkInterconnectImpl(NetworkToNetworkInterconnectInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.networkFabricName = Utils.getValueFromIdByName(innerObject.id(), "networkFabrics");
-        this.networkToNetworkInterconnectName =
-            Utils.getValueFromIdByName(innerObject.id(), "networkToNetworkInterconnects");
+        this.networkToNetworkInterconnectName
+            = Utils.getValueFromIdByName(innerObject.id(), "networkToNetworkInterconnects");
     }
 
     public NetworkToNetworkInterconnect refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkToNetworkInterconnect refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkToNetworkInterconnects()
-                .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkToNetworkInterconnects()
+            .getWithResponse(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context)
+            .getValue();
         return this;
     }
 
-    public CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body) {
-        return serviceManager
-            .networkToNetworkInterconnects()
-            .updateNpbStaticRouteBfdAdministrativeState(
-                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+    public CommonPostActionResponseForStateUpdate
+        updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager.networkToNetworkInterconnects()
+            .updateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
+                networkToNetworkInterconnectName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkToNetworkInterconnects()
-            .updateNpbStaticRouteBfdAdministrativeState(
-                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+    public CommonPostActionResponseForStateUpdate
+        updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body, Context context) {
+        return serviceManager.networkToNetworkInterconnects()
+            .updateNpbStaticRouteBfdAdministrativeState(resourceGroupName, networkFabricName,
+                networkToNetworkInterconnectName, body, context);
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .networkToNetworkInterconnects()
+        return serviceManager.networkToNetworkInterconnects()
             .updateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkToNetworkInterconnects()
-            .updateAdministrativeState(
-                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.networkToNetworkInterconnects()
+            .updateAdministrativeState(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body,
+                context);
     }
 
     public NetworkToNetworkInterconnectImpl withUseOptionB(BooleanEnumProperty useOptionB) {
@@ -269,8 +244,8 @@ public final class NetworkToNetworkInterconnectImpl
         return this;
     }
 
-    public NetworkToNetworkInterconnectImpl withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectImpl
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         if (isInCreateMode()) {
             this.innerModel().withNpbStaticRouteConfiguration(npbStaticRouteConfiguration);
             return this;
@@ -320,8 +295,8 @@ public final class NetworkToNetworkInterconnectImpl
         }
     }
 
-    public NetworkToNetworkInterconnectImpl withOptionBLayer3Configuration(
-        OptionBLayer3Configuration optionBLayer3Configuration) {
+    public NetworkToNetworkInterconnectImpl
+        withOptionBLayer3Configuration(OptionBLayer3Configuration optionBLayer3Configuration) {
         this.updateBody.withOptionBLayer3Configuration(optionBLayer3Configuration);
         return this;
     }

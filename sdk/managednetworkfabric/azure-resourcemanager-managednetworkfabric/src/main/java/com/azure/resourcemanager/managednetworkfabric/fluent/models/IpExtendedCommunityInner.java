@@ -109,8 +109,8 @@ public final class IpExtendedCommunityInner extends Resource {
      * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
      * @return the IpExtendedCommunityInner object itself.
      */
-    public IpExtendedCommunityInner withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityInner
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IpExtendedCommunityProperties();
         }
@@ -148,10 +148,8 @@ public final class IpExtendedCommunityInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IpExtendedCommunityInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model IpExtendedCommunityInner"));
         } else {
             innerProperties().validate();
         }

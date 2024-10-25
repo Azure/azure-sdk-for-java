@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPolicyPlayReadyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPolicyPlayReadyConfiguration model =
-            BinaryData
-                .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"yhz\",\"playReadyCustomAttributes\":\"ss\"}")
-                .toObject(StreamingPolicyPlayReadyConfiguration.class);
+        StreamingPolicyPlayReadyConfiguration model = BinaryData
+            .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"yhz\",\"playReadyCustomAttributes\":\"ss\"}")
+            .toObject(StreamingPolicyPlayReadyConfiguration.class);
         Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals("ss", model.playReadyCustomAttributes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPolicyPlayReadyConfiguration model =
-            new StreamingPolicyPlayReadyConfiguration()
-                .withCustomLicenseAcquisitionUrlTemplate("yhz")
+        StreamingPolicyPlayReadyConfiguration model
+            = new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("yhz")
                 .withPlayReadyCustomAttributes("ss");
         model = BinaryData.fromObject(model).toObject(StreamingPolicyPlayReadyConfiguration.class);
         Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());

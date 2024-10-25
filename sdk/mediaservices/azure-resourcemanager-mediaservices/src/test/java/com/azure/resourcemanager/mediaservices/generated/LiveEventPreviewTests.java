@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventPreviewTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventPreview model =
-            BinaryData
-                .fromString(
-                    "{\"endpoints\":[{\"protocol\":\"gj\",\"url\":\"bldtlww\"},{\"protocol\":\"kdmtncvokotll\",\"url\":\"yhgsy\"},{\"protocol\":\"ogjltdtbnnhad\",\"url\":\"crkvcikhnv\"}],\"accessControl\":{\"ip\":{\"allow\":[]}},\"previewLocator\":\"qqu\",\"streamingPolicyName\":\"ik\",\"alternativeMediaId\":\"ggxkallatmelwuip\"}")
-                .toObject(LiveEventPreview.class);
+        LiveEventPreview model = BinaryData.fromString(
+            "{\"endpoints\":[{\"protocol\":\"gj\",\"url\":\"bldtlww\"},{\"protocol\":\"kdmtncvokotll\",\"url\":\"yhgsy\"},{\"protocol\":\"ogjltdtbnnhad\",\"url\":\"crkvcikhnv\"}],\"accessControl\":{\"ip\":{\"allow\":[]}},\"previewLocator\":\"qqu\",\"streamingPolicyName\":\"ik\",\"alternativeMediaId\":\"ggxkallatmelwuip\"}")
+            .toObject(LiveEventPreview.class);
         Assertions.assertEquals("gj", model.endpoints().get(0).protocol());
         Assertions.assertEquals("bldtlww", model.endpoints().get(0).url());
         Assertions.assertEquals("qqu", model.previewLocator());
@@ -29,19 +27,15 @@ public final class LiveEventPreviewTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventPreview model =
-            new LiveEventPreview()
-                .withEndpoints(
-                    Arrays
-                        .asList(
-                            new LiveEventEndpoint().withProtocol("gj").withUrl("bldtlww"),
-                            new LiveEventEndpoint().withProtocol("kdmtncvokotll").withUrl("yhgsy"),
-                            new LiveEventEndpoint().withProtocol("ogjltdtbnnhad").withUrl("crkvcikhnv")))
-                .withAccessControl(
-                    new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList())))
-                .withPreviewLocator("qqu")
-                .withStreamingPolicyName("ik")
-                .withAlternativeMediaId("ggxkallatmelwuip");
+        LiveEventPreview model = new LiveEventPreview()
+            .withEndpoints(Arrays.asList(new LiveEventEndpoint().withProtocol("gj").withUrl("bldtlww"),
+                new LiveEventEndpoint().withProtocol("kdmtncvokotll").withUrl("yhgsy"),
+                new LiveEventEndpoint().withProtocol("ogjltdtbnnhad").withUrl("crkvcikhnv")))
+            .withAccessControl(
+                new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList())))
+            .withPreviewLocator("qqu")
+            .withStreamingPolicyName("ik")
+            .withAlternativeMediaId("ggxkallatmelwuip");
         model = BinaryData.fromObject(model).toObject(LiveEventPreview.class);
         Assertions.assertEquals("gj", model.endpoints().get(0).protocol());
         Assertions.assertEquals("bldtlww", model.endpoints().get(0).url());

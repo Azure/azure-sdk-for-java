@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 /** The last operation on ComputeInstance. */
 @Fluent
 public final class ComputeInstanceLastOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceLastOperation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceLastOperation.class);
 
     /*
      * Name of the last operation.

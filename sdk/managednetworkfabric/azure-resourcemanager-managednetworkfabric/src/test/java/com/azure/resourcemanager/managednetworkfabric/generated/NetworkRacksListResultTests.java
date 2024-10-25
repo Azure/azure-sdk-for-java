@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRacksListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRacksListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"gapvdgtfpeerscdx\",\"networkDevices\":[\"njrcuf\"],\"provisioningState\":\"Canceled\",\"annotation\":\"cnrgfdtnc\"},\"location\":\"psa\",\"tags\":{\"qiqmlfvhlq\":\"meub\"},\"id\":\"skkqjmxptuei\",\"name\":\"uugkw\",\"type\":\"rq\"}],\"nextLink\":\"pahu\"}")
-                .toObject(NetworkRacksListResult.class);
+        NetworkRacksListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"gapvdgtfpeerscdx\",\"networkDevices\":[\"njrcuf\"],\"provisioningState\":\"Canceled\",\"annotation\":\"cnrgfdtnc\"},\"location\":\"psa\",\"tags\":{\"qiqmlfvhlq\":\"meub\"},\"id\":\"skkqjmxptuei\",\"name\":\"uugkw\",\"type\":\"rq\"}],\"nextLink\":\"pahu\"}")
+            .toObject(NetworkRacksListResult.class);
         Assertions.assertEquals("psa", model.value().get(0).location());
         Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));
         Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
@@ -31,18 +29,12 @@ public final class NetworkRacksListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRacksListResult model =
-            new NetworkRacksListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkRackInner()
-                                .withLocation("psa")
-                                .withTags(mapOf("qiqmlfvhlq", "meub"))
-                                .withNetworkRackType(NetworkRackType.COMBINED)
-                                .withNetworkFabricId("gapvdgtfpeerscdx")
-                                .withAnnotation("cnrgfdtnc")))
-                .withNextLink("pahu");
+        NetworkRacksListResult model
+            = new NetworkRacksListResult().withValue(Arrays.asList(new NetworkRackInner().withLocation("psa")
+                .withTags(mapOf("qiqmlfvhlq", "meub"))
+                .withNetworkRackType(NetworkRackType.COMBINED)
+                .withNetworkFabricId("gapvdgtfpeerscdx")
+                .withAnnotation("cnrgfdtnc"))).withNextLink("pahu");
         model = BinaryData.fromObject(model).toObject(NetworkRacksListResult.class);
         Assertions.assertEquals("psa", model.value().get(0).location());
         Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));

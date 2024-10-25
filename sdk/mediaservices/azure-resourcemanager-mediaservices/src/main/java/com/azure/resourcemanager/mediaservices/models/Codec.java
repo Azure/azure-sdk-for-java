@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Media.Audio", value = Audio.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.Video", value = Video.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.CopyVideo", value = CopyVideo.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.CopyAudio", value = CopyAudio.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.CopyAudio", value = CopyAudio.class) })
 @Fluent
 public class Codec {
     /*

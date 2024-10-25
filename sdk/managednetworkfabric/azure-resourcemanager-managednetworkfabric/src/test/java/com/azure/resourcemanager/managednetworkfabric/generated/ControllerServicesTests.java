@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ControllerServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerServices model =
-            BinaryData
-                .fromString(
-                    "{\"ipv4AddressSpaces\":[\"bhtleberpy\",\"jeknfqnw\",\"j\"],\"ipv6AddressSpaces\":[\"wkdnjrxgkrhwiehy\",\"pnowawonoehrguql\"]}")
-                .toObject(ControllerServices.class);
+        ControllerServices model = BinaryData.fromString(
+            "{\"ipv4AddressSpaces\":[\"bhtleberpy\",\"jeknfqnw\",\"j\"],\"ipv6AddressSpaces\":[\"wkdnjrxgkrhwiehy\",\"pnowawonoehrguql\"]}")
+            .toObject(ControllerServices.class);
         Assertions.assertEquals("bhtleberpy", model.ipv4AddressSpaces().get(0));
         Assertions.assertEquals("wkdnjrxgkrhwiehy", model.ipv6AddressSpaces().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerServices model =
-            new ControllerServices()
-                .withIpv4AddressSpaces(Arrays.asList("bhtleberpy", "jeknfqnw", "j"))
+        ControllerServices model
+            = new ControllerServices().withIpv4AddressSpaces(Arrays.asList("bhtleberpy", "jeknfqnw", "j"))
                 .withIpv6AddressSpaces(Arrays.asList("wkdnjrxgkrhwiehy", "pnowawonoehrguql"));
         model = BinaryData.fromObject(model).toObject(ControllerServices.class);
         Assertions.assertEquals("bhtleberpy", model.ipv4AddressSpaces().get(0));

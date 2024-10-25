@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayRulePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayRulePatch model =
-            BinaryData
-                .fromString("{\"tags\":{\"ly\":\"q\",\"trjbhxykfhyq\":\"hluqwquls\"}}")
+        InternetGatewayRulePatch model
+            = BinaryData.fromString("{\"tags\":{\"ly\":\"q\",\"trjbhxykfhyq\":\"hluqwquls\"}}")
                 .toObject(InternetGatewayRulePatch.class);
         Assertions.assertEquals("q", model.tags().get("ly"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRulePatch model =
-            new InternetGatewayRulePatch().withTags(mapOf("ly", "q", "trjbhxykfhyq", "hluqwquls"));
+        InternetGatewayRulePatch model
+            = new InternetGatewayRulePatch().withTags(mapOf("ly", "q", "trjbhxykfhyq", "hluqwquls"));
         model = BinaryData.fromObject(model).toObject(InternetGatewayRulePatch.class);
         Assertions.assertEquals("q", model.tags().get("ly"));
     }

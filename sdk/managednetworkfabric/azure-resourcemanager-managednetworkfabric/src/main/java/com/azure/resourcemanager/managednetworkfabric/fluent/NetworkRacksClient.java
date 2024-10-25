@@ -30,8 +30,8 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
-        String resourceGroupName, String networkRackName, NetworkRackInner body);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
+        String networkRackName, NetworkRackInner body);
 
     /**
      * Create Network Rack.
@@ -48,8 +48,8 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
-        String resourceGroupName, String networkRackName, NetworkRackInner body, Context context);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
+        String networkRackName, NetworkRackInner body, Context context);
 
     /**
      * Create Network Rack.
@@ -98,8 +98,8 @@ public interface NetworkRacksClient {
      * @return network Rack resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkRackInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkRackName, Context context);
+    Response<NetworkRackInner> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
+        Context context);
 
     /**
      * Gets a Network Rack.
@@ -130,8 +130,8 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, TagsUpdate body);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
+        String networkRackName, TagsUpdate body);
 
     /**
      * Updates a Network Rack.
@@ -148,8 +148,8 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, TagsUpdate body, Context context);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
+        String networkRackName, TagsUpdate body, Context context);
 
     /**
      * Updates a Network Rack.

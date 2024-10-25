@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommonMatchConditionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommonMatchConditions model =
-            BinaryData
-                .fromString(
-                    "{\"protocolTypes\":[\"kvntjlrigjkskyri\"],\"vlanMatchCondition\":{\"vlans\":[\"idsxwaabzmifry\"],\"innerVlans\":[\"mmaxrizkzobgo\",\"xlhslnel\",\"ieixynllxe\"],\"vlanGroupNames\":[\"rojphslhcawjutif\",\"wfmvigorqjbt\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"afhonqj\",\"jeick\"],\"ipGroupNames\":[\"cpopmxel\",\"wcltyjede\"]}}")
-                .toObject(CommonMatchConditions.class);
+        CommonMatchConditions model = BinaryData.fromString(
+            "{\"protocolTypes\":[\"kvntjlrigjkskyri\"],\"vlanMatchCondition\":{\"vlans\":[\"idsxwaabzmifry\"],\"innerVlans\":[\"mmaxrizkzobgo\",\"xlhslnel\",\"ieixynllxe\"],\"vlanGroupNames\":[\"rojphslhcawjutif\",\"wfmvigorqjbt\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"afhonqj\",\"jeick\"],\"ipGroupNames\":[\"cpopmxel\",\"wcltyjede\"]}}")
+            .toObject(CommonMatchConditions.class);
         Assertions.assertEquals("kvntjlrigjkskyri", model.protocolTypes().get(0));
         Assertions.assertEquals("idsxwaabzmifry", model.vlanMatchCondition().vlans().get(0));
         Assertions.assertEquals("mmaxrizkzobgo", model.vlanMatchCondition().innerVlans().get(0));
@@ -33,20 +31,14 @@ public final class CommonMatchConditionsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonMatchConditions model =
-            new CommonMatchConditions()
-                .withProtocolTypes(Arrays.asList("kvntjlrigjkskyri"))
-                .withVlanMatchCondition(
-                    new VlanMatchCondition()
-                        .withVlans(Arrays.asList("idsxwaabzmifry"))
-                        .withInnerVlans(Arrays.asList("mmaxrizkzobgo", "xlhslnel", "ieixynllxe"))
-                        .withVlanGroupNames(Arrays.asList("rojphslhcawjutif", "wfmvigorqjbt")))
-                .withIpCondition(
-                    new IpMatchCondition()
-                        .withType(SourceDestinationType.SOURCE_IP)
-                        .withPrefixType(PrefixType.PREFIX)
-                        .withIpPrefixValues(Arrays.asList("afhonqj", "jeick"))
-                        .withIpGroupNames(Arrays.asList("cpopmxel", "wcltyjede")));
+        CommonMatchConditions model = new CommonMatchConditions().withProtocolTypes(Arrays.asList("kvntjlrigjkskyri"))
+            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("idsxwaabzmifry"))
+                .withInnerVlans(Arrays.asList("mmaxrizkzobgo", "xlhslnel", "ieixynllxe"))
+                .withVlanGroupNames(Arrays.asList("rojphslhcawjutif", "wfmvigorqjbt")))
+            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+                .withPrefixType(PrefixType.PREFIX)
+                .withIpPrefixValues(Arrays.asList("afhonqj", "jeick"))
+                .withIpGroupNames(Arrays.asList("cpopmxel", "wcltyjede")));
         model = BinaryData.fromObject(model).toObject(CommonMatchConditions.class);
         Assertions.assertEquals("kvntjlrigjkskyri", model.protocolTypes().get(0));
         Assertions.assertEquals("idsxwaabzmifry", model.vlanMatchCondition().vlans().get(0));

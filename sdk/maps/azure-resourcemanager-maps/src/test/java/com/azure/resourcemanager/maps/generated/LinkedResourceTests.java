@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedResource model =
-            BinaryData.fromString("{\"uniqueName\":\"dumjgrtfwvuk\",\"id\":\"gaudcc\"}").toObject(LinkedResource.class);
+        LinkedResource model = BinaryData.fromString("{\"uniqueName\":\"dumjgrtfwvuk\",\"id\":\"gaudcc\"}")
+            .toObject(LinkedResource.class);
         Assertions.assertEquals("dumjgrtfwvuk", model.uniqueName());
         Assertions.assertEquals("gaudcc", model.id());
     }

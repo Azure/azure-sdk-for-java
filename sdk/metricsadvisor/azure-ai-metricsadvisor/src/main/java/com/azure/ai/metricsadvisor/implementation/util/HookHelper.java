@@ -16,15 +16,19 @@ import java.util.List;
 public final class HookHelper {
     private static HookAccessor accessor;
 
-    private HookHelper() { }
+    private HookHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link NotificationHook} instance.
      */
     public interface HookAccessor {
         void setId(NotificationHook hook, String id);
+
         List<String> getAdminsRaw(NotificationHook hook);
+
         List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook);
+
         HttpHeaders getHttpHeadersRaw(WebNotificationHook webHook);
     }
 

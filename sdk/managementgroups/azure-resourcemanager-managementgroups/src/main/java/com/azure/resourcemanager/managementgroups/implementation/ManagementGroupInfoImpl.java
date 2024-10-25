@@ -12,8 +12,7 @@ public final class ManagementGroupInfoImpl implements ManagementGroupInfo {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    ManagementGroupInfoImpl(
-        ManagementGroupInfoInner innerObject,
+    ManagementGroupInfoImpl(ManagementGroupInfoInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

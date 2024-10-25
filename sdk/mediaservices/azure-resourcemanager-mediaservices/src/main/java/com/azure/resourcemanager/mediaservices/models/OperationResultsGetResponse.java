@@ -20,12 +20,8 @@ public final class OperationResultsGetResponse extends ResponseBase<OperationRes
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public OperationResultsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AssetTrackInner value,
-        OperationResultsGetHeaders headers) {
+    public OperationResultsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        AssetTrackInner value, OperationResultsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

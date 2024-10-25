@@ -33,34 +33,24 @@ public final class NetworkDeviceSkusListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"model\":\"xb\",\"manufacturer\":\"beyqohvi\",\"supportedVersions\":[{\"version\":\"fkrarer\",\"vendorOsVersion\":\"gbvtpxo\",\"vendorFirmwareVersion\":\"o\",\"isDefault\":\"False\"},{\"version\":\"cjasua\",\"vendorOsVersion\":\"gjkfiszhexumfavw\",\"vendorFirmwareVersion\":\"loblitxrrsjsc\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"ToR\"],\"interfaces\":[{\"identifier\":\"rztog\",\"interfaceType\":\"gbncl\",\"supportedConnectorTypes\":[{},{},{}]},{\"identifier\":\"zfggsuzkvdantpz\",\"interfaceType\":\"wazoabthutctc\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"abzfihsz\",\"name\":\"kpoidfzwegvu\",\"type\":\"juwgw\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"model\":\"xb\",\"manufacturer\":\"beyqohvi\",\"supportedVersions\":[{\"version\":\"fkrarer\",\"vendorOsVersion\":\"gbvtpxo\",\"vendorFirmwareVersion\":\"o\",\"isDefault\":\"False\"},{\"version\":\"cjasua\",\"vendorOsVersion\":\"gjkfiszhexumfavw\",\"vendorFirmwareVersion\":\"loblitxrrsjsc\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"ToR\"],\"interfaces\":[{\"identifier\":\"rztog\",\"interfaceType\":\"gbncl\",\"supportedConnectorTypes\":[{},{},{}]},{\"identifier\":\"zfggsuzkvdantpz\",\"interfaceType\":\"wazoabthutctc\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"abzfihsz\",\"name\":\"kpoidfzwegvu\",\"type\":\"juwgw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkDeviceSku> response = manager.networkDeviceSkus().list(com.azure.core.util.Context.NONE);
 
@@ -69,8 +59,8 @@ public final class NetworkDeviceSkusListMockTests {
         Assertions.assertEquals("fkrarer", response.iterator().next().supportedVersions().get(0).version());
         Assertions.assertEquals("gbvtpxo", response.iterator().next().supportedVersions().get(0).vendorOsVersion());
         Assertions.assertEquals("o", response.iterator().next().supportedVersions().get(0).vendorFirmwareVersion());
-        Assertions
-            .assertEquals(BooleanEnumProperty.FALSE, response.iterator().next().supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE,
+            response.iterator().next().supportedVersions().get(0).isDefault());
         Assertions.assertEquals(NetworkDeviceRoleName.TOR, response.iterator().next().supportedRoleTypes().get(0));
         Assertions.assertEquals("rztog", response.iterator().next().interfaces().get(0).identifier());
         Assertions.assertEquals("gbncl", response.iterator().next().interfaces().get(0).interfaceType());

@@ -22,7 +22,7 @@ import java.util.Map;
     property = "@odata.type",
     defaultImpl = AudioAnalyzerPreset.class)
 @JsonTypeName("#Microsoft.Media.AudioAnalyzerPreset")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.VideoAnalyzerPreset", value = VideoAnalyzerPreset.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "#Microsoft.Media.VideoAnalyzerPreset", value = VideoAnalyzerPreset.class) })
 @Fluent
 public class AudioAnalyzerPreset extends Preset {
     /*

@@ -220,8 +220,8 @@ public final class NetworkToNetworkInterconnectProperties {
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectProperties
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         this.npbStaticRouteConfiguration = npbStaticRouteConfiguration;
         return this;
     }
@@ -241,8 +241,8 @@ public final class NetworkToNetworkInterconnectProperties {
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withImportRoutePolicy(
-        ImportRoutePolicyInformation importRoutePolicy) {
+    public NetworkToNetworkInterconnectProperties
+        withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy) {
         this.importRoutePolicy = importRoutePolicy;
         return this;
     }
@@ -262,8 +262,8 @@ public final class NetworkToNetworkInterconnectProperties {
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withExportRoutePolicy(
-        ExportRoutePolicyInformation exportRoutePolicy) {
+    public NetworkToNetworkInterconnectProperties
+        withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy) {
         this.exportRoutePolicy = exportRoutePolicy;
         return this;
     }
@@ -342,10 +342,8 @@ public final class NetworkToNetworkInterconnectProperties {
      */
     public void validate() {
         if (useOptionB() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property useOptionB in model NetworkToNetworkInterconnectProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property useOptionB in model NetworkToNetworkInterconnectProperties"));
         }
         if (layer2Configuration() != null) {
             layer2Configuration().validate();

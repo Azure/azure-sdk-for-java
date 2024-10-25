@@ -27,8 +27,8 @@ public interface ManagementGroupSubscriptionsClient {
      * @return the details of subscription under management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionUnderManagementGroupInner> createWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroupInner> createWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Associates existing subscription with the management group.
@@ -85,8 +85,8 @@ public interface ManagementGroupSubscriptionsClient {
      * @return the details of subscription under management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionUnderManagementGroupInner> getSubscriptionWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroupInner> getSubscriptionWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
@@ -127,6 +127,6 @@ public interface ManagementGroupSubscriptionsClient {
      * @return the details of all subscriptions under management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroup(
-        String groupId, String skiptoken, Context context);
+    PagedIterable<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroup(String groupId,
+        String skiptoken, Context context);
 }

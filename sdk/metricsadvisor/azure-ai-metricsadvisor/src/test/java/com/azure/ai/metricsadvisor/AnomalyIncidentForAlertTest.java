@@ -25,11 +25,8 @@ public class AnomalyIncidentForAlertTest extends IncidentForAlertTestBase {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = client.listIncidentsForAlert(
-            ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
-            ListIncidentsForAlertInput.INSTANCE.alertId,
-            ListIncidentsForAlertInput.INSTANCE.options,
-            Context.NONE);
+            = client.listIncidentsForAlert(ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
+                ListIncidentsForAlertInput.INSTANCE.alertId, ListIncidentsForAlertInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         for (AnomalyIncident anomalyIncident : incidentsIterable) {

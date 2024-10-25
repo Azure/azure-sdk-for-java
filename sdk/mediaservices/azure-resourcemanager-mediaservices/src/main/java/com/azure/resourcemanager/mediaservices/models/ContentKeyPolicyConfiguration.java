@@ -31,8 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = ContentKeyPolicyPlayReadyConfiguration.class),
     @JsonSubTypes.Type(
         name = "#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration",
-        value = ContentKeyPolicyFairPlayConfiguration.class)
-})
+        value = ContentKeyPolicyFairPlayConfiguration.class) })
 @Immutable
 public class ContentKeyPolicyConfiguration {
     /** Creates an instance of ContentKeyPolicyConfiguration class. */

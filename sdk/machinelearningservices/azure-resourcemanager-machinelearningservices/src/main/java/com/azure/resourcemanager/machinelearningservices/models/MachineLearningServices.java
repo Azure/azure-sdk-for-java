@@ -44,19 +44,9 @@ public interface MachineLearningServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return services in specified workspace.
      */
-    PagedIterable<ServiceResource> listByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context);
+    PagedIterable<ServiceResource> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        String modelId, String modelName, String tag, String tags, String properties, String runId, Boolean expand,
+        OrderString orderby, Context context);
 
     /**
      * Get a Service by name.
@@ -84,8 +74,8 @@ public interface MachineLearningServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service by name.
      */
-    Response<ServiceResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand, Context context);
+    Response<ServiceResource> getWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Boolean expand, Context context);
 
     /**
      * Delete a specific Service..
@@ -111,8 +101,8 @@ public interface MachineLearningServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Context context);
 
     /**
      * Get a Service by name.

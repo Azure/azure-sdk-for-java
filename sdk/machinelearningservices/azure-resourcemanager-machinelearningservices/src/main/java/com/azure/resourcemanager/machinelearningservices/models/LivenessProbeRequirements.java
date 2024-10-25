@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The liveness probe requirements. */
 @Fluent
 public class LivenessProbeRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LivenessProbeRequirements.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LivenessProbeRequirements.class);
 
     /*
      * The number of failures to allow before returning an unhealthy status.

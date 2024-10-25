@@ -48,8 +48,8 @@ public interface StreamingLocatorsClient {
      * @return a collection of StreamingLocator items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StreamingLocatorInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<StreamingLocatorInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get a Streaming Locator
@@ -66,8 +66,8 @@ public interface StreamingLocatorsClient {
      * @return the details of a Streaming Locator in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingLocatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<StreamingLocatorInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * Get a Streaming Locator
@@ -101,12 +101,8 @@ public interface StreamingLocatorsClient {
      * @return a Streaming Locator resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingLocatorInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingLocatorName,
-        StreamingLocatorInner parameters,
-        Context context);
+    Response<StreamingLocatorInner> createWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, StreamingLocatorInner parameters, Context context);
 
     /**
      * Create a Streaming Locator
@@ -123,8 +119,8 @@ public interface StreamingLocatorsClient {
      * @return a Streaming Locator resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingLocatorInner create(
-        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters);
+    StreamingLocatorInner create(String resourceGroupName, String accountName, String streamingLocatorName,
+        StreamingLocatorInner parameters);
 
     /**
      * Delete a Streaming Locator
@@ -141,8 +137,8 @@ public interface StreamingLocatorsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingLocatorName,
+        Context context);
 
     /**
      * Delete a Streaming Locator
@@ -174,8 +170,8 @@ public interface StreamingLocatorsClient {
      * @return class of response for listContentKeys action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListContentKeysResponseInner> listContentKeysWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<ListContentKeysResponseInner> listContentKeysWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * List Content Keys
@@ -191,8 +187,8 @@ public interface StreamingLocatorsClient {
      * @return class of response for listContentKeys action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListContentKeysResponseInner listContentKeys(
-        String resourceGroupName, String accountName, String streamingLocatorName);
+    ListContentKeysResponseInner listContentKeys(String resourceGroupName, String accountName,
+        String streamingLocatorName);
 
     /**
      * List Paths
@@ -209,8 +205,8 @@ public interface StreamingLocatorsClient {
      * @return class of response for listPaths action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListPathsResponseInner> listPathsWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+    Response<ListPathsResponseInner> listPathsWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context);
 
     /**
      * List Paths

@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ListWorkspaceKeysResult model. */
 @Immutable
 public final class ListWorkspaceKeysResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListWorkspaceKeysResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListWorkspaceKeysResultInner.class);
 
     /*
      * The userStorageKey property.

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L2IsolationDomainInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2IsolationDomainInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkFabricId\":\"h\",\"vlanId\":1761587011,\"mtu\":765927655,\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"RMA\",\"annotation\":\"exlfciatxtjrrl\"},\"location\":\"dskjhhxdlaj\",\"tags\":{\"a\":\"cxscvslxlh\",\"slojfkqidnqt\":\"krmukmyjmkxett\",\"rngl\":\"qxjhqxcsqhtkbtnq\"},\"id\":\"mbiipsnawwlqk\",\"name\":\"nxhhl\",\"type\":\"xricctkwmuqq\"}")
-                .toObject(L2IsolationDomainInner.class);
+        L2IsolationDomainInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkFabricId\":\"h\",\"vlanId\":1761587011,\"mtu\":765927655,\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"RMA\",\"annotation\":\"exlfciatxtjrrl\"},\"location\":\"dskjhhxdlaj\",\"tags\":{\"a\":\"cxscvslxlh\",\"slojfkqidnqt\":\"krmukmyjmkxett\",\"rngl\":\"qxjhqxcsqhtkbtnq\"},\"id\":\"mbiipsnawwlqk\",\"name\":\"nxhhl\",\"type\":\"xricctkwmuqq\"}")
+            .toObject(L2IsolationDomainInner.class);
         Assertions.assertEquals("dskjhhxdlaj", model.location());
         Assertions.assertEquals("cxscvslxlh", model.tags().get("a"));
         Assertions.assertEquals("h", model.networkFabricId());
@@ -28,14 +26,12 @@ public final class L2IsolationDomainInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainInner model =
-            new L2IsolationDomainInner()
-                .withLocation("dskjhhxdlaj")
-                .withTags(mapOf("a", "cxscvslxlh", "slojfkqidnqt", "krmukmyjmkxett", "rngl", "qxjhqxcsqhtkbtnq"))
-                .withNetworkFabricId("h")
-                .withVlanId(1761587011)
-                .withMtu(765927655)
-                .withAnnotation("exlfciatxtjrrl");
+        L2IsolationDomainInner model = new L2IsolationDomainInner().withLocation("dskjhhxdlaj")
+            .withTags(mapOf("a", "cxscvslxlh", "slojfkqidnqt", "krmukmyjmkxett", "rngl", "qxjhqxcsqhtkbtnq"))
+            .withNetworkFabricId("h")
+            .withVlanId(1761587011)
+            .withMtu(765927655)
+            .withAnnotation("exlfciatxtjrrl");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainInner.class);
         Assertions.assertEquals("dskjhhxdlaj", model.location());
         Assertions.assertEquals("cxscvslxlh", model.tags().get("a"));

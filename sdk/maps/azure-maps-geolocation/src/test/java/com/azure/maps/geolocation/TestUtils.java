@@ -29,8 +29,8 @@ public class TestUtils {
     }
 
     static IpAddressToLocationResult getExpectedLocation() {
-        try (JsonReader jsonReader = JsonProviders.createReader(
-            ClassLoader.getSystemResourceAsStream("getlocation.json"))) {
+        try (JsonReader jsonReader
+            = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream("getlocation.json"))) {
             return IpAddressToLocationResult.fromJson(jsonReader);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

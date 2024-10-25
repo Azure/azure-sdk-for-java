@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AnnotationResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AnnotationResource model =
-            BinaryData.fromString("{\"annotation\":\"heyd\"}").toObject(AnnotationResource.class);
+        AnnotationResource model
+            = BinaryData.fromString("{\"annotation\":\"heyd\"}").toObject(AnnotationResource.class);
         Assertions.assertEquals("heyd", model.annotation());
     }
 

@@ -6645,7 +6645,7 @@ public final class RoutesImpl {
             auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter, accelerationEfficiency,
             decelerationEfficiency, uphillEfficiency, downhillEfficiency, constantSpeedConsumptionInKwHPerHundredKm,
             currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -10036,7 +10036,7 @@ public final class RoutesImpl {
             currentFuelInLiters, auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter,
             accelerationEfficiency, decelerationEfficiency, uphillEfficiency, downhillEfficiency,
             constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -10288,7 +10288,7 @@ public final class RoutesImpl {
             currentFuelInLiters, auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter,
             accelerationEfficiency, decelerationEfficiency, uphillEfficiency, downhillEfficiency,
             constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -10539,7 +10539,7 @@ public final class RoutesImpl {
             currentFuelInLiters, auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter,
             accelerationEfficiency, decelerationEfficiency, uphillEfficiency, downhillEfficiency,
             constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, context)
-            .block();
+                .block();
     }
 
     /**

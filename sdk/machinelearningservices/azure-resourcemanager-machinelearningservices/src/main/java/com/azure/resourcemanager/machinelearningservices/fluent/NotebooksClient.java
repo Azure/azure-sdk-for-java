@@ -24,8 +24,8 @@ public interface NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(
-        String resourceGroupName, String workspaceName);
+    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(String resourceGroupName,
+        String workspaceName);
 
     /**
      * @param resourceGroupName Name of the resource group in which workspace is located.
@@ -37,8 +37,8 @@ public interface NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(
-        String resourceGroupName, String workspaceName, Context context);
+    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepare(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * @param resourceGroupName Name of the resource group in which workspace is located.
@@ -84,6 +84,6 @@ public interface NotebooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListNotebookKeysResultInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListNotebookKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

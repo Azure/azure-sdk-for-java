@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VirtualMachine")
 @Fluent
 public final class VirtualMachineSecrets extends ComputeSecretsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSecrets.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineSecrets.class);
 
     /*
      * Admin credentials for virtual machine.

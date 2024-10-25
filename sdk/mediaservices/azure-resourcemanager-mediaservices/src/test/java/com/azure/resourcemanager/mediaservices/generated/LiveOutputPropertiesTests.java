@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveOutputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveOutputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"wygzlvdnkfxusem\",\"assetName\":\"wzrmuh\",\"archiveWindowLength\":\"PT117H40M54S\",\"rewindWindowLength\":\"PT222H26M1S\",\"manifestName\":\"dpsqx\",\"hls\":{\"fragmentsPerTsSegment\":902301118},\"outputSnapTime\":6741848328412634292,\"created\":\"2021-06-04T12:32:06Z\",\"lastModified\":\"2021-06-18T08:14:24Z\",\"provisioningState\":\"elvezrypq\",\"resourceState\":\"Running\"}")
-                .toObject(LiveOutputProperties.class);
+        LiveOutputProperties model = BinaryData.fromString(
+            "{\"description\":\"wygzlvdnkfxusem\",\"assetName\":\"wzrmuh\",\"archiveWindowLength\":\"PT117H40M54S\",\"rewindWindowLength\":\"PT222H26M1S\",\"manifestName\":\"dpsqx\",\"hls\":{\"fragmentsPerTsSegment\":902301118},\"outputSnapTime\":6741848328412634292,\"created\":\"2021-06-04T12:32:06Z\",\"lastModified\":\"2021-06-18T08:14:24Z\",\"provisioningState\":\"elvezrypq\",\"resourceState\":\"Running\"}")
+            .toObject(LiveOutputProperties.class);
         Assertions.assertEquals("wygzlvdnkfxusem", model.description());
         Assertions.assertEquals("wzrmuh", model.assetName());
         Assertions.assertEquals(Duration.parse("PT117H40M54S"), model.archiveWindowLength());
@@ -29,15 +27,13 @@ public final class LiveOutputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveOutputProperties model =
-            new LiveOutputProperties()
-                .withDescription("wygzlvdnkfxusem")
-                .withAssetName("wzrmuh")
-                .withArchiveWindowLength(Duration.parse("PT117H40M54S"))
-                .withRewindWindowLength(Duration.parse("PT222H26M1S"))
-                .withManifestName("dpsqx")
-                .withHls(new Hls().withFragmentsPerTsSegment(902301118))
-                .withOutputSnapTime(6741848328412634292L);
+        LiveOutputProperties model = new LiveOutputProperties().withDescription("wygzlvdnkfxusem")
+            .withAssetName("wzrmuh")
+            .withArchiveWindowLength(Duration.parse("PT117H40M54S"))
+            .withRewindWindowLength(Duration.parse("PT222H26M1S"))
+            .withManifestName("dpsqx")
+            .withHls(new Hls().withFragmentsPerTsSegment(902301118))
+            .withOutputSnapTime(6741848328412634292L);
         model = BinaryData.fromObject(model).toObject(LiveOutputProperties.class);
         Assertions.assertEquals("wygzlvdnkfxusem", model.description());
         Assertions.assertEquals("wzrmuh", model.assetName());

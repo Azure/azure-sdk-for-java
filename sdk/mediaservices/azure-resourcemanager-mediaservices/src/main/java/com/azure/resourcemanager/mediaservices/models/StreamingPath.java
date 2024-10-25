@@ -101,14 +101,12 @@ public final class StreamingPath {
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streamingProtocol in model StreamingPath"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property streamingProtocol in model StreamingPath"));
         }
         if (encryptionScheme() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property encryptionScheme in model StreamingPath"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property encryptionScheme in model StreamingPath"));
         }
     }
 

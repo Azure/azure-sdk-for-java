@@ -23,8 +23,8 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
-    Response<L2IsolationDomain> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    Response<L2IsolationDomain> getByResourceGroupWithResponse(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
@@ -80,8 +80,8 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -97,8 +97,8 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -123,8 +123,8 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -153,8 +153,8 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * List L2IsolationDomains by resource group.

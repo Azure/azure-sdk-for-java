@@ -13,7 +13,8 @@ import java.util.List;
 /** The ResourceSkuLocationInfo model. */
 @Immutable
 public final class ResourceSkuLocationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
 
     /*
      * Location of the SKU

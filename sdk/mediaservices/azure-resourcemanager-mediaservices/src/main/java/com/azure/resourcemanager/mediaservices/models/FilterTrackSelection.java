@@ -52,10 +52,8 @@ public final class FilterTrackSelection {
      */
     public void validate() {
         if (trackSelections() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trackSelections in model FilterTrackSelection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property trackSelections in model FilterTrackSelection"));
         } else {
             trackSelections().forEach(e -> e.validate());
         }

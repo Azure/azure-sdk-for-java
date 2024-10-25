@@ -12,13 +12,15 @@ import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 public final class MetricSeriesDefinitionHelper {
     private static MetricSeriesDefinitionAccessor accessor;
 
-    private MetricSeriesDefinitionHelper() { }
+    private MetricSeriesDefinitionHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricSeriesDefinition} instance.
      */
     public interface MetricSeriesDefinitionAccessor {
         void setMetricId(MetricSeriesDefinition seriesDefinition, String metricId);
+
         void setSeriesKey(MetricSeriesDefinition seriesDefinition, DimensionKey seriesKey);
     }
 

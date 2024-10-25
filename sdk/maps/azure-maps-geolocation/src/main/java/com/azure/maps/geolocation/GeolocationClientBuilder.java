@@ -58,10 +58,9 @@ import java.util.Objects;
  * <!-- end com.azure.maps.geolocation.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { GeolocationClient.class, GeolocationAsyncClient.class })
-public final class GeolocationClientBuilder
-    implements AzureKeyCredentialTrait<GeolocationClientBuilder>, TokenCredentialTrait<GeolocationClientBuilder>,
-    HttpTrait<GeolocationClientBuilder>, ConfigurationTrait<GeolocationClientBuilder>,
-    EndpointTrait<GeolocationClientBuilder> {
+public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<GeolocationClientBuilder>,
+    TokenCredentialTrait<GeolocationClientBuilder>, HttpTrait<GeolocationClientBuilder>,
+    ConfigurationTrait<GeolocationClientBuilder>, EndpointTrait<GeolocationClientBuilder> {
 
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
@@ -303,9 +302,8 @@ public final class GeolocationClientBuilder
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }

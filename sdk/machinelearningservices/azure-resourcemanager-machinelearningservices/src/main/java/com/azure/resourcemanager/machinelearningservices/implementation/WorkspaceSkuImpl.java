@@ -17,8 +17,7 @@ public final class WorkspaceSkuImpl implements WorkspaceSku {
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    WorkspaceSkuImpl(
-        WorkspaceSkuInner innerObject,
+    WorkspaceSkuImpl(WorkspaceSkuInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

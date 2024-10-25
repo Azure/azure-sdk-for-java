@@ -23,8 +23,8 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Tap Rule resource details along with {@link Response}.
      */
-    Response<NetworkTapRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    Response<NetworkTapRule> getByResourceGroupWithResponse(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.
@@ -131,8 +131,8 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap Rules.
@@ -148,8 +148,8 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync the Network Tap Rule.
@@ -207,8 +207,8 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.

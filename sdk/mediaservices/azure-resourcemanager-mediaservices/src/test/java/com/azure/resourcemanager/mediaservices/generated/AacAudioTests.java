@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AacAudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AacAudio model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AacAudio\",\"profile\":\"HeAacV2\",\"channels\":1448184483,\"samplingRate\":1746749164,\"bitrate\":1933702310,\"label\":\"bbdaxco\"}")
-                .toObject(AacAudio.class);
+        AacAudio model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.AacAudio\",\"profile\":\"HeAacV2\",\"channels\":1448184483,\"samplingRate\":1746749164,\"bitrate\":1933702310,\"label\":\"bbdaxco\"}")
+            .toObject(AacAudio.class);
         Assertions.assertEquals("bbdaxco", model.label());
         Assertions.assertEquals(1448184483, model.channels());
         Assertions.assertEquals(1746749164, model.samplingRate());
@@ -26,13 +24,11 @@ public final class AacAudioTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AacAudio model =
-            new AacAudio()
-                .withLabel("bbdaxco")
-                .withChannels(1448184483)
-                .withSamplingRate(1746749164)
-                .withBitrate(1933702310)
-                .withProfile(AacAudioProfile.HE_AAC_V2);
+        AacAudio model = new AacAudio().withLabel("bbdaxco")
+            .withChannels(1448184483)
+            .withSamplingRate(1746749164)
+            .withBitrate(1933702310)
+            .withProfile(AacAudioProfile.HE_AAC_V2);
         model = BinaryData.fromObject(model).toObject(AacAudio.class);
         Assertions.assertEquals("bbdaxco", model.label());
         Assertions.assertEquals(1448184483, model.channels());

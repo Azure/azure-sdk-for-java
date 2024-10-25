@@ -13,7 +13,8 @@ import java.util.List;
 /** Describes The zonal capabilities of a SKU. */
 @Immutable
 public final class ResourceSkuZoneDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuZoneDetails.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceSkuZoneDetails.class);
 
     /*
      * The set of zones that the SKU is available in with the specified

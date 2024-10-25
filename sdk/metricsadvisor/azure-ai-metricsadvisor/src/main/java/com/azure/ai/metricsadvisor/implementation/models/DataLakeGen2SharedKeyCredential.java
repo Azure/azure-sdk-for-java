@@ -69,7 +69,8 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dataSourceCredentialType",
-            DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY == null ? null
+            DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY == null
+                ? null
                 : DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());

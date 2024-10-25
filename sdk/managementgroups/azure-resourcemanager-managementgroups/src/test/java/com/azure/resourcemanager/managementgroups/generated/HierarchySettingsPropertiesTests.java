@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HierarchySettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HierarchySettingsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"aos\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"sonpclhocohs\"}")
-                .toObject(HierarchySettingsProperties.class);
+        HierarchySettingsProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"aos\",\"requireAuthorizationForGroupCreation\":false,\"defaultManagementGroup\":\"sonpclhocohs\"}")
+            .toObject(HierarchySettingsProperties.class);
         Assertions.assertEquals("aos", model.tenantId());
         Assertions.assertEquals(false, model.requireAuthorizationForGroupCreation());
         Assertions.assertEquals("sonpclhocohs", model.defaultManagementGroup());
@@ -23,11 +21,9 @@ public final class HierarchySettingsPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HierarchySettingsProperties model =
-            new HierarchySettingsProperties()
-                .withTenantId("aos")
-                .withRequireAuthorizationForGroupCreation(false)
-                .withDefaultManagementGroup("sonpclhocohs");
+        HierarchySettingsProperties model = new HierarchySettingsProperties().withTenantId("aos")
+            .withRequireAuthorizationForGroupCreation(false)
+            .withDefaultManagementGroup("sonpclhocohs");
         model = BinaryData.fromObject(model).toObject(HierarchySettingsProperties.class);
         Assertions.assertEquals("aos", model.tenantId());
         Assertions.assertEquals(false, model.requireAuthorizationForGroupCreation());

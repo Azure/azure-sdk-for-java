@@ -53,8 +53,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a live event along with {@link Response}.
      */
-    Response<LiveEvent> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    Response<LiveEvent> getWithResponse(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Get Live Event
@@ -187,11 +187,7 @@ public interface LiveEvents {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventActionInput parameters,
+    void stop(String resourceGroupName, String accountName, String liveEventName, LiveEventActionInput parameters,
         Context context);
 
     /**
@@ -256,8 +252,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LiveEventStatus> listGetStatus(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventStatus> listGetStatus(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Get stream events of one live event
@@ -272,8 +268,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(
-        String resourceGroupName, String accountName, String liveEventName);
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Get stream events of one live event
@@ -289,8 +285,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(String resourceGroupName, String accountName,
+        String liveEventName, Context context);
 
     /**
      * Get track events of one live event
@@ -305,8 +301,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(
-        String resourceGroupName, String accountName, String liveEventName);
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(String resourceGroupName, String accountName,
+        String liveEventName);
 
     /**
      * Get track events of one live event
@@ -322,8 +318,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(String resourceGroupName, String accountName,
+        String liveEventName, Context context);
 
     /**
      * Get operation status.
@@ -339,8 +335,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a live event operation status along with {@link Response}.
      */
-    Response<AsyncOperationResult> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResult> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -372,8 +368,8 @@ public interface LiveEvents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a live event operation status along with {@link Response}.
      */
-    Response<LiveEvent> operationLocationWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context);
+    Response<LiveEvent> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String liveEventName, String operationId, Context context);
 
     /**
      * Get operation status.

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpCommunityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpCommunityRule model =
-            BinaryData
-                .fromString(
-                    "{\"action\":\"Permit\",\"sequenceNumber\":931334095588425258,\"wellKnownCommunities\":[\"GShut\",\"NoExport\"],\"communityMembers\":[\"xigpxvkqmaupxvpi\",\"dfaifyzyzeyuube\"]}")
-                .toObject(IpCommunityRule.class);
+        IpCommunityRule model = BinaryData.fromString(
+            "{\"action\":\"Permit\",\"sequenceNumber\":931334095588425258,\"wellKnownCommunities\":[\"GShut\",\"NoExport\"],\"communityMembers\":[\"xigpxvkqmaupxvpi\",\"dfaifyzyzeyuube\"]}")
+            .toObject(IpCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
         Assertions.assertEquals(931334095588425258L, model.sequenceNumber());
         Assertions.assertEquals(WellKnownCommunities.GSHUT, model.wellKnownCommunities().get(0));
@@ -27,12 +25,10 @@ public final class IpCommunityRuleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityRule model =
-            new IpCommunityRule()
-                .withAction(CommunityActionTypes.PERMIT)
-                .withSequenceNumber(931334095588425258L)
-                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.NO_EXPORT))
-                .withCommunityMembers(Arrays.asList("xigpxvkqmaupxvpi", "dfaifyzyzeyuube"));
+        IpCommunityRule model = new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+            .withSequenceNumber(931334095588425258L)
+            .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.NO_EXPORT))
+            .withCommunityMembers(Arrays.asList("xigpxvkqmaupxvpi", "dfaifyzyzeyuube"));
         model = BinaryData.fromObject(model).toObject(IpCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
         Assertions.assertEquals(931334095588425258L, model.sequenceNumber());

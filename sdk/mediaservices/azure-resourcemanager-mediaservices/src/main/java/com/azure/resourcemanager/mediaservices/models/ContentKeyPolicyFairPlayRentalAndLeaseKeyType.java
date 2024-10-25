@@ -21,12 +21,12 @@ public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
     public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType DUAL_EXPIRY = fromString("DualExpiry");
 
     /** Static value PersistentUnlimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
-    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_UNLIMITED =
-        fromString("PersistentUnlimited");
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_UNLIMITED
+        = fromString("PersistentUnlimited");
 
     /** Static value PersistentLimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
-    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_LIMITED =
-        fromString("PersistentLimited");
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_LIMITED
+        = fromString("PersistentLimited");
 
     /**
      * Creates a new instance of ContentKeyPolicyFairPlayRentalAndLeaseKeyType value.

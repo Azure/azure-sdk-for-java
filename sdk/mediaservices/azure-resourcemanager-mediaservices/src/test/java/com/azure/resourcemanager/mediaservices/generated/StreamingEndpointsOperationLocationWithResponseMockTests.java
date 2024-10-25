@@ -30,41 +30,28 @@ public final class StreamingEndpointsOperationLocationWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"agnepzwaklsb\",\"scaleUnits\":716318057,\"availabilitySetName\":\"qqagwwr\",\"accessControl\":{},\"maxCacheAge\":6946414066223431148,\"customHostNames\":[\"rrczezkhhltnj\",\"dhqoawj\"],\"hostName\":\"yueayfbpcmsp\",\"cdnEnabled\":false,\"cdnProvider\":\"rueqthwm\",\"cdnProfile\":\"mbscbbx\",\"provisioningState\":\"dhxiidlopedbwd\",\"resourceState\":\"Stopped\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bxubmdna\",\"crossDomainPolicy\":\"bqwremjela\"},\"freeTrialEndTime\":\"2021-08-31T06:52:26Z\",\"created\":\"2021-03-24T08:52Z\",\"lastModified\":\"2021-06-02T17:16:27Z\"},\"sku\":{\"name\":\"bvqvwzkjopwbeo\",\"capacity\":2010643139},\"location\":\"kwzdqybxcea\",\"tags\":{\"chkrttzr\":\"ptsoqfyiase\",\"zohmnrxxbs\":\"zisgykiuemvanb\",\"dptysprqs\":\"jklinh\"},\"id\":\"nzxojpslsvjgpli\",\"name\":\"fiqwoy\",\"type\":\"qvapcohhoucq\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"agnepzwaklsb\",\"scaleUnits\":716318057,\"availabilitySetName\":\"qqagwwr\",\"accessControl\":{},\"maxCacheAge\":6946414066223431148,\"customHostNames\":[\"rrczezkhhltnj\",\"dhqoawj\"],\"hostName\":\"yueayfbpcmsp\",\"cdnEnabled\":false,\"cdnProvider\":\"rueqthwm\",\"cdnProfile\":\"mbscbbx\",\"provisioningState\":\"dhxiidlopedbwd\",\"resourceState\":\"Stopped\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bxubmdna\",\"crossDomainPolicy\":\"bqwremjela\"},\"freeTrialEndTime\":\"2021-08-31T06:52:26Z\",\"created\":\"2021-03-24T08:52Z\",\"lastModified\":\"2021-06-02T17:16:27Z\"},\"sku\":{\"name\":\"bvqvwzkjopwbeo\",\"capacity\":2010643139},\"location\":\"kwzdqybxcea\",\"tags\":{\"chkrttzr\":\"ptsoqfyiase\",\"zohmnrxxbs\":\"zisgykiuemvanb\",\"dptysprqs\":\"jklinh\"},\"id\":\"nzxojpslsvjgpli\",\"name\":\"fiqwoy\",\"type\":\"qvapcohhoucq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamingEndpoint response =
-            manager
-                .streamingEndpoints()
-                .operationLocationWithResponse(
-                    "bfihw", "hvcta", "s", "bxrblmliowxihspn", com.azure.core.util.Context.NONE)
-                .getValue();
+        StreamingEndpoint response = manager.streamingEndpoints()
+            .operationLocationWithResponse("bfihw", "hvcta", "s", "bxrblmliowxihspn", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("kwzdqybxcea", response.location());
         Assertions.assertEquals("ptsoqfyiase", response.tags().get("chkrttzr"));

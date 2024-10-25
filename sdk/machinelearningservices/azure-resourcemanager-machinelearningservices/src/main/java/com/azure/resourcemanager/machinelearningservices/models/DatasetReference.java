@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The dataset reference object. */
 @Fluent
 public final class DatasetReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatasetReference.class);
 
     /*
      * The name of the dataset reference.

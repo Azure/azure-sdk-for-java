@@ -95,11 +95,13 @@ public interface ContentKeyPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ContentKeyPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the ContentKeyPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ContentKeyPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -111,6 +113,7 @@ public interface ContentKeyPolicy {
              */
             WithCreate withExistingMediaService(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the ContentKeyPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -131,6 +134,7 @@ public interface ContentKeyPolicy {
              */
             ContentKeyPolicy create(Context context);
         }
+
         /** The stage of the ContentKeyPolicy definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -141,6 +145,7 @@ public interface ContentKeyPolicy {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ContentKeyPolicy definition allowing to specify options. */
         interface WithOptions {
             /**
@@ -152,6 +157,7 @@ public interface ContentKeyPolicy {
             WithCreate withOptions(List<ContentKeyPolicyOption> options);
         }
     }
+
     /**
      * Begins update for the ContentKeyPolicy resource.
      *
@@ -176,6 +182,7 @@ public interface ContentKeyPolicy {
          */
         ContentKeyPolicy apply(Context context);
     }
+
     /** The ContentKeyPolicy update stages. */
     interface UpdateStages {
         /** The stage of the ContentKeyPolicy update allowing to specify description. */
@@ -188,6 +195,7 @@ public interface ContentKeyPolicy {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ContentKeyPolicy update allowing to specify options. */
         interface WithOptions {
             /**
@@ -199,6 +207,7 @@ public interface ContentKeyPolicy {
             Update withOptions(List<ContentKeyPolicyOption> options);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

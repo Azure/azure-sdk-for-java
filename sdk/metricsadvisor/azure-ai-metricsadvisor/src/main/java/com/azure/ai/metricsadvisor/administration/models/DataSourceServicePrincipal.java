@@ -19,18 +19,17 @@ public final class DataSourceServicePrincipal extends DataSourceCredentialEntity
     private String clientSecret;
 
     static {
-        DataSourceServicePrincipalAccessor.setAccessor(
-            new DataSourceServicePrincipalAccessor.Accessor() {
-                @Override
-                public void setId(DataSourceServicePrincipal entity, String id) {
-                    entity.setId(id);
-                }
+        DataSourceServicePrincipalAccessor.setAccessor(new DataSourceServicePrincipalAccessor.Accessor() {
+            @Override
+            public void setId(DataSourceServicePrincipal entity, String id) {
+                entity.setId(id);
+            }
 
-                @Override
-                public String getClientSecret(DataSourceServicePrincipal entity) {
-                    return entity.getClientSecret();
-                }
-            });
+            @Override
+            public String getClientSecret(DataSourceServicePrincipal entity) {
+                return entity.getClientSecret();
+            }
+        });
     }
 
     @Override

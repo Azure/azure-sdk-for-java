@@ -13,8 +13,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
