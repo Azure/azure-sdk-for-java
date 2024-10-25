@@ -13,20 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspacePatchResource model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"luwfzitonpeqfpjk\":\"xxjtfe\",\"nmayhuybb\":\"lxofpdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\"}}")
-                .toObject(WorkspacePatchResource.class);
+        WorkspacePatchResource model = BinaryData.fromString(
+            "{\"tags\":{\"luwfzitonpeqfpjk\":\"xxjtfe\",\"nmayhuybb\":\"lxofpdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\"}}")
+            .toObject(WorkspacePatchResource.class);
         Assertions.assertEquals("xxjtfe", model.tags().get("luwfzitonpeqfpjk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspacePatchResource model =
-            new WorkspacePatchResource()
-                .withTags(
-                    mapOf("luwfzitonpeqfpjk", "xxjtfe", "nmayhuybb", "lxofpdvhpfxxypin", "inuvamiheogn", "podepoo"));
+        WorkspacePatchResource model = new WorkspacePatchResource()
+            .withTags(mapOf("luwfzitonpeqfpjk", "xxjtfe", "nmayhuybb", "lxofpdvhpfxxypin", "inuvamiheogn", "podepoo"));
         model = BinaryData.fromObject(model).toObject(WorkspacePatchResource.class);
         Assertions.assertEquals("xxjtfe", model.tags().get("luwfzitonpeqfpjk"));
     }

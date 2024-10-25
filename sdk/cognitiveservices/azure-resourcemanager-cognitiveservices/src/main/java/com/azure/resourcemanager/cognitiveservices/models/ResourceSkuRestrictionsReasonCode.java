@@ -14,8 +14,8 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
     public static final ResourceSkuRestrictionsReasonCode QUOTA_ID = fromString("QuotaId");
 
     /** Static value NotAvailableForSubscription for ResourceSkuRestrictionsReasonCode. */
-    public static final ResourceSkuRestrictionsReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION =
-        fromString("NotAvailableForSubscription");
+    public static final ResourceSkuRestrictionsReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION
+        = fromString("NotAvailableForSubscription");
 
     /**
      * Creates a new instance of ResourceSkuRestrictionsReasonCode value.

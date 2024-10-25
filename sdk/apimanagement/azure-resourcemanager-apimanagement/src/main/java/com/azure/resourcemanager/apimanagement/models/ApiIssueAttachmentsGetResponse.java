@@ -21,12 +21,8 @@ public final class ApiIssueAttachmentsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiIssueAttachmentsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        IssueAttachmentContractInner value,
-        ApiIssueAttachmentsGetHeaders headers) {
+    public ApiIssueAttachmentsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        IssueAttachmentContractInner value, ApiIssueAttachmentsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

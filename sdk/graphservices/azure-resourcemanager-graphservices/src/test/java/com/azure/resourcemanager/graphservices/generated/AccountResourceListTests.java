@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-05-25T17:48:57Z\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-27T14:18:12Z\"},\"properties\":{\"provisioningState\":\"Canceled\",\"appId\":\"phrupidgsybbejhp\",\"billingPlanId\":\"ycm\"},\"location\":\"xaobhdxbmtqioqjz\",\"tags\":{\"izhwlrxy\":\"bmufpown\",\"bpazlobcufpdzn\":\"qsoqijgkd\"},\"id\":\"btcqq\",\"name\":\"nq\",\"type\":\"lhqgnufooojy\"},{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2021-04-03T02:29:48Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-05-21T02:15:24Z\"},\"properties\":{\"provisioningState\":\"Canceled\",\"appId\":\"mglzlhj\",\"billingPlanId\":\"ifkwmrvktsizntoc\"},\"location\":\"pa\",\"tags\":{\"cmpoyfdkfogkny\":\"jpsq\",\"eqsrdeupewnwreit\":\"jofjd\"},\"id\":\"zyf\",\"name\":\"usarhmofc\",\"type\":\"hs\"},{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-08-18T07:24:06Z\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-19T18:09:11Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"kuksjtxukcdm\",\"billingPlanId\":\"rcryuanzwuxzdxta\"},\"location\":\"rlhm\",\"tags\":{\"u\":\"pmrqobm\"},\"id\":\"knryrtihfxtij\",\"name\":\"pzvgnwzsymglzufc\",\"type\":\"zk\"},{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-01-03T15:44:14Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-07-21T15:51:12Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"cbjy\",\"billingPlanId\":\"git\"},\"location\":\"xqhabi\",\"tags\":{\"y\":\"kxwczbyscnpqxuhi\",\"wby\":\"n\"},\"id\":\"rkxvdum\",\"name\":\"grtfwvu\",\"type\":\"xgaudccs\"}]}")
-                .toObject(AccountResourceList.class);
+        AccountResourceList model = BinaryData.fromString(
+            "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-05-25T17:48:57Z\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-27T14:18:12Z\"},\"properties\":{\"provisioningState\":\"Canceled\",\"appId\":\"phrupidgsybbejhp\",\"billingPlanId\":\"ycm\"},\"location\":\"xaobhdxbmtqioqjz\",\"tags\":{\"izhwlrxy\":\"bmufpown\",\"bpazlobcufpdzn\":\"qsoqijgkd\"},\"id\":\"btcqq\",\"name\":\"nq\",\"type\":\"lhqgnufooojy\"},{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2021-04-03T02:29:48Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-05-21T02:15:24Z\"},\"properties\":{\"provisioningState\":\"Canceled\",\"appId\":\"mglzlhj\",\"billingPlanId\":\"ifkwmrvktsizntoc\"},\"location\":\"pa\",\"tags\":{\"cmpoyfdkfogkny\":\"jpsq\",\"eqsrdeupewnwreit\":\"jofjd\"},\"id\":\"zyf\",\"name\":\"usarhmofc\",\"type\":\"hs\"},{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-08-18T07:24:06Z\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-19T18:09:11Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"kuksjtxukcdm\",\"billingPlanId\":\"rcryuanzwuxzdxta\"},\"location\":\"rlhm\",\"tags\":{\"u\":\"pmrqobm\"},\"id\":\"knryrtihfxtij\",\"name\":\"pzvgnwzsymglzufc\",\"type\":\"zk\"},{\"systemData\":{\"createdByType\":\"Application\",\"createdAt\":\"2021-01-03T15:44:14Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-07-21T15:51:12Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"cbjy\",\"billingPlanId\":\"git\"},\"location\":\"xqhabi\",\"tags\":{\"y\":\"kxwczbyscnpqxuhi\",\"wby\":\"n\"},\"id\":\"rkxvdum\",\"name\":\"grtfwvu\",\"type\":\"xgaudccs\"}]}")
+            .toObject(AccountResourceList.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).location());
         Assertions.assertEquals("bmufpown", model.value().get(0).tags().get("izhwlrxy"));
@@ -29,28 +27,20 @@ public final class AccountResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountResourceList model =
-            new AccountResourceList()
-                .withNextLink("mhquvgjxp")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountResourceInner()
-                                .withLocation("xaobhdxbmtqioqjz")
-                                .withTags(mapOf("izhwlrxy", "bmufpown", "bpazlobcufpdzn", "qsoqijgkd"))
-                                .withProperties(new AccountResourceProperties().withAppId("phrupidgsybbejhp")),
-                            new AccountResourceInner()
-                                .withLocation("pa")
-                                .withTags(mapOf("cmpoyfdkfogkny", "jpsq", "eqsrdeupewnwreit", "jofjd"))
-                                .withProperties(new AccountResourceProperties().withAppId("mglzlhj")),
-                            new AccountResourceInner()
-                                .withLocation("rlhm")
-                                .withTags(mapOf("u", "pmrqobm"))
-                                .withProperties(new AccountResourceProperties().withAppId("kuksjtxukcdm")),
-                            new AccountResourceInner()
-                                .withLocation("xqhabi")
-                                .withTags(mapOf("y", "kxwczbyscnpqxuhi", "wby", "n"))
-                                .withProperties(new AccountResourceProperties().withAppId("cbjy"))));
+        AccountResourceList model = new AccountResourceList().withNextLink("mhquvgjxp")
+            .withValue(Arrays.asList(
+                new AccountResourceInner().withLocation("xaobhdxbmtqioqjz")
+                    .withTags(mapOf("izhwlrxy", "bmufpown", "bpazlobcufpdzn", "qsoqijgkd"))
+                    .withProperties(new AccountResourceProperties().withAppId("phrupidgsybbejhp")),
+                new AccountResourceInner().withLocation("pa")
+                    .withTags(mapOf("cmpoyfdkfogkny", "jpsq", "eqsrdeupewnwreit", "jofjd"))
+                    .withProperties(new AccountResourceProperties().withAppId("mglzlhj")),
+                new AccountResourceInner().withLocation("rlhm")
+                    .withTags(mapOf("u", "pmrqobm"))
+                    .withProperties(new AccountResourceProperties().withAppId("kuksjtxukcdm")),
+                new AccountResourceInner().withLocation("xqhabi")
+                    .withTags(mapOf("y", "kxwczbyscnpqxuhi", "wby", "n"))
+                    .withProperties(new AccountResourceProperties().withAppId("cbjy"))));
         model = BinaryData.fromObject(model).toObject(AccountResourceList.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).location());

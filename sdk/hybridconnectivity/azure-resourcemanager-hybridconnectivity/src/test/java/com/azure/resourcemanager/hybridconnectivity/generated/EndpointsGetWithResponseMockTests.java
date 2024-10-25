@@ -31,37 +31,27 @@ public final class EndpointsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"type\":\"custom\",\"resourceId\":\"dqytbciqfouflmm\",\"provisioningState\":\"zsm\"},\"id\":\"mglougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"}";
+        String responseStr
+            = "{\"properties\":{\"type\":\"custom\",\"resourceId\":\"dqytbciqfouflmm\",\"provisioningState\":\"zsm\"},\"id\":\"mglougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HybridConnectivityManager manager =
-            HybridConnectivityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridConnectivityManager manager = HybridConnectivityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EndpointResource response =
-            manager.endpoints().getWithResponse("gakeqsr", "yb", com.azure.core.util.Context.NONE).getValue();
+        EndpointResource response
+            = manager.endpoints().getWithResponse("gakeqsr", "yb", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(Type.CUSTOM, response.properties().type());
         Assertions.assertEquals("dqytbciqfouflmm", response.properties().resourceId());

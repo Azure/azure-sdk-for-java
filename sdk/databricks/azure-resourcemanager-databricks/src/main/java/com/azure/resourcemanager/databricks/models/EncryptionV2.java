@@ -76,9 +76,8 @@ public final class EncryptionV2 {
      */
     public void validate() {
         if (keySource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keySource in model EncryptionV2"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keySource in model EncryptionV2"));
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();

@@ -58,117 +58,81 @@ public final class ViewsClientImpl implements ViewsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface ViewsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CostManagement/views")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/views")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewListResult>> listByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewListResult>> listByScope(@HostParam("$host") String endpoint,
+            @PathParam("scope") String scope, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("viewName") String viewName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @BodyParam("application/json") ViewInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("viewName") String viewName,
+            @BodyParam("application/json") ViewInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("viewName") String viewName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewInner>> getByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewInner>> getByScope(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("viewName") String viewName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewInner>> createOrUpdateByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @BodyParam("application/json") ViewInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewInner>> createOrUpdateByScope(@HostParam("$host") String endpoint,
+            @PathParam("scope") String scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("viewName") String viewName, @BodyParam("application/json") ViewInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.CostManagement/views/{viewName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("viewName") String viewName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteByScope(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("viewName") String viewName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ViewListResult>> listByScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ViewListResult>> listByScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -181,24 +145,15 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ViewInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ViewInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -214,24 +169,14 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -257,8 +202,8 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ViewInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -313,28 +258,18 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewInner>> listByScopeSinglePageAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ViewInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                accept, context))
+            .<PagedResponse<ViewInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -365,27 +300,17 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewInner>> listByScopeSinglePageAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -413,8 +338,8 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ViewInner> listByScopeAsync(String scope) {
-        return new PagedFlux<>(
-            () -> listByScopeSinglePageAsync(scope), nextLink -> listByScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByScopeSinglePageAsync(scope),
+            nextLink -> listByScopeNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -443,8 +368,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ViewInner> listByScopeAsync(String scope, Context context) {
-        return new PagedFlux<>(
-            () -> listByScopeSinglePageAsync(scope, context),
+        return new PagedFlux<>(() -> listByScopeSinglePageAsync(scope, context),
             nextLink -> listByScopeNextSinglePageAsync(nextLink, context));
     }
 
@@ -517,19 +441,15 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewInner>> getWithResponseAsync(String viewName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.get(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context))
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -546,10 +466,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewInner>> getWithResponseAsync(String viewName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
@@ -617,10 +535,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewInner>> createOrUpdateWithResponseAsync(String viewName, ViewInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
@@ -632,16 +548,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            viewName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                viewName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -659,13 +567,11 @@ public final class ViewsClientImpl implements ViewsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ViewInner>> createOrUpdateWithResponseAsync(
-        String viewName, ViewInner parameters, Context context) {
+    private Mono<Response<ViewInner>> createOrUpdateWithResponseAsync(String viewName, ViewInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
@@ -677,9 +583,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(), this.client.getApiVersion(), viewName, parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), viewName, parameters,
+            accept, context);
     }
 
     /**
@@ -743,19 +648,16 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String viewName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.delete(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), viewName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -772,10 +674,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String viewName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (viewName == null) {
             return Mono.error(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
@@ -855,10 +755,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewInner>> getByScopeWithResponseAsync(String scope, String viewName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -868,11 +766,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context))
+            .withContext(context -> service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                viewName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -905,10 +800,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewInner>> getByScopeWithResponseAsync(String scope, String viewName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -918,8 +811,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context);
+        return service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept,
+            context);
     }
 
     /**
@@ -1038,13 +931,11 @@ public final class ViewsClientImpl implements ViewsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ViewInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String viewName, ViewInner parameters) {
+    private Mono<Response<ViewInner>> createOrUpdateByScopeWithResponseAsync(String scope, String viewName,
+        ViewInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1059,17 +950,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateByScope(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            viewName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateByScope(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), viewName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1102,13 +984,11 @@ public final class ViewsClientImpl implements ViewsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ViewInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String viewName, ViewInner parameters, Context context) {
+    private Mono<Response<ViewInner>> createOrUpdateByScopeWithResponseAsync(String scope, String viewName,
+        ViewInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1123,9 +1003,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateByScope(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, parameters, accept, context);
+        return service.createOrUpdateByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName,
+            parameters, accept, context);
     }
 
     /**
@@ -1188,8 +1067,8 @@ public final class ViewsClientImpl implements ViewsClient {
      * @return states and configurations of Cost Analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ViewInner> createOrUpdateByScopeWithResponse(
-        String scope, String viewName, ViewInner parameters, Context context) {
+    public Response<ViewInner> createOrUpdateByScopeWithResponse(String scope, String viewName, ViewInner parameters,
+        Context context) {
         return createOrUpdateByScopeWithResponseAsync(scope, viewName, parameters, context).block();
     }
 
@@ -1251,10 +1130,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String viewName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1264,11 +1141,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteByScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context))
+            .withContext(context -> service.deleteByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                viewName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1300,10 +1174,8 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String viewName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1313,8 +1185,8 @@ public final class ViewsClientImpl implements ViewsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context);
+        return service.deleteByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept,
+            context);
     }
 
     /**
@@ -1420,23 +1292,13 @@ public final class ViewsClientImpl implements ViewsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ViewInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ViewInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1457,24 +1319,14 @@ public final class ViewsClientImpl implements ViewsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1493,23 +1345,14 @@ public final class ViewsClientImpl implements ViewsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ViewInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ViewInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1530,23 +1373,13 @@ public final class ViewsClientImpl implements ViewsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

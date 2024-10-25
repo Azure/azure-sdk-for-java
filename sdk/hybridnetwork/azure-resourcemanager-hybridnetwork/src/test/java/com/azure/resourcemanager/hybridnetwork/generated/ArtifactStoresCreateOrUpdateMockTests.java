@@ -50,11 +50,14 @@ public final class ArtifactStoresCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ArtifactStore response = manager.artifactStores().define("dwckygroe").withRegion("wryshwd")
+        ArtifactStore response = manager.artifactStores()
+            .define("dwckygroe")
+            .withRegion("wryshwd")
             .withExistingPublisher("oytehqpuvjm", "qm")
             .withTags(mapOf("w", "bxgkqusy", "ymtpo", "tdacarvvlfn", "r", "wenaz"))
             .withProperties(

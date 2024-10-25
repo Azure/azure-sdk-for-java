@@ -53,10 +53,7 @@ public class FrontDoorManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -83,7 +80,8 @@ public class FrontDoorManagerTests extends TestProxyTestBase {
             policy.refresh();
             Assertions.assertEquals(policyName, policy.name());
             Assertions.assertEquals(policyName, frontDoorManager.policies().getById(policy.id()).name());
-            Assertions.assertTrue(frontDoorManager.policies().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                frontDoorManager.policies().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (policy != null) {
                 frontDoorManager.policies().deleteById(policy.id());

@@ -32,47 +32,28 @@ public final class VirtualMachineSchedulesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"tbspvkhglaqjs\",\"weeklyRecurrence\":{\"weekdays\":[\"tujrzxrkn\",\"fdrld\",\"yehi\",\"ittugyu\"],\"time\":\"rldaxurfqa\"},\"dailyRecurrence\":{\"time\":\"ozjv\"},\"hourlyRecurrence\":{\"minute\":662238435},\"timeZoneId\":\"ggbnvtxo\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":208696047,\"webhookUrl\":\"whoea\",\"emailRecipient\":\"e\",\"notificationLocale\":\"doey\"},\"createdDate\":\"2021-04-03T18:48:17Z\",\"targetResourceId\":\"imtwuuhau\",\"provisioningState\":\"nkwmnfeub\",\"uniqueIdentifier\":\"jyrkwfug\"},\"location\":\"phrrkuum\",\"tags\":{\"pue\":\"urhzzf\",\"ttoztj\":\"qusvwlujopwnib\",\"ctxegt\":\"qumqvfmwcaddt\",\"elfnzzryiz\":\"gwyur\"},\"id\":\"bxgde\",\"name\":\"xlayunomir\",\"type\":\"p\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"tbspvkhglaqjs\",\"weeklyRecurrence\":{\"weekdays\":[\"tujrzxrkn\",\"fdrld\",\"yehi\",\"ittugyu\"],\"time\":\"rldaxurfqa\"},\"dailyRecurrence\":{\"time\":\"ozjv\"},\"hourlyRecurrence\":{\"minute\":662238435},\"timeZoneId\":\"ggbnvtxo\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":208696047,\"webhookUrl\":\"whoea\",\"emailRecipient\":\"e\",\"notificationLocale\":\"doey\"},\"createdDate\":\"2021-04-03T18:48:17Z\",\"targetResourceId\":\"imtwuuhau\",\"provisioningState\":\"nkwmnfeub\",\"uniqueIdentifier\":\"jyrkwfug\"},\"location\":\"phrrkuum\",\"tags\":{\"pue\":\"urhzzf\",\"ttoztj\":\"qusvwlujopwnib\",\"ctxegt\":\"qumqvfmwcaddt\",\"elfnzzryiz\":\"gwyur\"},\"id\":\"bxgde\",\"name\":\"xlayunomir\",\"type\":\"p\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Schedule> response =
-            manager
-                .virtualMachineSchedules()
-                .list(
-                    "icqqw",
-                    "v",
-                    "wkslvlized",
-                    "biabvnsrgekz",
-                    "qx",
-                    1170425933,
-                    "yfhbmwkh",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Schedule> response = manager.virtualMachineSchedules()
+            .list("icqqw", "v", "wkslvlized", "biabvnsrgekz", "qx", 1170425933, "yfhbmwkh",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("phrrkuum", response.iterator().next().location());
         Assertions.assertEquals("urhzzf", response.iterator().next().tags().get("pue"));

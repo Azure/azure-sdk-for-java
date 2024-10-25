@@ -70,25 +70,21 @@ public final class PolicyFragmentContractImpl
     }
 
     public PolicyFragmentContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), createIfMatch, Context.NONE);
         return this;
     }
 
     public PolicyFragmentContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), createIfMatch, context);
         return this;
     }
 
-    PolicyFragmentContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    PolicyFragmentContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new PolicyFragmentContractInner();
         this.serviceManager = serviceManager;
         this.id = name;
@@ -101,25 +97,20 @@ public final class PolicyFragmentContractImpl
     }
 
     public PolicyFragmentContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), updateIfMatch, Context.NONE);
         return this;
     }
 
     public PolicyFragmentContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .createOrUpdate(resourceGroupName, serviceName, id, this.innerModel(), updateIfMatch, context);
         return this;
     }
 
-    PolicyFragmentContractImpl(
-        PolicyFragmentContractInner innerObject,
+    PolicyFragmentContractImpl(PolicyFragmentContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -130,29 +121,24 @@ public final class PolicyFragmentContractImpl
 
     public PolicyFragmentContract refresh() {
         PolicyFragmentContentFormat localFormat = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .getWithResponse(resourceGroupName, serviceName, id, localFormat, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .getWithResponse(resourceGroupName, serviceName, id, localFormat, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PolicyFragmentContract refresh(Context context) {
         PolicyFragmentContentFormat localFormat = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicyFragments()
-                .getWithResponse(resourceGroupName, serviceName, id, localFormat, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicyFragments()
+            .getWithResponse(resourceGroupName, serviceName, id, localFormat, context)
+            .getValue();
         return this;
     }
 
     public Response<ResourceCollection> listReferencesWithResponse(Integer top, Integer skip, Context context) {
-        return serviceManager
-            .policyFragments()
+        return serviceManager.policyFragments()
             .listReferencesWithResponse(resourceGroupName, serviceName, id, top, skip, context);
     }
 

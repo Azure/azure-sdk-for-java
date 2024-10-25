@@ -107,8 +107,8 @@ public final class GatewayHostnameConfigurationContractProperties {
      * @param negotiateClientCertificate the negotiateClientCertificate value to set.
      * @return the GatewayHostnameConfigurationContractProperties object itself.
      */
-    public GatewayHostnameConfigurationContractProperties withNegotiateClientCertificate(
-        Boolean negotiateClientCertificate) {
+    public GatewayHostnameConfigurationContractProperties
+        withNegotiateClientCertificate(Boolean negotiateClientCertificate) {
         this.negotiateClientCertificate = negotiateClientCertificate;
         return this;
     }

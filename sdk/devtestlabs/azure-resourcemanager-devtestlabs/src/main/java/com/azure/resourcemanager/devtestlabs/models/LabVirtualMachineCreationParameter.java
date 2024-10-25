@@ -128,8 +128,8 @@ public final class LabVirtualMachineCreationParameter {
      * @param bulkCreationParameters the bulkCreationParameters value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
-    public LabVirtualMachineCreationParameter withBulkCreationParameters(
-        BulkCreationParameters bulkCreationParameters) {
+    public LabVirtualMachineCreationParameter
+        withBulkCreationParameters(BulkCreationParameters bulkCreationParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LabVirtualMachineCreationParameterProperties();
         }
@@ -662,8 +662,8 @@ public final class LabVirtualMachineCreationParameter {
      * @param scheduleParameters the scheduleParameters value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
-    public LabVirtualMachineCreationParameter withScheduleParameters(
-        List<ScheduleCreationParameter> scheduleParameters) {
+    public LabVirtualMachineCreationParameter
+        withScheduleParameters(List<ScheduleCreationParameter> scheduleParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LabVirtualMachineCreationParameterProperties();
         }

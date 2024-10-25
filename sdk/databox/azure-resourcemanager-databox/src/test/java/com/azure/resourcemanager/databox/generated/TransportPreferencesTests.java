@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TransportPreferencesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransportPreferences model =
-            BinaryData
-                .fromString("{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":true}")
+        TransportPreferences model
+            = BinaryData.fromString("{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":true}")
                 .toObject(TransportPreferences.class);
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED, model.preferredShipmentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransportPreferences model =
-            new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED);
+        TransportPreferences model
+            = new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED);
         model = BinaryData.fromObject(model).toObject(TransportPreferences.class);
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED, model.preferredShipmentType());
     }

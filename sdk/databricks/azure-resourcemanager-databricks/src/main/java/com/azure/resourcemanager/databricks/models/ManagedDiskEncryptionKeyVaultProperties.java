@@ -100,22 +100,16 @@ public final class ManagedDiskEncryptionKeyVaultProperties {
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultUri in model ManagedDiskEncryptionKeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultUri in model ManagedDiskEncryptionKeyVaultProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model ManagedDiskEncryptionKeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model ManagedDiskEncryptionKeyVaultProperties"));
         }
         if (keyVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVersion in model ManagedDiskEncryptionKeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVersion in model ManagedDiskEncryptionKeyVaultProperties"));
         }
     }
 

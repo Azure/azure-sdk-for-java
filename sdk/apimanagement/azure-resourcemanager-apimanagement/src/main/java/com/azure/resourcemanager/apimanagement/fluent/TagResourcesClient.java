@@ -53,6 +53,6 @@ public interface TagResourcesClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagResourceContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<TagResourceContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 }

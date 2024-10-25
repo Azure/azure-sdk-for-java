@@ -46,11 +46,16 @@ public final class AgentPoolInnerTests {
     public void testSerialize() throws Exception {
         AgentPoolInner model
             = new AgentPoolInner()
-                .withProperties(new AgentPoolProperties().withOsType(OsType.WINDOWS).withOsSku(Ossku.WINDOWS2019)
+                .withProperties(new AgentPoolProperties().withOsType(OsType.WINDOWS)
+                    .withOsSku(Ossku.WINDOWS2019)
                     .withNodeLabels(mapOf("mnkzsmod", "qedqytbciqfoufl", "tmut", "glougpbk", "pwgcuertu", "uqktap",
                         "bmdg", "kdosvqw"))
-                    .withNodeTaints(Arrays.asList("f", "dgmb", "bexppb")).withMaxCount(211326115)
-                    .withMinCount(1774443040).withEnableAutoScaling(false).withMaxPods(159244134).withCount(391471833)
+                    .withNodeTaints(Arrays.asList("f", "dgmb", "bexppb"))
+                    .withMaxCount(211326115)
+                    .withMinCount(1774443040)
+                    .withEnableAutoScaling(false)
+                    .withMaxPods(159244134)
+                    .withCount(391471833)
                     .withVmSize("dhugjzzdatqxhocd")
                     .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("tyhxhurokft")
                         .withReadyReplicas(Arrays.asList(

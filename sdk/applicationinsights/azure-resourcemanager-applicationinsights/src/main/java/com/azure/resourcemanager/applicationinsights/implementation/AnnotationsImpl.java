@@ -24,8 +24,7 @@ public final class AnnotationsImpl implements Annotations {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public AnnotationsImpl(
-        AnnotationsClient innerClient,
+    public AnnotationsImpl(AnnotationsClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,24 +35,20 @@ public final class AnnotationsImpl implements Annotations {
         return Utils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Annotation> list(
-        String resourceGroupName, String resourceName, String start, String end, Context context) {
-        PagedIterable<AnnotationInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, start, end, context);
+    public PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end,
+        Context context) {
+        PagedIterable<AnnotationInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, start, end, context);
         return Utils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
     }
 
-    public Response<List<Annotation>> createWithResponse(
-        String resourceGroupName, String resourceName, AnnotationInner annotationProperties, Context context) {
-        Response<List<AnnotationInner>> inner =
-            this.serviceClient().createWithResponse(resourceGroupName, resourceName, annotationProperties, context);
+    public Response<List<Annotation>> createWithResponse(String resourceGroupName, String resourceName,
+        AnnotationInner annotationProperties, Context context) {
+        Response<List<AnnotationInner>> inner
+            = this.serviceClient().createWithResponse(resourceGroupName, resourceName, annotationProperties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new AnnotationImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -62,24 +57,20 @@ public final class AnnotationsImpl implements Annotations {
         }
     }
 
-    public List<Annotation> create(
-        String resourceGroupName, String resourceName, AnnotationInner annotationProperties) {
-        List<AnnotationInner> inner =
-            this.serviceClient().create(resourceGroupName, resourceName, annotationProperties);
+    public List<Annotation> create(String resourceGroupName, String resourceName,
+        AnnotationInner annotationProperties) {
+        List<AnnotationInner> inner
+            = this.serviceClient().create(resourceGroupName, resourceName, annotationProperties);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AnnotationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new AnnotationImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String annotationId,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, annotationId, context);
     }
 
@@ -87,17 +78,13 @@ public final class AnnotationsImpl implements Annotations {
         this.serviceClient().delete(resourceGroupName, resourceName, annotationId);
     }
 
-    public Response<List<Annotation>> getWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context) {
-        Response<List<AnnotationInner>> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, annotationId, context);
+    public Response<List<Annotation>> getWithResponse(String resourceGroupName, String resourceName,
+        String annotationId, Context context) {
+        Response<List<AnnotationInner>> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, annotationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new AnnotationImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -109,12 +96,8 @@ public final class AnnotationsImpl implements Annotations {
     public List<Annotation> get(String resourceGroupName, String resourceName, String annotationId) {
         List<AnnotationInner> inner = this.serviceClient().get(resourceGroupName, resourceName, annotationId);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AnnotationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new AnnotationImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

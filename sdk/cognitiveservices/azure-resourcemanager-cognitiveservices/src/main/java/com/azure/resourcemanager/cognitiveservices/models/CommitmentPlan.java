@@ -136,12 +136,8 @@ public interface CommitmentPlan {
          * The stage of the CommitmentPlan definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithKind, DefinitionStages.WithSku, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *

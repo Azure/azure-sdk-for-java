@@ -50,14 +50,8 @@ public interface GroupUsersClient {
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String groupId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<UserContractInner> list(String resourceGroupName, String serviceName, String groupId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
@@ -73,8 +67,8 @@ public interface GroupUsersClient {
      * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context);
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
@@ -105,8 +99,8 @@ public interface GroupUsersClient {
      * @return user details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserContractInner> createWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<UserContractInner> createWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context);
 
     /**
      * Add existing user to existing group.
@@ -137,8 +131,8 @@ public interface GroupUsersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String groupId, String userId,
+        Context context);
 
     /**
      * Remove existing user from existing group.

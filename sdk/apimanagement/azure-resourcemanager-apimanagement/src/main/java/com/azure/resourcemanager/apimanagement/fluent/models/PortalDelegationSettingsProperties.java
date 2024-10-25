@@ -97,8 +97,8 @@ public final class PortalDelegationSettingsProperties {
      * @param subscriptions the subscriptions value to set.
      * @return the PortalDelegationSettingsProperties object itself.
      */
-    public PortalDelegationSettingsProperties withSubscriptions(
-        SubscriptionsDelegationSettingsProperties subscriptions) {
+    public PortalDelegationSettingsProperties
+        withSubscriptions(SubscriptionsDelegationSettingsProperties subscriptions) {
         this.subscriptions = subscriptions;
         return this;
     }
@@ -118,8 +118,8 @@ public final class PortalDelegationSettingsProperties {
      * @param userRegistration the userRegistration value to set.
      * @return the PortalDelegationSettingsProperties object itself.
      */
-    public PortalDelegationSettingsProperties withUserRegistration(
-        RegistrationDelegationSettingsProperties userRegistration) {
+    public PortalDelegationSettingsProperties
+        withUserRegistration(RegistrationDelegationSettingsProperties userRegistration) {
         this.userRegistration = userRegistration;
         return this;
     }

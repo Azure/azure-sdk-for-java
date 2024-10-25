@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ConfidentialLedgerCertificateClient type. */
 @ServiceClient(builder = ConfidentialLedgerCertificateClientBuilder.class, isAsync = true)
 public final class ConfidentialLedgerCertificateAsyncClient {
-    @Generated private final ConfidentialLedgerCertificateClientImpl serviceClient;
+    @Generated
+    private final ConfidentialLedgerCertificateClientImpl serviceClient;
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateAsyncClient class.

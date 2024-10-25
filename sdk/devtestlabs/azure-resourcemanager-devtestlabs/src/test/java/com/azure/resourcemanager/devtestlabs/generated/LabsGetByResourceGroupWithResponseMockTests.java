@@ -34,40 +34,28 @@ public final class LabsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"defaultStorageAccount\":\"mkfqlwxldy\",\"defaultPremiumStorageAccount\":\"lsygaol\",\"artifactsStorageAccount\":\"pnnbm\",\"premiumDataDiskStorageAccount\":\"sibjgs\",\"vaultName\":\"xxahmrnadzyqegxy\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"bmh\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ijkgqxnhm\",\"keznjaujvaa\",\"nggiycwkdtaa\",\"xw\"],\"createdDate\":\"2021-10-08T13:52:04Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Contributor\",\"announcement\":{\"title\":\"mbzmqk\",\"markdown\":\"tbnxwbjsid\",\"enabled\":\"Enabled\",\"expirationDate\":\"2020-12-26T13:23:10Z\",\"expired\":false,\"provisioningState\":\"okdgoge\",\"uniqueIdentifier\":\"jymrhbg\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"yewnfnzhhhqos\"},\"vmCreationResourceGroup\":\"fjkutycyarnroo\",\"publicIpId\":\"uabzoghkt\",\"loadBalancerId\":\"yczhco\",\"networkSecurityGroupId\":\"cnhz\",\"extendedProperties\":{\"rl\":\"ttjzcfyjzpt\"},\"provisioningState\":\"apqinf\",\"uniqueIdentifier\":\"pyglqdhmrjzral\"},\"location\":\"xpjb\",\"tags\":{\"xfxjelgcmpzqj\":\"sjoqcjenkyhfqzvs\",\"s\":\"hhqxuwyvcacoyviv\",\"bscm\":\"zusjsz\"},\"id\":\"lzijiufehgmvflnw\",\"name\":\"v\",\"type\":\"kxrerlniylylyfwx\"}";
+        String responseStr
+            = "{\"properties\":{\"defaultStorageAccount\":\"mkfqlwxldy\",\"defaultPremiumStorageAccount\":\"lsygaol\",\"artifactsStorageAccount\":\"pnnbm\",\"premiumDataDiskStorageAccount\":\"sibjgs\",\"vaultName\":\"xxahmrnadzyqegxy\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"bmh\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ijkgqxnhm\",\"keznjaujvaa\",\"nggiycwkdtaa\",\"xw\"],\"createdDate\":\"2021-10-08T13:52:04Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Contributor\",\"announcement\":{\"title\":\"mbzmqk\",\"markdown\":\"tbnxwbjsid\",\"enabled\":\"Enabled\",\"expirationDate\":\"2020-12-26T13:23:10Z\",\"expired\":false,\"provisioningState\":\"okdgoge\",\"uniqueIdentifier\":\"jymrhbg\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"yewnfnzhhhqos\"},\"vmCreationResourceGroup\":\"fjkutycyarnroo\",\"publicIpId\":\"uabzoghkt\",\"loadBalancerId\":\"yczhco\",\"networkSecurityGroupId\":\"cnhz\",\"extendedProperties\":{\"rl\":\"ttjzcfyjzpt\"},\"provisioningState\":\"apqinf\",\"uniqueIdentifier\":\"pyglqdhmrjzral\"},\"location\":\"xpjb\",\"tags\":{\"xfxjelgcmpzqj\":\"sjoqcjenkyhfqzvs\",\"s\":\"hhqxuwyvcacoyviv\",\"bscm\":\"zusjsz\"},\"id\":\"lzijiufehgmvflnw\",\"name\":\"v\",\"type\":\"kxrerlniylylyfwx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Lab response =
-            manager
-                .labs()
-                .getByResourceGroupWithResponse("lcouqehbhbcdszir", "randoypmb", "t", com.azure.core.util.Context.NONE)
-                .getValue();
+        Lab response = manager.labs()
+            .getByResourceGroupWithResponse("lcouqehbhbcdszir", "randoypmb", "t", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("xpjb", response.location());
         Assertions.assertEquals("sjoqcjenkyhfqzvs", response.tags().get("xfxjelgcmpzqj"));

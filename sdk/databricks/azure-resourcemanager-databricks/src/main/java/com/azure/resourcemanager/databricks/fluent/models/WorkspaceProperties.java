@@ -424,10 +424,8 @@ public final class WorkspaceProperties {
      */
     public void validate() {
         if (managedResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedResourceGroupId in model WorkspaceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managedResourceGroupId in model WorkspaceProperties"));
         }
         if (parameters() != null) {
             parameters().validate();

@@ -136,11 +136,13 @@ public interface ScheduledAction {
     /** The entirety of the ScheduledAction definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScopeStage, DefinitionStages.WithCreate {
     }
+
     /** The ScheduledAction definition stages. */
     interface DefinitionStages {
         /** The first stage of the ScheduledAction definition. */
         interface Blank extends WithScopeStage {
         }
+
         /** The stage of the ScheduledAction definition allowing to specify parent resource. */
         interface WithScopeStage {
             /**
@@ -166,21 +168,15 @@ public interface ScheduledAction {
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the ScheduledAction definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithKind,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithFileDestination,
-                DefinitionStages.WithNotification,
-                DefinitionStages.WithNotificationEmail,
-                DefinitionStages.WithSchedule,
-                DefinitionStages.WithScope,
-                DefinitionStages.WithStatus,
-                DefinitionStages.WithViewId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithKind, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithFileDestination, DefinitionStages.WithNotification,
+            DefinitionStages.WithNotificationEmail, DefinitionStages.WithSchedule, DefinitionStages.WithScope,
+            DefinitionStages.WithStatus, DefinitionStages.WithViewId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -196,6 +192,7 @@ public interface ScheduledAction {
              */
             ScheduledAction create(Context context);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -206,6 +203,7 @@ public interface ScheduledAction {
              */
             WithCreate withKind(ScheduledActionKind kind);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -216,6 +214,7 @@ public interface ScheduledAction {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify fileDestination. */
         interface WithFileDestination {
             /**
@@ -226,6 +225,7 @@ public interface ScheduledAction {
              */
             WithCreate withFileDestination(FileDestination fileDestination);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify notification. */
         interface WithNotification {
             /**
@@ -236,6 +236,7 @@ public interface ScheduledAction {
              */
             WithCreate withNotification(NotificationProperties notification);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify notificationEmail. */
         interface WithNotificationEmail {
             /**
@@ -248,6 +249,7 @@ public interface ScheduledAction {
              */
             WithCreate withNotificationEmail(String notificationEmail);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify schedule. */
         interface WithSchedule {
             /**
@@ -258,6 +260,7 @@ public interface ScheduledAction {
              */
             WithCreate withSchedule(ScheduleProperties schedule);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify scope. */
         interface WithScope {
             /**
@@ -296,6 +299,7 @@ public interface ScheduledAction {
              */
             WithCreate withScope(String scope);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify status. */
         interface WithStatus {
             /**
@@ -306,6 +310,7 @@ public interface ScheduledAction {
              */
             WithCreate withStatus(ScheduledActionStatus status);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify viewId. */
         interface WithViewId {
             /**
@@ -318,6 +323,7 @@ public interface ScheduledAction {
              */
             WithCreate withViewId(String viewId);
         }
+
         /** The stage of the ScheduledAction definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -331,6 +337,7 @@ public interface ScheduledAction {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ScheduledAction resource.
      *
@@ -339,17 +346,9 @@ public interface ScheduledAction {
     ScheduledAction.Update update();
 
     /** The template for ScheduledAction update. */
-    interface Update
-        extends UpdateStages.WithKind,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithFileDestination,
-            UpdateStages.WithNotification,
-            UpdateStages.WithNotificationEmail,
-            UpdateStages.WithSchedule,
-            UpdateStages.WithScope,
-            UpdateStages.WithStatus,
-            UpdateStages.WithViewId,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithKind, UpdateStages.WithDisplayName, UpdateStages.WithFileDestination,
+        UpdateStages.WithNotification, UpdateStages.WithNotificationEmail, UpdateStages.WithSchedule,
+        UpdateStages.WithScope, UpdateStages.WithStatus, UpdateStages.WithViewId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -365,6 +364,7 @@ public interface ScheduledAction {
          */
         ScheduledAction apply(Context context);
     }
+
     /** The ScheduledAction update stages. */
     interface UpdateStages {
         /** The stage of the ScheduledAction update allowing to specify kind. */
@@ -377,6 +377,7 @@ public interface ScheduledAction {
              */
             Update withKind(ScheduledActionKind kind);
         }
+
         /** The stage of the ScheduledAction update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -387,6 +388,7 @@ public interface ScheduledAction {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the ScheduledAction update allowing to specify fileDestination. */
         interface WithFileDestination {
             /**
@@ -397,6 +399,7 @@ public interface ScheduledAction {
              */
             Update withFileDestination(FileDestination fileDestination);
         }
+
         /** The stage of the ScheduledAction update allowing to specify notification. */
         interface WithNotification {
             /**
@@ -407,6 +410,7 @@ public interface ScheduledAction {
              */
             Update withNotification(NotificationProperties notification);
         }
+
         /** The stage of the ScheduledAction update allowing to specify notificationEmail. */
         interface WithNotificationEmail {
             /**
@@ -419,6 +423,7 @@ public interface ScheduledAction {
              */
             Update withNotificationEmail(String notificationEmail);
         }
+
         /** The stage of the ScheduledAction update allowing to specify schedule. */
         interface WithSchedule {
             /**
@@ -429,6 +434,7 @@ public interface ScheduledAction {
              */
             Update withSchedule(ScheduleProperties schedule);
         }
+
         /** The stage of the ScheduledAction update allowing to specify scope. */
         interface WithScope {
             /**
@@ -467,6 +473,7 @@ public interface ScheduledAction {
              */
             Update withScope(String scope);
         }
+
         /** The stage of the ScheduledAction update allowing to specify status. */
         interface WithStatus {
             /**
@@ -477,6 +484,7 @@ public interface ScheduledAction {
              */
             Update withStatus(ScheduledActionStatus status);
         }
+
         /** The stage of the ScheduledAction update allowing to specify viewId. */
         interface WithViewId {
             /**
@@ -489,6 +497,7 @@ public interface ScheduledAction {
              */
             Update withViewId(String viewId);
         }
+
         /** The stage of the ScheduledAction update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -502,6 +511,7 @@ public interface ScheduledAction {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

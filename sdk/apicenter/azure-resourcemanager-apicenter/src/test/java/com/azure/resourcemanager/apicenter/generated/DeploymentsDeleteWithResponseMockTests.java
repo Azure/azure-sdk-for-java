@@ -41,12 +41,14 @@ public final class DeploymentsDeleteWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.deployments().deleteWithResponse("g", "vfvpdbodaciz", "j", "lhkrribdeibqipqk", "hvxndzwmkrefajpj",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .deleteWithResponse("g", "vfvpdbodaciz", "j", "lhkrribdeibqipqk", "hvxndzwmkrefajpj",
+                com.azure.core.util.Context.NONE);
 
     }
 }

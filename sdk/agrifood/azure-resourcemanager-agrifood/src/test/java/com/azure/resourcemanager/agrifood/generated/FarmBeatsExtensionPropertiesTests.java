@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsExtensionPropertiesTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsExtensionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"targetResourceType\":\"fpjkjlxofp\",\"farmBeatsExtensionId\":\"hpf\",\"farmBeatsExtensionName\":\"ypininm\",\"farmBeatsExtensionVersion\":\"huyb\",\"publisherId\":\"podepoo\",\"description\":\"nuvamiheogna\",\"extensionCategory\":\"zxtheotusivyevcc\",\"extensionAuthLink\":\"ihnhun\",\"extensionApiDocsLink\":\"wjzrnfygxgisp\",\"detailedInformation\":[{\"apiName\":\"zfkufubljofx\",\"customParameters\":[\"fjaeq\",\"hqjbasvmsmj\",\"ulngsntn\"],\"platformParameters\":[\"kzgcwrwcl\",\"xwrljdouskcqvkoc\",\"cjdkwtnhxbnjbi\"],\"unitsSupported\":{\"key\":\"qrglssainqpjwn\",\"values\":[]},\"apiInputParameters\":[\"jfm\",\"pee\"]}]}")
-                .toObject(FarmBeatsExtensionProperties.class);
+        FarmBeatsExtensionProperties model = BinaryData.fromString(
+            "{\"targetResourceType\":\"fpjkjlxofp\",\"farmBeatsExtensionId\":\"hpf\",\"farmBeatsExtensionName\":\"ypininm\",\"farmBeatsExtensionVersion\":\"huyb\",\"publisherId\":\"podepoo\",\"description\":\"nuvamiheogna\",\"extensionCategory\":\"zxtheotusivyevcc\",\"extensionAuthLink\":\"ihnhun\",\"extensionApiDocsLink\":\"wjzrnfygxgisp\",\"detailedInformation\":[{\"apiName\":\"zfkufubljofx\",\"customParameters\":[\"fjaeq\",\"hqjbasvmsmj\",\"ulngsntn\"],\"platformParameters\":[\"kzgcwrwcl\",\"xwrljdouskcqvkoc\",\"cjdkwtnhxbnjbi\"],\"unitsSupported\":{\"key\":\"qrglssainqpjwn\",\"values\":[]},\"apiInputParameters\":[\"jfm\",\"pee\"]}]}")
+            .toObject(FarmBeatsExtensionProperties.class);
     }
 
     @Test

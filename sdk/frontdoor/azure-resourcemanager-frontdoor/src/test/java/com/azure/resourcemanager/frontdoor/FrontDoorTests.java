@@ -67,7 +67,7 @@ public class FrontDoorTests extends TestProxyTestBase {
         FrontDoorManager manager = FrontDoorManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
@@ -97,56 +97,43 @@ public class FrontDoorTests extends TestProxyTestBase {
             String healthProbeSettingsId = getResourceId("healthProbeSettings", healthProbeName);
             String backendPoolsId = getResourceId("backendPools", backendPoolName);
 
-            FrontDoor frontDoor = manager.frontDoors().define(fdName)
+            FrontDoor frontDoor = manager.frontDoors()
+                .define(fdName)
                 .withRegion("global")
                 .withExistingResourceGroup(resourceGroupName)
-                .withFrontendEndpoints(Collections.singletonList(
-                    new FrontendEndpointInner()
-                        .withName(frontendName)
-                        .withHostname(fdName + ".azurefd.net")
-                        .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
-                ))
-                .withBackendPools(Collections.singletonList(
-                    new BackendPool().withName(backendPoolName).withBackends(Collections.singletonList(
-                            new Backend()
-                                .withAddress(backendAddress)
-                                .withEnabledState(BackendEnabledState.ENABLED)
-                                .withBackendHostHeader(backendAddress)
-                                .withHttpPort(80)
-                                .withHttpsPort(443)
-                                .withPriority(1)
-                                .withWeight(50)
-                        ))
-                        .withLoadBalancingSettings(new SubResource().withId(loadBalancingSettingsId))
-                        .withHealthProbeSettings(new SubResource().withId(healthProbeSettingsId))
-                ))
-                .withLoadBalancingSettings(Collections.singletonList(
-                    new LoadBalancingSettingsModel()
-                        .withName(loadBalancingName)
+                .withFrontendEndpoints(Collections.singletonList(new FrontendEndpointInner().withName(frontendName)
+                    .withHostname(fdName + ".azurefd.net")
+                    .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)))
+                .withBackendPools(Collections.singletonList(new BackendPool().withName(backendPoolName)
+                    .withBackends(Collections.singletonList(new Backend().withAddress(backendAddress)
+                        .withEnabledState(BackendEnabledState.ENABLED)
+                        .withBackendHostHeader(backendAddress)
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withPriority(1)
+                        .withWeight(50)))
+                    .withLoadBalancingSettings(new SubResource().withId(loadBalancingSettingsId))
+                    .withHealthProbeSettings(new SubResource().withId(healthProbeSettingsId))))
+                .withLoadBalancingSettings(
+                    Collections.singletonList(new LoadBalancingSettingsModel().withName(loadBalancingName)
                         .withSampleSize(4)
                         .withSuccessfulSamplesRequired(2)
-                        .withAdditionalLatencyMilliseconds(0)
-                ))
-                .withHealthProbeSettings(Collections.singletonList(
-                    new HealthProbeSettingsModel()
-                        .withName(healthProbeName)
+                        .withAdditionalLatencyMilliseconds(0)))
+                .withHealthProbeSettings(
+                    Collections.singletonList(new HealthProbeSettingsModel().withName(healthProbeName)
                         .withEnabledState(HealthProbeEnabled.ENABLED)
                         .withPath("/")
                         .withProtocol(FrontDoorProtocol.HTTPS)
                         .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-                        .withIntervalInSeconds(30)
-                ))
-                .withRoutingRules(Collections.singletonList(
-                    new RoutingRule()
-                        .withName(routingRuleName)
-                        .withEnabledState(RoutingRuleEnabledState.ENABLED)
-                        .withFrontendEndpoints(Collections.singletonList(new SubResource().withId(frontendEndpointsId)))
-                        .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
-                        .withPatternsToMatch(Collections.singletonList("/*"))
-                        .withRouteConfiguration(new ForwardingConfiguration()
-                            .withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
-                            .withBackendPool(new SubResource().withId(backendPoolsId)))
-                ))
+                        .withIntervalInSeconds(30)))
+                .withRoutingRules(Collections.singletonList(new RoutingRule().withName(routingRuleName)
+                    .withEnabledState(RoutingRuleEnabledState.ENABLED)
+                    .withFrontendEndpoints(Collections.singletonList(new SubResource().withId(frontendEndpointsId)))
+                    .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
+                    .withPatternsToMatch(Collections.singletonList("/*"))
+                    .withRouteConfiguration(
+                        new ForwardingConfiguration().withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
+                            .withBackendPool(new SubResource().withId(backendPoolsId)))))
                 .create();
             // @embedmeEnd
         } finally {
@@ -161,7 +148,8 @@ public class FrontDoorTests extends TestProxyTestBase {
     }
 
     private String getResourceId(String type, String name) {
-        return String.format("/subscriptions/%1$s/resourceGroups/%2$s/providers/Microsoft.Network/frontdoors/%3$s/%4$s/%5$s",
+        return String.format(
+            "/subscriptions/%1$s/resourceGroups/%2$s/providers/Microsoft.Network/frontdoors/%3$s/%4$s/%5$s",
             subscriptionId, resourceGroupName, fdName, type, name);
     }
 }

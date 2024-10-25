@@ -102,9 +102,7 @@ public class SynchronousReceiveWork {
      */
     public synchronized void complete() {
         if (!isTerminal || emitter.isCancelled()) {
-            LOGGER.atInfo()
-                .addKeyValue(WORK_ID_KEY, id)
-                .log("Completing task.");
+            LOGGER.atInfo().addKeyValue(WORK_ID_KEY, id).log("Completing task.");
             isTerminal = true;
             emitter.complete();
         }

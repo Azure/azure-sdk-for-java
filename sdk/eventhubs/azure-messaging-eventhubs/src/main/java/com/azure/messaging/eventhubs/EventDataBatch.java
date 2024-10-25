@@ -170,9 +170,9 @@ public final class EventDataBatch {
             // The maxMessageSize is the Event Hubs service enforced upper limit for the message size or the application
             // configured limit (lower than the service limit) when obtaining the batch object.
             // https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#what-is-the-message-event-size-for-event-hubs-
-            throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
+            throw LOGGER.logExceptionAsWarning(new AmqpException(
+                false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
+                    "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
         return size;

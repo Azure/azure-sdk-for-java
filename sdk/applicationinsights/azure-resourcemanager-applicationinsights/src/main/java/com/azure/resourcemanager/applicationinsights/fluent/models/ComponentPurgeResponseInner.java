@@ -48,10 +48,8 @@ public final class ComponentPurgeResponseInner {
      */
     public void validate() {
         if (operationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operationId in model ComponentPurgeResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operationId in model ComponentPurgeResponseInner"));
         }
     }
 

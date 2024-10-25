@@ -46,12 +46,13 @@ public final class ArtifactManifestsListByArtifactStoreMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ArtifactManifest> response = manager.artifactManifests().listByArtifactStore("wtbbaedorvvmqf",
-            "oygbdgwumgxd", "dhp", com.azure.core.util.Context.NONE);
+        PagedIterable<ArtifactManifest> response = manager.artifactManifests()
+            .listByArtifactStore("wtbbaedorvvmqf", "oygbdgwumgxd", "dhp", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("sxfwushcdp", response.iterator().next().location());
         Assertions.assertEquals("nq", response.iterator().next().tags().get("mgjfbpkuwxeoio"));

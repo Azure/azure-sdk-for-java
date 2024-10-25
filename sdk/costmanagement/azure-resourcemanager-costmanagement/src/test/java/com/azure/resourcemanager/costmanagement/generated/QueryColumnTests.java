@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryColumn model =
-            BinaryData.fromString("{\"name\":\"fcktqumiekke\",\"type\":\"ikh\"}").toObject(QueryColumn.class);
+        QueryColumn model
+            = BinaryData.fromString("{\"name\":\"fcktqumiekke\",\"type\":\"ikh\"}").toObject(QueryColumn.class);
         Assertions.assertEquals("fcktqumiekke", model.name());
         Assertions.assertEquals("ikh", model.type());
     }

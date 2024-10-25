@@ -19,11 +19,7 @@ public final class SubscriptionsGetEntityTagResponse extends ResponseBase<Subscr
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SubscriptionsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public SubscriptionsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         SubscriptionsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

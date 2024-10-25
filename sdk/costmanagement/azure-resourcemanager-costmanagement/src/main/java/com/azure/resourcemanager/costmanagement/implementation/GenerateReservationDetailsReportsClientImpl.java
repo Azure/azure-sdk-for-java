@@ -46,12 +46,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @param client the instance of the service client containing this operation class.
      */
     GenerateReservationDetailsReportsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GenerateReservationDetailsReportsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(GenerateReservationDetailsReportsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,34 +58,24 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface GenerateReservationDetailsReportsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> byBillingAccountId(
-            @HostParam("$host") String endpoint,
-            @PathParam("billingAccountId") String billingAccountId,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> byBillingAccountId(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountId") String billingAccountId, @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> byBillingProfileId(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> byBillingProfileId(@HostParam("$host") String endpoint,
             @PathParam("billingAccountId") String billingAccountId,
-            @PathParam("billingProfileId") String billingProfileId,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("billingProfileId") String billingProfileId, @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -107,13 +93,11 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(
-        String billingAccountId, String startDate, String endDate) {
+    private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(String billingAccountId,
+        String startDate, String endDate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -127,17 +111,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .byBillingAccountId(
-                            this.client.getEndpoint(),
-                            billingAccountId,
-                            startDate,
-                            endDate,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.byBillingAccountId(this.client.getEndpoint(), billingAccountId, startDate,
+                endDate, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -157,13 +132,11 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(
-        String billingAccountId, String startDate, String endDate, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(String billingAccountId,
+        String startDate, String endDate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -177,15 +150,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .byBillingAccountId(
-                this.client.getEndpoint(),
-                billingAccountId,
-                startDate,
-                endDate,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.byBillingAccountId(this.client.getEndpoint(), billingAccountId, startDate, endDate,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -202,18 +168,12 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountIdAsync(
-        String billingAccountId, String startDate, String endDate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            byBillingAccountIdWithResponseAsync(billingAccountId, startDate, endDate);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginByBillingAccountIdAsync(String billingAccountId, String startDate, String endDate) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = byBillingAccountIdWithResponseAsync(billingAccountId, startDate, endDate);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -231,15 +191,13 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountIdAsync(
-        String billingAccountId, String startDate, String endDate, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginByBillingAccountIdAsync(String billingAccountId, String startDate, String endDate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            byBillingAccountIdWithResponseAsync(billingAccountId, startDate, endDate, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = byBillingAccountIdWithResponseAsync(billingAccountId, startDate, endDate, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -256,8 +214,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginByBillingAccountId(String billingAccountId, String startDate, String endDate) {
         return this.beginByBillingAccountIdAsync(billingAccountId, startDate, endDate).getSyncPoller();
     }
 
@@ -276,8 +234,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginByBillingAccountId(String billingAccountId, String startDate, String endDate, Context context) {
         return this.beginByBillingAccountIdAsync(billingAccountId, startDate, endDate, context).getSyncPoller();
     }
 
@@ -295,10 +253,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> byBillingAccountIdAsync(
-        String billingAccountId, String startDate, String endDate) {
-        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate)
-            .last()
+    private Mono<OperationStatusInner> byBillingAccountIdAsync(String billingAccountId, String startDate,
+        String endDate) {
+        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -317,10 +274,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> byBillingAccountIdAsync(
-        String billingAccountId, String startDate, String endDate, Context context) {
-        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate, context)
-            .last()
+    private Mono<OperationStatusInner> byBillingAccountIdAsync(String billingAccountId, String startDate,
+        String endDate, Context context) {
+        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -357,8 +313,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner byBillingAccountId(
-        String billingAccountId, String startDate, String endDate, Context context) {
+    public OperationStatusInner byBillingAccountId(String billingAccountId, String startDate, String endDate,
+        Context context) {
         return byBillingAccountIdAsync(billingAccountId, startDate, endDate, context).block();
     }
 
@@ -379,13 +335,11 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
+    private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(String billingAccountId,
+        String billingProfileId, String startDate, String endDate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -403,18 +357,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .byBillingProfileId(
-                            this.client.getEndpoint(),
-                            billingAccountId,
-                            billingProfileId,
-                            startDate,
-                            endDate,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.byBillingProfileId(this.client.getEndpoint(), billingAccountId,
+                billingProfileId, startDate, endDate, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -436,13 +380,11 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(String billingAccountId,
+        String billingProfileId, String startDate, String endDate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -460,16 +402,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .byBillingProfileId(
-                this.client.getEndpoint(),
-                billingAccountId,
-                billingProfileId,
-                startDate,
-                endDate,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.byBillingProfileId(this.client.getEndpoint(), billingAccountId, billingProfileId, startDate,
+            endDate, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -490,16 +424,10 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileIdAsync(
         String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            byBillingProfileIdWithResponseAsync(billingAccountId, billingProfileId, startDate, endDate);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = byBillingProfileIdWithResponseAsync(billingAccountId, billingProfileId, startDate, endDate);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -522,12 +450,10 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileIdAsync(
         String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            byBillingProfileIdWithResponseAsync(billingAccountId, billingProfileId, startDate, endDate, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = byBillingProfileIdWithResponseAsync(billingAccountId, billingProfileId, startDate, endDate, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -546,10 +472,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        return this
-            .beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate)
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginByBillingProfileId(String billingAccountId, String billingProfileId, String startDate, String endDate) {
+        return this.beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate)
             .getSyncPoller();
     }
 
@@ -572,8 +497,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
         String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
-        return this
-            .beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context)
+        return this.beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context)
             .getSyncPoller();
     }
 
@@ -593,10 +517,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> byBillingProfileIdAsync(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate)
-            .last()
+    private Mono<OperationStatusInner> byBillingProfileIdAsync(String billingAccountId, String billingProfileId,
+        String startDate, String endDate) {
+        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -617,10 +540,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> byBillingProfileIdAsync(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
-        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context)
-            .last()
+    private Mono<OperationStatusInner> byBillingProfileIdAsync(String billingAccountId, String billingProfileId,
+        String startDate, String endDate, Context context) {
+        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -640,8 +562,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
+    public OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate) {
         return byBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate).block();
     }
 
@@ -662,8 +584,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
+    public OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context) {
         return byBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context).block();
     }
 }

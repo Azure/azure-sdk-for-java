@@ -98,9 +98,8 @@ public final class InventoryItemInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model InventoryItemInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model InventoryItemInner"));
         } else {
             properties().validate();
         }

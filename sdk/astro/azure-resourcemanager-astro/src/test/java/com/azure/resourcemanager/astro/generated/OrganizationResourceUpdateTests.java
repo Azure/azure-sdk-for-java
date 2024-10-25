@@ -48,20 +48,29 @@ public final class OrganizationResourceUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceUpdate model = new OrganizationResourceUpdate()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("ocjjxhvpmouexh", new UserAssignedIdentity(), "i",
-                    new UserAssignedIdentity(), "ojnxqbzvdd", new UserAssignedIdentity())))
-            .withTags(mapOf("btwnpzaoqvuhrhcf", "ndei", "pyeicxm", "cyddglmjthjqk", "ixuigdtopbobj", "ciwqvhk"))
-            .withProperties(new OrganizationResourceUpdateProperties()
-                .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("e").withLastName("a")
-                    .withEmailAddress("uhrzayvvt").withUpn("vdfgiotk").withPhoneNumber("utqxlngx"))
-                .withPartnerOrganizationProperties(new LiftrBaseDataPartnerOrganizationPropertiesUpdate()
-                    .withOrganizationId("gug").withWorkspaceId("krxd").withOrganizationName("i")
-                    .withWorkspaceName("thz")
-                    .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.DISABLE).withEnterpriseAppId("abhjybi")
-                        .withSingleSignOnUrl("h").withAadDomains(Arrays.asList("bowsk", "nyktzlcuiy", "gqywgndrv")))));
+        OrganizationResourceUpdate model
+            = new OrganizationResourceUpdate()
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("ocjjxhvpmouexh", new UserAssignedIdentity(), "i",
+                        new UserAssignedIdentity(), "ojnxqbzvdd", new UserAssignedIdentity())))
+                .withTags(mapOf("btwnpzaoqvuhrhcf", "ndei", "pyeicxm", "cyddglmjthjqk", "ixuigdtopbobj", "ciwqvhk"))
+                .withProperties(
+                    new OrganizationResourceUpdateProperties()
+                        .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("e")
+                            .withLastName("a")
+                            .withEmailAddress("uhrzayvvt")
+                            .withUpn("vdfgiotk")
+                            .withPhoneNumber("utqxlngx"))
+                        .withPartnerOrganizationProperties(
+                            new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("gug")
+                                .withWorkspaceId("krxd")
+                                .withOrganizationName("i")
+                                .withWorkspaceName("thz")
+                                .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
+                                    .withSingleSignOnState(SingleSignOnStates.DISABLE)
+                                    .withEnterpriseAppId("abhjybi")
+                                    .withSingleSignOnUrl("h")
+                                    .withAadDomains(Arrays.asList("bowsk", "nyktzlcuiy", "gqywgndrv")))));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("ndei", model.tags().get("btwnpzaoqvuhrhcf"));

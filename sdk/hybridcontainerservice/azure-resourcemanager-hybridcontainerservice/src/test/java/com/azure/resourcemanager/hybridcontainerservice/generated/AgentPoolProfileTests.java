@@ -31,10 +31,14 @@ public final class AgentPoolProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolProfile model = new AgentPoolProfile().withOsType(OsType.LINUX).withOsSku(Ossku.WINDOWS2019)
+        AgentPoolProfile model = new AgentPoolProfile().withOsType(OsType.LINUX)
+            .withOsSku(Ossku.WINDOWS2019)
             .withNodeLabels(mapOf("usarhmofc", "zyf", "yurkdtmlxhekuksj", "hs"))
-            .withNodeTaints(Arrays.asList("kc", "mparcryuanzw", "xzdxtayrlhmwh", "pmrqobm")).withMaxCount(400628348)
-            .withMinCount(1941399376).withEnableAutoScaling(false).withMaxPods(1077251222);
+            .withNodeTaints(Arrays.asList("kc", "mparcryuanzw", "xzdxtayrlhmwh", "pmrqobm"))
+            .withMaxCount(400628348)
+            .withMinCount(1941399376)
+            .withEnableAutoScaling(false)
+            .withMaxPods(1077251222);
         model = BinaryData.fromObject(model).toObject(AgentPoolProfile.class);
         Assertions.assertEquals(OsType.LINUX, model.osType());
         Assertions.assertEquals(Ossku.WINDOWS2019, model.osSku());

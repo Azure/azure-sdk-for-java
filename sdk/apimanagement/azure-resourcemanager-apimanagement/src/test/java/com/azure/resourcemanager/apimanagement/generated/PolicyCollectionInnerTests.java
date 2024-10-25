@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyCollectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"plpvm\",\"format\":\"rawxml\"},\"id\":\"oewbid\",\"name\":\"vteo\",\"type\":\"xvgpiude\"},{\"properties\":{\"value\":\"fsxzecp\",\"format\":\"rawxml-link\"},\"id\":\"kufykhvu\",\"name\":\"xepmrut\",\"type\":\"nabaobnslujd\"},{\"properties\":{\"value\":\"tymkmvguihywart\",\"format\":\"rawxml-link\"},\"id\":\"hkixkykxdssj\",\"name\":\"emmucfxh\",\"type\":\"kkflrmymyincqlhr\"}],\"count\":4924256008902256933,\"nextLink\":\"miii\"}")
-                .toObject(PolicyCollectionInner.class);
+        PolicyCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"plpvm\",\"format\":\"rawxml\"},\"id\":\"oewbid\",\"name\":\"vteo\",\"type\":\"xvgpiude\"},{\"properties\":{\"value\":\"fsxzecp\",\"format\":\"rawxml-link\"},\"id\":\"kufykhvu\",\"name\":\"xepmrut\",\"type\":\"nabaobnslujd\"},{\"properties\":{\"value\":\"tymkmvguihywart\",\"format\":\"rawxml-link\"},\"id\":\"hkixkykxdssj\",\"name\":\"emmucfxh\",\"type\":\"kkflrmymyincqlhr\"}],\"count\":4924256008902256933,\"nextLink\":\"miii\"}")
+            .toObject(PolicyCollectionInner.class);
         Assertions.assertEquals("plpvm", model.value().get(0).value());
         Assertions.assertEquals(PolicyContentFormat.RAWXML, model.value().get(0).format());
         Assertions.assertEquals(4924256008902256933L, model.count());
@@ -27,16 +25,13 @@ public final class PolicyCollectionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyCollectionInner model =
-            new PolicyCollectionInner()
+        PolicyCollectionInner model
+            = new PolicyCollectionInner()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new PolicyContractInner().withValue("plpvm").withFormat(PolicyContentFormat.RAWXML),
-                            new PolicyContractInner().withValue("fsxzecp").withFormat(PolicyContentFormat.RAWXML_LINK),
-                            new PolicyContractInner()
-                                .withValue("tymkmvguihywart")
-                                .withFormat(PolicyContentFormat.RAWXML_LINK)))
+                    Arrays.asList(new PolicyContractInner().withValue("plpvm").withFormat(PolicyContentFormat.RAWXML),
+                        new PolicyContractInner().withValue("fsxzecp").withFormat(PolicyContentFormat.RAWXML_LINK),
+                        new PolicyContractInner().withValue("tymkmvguihywart")
+                            .withFormat(PolicyContentFormat.RAWXML_LINK)))
                 .withCount(4924256008902256933L)
                 .withNextLink("miii");
         model = BinaryData.fromObject(model).toObject(PolicyCollectionInner.class);

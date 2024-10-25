@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicableSchedulePropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicableSchedulePropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"svth\",\"weeklyRecurrence\":{\"weekdays\":[\"tekovmri\"],\"time\":\"attgplu\"},\"dailyRecurrence\":{\"time\":\"tangcfhnykzcu\"},\"hourlyRecurrence\":{\"minute\":1514018500},\"timeZoneId\":\"wlmzqwmvtxnjmxmc\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":386890050,\"webhookUrl\":\"clxyn\",\"emailRecipient\":\"k\",\"notificationLocale\":\"fabuiyjibu\"},\"createdDate\":\"2021-07-04T05:28:17Z\",\"targetResourceId\":\"ugneikn\",\"provisioningState\":\"oxgjiuqhibt\",\"uniqueIdentifier\":\"ipq\"},\"location\":\"jedmurrxxgewp\",\"tags\":{\"cgwgcloxoebqinji\":\"qylkmqpzoyhlf\",\"qlafcbahhpzpofoi\":\"nwjfu\",\"kholvd\":\"jwpfilkm\",\"uartvti\":\"dviauogp\"},\"id\":\"kyefchnmnahmnxhk\",\"name\":\"jqirwrw\",\"type\":\"ooxf\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"wrsnewmozqvbu\",\"weeklyRecurrence\":{\"weekdays\":[\"m\",\"sycxhxzgaz\",\"taboidvmf\",\"hppubowsepdfgkmt\"],\"time\":\"erngbtcjuahokqto\"},\"dailyRecurrence\":{\"time\":\"uxofshfphwpnulai\"},\"hourlyRecurrence\":{\"minute\":102187695},\"timeZoneId\":\"ywhslwkojpllndnp\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":211402317,\"webhookUrl\":\"gfugsnnfhyet\",\"emailRecipient\":\"ypococtfjgtixr\",\"notificationLocale\":\"zuyt\"},\"createdDate\":\"2021-03-14T11:53:49Z\",\"targetResourceId\":\"muowolbauiro\",\"provisioningState\":\"ons\",\"uniqueIdentifier\":\"nw\"},\"location\":\"ngajinnixjawrtmj\",\"tags\":{\"vnekhenlusfnrdtj\":\"yccxlzhcox\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\"},\"id\":\"wkasiziesf\",\"name\":\"ughtuqfecjxeygtu\",\"type\":\"xu\"}}")
-                .toObject(ApplicableSchedulePropertiesInner.class);
+        ApplicableSchedulePropertiesInner model = BinaryData.fromString(
+            "{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"svth\",\"weeklyRecurrence\":{\"weekdays\":[\"tekovmri\"],\"time\":\"attgplu\"},\"dailyRecurrence\":{\"time\":\"tangcfhnykzcu\"},\"hourlyRecurrence\":{\"minute\":1514018500},\"timeZoneId\":\"wlmzqwmvtxnjmxmc\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":386890050,\"webhookUrl\":\"clxyn\",\"emailRecipient\":\"k\",\"notificationLocale\":\"fabuiyjibu\"},\"createdDate\":\"2021-07-04T05:28:17Z\",\"targetResourceId\":\"ugneikn\",\"provisioningState\":\"oxgjiuqhibt\",\"uniqueIdentifier\":\"ipq\"},\"location\":\"jedmurrxxgewp\",\"tags\":{\"cgwgcloxoebqinji\":\"qylkmqpzoyhlf\",\"qlafcbahhpzpofoi\":\"nwjfu\",\"kholvd\":\"jwpfilkm\",\"uartvti\":\"dviauogp\"},\"id\":\"kyefchnmnahmnxhk\",\"name\":\"jqirwrw\",\"type\":\"ooxf\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"wrsnewmozqvbu\",\"weeklyRecurrence\":{\"weekdays\":[\"m\",\"sycxhxzgaz\",\"taboidvmf\",\"hppubowsepdfgkmt\"],\"time\":\"erngbtcjuahokqto\"},\"dailyRecurrence\":{\"time\":\"uxofshfphwpnulai\"},\"hourlyRecurrence\":{\"minute\":102187695},\"timeZoneId\":\"ywhslwkojpllndnp\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":211402317,\"webhookUrl\":\"gfugsnnfhyet\",\"emailRecipient\":\"ypococtfjgtixr\",\"notificationLocale\":\"zuyt\"},\"createdDate\":\"2021-03-14T11:53:49Z\",\"targetResourceId\":\"muowolbauiro\",\"provisioningState\":\"ons\",\"uniqueIdentifier\":\"nw\"},\"location\":\"ngajinnixjawrtmj\",\"tags\":{\"vnekhenlusfnrdtj\":\"yccxlzhcox\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\"},\"id\":\"wkasiziesf\",\"name\":\"ughtuqfecjxeygtu\",\"type\":\"xu\"}}")
+            .toObject(ApplicableSchedulePropertiesInner.class);
         Assertions.assertEquals("jedmurrxxgewp", model.labVmsShutdown().location());
         Assertions.assertEquals("qylkmqpzoyhlf", model.labVmsShutdown().tags().get("cgwgcloxoebqinji"));
         Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsShutdown().status());
@@ -59,57 +57,39 @@ public final class ApplicableSchedulePropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicableSchedulePropertiesInner model =
-            new ApplicableSchedulePropertiesInner()
-                .withLabVmsShutdown(
-                    new ScheduleInner()
-                        .withLocation("jedmurrxxgewp")
-                        .withTags(
-                            mapOf(
-                                "cgwgcloxoebqinji",
-                                "qylkmqpzoyhlf",
-                                "qlafcbahhpzpofoi",
-                                "nwjfu",
-                                "kholvd",
-                                "jwpfilkm",
-                                "uartvti",
-                                "dviauogp"))
-                        .withStatus(EnableStatus.DISABLED)
-                        .withTaskType("svth")
-                        .withWeeklyRecurrence(
-                            new WeekDetails().withWeekdays(Arrays.asList("tekovmri")).withTime("attgplu"))
-                        .withDailyRecurrence(new DayDetails().withTime("tangcfhnykzcu"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(1514018500))
-                        .withTimeZoneId("wlmzqwmvtxnjmxmc")
-                        .withNotificationSettings(
-                            new NotificationSettings()
-                                .withStatus(EnableStatus.ENABLED)
-                                .withTimeInMinutes(386890050)
-                                .withWebhookUrl("clxyn")
-                                .withEmailRecipient("k")
-                                .withNotificationLocale("fabuiyjibu"))
-                        .withTargetResourceId("ugneikn"))
-                .withLabVmsStartup(
-                    new ScheduleInner()
-                        .withLocation("ngajinnixjawrtmj")
-                        .withTags(mapOf("vnekhenlusfnrdtj", "yccxlzhcox", "ttgepuslvyjtcv", "txrdcqtjvi"))
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTaskType("wrsnewmozqvbu")
-                        .withWeeklyRecurrence(
-                            new WeekDetails()
-                                .withWeekdays(Arrays.asList("m", "sycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt"))
-                                .withTime("erngbtcjuahokqto"))
-                        .withDailyRecurrence(new DayDetails().withTime("uxofshfphwpnulai"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(102187695))
-                        .withTimeZoneId("ywhslwkojpllndnp")
-                        .withNotificationSettings(
-                            new NotificationSettings()
-                                .withStatus(EnableStatus.DISABLED)
-                                .withTimeInMinutes(211402317)
-                                .withWebhookUrl("gfugsnnfhyet")
-                                .withEmailRecipient("ypococtfjgtixr")
-                                .withNotificationLocale("zuyt"))
-                        .withTargetResourceId("muowolbauiro"));
+        ApplicableSchedulePropertiesInner model
+            = new ApplicableSchedulePropertiesInner()
+                .withLabVmsShutdown(new ScheduleInner().withLocation("jedmurrxxgewp")
+                    .withTags(mapOf("cgwgcloxoebqinji", "qylkmqpzoyhlf", "qlafcbahhpzpofoi", "nwjfu", "kholvd",
+                        "jwpfilkm", "uartvti", "dviauogp"))
+                    .withStatus(EnableStatus.DISABLED)
+                    .withTaskType("svth")
+                    .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("tekovmri")).withTime("attgplu"))
+                    .withDailyRecurrence(new DayDetails().withTime("tangcfhnykzcu"))
+                    .withHourlyRecurrence(new HourDetails().withMinute(1514018500))
+                    .withTimeZoneId("wlmzqwmvtxnjmxmc")
+                    .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                        .withTimeInMinutes(386890050)
+                        .withWebhookUrl("clxyn")
+                        .withEmailRecipient("k")
+                        .withNotificationLocale("fabuiyjibu"))
+                    .withTargetResourceId("ugneikn"))
+                .withLabVmsStartup(new ScheduleInner().withLocation("ngajinnixjawrtmj")
+                    .withTags(mapOf("vnekhenlusfnrdtj", "yccxlzhcox", "ttgepuslvyjtcv", "txrdcqtjvi"))
+                    .withStatus(EnableStatus.ENABLED)
+                    .withTaskType("wrsnewmozqvbu")
+                    .withWeeklyRecurrence(new WeekDetails()
+                        .withWeekdays(Arrays.asList("m", "sycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt"))
+                        .withTime("erngbtcjuahokqto"))
+                    .withDailyRecurrence(new DayDetails().withTime("uxofshfphwpnulai"))
+                    .withHourlyRecurrence(new HourDetails().withMinute(102187695))
+                    .withTimeZoneId("ywhslwkojpllndnp")
+                    .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.DISABLED)
+                        .withTimeInMinutes(211402317)
+                        .withWebhookUrl("gfugsnnfhyet")
+                        .withEmailRecipient("ypococtfjgtixr")
+                        .withNotificationLocale("zuyt"))
+                    .withTargetResourceId("muowolbauiro"));
         model = BinaryData.fromObject(model).toObject(ApplicableSchedulePropertiesInner.class);
         Assertions.assertEquals("jedmurrxxgewp", model.labVmsShutdown().location());
         Assertions.assertEquals("qylkmqpzoyhlf", model.labVmsShutdown().tags().get("cgwgcloxoebqinji"));

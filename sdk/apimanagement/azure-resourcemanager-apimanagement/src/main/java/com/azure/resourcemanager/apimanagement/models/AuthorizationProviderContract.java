@@ -92,11 +92,8 @@ public interface AuthorizationProviderContract {
          * The stage of the AuthorizationProviderContract definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithIdentityProvider,
-                DefinitionStages.WithOauth2,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithIdentityProvider,
+            DefinitionStages.WithOauth2, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -168,11 +165,8 @@ public interface AuthorizationProviderContract {
     AuthorizationProviderContract.Update update();
 
     /** The template for AuthorizationProviderContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithIdentityProvider,
-            UpdateStages.WithOauth2,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithIdentityProvider, UpdateStages.WithOauth2,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

@@ -21,21 +21,18 @@ public final class TagRulesImpl implements TagRules {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    public TagRulesImpl(
-        TagRulesClient innerClient, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    public TagRulesImpl(TagRulesClient innerClient,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<TagRule> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        Response<TagRuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
+    public Response<TagRule> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context) {
+        Response<TagRuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TagRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -72,25 +69,18 @@ public final class TagRulesImpl implements TagRules {
     public TagRule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
     }
@@ -98,25 +88,18 @@ public final class TagRulesImpl implements TagRules {
     public Response<TagRule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
     }
@@ -124,25 +107,18 @@ public final class TagRulesImpl implements TagRules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         this.delete(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
@@ -150,25 +126,18 @@ public final class TagRulesImpl implements TagRules {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         this.delete(resourceGroupName, monitorName, ruleSetName, context);
     }

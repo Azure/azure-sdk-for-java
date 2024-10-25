@@ -23,7 +23,8 @@ public final class CheckNameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(false)
-            .withReason(CheckNameAvailabilityReason.INVALID).withMessage("gsybbejhp");
+            .withReason(CheckNameAvailabilityReason.INVALID)
+            .withMessage("gsybbejhp");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, model.reason());

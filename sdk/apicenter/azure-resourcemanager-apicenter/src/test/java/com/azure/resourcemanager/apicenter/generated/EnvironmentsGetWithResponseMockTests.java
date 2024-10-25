@@ -46,9 +46,10 @@ public final class EnvironmentsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Environment response = manager.environments()
             .getWithResponse("nrnrp", "ehuwrykqgaifmvik", "bydvkhbejdz", "xcv", com.azure.core.util.Context.NONE)

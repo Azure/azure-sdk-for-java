@@ -12,8 +12,8 @@ public final class ArmAsyncOperationImpl implements ArmAsyncOperation {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    ArmAsyncOperationImpl(
-        ArmAsyncOperationInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    ArmAsyncOperationImpl(ArmAsyncOperationInner innerObject,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

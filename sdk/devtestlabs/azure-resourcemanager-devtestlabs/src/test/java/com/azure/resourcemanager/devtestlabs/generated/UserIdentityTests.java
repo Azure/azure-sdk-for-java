@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalName\":\"weazul\",\"principalId\":\"ethwwnpjhlfz\",\"tenantId\":\"pchwa\",\"objectId\":\"bousn\",\"appId\":\"pgfewetwlyx\"}")
-                .toObject(UserIdentity.class);
+        UserIdentity model = BinaryData.fromString(
+            "{\"principalName\":\"weazul\",\"principalId\":\"ethwwnpjhlfz\",\"tenantId\":\"pchwa\",\"objectId\":\"bousn\",\"appId\":\"pgfewetwlyx\"}")
+            .toObject(UserIdentity.class);
         Assertions.assertEquals("weazul", model.principalName());
         Assertions.assertEquals("ethwwnpjhlfz", model.principalId());
         Assertions.assertEquals("pchwa", model.tenantId());
@@ -25,13 +23,11 @@ public final class UserIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentity model =
-            new UserIdentity()
-                .withPrincipalName("weazul")
-                .withPrincipalId("ethwwnpjhlfz")
-                .withTenantId("pchwa")
-                .withObjectId("bousn")
-                .withAppId("pgfewetwlyx");
+        UserIdentity model = new UserIdentity().withPrincipalName("weazul")
+            .withPrincipalId("ethwwnpjhlfz")
+            .withTenantId("pchwa")
+            .withObjectId("bousn")
+            .withAppId("pgfewetwlyx");
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
         Assertions.assertEquals("weazul", model.principalName());
         Assertions.assertEquals("ethwwnpjhlfz", model.principalId());

@@ -31,49 +31,35 @@ public final class GatewaysCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"locationData\":{\"name\":\"zrieitqmlzuw\",\"city\":\"dzqajxkmpebfh\",\"district\":\"eehbdjgplnl\",\"countryOrRegion\":\"feszunbua\"},\"description\":\"oubukqmie\"},\"id\":\"z\",\"name\":\"n\",\"type\":\"bvvequzy\"}";
+        String responseStr
+            = "{\"properties\":{\"locationData\":{\"name\":\"zrieitqmlzuw\",\"city\":\"dzqajxkmpebfh\",\"district\":\"eehbdjgplnl\",\"countryOrRegion\":\"feszunbua\"},\"description\":\"oubukqmie\"},\"id\":\"z\",\"name\":\"n\",\"type\":\"bvvequzy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GatewayContract response =
-            manager
-                .gateways()
-                .define("bkyy")
-                .withExistingService("gqwbbxiwtwfgo", "lalvemnnzug")
-                .withLocationData(
-                    new ResourceLocationDataContract()
-                        .withName("w")
-                        .withCity("hlmtsnvonvb")
-                        .withDistrict("swcdopnseptvdt")
-                        .withCountryOrRegion("caflgzw"))
-                .withDescription("pxdkbtwoqhgppwxn")
-                .withIfMatch("jtbcqjkbkjcurxr")
-                .create();
+        GatewayContract response = manager.gateways()
+            .define("bkyy")
+            .withExistingService("gqwbbxiwtwfgo", "lalvemnnzug")
+            .withLocationData(new ResourceLocationDataContract().withName("w")
+                .withCity("hlmtsnvonvb")
+                .withDistrict("swcdopnseptvdt")
+                .withCountryOrRegion("caflgzw"))
+            .withDescription("pxdkbtwoqhgppwxn")
+            .withIfMatch("jtbcqjkbkjcurxr")
+            .create();
 
         Assertions.assertEquals("zrieitqmlzuw", response.locationData().name());
         Assertions.assertEquals("dzqajxkmpebfh", response.locationData().city());

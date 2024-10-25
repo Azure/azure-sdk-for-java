@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameResultInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"message\":\"ulexxbczwtr\",\"reason\":\"Invalid\"}")
+        CheckNameResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":false,\"message\":\"ulexxbczwtr\",\"reason\":\"Invalid\"}")
                 .toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals("ulexxbczwtr", model.message());
@@ -23,8 +22,8 @@ public final class CheckNameResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameResultInner model =
-            new CheckNameResultInner().withNameAvailable(false).withMessage("ulexxbczwtr").withReason(Reason.INVALID);
+        CheckNameResultInner model
+            = new CheckNameResultInner().withNameAvailable(false).withMessage("ulexxbczwtr").withReason(Reason.INVALID);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals("ulexxbczwtr", model.message());

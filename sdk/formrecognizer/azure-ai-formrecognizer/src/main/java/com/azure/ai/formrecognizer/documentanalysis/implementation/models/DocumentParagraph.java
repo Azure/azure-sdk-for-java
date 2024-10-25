@@ -108,6 +108,9 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
         return this.spans;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

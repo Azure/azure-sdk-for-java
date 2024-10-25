@@ -14,8 +14,8 @@ public final class ApiExportResultImpl implements ApiExportResult {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ApiExportResultImpl(
-        ApiExportResultInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    ApiExportResultImpl(ApiExportResultInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

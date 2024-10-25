@@ -95,8 +95,7 @@ public final class DocumentModelDetails {
         return documentTypes;
     }
 
-    private void setDocumentTypes(
-        Map<String, DocumentTypeDetails> documentTypes) {
+    private void setDocumentTypes(Map<String, DocumentTypeDetails> documentTypes) {
         this.documentTypes = documentTypes;
     }
 
@@ -162,7 +161,8 @@ public final class DocumentModelDetails {
             }
 
             @Override
-            public void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocumentTypeDetails> docTypes) {
+            public void setDocTypes(DocumentModelDetails documentModelDetails,
+                Map<String, DocumentTypeDetails> docTypes) {
                 documentModelDetails.setDocumentTypes(docTypes);
             }
 

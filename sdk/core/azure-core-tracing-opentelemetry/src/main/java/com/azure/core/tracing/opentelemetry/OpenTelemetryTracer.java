@@ -137,7 +137,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (shouldSuppress(spanKind, context)) {
             return startSuppressedSpan(context);
         }
-        context = unsuppress(context);
+        context = unsuppressed(context);
         if (isInternalOrClientSpan(spanKind) && !context.getData(CLIENT_METHOD_CALL_FLAG).isPresent()) {
             context = context.addData(CLIENT_METHOD_CALL_FLAG, true);
         }
@@ -499,7 +499,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return kind == SpanKind.INTERNAL && getBoolean(CLIENT_METHOD_CALL_FLAG, context);
     }
 
-    private static Context unsuppress(Context context) {
+    private static Context unsuppressed(Context context) {
         if (getBoolean(SUPPRESSED_SPAN_FLAG, context)) {
             return context.addData(SUPPRESSED_SPAN_FLAG, false);
         }

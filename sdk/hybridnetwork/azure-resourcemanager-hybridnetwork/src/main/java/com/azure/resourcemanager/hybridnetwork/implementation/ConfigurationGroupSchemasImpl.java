@@ -53,8 +53,8 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
 
     public Response<ConfigurationGroupSchema> getWithResponse(String resourceGroupName, String publisherName,
         String configurationGroupSchemaName, Context context) {
-        Response<ConfigurationGroupSchemaInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, configurationGroupSchemaName, context);
+        Response<ConfigurationGroupSchemaInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationGroupSchemaImpl(inner.getValue(), this.manager()));
@@ -76,8 +76,8 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
 
     public ConfigurationGroupSchemaVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String configurationGroupSchemaName, ConfigurationGroupSchemaVersionUpdateStateInner parameters) {
-        ConfigurationGroupSchemaVersionUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, configurationGroupSchemaName, parameters);
+        ConfigurationGroupSchemaVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, configurationGroupSchemaName, parameters);
         if (inner != null) {
             return new ConfigurationGroupSchemaVersionUpdateStateImpl(inner, this.manager());
         } else {
@@ -88,8 +88,8 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     public ConfigurationGroupSchemaVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String configurationGroupSchemaName, ConfigurationGroupSchemaVersionUpdateStateInner parameters,
         Context context) {
-        ConfigurationGroupSchemaVersionUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, configurationGroupSchemaName, parameters, context);
+        ConfigurationGroupSchemaVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, configurationGroupSchemaName, parameters, context);
         if (inner != null) {
             return new ConfigurationGroupSchemaVersionUpdateStateImpl(inner, this.manager());
         } else {

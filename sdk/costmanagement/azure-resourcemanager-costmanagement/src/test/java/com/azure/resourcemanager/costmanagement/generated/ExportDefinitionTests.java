@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AmortizedCost\",\"timeframe\":\"BillingMonthToDate\",\"timePeriod\":{\"from\":\"2021-11-22T11:29:41Z\",\"to\":\"2020-12-26T05:50:43Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"altol\",\"ncwsob\",\"wcsdbnwdcfhucq\"]}}}")
-                .toObject(ExportDefinition.class);
+        ExportDefinition model = BinaryData.fromString(
+            "{\"type\":\"AmortizedCost\",\"timeframe\":\"BillingMonthToDate\",\"timePeriod\":{\"from\":\"2021-11-22T11:29:41Z\",\"to\":\"2020-12-26T05:50:43Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"altol\",\"ncwsob\",\"wcsdbnwdcfhucq\"]}}}")
+            .toObject(ExportDefinition.class);
         Assertions.assertEquals(ExportType.AMORTIZED_COST, model.type());
         Assertions.assertEquals(TimeframeType.BILLING_MONTH_TO_DATE, model.timeframe());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T11:29:41Z"), model.timePeriod().from());
@@ -34,20 +32,13 @@ public final class ExportDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportDefinition model =
-            new ExportDefinition()
-                .withType(ExportType.AMORTIZED_COST)
-                .withTimeframe(TimeframeType.BILLING_MONTH_TO_DATE)
-                .withTimePeriod(
-                    new ExportTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-11-22T11:29:41Z"))
-                        .withTo(OffsetDateTime.parse("2020-12-26T05:50:43Z")))
-                .withDataSet(
-                    new ExportDataset()
-                        .withGranularity(GranularityType.DAILY)
-                        .withConfiguration(
-                            new ExportDatasetConfiguration()
-                                .withColumns(Arrays.asList("altol", "ncwsob", "wcsdbnwdcfhucq"))));
+        ExportDefinition model = new ExportDefinition().withType(ExportType.AMORTIZED_COST)
+            .withTimeframe(TimeframeType.BILLING_MONTH_TO_DATE)
+            .withTimePeriod(new ExportTimePeriod().withFrom(OffsetDateTime.parse("2021-11-22T11:29:41Z"))
+                .withTo(OffsetDateTime.parse("2020-12-26T05:50:43Z")))
+            .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
+                .withConfiguration(
+                    new ExportDatasetConfiguration().withColumns(Arrays.asList("altol", "ncwsob", "wcsdbnwdcfhucq"))));
         model = BinaryData.fromObject(model).toObject(ExportDefinition.class);
         Assertions.assertEquals(ExportType.AMORTIZED_COST, model.type());
         Assertions.assertEquals(TimeframeType.BILLING_MONTH_TO_DATE, model.timeframe());

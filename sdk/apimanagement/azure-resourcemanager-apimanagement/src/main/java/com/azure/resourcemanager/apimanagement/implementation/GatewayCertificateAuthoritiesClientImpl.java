@@ -51,12 +51,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @param client the instance of the service client containing this operation class.
      */
     GatewayCertificateAuthoritiesClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GatewayCertificateAuthoritiesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(GatewayCertificateAuthoritiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,100 +63,66 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientG")
     public interface GatewayCertificateAuthoritiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GatewayCertificateAuthorityCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayId") String gatewayId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GatewayCertificateAuthorityCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GatewayCertificateAuthoritiesGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayId") String gatewayId,
-            @PathParam("certificateId") String certificateId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<GatewayCertificateAuthoritiesGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @PathParam("certificateId") String certificateId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GatewayCertificateAuthoritiesGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayId") String gatewayId,
-            @PathParam("certificateId") String certificateId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<GatewayCertificateAuthoritiesGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @PathParam("certificateId") String certificateId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GatewayCertificateAuthoritiesCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayId") String gatewayId,
-            @PathParam("certificateId") String certificateId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
+        Mono<GatewayCertificateAuthoritiesCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @PathParam("certificateId") String certificateId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") GatewayCertificateAuthorityContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/certificateAuthorities/{certificateId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayId") String gatewayId,
-            @PathParam("certificateId") String certificateId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @PathParam("certificateId") String certificateId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GatewayCertificateAuthorityCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -185,10 +147,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceSinglePageAsync(
         String resourceGroupName, String serviceName, String gatewayId, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,37 +161,17 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayId,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId,
+                    filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<GatewayCertificateAuthorityContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -256,18 +196,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
+        String resourceGroupName, String serviceName, String gatewayId, String filter, Integer top, Integer skip,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -280,35 +213,16 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                gatewayId,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -329,8 +243,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String filter, Integer top, Integer skip) {
+    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(String resourceGroupName,
+        String serviceName, String gatewayId, String filter, Integer top, Integer skip) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, gatewayId, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
@@ -349,8 +263,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String gatewayId) {
+    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(String resourceGroupName,
+        String serviceName, String gatewayId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -378,14 +292,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<GatewayCertificateAuthorityContractInner> listByServiceAsync(String resourceGroupName,
+        String serviceName, String gatewayId, String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, gatewayId, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -404,8 +312,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayCertificateAuthorityContractInner> listByService(
-        String resourceGroupName, String serviceName, String gatewayId) {
+    public PagedIterable<GatewayCertificateAuthorityContractInner> listByService(String resourceGroupName,
+        String serviceName, String gatewayId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -431,14 +339,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayCertificateAuthorityContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<GatewayCertificateAuthorityContractInner> listByService(String resourceGroupName,
+        String serviceName, String gatewayId, String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(
             listByServiceAsync(resourceGroupName, serviceName, gatewayId, filter, top, skip, context));
     }
@@ -461,10 +363,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
     private Mono<GatewayCertificateAuthoritiesGetEntityTagResponse> getEntityTagWithResponseAsync(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -480,26 +380,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayId,
-                            certificateId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId,
+                    certificateId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -522,10 +410,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
     private Mono<GatewayCertificateAuthoritiesGetEntityTagResponse> getEntityTagWithResponseAsync(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -541,24 +427,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                gatewayId,
-                certificateId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId, certificateId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -576,8 +451,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getEntityTagAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+    private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId)
             .flatMap(ignored -> Mono.empty());
     }
@@ -598,8 +473,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
+    public GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, context).block();
     }
 
@@ -636,13 +511,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GatewayCertificateAuthoritiesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+    private Mono<GatewayCertificateAuthoritiesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -658,26 +531,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayId,
-                            certificateId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId,
+                certificateId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -697,13 +557,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GatewayCertificateAuthoritiesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
+    private Mono<GatewayCertificateAuthoritiesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -719,24 +577,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                gatewayId,
-                certificateId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId, certificateId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -754,8 +601,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GatewayCertificateAuthorityContractInner> getAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+    private Mono<GatewayCertificateAuthorityContractInner> getAsync(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -776,8 +623,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayCertificateAuthoritiesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
+    public GatewayCertificateAuthoritiesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, context).block();
     }
 
@@ -796,8 +643,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayCertificateAuthorityContractInner get(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+    public GatewayCertificateAuthorityContractInner get(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId) {
         return getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, Context.NONE).getValue();
     }
 
@@ -819,17 +666,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayCertificateAuthoritiesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters,
-        String ifMatch) {
+        String resourceGroupName, String serviceName, String gatewayId, String certificateId,
+        GatewayCertificateAuthorityContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -845,10 +686,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -857,21 +696,9 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayId,
-                            certificateId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                gatewayId, certificateId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -894,18 +721,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayCertificateAuthoritiesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters,
-        String ifMatch,
-        Context context) {
+        String resourceGroupName, String serviceName, String gatewayId, String certificateId,
+        GatewayCertificateAuthorityContractInner parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -921,10 +741,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter certificateId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -933,19 +751,9 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                gatewayId,
-                certificateId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId,
+            certificateId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+            context);
     }
 
     /**
@@ -964,16 +772,12 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return gateway certificate authority details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GatewayCertificateAuthorityContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
+    private Mono<GatewayCertificateAuthorityContractInner> createOrUpdateAsync(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId,
         GatewayCertificateAuthorityContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, gatewayId, certificateId, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, parameters,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -994,17 +798,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, gatewayId, certificateId, parameters, ifMatch, context)
-            .block();
+    public GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, GatewayCertificateAuthorityContractInner parameters,
+        String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, parameters,
+            ifMatch, context).block();
     }
 
     /**
@@ -1023,16 +821,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayCertificateAuthorityContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters) {
+    public GatewayCertificateAuthorityContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, GatewayCertificateAuthorityContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, serviceName, gatewayId, certificateId, parameters, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, parameters, ifMatch,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1052,13 +845,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1077,27 +868,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayId,
-                            certificateId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId,
+                certificateId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1119,18 +896,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1149,25 +919,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                gatewayId,
-                certificateId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, gatewayId, certificateId,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1187,8 +945,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, String ifMatch) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String gatewayId, String certificateId,
+        String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1211,13 +969,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        String ifMatch,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch, context)
             .block();
     }
@@ -1238,8 +991,8 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String gatewayId, String certificateId,
+        String ifMatch) {
         deleteWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch, Context.NONE);
     }
 
@@ -1255,29 +1008,21 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>>
+        listByServiceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GatewayCertificateAuthorityContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1294,29 +1039,19 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>>
+        listByServiceNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

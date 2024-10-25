@@ -65,108 +65,76 @@ public final class HostsClientImpl implements HostsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
     public interface HostsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostName") String hostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") HostModelInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") HostModelInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HostModelInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<HostModelInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostName") String hostname,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HostModelInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<HostModelInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostName") String hostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourcePatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourcePatch body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostName") String hostname,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion, @QueryParam("force") Boolean force,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/hosts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HostsList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<HostsList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<HostsList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HostsList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HostsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<HostsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HostsList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -183,19 +151,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String hostname, HostModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String hostname,
+        HostModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -209,18 +173,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostname,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, hostname, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -239,19 +193,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String hostname, HostModelInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String hostname,
+        HostModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -265,16 +215,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostname,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, hostname,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -291,17 +233,11 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link PollerFlux} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(
-        String resourceGroupName, String hostname, HostModelInner body) {
+    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(String resourceGroupName,
+        String hostname, HostModelInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, hostname, body);
-        return this
-            .client
-            .<HostModelInner, HostModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                HostModelInner.class,
-                HostModelInner.class,
-                this.client.getContext());
+        return this.client.<HostModelInner, HostModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            HostModelInner.class, HostModelInner.class, this.client.getContext());
     }
 
     /**
@@ -317,18 +253,12 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link PollerFlux} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(
-        String resourceGroupName, String hostname) {
+    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(String resourceGroupName,
+        String hostname) {
         final HostModelInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, hostname, body);
-        return this
-            .client
-            .<HostModelInner, HostModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                HostModelInner.class,
-                HostModelInner.class,
-                this.client.getContext());
+        return this.client.<HostModelInner, HostModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            HostModelInner.class, HostModelInner.class, this.client.getContext());
     }
 
     /**
@@ -346,14 +276,12 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link PollerFlux} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(
-        String resourceGroupName, String hostname, HostModelInner body, Context context) {
+    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(String resourceGroupName,
+        String hostname, HostModelInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, hostname, body, context);
-        return this
-            .client
-            .<HostModelInner, HostModelInner>getLroResult(
-                mono, this.client.getHttpPipeline(), HostModelInner.class, HostModelInner.class, context);
+        return this.client.<HostModelInner, HostModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            HostModelInner.class, HostModelInner.class, context);
     }
 
     /**
@@ -369,8 +297,8 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link SyncPoller} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname) {
+    public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(String resourceGroupName,
+        String hostname) {
         final HostModelInner body = null;
         return this.beginCreateAsync(resourceGroupName, hostname, body).getSyncPoller();
     }
@@ -390,8 +318,8 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link SyncPoller} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname, HostModelInner body, Context context) {
+    public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(String resourceGroupName, String hostname,
+        HostModelInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, hostname, body, context).getSyncPoller();
     }
 
@@ -410,8 +338,7 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HostModelInner> createAsync(String resourceGroupName, String hostname, HostModelInner body) {
-        return beginCreateAsync(resourceGroupName, hostname, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, hostname, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -430,8 +357,7 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HostModelInner> createAsync(String resourceGroupName, String hostname) {
         final HostModelInner body = null;
-        return beginCreateAsync(resourceGroupName, hostname, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, hostname, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -450,10 +376,9 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HostModelInner> createAsync(
-        String resourceGroupName, String hostname, HostModelInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, hostname, body, context)
-            .last()
+    private Mono<HostModelInner> createAsync(String resourceGroupName, String hostname, HostModelInner body,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, hostname, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -507,19 +432,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HostModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String hostname) {
+    private Mono<Response<HostModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String hostname) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -531,16 +452,8 @@ public final class HostsClientImpl implements HostsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostname,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, hostname, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -558,19 +471,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HostModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String hostname, Context context) {
+    private Mono<Response<HostModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -581,15 +490,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostname,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            hostname, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -624,8 +526,8 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HostModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hostname, Context context) {
+    public Response<HostModelInner> getByResourceGroupWithResponse(String resourceGroupName, String hostname,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostname, context).block();
     }
 
@@ -660,19 +562,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HostModelInner>> updateWithResponseAsync(
-        String resourceGroupName, String hostname, ResourcePatch body) {
+    private Mono<Response<HostModelInner>> updateWithResponseAsync(String resourceGroupName, String hostname,
+        ResourcePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -686,18 +584,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostname,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, hostname, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -716,19 +604,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HostModelInner>> updateWithResponseAsync(
-        String resourceGroupName, String hostname, ResourcePatch body, Context context) {
+    private Mono<Response<HostModelInner>> updateWithResponseAsync(String resourceGroupName, String hostname,
+        ResourcePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -742,16 +626,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostname,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, hostname,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -788,8 +664,8 @@ public final class HostsClientImpl implements HostsClient {
      * @return define the host along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HostModelInner> updateWithResponse(
-        String resourceGroupName, String hostname, ResourcePatch body, Context context) {
+    public Response<HostModelInner> updateWithResponse(String resourceGroupName, String hostname, ResourcePatch body,
+        Context context) {
         return updateWithResponseAsync(resourceGroupName, hostname, body, context).block();
     }
 
@@ -825,19 +701,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String hostname, Boolean force) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hostname,
+        Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -848,18 +720,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostname,
-                            this.client.getApiVersion(),
-                            force,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, hostname, this.client.getApiVersion(), force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -878,19 +740,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String hostname, Boolean force, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hostname,
+        Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -901,16 +759,8 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostname,
-                this.client.getApiVersion(),
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, hostname,
+            this.client.getApiVersion(), force, accept, context);
     }
 
     /**
@@ -927,13 +777,11 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String hostname, Boolean force) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostname,
+        Boolean force) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostname, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -952,10 +800,8 @@ public final class HostsClientImpl implements HostsClient {
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostname) {
         final Boolean force = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostname, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -973,13 +819,12 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String hostname, Boolean force, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostname,
+        Boolean force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostname, force, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1015,8 +860,8 @@ public final class HostsClientImpl implements HostsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hostname, Boolean force, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname, Boolean force,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, hostname, force, context).getSyncPoller();
     }
 
@@ -1035,8 +880,7 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hostname, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, hostname, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, hostname, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1055,8 +899,7 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hostname) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, hostname, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, hostname, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1076,8 +919,7 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hostname, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, hostname, force, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, hostname, force, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1128,37 +970,19 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HostModelInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<HostModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<HostModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1176,35 +1000,20 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HostModelInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1234,8 +1043,8 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HostModelInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1282,16 +1091,12 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HostModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1299,25 +1104,10 @@ public final class HostsClientImpl implements HostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<HostModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<HostModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1334,19 +1124,15 @@ public final class HostsClientImpl implements HostsClient {
      * @return list of Hosts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HostModelInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<HostModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1355,22 +1141,10 @@ public final class HostsClientImpl implements HostsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1386,8 +1160,7 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HostModelInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1405,8 +1178,7 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HostModelInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1459,23 +1231,13 @@ public final class HostsClientImpl implements HostsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<HostModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<HostModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1496,24 +1258,14 @@ public final class HostsClientImpl implements HostsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1532,24 +1284,15 @@ public final class HostsClientImpl implements HostsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<HostModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<HostModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1565,29 +1308,19 @@ public final class HostsClientImpl implements HostsClient {
      * @return list of Hosts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HostModelInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<HostModelInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

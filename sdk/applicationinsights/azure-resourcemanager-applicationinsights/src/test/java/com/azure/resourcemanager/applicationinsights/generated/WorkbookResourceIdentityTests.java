@@ -15,19 +15,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"89c30e67-7c7e-469c-a7b2-fdc9cb1a6995\",\"tenantId\":\"a177e4fe-c5a7-4178-b308-b9ea1553ba7a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yfzqwhxxbu\":{\"principalId\":\"a5d54bb1-7822-4b1b-8a39-2bc9c49fc704\",\"clientId\":\"6fb2bb87-3f1a-45fd-948a-e10c5b11c475\"}}}")
-                .toObject(WorkbookResourceIdentity.class);
+        WorkbookResourceIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"89c30e67-7c7e-469c-a7b2-fdc9cb1a6995\",\"tenantId\":\"a177e4fe-c5a7-4178-b308-b9ea1553ba7a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yfzqwhxxbu\":{\"principalId\":\"a5d54bb1-7822-4b1b-8a39-2bc9c49fc704\",\"clientId\":\"6fb2bb87-3f1a-45fd-948a-e10c5b11c475\"}}}")
+            .toObject(WorkbookResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookResourceIdentity model =
-            new WorkbookResourceIdentity()
-                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+        WorkbookResourceIdentity model
+            = new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                 .withUserAssignedIdentities(mapOf("yfzqwhxxbu", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(WorkbookResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());

@@ -15,19 +15,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogAgreementResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogAgreementResourceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"publisher\":\"uv\",\"product\":\"xpyb\",\"plan\":\"m\",\"licenseTextLink\":\"mtz\",\"privacyPolicyLink\":\"bsphrupidgsybbe\",\"retrieveDatetime\":\"2021-02-20T13:53:07Z\",\"signature\":\"oycmsxaobhdxbmt\",\"accepted\":true},\"id\":\"jzehtb\",\"name\":\"ufpo\",\"type\":\"noi\"},{\"properties\":{\"publisher\":\"lrxybqsoq\",\"product\":\"gkdmb\",\"plan\":\"zlobcufpd\",\"licenseTextLink\":\"rbt\",\"privacyPolicyLink\":\"qjnqglhqgnufoooj\",\"retrieveDatetime\":\"2021-06-05T07:25:28Z\",\"signature\":\"sqe\",\"accepted\":true},\"id\":\"dfmglzlhjx\",\"name\":\"ifkwmrvktsizntoc\",\"type\":\"pa\"},{\"properties\":{\"publisher\":\"jpsq\",\"product\":\"mpoyfd\",\"plan\":\"ogknygjofjdd\",\"licenseTextLink\":\"s\",\"privacyPolicyLink\":\"eupewnwreitjz\",\"retrieveDatetime\":\"2021-09-21T22:26:17Z\",\"signature\":\"sarhmofc\",\"accepted\":false},\"id\":\"yurkdtmlxhekuksj\",\"name\":\"xukcdmpar\",\"type\":\"ryuanzwuxzdxtay\"}],\"nextLink\":\"hmwhfpmrqo\"}")
-                .toObject(DatadogAgreementResourceListResponse.class);
+        DatadogAgreementResourceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"publisher\":\"uv\",\"product\":\"xpyb\",\"plan\":\"m\",\"licenseTextLink\":\"mtz\",\"privacyPolicyLink\":\"bsphrupidgsybbe\",\"retrieveDatetime\":\"2021-02-20T13:53:07Z\",\"signature\":\"oycmsxaobhdxbmt\",\"accepted\":true},\"id\":\"jzehtb\",\"name\":\"ufpo\",\"type\":\"noi\"},{\"properties\":{\"publisher\":\"lrxybqsoq\",\"product\":\"gkdmb\",\"plan\":\"zlobcufpd\",\"licenseTextLink\":\"rbt\",\"privacyPolicyLink\":\"qjnqglhqgnufoooj\",\"retrieveDatetime\":\"2021-06-05T07:25:28Z\",\"signature\":\"sqe\",\"accepted\":true},\"id\":\"dfmglzlhjx\",\"name\":\"ifkwmrvktsizntoc\",\"type\":\"pa\"},{\"properties\":{\"publisher\":\"jpsq\",\"product\":\"mpoyfd\",\"plan\":\"ogknygjofjdd\",\"licenseTextLink\":\"s\",\"privacyPolicyLink\":\"eupewnwreitjz\",\"retrieveDatetime\":\"2021-09-21T22:26:17Z\",\"signature\":\"sarhmofc\",\"accepted\":false},\"id\":\"yurkdtmlxhekuksj\",\"name\":\"xukcdmpar\",\"type\":\"ryuanzwuxzdxtay\"}],\"nextLink\":\"hmwhfpmrqo\"}")
+            .toObject(DatadogAgreementResourceListResponse.class);
         Assertions.assertEquals("uv", model.value().get(0).properties().publisher());
         Assertions.assertEquals("xpyb", model.value().get(0).properties().product());
         Assertions.assertEquals("m", model.value().get(0).properties().plan());
         Assertions.assertEquals("mtz", model.value().get(0).properties().licenseTextLink());
         Assertions.assertEquals("bsphrupidgsybbe", model.value().get(0).properties().privacyPolicyLink());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-20T13:53:07Z"), model.value().get(0).properties().retrieveDatetime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T13:53:07Z"),
+            model.value().get(0).properties().retrieveDatetime());
         Assertions.assertEquals("oycmsxaobhdxbmt", model.value().get(0).properties().signature());
         Assertions.assertEquals(true, model.value().get(0).properties().accepted());
         Assertions.assertEquals("hmwhfpmrqo", model.nextLink());
@@ -35,54 +32,41 @@ public final class DatadogAgreementResourceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogAgreementResourceListResponse model =
-            new DatadogAgreementResourceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatadogAgreementResourceInner()
-                                .withProperties(
-                                    new DatadogAgreementProperties()
-                                        .withPublisher("uv")
-                                        .withProduct("xpyb")
-                                        .withPlan("m")
-                                        .withLicenseTextLink("mtz")
-                                        .withPrivacyPolicyLink("bsphrupidgsybbe")
-                                        .withRetrieveDatetime(OffsetDateTime.parse("2021-02-20T13:53:07Z"))
-                                        .withSignature("oycmsxaobhdxbmt")
-                                        .withAccepted(true)),
-                            new DatadogAgreementResourceInner()
-                                .withProperties(
-                                    new DatadogAgreementProperties()
-                                        .withPublisher("lrxybqsoq")
-                                        .withProduct("gkdmb")
-                                        .withPlan("zlobcufpd")
-                                        .withLicenseTextLink("rbt")
-                                        .withPrivacyPolicyLink("qjnqglhqgnufoooj")
-                                        .withRetrieveDatetime(OffsetDateTime.parse("2021-06-05T07:25:28Z"))
-                                        .withSignature("sqe")
-                                        .withAccepted(true)),
-                            new DatadogAgreementResourceInner()
-                                .withProperties(
-                                    new DatadogAgreementProperties()
-                                        .withPublisher("jpsq")
-                                        .withProduct("mpoyfd")
-                                        .withPlan("ogknygjofjdd")
-                                        .withLicenseTextLink("s")
-                                        .withPrivacyPolicyLink("eupewnwreitjz")
-                                        .withRetrieveDatetime(OffsetDateTime.parse("2021-09-21T22:26:17Z"))
-                                        .withSignature("sarhmofc")
-                                        .withAccepted(false))))
-                .withNextLink("hmwhfpmrqo");
+        DatadogAgreementResourceListResponse model = new DatadogAgreementResourceListResponse().withValue(Arrays.asList(
+            new DatadogAgreementResourceInner().withProperties(new DatadogAgreementProperties().withPublisher("uv")
+                .withProduct("xpyb")
+                .withPlan("m")
+                .withLicenseTextLink("mtz")
+                .withPrivacyPolicyLink("bsphrupidgsybbe")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-02-20T13:53:07Z"))
+                .withSignature("oycmsxaobhdxbmt")
+                .withAccepted(true)),
+            new DatadogAgreementResourceInner()
+                .withProperties(new DatadogAgreementProperties().withPublisher("lrxybqsoq")
+                    .withProduct("gkdmb")
+                    .withPlan("zlobcufpd")
+                    .withLicenseTextLink("rbt")
+                    .withPrivacyPolicyLink("qjnqglhqgnufoooj")
+                    .withRetrieveDatetime(OffsetDateTime.parse("2021-06-05T07:25:28Z"))
+                    .withSignature("sqe")
+                    .withAccepted(true)),
+            new DatadogAgreementResourceInner().withProperties(new DatadogAgreementProperties().withPublisher("jpsq")
+                .withProduct("mpoyfd")
+                .withPlan("ogknygjofjdd")
+                .withLicenseTextLink("s")
+                .withPrivacyPolicyLink("eupewnwreitjz")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-09-21T22:26:17Z"))
+                .withSignature("sarhmofc")
+                .withAccepted(false))))
+            .withNextLink("hmwhfpmrqo");
         model = BinaryData.fromObject(model).toObject(DatadogAgreementResourceListResponse.class);
         Assertions.assertEquals("uv", model.value().get(0).properties().publisher());
         Assertions.assertEquals("xpyb", model.value().get(0).properties().product());
         Assertions.assertEquals("m", model.value().get(0).properties().plan());
         Assertions.assertEquals("mtz", model.value().get(0).properties().licenseTextLink());
         Assertions.assertEquals("bsphrupidgsybbe", model.value().get(0).properties().privacyPolicyLink());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-20T13:53:07Z"), model.value().get(0).properties().retrieveDatetime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T13:53:07Z"),
+            model.value().get(0).properties().retrieveDatetime());
         Assertions.assertEquals("oycmsxaobhdxbmt", model.value().get(0).properties().signature());
         Assertions.assertEquals(true, model.value().get(0).properties().accepted());
         Assertions.assertEquals("hmwhfpmrqo", model.nextLink());

@@ -53,10 +53,7 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -84,8 +81,13 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), healthcareApisManager.workspaces().getById(workspace.id()).name());
-            Assertions.assertTrue(healthcareApisManager.workspaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(workspace.name(),
+                healthcareApisManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertTrue(healthcareApisManager.workspaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (workspace != null) {
                 healthcareApisManager.workspaces().deleteById(workspace.id());

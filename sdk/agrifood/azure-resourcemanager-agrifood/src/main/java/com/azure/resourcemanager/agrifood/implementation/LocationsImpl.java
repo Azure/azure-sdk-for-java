@@ -21,8 +21,8 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -36,15 +36,12 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest body, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(body, context);
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body,
+        Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

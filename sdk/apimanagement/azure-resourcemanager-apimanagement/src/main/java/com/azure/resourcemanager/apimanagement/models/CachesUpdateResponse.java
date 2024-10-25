@@ -20,11 +20,7 @@ public final class CachesUpdateResponse extends ResponseBase<CachesUpdateHeaders
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CachesUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CacheContractInner value,
+    public CachesUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, CacheContractInner value,
         CachesUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

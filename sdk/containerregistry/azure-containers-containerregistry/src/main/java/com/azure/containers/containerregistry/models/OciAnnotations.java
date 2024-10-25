@@ -86,7 +86,8 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     private Map<String, Object> additionalProperties;
 
     /** Creates an instance of OciAnnotations class. */
-    public OciAnnotations() {}
+    public OciAnnotations() {
+    }
 
     /**
      * Get the createdOn property: Date and time on which the image was built (string, date-time as defined by
@@ -386,51 +387,49 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @throws IOException If an error occurs while reading the OciAnnotations.
      */
     public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OciAnnotations deserializedOciAnnotations = new OciAnnotations();
-                    Map<String, Object> additionalProperties = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OciAnnotations deserializedOciAnnotations = new OciAnnotations();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("org.opencontainers.image.created".equals(fieldName)) {
-                            deserializedOciAnnotations.createdOn =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("org.opencontainers.image.authors".equals(fieldName)) {
-                            deserializedOciAnnotations.authors = reader.getString();
-                        } else if ("org.opencontainers.image.url".equals(fieldName)) {
-                            deserializedOciAnnotations.url = reader.getString();
-                        } else if ("org.opencontainers.image.documentation".equals(fieldName)) {
-                            deserializedOciAnnotations.documentation = reader.getString();
-                        } else if ("org.opencontainers.image.source".equals(fieldName)) {
-                            deserializedOciAnnotations.source = reader.getString();
-                        } else if ("org.opencontainers.image.version".equals(fieldName)) {
-                            deserializedOciAnnotations.version = reader.getString();
-                        } else if ("org.opencontainers.image.revision".equals(fieldName)) {
-                            deserializedOciAnnotations.revision = reader.getString();
-                        } else if ("org.opencontainers.image.vendor".equals(fieldName)) {
-                            deserializedOciAnnotations.vendor = reader.getString();
-                        } else if ("org.opencontainers.image.licenses".equals(fieldName)) {
-                            deserializedOciAnnotations.licenses = reader.getString();
-                        } else if ("org.opencontainers.image.ref.name".equals(fieldName)) {
-                            deserializedOciAnnotations.name = reader.getString();
-                        } else if ("org.opencontainers.image.title".equals(fieldName)) {
-                            deserializedOciAnnotations.title = reader.getString();
-                        } else if ("org.opencontainers.image.description".equals(fieldName)) {
-                            deserializedOciAnnotations.description = reader.getString();
-                        } else {
-                            if (additionalProperties == null) {
-                                additionalProperties = new LinkedHashMap<>();
-                            }
-
-                            additionalProperties.put(fieldName, reader.readUntyped());
-                        }
+                if ("org.opencontainers.image.created".equals(fieldName)) {
+                    deserializedOciAnnotations.createdOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("org.opencontainers.image.authors".equals(fieldName)) {
+                    deserializedOciAnnotations.authors = reader.getString();
+                } else if ("org.opencontainers.image.url".equals(fieldName)) {
+                    deserializedOciAnnotations.url = reader.getString();
+                } else if ("org.opencontainers.image.documentation".equals(fieldName)) {
+                    deserializedOciAnnotations.documentation = reader.getString();
+                } else if ("org.opencontainers.image.source".equals(fieldName)) {
+                    deserializedOciAnnotations.source = reader.getString();
+                } else if ("org.opencontainers.image.version".equals(fieldName)) {
+                    deserializedOciAnnotations.version = reader.getString();
+                } else if ("org.opencontainers.image.revision".equals(fieldName)) {
+                    deserializedOciAnnotations.revision = reader.getString();
+                } else if ("org.opencontainers.image.vendor".equals(fieldName)) {
+                    deserializedOciAnnotations.vendor = reader.getString();
+                } else if ("org.opencontainers.image.licenses".equals(fieldName)) {
+                    deserializedOciAnnotations.licenses = reader.getString();
+                } else if ("org.opencontainers.image.ref.name".equals(fieldName)) {
+                    deserializedOciAnnotations.name = reader.getString();
+                } else if ("org.opencontainers.image.title".equals(fieldName)) {
+                    deserializedOciAnnotations.title = reader.getString();
+                } else if ("org.opencontainers.image.description".equals(fieldName)) {
+                    deserializedOciAnnotations.description = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
                     }
-                    deserializedOciAnnotations.additionalProperties = additionalProperties;
 
-                    return deserializedOciAnnotations;
-                });
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOciAnnotations.additionalProperties = additionalProperties;
+
+            return deserializedOciAnnotations;
+        });
     }
 }

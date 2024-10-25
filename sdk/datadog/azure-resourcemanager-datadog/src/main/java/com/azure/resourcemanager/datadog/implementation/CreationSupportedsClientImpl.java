@@ -44,8 +44,8 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @param client the instance of the service client containing this operation class.
      */
     CreationSupportedsClientImpl(MicrosoftDatadogClientImpl client) {
-        this.service =
-            RestProxy.create(CreationSupportedsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CreationSupportedsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,28 +56,22 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftDatadogClie")
     public interface CreationSupportedsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreateResourceSupportedResponseList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("datadogOrganizationId") String datadogOrganizationId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CreateResourceSupportedResponseList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("datadogOrganizationId") String datadogOrganizationId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreateResourceSupportedResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("datadogOrganizationId") String datadogOrganizationId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CreateResourceSupportedResponseInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("datadogOrganizationId") String datadogOrganizationId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -91,19 +85,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(
-        String datadogOrganizationId) {
+    private Mono<PagedResponse<CreateResourceSupportedResponseInner>>
+        listSinglePageAsync(String datadogOrganizationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -111,20 +101,10 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            datadogOrganizationId,
-                            accept,
-                            context))
-            .<PagedResponse<CreateResourceSupportedResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), datadogOrganizationId, accept, context))
+            .<PagedResponse<CreateResourceSupportedResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -139,19 +119,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(
-        String datadogOrganizationId, Context context) {
+    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(String datadogOrganizationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -160,17 +136,10 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                datadogOrganizationId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+                datadogOrganizationId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -244,16 +213,12 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -261,16 +226,8 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            datadogOrganizationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), datadogOrganizationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -286,19 +243,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(
-        String datadogOrganizationId, Context context) {
+    private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -306,14 +259,8 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                datadogOrganizationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            datadogOrganizationId, accept, context);
     }
 
     /**
@@ -341,8 +288,8 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return datadog resource can be created or not along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateResourceSupportedResponseInner> getWithResponse(
-        String datadogOrganizationId, Context context) {
+    public Response<CreateResourceSupportedResponseInner> getWithResponse(String datadogOrganizationId,
+        Context context) {
         return getWithResponseAsync(datadogOrganizationId, context).block();
     }
 

@@ -20,12 +20,8 @@ public final class TagsGetByOperationResponse extends ResponseBase<TagsGetByOper
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TagsGetByOperationResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        TagContractInner value,
-        TagsGetByOperationHeaders headers) {
+    public TagsGetByOperationResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        TagContractInner value, TagsGetByOperationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

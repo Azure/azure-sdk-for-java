@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
-
 /**
  * Options that may be passed when using recognize business card APIs on Form Recognizer client.
  */

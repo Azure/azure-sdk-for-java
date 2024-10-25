@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"uujitcjc\",\"repositoryName\":\"zevndhkrwpdappds\",\"branchName\":\"kvwrwjfeu\",\"dockerfile\":\"hutje\",\"dockerBuildContext\":\"mrldhu\",\"namespace\":\"zdatqxhocdg\",\"aksResourceId\":\"gphuticndvka\",\"prURL\":\"wyiftyhxhur\",\"pullNumber\":233179905,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"php\",\"languageVersion\":\"wcukjfkgiawxk\",\"builderVersion\":\"ypl\",\"port\":\"kbasyypn\",\"appName\":\"hsgcbacphejkot\",\"dockerfileOutputDirectory\":\"qgoulznd\",\"manifestOutputDirectory\":\"kwy\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"adgakeqsrxybz\",\"namespace\":\"e\",\"imageTag\":\"ytb\"}},\"location\":\"qfou\",\"tags\":{\"glougpbk\":\"mnkzsmod\",\"uqktap\":\"tmut\",\"kdosvqw\":\"pwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"}")
-                .toObject(WorkflowInner.class);
+        WorkflowInner model = BinaryData.fromString(
+            "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"uujitcjc\",\"repositoryName\":\"zevndhkrwpdappds\",\"branchName\":\"kvwrwjfeu\",\"dockerfile\":\"hutje\",\"dockerBuildContext\":\"mrldhu\",\"namespace\":\"zdatqxhocdg\",\"aksResourceId\":\"gphuticndvka\",\"prURL\":\"wyiftyhxhur\",\"pullNumber\":233179905,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"php\",\"languageVersion\":\"wcukjfkgiawxk\",\"builderVersion\":\"ypl\",\"port\":\"kbasyypn\",\"appName\":\"hsgcbacphejkot\",\"dockerfileOutputDirectory\":\"qgoulznd\",\"manifestOutputDirectory\":\"kwy\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"adgakeqsrxybz\",\"namespace\":\"e\",\"imageTag\":\"ytb\"}},\"location\":\"qfou\",\"tags\":{\"glougpbk\":\"mnkzsmod\",\"uqktap\":\"tmut\",\"kdosvqw\":\"pwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"}")
+            .toObject(WorkflowInner.class);
         Assertions.assertEquals("qfou", model.location());
         Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));
         Assertions.assertEquals("uujitcjc", model.repositoryOwner());
@@ -48,30 +46,28 @@ public final class WorkflowInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowInner model =
-            new WorkflowInner()
-                .withLocation("qfou")
-                .withTags(mapOf("glougpbk", "mnkzsmod", "uqktap", "tmut", "kdosvqw", "pwgcuertu"))
-                .withRepositoryOwner("uujitcjc")
-                .withRepositoryName("zevndhkrwpdappds")
-                .withBranchName("kvwrwjfeu")
-                .withDockerfile("hutje")
-                .withDockerBuildContext("mrldhu")
-                .withNamespace("zdatqxhocdg")
-                .withAksResourceId("gphuticndvka")
-                .withGenerationLanguage(GenerationLanguage.PHP)
-                .withLanguageVersion("wcukjfkgiawxk")
-                .withBuilderVersion("ypl")
-                .withPort("kbasyypn")
-                .withAppName("hsgcbacphejkot")
-                .withDockerfileOutputDirectory("qgoulznd")
-                .withManifestOutputDirectory("kwy")
-                .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
-                .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
-                .withManifestType(GenerationManifestType.HELM)
-                .withImageName("adgakeqsrxybz")
-                .withNamespaceArtifactGenerationPropertiesNamespace("e")
-                .withImageTag("ytb");
+        WorkflowInner model = new WorkflowInner().withLocation("qfou")
+            .withTags(mapOf("glougpbk", "mnkzsmod", "uqktap", "tmut", "kdosvqw", "pwgcuertu"))
+            .withRepositoryOwner("uujitcjc")
+            .withRepositoryName("zevndhkrwpdappds")
+            .withBranchName("kvwrwjfeu")
+            .withDockerfile("hutje")
+            .withDockerBuildContext("mrldhu")
+            .withNamespace("zdatqxhocdg")
+            .withAksResourceId("gphuticndvka")
+            .withGenerationLanguage(GenerationLanguage.PHP)
+            .withLanguageVersion("wcukjfkgiawxk")
+            .withBuilderVersion("ypl")
+            .withPort("kbasyypn")
+            .withAppName("hsgcbacphejkot")
+            .withDockerfileOutputDirectory("qgoulznd")
+            .withManifestOutputDirectory("kwy")
+            .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
+            .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
+            .withManifestType(GenerationManifestType.HELM)
+            .withImageName("adgakeqsrxybz")
+            .withNamespaceArtifactGenerationPropertiesNamespace("e")
+            .withImageTag("ytb");
         model = BinaryData.fromObject(model).toObject(WorkflowInner.class);
         Assertions.assertEquals("qfou", model.location());
         Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));

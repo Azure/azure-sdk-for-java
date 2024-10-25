@@ -84,14 +84,16 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role create() {
-        this.innerObject = serviceManager.serviceClient().getRoles().create(resourceGroupName, clusterName, roleName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoles()
+            .create(resourceGroupName, clusterName, roleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Role create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getRoles().create(resourceGroupName, clusterName, roleName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoles()
+            .create(resourceGroupName, clusterName, roleName, this.innerModel(), context);
         return this;
     }
 
@@ -102,14 +104,18 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role refresh() {
-        this.innerObject = serviceManager.serviceClient().getRoles()
-            .getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoles()
+            .getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Role refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getRoles()
-            .getWithResponse(resourceGroupName, clusterName, roleName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoles()
+            .getWithResponse(resourceGroupName, clusterName, roleName, context)
+            .getValue();
         return this;
     }
 

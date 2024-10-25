@@ -24,7 +24,10 @@ public final class LiftrBaseUserDetailsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiftrBaseUserDetailsUpdate model = new LiftrBaseUserDetailsUpdate().withFirstName("bonqvpkvlrxnjeas")
-            .withLastName("pheoflokeyy").withEmailAddress("nj").withUpn("lwtgrhpdj").withPhoneNumber("umasxazjpq");
+            .withLastName("pheoflokeyy")
+            .withEmailAddress("nj")
+            .withUpn("lwtgrhpdj")
+            .withPhoneNumber("umasxazjpq");
         model = BinaryData.fromObject(model).toObject(LiftrBaseUserDetailsUpdate.class);
         Assertions.assertEquals("bonqvpkvlrxnjeas", model.firstName());
         Assertions.assertEquals("pheoflokeyy", model.lastName());

@@ -39,65 +39,70 @@ public final class NetworkFunctionListResultTests {
         NetworkFunctionListResult model
             = new NetworkFunctionListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkFunctionInner().withLocation("u")
-                                .withTags(mapOf("nhzgpphrcgyn", "gqywgndrv", "fsxlzevgbmqjqa", "ocpecfvmmco"))
-                                .withProperties(new NetworkFunctionPropertiesFormat()
-                                    .withNetworkFunctionDefinitionVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withNfviType(NfviType.UNKNOWN).withNfviId("w").withAllowSoftwareUpdate(false)
-                                    .withRoleOverrideValues(
-                                        Arrays.asList("hrzayvvtpgvdf", "iotkftutqxl", "gxlefgugnxkrxd")))
-                                .withEtag("i")
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                    .withUserAssignedIdentities(
-                                        mapOf(
-                                            "rabhjybigeho", new UserAssignedIdentity(), "owskanyktz",
-                                            new UserAssignedIdentity()))),
-                            new NetworkFunctionInner().withLocation("npwlbjnpg")
-                                .withTags(mapOf("suesnzw", "tadehxnltyfsopp", "avo", "ej", "vudwx", "xzdmohctb",
-                                    "gujjugwdkcglh", "ndnvo"))
-                                .withProperties(new NetworkFunctionPropertiesFormat()
-                                    .withNetworkFunctionDefinitionVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withNfviType(NfviType.AZURE_OPERATOR_NEXUS).withNfviId("cbonqvpk")
-                                    .withAllowSoftwareUpdate(true).withRoleOverrideValues(
-                                        Arrays.asList("jease", "pheoflokeyy", "enjbdlwtgrhp", "jp")))
-                                .withEtag("masxazjpqyegu").withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(
-                                            mapOf(
-                                                "jzzvdud", new UserAssignedIdentity(), "slfhotwm",
-                                                new UserAssignedIdentity()))),
-                            new NetworkFunctionInner().withLocation("bezy")
-                                .withTags(
-                                    mapOf("ywqsmbsurexim", "kktwhrdxw", "stkiiuxhqyud", "ryocfsfksymdd", "rq", "o"))
-                                .withProperties(new NetworkFunctionPropertiesFormat()
-                                    .withNetworkFunctionDefinitionVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withNfviType(NfviType.AZURE_OPERATOR_NEXUS).withNfviId("yvxyqjp")
-                                    .withAllowSoftwareUpdate(true).withRoleOverrideValues(
-                                        Arrays.asList("pngjcrcczsqpjhvm", "ajvnysounqe", "a", "oaeupfhyhltrpmo")))
-                                .withEtag("mcmatuokthfuiu")
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("xodpuozmyzydagfu", new UserAssignedIdentity()))),
-                            new NetworkFunctionInner().withLocation("vmezy")
-                                .withTags(mapOf("grxwbu", "xmzsbbzogg", "dptkoenkouk", "vjxxjnsp", "pocipazyxoegu",
-                                    "vudwtiukbldng", "npiucgygevqznty", "g"))
-                                .withProperties(new NetworkFunctionPropertiesFormat()
-                                    .withNetworkFunctionDefinitionVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withNfviType(NfviType.AZURE_OPERATOR_NEXUS).withNfviId("ciwwzjuqkhr")
-                                    .withAllowSoftwareUpdate(true).withRoleOverrideValues(
-                                        Arrays.asList("ku", "foskghsauuimj", "vxieduugidyj", "rfbyaosvexcso")))
-                                .withEtag("clhocohsl")
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED).withUserAssignedIdentities(
-                                        mapOf("buhfmvfaxkffeiit", new UserAssignedIdentity())))));
+                    Arrays.asList(
+                        new NetworkFunctionInner().withLocation("u")
+                            .withTags(mapOf("nhzgpphrcgyn", "gqywgndrv", "fsxlzevgbmqjqa", "ocpecfvmmco"))
+                            .withProperties(new NetworkFunctionPropertiesFormat()
+                                .withNetworkFunctionDefinitionVersionResourceReference(
+                                    new DeploymentResourceIdReference())
+                                .withNfviType(NfviType.UNKNOWN)
+                                .withNfviId("w")
+                                .withAllowSoftwareUpdate(false)
+                                .withRoleOverrideValues(
+                                    Arrays.asList("hrzayvvtpgvdf", "iotkftutqxl", "gxlefgugnxkrxd")))
+                            .withEtag("i")
+                            .withIdentity(new ManagedServiceIdentity()
+                                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                .withUserAssignedIdentities(
+                                    mapOf(
+                                        "rabhjybigeho", new UserAssignedIdentity(), "owskanyktz",
+                                        new UserAssignedIdentity()))),
+                        new NetworkFunctionInner().withLocation("npwlbjnpg")
+                            .withTags(mapOf("suesnzw", "tadehxnltyfsopp", "avo", "ej", "vudwx", "xzdmohctb",
+                                "gujjugwdkcglh", "ndnvo"))
+                            .withProperties(new NetworkFunctionPropertiesFormat()
+                                .withNetworkFunctionDefinitionVersionResourceReference(
+                                    new DeploymentResourceIdReference())
+                                .withNfviType(NfviType.AZURE_OPERATOR_NEXUS)
+                                .withNfviId("cbonqvpk")
+                                .withAllowSoftwareUpdate(true)
+                                .withRoleOverrideValues(Arrays.asList("jease", "pheoflokeyy", "enjbdlwtgrhp", "jp")))
+                            .withEtag("masxazjpqyegu")
+                            .withIdentity(
+                                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                                    .withUserAssignedIdentities(mapOf(
+                                        "jzzvdud", new UserAssignedIdentity(), "slfhotwm",
+                                        new UserAssignedIdentity()))),
+                        new NetworkFunctionInner()
+                            .withLocation("bezy")
+                            .withTags(mapOf("ywqsmbsurexim", "kktwhrdxw", "stkiiuxhqyud", "ryocfsfksymdd", "rq", "o"))
+                            .withProperties(new NetworkFunctionPropertiesFormat()
+                                .withNetworkFunctionDefinitionVersionResourceReference(
+                                    new DeploymentResourceIdReference())
+                                .withNfviType(NfviType.AZURE_OPERATOR_NEXUS)
+                                .withNfviId("yvxyqjp")
+                                .withAllowSoftwareUpdate(true)
+                                .withRoleOverrideValues(
+                                    Arrays.asList("pngjcrcczsqpjhvm", "ajvnysounqe", "a", "oaeupfhyhltrpmo")))
+                            .withEtag("mcmatuokthfuiu")
+                            .withIdentity(new ManagedServiceIdentity()
+                                .withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentities(mapOf("xodpuozmyzydagfu", new UserAssignedIdentity()))),
+                        new NetworkFunctionInner().withLocation("vmezy")
+                            .withTags(mapOf("grxwbu", "xmzsbbzogg", "dptkoenkouk", "vjxxjnsp", "pocipazyxoegu",
+                                "vudwtiukbldng", "npiucgygevqznty", "g"))
+                            .withProperties(new NetworkFunctionPropertiesFormat()
+                                .withNetworkFunctionDefinitionVersionResourceReference(
+                                    new DeploymentResourceIdReference())
+                                .withNfviType(NfviType.AZURE_OPERATOR_NEXUS)
+                                .withNfviId("ciwwzjuqkhr")
+                                .withAllowSoftwareUpdate(true)
+                                .withRoleOverrideValues(
+                                    Arrays.asList("ku", "foskghsauuimj", "vxieduugidyj", "rfbyaosvexcso")))
+                            .withEtag("clhocohsl")
+                            .withIdentity(new ManagedServiceIdentity()
+                                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                .withUserAssignedIdentities(mapOf("buhfmvfaxkffeiit", new UserAssignedIdentity())))));
         model = BinaryData.fromObject(model).toObject(NetworkFunctionListResult.class);
         Assertions.assertEquals("u", model.value().get(0).location());
         Assertions.assertEquals("gqywgndrv", model.value().get(0).tags().get("nhzgpphrcgyn"));
