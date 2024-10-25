@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.webpubsub;
+package com.azure.resourcemanager.appcontainers;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -13,39 +13,36 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
+import com.azure.resourcemanager.appcontainers.models.Mtls;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.resourcemanager.webpubsub.models.ResourceSku;
-import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
-import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class WebPubSubManagerTests extends TestProxyTestBase {
+public class ContainerAppsApiManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST2;
     private String resourceGroupName = "rg" + randomPadding();
-    private WebPubSubManager webPubSubManager;
+    private ContainerAppsApiManager containerAppsApiManager = null;
     private ResourceManager resourceManager;
     private boolean testEnv;
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        webPubSubManager = WebPubSubManager
-            .configure()
+        containerAppsApiManager = ContainerAppsApiManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
@@ -56,10 +53,7 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -72,25 +66,31 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testCreateWebPubSubResource() {
-        WebPubSubResource webPubSubResource = null;
+    public void testCreateManagedEnvironment() {
+        ManagedEnvironment managedEnvironment = null;
         try {
-            String resourceName = "webpubsub" + randomPadding();
+            String envName = "env" + randomPadding();
             // @embedmeStart
-            webPubSubResource = webPubSubManager.webPubSubs()
-                .define(resourceName)
+            managedEnvironment = containerAppsApiManager.managedEnvironments()
+                .define(envName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new ResourceSku().withName("Free_F1").withCapacity(1).withTier(WebPubSubSkuTier.FREE))
+                .withPeerAuthentication(
+                    new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(false)))
                 .create();
             // @embedmeEnd
-            webPubSubResource.refresh();
-            Assertions.assertEquals(webPubSubResource.name(), resourceName);
-            Assertions.assertEquals(webPubSubResource.name(), webPubSubManager.webPubSubs().getById(webPubSubResource.id()).name());
-            Assertions.assertTrue(webPubSubManager.webPubSubs().list().stream().count() > 0);
+            managedEnvironment.refresh();
+            Assertions.assertEquals(envName, managedEnvironment.name());
+            Assertions.assertEquals(envName,
+                containerAppsApiManager.managedEnvironments().getById(managedEnvironment.id()).name());
+            Assertions.assertTrue(containerAppsApiManager.managedEnvironments()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
-            if (webPubSubResource != null) {
-                webPubSubManager.webPubSubs().deleteById(webPubSubResource.id());
+            if (managedEnvironment != null) {
+                containerAppsApiManager.managedEnvironments().deleteById(managedEnvironment.id());
             }
         }
     }
@@ -98,5 +98,4 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
     }
-
 }
