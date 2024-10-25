@@ -23,9 +23,11 @@ public final class AddVCenterRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddVCenterRequestProperties model
-            = new AddVCenterRequestProperties().withFriendlyName("dhzmmesckdlp").withIpAddress("zrcxfailcfxwmdbo")
-                .withProcessServerId("fgsftufqob").withPort("lnacgcc").withRunAsAccountId("nhxk");
+        AddVCenterRequestProperties model = new AddVCenterRequestProperties().withFriendlyName("dhzmmesckdlp")
+            .withIpAddress("zrcxfailcfxwmdbo")
+            .withProcessServerId("fgsftufqob")
+            .withPort("lnacgcc")
+            .withRunAsAccountId("nhxk");
         model = BinaryData.fromObject(model).toObject(AddVCenterRequestProperties.class);
         Assertions.assertEquals("dhzmmesckdlp", model.friendlyName());
         Assertions.assertEquals("zrcxfailcfxwmdbo", model.ipAddress());

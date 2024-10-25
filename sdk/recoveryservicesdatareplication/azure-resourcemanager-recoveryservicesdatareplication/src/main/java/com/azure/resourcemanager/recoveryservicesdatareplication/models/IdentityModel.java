@@ -155,29 +155,24 @@ public final class IdentityModel {
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model IdentityModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tenantId in model IdentityModel"));
         }
         if (applicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property applicationId in model IdentityModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property applicationId in model IdentityModel"));
         }
         if (objectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objectId in model IdentityModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property objectId in model IdentityModel"));
         }
         if (audience() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property audience in model IdentityModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property audience in model IdentityModel"));
         }
         if (aadAuthority() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aadAuthority in model IdentityModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property aadAuthority in model IdentityModel"));
         }
     }
 

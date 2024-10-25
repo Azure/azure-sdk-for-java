@@ -46,15 +46,17 @@ public final class ReplicationPoliciesCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Policy response
-            = manager.replicationPolicies().define("pxwwblscrmzqu").withExistingVault("vgppp", "ilbdvxlfhlzzgap")
-                .withProperties(
-                    new CreatePolicyInputProperties().withProviderSpecificInput(new PolicyProviderSpecificInput()))
-                .create();
+        Policy response = manager.replicationPolicies()
+            .define("pxwwblscrmzqu")
+            .withExistingVault("vgppp", "ilbdvxlfhlzzgap")
+            .withProperties(
+                new CreatePolicyInputProperties().withProviderSpecificInput(new PolicyProviderSpecificInput()))
+            .create();
 
         Assertions.assertEquals("gouxnro", response.properties().friendlyName());
         Assertions.assertEquals("hesywyw", response.location());

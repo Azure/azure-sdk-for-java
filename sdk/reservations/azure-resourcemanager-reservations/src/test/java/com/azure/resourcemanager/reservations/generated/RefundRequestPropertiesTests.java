@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RefundRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RefundRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sessionId\":\"omzlfmi\",\"scope\":\"wbnb\",\"reservationToReturn\":{\"reservationId\":\"dawkzbali\",\"quantity\":12612409},\"returnReason\":\"hakauhashsf\"}")
-                .toObject(RefundRequestProperties.class);
+        RefundRequestProperties model = BinaryData.fromString(
+            "{\"sessionId\":\"omzlfmi\",\"scope\":\"wbnb\",\"reservationToReturn\":{\"reservationId\":\"dawkzbali\",\"quantity\":12612409},\"returnReason\":\"hakauhashsf\"}")
+            .toObject(RefundRequestProperties.class);
         Assertions.assertEquals("omzlfmi", model.sessionId());
         Assertions.assertEquals("wbnb", model.scope());
         Assertions.assertEquals("dawkzbali", model.reservationToReturn().reservationId());
@@ -26,13 +24,10 @@ public final class RefundRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RefundRequestProperties model =
-            new RefundRequestProperties()
-                .withSessionId("omzlfmi")
-                .withScope("wbnb")
-                .withReservationToReturn(
-                    new ReservationToReturn().withReservationId("dawkzbali").withQuantity(12612409))
-                .withReturnReason("hakauhashsf");
+        RefundRequestProperties model = new RefundRequestProperties().withSessionId("omzlfmi")
+            .withScope("wbnb")
+            .withReservationToReturn(new ReservationToReturn().withReservationId("dawkzbali").withQuantity(12612409))
+            .withReturnReason("hakauhashsf");
         model = BinaryData.fromObject(model).toObject(RefundRequestProperties.class);
         Assertions.assertEquals("omzlfmi", model.sessionId());
         Assertions.assertEquals("wbnb", model.scope());

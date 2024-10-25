@@ -26,8 +26,8 @@ public interface ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body);
+    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body);
 
     /**
      * Exchange Reservation(s)
@@ -42,8 +42,8 @@ public interface ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body, Context context);
+    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body, Context context);
 
     /**
      * Exchange Reservation(s)

@@ -22,7 +22,8 @@ public final class SubnetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model = new Subnet().withName("fhyhltrpmopjmcma").withFriendlyName("okth")
+        Subnet model = new Subnet().withName("fhyhltrpmopjmcma")
+            .withFriendlyName("okth")
             .withAddressList(Arrays.asList("uaodsfcpk", "xodpuozmyzydagfu"));
         model = BinaryData.fromObject(model).toObject(Subnet.class);
         Assertions.assertEquals("fhyhltrpmopjmcma", model.name());

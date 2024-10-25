@@ -87,8 +87,8 @@ public interface ReservationOrdersClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPurchase(
-        String reservationOrderId, PurchaseRequest body);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPurchase(String reservationOrderId, PurchaseRequest body);
 
     /**
      * Purchase `ReservationOrder`
@@ -104,8 +104,8 @@ public interface ReservationOrdersClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPurchase(
-        String reservationOrderId, PurchaseRequest body, Context context);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPurchase(String reservationOrderId, PurchaseRequest body, Context context);
 
     /**
      * Purchase `ReservationOrder`
@@ -182,8 +182,8 @@ public interface ReservationOrdersClient {
      * @return change directory response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangeDirectoryResponseInner> changeDirectoryWithResponse(
-        String reservationOrderId, ChangeDirectoryRequest body, Context context);
+    Response<ChangeDirectoryResponseInner> changeDirectoryWithResponse(String reservationOrderId,
+        ChangeDirectoryRequest body, Context context);
 
     /**
      * Change directory of `ReservationOrder`.

@@ -20,12 +20,8 @@ public final class QuotasGetResponse extends ResponseBase<QuotasGetHeaders, Curr
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public QuotasGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CurrentQuotaLimitBaseInner value,
-        QuotasGetHeaders headers) {
+    public QuotasGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        CurrentQuotaLimitBaseInner value, QuotasGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

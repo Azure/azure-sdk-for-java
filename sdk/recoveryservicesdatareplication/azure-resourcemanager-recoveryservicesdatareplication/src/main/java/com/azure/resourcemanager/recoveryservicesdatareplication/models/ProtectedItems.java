@@ -25,8 +25,8 @@ public interface ProtectedItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the protected item along with {@link Response}.
      */
-    Response<ProtectedItemModel> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    Response<ProtectedItemModel> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        Context context);
 
     /**
      * Gets the protected item.
@@ -71,8 +71,8 @@ public interface ProtectedItems {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context);
+    void delete(String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete,
+        Context context);
 
     /**
      * Lists the protected items.
@@ -133,12 +133,8 @@ public interface ProtectedItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return planned failover model.
      */
-    PlannedFailoverModel plannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context);
+    PlannedFailoverModel plannedFailover(String resourceGroupName, String vaultName, String protectedItemName,
+        PlannedFailoverModelInner body, Context context);
 
     /**
      * Gets the protected item.

@@ -24,8 +24,8 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the policy along with {@link Response}.
      */
-    Response<PolicyModel> getWithResponse(
-        String resourceGroupName, String vaultName, String policyName, Context context);
+    Response<PolicyModel> getWithResponse(String resourceGroupName, String vaultName, String policyName,
+        Context context);
 
     /**
      * Gets the policy.

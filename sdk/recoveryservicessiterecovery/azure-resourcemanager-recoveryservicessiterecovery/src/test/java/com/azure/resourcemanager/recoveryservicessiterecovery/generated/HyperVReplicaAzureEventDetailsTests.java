@@ -22,7 +22,8 @@ public final class HyperVReplicaAzureEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureEventDetails model = new HyperVReplicaAzureEventDetails().withContainerName("psimsf")
-            .withFabricName("pofqpmbhy").withRemoteContainerName("sdrmmttjxophgerh");
+            .withFabricName("pofqpmbhy")
+            .withRemoteContainerName("sdrmmttjxophgerh");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureEventDetails.class);
         Assertions.assertEquals("psimsf", model.containerName());
         Assertions.assertEquals("pofqpmbhy", model.fabricName());

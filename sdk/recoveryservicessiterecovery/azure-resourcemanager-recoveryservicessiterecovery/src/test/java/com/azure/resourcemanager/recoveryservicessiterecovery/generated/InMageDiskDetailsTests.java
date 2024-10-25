@@ -27,8 +27,11 @@ public final class InMageDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageDiskDetails model = new InMageDiskDetails().withDiskId("kgxqwqueuuylztpz").withDiskName("zevjykofve")
-            .withDiskSizeInMB("fkhkqtwqlep").withDiskType("zkca").withDiskConfiguration("wz")
+        InMageDiskDetails model = new InMageDiskDetails().withDiskId("kgxqwqueuuylztpz")
+            .withDiskName("zevjykofve")
+            .withDiskSizeInMB("fkhkqtwqlep")
+            .withDiskType("zkca")
+            .withDiskConfiguration("wz")
             .withVolumeList(Arrays.asList(new DiskVolumeDetails().withLabel("gffjw").withName("nrtwz"),
                 new DiskVolumeDetails().withLabel("qkifmxawostfz").withName("hrkmjqncfv"),
                 new DiskVolumeDetails().withLabel("cnhemvwfnq").withName("ypvndrw"),

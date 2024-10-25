@@ -839,8 +839,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input)
+            .getSyncPoller();
     }
 
     /**
@@ -864,8 +866,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1164,8 +1168,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String migrationItemName) {
         final String deleteOption = null;
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, deleteOption).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                deleteOption)
+            .getSyncPoller();
     }
 
     /**
@@ -1189,8 +1195,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption,
         Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, deleteOption, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                deleteOption, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1499,8 +1507,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input)
+            .getSyncPoller();
     }
 
     /**
@@ -1524,8 +1534,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input, Context context) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1813,8 +1825,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput) {
-        return this.beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, migrateInput).getSyncPoller();
+        return this
+            .beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                migrateInput)
+            .getSyncPoller();
     }
 
     /**
@@ -1838,8 +1852,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput, Context context) {
-        return this.beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, migrateInput, context).getSyncPoller();
+        return this
+            .beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                migrateInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2130,8 +2146,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput) {
-        return this.beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, pauseReplicationInput).getSyncPoller();
+        return this
+            .beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, pauseReplicationInput)
+            .getSyncPoller();
     }
 
     /**
@@ -2155,8 +2173,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput, Context context) {
-        return this.beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, pauseReplicationInput, context).getSyncPoller();
+        return this
+            .beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, pauseReplicationInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2450,8 +2470,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput) {
-        return this.beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, resumeReplicationInput).getSyncPoller();
+        return this
+            .beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, resumeReplicationInput)
+            .getSyncPoller();
     }
 
     /**
@@ -2475,8 +2497,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput, Context context) {
-        return this.beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, resumeReplicationInput, context).getSyncPoller();
+        return this
+            .beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, resumeReplicationInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2767,8 +2791,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input) {
-        return this.beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input).getSyncPoller();
+        return this
+            .beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input)
+            .getSyncPoller();
     }
 
     /**
@@ -2792,8 +2818,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input, Context context) {
-        return this.beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, input, context).getSyncPoller();
+        return this
+            .beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+                input, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3084,8 +3112,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput) {
-        return this.beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateInput).getSyncPoller();
+        return this
+            .beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, testMigrateInput)
+            .getSyncPoller();
     }
 
     /**
@@ -3109,8 +3139,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput, Context context) {
-        return this.beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateInput, context).getSyncPoller();
+        return this
+            .beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, testMigrateInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3401,8 +3433,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput) {
-        return this.beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateCleanupInput).getSyncPoller();
+        return this
+            .beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, testMigrateCleanupInput)
+            .getSyncPoller();
     }
 
     /**
@@ -3426,8 +3460,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
-        return this.beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            migrationItemName, testMigrateCleanupInput, context).getSyncPoller();
+        return this
+            .beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                migrationItemName, testMigrateCleanupInput, context)
+            .getSyncPoller();
     }
 
     /**

@@ -23,7 +23,8 @@ public final class RecoveryPlanScriptActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanScriptActionDetails model = new RecoveryPlanScriptActionDetails().withPath("kyvscbgngcrus")
-            .withTimeout("ircpgcvsvkk").withFabricLocation(RecoveryPlanActionLocation.RECOVERY);
+            .withTimeout("ircpgcvsvkk")
+            .withFabricLocation(RecoveryPlanActionLocation.RECOVERY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanScriptActionDetails.class);
         Assertions.assertEquals("kyvscbgngcrus", model.path());
         Assertions.assertEquals("ircpgcvsvkk", model.timeout());

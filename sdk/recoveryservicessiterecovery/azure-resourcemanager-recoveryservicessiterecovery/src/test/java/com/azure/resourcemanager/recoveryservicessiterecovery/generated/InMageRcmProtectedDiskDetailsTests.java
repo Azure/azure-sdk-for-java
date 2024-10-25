@@ -23,7 +23,8 @@ public final class InMageRcmProtectedDiskDetailsTests {
     public void testSerialize() throws Exception {
         InMageRcmProtectedDiskDetails model
             = new InMageRcmProtectedDiskDetails().withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                .withIrDetails(new InMageRcmSyncDetails()).withResyncDetails(new InMageRcmSyncDetails());
+                .withIrDetails(new InMageRcmSyncDetails())
+                .withResyncDetails(new InMageRcmSyncDetails());
         model = BinaryData.fromObject(model).toObject(InMageRcmProtectedDiskDetails.class);
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
     }

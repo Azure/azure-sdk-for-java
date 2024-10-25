@@ -27,8 +27,8 @@ public interface ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body);
 
     /**
      * Return a reservation.
@@ -44,8 +44,8 @@ public interface ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body, Context context);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body, Context context);
 
     /**
      * Return a reservation.

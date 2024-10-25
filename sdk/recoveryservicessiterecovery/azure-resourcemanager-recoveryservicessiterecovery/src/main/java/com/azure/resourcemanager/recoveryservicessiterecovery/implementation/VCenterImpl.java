@@ -79,14 +79,16 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().create(resourceName,
-            resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .create(resourceName, resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, Context.NONE);
         return this;
     }
 
     public VCenter create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().create(resourceName,
-            resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .create(resourceName, resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, context);
         return this;
     }
 
@@ -104,14 +106,16 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter apply() {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().update(resourceName,
-            resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .update(resourceName, resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, Context.NONE);
         return this;
     }
 
     public VCenter apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().update(resourceName,
-            resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .update(resourceName, resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, context);
         return this;
     }
 
@@ -126,14 +130,18 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter refresh() {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VCenter refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationvCenters()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationvCenters()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, context)
+            .getValue();
         return this;
     }
 

@@ -45,8 +45,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
      * @param client the instance of the service client containing this operation class.
      */
     ExchangesClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(ExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,16 +57,13 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiE")
     public interface ExchangesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/exchange")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExchangeRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExchangeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -83,10 +80,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(ExchangeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -115,10 +110,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(ExchangeRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -146,14 +139,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
     private PollerFlux<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
         beginPostAsync(ExchangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body);
-        return this
-            .client
-            .<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExchangeOperationResultResponseInner.class,
-                ExchangeOperationResultResponseInner.class,
-                this.client.getContext());
+        return this.client.<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExchangeOperationResultResponseInner.class,
+            ExchangeOperationResultResponseInner.class, this.client.getContext());
     }
 
     /**
@@ -173,14 +161,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
         beginPostAsync(ExchangeRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body, context);
-        return this
-            .client
-            .<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExchangeOperationResultResponseInner.class,
-                ExchangeOperationResultResponseInner.class,
-                context);
+        return this.client.<ExchangeOperationResultResponseInner, ExchangeOperationResultResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExchangeOperationResultResponseInner.class,
+            ExchangeOperationResultResponseInner.class, context);
     }
 
     /**
@@ -195,8 +178,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body) {
+    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body) {
         return this.beginPostAsync(body).getSyncPoller();
     }
 
@@ -213,8 +196,8 @@ public final class ExchangesClientImpl implements ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body, Context context) {
+    public SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body, Context context) {
         return this.beginPostAsync(body, context).getSyncPoller();
     }
 

@@ -60,8 +60,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ReservationsClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(ReservationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ReservationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,165 +72,118 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiR")
     public interface ReservationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/availableScopes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/availableScopes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> availableScopes(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> availableScopes(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AvailableScopeRequest body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AvailableScopeRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/split")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> split(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SplitRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> split(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SplitRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/merge")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> merge(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") MergeRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> merge(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MergeRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReservationList>> list(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationResponseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReservationResponseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PatchModel parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PatchModel parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/archive")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/archive")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> archive(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> archive(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> unarchive(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> unarchive(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationList>> listRevisions(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReservationList>> listRevisions(@HostParam("$host") String endpoint,
             @PathParam("reservationOrderId") String reservationOrderId,
-            @PathParam("reservationId") String reservationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("reservationId") String reservationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Capacity/reservations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationsListResult>> listAll(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("refreshSummary") String refreshSummary,
-            @QueryParam("$skiptoken") Float skiptoken,
-            @QueryParam("selectedState") String selectedState,
-            @QueryParam("take") Float take,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReservationsListResult>> listAll(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$orderby") String orderby, @QueryParam("refreshSummary") String refreshSummary,
+            @QueryParam("$skiptoken") Float skiptoken, @QueryParam("selectedState") String selectedState,
+            @QueryParam("take") Float take, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReservationList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReservationList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationList>> listRevisionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationsListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -248,13 +201,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(String reservationOrderId,
+        String reservationId, AvailableScopeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -271,17 +222,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .availableScopes(
-                            this.client.getEndpoint(),
-                            reservationOrderId,
-                            reservationId,
-                            apiVersion,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.availableScopes(this.client.getEndpoint(), reservationOrderId,
+                reservationId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -301,13 +243,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(String reservationOrderId,
+        String reservationId, AvailableScopeRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -324,9 +264,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .availableScopes(
-                this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, body, accept, context);
+        return service.availableScopes(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, body,
+            accept, context);
     }
 
     /**
@@ -346,16 +285,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
         beginAvailableScopesAsync(String reservationOrderId, String reservationId, AvailableScopeRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            availableScopesWithResponseAsync(reservationOrderId, reservationId, body);
-        return this
-            .client
-            .<AvailableScopePropertiesInner, AvailableScopePropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AvailableScopePropertiesInner.class,
-                AvailableScopePropertiesInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = availableScopesWithResponseAsync(reservationOrderId, reservationId, body);
+        return this.client.<AvailableScopePropertiesInner, AvailableScopePropertiesInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AvailableScopePropertiesInner.class, AvailableScopePropertiesInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -375,19 +309,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
-        beginAvailableScopesAsync(
-            String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context) {
+        beginAvailableScopesAsync(String reservationOrderId, String reservationId, AvailableScopeRequest body,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            availableScopesWithResponseAsync(reservationOrderId, reservationId, body, context);
-        return this
-            .client
-            .<AvailableScopePropertiesInner, AvailableScopePropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AvailableScopePropertiesInner.class,
-                AvailableScopePropertiesInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = availableScopesWithResponseAsync(reservationOrderId, reservationId, body, context);
+        return this.client.<AvailableScopePropertiesInner, AvailableScopePropertiesInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AvailableScopePropertiesInner.class, AvailableScopePropertiesInner.class,
+            context);
     }
 
     /**
@@ -405,8 +334,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner> beginAvailableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body) {
+    public SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
+        beginAvailableScopes(String reservationOrderId, String reservationId, AvailableScopeRequest body) {
         return this.beginAvailableScopesAsync(reservationOrderId, reservationId, body).getSyncPoller();
     }
 
@@ -446,10 +375,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailableScopePropertiesInner> availableScopesAsync(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body) {
-        return beginAvailableScopesAsync(reservationOrderId, reservationId, body)
-            .last()
+    private Mono<AvailableScopePropertiesInner> availableScopesAsync(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body) {
+        return beginAvailableScopesAsync(reservationOrderId, reservationId, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -469,10 +397,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailableScopePropertiesInner> availableScopesAsync(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context) {
-        return beginAvailableScopesAsync(reservationOrderId, reservationId, body, context)
-            .last()
+    private Mono<AvailableScopePropertiesInner> availableScopesAsync(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body, Context context) {
+        return beginAvailableScopesAsync(reservationOrderId, reservationId, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -490,8 +417,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the response of available scope api containing scopes and their eligibilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailableScopePropertiesInner availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body) {
+    public AvailableScopePropertiesInner availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body) {
         return availableScopesAsync(reservationOrderId, reservationId, body).block();
     }
 
@@ -510,8 +437,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the response of available scope api containing scopes and their eligibilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailableScopePropertiesInner availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context) {
+    public AvailableScopePropertiesInner availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body, Context context) {
         return availableScopesAsync(reservationOrderId, reservationId, body, context).block();
     }
 
@@ -530,10 +457,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> splitWithResponseAsync(String reservationOrderId, SplitRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -546,10 +471,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.split(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
+        return FluxUtil.withContext(
+            context -> service.split(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -567,13 +490,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return array of ReservationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> splitWithResponseAsync(
-        String reservationOrderId, SplitRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> splitWithResponseAsync(String reservationOrderId, SplitRequest body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -603,19 +524,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplitAsync(
-        String reservationOrderId, SplitRequest body) {
+    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplitAsync(String reservationOrderId, SplitRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = splitWithResponseAsync(reservationOrderId, body);
-        return this
-            .client
-            .<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                this.client.getContext());
+        return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), this.client.getContext());
     }
 
     /**
@@ -632,20 +547,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplitAsync(
-        String reservationOrderId, SplitRequest body, Context context) {
+    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplitAsync(String reservationOrderId, SplitRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = splitWithResponseAsync(reservationOrderId, body, context);
-        return this
-            .client
-            .<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                context);
+        return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), context);
     }
 
     /**
@@ -661,8 +570,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplit(
-        String reservationOrderId, SplitRequest body) {
+    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplit(String reservationOrderId, SplitRequest body) {
         return this.beginSplitAsync(reservationOrderId, body).getSyncPoller();
     }
 
@@ -680,8 +589,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplit(
-        String reservationOrderId, SplitRequest body, Context context) {
+    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplit(String reservationOrderId, SplitRequest body, Context context) {
         return this.beginSplitAsync(reservationOrderId, body, context).getSyncPoller();
     }
 
@@ -716,8 +625,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return array of ReservationResponse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ReservationResponseInner>> splitAsync(
-        String reservationOrderId, SplitRequest body, Context context) {
+    private Mono<List<ReservationResponseInner>> splitAsync(String reservationOrderId, SplitRequest body,
+        Context context) {
         return beginSplitAsync(reservationOrderId, body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -772,10 +681,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> mergeWithResponseAsync(String reservationOrderId, MergeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -788,10 +695,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.merge(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
+        return FluxUtil.withContext(
+            context -> service.merge(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -810,13 +715,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return array of ReservationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> mergeWithResponseAsync(
-        String reservationOrderId, MergeRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> mergeWithResponseAsync(String reservationOrderId, MergeRequest body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -847,19 +750,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMergeAsync(
-        String reservationOrderId, MergeRequest body) {
+    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMergeAsync(String reservationOrderId, MergeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = mergeWithResponseAsync(reservationOrderId, body);
-        return this
-            .client
-            .<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                this.client.getContext());
+        return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), this.client.getContext());
     }
 
     /**
@@ -877,20 +774,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMergeAsync(
-        String reservationOrderId, MergeRequest body, Context context) {
+    private PollerFlux<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMergeAsync(String reservationOrderId, MergeRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = mergeWithResponseAsync(reservationOrderId, body, context);
-        return this
-            .client
-            .<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                new TypeReference<List<ReservationResponseInner>>() {
-                }.getType(),
-                context);
+        return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getType(), context);
     }
 
     /**
@@ -907,8 +798,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMerge(
-        String reservationOrderId, MergeRequest body) {
+    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMerge(String reservationOrderId, MergeRequest body) {
         return this.beginMergeAsync(reservationOrderId, body).getSyncPoller();
     }
 
@@ -927,8 +818,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMerge(
-        String reservationOrderId, MergeRequest body, Context context) {
+    public SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMerge(String reservationOrderId, MergeRequest body, Context context) {
         return this.beginMergeAsync(reservationOrderId, body, context).getSyncPoller();
     }
 
@@ -965,8 +856,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return array of ReservationResponse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ReservationResponseInner>> mergeAsync(
-        String reservationOrderId, MergeRequest body, Context context) {
+    private Mono<List<ReservationResponseInner>> mergeAsync(String reservationOrderId, MergeRequest body,
+        Context context) {
         return beginMergeAsync(reservationOrderId, body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1021,10 +912,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationResponseInner>> listSinglePageAsync(String reservationOrderId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1035,15 +924,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), reservationOrderId, apiVersion, accept, context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1060,13 +942,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listSinglePageAsync(
-        String reservationOrderId, Context context) {
+    private Mono<PagedResponse<ReservationResponseInner>> listSinglePageAsync(String reservationOrderId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1075,17 +955,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), reservationOrderId, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), reservationOrderId, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1101,8 +973,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listAsync(String reservationOrderId) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(reservationOrderId), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(reservationOrderId),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1119,8 +991,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listAsync(String reservationOrderId, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(reservationOrderId, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(reservationOrderId, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1171,13 +1042,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return specific `Reservation` details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReservationResponseInner>> getWithResponseAsync(
-        String reservationOrderId, String reservationId, String expand) {
+    private Mono<Response<ReservationResponseInner>> getWithResponseAsync(String reservationOrderId,
+        String reservationId, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1189,17 +1058,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            reservationOrderId,
-                            reservationId,
-                            apiVersion,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), reservationOrderId, reservationId,
+                apiVersion, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1218,13 +1078,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return specific `Reservation` details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReservationResponseInner>> getWithResponseAsync(
-        String reservationOrderId, String reservationId, String expand, Context context) {
+    private Mono<Response<ReservationResponseInner>> getWithResponseAsync(String reservationOrderId,
+        String reservationId, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1236,8 +1094,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, expand, accept, context);
+        return service.get(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, expand, accept,
+            context);
     }
 
     /**
@@ -1274,8 +1132,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return specific `Reservation` details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReservationResponseInner> getWithResponse(
-        String reservationOrderId, String reservationId, String expand, Context context) {
+    public Response<ReservationResponseInner> getWithResponse(String reservationOrderId, String reservationId,
+        String expand, Context context) {
         return getWithResponseAsync(reservationOrderId, reservationId, expand, context).block();
     }
 
@@ -1311,13 +1169,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the definition of the reservation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String reservationOrderId, String reservationId,
+        PatchModel parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1334,17 +1190,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            reservationOrderId,
-                            reservationId,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), reservationOrderId, reservationId,
+                apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1363,13 +1210,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the definition of the reservation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String reservationOrderId, String reservationId,
+        PatchModel parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1386,9 +1231,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, parameters, accept, context);
+        return service.update(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, parameters,
+            accept, context);
     }
 
     /**
@@ -1405,17 +1249,12 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdateAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters) {
+    private PollerFlux<PollResult<ReservationResponseInner>, ReservationResponseInner>
+        beginUpdateAsync(String reservationOrderId, String reservationId, PatchModel parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(reservationOrderId, reservationId, parameters);
-        return this
-            .client
-            .<ReservationResponseInner, ReservationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReservationResponseInner.class,
-                ReservationResponseInner.class,
-                this.client.getContext());
+        return this.client.<ReservationResponseInner, ReservationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReservationResponseInner.class, ReservationResponseInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1433,19 +1272,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link PollerFlux} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdateAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
+    private PollerFlux<PollResult<ReservationResponseInner>, ReservationResponseInner>
+        beginUpdateAsync(String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(reservationOrderId, reservationId, parameters, context);
-        return this
-            .client
-            .<ReservationResponseInner, ReservationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReservationResponseInner.class,
-                ReservationResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(reservationOrderId, reservationId, parameters, context);
+        return this.client.<ReservationResponseInner, ReservationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReservationResponseInner.class, ReservationResponseInner.class, context);
     }
 
     /**
@@ -1462,8 +1295,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(
-        String reservationOrderId, String reservationId, PatchModel parameters) {
+    public SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner>
+        beginUpdate(String reservationOrderId, String reservationId, PatchModel parameters) {
         return this.beginUpdateAsync(reservationOrderId, reservationId, parameters).getSyncPoller();
     }
 
@@ -1482,8 +1315,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link SyncPoller} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
+    public SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner>
+        beginUpdate(String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
         return this.beginUpdateAsync(reservationOrderId, reservationId, parameters, context).getSyncPoller();
     }
 
@@ -1501,10 +1334,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the definition of the reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReservationResponseInner> updateAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters) {
-        return beginUpdateAsync(reservationOrderId, reservationId, parameters)
-            .last()
+    private Mono<ReservationResponseInner> updateAsync(String reservationOrderId, String reservationId,
+        PatchModel parameters) {
+        return beginUpdateAsync(reservationOrderId, reservationId, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1523,10 +1355,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the definition of the reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReservationResponseInner> updateAsync(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
-        return beginUpdateAsync(reservationOrderId, reservationId, parameters, context)
-            .last()
+    private Mono<ReservationResponseInner> updateAsync(String reservationOrderId, String reservationId,
+        PatchModel parameters, Context context) {
+        return beginUpdateAsync(reservationOrderId, reservationId, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1563,8 +1394,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReservationResponseInner update(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
+    public ReservationResponseInner update(String reservationOrderId, String reservationId, PatchModel parameters,
+        Context context) {
         return updateAsync(reservationOrderId, reservationId, parameters, context).block();
     }
 
@@ -1583,10 +1414,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> archiveWithResponseAsync(String reservationOrderId, String reservationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1598,11 +1427,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .archive(
-                            this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context))
+            .withContext(context -> service.archive(this.client.getEndpoint(), reservationOrderId, reservationId,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1620,13 +1446,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> archiveWithResponseAsync(
-        String reservationOrderId, String reservationId, Context context) {
+    private Mono<Response<Void>> archiveWithResponseAsync(String reservationOrderId, String reservationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1638,8 +1462,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .archive(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context);
+        return service.archive(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept,
+            context);
     }
 
     /**
@@ -1708,10 +1532,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> unarchiveWithResponseAsync(String reservationOrderId, String reservationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1723,11 +1545,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .unarchive(
-                            this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context))
+            .withContext(context -> service.unarchive(this.client.getEndpoint(), reservationOrderId, reservationId,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1745,13 +1564,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> unarchiveWithResponseAsync(
-        String reservationOrderId, String reservationId, Context context) {
+    private Mono<Response<Void>> unarchiveWithResponseAsync(String reservationOrderId, String reservationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1763,8 +1580,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .unarchive(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context);
+        return service.unarchive(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept,
+            context);
     }
 
     /**
@@ -1831,13 +1648,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsSinglePageAsync(
-        String reservationOrderId, String reservationId) {
+    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsSinglePageAsync(String reservationOrderId,
+        String reservationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1849,20 +1664,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRevisions(
-                            this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRevisions(this.client.getEndpoint(), reservationOrderId, reservationId,
+                apiVersion, accept, context))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1880,13 +1685,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsSinglePageAsync(
-        String reservationOrderId, String reservationId, Context context) {
+    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsSinglePageAsync(String reservationOrderId,
+        String reservationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -1900,15 +1703,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
         context = this.client.mergeContext(context);
         return service
             .listRevisions(this.client.getEndpoint(), reservationOrderId, reservationId, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1925,8 +1721,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listRevisionsAsync(String reservationOrderId, String reservationId) {
-        return new PagedFlux<>(
-            () -> listRevisionsSinglePageAsync(reservationOrderId, reservationId),
+        return new PagedFlux<>(() -> listRevisionsSinglePageAsync(reservationOrderId, reservationId),
             nextLink -> listRevisionsNextSinglePageAsync(nextLink));
     }
 
@@ -1944,10 +1739,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationResponseInner> listRevisionsAsync(
-        String reservationOrderId, String reservationId, Context context) {
-        return new PagedFlux<>(
-            () -> listRevisionsSinglePageAsync(reservationOrderId, reservationId, context),
+    private PagedFlux<ReservationResponseInner> listRevisionsAsync(String reservationOrderId, String reservationId,
+        Context context) {
+        return new PagedFlux<>(() -> listRevisionsSinglePageAsync(reservationOrderId, reservationId, context),
             nextLink -> listRevisionsNextSinglePageAsync(nextLink, context));
     }
 
@@ -1982,8 +1776,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationResponseInner> listRevisions(
-        String reservationOrderId, String reservationId, Context context) {
+    public PagedIterable<ReservationResponseInner> listRevisions(String reservationOrderId, String reservationId,
+        Context context) {
         return new PagedIterable<>(listRevisionsAsync(reservationOrderId, reservationId, context));
     }
 
@@ -2009,40 +1803,19 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(
-        String filter, String orderby, String refreshSummary, Float skiptoken, String selectedState, Float take) {
+    private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(String filter, String orderby,
+        String refreshSummary, Float skiptoken, String selectedState, Float take) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAll(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            filter,
-                            orderby,
-                            refreshSummary,
-                            skiptoken,
-                            selectedState,
-                            take,
-                            accept,
-                            context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAll(this.client.getEndpoint(), apiVersion, filter, orderby,
+                refreshSummary, skiptoken, selectedState, take, accept, context))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2069,44 +1842,20 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context) {
+    private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(String filter, String orderby,
+        String refreshSummary, Float skiptoken, String selectedState, Float take, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAll(
-                this.client.getEndpoint(),
-                apiVersion,
-                filter,
-                orderby,
-                refreshSummary,
-                skiptoken,
-                selectedState,
-                take,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAll(this.client.getEndpoint(), apiVersion, filter, orderby, refreshSummary, skiptoken, selectedState,
+                take, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2131,8 +1880,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationResponseInner> listAllAsync(
-        String filter, String orderby, String refreshSummary, Float skiptoken, String selectedState, Float take) {
+    private PagedFlux<ReservationResponseInner> listAllAsync(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take) {
         return new PagedFlux<>(
             () -> listAllSinglePageAsync(filter, orderby, refreshSummary, skiptoken, selectedState, take),
             nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -2183,14 +1932,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReservationResponseInner> listAllAsync(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context) {
+    private PagedFlux<ReservationResponseInner> listAllAsync(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take, Context context) {
         return new PagedFlux<>(
             () -> listAllSinglePageAsync(filter, orderby, refreshSummary, skiptoken, selectedState, take, context),
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
@@ -2239,14 +1982,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReservationResponseInner> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context) {
+    public PagedIterable<ReservationResponseInner> listAll(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take, Context context) {
         return new PagedIterable<>(
             listAllAsync(filter, orderby, refreshSummary, skiptoken, selectedState, take, context));
     }
@@ -2267,23 +2004,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2304,24 +2031,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2340,23 +2057,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRevisionsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2372,30 +2080,20 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @return list of `Reservation`s along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReservationResponseInner>> listRevisionsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRevisionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRevisionsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2415,23 +2113,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReservationResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReservationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2453,23 +2142,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

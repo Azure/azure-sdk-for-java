@@ -73,9 +73,7 @@ public final class JobDetailsList implements JsonSerializable<JobDetailsList> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeNumberField("count", count)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeNumberField("count", count).writeEndObject();
     }
 
     /**

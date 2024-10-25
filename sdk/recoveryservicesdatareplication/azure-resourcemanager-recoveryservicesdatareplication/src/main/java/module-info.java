@@ -10,10 +10,8 @@ module com.azure.resourcemanager.recoveryservicesdatareplication {
     exports com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
     exports com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
-    opens com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.recoveryservicesdatareplication.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.recoveryservicesdatareplication.models
+        to com.azure.core, com.fasterxml.jackson.databind;
 }

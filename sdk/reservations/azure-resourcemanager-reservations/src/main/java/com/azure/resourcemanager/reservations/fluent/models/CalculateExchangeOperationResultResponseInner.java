@@ -124,8 +124,8 @@ public final class CalculateExchangeOperationResultResponseInner {
      * @param properties the properties value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
-    public CalculateExchangeOperationResultResponseInner withProperties(
-        CalculateExchangeResponseProperties properties) {
+    public CalculateExchangeOperationResultResponseInner
+        withProperties(CalculateExchangeResponseProperties properties) {
         this.properties = properties;
         return this;
     }

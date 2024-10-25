@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MergeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MergeRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"sources\":[\"sfcpkvxodpuozm\",\"zydagfuaxbezyiuo\",\"ktwh\",\"dxwzywqsmbsurexi\"]}}")
-                .toObject(MergeRequest.class);
+        MergeRequest model = BinaryData.fromString(
+            "{\"properties\":{\"sources\":[\"sfcpkvxodpuozm\",\"zydagfuaxbezyiuo\",\"ktwh\",\"dxwzywqsmbsurexi\"]}}")
+            .toObject(MergeRequest.class);
         Assertions.assertEquals("sfcpkvxodpuozm", model.sources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MergeRequest model =
-            new MergeRequest()
-                .withSources(Arrays.asList("sfcpkvxodpuozm", "zydagfuaxbezyiuo", "ktwh", "dxwzywqsmbsurexi"));
+        MergeRequest model = new MergeRequest()
+            .withSources(Arrays.asList("sfcpkvxodpuozm", "zydagfuaxbezyiuo", "ktwh", "dxwzywqsmbsurexi"));
         model = BinaryData.fromObject(model).toObject(MergeRequest.class);
         Assertions.assertEquals("sfcpkvxodpuozm", model.sources().get(0));
     }

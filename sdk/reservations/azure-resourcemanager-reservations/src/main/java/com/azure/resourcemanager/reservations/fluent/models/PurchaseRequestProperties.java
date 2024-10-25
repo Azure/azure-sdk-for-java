@@ -321,8 +321,8 @@ public final class PurchaseRequestProperties {
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the PurchaseRequestProperties object itself.
      */
-    public PurchaseRequestProperties withReservedResourceProperties(
-        PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
+    public PurchaseRequestProperties
+        withReservedResourceProperties(PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
         this.reservedResourceProperties = reservedResourceProperties;
         return this;
     }

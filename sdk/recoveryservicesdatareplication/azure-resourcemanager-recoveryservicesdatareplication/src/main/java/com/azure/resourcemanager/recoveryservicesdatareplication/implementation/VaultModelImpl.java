@@ -17,8 +17,7 @@ import java.util.Map;
 public final class VaultModelImpl implements VaultModel, VaultModel.Definition, VaultModel.Update {
     private VaultModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -85,24 +84,21 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
     }
 
     public VaultModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVaults()
-                .create(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVaults()
+            .create(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VaultModel create(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getVaults().create(resourceGroupName, vaultName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVaults()
+            .create(resourceGroupName, vaultName, this.innerModel(), context);
         return this;
     }
 
-    VaultModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    VaultModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new VaultModelInner();
         this.serviceManager = serviceManager;
         this.vaultName = name;
@@ -114,21 +110,19 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
     }
 
     public VaultModel apply() {
-        this.innerObject =
-            serviceManager.serviceClient().getVaults().update(resourceGroupName, vaultName, updateBody, Context.NONE);
+        this.innerObject
+            = serviceManager.serviceClient().getVaults().update(resourceGroupName, vaultName, updateBody, Context.NONE);
         return this;
     }
 
     public VaultModel apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getVaults().update(resourceGroupName, vaultName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getVaults().update(resourceGroupName, vaultName, updateBody, context);
         return this;
     }
 
-    VaultModelImpl(
-        VaultModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    VaultModelImpl(VaultModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -136,22 +130,18 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
     }
 
     public VaultModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VaultModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, context)
+            .getValue();
         return this;
     }
 

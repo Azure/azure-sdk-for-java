@@ -31,10 +31,14 @@ public final class AzureToAzureVmSyncedConfigDetailsTests {
             .withTags(
                 mapOf("jceatlijjjrtva", "flwfgziiuci", "xk", "caszk", "ignohi", "ccxetyvkun", "indedvabbx", "kgqogjw"))
             .withInputEndpoints(Arrays.asList(
-                new InputEndpoint().withEndpointName("dei").withPrivatePort(1416675602).withPublicPort(277548984)
+                new InputEndpoint().withEndpointName("dei")
+                    .withPrivatePort(1416675602)
+                    .withPublicPort(277548984)
                     .withProtocol("cfxzirzzih"),
-                new InputEndpoint().withEndpointName("ypusuvjslczwci").withPrivatePort(73772123)
-                    .withPublicPort(1150687421).withProtocol("fryvdmvxadqac")));
+                new InputEndpoint().withEndpointName("ypusuvjslczwci")
+                    .withPrivatePort(73772123)
+                    .withPublicPort(1150687421)
+                    .withProtocol("fryvdmvxadqac")));
         model = BinaryData.fromObject(model).toObject(AzureToAzureVmSyncedConfigDetails.class);
         Assertions.assertEquals("flwfgziiuci", model.tags().get("jceatlijjjrtva"));
         Assertions.assertEquals("dei", model.inputEndpoints().get(0).endpointName());

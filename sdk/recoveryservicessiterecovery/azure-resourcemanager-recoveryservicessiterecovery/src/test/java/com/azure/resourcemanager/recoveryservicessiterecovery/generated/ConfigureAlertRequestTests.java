@@ -25,7 +25,8 @@ public final class ConfigureAlertRequestTests {
     public void testSerialize() throws Exception {
         ConfigureAlertRequest model = new ConfigureAlertRequest()
             .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("evdphlxaol")
-                .withCustomEmailAddresses(Arrays.asList("trg", "jbp", "zfsinzgvf", "jrwzox")).withLocale("tfell"));
+                .withCustomEmailAddresses(Arrays.asList("trg", "jbp", "zfsinzgvf", "jrwzox"))
+                .withLocale("tfell"));
         model = BinaryData.fromObject(model).toObject(ConfigureAlertRequest.class);
         Assertions.assertEquals("evdphlxaol", model.properties().sendToOwners());
         Assertions.assertEquals("trg", model.properties().customEmailAddresses().get(0));

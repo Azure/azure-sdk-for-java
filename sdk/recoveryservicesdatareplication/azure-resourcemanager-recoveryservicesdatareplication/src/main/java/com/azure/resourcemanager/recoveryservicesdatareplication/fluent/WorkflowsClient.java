@@ -28,8 +28,8 @@ public interface WorkflowsClient {
      * @return the details of the job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, Context context);
+    Response<WorkflowModelInner> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        Context context);
 
     /**
      * Gets the job (workflow).
@@ -78,6 +78,6 @@ public interface WorkflowsClient {
      * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowModelInner> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<WorkflowModelInner> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

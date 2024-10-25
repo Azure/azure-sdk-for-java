@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationOrderResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationOrderResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":1381464845,\"properties\":{\"displayName\":\"yulpkudjkr\",\"requestDateTime\":\"2021-10-21T07:00:30Z\",\"createdDateTime\":\"2021-05-27T14:40:55Z\",\"expiryDateTime\":\"2021-01-13T00:49:17Z\",\"benefitStartTime\":\"2021-06-22T06:44:59Z\",\"originalQuantity\":384033547,\"term\":\"P1Y\",\"provisioningState\":\"Failed\",\"billingPlan\":\"Monthly\",\"planInformation\":{\"transactions\":[]},\"reservations\":[{\"location\":\"hhbcsglummajtjao\",\"etag\":1555681942,\"kind\":\"Microsoft.Compute\",\"id\":\"k\",\"name\":\"pxokajionp\",\"type\":\"mexgstxgcp\"},{\"location\":\"gmaajrm\",\"etag\":1305884847,\"kind\":\"Microsoft.Compute\",\"id\":\"vmclw\",\"name\":\"ijcoejctb\",\"type\":\"aqsqsycbkbfk\"},{\"location\":\"kdkexxp\",\"etag\":922056801,\"kind\":\"Microsoft.Compute\",\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"reviewDateTime\":\"2021-09-06T23:00:29Z\"},\"id\":\"qeojnxqbzvddntw\",\"name\":\"deicbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}")
-                .toObject(ReservationOrderResponseInner.class);
+        ReservationOrderResponseInner model = BinaryData.fromString(
+            "{\"etag\":1381464845,\"properties\":{\"displayName\":\"yulpkudjkr\",\"requestDateTime\":\"2021-10-21T07:00:30Z\",\"createdDateTime\":\"2021-05-27T14:40:55Z\",\"expiryDateTime\":\"2021-01-13T00:49:17Z\",\"benefitStartTime\":\"2021-06-22T06:44:59Z\",\"originalQuantity\":384033547,\"term\":\"P1Y\",\"provisioningState\":\"Failed\",\"billingPlan\":\"Monthly\",\"planInformation\":{\"transactions\":[]},\"reservations\":[{\"location\":\"hhbcsglummajtjao\",\"etag\":1555681942,\"kind\":\"Microsoft.Compute\",\"id\":\"k\",\"name\":\"pxokajionp\",\"type\":\"mexgstxgcp\"},{\"location\":\"gmaajrm\",\"etag\":1305884847,\"kind\":\"Microsoft.Compute\",\"id\":\"vmclw\",\"name\":\"ijcoejctb\",\"type\":\"aqsqsycbkbfk\"},{\"location\":\"kdkexxp\",\"etag\":922056801,\"kind\":\"Microsoft.Compute\",\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"reviewDateTime\":\"2021-09-06T23:00:29Z\"},\"id\":\"qeojnxqbzvddntw\",\"name\":\"deicbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}")
+            .toObject(ReservationOrderResponseInner.class);
         Assertions.assertEquals(1381464845, model.etag());
         Assertions.assertEquals("yulpkudjkr", model.displayName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T07:00:30Z"), model.requestDateTime());
@@ -42,35 +40,28 @@ public final class ReservationOrderResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationOrderResponseInner model =
-            new ReservationOrderResponseInner()
-                .withEtag(1381464845)
-                .withDisplayName("yulpkudjkr")
-                .withRequestDateTime(OffsetDateTime.parse("2021-10-21T07:00:30Z"))
-                .withCreatedDateTime(OffsetDateTime.parse("2021-05-27T14:40:55Z"))
-                .withExpiryDateTime(OffsetDateTime.parse("2021-01-13T00:49:17Z"))
-                .withBenefitStartTime(OffsetDateTime.parse("2021-06-22T06:44:59Z"))
-                .withOriginalQuantity(384033547)
-                .withTerm(ReservationTerm.P1Y)
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                .withPlanInformation(new ReservationOrderBillingPlanInformation().withTransactions(Arrays.asList()))
-                .withReservations(
-                    Arrays
-                        .asList(
-                            new ReservationResponseInner()
-                                .withLocation("hhbcsglummajtjao")
-                                .withEtag(1555681942)
-                                .withKind(Kind.MICROSOFT_COMPUTE),
-                            new ReservationResponseInner()
-                                .withLocation("gmaajrm")
-                                .withEtag(1305884847)
-                                .withKind(Kind.MICROSOFT_COMPUTE),
-                            new ReservationResponseInner()
-                                .withLocation("kdkexxp")
-                                .withEtag(922056801)
-                                .withKind(Kind.MICROSOFT_COMPUTE)))
-                .withReviewDateTime(OffsetDateTime.parse("2021-09-06T23:00:29Z"));
+        ReservationOrderResponseInner model = new ReservationOrderResponseInner().withEtag(1381464845)
+            .withDisplayName("yulpkudjkr")
+            .withRequestDateTime(OffsetDateTime.parse("2021-10-21T07:00:30Z"))
+            .withCreatedDateTime(OffsetDateTime.parse("2021-05-27T14:40:55Z"))
+            .withExpiryDateTime(OffsetDateTime.parse("2021-01-13T00:49:17Z"))
+            .withBenefitStartTime(OffsetDateTime.parse("2021-06-22T06:44:59Z"))
+            .withOriginalQuantity(384033547)
+            .withTerm(ReservationTerm.P1Y)
+            .withProvisioningState(ProvisioningState.FAILED)
+            .withBillingPlan(ReservationBillingPlan.MONTHLY)
+            .withPlanInformation(new ReservationOrderBillingPlanInformation().withTransactions(Arrays.asList()))
+            .withReservations(Arrays.asList(
+                new ReservationResponseInner().withLocation("hhbcsglummajtjao")
+                    .withEtag(1555681942)
+                    .withKind(Kind.MICROSOFT_COMPUTE),
+                new ReservationResponseInner().withLocation("gmaajrm")
+                    .withEtag(1305884847)
+                    .withKind(Kind.MICROSOFT_COMPUTE),
+                new ReservationResponseInner().withLocation("kdkexxp")
+                    .withEtag(922056801)
+                    .withKind(Kind.MICROSOFT_COMPUTE)))
+            .withReviewDateTime(OffsetDateTime.parse("2021-09-06T23:00:29Z"));
         model = BinaryData.fromObject(model).toObject(ReservationOrderResponseInner.class);
         Assertions.assertEquals(1381464845, model.etag());
         Assertions.assertEquals("yulpkudjkr", model.displayName());

@@ -22,9 +22,10 @@ public final class LogicalNetworkPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkProperties model
-            = new LogicalNetworkProperties().withFriendlyName("mqc").withNetworkVirtualizationStatus("q")
-                .withLogicalNetworkUsage("khixuigdtopbo").withLogicalNetworkDefinitionsStatus("og");
+        LogicalNetworkProperties model = new LogicalNetworkProperties().withFriendlyName("mqc")
+            .withNetworkVirtualizationStatus("q")
+            .withLogicalNetworkUsage("khixuigdtopbo")
+            .withLogicalNetworkDefinitionsStatus("og");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkProperties.class);
         Assertions.assertEquals("mqc", model.friendlyName());
         Assertions.assertEquals("q", model.networkVirtualizationStatus());

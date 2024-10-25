@@ -26,8 +26,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode BAD_REQUEST = fromString("BadRequest");
 
     /** Static value ClientCertificateThumbprintNotSet for ErrorResponseCode. */
-    public static final ErrorResponseCode CLIENT_CERTIFICATE_THUMBPRINT_NOT_SET =
-        fromString("ClientCertificateThumbprintNotSet");
+    public static final ErrorResponseCode CLIENT_CERTIFICATE_THUMBPRINT_NOT_SET
+        = fromString("ClientCertificateThumbprintNotSet");
 
     /** Static value InvalidRequestContent for ErrorResponseCode. */
     public static final ErrorResponseCode INVALID_REQUEST_CONTENT = fromString("InvalidRequestContent");
@@ -54,8 +54,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode INVALID_RESERVATION_ID = fromString("InvalidReservationId");
 
     /** Static value ReservationIdNotInReservationOrder for ErrorResponseCode. */
-    public static final ErrorResponseCode RESERVATION_ID_NOT_IN_RESERVATION_ORDER =
-        fromString("ReservationIdNotInReservationOrder");
+    public static final ErrorResponseCode RESERVATION_ID_NOT_IN_RESERVATION_ORDER
+        = fromString("ReservationIdNotInReservationOrder");
 
     /** Static value ReservationOrderNotFound for ErrorResponseCode. */
     public static final ErrorResponseCode RESERVATION_ORDER_NOT_FOUND = fromString("ReservationOrderNotFound");
@@ -70,8 +70,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode INVALID_LOCATION_ID = fromString("InvalidLocationId");
 
     /** Static value UnauthenticatedRequestsThrottled for ErrorResponseCode. */
-    public static final ErrorResponseCode UNAUTHENTICATED_REQUESTS_THROTTLED =
-        fromString("UnauthenticatedRequestsThrottled");
+    public static final ErrorResponseCode UNAUTHENTICATED_REQUESTS_THROTTLED
+        = fromString("UnauthenticatedRequestsThrottled");
 
     /** Static value InvalidHealthCheckType for ErrorResponseCode. */
     public static final ErrorResponseCode INVALID_HEALTH_CHECK_TYPE = fromString("InvalidHealthCheckType");
@@ -80,12 +80,12 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode FORBIDDEN = fromString("Forbidden");
 
     /** Static value BillingScopeIdCannotBeChanged for ErrorResponseCode. */
-    public static final ErrorResponseCode BILLING_SCOPE_ID_CANNOT_BE_CHANGED =
-        fromString("BillingScopeIdCannotBeChanged");
+    public static final ErrorResponseCode BILLING_SCOPE_ID_CANNOT_BE_CHANGED
+        = fromString("BillingScopeIdCannotBeChanged");
 
     /** Static value AppliedScopesNotAssociatedWithCommerceAccount for ErrorResponseCode. */
-    public static final ErrorResponseCode APPLIED_SCOPES_NOT_ASSOCIATED_WITH_COMMERCE_ACCOUNT =
-        fromString("AppliedScopesNotAssociatedWithCommerceAccount");
+    public static final ErrorResponseCode APPLIED_SCOPES_NOT_ASSOCIATED_WITH_COMMERCE_ACCOUNT
+        = fromString("AppliedScopesNotAssociatedWithCommerceAccount");
 
     /** Static value PatchValuesSameAsExisting for ErrorResponseCode. */
     public static final ErrorResponseCode PATCH_VALUES_SAME_AS_EXISTING = fromString("PatchValuesSameAsExisting");
@@ -94,8 +94,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode ROLE_ASSIGNMENT_CREATION_FAILED = fromString("RoleAssignmentCreationFailed");
 
     /** Static value ReservationOrderCreationFailed for ErrorResponseCode. */
-    public static final ErrorResponseCode RESERVATION_ORDER_CREATION_FAILED =
-        fromString("ReservationOrderCreationFailed");
+    public static final ErrorResponseCode RESERVATION_ORDER_CREATION_FAILED
+        = fromString("ReservationOrderCreationFailed");
 
     /** Static value ReservationOrderNotEnabled for ErrorResponseCode. */
     public static final ErrorResponseCode RESERVATION_ORDER_NOT_ENABLED = fromString("ReservationOrderNotEnabled");
@@ -107,8 +107,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode UNSUPPORTED_RESERVATION_TERM = fromString("UnsupportedReservationTerm");
 
     /** Static value ReservationOrderIdAlreadyExists for ErrorResponseCode. */
-    public static final ErrorResponseCode RESERVATION_ORDER_ID_ALREADY_EXISTS =
-        fromString("ReservationOrderIdAlreadyExists");
+    public static final ErrorResponseCode RESERVATION_ORDER_ID_ALREADY_EXISTS
+        = fromString("ReservationOrderIdAlreadyExists");
 
     /** Static value RiskCheckFailed for ErrorResponseCode. */
     public static final ErrorResponseCode RISK_CHECK_FAILED = fromString("RiskCheckFailed");
@@ -126,8 +126,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode PAYMENT_INSTRUMENT_NOT_FOUND = fromString("PaymentInstrumentNotFound");
 
     /** Static value MissingAppliedScopesForSingle for ErrorResponseCode. */
-    public static final ErrorResponseCode MISSING_APPLIED_SCOPES_FOR_SINGLE =
-        fromString("MissingAppliedScopesForSingle");
+    public static final ErrorResponseCode MISSING_APPLIED_SCOPES_FOR_SINGLE
+        = fromString("MissingAppliedScopesForSingle");
 
     /** Static value NoValidReservationsToReRate for ErrorResponseCode. */
     public static final ErrorResponseCode NO_VALID_RESERVATIONS_TO_RE_RATE = fromString("NoValidReservationsToReRate");
@@ -136,16 +136,16 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode RE_RATE_ONLY_ALLOWED_FOR_EA = fromString("ReRateOnlyAllowedForEA");
 
     /** Static value OperationCannotBePerformedInCurrentState for ErrorResponseCode. */
-    public static final ErrorResponseCode OPERATION_CANNOT_BE_PERFORMED_IN_CURRENT_STATE =
-        fromString("OperationCannotBePerformedInCurrentState");
+    public static final ErrorResponseCode OPERATION_CANNOT_BE_PERFORMED_IN_CURRENT_STATE
+        = fromString("OperationCannotBePerformedInCurrentState");
 
     /** Static value InvalidSingleAppliedScopesCount for ErrorResponseCode. */
-    public static final ErrorResponseCode INVALID_SINGLE_APPLIED_SCOPES_COUNT =
-        fromString("InvalidSingleAppliedScopesCount");
+    public static final ErrorResponseCode INVALID_SINGLE_APPLIED_SCOPES_COUNT
+        = fromString("InvalidSingleAppliedScopesCount");
 
     /** Static value InvalidFulfillmentRequestParameters for ErrorResponseCode. */
-    public static final ErrorResponseCode INVALID_FULFILLMENT_REQUEST_PARAMETERS =
-        fromString("InvalidFulfillmentRequestParameters");
+    public static final ErrorResponseCode INVALID_FULFILLMENT_REQUEST_PARAMETERS
+        = fromString("InvalidFulfillmentRequestParameters");
 
     /** Static value NotSupportedCountry for ErrorResponseCode. */
     public static final ErrorResponseCode NOT_SUPPORTED_COUNTRY = fromString("NotSupportedCountry");
@@ -160,12 +160,12 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode BILLING_CUSTOMER_INPUT_ERROR = fromString("BillingCustomerInputError");
 
     /** Static value BillingPaymentInstrumentSoftError for ErrorResponseCode. */
-    public static final ErrorResponseCode BILLING_PAYMENT_INSTRUMENT_SOFT_ERROR =
-        fromString("BillingPaymentInstrumentSoftError");
+    public static final ErrorResponseCode BILLING_PAYMENT_INSTRUMENT_SOFT_ERROR
+        = fromString("BillingPaymentInstrumentSoftError");
 
     /** Static value BillingPaymentInstrumentHardError for ErrorResponseCode. */
-    public static final ErrorResponseCode BILLING_PAYMENT_INSTRUMENT_HARD_ERROR =
-        fromString("BillingPaymentInstrumentHardError");
+    public static final ErrorResponseCode BILLING_PAYMENT_INSTRUMENT_HARD_ERROR
+        = fromString("BillingPaymentInstrumentHardError");
 
     /** Static value BillingTransientError for ErrorResponseCode. */
     public static final ErrorResponseCode BILLING_TRANSIENT_ERROR = fromString("BillingTransientError");
@@ -192,8 +192,8 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
     public static final ErrorResponseCode APPLIED_SCOPES_SAME_AS_EXISTING = fromString("AppliedScopesSameAsExisting");
 
     /** Static value SelfServiceRefundNotSupported for ErrorResponseCode. */
-    public static final ErrorResponseCode SELF_SERVICE_REFUND_NOT_SUPPORTED =
-        fromString("SelfServiceRefundNotSupported");
+    public static final ErrorResponseCode SELF_SERVICE_REFUND_NOT_SUPPORTED
+        = fromString("SelfServiceRefundNotSupported");
 
     /** Static value RefundLimitExceeded for ErrorResponseCode. */
     public static final ErrorResponseCode REFUND_LIMIT_EXCEEDED = fromString("RefundLimitExceeded");

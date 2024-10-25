@@ -23,22 +23,21 @@ import java.util.Map;
 
 /** A builder for creating a new instance of the QuantumClient type. */
 @ServiceClientBuilder(
-        serviceClients = {
-            JobsClient.class,
-            ProvidersClient.class,
-            StorageClient.class,
-            QuotasClient.class,
-            JobsAsyncClient.class,
-            ProvidersAsyncClient.class,
-            StorageAsyncClient.class,
-            QuotasAsyncClient.class
-        })
+    serviceClients = {
+        JobsClient.class,
+        ProvidersClient.class,
+        StorageClient.class,
+        QuotasClient.class,
+        JobsAsyncClient.class,
+        ProvidersAsyncClient.class,
+        StorageAsyncClient.class,
+        QuotasAsyncClient.class })
 public final class QuantumClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://quantum.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://quantum.microsoft.com/.default" };
 
     private final Map<String, String> properties = new HashMap<>();
 
@@ -257,15 +256,14 @@ public final class QuantumClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        QuantumClientImpl client =
-                new QuantumClientImpl(
-                        pipeline, serializerAdapter, subscriptionId, resourceGroupName, workspaceName, host);
+        QuantumClientImpl client = new QuantumClientImpl(pipeline, serializerAdapter, subscriptionId, resourceGroupName,
+            workspaceName, host);
         return client;
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -275,19 +273,17 @@ public final class QuantumClientBuilder {
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
         return httpPipeline;
     }
 

@@ -73,7 +73,8 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options, Context context) {
+    public SyncPoller<RenderingSession, RenderingSession> beginSession(String sessionId, BeginSessionOptions options,
+        Context context) {
         return client.beginSessionInternal(sessionId, options, context).getSyncPoller();
     }
 
@@ -141,7 +142,8 @@ public final class RemoteRenderingClient {
      * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RenderingSession> updateSessionWithResponse(String sessionId, UpdateSessionOptions options, Context context) {
+    public Response<RenderingSession> updateSessionWithResponse(String sessionId, UpdateSessionOptions options,
+        Context context) {
         return client.updateSessionInternal(sessionId, options, context).block();
     }
 
@@ -224,7 +226,8 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options) {
+    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId,
+        AssetConversionOptions options) {
         return client.beginConversion(conversionId, options).getSyncPoller();
     }
 
@@ -249,7 +252,8 @@ public final class RemoteRenderingClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options, Context context) {
+    public SyncPoller<AssetConversion, AssetConversion> beginConversion(String conversionId,
+        AssetConversionOptions options, Context context) {
         return client.beginConversionInternal(conversionId, options, context).getSyncPoller();
     }
 

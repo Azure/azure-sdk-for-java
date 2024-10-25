@@ -46,7 +46,8 @@ public final class CreateRecoveryPlanInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateRecoveryPlanInputProperties model = new CreateRecoveryPlanInputProperties().withPrimaryFabricId("ijp")
-            .withRecoveryFabricId("gsksrfhf").withFailoverDeploymentModel(FailoverDeploymentModel.NOT_APPLICABLE)
+            .withRecoveryFabricId("gsksrfhf")
+            .withFailoverDeploymentModel(FailoverDeploymentModel.NOT_APPLICABLE)
             .withGroups(Arrays.asList(
                 new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
                     .withReplicationProtectedItems(Arrays.asList(

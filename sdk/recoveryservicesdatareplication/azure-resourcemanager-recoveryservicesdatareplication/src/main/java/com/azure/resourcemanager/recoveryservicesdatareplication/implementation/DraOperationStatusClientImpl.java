@@ -39,8 +39,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @param client the instance of the service client containing this operation class.
      */
     DraOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy.create(DraOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DraOperationStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,21 +51,15 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface DraOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @PathParam("fabricAgentName") String fabricAgentName, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -83,19 +77,15 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -114,18 +104,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            fabricAgentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    fabricName, fabricAgentName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -145,19 +125,15 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,17 +151,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                fabricAgentName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+            fabricAgentName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -203,8 +170,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @return defines the operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> getAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId) {
+    private Mono<OperationStatusInner> getAsync(String resourceGroupName, String fabricName, String fabricAgentName,
+        String operationId) {
         return getWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -225,8 +192,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId, Context context) {
+    public Response<OperationStatusInner> getWithResponse(String resourceGroupName, String fabricName,
+        String fabricAgentName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, operationId, context).block();
     }
 
@@ -245,8 +212,8 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
      * @return defines the operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId) {
+    public OperationStatusInner get(String resourceGroupName, String fabricName, String fabricAgentName,
+        String operationId) {
         return getWithResponse(resourceGroupName, fabricName, fabricAgentName, operationId, Context.NONE).getValue();
     }
 }

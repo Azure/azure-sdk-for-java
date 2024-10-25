@@ -47,11 +47,13 @@ public final class ReplicationProtectionContainersCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionContainer response = manager.replicationProtectionContainers().define("ntjna")
+        ProtectionContainer response = manager.replicationProtectionContainers()
+            .define("ntjna")
             .withExistingReplicationFabric("dvt", "urmd", "a")
             .withProperties(new CreateProtectionContainerInputProperties()
                 .withProviderSpecificInput(Arrays.asList(new ReplicationProviderSpecificContainerCreationInput(),

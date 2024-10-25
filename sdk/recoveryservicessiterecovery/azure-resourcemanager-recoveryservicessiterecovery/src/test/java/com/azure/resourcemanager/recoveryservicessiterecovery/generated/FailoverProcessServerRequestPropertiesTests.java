@@ -25,8 +25,11 @@ public final class FailoverProcessServerRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FailoverProcessServerRequestProperties model
-            = new FailoverProcessServerRequestProperties().withContainerName("l").withSourceProcessServerId("u")
-                .withTargetProcessServerId("krlkhbzhfepg").withVmsToMigrate(Arrays.asList("e")).withUpdateType("locx");
+            = new FailoverProcessServerRequestProperties().withContainerName("l")
+                .withSourceProcessServerId("u")
+                .withTargetProcessServerId("krlkhbzhfepg")
+                .withVmsToMigrate(Arrays.asList("e"))
+                .withUpdateType("locx");
         model = BinaryData.fromObject(model).toObject(FailoverProcessServerRequestProperties.class);
         Assertions.assertEquals("l", model.containerName());
         Assertions.assertEquals("u", model.sourceProcessServerId());

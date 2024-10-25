@@ -30,8 +30,8 @@ public interface DrasClient {
      * @return the details of the fabric agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DraModelInner> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context);
+    Response<DraModelInner> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context);
 
     /**
      * Gets the fabric agent (Dra).
@@ -63,8 +63,8 @@ public interface DrasClient {
      * @return the {@link SyncPoller} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(
-        String resourceGroupName, String fabricName, String fabricAgentName);
+    SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(String resourceGroupName, String fabricName,
+        String fabricAgentName);
 
     /**
      * Puts the fabric agent (Dra).
@@ -82,8 +82,8 @@ public interface DrasClient {
      * @return the {@link SyncPoller} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context);
+    SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(String resourceGroupName, String fabricName,
+        String fabricAgentName, DraModelInner body, Context context);
 
     /**
      * Puts the fabric agent (Dra).
@@ -117,8 +117,8 @@ public interface DrasClient {
      * @return dra model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DraModelInner create(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context);
+    DraModelInner create(String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body,
+        Context context);
 
     /**
      * Deletes the fabric agent (Dra).
@@ -151,8 +151,8 @@ public interface DrasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context);
 
     /**
      * Deletes the fabric agent (Dra).

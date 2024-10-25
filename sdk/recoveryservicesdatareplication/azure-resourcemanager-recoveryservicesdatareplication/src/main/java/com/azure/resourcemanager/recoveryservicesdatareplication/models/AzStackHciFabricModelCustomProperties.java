@@ -167,25 +167,18 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
     public void validate() {
         super.validate();
         if (azStackHciSiteId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azStackHciSiteId in model AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property azStackHciSiteId in model AzStackHciFabricModelCustomProperties"));
         }
         if (cluster() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cluster in model AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cluster in model AzStackHciFabricModelCustomProperties"));
         } else {
             cluster().validate();
         }
         if (migrationSolutionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationSolutionId in model"
-                            + " AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property migrationSolutionId in model" + " AzStackHciFabricModelCustomProperties"));
         }
     }
 

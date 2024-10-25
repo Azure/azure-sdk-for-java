@@ -31,24 +31,42 @@ public final class VMwareCbtTestMigrateInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtTestMigrateInput model
-            = new VMwareCbtTestMigrateInput().withRecoveryPointId("zisvbrqgcyjpgaw").withNetworkId("pkwonrzpghlr")
-                .withVmNics(Arrays.asList(
-                    new VMwareCbtNicInput()
-                        .withNicId("gblxbu").withIsPrimaryNic("brvjztaflv").withTargetSubnetName("fjihvfjcqrttjfuq")
-                        .withTargetStaticIpAddress("fjewfeqbavdo").withIsSelectedForMigration("wy")
-                        .withTargetNicName("fm").withTestSubnetName("lvxgwzz").withTestStaticIpAddress("dtlcjgpvcqzv"),
-                    new VMwareCbtNicInput().withNicId("rbvgwxhlxr").withIsPrimaryNic("xvmdr").withTargetSubnetName("n")
-                        .withTargetStaticIpAddress("ovazoymdvhhpl").withIsSelectedForMigration("wwd")
-                        .withTargetNicName("tveqmg").withTestSubnetName("swzeyxry").withTestStaticIpAddress("r"),
-                    new VMwareCbtNicInput().withNicId("hpwbuklvsmfasgt").withIsPrimaryNic("v")
-                        .withTargetSubnetName("poil").withTargetStaticIpAddress("ja").withIsSelectedForMigration("cez")
-                        .withTargetNicName("ft").withTestSubnetName("l").withTestStaticIpAddress("okjyghzt"),
-                    new VMwareCbtNicInput().withNicId("smiwtpcflc").withIsPrimaryNic("zswwvwi")
-                        .withTargetSubnetName("djtvbf").withTargetStaticIpAddress("hruptsyq")
-                        .withIsSelectedForMigration("nqswxdowumxquk").withTargetNicName("diohclqddn")
-                        .withTestSubnetName("k").withTestStaticIpAddress("bweddpnyzc")))
-                .withOsUpgradeVersion("jsmka");
+        VMwareCbtTestMigrateInput model = new VMwareCbtTestMigrateInput().withRecoveryPointId("zisvbrqgcyjpgaw")
+            .withNetworkId("pkwonrzpghlr")
+            .withVmNics(Arrays.asList(
+                new VMwareCbtNicInput().withNicId("gblxbu")
+                    .withIsPrimaryNic("brvjztaflv")
+                    .withTargetSubnetName("fjihvfjcqrttjfuq")
+                    .withTargetStaticIpAddress("fjewfeqbavdo")
+                    .withIsSelectedForMigration("wy")
+                    .withTargetNicName("fm")
+                    .withTestSubnetName("lvxgwzz")
+                    .withTestStaticIpAddress("dtlcjgpvcqzv"),
+                new VMwareCbtNicInput().withNicId("rbvgwxhlxr")
+                    .withIsPrimaryNic("xvmdr")
+                    .withTargetSubnetName("n")
+                    .withTargetStaticIpAddress("ovazoymdvhhpl")
+                    .withIsSelectedForMigration("wwd")
+                    .withTargetNicName("tveqmg")
+                    .withTestSubnetName("swzeyxry")
+                    .withTestStaticIpAddress("r"),
+                new VMwareCbtNicInput().withNicId("hpwbuklvsmfasgt")
+                    .withIsPrimaryNic("v")
+                    .withTargetSubnetName("poil")
+                    .withTargetStaticIpAddress("ja")
+                    .withIsSelectedForMigration("cez")
+                    .withTargetNicName("ft")
+                    .withTestSubnetName("l")
+                    .withTestStaticIpAddress("okjyghzt"),
+                new VMwareCbtNicInput().withNicId("smiwtpcflc")
+                    .withIsPrimaryNic("zswwvwi")
+                    .withTargetSubnetName("djtvbf")
+                    .withTargetStaticIpAddress("hruptsyq")
+                    .withIsSelectedForMigration("nqswxdowumxquk")
+                    .withTargetNicName("diohclqddn")
+                    .withTestSubnetName("k")
+                    .withTestStaticIpAddress("bweddpnyzc")))
+            .withOsUpgradeVersion("jsmka");
         model = BinaryData.fromObject(model).toObject(VMwareCbtTestMigrateInput.class);
         Assertions.assertEquals("zisvbrqgcyjpgaw", model.recoveryPointId());
         Assertions.assertEquals("pkwonrzpghlr", model.networkId());

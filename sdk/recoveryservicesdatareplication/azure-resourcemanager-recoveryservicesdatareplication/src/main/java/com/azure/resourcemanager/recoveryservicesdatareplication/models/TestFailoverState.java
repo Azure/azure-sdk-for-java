@@ -32,8 +32,8 @@ public final class TestFailoverState extends ExpandableStringEnum<TestFailoverSt
     public static final TestFailoverState TEST_FAILOVER_CLEANUP_INITIATED = fromString("TestFailoverCleanupInitiated");
 
     /** Static value TestFailoverCleanupCompleting for TestFailoverState. */
-    public static final TestFailoverState TEST_FAILOVER_CLEANUP_COMPLETING =
-        fromString("TestFailoverCleanupCompleting");
+    public static final TestFailoverState TEST_FAILOVER_CLEANUP_COMPLETING
+        = fromString("TestFailoverCleanupCompleting");
 
     /** Static value MarkedForDeletion for TestFailoverState. */
     public static final TestFailoverState MARKED_FOR_DELETION = fromString("MarkedForDeletion");

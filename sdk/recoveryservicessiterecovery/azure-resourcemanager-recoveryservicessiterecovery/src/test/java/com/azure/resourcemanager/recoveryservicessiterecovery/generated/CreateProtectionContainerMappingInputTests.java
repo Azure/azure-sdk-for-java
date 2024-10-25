@@ -24,7 +24,8 @@ public final class CreateProtectionContainerMappingInputTests {
     public void testSerialize() throws Exception {
         CreateProtectionContainerMappingInput model = new CreateProtectionContainerMappingInput().withProperties(
             new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("smystuluqypfc")
-                .withPolicyId("er").withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput()));
+                .withPolicyId("er")
+                .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput()));
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerMappingInput.class);
         Assertions.assertEquals("smystuluqypfc", model.properties().targetProtectionContainerId());
         Assertions.assertEquals("er", model.properties().policyId());

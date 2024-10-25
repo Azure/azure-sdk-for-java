@@ -96,8 +96,8 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
 
     public Fabric reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
-        FabricInner inner = this.serviceClient().reassociateGateway(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest);
+        FabricInner inner = this.serviceClient()
+            .reassociateGateway(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest);
         if (inner != null) {
             return new FabricImpl(inner, this.manager());
         } else {
@@ -107,8 +107,8 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
 
     public Fabric reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest, Context context) {
-        FabricInner inner = this.serviceClient().reassociateGateway(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest, context);
+        FabricInner inner = this.serviceClient()
+            .reassociateGateway(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context);
         if (inner != null) {
             return new FabricImpl(inner, this.manager());
         } else {
@@ -137,8 +137,8 @@ public final class ReplicationFabricsImpl implements ReplicationFabrics {
 
     public Fabric renewCertificate(String resourceName, String resourceGroupName, String fabricName,
         RenewCertificateInput renewCertificate, Context context) {
-        FabricInner inner = this.serviceClient().renewCertificate(resourceName, resourceGroupName, fabricName,
-            renewCertificate, context);
+        FabricInner inner = this.serviceClient()
+            .renewCertificate(resourceName, resourceGroupName, fabricName, renewCertificate, context);
         if (inner != null) {
             return new FabricImpl(inner, this.manager());
         } else {

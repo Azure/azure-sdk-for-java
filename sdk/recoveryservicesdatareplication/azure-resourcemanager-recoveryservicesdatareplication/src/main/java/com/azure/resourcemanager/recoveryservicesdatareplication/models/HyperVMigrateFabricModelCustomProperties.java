@@ -125,17 +125,13 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
     public void validate() {
         super.validate();
         if (hyperVSiteId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hyperVSiteId in model HyperVMigrateFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hyperVSiteId in model HyperVMigrateFabricModelCustomProperties"));
         }
         if (migrationSolutionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationSolutionId in model"
-                            + " HyperVMigrateFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property migrationSolutionId in model"
+                    + " HyperVMigrateFabricModelCustomProperties"));
         }
     }
 

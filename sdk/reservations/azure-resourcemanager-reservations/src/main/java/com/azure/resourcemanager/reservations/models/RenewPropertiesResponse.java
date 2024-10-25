@@ -71,8 +71,8 @@ public final class RenewPropertiesResponse {
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the RenewPropertiesResponse object itself.
      */
-    public RenewPropertiesResponse withPricingCurrencyTotal(
-        RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal) {
+    public RenewPropertiesResponse
+        withPricingCurrencyTotal(RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal) {
         this.pricingCurrencyTotal = pricingCurrencyTotal;
         return this;
     }
@@ -94,8 +94,8 @@ public final class RenewPropertiesResponse {
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the RenewPropertiesResponse object itself.
      */
-    public RenewPropertiesResponse withBillingCurrencyTotal(
-        RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal) {
+    public RenewPropertiesResponse
+        withBillingCurrencyTotal(RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal) {
         this.billingCurrencyTotal = billingCurrencyTotal;
         return this;
     }

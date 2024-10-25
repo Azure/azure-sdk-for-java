@@ -64,49 +64,53 @@ public final class UpdateReplicationProtectedItemInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateReplicationProtectedItemInput model
-            = new UpdateReplicationProtectedItemInput()
-                .withProperties(
-                    new UpdateReplicationProtectedItemInputProperties()
-                        .withRecoveryAzureVMName("wneaiv").withRecoveryAzureVMSize(
-                            "czelpcirel")
-                        .withSelectedRecoveryAzureNetworkId("eae").withSelectedTfoAzureNetworkId("abfatkl")
-                        .withSelectedSourceNicId("xbjhwuaanozjosph").withEnableRdpOnTargetOption("ulpjr")
-                        .withVmNics(
-                            Arrays
-                                .asList(
-                                    new VMNicInputDetails()
-                                        .withNicId(
-                                            "l")
-                                        .withIpConfigs(Arrays.asList(new IpConfigInputDetails()
-                                            .withIpConfigName("jwosytxitcskfck").withIsPrimary(true)
-                                            .withIsSeletedForFailover(false).withRecoverySubnetName("kkezzikhlyfjhdgq")
-                                            .withRecoveryStaticIpAddress("ebdunyg")
-                                            .withRecoveryPublicIpAddressId("qidbqfatpxllrxcy")
-                                            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("a", "su"))
-                                            .withTfoSubnetName("r").withTfoStaticIpAddress("wdmjsjqbjhhyx")
-                                            .withTfoPublicIpAddressId("wlycoduhpkxkg")
-                                            .withTfoLBBackendAddressPoolIds(Arrays.asList("re", "n")),
-                                            new IpConfigInputDetails().withIpConfigName("xqugjhkycubedd")
-                                                .withIsPrimary(true).withIsSeletedForFailover(true)
-                                                .withRecoverySubnetName("qmzqalkrmnjijpx")
-                                                .withRecoveryStaticIpAddress("q")
-                                                .withRecoveryPublicIpAddressId("dfnbyxbaaabjyv")
-                                                .withRecoveryLBBackendAddressPoolIds(
-                                                    Arrays.asList("fimrzrtuzqogse", "nevfdnw", "wmewzsyy", "euzsoi"))
-                                                .withTfoSubnetName("ud").withTfoStaticIpAddress("rx")
-                                                .withTfoPublicIpAddressId("thzvaytdwkqbrqu")
-                                                .withTfoLBBackendAddressPoolIds(
-                                                    Arrays.asList("xhexiilivpdti", "r", "tdqoaxoruzfgsq"))))
-                                        .withSelectionType("fxrxxle").withRecoveryNetworkSecurityGroupId("ramxjezwlwnw")
-                                        .withEnableAcceleratedNetworkingOnRecovery(false)
-                                        .withTfoNetworkSecurityGroupId("cvydypatdoo")
-                                        .withEnableAcceleratedNetworkingOnTfo(false).withRecoveryNicName("niodkooeb")
-                                        .withRecoveryNicResourceGroupName("ujhemmsbvdkcrodt").withReuseExistingNic(true)
-                                        .withTfoNicName("wj").withTfoNicResourceGroupName("lt")
-                                        .withTfoReuseExistingNic(true).withTargetNicName("vefkdlfoakggk")))
-                        .withLicenseType(LicenseType.NOT_SPECIFIED).withRecoveryAvailabilitySetId("ao")
-                        .withProviderSpecificDetails(new UpdateReplicationProtectedItemProviderInput()));
+        UpdateReplicationProtectedItemInput model = new UpdateReplicationProtectedItemInput()
+            .withProperties(new UpdateReplicationProtectedItemInputProperties().withRecoveryAzureVMName("wneaiv")
+                .withRecoveryAzureVMSize("czelpcirel")
+                .withSelectedRecoveryAzureNetworkId("eae")
+                .withSelectedTfoAzureNetworkId("abfatkl")
+                .withSelectedSourceNicId("xbjhwuaanozjosph")
+                .withEnableRdpOnTargetOption("ulpjr")
+                .withVmNics(Arrays.asList(new VMNicInputDetails().withNicId("l")
+                    .withIpConfigs(Arrays.asList(
+                        new IpConfigInputDetails().withIpConfigName("jwosytxitcskfck")
+                            .withIsPrimary(true)
+                            .withIsSeletedForFailover(false)
+                            .withRecoverySubnetName("kkezzikhlyfjhdgq")
+                            .withRecoveryStaticIpAddress("ebdunyg")
+                            .withRecoveryPublicIpAddressId("qidbqfatpxllrxcy")
+                            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("a", "su"))
+                            .withTfoSubnetName("r")
+                            .withTfoStaticIpAddress("wdmjsjqbjhhyx")
+                            .withTfoPublicIpAddressId("wlycoduhpkxkg")
+                            .withTfoLBBackendAddressPoolIds(Arrays.asList("re", "n")),
+                        new IpConfigInputDetails().withIpConfigName("xqugjhkycubedd")
+                            .withIsPrimary(true)
+                            .withIsSeletedForFailover(true)
+                            .withRecoverySubnetName("qmzqalkrmnjijpx")
+                            .withRecoveryStaticIpAddress("q")
+                            .withRecoveryPublicIpAddressId("dfnbyxbaaabjyv")
+                            .withRecoveryLBBackendAddressPoolIds(
+                                Arrays.asList("fimrzrtuzqogse", "nevfdnw", "wmewzsyy", "euzsoi"))
+                            .withTfoSubnetName("ud")
+                            .withTfoStaticIpAddress("rx")
+                            .withTfoPublicIpAddressId("thzvaytdwkqbrqu")
+                            .withTfoLBBackendAddressPoolIds(Arrays.asList("xhexiilivpdti", "r", "tdqoaxoruzfgsq"))))
+                    .withSelectionType("fxrxxle")
+                    .withRecoveryNetworkSecurityGroupId("ramxjezwlwnw")
+                    .withEnableAcceleratedNetworkingOnRecovery(false)
+                    .withTfoNetworkSecurityGroupId("cvydypatdoo")
+                    .withEnableAcceleratedNetworkingOnTfo(false)
+                    .withRecoveryNicName("niodkooeb")
+                    .withRecoveryNicResourceGroupName("ujhemmsbvdkcrodt")
+                    .withReuseExistingNic(true)
+                    .withTfoNicName("wj")
+                    .withTfoNicResourceGroupName("lt")
+                    .withTfoReuseExistingNic(true)
+                    .withTargetNicName("vefkdlfoakggk")))
+                .withLicenseType(LicenseType.NOT_SPECIFIED)
+                .withRecoveryAvailabilitySetId("ao")
+                .withProviderSpecificDetails(new UpdateReplicationProtectedItemProviderInput()));
         model = BinaryData.fromObject(model).toObject(UpdateReplicationProtectedItemInput.class);
         Assertions.assertEquals("wneaiv", model.properties().recoveryAzureVMName());
         Assertions.assertEquals("czelpcirel", model.properties().recoveryAzureVMSize());

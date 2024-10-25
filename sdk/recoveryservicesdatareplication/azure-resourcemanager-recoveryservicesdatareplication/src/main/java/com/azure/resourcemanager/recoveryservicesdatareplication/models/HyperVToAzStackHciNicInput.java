@@ -141,28 +141,20 @@ public final class HyperVToAzStackHciNicInput {
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nicId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nicId in model HyperVToAzStackHciNicInput"));
         }
         if (targetNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNetworkId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetNetworkId in model HyperVToAzStackHciNicInput"));
         }
         if (testNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property testNetworkId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property testNetworkId in model HyperVToAzStackHciNicInput"));
         }
         if (selectionTypeForFailover() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectionTypeForFailover in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property selectionTypeForFailover in model HyperVToAzStackHciNicInput"));
         }
     }
 

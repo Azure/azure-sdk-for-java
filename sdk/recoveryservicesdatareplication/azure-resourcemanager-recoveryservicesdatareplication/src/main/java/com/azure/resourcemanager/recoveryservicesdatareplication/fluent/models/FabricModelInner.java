@@ -81,9 +81,8 @@ public final class FabricModelInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model FabricModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model FabricModelInner"));
         } else {
             properties().validate();
         }

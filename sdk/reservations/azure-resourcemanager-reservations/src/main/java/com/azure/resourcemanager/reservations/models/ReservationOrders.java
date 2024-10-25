@@ -131,8 +131,8 @@ public interface ReservationOrders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return change directory response along with {@link Response}.
      */
-    Response<ChangeDirectoryResponse> changeDirectoryWithResponse(
-        String reservationOrderId, ChangeDirectoryRequest body, Context context);
+    Response<ChangeDirectoryResponse> changeDirectoryWithResponse(String reservationOrderId,
+        ChangeDirectoryRequest body, Context context);
 
     /**
      * Change directory of `ReservationOrder`.

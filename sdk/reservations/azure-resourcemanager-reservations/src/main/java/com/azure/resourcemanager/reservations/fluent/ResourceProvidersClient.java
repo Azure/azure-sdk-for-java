@@ -48,17 +48,8 @@ public interface ResourceProvidersClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CatalogInner> list(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context);
+    PagedIterable<CatalogInner> list(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context);
 
     /**
      * Get list of applicable `Reservation`s.

@@ -36,19 +36,32 @@ public final class FailoverJobDetailsTests {
     public void testSerialize() throws Exception {
         FailoverJobDetails model = new FailoverJobDetails().withAffectedObjectDetails(mapOf("lh", "wjleip"))
             .withProtectedItemDetails(Arrays.asList(
-                new FailoverReplicationProtectedItemDetails().withName("jcciklhsyek").withFriendlyName("renxolriyehqbe")
-                    .withTestVmName("dlh").withTestVmFriendlyName("wbdbfg").withNetworkConnectionStatus("punytjl")
-                    .withNetworkFriendlyName("smmpathubt").withSubnet("deani").withRecoveryPointId("llbvgwzsfftedous")
+                new FailoverReplicationProtectedItemDetails().withName("jcciklhsyek")
+                    .withFriendlyName("renxolriyehqbe")
+                    .withTestVmName("dlh")
+                    .withTestVmFriendlyName("wbdbfg")
+                    .withNetworkConnectionStatus("punytjl")
+                    .withNetworkFriendlyName("smmpathubt")
+                    .withSubnet("deani")
+                    .withRecoveryPointId("llbvgwzsfftedous")
                     .withRecoveryPointTime(OffsetDateTime.parse("2021-07-21T04:35:12Z")),
-                new FailoverReplicationProtectedItemDetails().withName("tgravaqogf").withFriendlyName("ebauzlqbtx")
-                    .withTestVmName("pfhnjzudrt").withTestVmFriendlyName("kgmeb")
-                    .withNetworkConnectionStatus("whczzqrhmng").withNetworkFriendlyName("edygisrzwnykdi")
-                    .withSubnet("chl").withRecoveryPointId("pwctofl")
+                new FailoverReplicationProtectedItemDetails().withName("tgravaqogf")
+                    .withFriendlyName("ebauzlqbtx")
+                    .withTestVmName("pfhnjzudrt")
+                    .withTestVmFriendlyName("kgmeb")
+                    .withNetworkConnectionStatus("whczzqrhmng")
+                    .withNetworkFriendlyName("edygisrzwnykdi")
+                    .withSubnet("chl")
+                    .withRecoveryPointId("pwctofl")
                     .withRecoveryPointTime(OffsetDateTime.parse("2021-07-22T16:13:46Z")),
-                new FailoverReplicationProtectedItemDetails().withName("cdhz").withFriendlyName("kbrfgdrwji")
-                    .withTestVmName("whfjsrwqrxe").withTestVmFriendlyName("gcwvrrmdqntycna")
-                    .withNetworkConnectionStatus("hvmaxgnuyeamcmhu").withNetworkFriendlyName("jecehokwc")
-                    .withSubnet("twloesqr").withRecoveryPointId("vrbnyrukoil")
+                new FailoverReplicationProtectedItemDetails().withName("cdhz")
+                    .withFriendlyName("kbrfgdrwji")
+                    .withTestVmName("whfjsrwqrxe")
+                    .withTestVmFriendlyName("gcwvrrmdqntycna")
+                    .withNetworkConnectionStatus("hvmaxgnuyeamcmhu")
+                    .withNetworkFriendlyName("jecehokwc")
+                    .withSubnet("twloesqr")
+                    .withRecoveryPointId("vrbnyrukoil")
                     .withRecoveryPointTime(OffsetDateTime.parse("2021-09-21T11:09:08Z"))));
         model = BinaryData.fromObject(model).toObject(FailoverJobDetails.class);
         Assertions.assertEquals("wjleip", model.affectedObjectDetails().get("lh"));

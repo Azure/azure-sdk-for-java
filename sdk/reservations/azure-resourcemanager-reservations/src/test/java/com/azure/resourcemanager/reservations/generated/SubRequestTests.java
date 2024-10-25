@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SubRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubRequest model =
-            BinaryData
-                .fromString(
-                    "{\"limit\":1110186498,\"name\":{\"value\":\"kjj\",\"localizedValue\":\"xrbuukzclew\"},\"resourceType\":\"mlwpazt\",\"unit\":\"ofncckwyfzqwhxxb\",\"provisioningState\":\"Failed\",\"message\":\"xzfe\",\"subRequestId\":\"tpp\"}")
-                .toObject(SubRequest.class);
+        SubRequest model = BinaryData.fromString(
+            "{\"limit\":1110186498,\"name\":{\"value\":\"kjj\",\"localizedValue\":\"xrbuukzclew\"},\"resourceType\":\"mlwpazt\",\"unit\":\"ofncckwyfzqwhxxb\",\"provisioningState\":\"Failed\",\"message\":\"xzfe\",\"subRequestId\":\"tpp\"}")
+            .toObject(SubRequest.class);
         Assertions.assertEquals("kjj", model.name().value());
         Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());
         Assertions.assertEquals(QuotaRequestState.FAILED, model.provisioningState());
@@ -25,11 +23,9 @@ public final class SubRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubRequest model =
-            new SubRequest()
-                .withName(new ResourceName().withValue("kjj"))
-                .withUnit("ofncckwyfzqwhxxb")
-                .withProvisioningState(QuotaRequestState.FAILED);
+        SubRequest model = new SubRequest().withName(new ResourceName().withValue("kjj"))
+            .withUnit("ofncckwyfzqwhxxb")
+            .withProvisioningState(QuotaRequestState.FAILED);
         model = BinaryData.fromObject(model).toObject(SubRequest.class);
         Assertions.assertEquals("kjj", model.name().value());
         Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());

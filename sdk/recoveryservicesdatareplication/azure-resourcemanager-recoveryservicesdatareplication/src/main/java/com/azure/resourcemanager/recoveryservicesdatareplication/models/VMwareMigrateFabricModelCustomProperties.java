@@ -80,17 +80,13 @@ public final class VMwareMigrateFabricModelCustomProperties extends FabricModelC
     public void validate() {
         super.validate();
         if (vmwareSiteId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmwareSiteId in model VMwareMigrateFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmwareSiteId in model VMwareMigrateFabricModelCustomProperties"));
         }
         if (migrationSolutionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationSolutionId in model"
-                            + " VMwareMigrateFabricModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property migrationSolutionId in model"
+                    + " VMwareMigrateFabricModelCustomProperties"));
         }
     }
 

@@ -53,11 +53,8 @@ public interface EmailConfigurationModel {
     EmailConfigurationModelInner innerModel();
 
     /** The entirety of the EmailConfigurationModel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The EmailConfigurationModel definition stages. */

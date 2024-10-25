@@ -31,8 +31,8 @@ public interface QuotasClient {
      * @return the current quota (service limit) and usage of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotasGetResponse getWithResponse(
-        String subscriptionId, String providerId, String location, String resourceName, Context context);
+    QuotasGetResponse getWithResponse(String subscriptionId, String providerId, String location, String resourceName,
+        Context context);
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
@@ -70,10 +70,7 @@ public interface QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+        String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest);
 
     /**
@@ -96,12 +93,8 @@ public interface QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context);
+        String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context);
 
     /**
      * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
@@ -121,12 +114,8 @@ public interface QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CurrentQuotaLimitBaseInner createOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest);
+    CurrentQuotaLimitBaseInner createOrUpdate(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest);
 
     /**
      * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
@@ -147,13 +136,8 @@ public interface QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CurrentQuotaLimitBaseInner createOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context);
+    CurrentQuotaLimitBaseInner createOrUpdate(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context);
 
     /**
      * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
@@ -173,12 +157,8 @@ public interface QuotasClient {
      * @return the {@link SyncPoller} for polling of quota properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest);
+    SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(String subscriptionId,
+        String providerId, String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest);
 
     /**
      * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
@@ -199,12 +179,8 @@ public interface QuotasClient {
      * @return the {@link SyncPoller} for polling of quota properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
+    SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(String subscriptionId,
+        String providerId, String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest,
         Context context);
 
     /**
@@ -225,11 +201,7 @@ public interface QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CurrentQuotaLimitBaseInner update(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+    CurrentQuotaLimitBaseInner update(String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest);
 
     /**
@@ -251,13 +223,8 @@ public interface QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CurrentQuotaLimitBaseInner update(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context);
+    CurrentQuotaLimitBaseInner update(String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context);
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
@@ -290,6 +257,6 @@ public interface QuotasClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CurrentQuotaLimitBaseInner> list(
-        String subscriptionId, String providerId, String location, Context context);
+    PagedIterable<CurrentQuotaLimitBaseInner> list(String subscriptionId, String providerId, String location,
+        Context context);
 }

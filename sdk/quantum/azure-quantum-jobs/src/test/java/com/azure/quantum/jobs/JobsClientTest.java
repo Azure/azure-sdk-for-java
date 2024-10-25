@@ -46,12 +46,11 @@ public class JobsClientTest extends QuantumClientTestBase {
         //set up job details
         String containerName = "testcontainer";
         String containerUri = storageClient.sasUri(new BlobDetails().setContainerName(containerName)).getSasUri();
-        String qirFilePath = FileSystems.getDefault().getPath("src/samples/java/com/azure/quantum/jobs/BellState.bc").toString();
-        BlobDetails d = new BlobDetails()
-            .setContainerName(containerName)
+        String qirFilePath
+            = FileSystems.getDefault().getPath("src/samples/java/com/azure/quantum/jobs/BellState.bc").toString();
+        BlobDetails d = new BlobDetails().setContainerName(containerName)
             .setBlobName(String.format("input-%s.bc", testResourceNamer.randomUuid()));
-        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders()
-            .setContentType("qir.v1");
+        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders().setContentType("qir.v1");
         String inputDataUri = storageClient.sasUri(d).getSasUri();
         String jobId = String.format("%s", testResourceNamer.randomUuid());
         String jobName = String.format("javaSdkTest-%s", jobId);
@@ -63,18 +62,14 @@ public class JobsClientTest extends QuantumClientTestBase {
         //if in record mode, setup the storage account
         if (!interceptorManager.isPlaybackMode()) {
             // create container if it doesn't exist
-            BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .containerName(containerName)
-                .endpoint(containerUri)
-                .buildClient();
+            BlobContainerClient containerClient
+                = new BlobContainerClientBuilder().containerName(containerName).endpoint(containerUri).buildClient();
             if (!containerClient.exists()) {
                 containerClient.create();
             }
 
             // upload input data to blob
-            BlobClient blobClient = new BlobClientBuilder()
-                .endpoint(inputDataUri)
-                .buildClient();
+            BlobClient blobClient = new BlobClientBuilder().endpoint(inputDataUri).buildClient();
             blobClient.uploadFromFile(qirFilePath, null, blobHttpHeaders, null, null, null, null);
         }
 
@@ -83,8 +78,7 @@ public class JobsClientTest extends QuantumClientTestBase {
         inputParams.put("entryPoint", "ENTRYPOINT__BellState");
         inputParams.put("arguments", new ArrayList<String>());
         inputParams.put("targetCapability", "AdaptiveExecution");
-        JobDetails createJobDetails = new JobDetails()
-            .setContainerUri(containerUri)
+        JobDetails createJobDetails = new JobDetails().setContainerUri(containerUri)
             .setId(jobId)
             .setInputDataFormat(inputDataFormat)
             .setOutputDataFormat(outputDataFormat)

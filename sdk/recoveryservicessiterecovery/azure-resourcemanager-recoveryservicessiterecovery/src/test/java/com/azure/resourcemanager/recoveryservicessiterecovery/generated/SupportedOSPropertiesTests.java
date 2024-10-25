@@ -28,9 +28,11 @@ public final class SupportedOSPropertiesTests {
         SupportedOSProperties model = new SupportedOSProperties()
             .withSupportedOsList(Arrays.asList(new SupportedOSProperty().withInstanceType("uuipldq")
                 .withSupportedOs(Arrays.asList(
-                    new SupportedOSDetails().withOsName("kva").withOsType("l")
+                    new SupportedOSDetails().withOsName("kva")
+                        .withOsType("l")
                         .withOsVersions(Arrays.asList(new OSVersionWrapper())),
-                    new SupportedOSDetails().withOsName("vqyvwehtaemxhzz").withOsType("ev")
+                    new SupportedOSDetails().withOsName("vqyvwehtaemxhzz")
+                        .withOsType("ev")
                         .withOsVersions(Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper()))))));
         model = BinaryData.fromObject(model).toObject(SupportedOSProperties.class);
         Assertions.assertEquals("uuipldq", model.supportedOsList().get(0).instanceType());

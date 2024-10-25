@@ -28,9 +28,11 @@ public final class ProtectableItemInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableItemInner model = new ProtectableItemInner().withProperties(
-            new ProtectableItemProperties().withFriendlyName("ylpstdbhhxsrzdz").withProtectionStatus("erscdntne")
-                .withReplicationProtectedItemId("iwjmygtdssls").withRecoveryServicesProviderId("mweriofzpy")
+        ProtectableItemInner model = new ProtectableItemInner()
+            .withProperties(new ProtectableItemProperties().withFriendlyName("ylpstdbhhxsrzdz")
+                .withProtectionStatus("erscdntne")
+                .withReplicationProtectedItemId("iwjmygtdssls")
+                .withRecoveryServicesProviderId("mweriofzpy")
                 .withProtectionReadinessErrors(Arrays.asList("mwabnetshhszhedp", "vwiwubmwmbesld"))
                 .withSupportedReplicationProviders(Arrays.asList("wtppjflcxogaoko", "z"))
                 .withCustomDetails(new ConfigurationSettings()))

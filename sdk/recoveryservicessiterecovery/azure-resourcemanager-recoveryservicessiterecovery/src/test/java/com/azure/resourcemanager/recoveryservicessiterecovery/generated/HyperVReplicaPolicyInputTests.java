@@ -29,10 +29,15 @@ public final class HyperVReplicaPolicyInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaPolicyInput model = new HyperVReplicaPolicyInput().withRecoveryPoints(1848793230)
-            .withApplicationConsistentSnapshotFrequencyInHours(60033751).withCompression("apbxwieexuyade")
-            .withInitialReplicationMethod("tfo").withOnlineReplicationStartTime("k")
-            .withOfflineReplicationImportPath("imyc").withOfflineReplicationExportPath("r")
-            .withReplicationPort(360310908).withAllowedAuthenticationType(1678727382).withReplicaDeletion("nnuifersej");
+            .withApplicationConsistentSnapshotFrequencyInHours(60033751)
+            .withCompression("apbxwieexuyade")
+            .withInitialReplicationMethod("tfo")
+            .withOnlineReplicationStartTime("k")
+            .withOfflineReplicationImportPath("imyc")
+            .withOfflineReplicationExportPath("r")
+            .withReplicationPort(360310908)
+            .withAllowedAuthenticationType(1678727382)
+            .withReplicaDeletion("nnuifersej");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaPolicyInput.class);
         Assertions.assertEquals(1848793230, model.recoveryPoints());
         Assertions.assertEquals(60033751, model.applicationConsistentSnapshotFrequencyInHours());

@@ -45,12 +45,13 @@ public final class ReplicationVaultSettingsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VaultSetting> response = manager.replicationVaultSettings().list("jkhcoscoljjhcs", "zooefzsdttbq",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<VaultSetting> response = manager.replicationVaultSettings()
+            .list("jkhcoscoljjhcs", "zooefzsdttbq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("dvwojvx", response.iterator().next().properties().migrationSolutionId());
         Assertions.assertEquals("vhrqxrqghot", response.iterator().next().properties().vmwareToAzureProviderType());

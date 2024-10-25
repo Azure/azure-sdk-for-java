@@ -44,12 +44,15 @@ public final class RecoveryPointsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPoint response = manager.recoveryPoints().getWithResponse("szopeuku", "dswbsskgq", "emosq", "fsjbpwjwz",
-            "gipdzym", "khxfpz", com.azure.core.util.Context.NONE).getValue();
+        RecoveryPoint response = manager.recoveryPoints()
+            .getWithResponse("szopeuku", "dswbsskgq", "emosq", "fsjbpwjwz", "gipdzym", "khxfpz",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T08:38:28Z"),
             response.properties().recoveryPointTime());

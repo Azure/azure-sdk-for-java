@@ -25,8 +25,11 @@ public final class UpdateVCenterRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateVCenterRequest model = new UpdateVCenterRequest()
-            .withProperties(new UpdateVCenterRequestProperties().withFriendlyName("ytnrzvuljraae").withIpAddress("nok")
-                .withProcessServerId("ukkjqnvbroyla").withPort("ulcdisdosf").withRunAsAccountId("jsvg"));
+            .withProperties(new UpdateVCenterRequestProperties().withFriendlyName("ytnrzvuljraae")
+                .withIpAddress("nok")
+                .withProcessServerId("ukkjqnvbroyla")
+                .withPort("ulcdisdosf")
+                .withRunAsAccountId("jsvg"));
         model = BinaryData.fromObject(model).toObject(UpdateVCenterRequest.class);
         Assertions.assertEquals("ytnrzvuljraae", model.properties().friendlyName());
         Assertions.assertEquals("nok", model.properties().ipAddress());

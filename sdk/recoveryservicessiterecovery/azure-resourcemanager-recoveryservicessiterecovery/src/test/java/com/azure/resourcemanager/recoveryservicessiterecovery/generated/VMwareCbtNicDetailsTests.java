@@ -30,9 +30,14 @@ public final class VMwareCbtNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMwareCbtNicDetails model = new VMwareCbtNicDetails().withIsPrimaryNic("ymfjxl")
-            .withTargetIpAddress("hmqyncgaullfstyy").withTargetIpAddressType(EthernetAddressType.DYNAMIC)
-            .withTargetSubnetName("ulmwqgmhmqmiwx").withTestNetworkId("v").withTestSubnetName("ucqfgufjnbxwbm")
-            .withTestIpAddress("ukin").withTestIpAddressType(EthernetAddressType.DYNAMIC).withTargetNicName("gde")
+            .withTargetIpAddress("hmqyncgaullfstyy")
+            .withTargetIpAddressType(EthernetAddressType.DYNAMIC)
+            .withTargetSubnetName("ulmwqgmhmqmiwx")
+            .withTestNetworkId("v")
+            .withTestSubnetName("ucqfgufjnbxwbm")
+            .withTestIpAddress("ukin")
+            .withTestIpAddressType(EthernetAddressType.DYNAMIC)
+            .withTargetNicName("gde")
             .withIsSelectedForMigration("kzou");
         model = BinaryData.fromObject(model).toObject(VMwareCbtNicDetails.class);
         Assertions.assertEquals("ymfjxl", model.isPrimaryNic());

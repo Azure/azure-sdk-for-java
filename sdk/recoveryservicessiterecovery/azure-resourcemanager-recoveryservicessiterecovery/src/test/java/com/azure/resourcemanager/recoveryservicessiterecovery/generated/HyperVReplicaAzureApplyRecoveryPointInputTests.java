@@ -20,8 +20,9 @@ public final class HyperVReplicaAzureApplyRecoveryPointInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureApplyRecoveryPointInput model = new HyperVReplicaAzureApplyRecoveryPointInput()
-            .withPrimaryKekCertificatePfx("ljcirvpefycdvei").withSecondaryKekCertificatePfx("tjnsx");
+        HyperVReplicaAzureApplyRecoveryPointInput model
+            = new HyperVReplicaAzureApplyRecoveryPointInput().withPrimaryKekCertificatePfx("ljcirvpefycdvei")
+                .withSecondaryKekCertificatePfx("tjnsx");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureApplyRecoveryPointInput.class);
         Assertions.assertEquals("ljcirvpefycdvei", model.primaryKekCertificatePfx());
         Assertions.assertEquals("tjnsx", model.secondaryKekCertificatePfx());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaProperties model =
-            BinaryData
-                .fromString(
-                    "{\"limit\":671328296,\"currentValue\":1223269261,\"unit\":\"uiizynke\",\"name\":{\"value\":\"trwyhqmib\",\"localizedValue\":\"hwit\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"yynpcdpumnzgmwz\",\"properties\":\"dataabikns\"}")
-                .toObject(QuotaProperties.class);
+        QuotaProperties model = BinaryData.fromString(
+            "{\"limit\":671328296,\"currentValue\":1223269261,\"unit\":\"uiizynke\",\"name\":{\"value\":\"trwyhqmib\",\"localizedValue\":\"hwit\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"yynpcdpumnzgmwz\",\"properties\":\"dataabikns\"}")
+            .toObject(QuotaProperties.class);
         Assertions.assertEquals(671328296, model.limit());
         Assertions.assertEquals("uiizynke", model.unit());
         Assertions.assertEquals("trwyhqmib", model.name().value());
@@ -26,13 +24,11 @@ public final class QuotaPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaProperties model =
-            new QuotaProperties()
-                .withLimit(671328296)
-                .withUnit("uiizynke")
-                .withName(new ResourceName().withValue("trwyhqmib"))
-                .withResourceType(ResourceType.LOW_PRIORITY)
-                .withProperties("dataabikns");
+        QuotaProperties model = new QuotaProperties().withLimit(671328296)
+            .withUnit("uiizynke")
+            .withName(new ResourceName().withValue("trwyhqmib"))
+            .withResourceType(ResourceType.LOW_PRIORITY)
+            .withProperties("dataabikns");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
         Assertions.assertEquals(671328296, model.limit());
         Assertions.assertEquals("uiizynke", model.unit());

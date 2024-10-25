@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = EventModelCustomProperties.class)
 @JsonTypeName("EventModelCustomProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciEventModelCustomProperties.class)
-})
+    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciEventModelCustomProperties.class) })
 @Immutable
 public class EventModelCustomProperties {
     /** Creates an instance of EventModelCustomProperties class. */

@@ -45,12 +45,13 @@ public final class ReplicationProtectionIntentsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReplicationProtectionIntent> response = manager.replicationProtectionIntents().list("frzcwuejmxl",
-            "zlnzyrgr", "hchraunjovlx", "tvmvzpni", com.azure.core.util.Context.NONE);
+        PagedIterable<ReplicationProtectionIntent> response = manager.replicationProtectionIntents()
+            .list("frzcwuejmxl", "zlnzyrgr", "hchraunjovlx", "tvmvzpni", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("mrgm", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals("nvzmsvzng", response.iterator().next().location());

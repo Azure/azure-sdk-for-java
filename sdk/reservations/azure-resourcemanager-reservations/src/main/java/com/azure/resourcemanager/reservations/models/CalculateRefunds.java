@@ -23,8 +23,8 @@ public interface CalculateRefunds {
      * @return the response of calculate refund containing refund information of reservation along with {@link
      *     Response}.
      */
-    Response<CalculateRefundResponse> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context);
+    Response<CalculateRefundResponse> postWithResponse(String reservationOrderId, CalculateRefundRequest body,
+        Context context);
 
     /**
      * Calculate the refund amount of a reservation order.

@@ -24,7 +24,9 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInputTests {
     public void testSerialize() throws Exception {
         HyperVReplicaAzurePlannedFailoverProviderInput model
             = new HyperVReplicaAzurePlannedFailoverProviderInput().withPrimaryKekCertificatePfx("fsbw")
-                .withSecondaryKekCertificatePfx("ivbvzi").withRecoveryPointId("wxgoooxzpra").withOsUpgradeVersion("s");
+                .withSecondaryKekCertificatePfx("ivbvzi")
+                .withRecoveryPointId("wxgoooxzpra")
+                .withOsUpgradeVersion("s");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzurePlannedFailoverProviderInput.class);
         Assertions.assertEquals("fsbw", model.primaryKekCertificatePfx());
         Assertions.assertEquals("ivbvzi", model.secondaryKekCertificatePfx());

@@ -158,8 +158,8 @@ public final class CalculateExchangeResponseProperties {
      * @param reservationsToPurchase the reservationsToPurchase value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withReservationsToPurchase(
-        List<ReservationToPurchaseCalculateExchange> reservationsToPurchase) {
+    public CalculateExchangeResponseProperties
+        withReservationsToPurchase(List<ReservationToPurchaseCalculateExchange> reservationsToPurchase) {
         this.reservationsToPurchase = reservationsToPurchase;
         return this;
     }
@@ -179,8 +179,8 @@ public final class CalculateExchangeResponseProperties {
      * @param savingsPlansToPurchase the savingsPlansToPurchase value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withSavingsPlansToPurchase(
-        List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase) {
+    public CalculateExchangeResponseProperties
+        withSavingsPlansToPurchase(List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase) {
         this.savingsPlansToPurchase = savingsPlansToPurchase;
         return this;
     }
@@ -200,8 +200,8 @@ public final class CalculateExchangeResponseProperties {
      * @param reservationsToExchange the reservationsToExchange value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withReservationsToExchange(
-        List<ReservationToExchange> reservationsToExchange) {
+    public CalculateExchangeResponseProperties
+        withReservationsToExchange(List<ReservationToExchange> reservationsToExchange) {
         this.reservationsToExchange = reservationsToExchange;
         return this;
     }

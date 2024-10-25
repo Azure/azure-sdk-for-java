@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapability model =
-            BinaryData.fromString("{\"name\":\"kljla\",\"value\":\"cr\"}").toObject(SkuCapability.class);
+        SkuCapability model
+            = BinaryData.fromString("{\"name\":\"kljla\",\"value\":\"cr\"}").toObject(SkuCapability.class);
         Assertions.assertEquals("kljla", model.name());
         Assertions.assertEquals("cr", model.value());
     }

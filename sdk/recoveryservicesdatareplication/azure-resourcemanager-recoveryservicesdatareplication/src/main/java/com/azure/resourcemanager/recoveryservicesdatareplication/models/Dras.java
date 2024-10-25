@@ -24,8 +24,8 @@ public interface Dras {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the fabric agent along with {@link Response}.
      */
-    Response<DraModel> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context);
+    Response<DraModel> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context);
 
     /**
      * Gets the fabric agent (Dra).

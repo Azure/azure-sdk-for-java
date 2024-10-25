@@ -45,8 +45,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @param client the instance of the service client containing this operation class.
      */
     CalculateExchangesClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(CalculateExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CalculateExchangesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,16 +57,13 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiC")
     public interface CalculateExchangesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/calculateExchange")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CalculateExchangeRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CalculateExchangeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -83,10 +80,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(CalculateExchangeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -115,10 +110,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(CalculateExchangeRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -143,18 +136,14 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link PollerFlux} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    private
+        PollerFlux<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPostAsync(CalculateExchangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body);
-        return this
-            .client
+        return this.client
             .<CalculateExchangeOperationResultResponseInner, CalculateExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CalculateExchangeOperationResultResponseInner.class,
-                CalculateExchangeOperationResultResponseInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CalculateExchangeOperationResultResponseInner.class,
+                CalculateExchangeOperationResultResponseInner.class, this.client.getContext());
     }
 
     /**
@@ -170,19 +159,15 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link PollerFlux} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    private
+        PollerFlux<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPostAsync(CalculateExchangeRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body, context);
-        return this
-            .client
+        return this.client
             .<CalculateExchangeOperationResultResponseInner, CalculateExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CalculateExchangeOperationResultResponseInner.class,
-                CalculateExchangeOperationResultResponseInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CalculateExchangeOperationResultResponseInner.class,
+                CalculateExchangeOperationResultResponseInner.class, context);
     }
 
     /**
@@ -197,8 +182,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link SyncPoller} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    public
+        SyncPoller<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPost(CalculateExchangeRequest body) {
         return this.beginPostAsync(body).getSyncPoller();
     }
@@ -216,8 +201,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link SyncPoller} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    public
+        SyncPoller<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPost(CalculateExchangeRequest body, Context context) {
         return this.beginPostAsync(body, context).getSyncPoller();
     }
@@ -251,8 +236,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return calculateExchange operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CalculateExchangeOperationResultResponseInner> postAsync(
-        CalculateExchangeRequest body, Context context) {
+    private Mono<CalculateExchangeOperationResultResponseInner> postAsync(CalculateExchangeRequest body,
+        Context context) {
         return beginPostAsync(body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 

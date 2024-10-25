@@ -22,7 +22,8 @@ public final class VmwareCbtPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmwareCbtPolicyDetails model = new VmwareCbtPolicyDetails().withRecoveryPointHistoryInMinutes(565605624)
-            .withAppConsistentFrequencyInMinutes(1535089718).withCrashConsistentFrequencyInMinutes(1544555304);
+            .withAppConsistentFrequencyInMinutes(1535089718)
+            .withCrashConsistentFrequencyInMinutes(1544555304);
         model = BinaryData.fromObject(model).toObject(VmwareCbtPolicyDetails.class);
         Assertions.assertEquals(565605624, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1535089718, model.appConsistentFrequencyInMinutes());

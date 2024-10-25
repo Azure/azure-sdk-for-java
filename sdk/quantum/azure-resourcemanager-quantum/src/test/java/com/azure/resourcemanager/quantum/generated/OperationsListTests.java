@@ -28,9 +28,13 @@ public final class OperationsListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsList model = new OperationsList().withNextLink("gaokonzmnsikv").withValue(
-            Arrays.asList(new OperationInner().withName("ze").withIsDataAction(true).withDisplay(new OperationDisplay()
-                .withProvider("tfz").withResource("hhvh").withOperation("r").withDescription("dkwobdagx"))));
+        OperationsList model = new OperationsList().withNextLink("gaokonzmnsikv")
+            .withValue(Arrays.asList(new OperationInner().withName("ze")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDisplay().withProvider("tfz")
+                    .withResource("hhvh")
+                    .withOperation("r")
+                    .withDescription("dkwobdagx"))));
         model = BinaryData.fromObject(model).toObject(OperationsList.class);
         Assertions.assertEquals("gaokonzmnsikv", model.nextLink());
         Assertions.assertEquals("ze", model.value().get(0).name());

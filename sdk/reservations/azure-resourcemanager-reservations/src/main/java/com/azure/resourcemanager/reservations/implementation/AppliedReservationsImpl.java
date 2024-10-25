@@ -13,8 +13,7 @@ public final class AppliedReservationsImpl implements AppliedReservations {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    AppliedReservationsImpl(
-        AppliedReservationsInner innerObject,
+    AppliedReservationsImpl(AppliedReservationsInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -23,7 +23,8 @@ public final class HyperVReplicaAzureFailbackProviderInputTests {
     public void testSerialize() throws Exception {
         HyperVReplicaAzureFailbackProviderInput model
             = new HyperVReplicaAzureFailbackProviderInput().withDataSyncOption("vgohtw")
-                .withRecoveryVmCreationOption("qilrixysfn").withProviderIdForAlternateRecovery("sqywwwmhkru");
+                .withRecoveryVmCreationOption("qilrixysfn")
+                .withProviderIdForAlternateRecovery("sqywwwmhkru");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureFailbackProviderInput.class);
         Assertions.assertEquals("vgohtw", model.dataSyncOption());
         Assertions.assertEquals("qilrixysfn", model.recoveryVmCreationOption());

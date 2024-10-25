@@ -49,10 +49,8 @@ public final class PlannedFailoverModelInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model PlannedFailoverModelInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model PlannedFailoverModelInner"));
         } else {
             properties().validate();
         }

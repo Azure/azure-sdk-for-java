@@ -45,13 +45,16 @@ public final class StorageClassificationMappingsCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StorageClassificationMapping response = manager.storageClassificationMappings().define("k")
+        StorageClassificationMapping response = manager.storageClassificationMappings()
+            .define("k")
             .withExistingReplicationStorageClassification("wn", "wckzeb", "bvwdxgyypmxq", "lmlnxrcatkuh")
-            .withProperties(new StorageMappingInputProperties().withTargetStorageClassificationId("kvvii")).create();
+            .withProperties(new StorageMappingInputProperties().withTargetStorageClassificationId("kvvii"))
+            .create();
 
         Assertions.assertEquals("shoxfzzjd", response.properties().targetStorageClassificationId());
         Assertions.assertEquals("pbusxy", response.location());

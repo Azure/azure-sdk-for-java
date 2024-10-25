@@ -45,12 +45,14 @@ public final class ReplicationRecoveryPlansGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RecoveryPlan response = manager.replicationRecoveryPlans()
-            .getWithResponse("voyjdgfkrq", "jrvpakxrdeexw", "juguvnxbo", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("voyjdgfkrq", "jrvpakxrdeexw", "juguvnxbo", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("urnzoytkbe", response.properties().friendlyName());
         Assertions.assertEquals("yfenrozoijoxcbpk", response.properties().primaryFabricId());

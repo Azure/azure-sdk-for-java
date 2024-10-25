@@ -19,8 +19,8 @@ public final class ReturnsImpl implements Returns {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public ReturnsImpl(
-        ReturnsClient innerClient, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    public ReturnsImpl(ReturnsClient innerClient,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

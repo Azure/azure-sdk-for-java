@@ -46,15 +46,18 @@ public final class ReplicationAlertSettingsCreateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Alert response
-            = manager.replicationAlertSettings().define("derjennmk").withExistingVault("ustihtgrafjajvky", "mmjczvog")
-                .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("uwqdwxhhlbmyphf")
-                    .withCustomEmailAddresses(Arrays.asList("pdhewokyqs", "kx", "sy")).withLocale("ihqbtod"))
-                .create();
+        Alert response = manager.replicationAlertSettings()
+            .define("derjennmk")
+            .withExistingVault("ustihtgrafjajvky", "mmjczvog")
+            .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("uwqdwxhhlbmyphf")
+                .withCustomEmailAddresses(Arrays.asList("pdhewokyqs", "kx", "sy"))
+                .withLocale("ihqbtod"))
+            .create();
 
         Assertions.assertEquals("xbvkvwzdmvdd", response.properties().sendToOwners());
         Assertions.assertEquals("rugyozzzawnjdv", response.properties().customEmailAddresses().get(0));

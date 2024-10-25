@@ -29,10 +29,15 @@ public final class FailoverReplicationProtectedItemDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FailoverReplicationProtectedItemDetails model
-            = new FailoverReplicationProtectedItemDetails().withName("xpzruzythqkk").withFriendlyName("bg")
-                .withTestVmName("ellv").withTestVmFriendlyName("nxdmnitmujdtv")
-                .withNetworkConnectionStatus("lyymffhmjpddny").withNetworkFriendlyName("zuvrzmzqmz").withSubnet("rb")
-                .withRecoveryPointId("vnmdyfoeboj").withRecoveryPointTime(OffsetDateTime.parse("2021-06-09T22:38:27Z"));
+            = new FailoverReplicationProtectedItemDetails().withName("xpzruzythqkk")
+                .withFriendlyName("bg")
+                .withTestVmName("ellv")
+                .withTestVmFriendlyName("nxdmnitmujdtv")
+                .withNetworkConnectionStatus("lyymffhmjpddny")
+                .withNetworkFriendlyName("zuvrzmzqmz")
+                .withSubnet("rb")
+                .withRecoveryPointId("vnmdyfoeboj")
+                .withRecoveryPointTime(OffsetDateTime.parse("2021-06-09T22:38:27Z"));
         model = BinaryData.fromObject(model).toObject(FailoverReplicationProtectedItemDetails.class);
         Assertions.assertEquals("xpzruzythqkk", model.name());
         Assertions.assertEquals("bg", model.friendlyName());

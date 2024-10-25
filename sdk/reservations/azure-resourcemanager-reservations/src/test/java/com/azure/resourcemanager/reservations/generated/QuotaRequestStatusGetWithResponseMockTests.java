@@ -31,45 +31,29 @@ public final class QuotaRequestStatusGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Invalid\",\"message\":\"ocxvdfffwafqr\",\"requestSubmitTime\":\"2021-06-07T05:27:14Z\",\"value\":[]},\"id\":\"pavehhr\",\"name\":\"kbunzoz\",\"type\":\"dhcxgkmoy\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Invalid\",\"message\":\"ocxvdfffwafqr\",\"requestSubmitTime\":\"2021-06-07T05:27:14Z\",\"value\":[]},\"id\":\"pavehhr\",\"name\":\"kbunzoz\",\"type\":\"dhcxgkmoy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ReservationsManager manager =
-            ReservationsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ReservationsManager manager = ReservationsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        QuotaRequestDetails response =
-            manager
-                .quotaRequestStatus()
-                .getWithResponse(
-                    "hihfrbbcevqagtlt",
-                    "hlfkqojpy",
-                    "vgtrdcnifmzzs",
-                    "ymbrnysuxmpraf",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        QuotaRequestDetails response = manager.quotaRequestStatus()
+            .getWithResponse("hihfrbbcevqagtlt", "hlfkqojpy", "vgtrdcnifmzzs", "ymbrnysuxmpraf",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(QuotaRequestState.INVALID, response.provisioningState());
     }

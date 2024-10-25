@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PolicyModelCustomProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciPolicyModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciPolicyModelCustomProperties.class)
-})
+    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciPolicyModelCustomProperties.class) })
 @Immutable
 public class PolicyModelCustomProperties {
     /** Creates an instance of PolicyModelCustomProperties class. */

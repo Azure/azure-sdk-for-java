@@ -45,9 +45,10 @@ public final class OfferingsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureQuantumManager manager = AzureQuantumManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureQuantumManager manager = AzureQuantumManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProviderDescription> response = manager.offerings().list("jlt", com.azure.core.util.Context.NONE);
 

@@ -25,10 +25,13 @@ public final class OperationsDiscoveryInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDiscoveryInner model = new OperationsDiscoveryInner()
-            .withName("rcryuanzwuxzdxta").withDisplay(new Display().withProvider("hmwhfpmrqo").withResource("tu")
-                .withOperation("nryrtihf").withDescription("ijbpzvgnwzsymgl"))
-            .withOrigin("fcyzkohdbihanufh").withProperties("databj");
+        OperationsDiscoveryInner model = new OperationsDiscoveryInner().withName("rcryuanzwuxzdxta")
+            .withDisplay(new Display().withProvider("hmwhfpmrqo")
+                .withResource("tu")
+                .withOperation("nryrtihf")
+                .withDescription("ijbpzvgnwzsymgl"))
+            .withOrigin("fcyzkohdbihanufh")
+            .withProperties("databj");
         model = BinaryData.fromObject(model).toObject(OperationsDiscoveryInner.class);
         Assertions.assertEquals("rcryuanzwuxzdxta", model.name());
         Assertions.assertEquals("hmwhfpmrqo", model.display().provider());

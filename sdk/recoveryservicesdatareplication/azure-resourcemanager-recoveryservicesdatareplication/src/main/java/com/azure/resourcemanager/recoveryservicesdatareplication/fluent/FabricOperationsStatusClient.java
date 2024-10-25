@@ -27,8 +27,8 @@ public interface FabricOperationsStatusClient {
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String fabricName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String resourceGroupName, String fabricName, String operationId,
+        Context context);
 
     /**
      * Gets the fabric operation status.

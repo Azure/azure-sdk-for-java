@@ -37,17 +37,25 @@ public final class AddRecoveryServicesProviderInputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddRecoveryServicesProviderInputProperties model = new AddRecoveryServicesProviderInputProperties()
-            .withMachineName("ysownbtgkbug").withMachineId("qctojcmisof").withBiosId("ypefojyqdhcupl")
-            .withAuthenticationIdentityInput(
-                new IdentityProviderInput().withTenantId("plcwkhi").withApplicationId("ihlhzdsqtzb")
-                    .withObjectId("rgnowcjhfgm").withAudience("ecactx").withAadAuthority("wotey"))
-            .withResourceAccessIdentityInput(
-                new IdentityProviderInput().withTenantId("wcluqovekqvgq").withApplicationId("uwifzmpjwyiv")
-                    .withObjectId("ikf").withAudience("cvhrfsp").withAadAuthority("uagrttikteusqc"))
-            .withDataPlaneAuthenticationIdentityInput(
-                new IdentityProviderInput().withTenantId("vyklxuby").withApplicationId("affmmfblcqc")
-                    .withObjectId("ubgq").withAudience("brta").withAadAuthority("metttwgd"));
+        AddRecoveryServicesProviderInputProperties model
+            = new AddRecoveryServicesProviderInputProperties().withMachineName("ysownbtgkbug")
+                .withMachineId("qctojcmisof")
+                .withBiosId("ypefojyqdhcupl")
+                .withAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("plcwkhi")
+                    .withApplicationId("ihlhzdsqtzb")
+                    .withObjectId("rgnowcjhfgm")
+                    .withAudience("ecactx")
+                    .withAadAuthority("wotey"))
+                .withResourceAccessIdentityInput(new IdentityProviderInput().withTenantId("wcluqovekqvgq")
+                    .withApplicationId("uwifzmpjwyiv")
+                    .withObjectId("ikf")
+                    .withAudience("cvhrfsp")
+                    .withAadAuthority("uagrttikteusqc"))
+                .withDataPlaneAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("vyklxuby")
+                    .withApplicationId("affmmfblcqc")
+                    .withObjectId("ubgq")
+                    .withAudience("brta")
+                    .withAadAuthority("metttwgd"));
         model = BinaryData.fromObject(model).toObject(AddRecoveryServicesProviderInputProperties.class);
         Assertions.assertEquals("ysownbtgkbug", model.machineName());
         Assertions.assertEquals("qctojcmisof", model.machineId());

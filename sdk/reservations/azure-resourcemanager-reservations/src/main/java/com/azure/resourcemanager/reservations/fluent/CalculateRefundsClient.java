@@ -28,8 +28,8 @@ public interface CalculateRefundsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CalculateRefundResponseInner> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context);
+    Response<CalculateRefundResponseInner> postWithResponse(String reservationOrderId, CalculateRefundRequest body,
+        Context context);
 
     /**
      * Calculate the refund amount of a reservation order.

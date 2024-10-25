@@ -312,17 +312,12 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
     public void validate() {
         super.validate();
         if (vmwareFabricArmId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
         }
         if (azStackHciFabricArmId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azStackHciFabricArmId in model"
-                            + " VMwareToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property azStackHciFabricArmId in model" + " VMwareToAzStackHciRepExtnCustomProps"));
         }
     }
 

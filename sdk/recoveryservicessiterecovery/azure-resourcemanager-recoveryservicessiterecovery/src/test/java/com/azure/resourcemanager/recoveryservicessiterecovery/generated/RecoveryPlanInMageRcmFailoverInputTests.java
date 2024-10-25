@@ -22,7 +22,8 @@ public final class RecoveryPlanInMageRcmFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanInMageRcmFailoverInput model = new RecoveryPlanInMageRcmFailoverInput()
-            .withRecoveryPointType(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT).withUseMultiVmSyncPoint("suc");
+            .withRecoveryPointType(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT)
+            .withUseMultiVmSyncPoint("suc");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInMageRcmFailoverInput.class);
         Assertions.assertEquals(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
         Assertions.assertEquals("suc", model.useMultiVmSyncPoint());

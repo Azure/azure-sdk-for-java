@@ -54,8 +54,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ProtectedItemsClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,92 +66,64 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ProtectedItemsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectedItemModelInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ProtectedItemModelInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ProtectedItemModelInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProtectedItemModelInner body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @QueryParam("forceDelete") Boolean forceDelete,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProtectedItemModelCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/plannedFailover")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> plannedFailover(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PlannedFailoverModelInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("forceDelete") Boolean forceDelete,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectedItemModelCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/plannedFailover")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> plannedFailover(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PlannedFailoverModelInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectedItemModelCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -168,19 +140,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the details of the protected item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemModelInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private Mono<Response<ProtectedItemModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,18 +163,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, protectedItemName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -225,19 +183,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the details of the protected item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemModelInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
+    private Mono<Response<ProtectedItemModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -252,16 +206,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            protectedItemName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -278,8 +224,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the details of the protected item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemModelInner> getAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private Mono<ProtectedItemModelInner> getAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -299,8 +245,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the details of the protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectedItemModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
+    public Response<ProtectedItemModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName, context).block();
     }
 
@@ -337,19 +283,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, ProtectedItemModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -367,19 +309,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, protectedItemName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -399,23 +330,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, ProtectedItemModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -433,17 +356,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            protectedItemName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -463,16 +377,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreateAsync(
         String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
-        return this
-            .client
-            .<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectedItemModelInner.class,
-                ProtectedItemModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
+        return this.client.<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectedItemModelInner.class, ProtectedItemModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -489,19 +398,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link PollerFlux} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreateAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private PollerFlux<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner>
+        beginCreateAsync(String resourceGroupName, String vaultName, String protectedItemName) {
         final ProtectedItemModelInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
-        return this
-            .client
-            .<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectedItemModelInner.class,
-                ProtectedItemModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
+        return this.client.<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectedItemModelInner.class, ProtectedItemModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -521,22 +425,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body, context);
-        return this
-            .client
-            .<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectedItemModelInner.class,
-                ProtectedItemModelInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body, context);
+        return this.client.<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectedItemModelInner.class, ProtectedItemModelInner.class, context);
     }
 
     /**
@@ -553,8 +448,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner>
+        beginCreate(String resourceGroupName, String vaultName, String protectedItemName) {
         final ProtectedItemModelInner body = null;
         return this.beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body).getSyncPoller();
     }
@@ -576,10 +471,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner body,
         Context context) {
         return this.beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body, context).getSyncPoller();
     }
@@ -599,10 +491,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemModelInner> createAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner body) {
-        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body)
-            .last()
+    private Mono<ProtectedItemModelInner> createAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, ProtectedItemModelInner body) {
+        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -620,11 +511,10 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemModelInner> createAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private Mono<ProtectedItemModelInner> createAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         final ProtectedItemModelInner body = null;
-        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -644,14 +534,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemModelInner> createAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body, context)
-            .last()
+    private Mono<ProtectedItemModelInner> createAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, ProtectedItemModelInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, vaultName, protectedItemName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -690,12 +575,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return protected item model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context) {
+    public ProtectedItemModelInner create(String resourceGroupName, String vaultName, String protectedItemName,
+        ProtectedItemModelInner body, Context context) {
         return createAsync(resourceGroupName, vaultName, protectedItemName, body, context).block();
     }
 
@@ -714,19 +595,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Boolean forceDelete) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -742,18 +619,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            forceDelete,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    vaultName, protectedItemName, forceDelete, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -773,19 +640,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Boolean forceDelete, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -800,17 +663,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                forceDelete,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            protectedItemName, forceDelete, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -828,14 +682,12 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Boolean forceDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -852,15 +704,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         final Boolean forceDelete = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -879,14 +729,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Boolean forceDelete, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -903,8 +752,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         final Boolean forceDelete = null;
         return this.beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete).getSyncPoller();
     }
@@ -925,10 +774,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String protectedItemName, Boolean forceDelete, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context)
             .getSyncPoller();
     }
 
@@ -947,10 +795,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete) {
-        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String protectedItemName,
+        Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -970,8 +817,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String protectedItemName) {
         final Boolean forceDelete = null;
-        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -991,10 +837,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String protectedItemName,
+        Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1031,8 +876,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context) {
+    public void delete(String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete,
+        Context context) {
         deleteAsync(resourceGroupName, vaultName, protectedItemName, forceDelete, context).block();
     }
 
@@ -1050,19 +895,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1073,26 +914,10 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ProtectedItemModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ProtectedItemModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1111,19 +936,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1135,23 +956,10 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1168,8 +976,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectedItemModelInner> listAsync(String resourceGroupName, String vaultName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1187,8 +995,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectedItemModelInner> listAsync(String resourceGroupName, String vaultName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1242,19 +1049,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> plannedFailoverWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> plannedFailoverWithResponseAsync(String resourceGroupName,
+        String vaultName, String protectedItemName, PlannedFailoverModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1272,19 +1075,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .plannedFailover(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.plannedFailover(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, protectedItemName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1304,23 +1096,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> plannedFailoverWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> plannedFailoverWithResponseAsync(String resourceGroupName,
+        String vaultName, String protectedItemName, PlannedFailoverModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1338,17 +1122,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .plannedFailover(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.plannedFailover(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, protectedItemName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1368,16 +1143,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailoverAsync(
         String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
-        return this
-            .client
-            .<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PlannedFailoverModelInner.class,
-                PlannedFailoverModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
+        return this.client.<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PlannedFailoverModelInner.class, PlannedFailoverModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1394,19 +1164,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link PollerFlux} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailoverAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private PollerFlux<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner>
+        beginPlannedFailoverAsync(String resourceGroupName, String vaultName, String protectedItemName) {
         final PlannedFailoverModelInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
-        return this
-            .client
-            .<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PlannedFailoverModelInner.class,
-                PlannedFailoverModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body);
+        return this.client.<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PlannedFailoverModelInner.class, PlannedFailoverModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1426,22 +1191,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailoverAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body, context);
-        return this
-            .client
-            .<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PlannedFailoverModelInner.class,
-                PlannedFailoverModelInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = plannedFailoverWithResponseAsync(resourceGroupName, vaultName, protectedItemName, body, context);
+        return this.client.<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PlannedFailoverModelInner.class, PlannedFailoverModelInner.class, context);
     }
 
     /**
@@ -1458,8 +1214,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner>
+        beginPlannedFailover(String resourceGroupName, String vaultName, String protectedItemName) {
         final PlannedFailoverModelInner body = null;
         return this.beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body).getSyncPoller();
     }
@@ -1481,13 +1237,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body,
         Context context) {
-        return this
-            .beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body, context)
+        return this.beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body, context)
             .getSyncPoller();
     }
 
@@ -1506,10 +1258,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body) {
-        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body)
-            .last()
+    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, PlannedFailoverModelInner body) {
+        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1527,11 +1278,10 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         final PlannedFailoverModelInner body = null;
-        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body)
-            .last()
+        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1551,14 +1301,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context) {
-        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body, context)
-            .last()
+    private Mono<PlannedFailoverModelInner> plannedFailoverAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, PlannedFailoverModelInner body, Context context) {
+        return beginPlannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1576,8 +1321,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlannedFailoverModelInner plannedFailover(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         final PlannedFailoverModelInner body = null;
         return plannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body).block();
     }
@@ -1598,12 +1343,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlannedFailoverModelInner plannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context) {
+    public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,
+        String protectedItemName, PlannedFailoverModelInner body, Context context) {
         return plannedFailoverAsync(resourceGroupName, vaultName, protectedItemName, body, context).block();
     }
 
@@ -1624,23 +1365,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProtectedItemModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProtectedItemModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1662,23 +1393,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

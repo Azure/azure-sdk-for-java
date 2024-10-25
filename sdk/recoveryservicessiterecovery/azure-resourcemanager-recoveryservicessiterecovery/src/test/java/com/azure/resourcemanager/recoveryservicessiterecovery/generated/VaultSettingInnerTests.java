@@ -22,8 +22,10 @@ public final class VaultSettingInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSettingInner model = new VaultSettingInner().withProperties(new VaultSettingProperties()
-            .withMigrationSolutionId("yxvrqtvbczsul").withVmwareToAzureProviderType("gglmepjpfsey")).withLocation("sa");
+        VaultSettingInner model = new VaultSettingInner()
+            .withProperties(new VaultSettingProperties().withMigrationSolutionId("yxvrqtvbczsul")
+                .withVmwareToAzureProviderType("gglmepjpfsey"))
+            .withLocation("sa");
         model = BinaryData.fromObject(model).toObject(VaultSettingInner.class);
         Assertions.assertEquals("yxvrqtvbczsul", model.properties().migrationSolutionId());
         Assertions.assertEquals("gglmepjpfsey", model.properties().vmwareToAzureProviderType());

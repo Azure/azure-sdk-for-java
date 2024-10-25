@@ -34,15 +34,20 @@ public final class TargetComputeSizeInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetComputeSizeInner model = new TargetComputeSizeInner().withId("ygo").withName("kkqfqjbvle")
+        TargetComputeSizeInner model = new TargetComputeSizeInner().withId("ygo")
+            .withName("kkqfqjbvle")
             .withType("fmluiqtqzfavyvn")
-            .withProperties(new TargetComputeSizeProperties().withName("bar").withFriendlyName("uayjkqa")
-                .withCpuCoresCount(2002865497).withMemoryInGB(51.89952430089579D).withMaxDataDiskCount(1318524891)
+            .withProperties(new TargetComputeSizeProperties().withName("bar")
+                .withFriendlyName("uayjkqa")
+                .withCpuCoresCount(2002865497)
+                .withMemoryInGB(51.89952430089579D)
+                .withMaxDataDiskCount(1318524891)
                 .withMaxNicsCount(813046030)
                 .withErrors(Arrays.asList(new ComputeSizeErrorDetails().withMessage("ntiew").withSeverity("cv"),
                     new ComputeSizeErrorDetails().withMessage("uwrbehwagoh").withSeverity("f"),
                     new ComputeSizeErrorDetails().withMessage("mrqemvvhmx").withSeverity("rjfut")))
-                .withHighIopsSupported("oe").withHyperVGenerations(Arrays.asList("ewzcjznmwcp", "guaadraufactkahz")));
+                .withHighIopsSupported("oe")
+                .withHyperVGenerations(Arrays.asList("ewzcjznmwcp", "guaadraufactkahz")));
         model = BinaryData.fromObject(model).toObject(TargetComputeSizeInner.class);
         Assertions.assertEquals("ygo", model.id());
         Assertions.assertEquals("kkqfqjbvle", model.name());

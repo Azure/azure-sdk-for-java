@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AppliedReservationsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppliedReservationsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"reservationOrderIds\":{\"value\":[\"luwfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\",\"podepoo\"],\"nextLink\":\"nuvamiheogna\"}}")
-                .toObject(AppliedReservationsProperties.class);
+        AppliedReservationsProperties model = BinaryData.fromString(
+            "{\"reservationOrderIds\":{\"value\":[\"luwfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\",\"podepoo\"],\"nextLink\":\"nuvamiheogna\"}}")
+            .toObject(AppliedReservationsProperties.class);
         Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
         Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedReservationsProperties model =
-            new AppliedReservationsProperties()
-                .withReservationOrderIds(
-                    new AppliedReservationList()
-                        .withValue(Arrays.asList("luwfzitonpeqfpjk", "lxofpdvhpfxxypin", "nmayhuybb", "podepoo"))
-                        .withNextLink("nuvamiheogna"));
+        AppliedReservationsProperties model
+            = new AppliedReservationsProperties().withReservationOrderIds(new AppliedReservationList()
+                .withValue(Arrays.asList("luwfzitonpeqfpjk", "lxofpdvhpfxxypin", "nmayhuybb", "podepoo"))
+                .withNextLink("nuvamiheogna"));
         model = BinaryData.fromObject(model).toObject(AppliedReservationsProperties.class);
         Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
         Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());

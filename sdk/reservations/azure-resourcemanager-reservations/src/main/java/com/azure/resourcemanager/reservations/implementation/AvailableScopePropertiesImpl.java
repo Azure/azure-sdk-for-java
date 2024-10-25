@@ -13,8 +13,7 @@ public final class AvailableScopePropertiesImpl implements AvailableScopePropert
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    AvailableScopePropertiesImpl(
-        AvailableScopePropertiesInner innerObject,
+    AvailableScopePropertiesImpl(AvailableScopePropertiesInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

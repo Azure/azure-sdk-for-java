@@ -127,28 +127,20 @@ public final class AzStackHciClusterProperties {
      */
     public void validate() {
         if (clusterName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterName in model AzStackHciClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterName in model AzStackHciClusterProperties"));
         }
         if (resourceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceName in model AzStackHciClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceName in model AzStackHciClusterProperties"));
         }
         if (storageAccountName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountName in model AzStackHciClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccountName in model AzStackHciClusterProperties"));
         }
         if (storageContainers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageContainers in model AzStackHciClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageContainers in model AzStackHciClusterProperties"));
         } else {
             storageContainers().forEach(e -> e.validate());
         }

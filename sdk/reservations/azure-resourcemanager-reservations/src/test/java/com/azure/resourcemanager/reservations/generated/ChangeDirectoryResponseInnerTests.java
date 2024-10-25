@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeDirectoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeDirectoryResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"reservationOrder\":{\"id\":\"k\",\"name\":\"oxafn\",\"isSucceeded\":false,\"error\":\"ichkoymkcdyhb\"},\"reservations\":[{\"id\":\"wdreqnovvqfovl\",\"name\":\"ywsuwsy\",\"isSucceeded\":true,\"error\":\"sytgadgvraea\"}]}")
-                .toObject(ChangeDirectoryResponseInner.class);
+        ChangeDirectoryResponseInner model = BinaryData.fromString(
+            "{\"reservationOrder\":{\"id\":\"k\",\"name\":\"oxafn\",\"isSucceeded\":false,\"error\":\"ichkoymkcdyhb\"},\"reservations\":[{\"id\":\"wdreqnovvqfovl\",\"name\":\"ywsuwsy\",\"isSucceeded\":true,\"error\":\"sytgadgvraea\"}]}")
+            .toObject(ChangeDirectoryResponseInner.class);
         Assertions.assertEquals("k", model.reservationOrder().id());
         Assertions.assertEquals("oxafn", model.reservationOrder().name());
         Assertions.assertEquals(false, model.reservationOrder().isSucceeded());
@@ -30,22 +28,12 @@ public final class ChangeDirectoryResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeDirectoryResponseInner model =
-            new ChangeDirectoryResponseInner()
-                .withReservationOrder(
-                    new ChangeDirectoryResult()
-                        .withId("k")
-                        .withName("oxafn")
-                        .withIsSucceeded(false)
-                        .withError("ichkoymkcdyhb"))
-                .withReservations(
-                    Arrays
-                        .asList(
-                            new ChangeDirectoryResult()
-                                .withId("wdreqnovvqfovl")
-                                .withName("ywsuwsy")
-                                .withIsSucceeded(true)
-                                .withError("sytgadgvraea")));
+        ChangeDirectoryResponseInner model = new ChangeDirectoryResponseInner().withReservationOrder(
+            new ChangeDirectoryResult().withId("k").withName("oxafn").withIsSucceeded(false).withError("ichkoymkcdyhb"))
+            .withReservations(Arrays.asList(new ChangeDirectoryResult().withId("wdreqnovvqfovl")
+                .withName("ywsuwsy")
+                .withIsSucceeded(true)
+                .withError("sytgadgvraea")));
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryResponseInner.class);
         Assertions.assertEquals("k", model.reservationOrder().id());
         Assertions.assertEquals("oxafn", model.reservationOrder().name());

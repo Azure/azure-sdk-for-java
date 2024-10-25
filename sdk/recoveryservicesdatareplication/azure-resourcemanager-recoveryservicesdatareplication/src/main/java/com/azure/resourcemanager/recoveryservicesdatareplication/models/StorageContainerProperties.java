@@ -74,15 +74,12 @@ public final class StorageContainerProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model StorageContainerProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model StorageContainerProperties"));
         }
         if (clusterSharedVolumePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterSharedVolumePath in model StorageContainerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterSharedVolumePath in model StorageContainerProperties"));
         }
     }
 

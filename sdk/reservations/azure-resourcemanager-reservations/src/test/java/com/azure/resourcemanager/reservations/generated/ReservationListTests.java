@@ -23,17 +23,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"yifqrvkdvjsllrmv\",\"etag\":146352395,\"sku\":{\"name\":\"t\"},\"properties\":{\"reservedResourceType\":\"AzureDataExplorer\",\"instanceFlexibility\":\"Off\",\"displayName\":\"xxbczwtr\",\"appliedScopes\":[],\"appliedScopeType\":\"Shared\",\"archived\":false,\"capabilities\":\"j\",\"quantity\":668778225,\"provisioningState\":\"Expired\",\"effectiveDateTime\":\"2020-12-29T19:47:48Z\",\"benefitStartTime\":\"2021-11-07T20:31:54Z\",\"lastUpdatedDateTime\":\"2021-01-06T15:04:50Z\",\"expiryDateTime\":\"2021-07-31T02:25:32Z\",\"reviewDateTime\":\"2021-04-15T03:02:29Z\",\"skuDescription\":\"dobpxjmflbvvn\",\"billingPlan\":\"Monthly\",\"displayProvisioningState\":\"ciwwzjuqkhr\",\"provisioningSubState\":\"jiwkuofoskghsau\",\"purchaseDateTime\":\"2021-09-27T06:41:32Z\",\"billingScopeId\":\"duugidyjr\",\"renew\":false,\"renewSource\":\"aos\",\"renewDestination\":\"xc\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"lhocohslkev\",\"userFriendlyRenewState\":\"ggzfbu\"},\"kind\":\"Microsoft.Compute\",\"id\":\"axkffei\",\"name\":\"th\",\"type\":\"vmezy\"},{\"location\":\"hxmzsbbzoggig\",\"etag\":2011180934,\"sku\":{\"name\":\"rvjx\"},\"properties\":{\"reservedResourceType\":\"AzureDataExplorer\",\"instanceFlexibility\":\"On\",\"displayName\":\"ptkoenkoukn\",\"appliedScopes\":[],\"appliedScopeType\":\"Single\",\"archived\":true,\"capabilities\":\"kbldngkpocipa\",\"quantity\":1866473569,\"provisioningState\":\"PendingResourceHold\",\"effectiveDateTime\":\"2021-01-06T21:03:44Z\",\"benefitStartTime\":\"2021-12-09T00:28:10Z\",\"lastUpdatedDateTime\":\"2021-07-16T00:56:23Z\",\"expiryDateTime\":\"2021-10-28T00:07:14Z\",\"reviewDateTime\":\"2021-07-11T10:35:30Z\",\"skuDescription\":\"gevqznty\",\"billingPlan\":\"Monthly\",\"displayProvisioningState\":\"izcdrqjsd\",\"provisioningSubState\":\"dnfyhxdeoejzicwi\",\"purchaseDateTime\":\"2021-01-05T16:16:49Z\",\"billingScopeId\":\"ishc\",\"renew\":true,\"renewSource\":\"jdeyeamdpha\",\"renewDestination\":\"lpbuxwgipwhonowk\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"nkixzbinj\",\"userFriendlyRenewState\":\"uttmrywnuzoqft\"},\"kind\":\"Microsoft.Compute\",\"id\":\"n\",\"name\":\"cqvyxlwhzlsico\",\"type\":\"oqqnwvlryav\"},{\"location\":\"heun\",\"etag\":1861834573,\"sku\":{\"name\":\"yxzk\"},\"properties\":{\"reservedResourceType\":\"MySql\",\"instanceFlexibility\":\"On\",\"displayName\":\"klyaxuconu\",\"appliedScopes\":[],\"appliedScopeType\":\"Shared\",\"archived\":true,\"capabilities\":\"ypewrmjmwvvjekt\",\"quantity\":2107215650,\"provisioningState\":\"ConfirmedBilling\",\"effectiveDateTime\":\"2020-12-26T16:44:41Z\",\"benefitStartTime\":\"2020-12-23T18:20:15Z\",\"lastUpdatedDateTime\":\"2021-11-05T02:28:20Z\",\"expiryDateTime\":\"2021-08-26T16:24:45Z\",\"reviewDateTime\":\"2021-08-02T01:11:29Z\",\"skuDescription\":\"lqdqgbiqylihka\",\"billingPlan\":\"Upfront\",\"displayProvisioningState\":\"vfcivfsnkymuc\",\"provisioningSubState\":\"hjfbebrjcxe\",\"purchaseDateTime\":\"2021-03-04T14:54:10Z\",\"billingScopeId\":\"fvjrbirphxepcy\",\"renew\":false,\"renewSource\":\"nljky\",\"renewDestination\":\"j\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"gidokgjljyoxgvcl\",\"userFriendlyRenewState\":\"gsncghkjeszz\"},\"kind\":\"Microsoft.Compute\",\"id\":\"txfvgx\",\"name\":\"fsm\",\"type\":\"nehmpvecx\"}],\"nextLink\":\"debfqkkrbmpukgri\"}")
-                .toObject(ReservationList.class);
+        ReservationList model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"yifqrvkdvjsllrmv\",\"etag\":146352395,\"sku\":{\"name\":\"t\"},\"properties\":{\"reservedResourceType\":\"AzureDataExplorer\",\"instanceFlexibility\":\"Off\",\"displayName\":\"xxbczwtr\",\"appliedScopes\":[],\"appliedScopeType\":\"Shared\",\"archived\":false,\"capabilities\":\"j\",\"quantity\":668778225,\"provisioningState\":\"Expired\",\"effectiveDateTime\":\"2020-12-29T19:47:48Z\",\"benefitStartTime\":\"2021-11-07T20:31:54Z\",\"lastUpdatedDateTime\":\"2021-01-06T15:04:50Z\",\"expiryDateTime\":\"2021-07-31T02:25:32Z\",\"reviewDateTime\":\"2021-04-15T03:02:29Z\",\"skuDescription\":\"dobpxjmflbvvn\",\"billingPlan\":\"Monthly\",\"displayProvisioningState\":\"ciwwzjuqkhr\",\"provisioningSubState\":\"jiwkuofoskghsau\",\"purchaseDateTime\":\"2021-09-27T06:41:32Z\",\"billingScopeId\":\"duugidyjr\",\"renew\":false,\"renewSource\":\"aos\",\"renewDestination\":\"xc\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"lhocohslkev\",\"userFriendlyRenewState\":\"ggzfbu\"},\"kind\":\"Microsoft.Compute\",\"id\":\"axkffei\",\"name\":\"th\",\"type\":\"vmezy\"},{\"location\":\"hxmzsbbzoggig\",\"etag\":2011180934,\"sku\":{\"name\":\"rvjx\"},\"properties\":{\"reservedResourceType\":\"AzureDataExplorer\",\"instanceFlexibility\":\"On\",\"displayName\":\"ptkoenkoukn\",\"appliedScopes\":[],\"appliedScopeType\":\"Single\",\"archived\":true,\"capabilities\":\"kbldngkpocipa\",\"quantity\":1866473569,\"provisioningState\":\"PendingResourceHold\",\"effectiveDateTime\":\"2021-01-06T21:03:44Z\",\"benefitStartTime\":\"2021-12-09T00:28:10Z\",\"lastUpdatedDateTime\":\"2021-07-16T00:56:23Z\",\"expiryDateTime\":\"2021-10-28T00:07:14Z\",\"reviewDateTime\":\"2021-07-11T10:35:30Z\",\"skuDescription\":\"gevqznty\",\"billingPlan\":\"Monthly\",\"displayProvisioningState\":\"izcdrqjsd\",\"provisioningSubState\":\"dnfyhxdeoejzicwi\",\"purchaseDateTime\":\"2021-01-05T16:16:49Z\",\"billingScopeId\":\"ishc\",\"renew\":true,\"renewSource\":\"jdeyeamdpha\",\"renewDestination\":\"lpbuxwgipwhonowk\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"nkixzbinj\",\"userFriendlyRenewState\":\"uttmrywnuzoqft\"},\"kind\":\"Microsoft.Compute\",\"id\":\"n\",\"name\":\"cqvyxlwhzlsico\",\"type\":\"oqqnwvlryav\"},{\"location\":\"heun\",\"etag\":1861834573,\"sku\":{\"name\":\"yxzk\"},\"properties\":{\"reservedResourceType\":\"MySql\",\"instanceFlexibility\":\"On\",\"displayName\":\"klyaxuconu\",\"appliedScopes\":[],\"appliedScopeType\":\"Shared\",\"archived\":true,\"capabilities\":\"ypewrmjmwvvjekt\",\"quantity\":2107215650,\"provisioningState\":\"ConfirmedBilling\",\"effectiveDateTime\":\"2020-12-26T16:44:41Z\",\"benefitStartTime\":\"2020-12-23T18:20:15Z\",\"lastUpdatedDateTime\":\"2021-11-05T02:28:20Z\",\"expiryDateTime\":\"2021-08-26T16:24:45Z\",\"reviewDateTime\":\"2021-08-02T01:11:29Z\",\"skuDescription\":\"lqdqgbiqylihka\",\"billingPlan\":\"Upfront\",\"displayProvisioningState\":\"vfcivfsnkymuc\",\"provisioningSubState\":\"hjfbebrjcxe\",\"purchaseDateTime\":\"2021-03-04T14:54:10Z\",\"billingScopeId\":\"fvjrbirphxepcy\",\"renew\":false,\"renewSource\":\"nljky\",\"renewDestination\":\"j\",\"term\":\"P1Y\",\"userFriendlyAppliedScopeType\":\"gidokgjljyoxgvcl\",\"userFriendlyRenewState\":\"gsncghkjeszz\"},\"kind\":\"Microsoft.Compute\",\"id\":\"txfvgx\",\"name\":\"fsm\",\"type\":\"nehmpvecx\"}],\"nextLink\":\"debfqkkrbmpukgri\"}")
+            .toObject(ReservationList.class);
         Assertions.assertEquals("yifqrvkdvjsllrmv", model.value().get(0).location());
         Assertions.assertEquals(146352395, model.value().get(0).etag());
         Assertions.assertEquals("t", model.value().get(0).sku().name());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.AZURE_DATA_EXPLORER, model.value().get(0).properties().reservedResourceType());
+        Assertions.assertEquals(ReservedResourceType.AZURE_DATA_EXPLORER,
+            model.value().get(0).properties().reservedResourceType());
         Assertions.assertEquals(InstanceFlexibility.OFF, model.value().get(0).properties().instanceFlexibility());
         Assertions.assertEquals("xxbczwtr", model.value().get(0).properties().displayName());
         Assertions.assertEquals(AppliedScopeType.SHARED, model.value().get(0).properties().appliedScopeType());
@@ -41,23 +38,18 @@ public final class ReservationListTests {
         Assertions.assertEquals("j", model.value().get(0).properties().capabilities());
         Assertions.assertEquals(668778225, model.value().get(0).properties().quantity());
         Assertions.assertEquals(ProvisioningState.EXPIRED, model.value().get(0).properties().provisioningState());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2020-12-29T19:47:48Z"), model.value().get(0).properties().effectiveDateTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-07T20:31:54Z"), model.value().get(0).properties().benefitStartTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-07-31T02:25:32Z"), model.value().get(0).properties().expiryDateTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-04-15T03:02:29Z"), model.value().get(0).properties().reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T19:47:48Z"),
+            model.value().get(0).properties().effectiveDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T20:31:54Z"),
+            model.value().get(0).properties().benefitStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T02:25:32Z"),
+            model.value().get(0).properties().expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T03:02:29Z"),
+            model.value().get(0).properties().reviewDateTime());
         Assertions.assertEquals("dobpxjmflbvvn", model.value().get(0).properties().skuDescription());
         Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.value().get(0).properties().billingPlan());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-27T06:41:32Z"), model.value().get(0).properties().purchaseDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T06:41:32Z"),
+            model.value().get(0).properties().purchaseDateTime());
         Assertions.assertEquals("duugidyjr", model.value().get(0).properties().billingScopeId());
         Assertions.assertEquals(false, model.value().get(0).properties().renew());
         Assertions.assertEquals("aos", model.value().get(0).properties().renewSource());
@@ -69,103 +61,95 @@ public final class ReservationListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationList model =
-            new ReservationList()
+        ReservationList model
+            = new ReservationList()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new ReservationResponseInner()
-                                .withLocation("yifqrvkdvjsllrmv")
-                                .withEtag(146352395)
-                                .withSku(new SkuName().withName("t"))
-                                .withProperties(
-                                    new ReservationsProperties()
-                                        .withReservedResourceType(ReservedResourceType.AZURE_DATA_EXPLORER)
-                                        .withInstanceFlexibility(InstanceFlexibility.OFF)
-                                        .withDisplayName("xxbczwtr")
-                                        .withAppliedScopes(Arrays.asList())
-                                        .withAppliedScopeType(AppliedScopeType.SHARED)
-                                        .withArchived(false)
-                                        .withCapabilities("j")
-                                        .withQuantity(668778225)
-                                        .withProvisioningState(ProvisioningState.EXPIRED)
-                                        .withEffectiveDateTime(OffsetDateTime.parse("2020-12-29T19:47:48Z"))
-                                        .withBenefitStartTime(OffsetDateTime.parse("2021-11-07T20:31:54Z"))
-                                        .withExpiryDateTime(OffsetDateTime.parse("2021-07-31T02:25:32Z"))
-                                        .withReviewDateTime(OffsetDateTime.parse("2021-04-15T03:02:29Z"))
-                                        .withSkuDescription("dobpxjmflbvvn")
-                                        .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                                        .withPurchaseDateTime(OffsetDateTime.parse("2021-09-27T06:41:32Z"))
-                                        .withBillingScopeId("duugidyjr")
-                                        .withRenew(false)
-                                        .withRenewSource("aos")
-                                        .withRenewDestination("xc")
-                                        .withTerm(ReservationTerm.P1Y))
-                                .withKind(Kind.MICROSOFT_COMPUTE),
-                            new ReservationResponseInner()
-                                .withLocation("hxmzsbbzoggig")
-                                .withEtag(2011180934)
-                                .withSku(new SkuName().withName("rvjx"))
-                                .withProperties(
-                                    new ReservationsProperties()
-                                        .withReservedResourceType(ReservedResourceType.AZURE_DATA_EXPLORER)
-                                        .withInstanceFlexibility(InstanceFlexibility.ON)
-                                        .withDisplayName("ptkoenkoukn")
-                                        .withAppliedScopes(Arrays.asList())
-                                        .withAppliedScopeType(AppliedScopeType.SINGLE)
-                                        .withArchived(true)
-                                        .withCapabilities("kbldngkpocipa")
-                                        .withQuantity(1866473569)
-                                        .withProvisioningState(ProvisioningState.PENDING_RESOURCE_HOLD)
-                                        .withEffectiveDateTime(OffsetDateTime.parse("2021-01-06T21:03:44Z"))
-                                        .withBenefitStartTime(OffsetDateTime.parse("2021-12-09T00:28:10Z"))
-                                        .withExpiryDateTime(OffsetDateTime.parse("2021-10-28T00:07:14Z"))
-                                        .withReviewDateTime(OffsetDateTime.parse("2021-07-11T10:35:30Z"))
-                                        .withSkuDescription("gevqznty")
-                                        .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                                        .withPurchaseDateTime(OffsetDateTime.parse("2021-01-05T16:16:49Z"))
-                                        .withBillingScopeId("ishc")
-                                        .withRenew(true)
-                                        .withRenewSource("jdeyeamdpha")
-                                        .withRenewDestination("lpbuxwgipwhonowk")
-                                        .withTerm(ReservationTerm.P1Y))
-                                .withKind(Kind.MICROSOFT_COMPUTE),
-                            new ReservationResponseInner()
-                                .withLocation("heun")
-                                .withEtag(1861834573)
-                                .withSku(new SkuName().withName("yxzk"))
-                                .withProperties(
-                                    new ReservationsProperties()
-                                        .withReservedResourceType(ReservedResourceType.MY_SQL)
-                                        .withInstanceFlexibility(InstanceFlexibility.ON)
-                                        .withDisplayName("klyaxuconu")
-                                        .withAppliedScopes(Arrays.asList())
-                                        .withAppliedScopeType(AppliedScopeType.SHARED)
-                                        .withArchived(true)
-                                        .withCapabilities("ypewrmjmwvvjekt")
-                                        .withQuantity(2107215650)
-                                        .withProvisioningState(ProvisioningState.CONFIRMED_BILLING)
-                                        .withEffectiveDateTime(OffsetDateTime.parse("2020-12-26T16:44:41Z"))
-                                        .withBenefitStartTime(OffsetDateTime.parse("2020-12-23T18:20:15Z"))
-                                        .withExpiryDateTime(OffsetDateTime.parse("2021-08-26T16:24:45Z"))
-                                        .withReviewDateTime(OffsetDateTime.parse("2021-08-02T01:11:29Z"))
-                                        .withSkuDescription("lqdqgbiqylihka")
-                                        .withBillingPlan(ReservationBillingPlan.UPFRONT)
-                                        .withPurchaseDateTime(OffsetDateTime.parse("2021-03-04T14:54:10Z"))
-                                        .withBillingScopeId("fvjrbirphxepcy")
-                                        .withRenew(false)
-                                        .withRenewSource("nljky")
-                                        .withRenewDestination("j")
-                                        .withTerm(ReservationTerm.P1Y))
-                                .withKind(Kind.MICROSOFT_COMPUTE)))
+                    Arrays.asList(
+                        new ReservationResponseInner().withLocation("yifqrvkdvjsllrmv")
+                            .withEtag(146352395)
+                            .withSku(new SkuName().withName("t"))
+                            .withProperties(new ReservationsProperties()
+                                .withReservedResourceType(ReservedResourceType.AZURE_DATA_EXPLORER)
+                                .withInstanceFlexibility(InstanceFlexibility.OFF)
+                                .withDisplayName("xxbczwtr")
+                                .withAppliedScopes(Arrays.asList())
+                                .withAppliedScopeType(AppliedScopeType.SHARED)
+                                .withArchived(false)
+                                .withCapabilities("j")
+                                .withQuantity(668778225)
+                                .withProvisioningState(ProvisioningState.EXPIRED)
+                                .withEffectiveDateTime(OffsetDateTime.parse("2020-12-29T19:47:48Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-11-07T20:31:54Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-07-31T02:25:32Z"))
+                                .withReviewDateTime(OffsetDateTime.parse("2021-04-15T03:02:29Z"))
+                                .withSkuDescription("dobpxjmflbvvn")
+                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                                .withPurchaseDateTime(OffsetDateTime.parse("2021-09-27T06:41:32Z"))
+                                .withBillingScopeId("duugidyjr")
+                                .withRenew(false)
+                                .withRenewSource("aos")
+                                .withRenewDestination("xc")
+                                .withTerm(ReservationTerm.P1Y))
+                            .withKind(Kind.MICROSOFT_COMPUTE),
+                        new ReservationResponseInner().withLocation("hxmzsbbzoggig")
+                            .withEtag(2011180934)
+                            .withSku(new SkuName().withName("rvjx"))
+                            .withProperties(new ReservationsProperties()
+                                .withReservedResourceType(ReservedResourceType.AZURE_DATA_EXPLORER)
+                                .withInstanceFlexibility(InstanceFlexibility.ON)
+                                .withDisplayName("ptkoenkoukn")
+                                .withAppliedScopes(Arrays.asList())
+                                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                                .withArchived(true)
+                                .withCapabilities("kbldngkpocipa")
+                                .withQuantity(1866473569)
+                                .withProvisioningState(ProvisioningState.PENDING_RESOURCE_HOLD)
+                                .withEffectiveDateTime(OffsetDateTime.parse("2021-01-06T21:03:44Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-12-09T00:28:10Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-10-28T00:07:14Z"))
+                                .withReviewDateTime(OffsetDateTime.parse("2021-07-11T10:35:30Z"))
+                                .withSkuDescription("gevqznty")
+                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                                .withPurchaseDateTime(OffsetDateTime.parse("2021-01-05T16:16:49Z"))
+                                .withBillingScopeId("ishc")
+                                .withRenew(true)
+                                .withRenewSource("jdeyeamdpha")
+                                .withRenewDestination("lpbuxwgipwhonowk")
+                                .withTerm(ReservationTerm.P1Y))
+                            .withKind(Kind.MICROSOFT_COMPUTE),
+                        new ReservationResponseInner().withLocation("heun")
+                            .withEtag(1861834573)
+                            .withSku(new SkuName().withName("yxzk"))
+                            .withProperties(
+                                new ReservationsProperties().withReservedResourceType(ReservedResourceType.MY_SQL)
+                                    .withInstanceFlexibility(InstanceFlexibility.ON)
+                                    .withDisplayName("klyaxuconu")
+                                    .withAppliedScopes(Arrays.asList())
+                                    .withAppliedScopeType(AppliedScopeType.SHARED)
+                                    .withArchived(true)
+                                    .withCapabilities("ypewrmjmwvvjekt")
+                                    .withQuantity(2107215650)
+                                    .withProvisioningState(ProvisioningState.CONFIRMED_BILLING)
+                                    .withEffectiveDateTime(OffsetDateTime.parse("2020-12-26T16:44:41Z"))
+                                    .withBenefitStartTime(OffsetDateTime.parse("2020-12-23T18:20:15Z"))
+                                    .withExpiryDateTime(OffsetDateTime.parse("2021-08-26T16:24:45Z"))
+                                    .withReviewDateTime(OffsetDateTime.parse("2021-08-02T01:11:29Z"))
+                                    .withSkuDescription("lqdqgbiqylihka")
+                                    .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                                    .withPurchaseDateTime(OffsetDateTime.parse("2021-03-04T14:54:10Z"))
+                                    .withBillingScopeId("fvjrbirphxepcy")
+                                    .withRenew(false)
+                                    .withRenewSource("nljky")
+                                    .withRenewDestination("j")
+                                    .withTerm(ReservationTerm.P1Y))
+                            .withKind(Kind.MICROSOFT_COMPUTE)))
                 .withNextLink("debfqkkrbmpukgri");
         model = BinaryData.fromObject(model).toObject(ReservationList.class);
         Assertions.assertEquals("yifqrvkdvjsllrmv", model.value().get(0).location());
         Assertions.assertEquals(146352395, model.value().get(0).etag());
         Assertions.assertEquals("t", model.value().get(0).sku().name());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.AZURE_DATA_EXPLORER, model.value().get(0).properties().reservedResourceType());
+        Assertions.assertEquals(ReservedResourceType.AZURE_DATA_EXPLORER,
+            model.value().get(0).properties().reservedResourceType());
         Assertions.assertEquals(InstanceFlexibility.OFF, model.value().get(0).properties().instanceFlexibility());
         Assertions.assertEquals("xxbczwtr", model.value().get(0).properties().displayName());
         Assertions.assertEquals(AppliedScopeType.SHARED, model.value().get(0).properties().appliedScopeType());
@@ -173,23 +157,18 @@ public final class ReservationListTests {
         Assertions.assertEquals("j", model.value().get(0).properties().capabilities());
         Assertions.assertEquals(668778225, model.value().get(0).properties().quantity());
         Assertions.assertEquals(ProvisioningState.EXPIRED, model.value().get(0).properties().provisioningState());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2020-12-29T19:47:48Z"), model.value().get(0).properties().effectiveDateTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-07T20:31:54Z"), model.value().get(0).properties().benefitStartTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-07-31T02:25:32Z"), model.value().get(0).properties().expiryDateTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-04-15T03:02:29Z"), model.value().get(0).properties().reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T19:47:48Z"),
+            model.value().get(0).properties().effectiveDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T20:31:54Z"),
+            model.value().get(0).properties().benefitStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T02:25:32Z"),
+            model.value().get(0).properties().expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T03:02:29Z"),
+            model.value().get(0).properties().reviewDateTime());
         Assertions.assertEquals("dobpxjmflbvvn", model.value().get(0).properties().skuDescription());
         Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.value().get(0).properties().billingPlan());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-27T06:41:32Z"), model.value().get(0).properties().purchaseDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T06:41:32Z"),
+            model.value().get(0).properties().purchaseDateTime());
         Assertions.assertEquals("duugidyjr", model.value().get(0).properties().billingScopeId());
         Assertions.assertEquals(false, model.value().get(0).properties().renew());
         Assertions.assertEquals("aos", model.value().get(0).properties().renewSource());

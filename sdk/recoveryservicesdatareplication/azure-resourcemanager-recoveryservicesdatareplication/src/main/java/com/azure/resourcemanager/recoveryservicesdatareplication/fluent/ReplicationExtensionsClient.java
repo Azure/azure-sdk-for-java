@@ -30,8 +30,8 @@ public interface ReplicationExtensionsClient {
      * @return the details of the replication extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationExtensionModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    Response<ReplicationExtensionModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Gets the replication extension.
@@ -63,8 +63,8 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of replication extension model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String replicationExtensionName);
+    SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner>
+        beginCreate(String resourceGroupName, String vaultName, String replicationExtensionName);
 
     /**
      * Puts the replication extension.
@@ -83,11 +83,8 @@ public interface ReplicationExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context);
+        String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context);
 
     /**
      * Puts the replication extension.
@@ -121,12 +118,8 @@ public interface ReplicationExtensionsClient {
      * @return replication extension model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationExtensionModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context);
+    ReplicationExtensionModelInner create(String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context);
 
     /**
      * Deletes the replication extension.
@@ -142,8 +135,8 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName);
 
     /**
      * Deletes the replication extension.
@@ -160,8 +153,8 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Deletes the replication extension.

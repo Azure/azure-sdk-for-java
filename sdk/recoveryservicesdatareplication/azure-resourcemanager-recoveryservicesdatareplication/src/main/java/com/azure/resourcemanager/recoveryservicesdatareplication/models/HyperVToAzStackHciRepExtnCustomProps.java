@@ -312,17 +312,12 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
     public void validate() {
         super.validate();
         if (hyperVFabricArmId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hyperVFabricArmId in model HyperVToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hyperVFabricArmId in model HyperVToAzStackHciRepExtnCustomProps"));
         }
         if (azStackHciFabricArmId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azStackHciFabricArmId in model"
-                            + " HyperVToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property azStackHciFabricArmId in model" + " HyperVToAzStackHciRepExtnCustomProps"));
         }
     }
 

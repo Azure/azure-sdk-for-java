@@ -68,8 +68,8 @@ public final class CalculateExchangeRequestProperties {
      * @param savingsPlansToPurchase the savingsPlansToPurchase value to set.
      * @return the CalculateExchangeRequestProperties object itself.
      */
-    public CalculateExchangeRequestProperties withSavingsPlansToPurchase(
-        List<SavingsPlanPurchaseRequest> savingsPlansToPurchase) {
+    public CalculateExchangeRequestProperties
+        withSavingsPlansToPurchase(List<SavingsPlanPurchaseRequest> savingsPlansToPurchase) {
         this.savingsPlansToPurchase = savingsPlansToPurchase;
         return this;
     }
@@ -89,8 +89,8 @@ public final class CalculateExchangeRequestProperties {
      * @param reservationsToExchange the reservationsToExchange value to set.
      * @return the CalculateExchangeRequestProperties object itself.
      */
-    public CalculateExchangeRequestProperties withReservationsToExchange(
-        List<ReservationToReturn> reservationsToExchange) {
+    public CalculateExchangeRequestProperties
+        withReservationsToExchange(List<ReservationToReturn> reservationsToExchange) {
         this.reservationsToExchange = reservationsToExchange;
         return this;
     }

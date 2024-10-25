@@ -53,27 +53,36 @@ public final class ReplicationRecoveryPlansCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().define("uvqbeyxwrmupzpe")
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .define("uvqbeyxwrmupzpe")
             .withExistingVault("gynsixgzbbnug", "quarb")
             .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId("zbhg")
-                .withRecoveryFabricId("ajkvwkoc").withFailoverDeploymentModel(FailoverDeploymentModel.RESOURCE_MANAGER)
+                .withRecoveryFabricId("ajkvwkoc")
+                .withFailoverDeploymentModel(FailoverDeploymentModel.RESOURCE_MANAGER)
                 .withGroups(Arrays.asList(new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                    .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
-                        new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
-                        new RecoveryPlanProtectedItem()))
+                    .withReplicationProtectedItems(
+                        Arrays.asList(new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
+                            new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
                     .withStartGroupActions(Arrays.asList(new RecoveryPlanAction().withActionName("atbgvlp")
-                        .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
+                        .withFailoverTypes(Arrays.asList())
+                        .withFailoverDirections(Arrays.asList())
                         .withCustomDetails(new RecoveryPlanActionDetails())))
                     .withEndGroupActions(Arrays.asList(
-                        new RecoveryPlanAction().withActionName("gen").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList()).withCustomDetails(new RecoveryPlanActionDetails()),
-                        new RecoveryPlanAction().withActionName("akybepsihz").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList()).withCustomDetails(new RecoveryPlanActionDetails()),
-                        new RecoveryPlanAction().withActionName("ieoymp").withFailoverTypes(Arrays.asList())
+                        new RecoveryPlanAction().withActionName("gen")
+                            .withFailoverTypes(Arrays.asList())
+                            .withFailoverDirections(Arrays.asList())
+                            .withCustomDetails(new RecoveryPlanActionDetails()),
+                        new RecoveryPlanAction().withActionName("akybepsihz")
+                            .withFailoverTypes(Arrays.asList())
+                            .withFailoverDirections(Arrays.asList())
+                            .withCustomDetails(new RecoveryPlanActionDetails()),
+                        new RecoveryPlanAction().withActionName("ieoymp")
+                            .withFailoverTypes(Arrays.asList())
                             .withFailoverDirections(Arrays.asList())
                             .withCustomDetails(new RecoveryPlanActionDetails())))))
                 .withProviderSpecificInput(Arrays.asList(new RecoveryPlanProviderSpecificInput())))

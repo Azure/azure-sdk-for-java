@@ -18,36 +18,30 @@ public final class ProtectedItemOperationStatusImpl implements ProtectedItemOper
 
     private final ProtectedItemOperationStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public ProtectedItemOperationStatusImpl(
-        ProtectedItemOperationStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public ProtectedItemOperationStatusImpl(ProtectedItemOperationStatusClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, protectedItemName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String operationId, Context context) {
+        Response<OperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, vaultName, protectedItemName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationStatus get(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId) {
-        OperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, protectedItemName, operationId);
+    public OperationStatus get(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId) {
+        OperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, protectedItemName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzStackHCI", value = AzStackHciFabricModelCustomProperties.class),
     @JsonSubTypes.Type(name = "HyperVMigrate", value = HyperVMigrateFabricModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "VMwareMigrate", value = VMwareMigrateFabricModelCustomProperties.class)
-})
+    @JsonSubTypes.Type(name = "VMwareMigrate", value = VMwareMigrateFabricModelCustomProperties.class) })
 @Immutable
 public class FabricModelCustomProperties {
     /** Creates an instance of FabricModelCustomProperties class. */

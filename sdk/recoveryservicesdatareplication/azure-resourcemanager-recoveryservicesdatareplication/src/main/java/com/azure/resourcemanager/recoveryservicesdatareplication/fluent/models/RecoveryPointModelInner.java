@@ -110,10 +110,8 @@ public final class RecoveryPointModelInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model RecoveryPointModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model RecoveryPointModelInner"));
         } else {
             properties().validate();
         }

@@ -57,324 +57,445 @@ public final class RecoveryPlanCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanCollection model = new RecoveryPlanCollection().withValue(Arrays.asList(
-            new RecoveryPlanInner()
-                .withProperties(new RecoveryPlanProperties().withFriendlyName("khgb").withPrimaryFabricId("ta")
-                    .withPrimaryFabricFriendlyName("rfdl").withRecoveryFabricId("kh")
-                    .withRecoveryFabricFriendlyName("rne").withFailoverDeploymentModel("jcpeogkhnmg")
-                    .withReplicationProviders(
-                        Arrays.asList("uxddbhfh", "fpazjzoywjxhpd", "lontacnpq", "tehtuevrhrljyoog"))
-                    .withAllowedOperations(Arrays.asList("nsduugwbsre", "rfqkfuar", "nlvhhtklnvnafvv", "yfedevjbo"))
-                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-06-07T05:21:39Z"))
-                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-09-09T03:44:16Z"))
-                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-02-13T17:58:26Z"))
-                    .withCurrentScenario(new CurrentScenarioDetails()
-                        .withScenarioName("khminqcymc").withJobId("gn")
-                        .withStartTime(OffsetDateTime.parse("2021-04-29T07:37:31Z")))
-                    .withCurrentScenarioStatus("ewuninvud").withCurrentScenarioStatusDescription("h")
-                    .withGroups(Arrays.asList(
-                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                            .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
-                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                            .withStartGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("rqctmxxdtdd")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction()
-                                    .withActionName("flhuytxzv").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("zna").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("xbannovvoxc")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("prwnwvroevytlyo")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("rrrouuxvnsa")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
-                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
-                            .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem()))
-                            .withStartGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("o").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("izrxklob").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("xnazpmkml").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("vevfxz").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("hbzxli").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("hrdd").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("tfgxqbawpcb")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("nzqcy").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))))
-                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificDetails(),
-                        new RecoveryPlanProviderSpecificDetails(), new RecoveryPlanProviderSpecificDetails())))
-                .withLocation("qofyuicdhzbdy"),
-            new RecoveryPlanInner()
-                .withProperties(new RecoveryPlanProperties().withFriendlyName("kccrrvwey").withPrimaryFabricId("oy")
-                    .withPrimaryFabricFriendlyName("k").withRecoveryFabricId("aimmoiroqb")
-                    .withRecoveryFabricFriendlyName("hbragapyyr").withFailoverDeploymentModel("svbpavbopfppdbwn")
-                    .withReplicationProviders(Arrays.asList("ahxku", "asjcaacfdmmcpu", "mehqepvufh", "zeh"))
-                    .withAllowedOperations(Arrays.asList("oqhnlb", "nbldxeaclgschori"))
-                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-03-13T23:48:24Z"))
-                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-07-09T02:56:18Z"))
-                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-11-28T04:18:19Z"))
-                    .withCurrentScenario(new CurrentScenarioDetails()
-                        .withScenarioName("cso").withJobId("dpuviyf")
-                        .withStartTime(OffsetDateTime.parse("2021-07-10T14:09:36Z")))
-                    .withCurrentScenarioStatus("eolhbhlvbmx").withCurrentScenarioStatusDescription("ibsxtkcud")
-                    .withGroups(Arrays.asList(new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(
-                            Arrays.asList(new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
-                                new RecoveryPlanProtectedItem()))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("iowl").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("jxnqp").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("wgfstmhqykizm").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("aoaf").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("luqvoxmycjimryv")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("gc").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))))
-                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificDetails())))
-                .withLocation("mzgwe"),
-            new RecoveryPlanInner().withProperties(new RecoveryPlanProperties().withFriendlyName("khlowkxxpv")
-                .withPrimaryFabricId("dfjmzsyzfhotlh").withPrimaryFabricFriendlyName("cyychunsjlp")
-                .withRecoveryFabricId("twszhvvuic").withRecoveryFabricFriendlyName("vtrrmhwrbfdpyflu")
-                .withFailoverDeploymentModel("vjglrocuyzlwhhme").withReplicationProviders(Arrays.asList("oclu", "n"))
-                .withAllowedOperations(Arrays.asList("emc", "jk", "mykyujxsglhs"))
-                .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-06-30T11:59:37Z"))
-                .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-09-26T10:44:20Z"))
-                .withLastTestFailoverTime(OffsetDateTime.parse("2021-04-08T08:51:31Z"))
-                .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("bkzudnigrfihot")
-                    .withJobId("wlpxuzzjg").withStartTime(OffsetDateTime.parse("2021-05-28T23:16:03Z")))
-                .withCurrentScenarioStatus("qyhqo").withCurrentScenarioStatusDescription("ihiqakydiw")
-                .withGroups(Arrays.asList(new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                    .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
-                        new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                    .withStartGroupActions(Arrays.asList(
-                        new RecoveryPlanAction().withActionName("qtvhcspodaqax").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList()).withCustomDetails(new RecoveryPlanActionDetails()),
-                        new RecoveryPlanAction().withActionName("ipietgbe").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList())
-                            .withCustomDetails(new RecoveryPlanActionDetails())))
-                    .withEndGroupActions(Arrays.asList(
-                        new RecoveryPlanAction().withActionName("ulbmoichdlp").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList()).withCustomDetails(new RecoveryPlanActionDetails()),
-                        new RecoveryPlanAction().withActionName("fpubntnbatz").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList()).withCustomDetails(new RecoveryPlanActionDetails()),
-                        new RecoveryPlanAction().withActionName("iqsowsaaelc").withFailoverTypes(Arrays.asList())
-                            .withFailoverDirections(Arrays.asList())
-                            .withCustomDetails(new RecoveryPlanActionDetails()))),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
-                            new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("hplrvkmjcwmjvlg")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("ggcvk").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("y").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("izrzb").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("fxsfuztlvtmv").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("gbwidqlvh").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()))),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem()))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("fizr").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("jfnmjmvlwyz").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("iblkujr").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("lfojuidjp").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("jucejikzoeovvtz")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("je").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("jklntikyj").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()))),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(
-                            Arrays.asList(new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
-                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("zolxrzvhqjwtr").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("tgvgzp").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("rrkolawjmjs").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("okcdxfzzzwyjaf").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("tlhguynuchl").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("mltx").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("whmozusgzvlnsnnj")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))))
-                .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificDetails(),
-                    new RecoveryPlanProviderSpecificDetails())))
-                .withLocation("folpymwamxqzra"),
-            new RecoveryPlanInner()
-                .withProperties(new RecoveryPlanProperties().withFriendlyName("zknmzlanrupd")
-                    .withPrimaryFabricId("nphcnzqtpjhmqrh").withPrimaryFabricFriendlyName("hlaiwd")
-                    .withRecoveryFabricId("smlzzhzdtxetlgy").withRecoveryFabricFriendlyName("hqvlnnpxybafiqg")
-                    .withFailoverDeploymentModel("arbgjekgl").withReplicationProviders(Arrays.asList("yulidwcwvm"))
-                    .withAllowedOperations(Arrays.asList("jonfhjirwgdnqzbr"))
-                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-08-15T23:23:18Z"))
-                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-02-01T12:15:25Z"))
-                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-01-01T19:33:39Z"))
-                    .withCurrentScenario(new CurrentScenarioDetails()
-                        .withScenarioName("ksjcitdigs").withJobId("dglj")
-                        .withStartTime(OffsetDateTime.parse("2021-04-10T15:56:09Z")))
-                    .withCurrentScenarioStatus("ua").withCurrentScenarioStatusDescription("tomflrytswfpf")
-                    .withGroups(Arrays.asList(new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem()))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("skw").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("qjjyslurl").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("shhkvpedw").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("srhmpqvww").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("kondcb").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("wimuvqej").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("so").withFailoverTypes(Arrays.asList())
-                                .withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()))),
-                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                            .withReplicationProtectedItems(
-                                Arrays.asList(new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                            .withStartGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("a").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("sinuqtljqobbpih")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("ecybmrqbrj").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("bmpxdlvykfrexc")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("s").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("qwjksghudgz")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
-                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
-                            .withReplicationProtectedItems(
-                                Arrays.asList(new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                            .withStartGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("gsv").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("u").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("kxibdafh").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("kmdyomkxfbvfbh")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(Arrays.asList(new RecoveryPlanAction().withActionName("rhpw")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails()))),
-                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                            .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
-                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
-                            .withStartGroupActions(Arrays.asList(new RecoveryPlanAction().withActionName("mawzovgk")
-                                .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(Arrays.asList(
-                                new RecoveryPlanAction().withActionName("ui").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("jcjcazt").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("wsnsqowx").withFailoverTypes(Arrays.asList())
-                                    .withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails()),
-                                new RecoveryPlanAction().withActionName("comlikytwvczc")
-                                    .withFailoverTypes(Arrays.asList()).withFailoverDirections(Arrays.asList())
-                                    .withCustomDetails(new RecoveryPlanActionDetails())))))
-                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificDetails())))
-                .withLocation("cvejyfdvlvhbwrn")))
-            .withNextLink("swankltytmh");
+        RecoveryPlanCollection model
+            = new RecoveryPlanCollection()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new RecoveryPlanInner()
+                                .withProperties(
+                                    new RecoveryPlanProperties().withFriendlyName("khgb")
+                                        .withPrimaryFabricId("ta")
+                                        .withPrimaryFabricFriendlyName("rfdl")
+                                        .withRecoveryFabricId("kh")
+                                        .withRecoveryFabricFriendlyName("rne")
+                                        .withFailoverDeploymentModel("jcpeogkhnmg")
+                                        .withReplicationProviders(Arrays.asList("uxddbhfh", "fpazjzoywjxhpd",
+                                            "lontacnpq", "tehtuevrhrljyoog"))
+                                        .withAllowedOperations(
+                                            Arrays.asList("nsduugwbsre", "rfqkfuar", "nlvhhtklnvnafvv", "yfedevjbo"))
+                                        .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-06-07T05:21:39Z"))
+                                        .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-09-09T03:44:16Z"))
+                                        .withLastTestFailoverTime(OffsetDateTime.parse("2021-02-13T17:58:26Z"))
+                                        .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("khminqcymc")
+                                            .withJobId("gn")
+                                            .withStartTime(OffsetDateTime.parse("2021-04-29T07:37:31Z")))
+                                        .withCurrentScenarioStatus("ewuninvud")
+                                        .withCurrentScenarioStatusDescription("h")
+                                        .withGroups(Arrays.asList(
+                                            new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                                .withReplicationProtectedItems(Arrays.asList(
+                                                    new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
+                                                    new RecoveryPlanProtectedItem()))
+                                                .withStartGroupActions(Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("rqctmxxdtdd")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("flhuytxzv")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("zna")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("xbannovvoxc")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails())))
+                                                .withEndGroupActions(Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("prwnwvroevytlyo")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("rrrouuxvnsa")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                            new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
+                                                .withReplicationProtectedItems(Arrays.asList(
+                                                    new RecoveryPlanProtectedItem()))
+                                                .withStartGroupActions(Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("o")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("izrxklob")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("xnazpmkml")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("vevfxz")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails())))
+                                                .withEndGroupActions(Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("hbzxli")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("hrdd")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("tfgxqbawpcb")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("nzqcy")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails())))))
+                                        .withProviderSpecificDetails(
+                                            Arrays.asList(new RecoveryPlanProviderSpecificDetails(),
+                                                new RecoveryPlanProviderSpecificDetails(),
+                                                new RecoveryPlanProviderSpecificDetails())))
+                                .withLocation("qofyuicdhzbdy"),
+                            new RecoveryPlanInner()
+                                .withProperties(new RecoveryPlanProperties().withFriendlyName("kccrrvwey")
+                                    .withPrimaryFabricId("oy")
+                                    .withPrimaryFabricFriendlyName("k")
+                                    .withRecoveryFabricId("aimmoiroqb")
+                                    .withRecoveryFabricFriendlyName("hbragapyyr")
+                                    .withFailoverDeploymentModel("svbpavbopfppdbwn")
+                                    .withReplicationProviders(
+                                        Arrays.asList("ahxku", "asjcaacfdmmcpu", "mehqepvufh", "zeh"))
+                                    .withAllowedOperations(Arrays.asList("oqhnlb", "nbldxeaclgschori"))
+                                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-03-13T23:48:24Z"))
+                                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-07-09T02:56:18Z"))
+                                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-11-28T04:18:19Z"))
+                                    .withCurrentScenario(new CurrentScenarioDetails()
+                                        .withScenarioName("cso")
+                                        .withJobId("dpuviyf")
+                                        .withStartTime(OffsetDateTime.parse("2021-07-10T14:09:36Z")))
+                                    .withCurrentScenarioStatus("eolhbhlvbmx")
+                                    .withCurrentScenarioStatusDescription("ibsxtkcud")
+                                    .withGroups(Arrays.asList(new RecoveryPlanGroup()
+                                        .withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
+                                            new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                        .withStartGroupActions(Arrays.asList(
+                                            new RecoveryPlanAction().withActionName("iowl")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                            new RecoveryPlanAction().withActionName("jxnqp")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                            new RecoveryPlanAction().withActionName("wgfstmhqykizm")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails())))
+                                        .withEndGroupActions(Arrays.asList(
+                                            new RecoveryPlanAction().withActionName("aoaf")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                            new RecoveryPlanAction().withActionName("luqvoxmycjimryv")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                            new RecoveryPlanAction().withActionName("gc")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails())))))
+                                    .withProviderSpecificDetails(
+                                        Arrays.asList(new RecoveryPlanProviderSpecificDetails())))
+                                .withLocation("mzgwe"),
+                            new RecoveryPlanInner()
+                                .withProperties(new RecoveryPlanProperties().withFriendlyName("khlowkxxpv")
+                                    .withPrimaryFabricId("dfjmzsyzfhotlh")
+                                    .withPrimaryFabricFriendlyName("cyychunsjlp")
+                                    .withRecoveryFabricId("twszhvvuic")
+                                    .withRecoveryFabricFriendlyName("vtrrmhwrbfdpyflu")
+                                    .withFailoverDeploymentModel("vjglrocuyzlwhhme")
+                                    .withReplicationProviders(Arrays.asList("oclu", "n"))
+                                    .withAllowedOperations(Arrays.asList("emc", "jk", "mykyujxsglhs"))
+                                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-06-30T11:59:37Z"))
+                                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-09-26T10:44:20Z"))
+                                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-04-08T08:51:31Z"))
+                                    .withCurrentScenario(new CurrentScenarioDetails()
+                                        .withScenarioName("bkzudnigrfihot")
+                                        .withJobId("wlpxuzzjg")
+                                        .withStartTime(OffsetDateTime.parse("2021-05-28T23:16:03Z")))
+                                    .withCurrentScenarioStatus("qyhqo")
+                                    .withCurrentScenarioStatusDescription("ihiqakydiw")
+                                    .withGroups(Arrays.asList(new RecoveryPlanGroup()
+                                        .withGroupType(RecoveryPlanGroupType.BOOT)
+                                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem(),
+                                            new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                        .withStartGroupActions(Arrays.asList(
+                                            new RecoveryPlanAction().withActionName("qtvhcspodaqax")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                            new RecoveryPlanAction().withActionName("ipietgbe")
+                                                .withFailoverTypes(Arrays.asList())
+                                                .withFailoverDirections(Arrays.asList())
+                                                .withCustomDetails(new RecoveryPlanActionDetails())))
+                                        .withEndGroupActions(
+                                            Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("ulbmoichdlp")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("fpubntnbatz")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction()
+                                                    .withActionName("iqsowsaaelc")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                            .withReplicationProtectedItems(
+                                                Arrays.asList(new RecoveryPlanProtectedItem(),
+                                                    new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("hplrvkmjcwmjvlg")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("ggcvk")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("y")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("izrzb")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(
+                                                Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("fxsfuztlvtmv")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction()
+                                                        .withActionName("gbwidqlvh")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                                            .withReplicationProtectedItems(
+                                                Arrays.asList(new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("fizr")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("jfnmjmvlwyz")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("iblkujr")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("lfojuidjp")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("jucejikzoeovvtz")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("je")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("jklntikyj")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup()
+                                            .withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                            .withReplicationProtectedItems(Arrays.asList(
+                                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem(),
+                                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("zolxrzvhqjwtr")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("tgvgzp")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("rrkolawjmjs")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(
+                                                Arrays.asList(
+                                                    new RecoveryPlanAction().withActionName("okcdxfzzzwyjaf")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("tlhguynuchl")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("mltx")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("whmozusgzvlnsnnj")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails())))))
+                                    .withProviderSpecificDetails(
+                                        Arrays.asList(
+                                            new RecoveryPlanProviderSpecificDetails(),
+                                            new RecoveryPlanProviderSpecificDetails())))
+                                .withLocation("folpymwamxqzra"),
+                            new RecoveryPlanInner()
+                                .withProperties(new RecoveryPlanProperties().withFriendlyName("zknmzlanrupd")
+                                    .withPrimaryFabricId("nphcnzqtpjhmqrh")
+                                    .withPrimaryFabricFriendlyName("hlaiwd")
+                                    .withRecoveryFabricId("smlzzhzdtxetlgy")
+                                    .withRecoveryFabricFriendlyName("hqvlnnpxybafiqg")
+                                    .withFailoverDeploymentModel("arbgjekgl")
+                                    .withReplicationProviders(Arrays.asList("yulidwcwvm"))
+                                    .withAllowedOperations(Arrays.asList("jonfhjirwgdnqzbr"))
+                                    .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-08-15T23:23:18Z"))
+                                    .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-02-01T12:15:25Z"))
+                                    .withLastTestFailoverTime(OffsetDateTime.parse("2021-01-01T19:33:39Z"))
+                                    .withCurrentScenario(new CurrentScenarioDetails()
+                                        .withScenarioName("ksjcitdigs")
+                                        .withJobId("dglj")
+                                        .withStartTime(OffsetDateTime.parse("2021-04-10T15:56:09Z")))
+                                    .withCurrentScenarioStatus("ua")
+                                    .withCurrentScenarioStatusDescription("tomflrytswfpf")
+                                    .withGroups(Arrays.asList(
+                                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                            .withReplicationProtectedItems(
+                                                Arrays.asList(new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("skw")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("qjjyslurl")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("shhkvpedw")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("srhmpqvww")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("kondcb")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("wimuvqej")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("so")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                                            .withReplicationProtectedItems(Arrays.asList(
+                                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("a")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("sinuqtljqobbpih")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(
+                                                Arrays.asList(new RecoveryPlanAction().withActionName("ecybmrqbrj")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("bmpxdlvykfrexc")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("s")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                    new RecoveryPlanAction().withActionName("qwjksghudgz")
+                                                        .withFailoverTypes(Arrays.asList())
+                                                        .withFailoverDirections(Arrays.asList())
+                                                        .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup()
+                                            .withGroupType(RecoveryPlanGroupType.SHUTDOWN)
+                                            .withReplicationProtectedItems(Arrays.asList(
+                                                new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("gsv")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("u")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("kxibdafh")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("kmdyomkxfbvfbh")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(Arrays
+                                                .asList(new RecoveryPlanAction().withActionName("rhpw")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
+                                        new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                                            .withReplicationProtectedItems(
+                                                Arrays.asList(new RecoveryPlanProtectedItem(),
+                                                    new RecoveryPlanProtectedItem(), new RecoveryPlanProtectedItem()))
+                                            .withStartGroupActions(
+                                                Arrays.asList(new RecoveryPlanAction().withActionName("mawzovgk")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))
+                                            .withEndGroupActions(Arrays.asList(
+                                                new RecoveryPlanAction().withActionName("ui")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("jcjcazt")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("wsnsqowx")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails()),
+                                                new RecoveryPlanAction().withActionName("comlikytwvczc")
+                                                    .withFailoverTypes(Arrays.asList())
+                                                    .withFailoverDirections(Arrays.asList())
+                                                    .withCustomDetails(new RecoveryPlanActionDetails())))))
+                                    .withProviderSpecificDetails(
+                                        Arrays.asList(new RecoveryPlanProviderSpecificDetails())))
+                                .withLocation("cvejyfdvlvhbwrn")))
+                .withNextLink("swankltytmh");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanCollection.class);
         Assertions.assertEquals("khgb", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("ta", model.value().get(0).properties().primaryFabricId());

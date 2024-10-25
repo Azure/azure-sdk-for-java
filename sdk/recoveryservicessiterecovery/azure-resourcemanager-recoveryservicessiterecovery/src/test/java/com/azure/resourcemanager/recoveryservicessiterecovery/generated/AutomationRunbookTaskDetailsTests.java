@@ -28,9 +28,14 @@ public final class AutomationRunbookTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationRunbookTaskDetails model = new AutomationRunbookTaskDetails().withName("idqpxlbtpakftn")
-            .withCloudServiceName("twmykyut").withSubscriptionId("mdwmf").withAccountName("pycvjqdvdwkqpldr")
-            .withRunbookId("fgnaavuagnteta").withRunbookName("tnpdctuhspfefy").withJobId("duyeuyl")
-            .withJobOutput("hmtybkcgsuthhll").withIsPrimarySideScript(false);
+            .withCloudServiceName("twmykyut")
+            .withSubscriptionId("mdwmf")
+            .withAccountName("pycvjqdvdwkqpldr")
+            .withRunbookId("fgnaavuagnteta")
+            .withRunbookName("tnpdctuhspfefy")
+            .withJobId("duyeuyl")
+            .withJobOutput("hmtybkcgsuthhll")
+            .withIsPrimarySideScript(false);
         model = BinaryData.fromObject(model).toObject(AutomationRunbookTaskDetails.class);
         Assertions.assertEquals("idqpxlbtpakftn", model.name());
         Assertions.assertEquals("twmykyut", model.cloudServiceName());

@@ -63,10 +63,8 @@ public final class PolicyModelProperties {
      */
     public void validate() {
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model PolicyModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customProperties in model PolicyModelProperties"));
         } else {
             customProperties().validate();
         }

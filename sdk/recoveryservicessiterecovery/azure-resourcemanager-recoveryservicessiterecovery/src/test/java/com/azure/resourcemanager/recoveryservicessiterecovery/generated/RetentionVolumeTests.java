@@ -22,8 +22,10 @@ public final class RetentionVolumeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetentionVolume model = new RetentionVolume().withVolumeName("pqsdoc").withCapacityInBytes(3488715345246036434L)
-            .withFreeSpaceInBytes(3180098480061688390L).withThresholdPercentage(1205622455);
+        RetentionVolume model = new RetentionVolume().withVolumeName("pqsdoc")
+            .withCapacityInBytes(3488715345246036434L)
+            .withFreeSpaceInBytes(3180098480061688390L)
+            .withThresholdPercentage(1205622455);
         model = BinaryData.fromObject(model).toObject(RetentionVolume.class);
         Assertions.assertEquals("pqsdoc", model.volumeName());
         Assertions.assertEquals(3488715345246036434L, model.capacityInBytes());

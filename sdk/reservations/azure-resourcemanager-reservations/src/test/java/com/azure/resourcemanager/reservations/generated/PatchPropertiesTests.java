@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"bh\",\"bnlankxmyskpb\",\"enbtkcxywny\"],\"appliedScopeProperties\":{\"tenantId\":\"synlqidybyxczfc\",\"managementGroupId\":\"aaxdbabphlwrq\",\"subscriptionId\":\"ktsthsucocmny\",\"resourceGroupId\":\"zt\",\"displayName\":\"twwrqp\"},\"instanceFlexibility\":\"Off\",\"name\":\"kzywbiex\",\"renew\":true,\"renewProperties\":{\"purchaseProperties\":{\"location\":\"xibxujwbhqwalm\"}},\"reviewDateTime\":\"2021-04-22T03:08:20Z\"}")
-                .toObject(PatchProperties.class);
+        PatchProperties model = BinaryData.fromString(
+            "{\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"bh\",\"bnlankxmyskpb\",\"enbtkcxywny\"],\"appliedScopeProperties\":{\"tenantId\":\"synlqidybyxczfc\",\"managementGroupId\":\"aaxdbabphlwrq\",\"subscriptionId\":\"ktsthsucocmny\",\"resourceGroupId\":\"zt\",\"displayName\":\"twwrqp\"},\"instanceFlexibility\":\"Off\",\"name\":\"kzywbiex\",\"renew\":true,\"renewProperties\":{\"purchaseProperties\":{\"location\":\"xibxujwbhqwalm\"}},\"reviewDateTime\":\"2021-04-22T03:08:20Z\"}")
+            .toObject(PatchProperties.class);
         Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
         Assertions.assertEquals("bh", model.appliedScopes().get(0));
         Assertions.assertEquals("synlqidybyxczfc", model.appliedScopeProperties().tenantId());
@@ -39,24 +37,19 @@ public final class PatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchProperties model =
-            new PatchProperties()
-                .withAppliedScopeType(AppliedScopeType.SHARED)
-                .withAppliedScopes(Arrays.asList("bh", "bnlankxmyskpb", "enbtkcxywny"))
-                .withAppliedScopeProperties(
-                    new AppliedScopeProperties()
-                        .withTenantId("synlqidybyxczfc")
-                        .withManagementGroupId("aaxdbabphlwrq")
-                        .withSubscriptionId("ktsthsucocmny")
-                        .withResourceGroupId("zt")
-                        .withDisplayName("twwrqp"))
-                .withInstanceFlexibility(InstanceFlexibility.OFF)
-                .withName("kzywbiex")
-                .withRenew(true)
-                .withRenewProperties(
-                    new PatchPropertiesRenewProperties()
-                        .withPurchaseProperties(new PurchaseRequest().withLocation("xibxujwbhqwalm")))
-                .withReviewDateTime(OffsetDateTime.parse("2021-04-22T03:08:20Z"));
+        PatchProperties model = new PatchProperties().withAppliedScopeType(AppliedScopeType.SHARED)
+            .withAppliedScopes(Arrays.asList("bh", "bnlankxmyskpb", "enbtkcxywny"))
+            .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("synlqidybyxczfc")
+                .withManagementGroupId("aaxdbabphlwrq")
+                .withSubscriptionId("ktsthsucocmny")
+                .withResourceGroupId("zt")
+                .withDisplayName("twwrqp"))
+            .withInstanceFlexibility(InstanceFlexibility.OFF)
+            .withName("kzywbiex")
+            .withRenew(true)
+            .withRenewProperties(new PatchPropertiesRenewProperties()
+                .withPurchaseProperties(new PurchaseRequest().withLocation("xibxujwbhqwalm")))
+            .withReviewDateTime(OffsetDateTime.parse("2021-04-22T03:08:20Z"));
         model = BinaryData.fromObject(model).toObject(PatchProperties.class);
         Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
         Assertions.assertEquals("bh", model.appliedScopes().get(0));

@@ -28,12 +28,8 @@ public final class AssetConversion {
      * @param conversionStatus The status of the conversion. Terminal states are CANCELLED, FAILED, or SUCCEEDED.
      * @param creationTime The time when the conversion was created. Date and time in ISO 8601 format.
      */
-    public AssetConversion(String id,
-                           AssetConversionOptions options,
-                           String outputAssetUrl,
-                           RemoteRenderingServiceError error,
-                           AssetConversionStatus conversionStatus,
-                           OffsetDateTime creationTime) {
+    public AssetConversion(String id, AssetConversionOptions options, String outputAssetUrl,
+        RemoteRenderingServiceError error, AssetConversionStatus conversionStatus, OffsetDateTime creationTime) {
         this.id = id;
         this.options = options;
         this.outputAssetUrl = outputAssetUrl;
@@ -41,7 +37,6 @@ public final class AssetConversion {
         this.conversionStatus = conversionStatus;
         this.creationTime = creationTime;
     }
-
 
     /**
      * Get the id property: The id of the conversion supplied when the conversion was created.

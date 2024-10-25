@@ -45,13 +45,16 @@ public final class ReplicationVaultSettingsCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VaultSetting response = manager.replicationVaultSettings().define("mwaxsymnrtv")
-            .withExistingVault("zrkrztpyay", "hxl").withProperties(new VaultSettingCreationInputProperties()
-                .withMigrationSolutionId("imavyotpcvpahh").withVmwareToAzureProviderType("vyqpvzxxzndw"))
+        VaultSetting response = manager.replicationVaultSettings()
+            .define("mwaxsymnrtv")
+            .withExistingVault("zrkrztpyay", "hxl")
+            .withProperties(new VaultSettingCreationInputProperties().withMigrationSolutionId("imavyotpcvpahh")
+                .withVmwareToAzureProviderType("vyqpvzxxzndw"))
             .create();
 
         Assertions.assertEquals("inrufq", response.properties().migrationSolutionId());

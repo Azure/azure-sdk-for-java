@@ -23,7 +23,8 @@ public final class InMageBasePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageBasePolicyDetails model = new InMageBasePolicyDetails().withRecoveryPointThresholdInMinutes(1501835760)
-            .withRecoveryPointHistory(1196368599).withAppConsistentFrequencyInMinutes(612698857)
+            .withRecoveryPointHistory(1196368599)
+            .withAppConsistentFrequencyInMinutes(612698857)
             .withMultiVmSyncStatus("tb");
         model = BinaryData.fromObject(model).toObject(InMageBasePolicyDetails.class);
         Assertions.assertEquals(1501835760, model.recoveryPointThresholdInMinutes());

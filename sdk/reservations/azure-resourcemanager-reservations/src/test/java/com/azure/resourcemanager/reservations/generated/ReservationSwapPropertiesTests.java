@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationSwapPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationSwapProperties model =
-            BinaryData
-                .fromString("{\"swapSource\":\"hb\",\"swapDestination\":\"hejjz\"}")
-                .toObject(ReservationSwapProperties.class);
+        ReservationSwapProperties model = BinaryData.fromString("{\"swapSource\":\"hb\",\"swapDestination\":\"hejjz\"}")
+            .toObject(ReservationSwapProperties.class);
         Assertions.assertEquals("hb", model.swapSource());
         Assertions.assertEquals("hejjz", model.swapDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationSwapProperties model =
-            new ReservationSwapProperties().withSwapSource("hb").withSwapDestination("hejjz");
+        ReservationSwapProperties model
+            = new ReservationSwapProperties().withSwapSource("hb").withSwapDestination("hejjz");
         model = BinaryData.fromObject(model).toObject(ReservationSwapProperties.class);
         Assertions.assertEquals("hb", model.swapSource());
         Assertions.assertEquals("hejjz", model.swapDestination());

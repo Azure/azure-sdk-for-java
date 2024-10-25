@@ -44,9 +44,7 @@ public final class RestError implements JsonSerializable<RestError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeJsonField("error", error)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeJsonField("error", error).writeEndObject();
     }
 
     /**

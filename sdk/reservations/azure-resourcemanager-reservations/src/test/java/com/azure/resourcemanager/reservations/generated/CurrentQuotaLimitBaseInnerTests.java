@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CurrentQuotaLimitBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"limit\":2001921074,\"currentValue\":1823399080,\"unit\":\"e\",\"name\":{\"value\":\"pfpubjibww\",\"localizedValue\":\"tohqkvpuvksgp\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"nynfsynljphuo\",\"properties\":\"dataodlqiyntor\"},\"id\":\"ihleos\",\"name\":\"swsrms\",\"type\":\"yzrpzbchckqqzq\"}")
-                .toObject(CurrentQuotaLimitBaseInner.class);
+        CurrentQuotaLimitBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"limit\":2001921074,\"currentValue\":1823399080,\"unit\":\"e\",\"name\":{\"value\":\"pfpubjibww\",\"localizedValue\":\"tohqkvpuvksgp\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"nynfsynljphuo\",\"properties\":\"dataodlqiyntor\"},\"id\":\"ihleos\",\"name\":\"swsrms\",\"type\":\"yzrpzbchckqqzq\"}")
+            .toObject(CurrentQuotaLimitBaseInner.class);
         Assertions.assertEquals(2001921074, model.properties().limit());
         Assertions.assertEquals("e", model.properties().unit());
         Assertions.assertEquals("pfpubjibww", model.properties().name().value());
@@ -27,15 +25,12 @@ public final class CurrentQuotaLimitBaseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            new CurrentQuotaLimitBaseInner()
-                .withProperties(
-                    new QuotaProperties()
-                        .withLimit(2001921074)
-                        .withUnit("e")
-                        .withName(new ResourceName().withValue("pfpubjibww"))
-                        .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("dataodlqiyntor"));
+        CurrentQuotaLimitBaseInner model
+            = new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(2001921074)
+                .withUnit("e")
+                .withName(new ResourceName().withValue("pfpubjibww"))
+                .withResourceType(ResourceType.DEDICATED)
+                .withProperties("dataodlqiyntor"));
         model = BinaryData.fromObject(model).toObject(CurrentQuotaLimitBaseInner.class);
         Assertions.assertEquals(2001921074, model.properties().limit());
         Assertions.assertEquals("e", model.properties().unit());

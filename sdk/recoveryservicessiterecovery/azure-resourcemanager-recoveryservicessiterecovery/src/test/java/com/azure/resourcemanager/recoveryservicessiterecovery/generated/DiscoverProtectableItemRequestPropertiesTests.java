@@ -21,8 +21,10 @@ public final class DiscoverProtectableItemRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoverProtectableItemRequestProperties model = new DiscoverProtectableItemRequestProperties()
-            .withFriendlyName("aiuebbaumnyqu").withIpAddress("deoj").withOsType("bckhsmtxpsi");
+        DiscoverProtectableItemRequestProperties model
+            = new DiscoverProtectableItemRequestProperties().withFriendlyName("aiuebbaumnyqu")
+                .withIpAddress("deoj")
+                .withOsType("bckhsmtxpsi");
         model = BinaryData.fromObject(model).toObject(DiscoverProtectableItemRequestProperties.class);
         Assertions.assertEquals("aiuebbaumnyqu", model.friendlyName());
         Assertions.assertEquals("deoj", model.ipAddress());

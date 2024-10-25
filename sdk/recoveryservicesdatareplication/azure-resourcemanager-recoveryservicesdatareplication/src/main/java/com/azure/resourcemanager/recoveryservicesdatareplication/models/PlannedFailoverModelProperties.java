@@ -48,10 +48,8 @@ public final class PlannedFailoverModelProperties {
      */
     public void validate() {
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model PlannedFailoverModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customProperties in model PlannedFailoverModelProperties"));
         } else {
             customProperties().validate();
         }

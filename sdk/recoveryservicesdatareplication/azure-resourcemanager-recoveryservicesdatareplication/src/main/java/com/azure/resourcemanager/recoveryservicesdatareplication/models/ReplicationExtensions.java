@@ -24,8 +24,8 @@ public interface ReplicationExtensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the replication extension along with {@link Response}.
      */
-    Response<ReplicationExtensionModel> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    Response<ReplicationExtensionModel> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Gets the replication extension.

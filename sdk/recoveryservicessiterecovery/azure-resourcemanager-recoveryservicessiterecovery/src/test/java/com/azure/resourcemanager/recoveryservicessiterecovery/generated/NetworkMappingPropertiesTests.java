@@ -28,9 +28,13 @@ public final class NetworkMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkMappingProperties model = new NetworkMappingProperties().withState("gigr")
-            .withPrimaryNetworkFriendlyName("burvjxxjnspy").withPrimaryNetworkId("tko")
-            .withPrimaryFabricFriendlyName("kouknvudwtiu").withRecoveryNetworkFriendlyName("ldngkpoci")
-            .withRecoveryNetworkId("z").withRecoveryFabricArmId("o").withRecoveryFabricFriendlyName("ukgjnpiucgygevq")
+            .withPrimaryNetworkFriendlyName("burvjxxjnspy")
+            .withPrimaryNetworkId("tko")
+            .withPrimaryFabricFriendlyName("kouknvudwtiu")
+            .withRecoveryNetworkFriendlyName("ldngkpoci")
+            .withRecoveryNetworkId("z")
+            .withRecoveryFabricArmId("o")
+            .withRecoveryFabricFriendlyName("ukgjnpiucgygevq")
             .withFabricSpecificSettings(new NetworkMappingFabricSpecificSettings());
         model = BinaryData.fromObject(model).toObject(NetworkMappingProperties.class);
         Assertions.assertEquals("gigr", model.state());

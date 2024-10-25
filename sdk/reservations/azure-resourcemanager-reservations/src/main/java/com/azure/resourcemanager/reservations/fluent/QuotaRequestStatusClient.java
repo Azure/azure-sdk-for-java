@@ -29,8 +29,8 @@ public interface QuotaRequestStatusClient {
      * @return quota request details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaRequestDetailsInner> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context);
+    Response<QuotaRequestDetailsInner> getWithResponse(String subscriptionId, String providerId, String location,
+        String id, Context context);
 
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
@@ -84,12 +84,6 @@ public interface QuotaRequestStatusClient {
      * @return quota request details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QuotaRequestDetailsInner> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context);
+    PagedIterable<QuotaRequestDetailsInner> list(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context);
 }

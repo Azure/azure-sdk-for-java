@@ -27,9 +27,13 @@ public final class JobQueryParameterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobQueryParameter model = new JobQueryParameter().withStartTime("amhsycxhxzgazt").withEndTime("boi")
-            .withFabricId("mfqhppubowse").withAffectedObjectTypes("fgkmtdhern").withJobStatus("tcjuahokqto")
-            .withJobOutputType(ExportJobOutputSerializationType.EXCEL).withJobName("xof")
+        JobQueryParameter model = new JobQueryParameter().withStartTime("amhsycxhxzgazt")
+            .withEndTime("boi")
+            .withFabricId("mfqhppubowse")
+            .withAffectedObjectTypes("fgkmtdhern")
+            .withJobStatus("tcjuahokqto")
+            .withJobOutputType(ExportJobOutputSerializationType.EXCEL)
+            .withJobName("xof")
             .withTimezoneOffset(37.56433108394144D);
         model = BinaryData.fromObject(model).toObject(JobQueryParameter.class);
         Assertions.assertEquals("amhsycxhxzgazt", model.startTime());

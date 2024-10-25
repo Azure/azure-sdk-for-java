@@ -14,26 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaRequestDetailsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestDetailsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"jaltolmnc\",\"requestSubmitTime\":\"2021-02-08T05:43:26Z\",\"value\":[]},\"id\":\"qwcsdbnwdcfhuc\",\"name\":\"dpfuvg\",\"type\":\"sbjjc\"}],\"nextLink\":\"vxb\"}")
-                .toObject(QuotaRequestDetailsList.class);
+        QuotaRequestDetailsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"jaltolmnc\",\"requestSubmitTime\":\"2021-02-08T05:43:26Z\",\"value\":[]},\"id\":\"qwcsdbnwdcfhuc\",\"name\":\"dpfuvg\",\"type\":\"sbjjc\"}],\"nextLink\":\"vxb\"}")
+            .toObject(QuotaRequestDetailsList.class);
         Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
         Assertions.assertEquals("vxb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRequestDetailsList model =
-            new QuotaRequestDetailsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new QuotaRequestDetailsInner()
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED)
-                                .withValue(Arrays.asList())))
-                .withNextLink("vxb");
+        QuotaRequestDetailsList model = new QuotaRequestDetailsList()
+            .withValue(Arrays.asList(new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.SUCCEEDED)
+                .withValue(Arrays.asList())))
+            .withNextLink("vxb");
         model = BinaryData.fromObject(model).toObject(QuotaRequestDetailsList.class);
         Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
         Assertions.assertEquals("vxb", model.nextLink());

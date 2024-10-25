@@ -24,10 +24,11 @@ public final class LogicalNetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkInner model = new LogicalNetworkInner()
-            .withProperties(new LogicalNetworkProperties().withFriendlyName("x").withNetworkVirtualizationStatus("jpgd")
-                .withLogicalNetworkUsage("ocjjxhvpmouexh").withLogicalNetworkDefinitionsStatus("xibqeojnx"))
-            .withLocation("zvddntwndeicbtwn");
+        LogicalNetworkInner model
+            = new LogicalNetworkInner().withProperties(new LogicalNetworkProperties().withFriendlyName("x")
+                .withNetworkVirtualizationStatus("jpgd")
+                .withLogicalNetworkUsage("ocjjxhvpmouexh")
+                .withLogicalNetworkDefinitionsStatus("xibqeojnx")).withLocation("zvddntwndeicbtwn");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkInner.class);
         Assertions.assertEquals("x", model.properties().friendlyName());
         Assertions.assertEquals("jpgd", model.properties().networkVirtualizationStatus());

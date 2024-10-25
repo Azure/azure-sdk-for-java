@@ -189,8 +189,8 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public RecoveryPlan testFailoverCleanup(String resourceName, String resourceGroupName, String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input, Context context) {
-        RecoveryPlanInner inner = this.serviceClient().testFailoverCleanup(resourceName, resourceGroupName,
-            recoveryPlanName, input, context);
+        RecoveryPlanInner inner = this.serviceClient()
+            .testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {

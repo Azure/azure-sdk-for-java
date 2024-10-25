@@ -21,7 +21,8 @@ public final class MobilityServiceUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MobilityServiceUpdate model = new MobilityServiceUpdate().withVersion("cdsgxceluji").withRebootStatus("lluunxh")
+        MobilityServiceUpdate model = new MobilityServiceUpdate().withVersion("cdsgxceluji")
+            .withRebootStatus("lluunxh")
             .withOsType("lfxzfwuge");
         model = BinaryData.fromObject(model).toObject(MobilityServiceUpdate.class);
         Assertions.assertEquals("cdsgxceluji", model.version());

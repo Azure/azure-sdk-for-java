@@ -41,9 +41,10 @@ public final class WorkspacesDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureQuantumManager manager = AzureQuantumManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureQuantumManager manager = AzureQuantumManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workspaces().delete("uxvypomgkopkwh", "jvp", com.azure.core.util.Context.NONE);
 

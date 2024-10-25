@@ -19,26 +19,20 @@ public final class WorkflowsImpl implements Workflows {
 
     private final WorkflowsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public WorkflowsImpl(
-        WorkflowsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public WorkflowsImpl(WorkflowsClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<WorkflowModel> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, Context context) {
-        Response<WorkflowModelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobName, context);
+    public Response<WorkflowModel> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        Context context) {
+        Response<WorkflowModelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,10 +53,10 @@ public final class WorkflowsImpl implements Workflows {
         return Utils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context) {
-        PagedIterable<WorkflowModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
+    public PagedIterable<WorkflowModel> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context) {
+        PagedIterable<WorkflowModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
         return Utils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
     }
 

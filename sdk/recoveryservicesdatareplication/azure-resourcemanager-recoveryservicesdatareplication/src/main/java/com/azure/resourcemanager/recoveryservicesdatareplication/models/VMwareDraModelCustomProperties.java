@@ -80,17 +80,12 @@ public final class VMwareDraModelCustomProperties extends DraModelCustomProperti
     public void validate() {
         super.validate();
         if (biosId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property biosId in model VMwareDraModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property biosId in model VMwareDraModelCustomProperties"));
         }
         if (marsAuthenticationIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property marsAuthenticationIdentity in model"
-                            + " VMwareDraModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property marsAuthenticationIdentity in model" + " VMwareDraModelCustomProperties"));
         } else {
             marsAuthenticationIdentity().validate();
         }

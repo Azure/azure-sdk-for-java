@@ -66,10 +66,8 @@ public final class ReplicationExtensionModelInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ReplicationExtensionModelInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model ReplicationExtensionModelInner"));
         } else {
             properties().validate();
         }

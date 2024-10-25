@@ -24,9 +24,10 @@ public final class ConsistencyCheckTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConsistencyCheckTaskDetails model
-            = new ConsistencyCheckTaskDetails().withVmDetails(Arrays.asList(new InconsistentVmDetails()
-                .withVmName("kbudbtwaokb").withCloudName("lyttaaknwfr").withDetails(Arrays.asList("sm", "p", "ujd"))
+        ConsistencyCheckTaskDetails model = new ConsistencyCheckTaskDetails()
+            .withVmDetails(Arrays.asList(new InconsistentVmDetails().withVmName("kbudbtwaokb")
+                .withCloudName("lyttaaknwfr")
+                .withDetails(Arrays.asList("sm", "p", "ujd"))
                 .withErrorIds(Arrays.asList("toleksc", "ctnanqimwbzxp", "cldpkawn"))));
         model = BinaryData.fromObject(model).toObject(ConsistencyCheckTaskDetails.class);
         Assertions.assertEquals("kbudbtwaokb", model.vmDetails().get(0).vmName());

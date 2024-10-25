@@ -29,12 +29,8 @@ public interface RecoveryPointsClient {
      * @return the details of the recovery point of a protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoveryPointModelInner> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context);
+    Response<RecoveryPointModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName, Context context);
 
     /**
      * Gets the recovery point.
@@ -51,8 +47,8 @@ public interface RecoveryPointsClient {
      * @return the details of the recovery point of a protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryPointModelInner get(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName);
+    RecoveryPointModelInner get(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName);
 
     /**
      * Lists the recovery points.
@@ -85,6 +81,6 @@ public interface RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointModelInner> list(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName, String protectedItemName,
+        Context context);
 }

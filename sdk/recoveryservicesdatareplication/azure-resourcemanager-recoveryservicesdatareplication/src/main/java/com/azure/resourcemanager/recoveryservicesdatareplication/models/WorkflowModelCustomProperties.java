@@ -24,8 +24,7 @@ import java.util.Map;
     @JsonSubTypes.Type(
         name = "TestFailoverCleanupWorkflowDetails",
         value = TestFailoverCleanupWorkflowModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "TestFailoverWorkflowDetails", value = TestFailoverWorkflowModelCustomProperties.class)
-})
+    @JsonSubTypes.Type(name = "TestFailoverWorkflowDetails", value = TestFailoverWorkflowModelCustomProperties.class) })
 @Immutable
 public class WorkflowModelCustomProperties {
     /*

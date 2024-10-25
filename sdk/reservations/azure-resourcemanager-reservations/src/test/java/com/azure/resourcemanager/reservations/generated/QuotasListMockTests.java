@@ -32,37 +32,27 @@ public final class QuotasListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"limit\":874924204,\"currentValue\":201174669,\"unit\":\"rr\",\"name\":{\"value\":\"gl\",\"localizedValue\":\"zgkrvqe\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"epr\",\"properties\":\"datat\"},\"id\":\"wytpzdmovz\",\"name\":\"fvaawzqa\",\"type\":\"f\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"limit\":874924204,\"currentValue\":201174669,\"unit\":\"rr\",\"name\":{\"value\":\"gl\",\"localizedValue\":\"zgkrvqe\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"epr\",\"properties\":\"datat\"},\"id\":\"wytpzdmovz\",\"name\":\"fvaawzqa\",\"type\":\"f\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ReservationsManager manager =
-            ReservationsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ReservationsManager manager = ReservationsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CurrentQuotaLimitBase> response =
-            manager.quotas().list("kuziycsle", "ufuztcktyhjtq", "dcgzul", com.azure.core.util.Context.NONE);
+        PagedIterable<CurrentQuotaLimitBase> response
+            = manager.quotas().list("kuziycsle", "ufuztcktyhjtq", "dcgzul", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(874924204, response.iterator().next().properties().limit());
         Assertions.assertEquals("rr", response.iterator().next().properties().unit());

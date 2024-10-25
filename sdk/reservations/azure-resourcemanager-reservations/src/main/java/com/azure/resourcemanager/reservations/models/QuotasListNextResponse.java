@@ -19,8 +19,8 @@ public final class QuotasListNextResponse extends ResponseBase<QuotasListNextHea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public QuotasListNextResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, QuotaLimits value, QuotasListNextHeaders headers) {
+    public QuotasListNextResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, QuotaLimits value,
+        QuotasListNextHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

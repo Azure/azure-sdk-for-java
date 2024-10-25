@@ -13,8 +13,7 @@ public final class QuotaRequestSubmitResponse201Impl implements QuotaRequestSubm
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    QuotaRequestSubmitResponse201Impl(
-        QuotaRequestSubmitResponse201Inner innerObject,
+    QuotaRequestSubmitResponse201Impl(QuotaRequestSubmitResponse201Inner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

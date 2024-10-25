@@ -20,8 +20,9 @@ public final class InMageRcmFailbackPolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFailbackPolicyDetails model = new InMageRcmFailbackPolicyDetails()
-            .withAppConsistentFrequencyInMinutes(1741536205).withCrashConsistentFrequencyInMinutes(516106077);
+        InMageRcmFailbackPolicyDetails model
+            = new InMageRcmFailbackPolicyDetails().withAppConsistentFrequencyInMinutes(1741536205)
+                .withCrashConsistentFrequencyInMinutes(516106077);
         model = BinaryData.fromObject(model).toObject(InMageRcmFailbackPolicyDetails.class);
         Assertions.assertEquals(1741536205, model.appConsistentFrequencyInMinutes());
         Assertions.assertEquals(516106077, model.crashConsistentFrequencyInMinutes());

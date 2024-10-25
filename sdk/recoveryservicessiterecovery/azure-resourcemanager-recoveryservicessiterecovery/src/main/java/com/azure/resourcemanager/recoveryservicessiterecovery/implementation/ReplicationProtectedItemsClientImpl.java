@@ -943,8 +943,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, EnableProtectionInput input) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, input).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, input)
+            .getSyncPoller();
     }
 
     /**
@@ -968,8 +970,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, EnableProtectionInput input, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, input, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, input, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1248,8 +1252,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getSyncPoller();
+        return this
+            .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName)
+            .getSyncPoller();
     }
 
     /**
@@ -1273,8 +1279,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
-        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getSyncPoller();
+        return this
+            .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1570,8 +1578,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdate(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateReplicationProtectedItemInput updateProtectionInput) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateProtectionInput).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, updateProtectionInput)
+            .getSyncPoller();
     }
 
     /**
@@ -1596,8 +1606,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateReplicationProtectedItemInput updateProtectionInput,
         Context context) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateProtectionInput, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, updateProtectionInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1647,7 +1659,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         UpdateReplicationProtectedItemInput updateProtectionInput, Context context) {
         return beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, updateProtectionInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1893,8 +1905,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, AddDisksInput addDisksInput) {
-        return this.beginAddDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, addDisksInput).getSyncPoller();
+        return this
+            .beginAddDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, addDisksInput)
+            .getSyncPoller();
     }
 
     /**
@@ -1918,8 +1932,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, AddDisksInput addDisksInput, Context context) {
-        return this.beginAddDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, addDisksInput, context).getSyncPoller();
+        return this
+            .beginAddDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, addDisksInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2217,8 +2233,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ApplyRecoveryPointInput applyRecoveryPointInput) {
-        return this.beginApplyRecoveryPointAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applyRecoveryPointInput).getSyncPoller();
+        return this
+            .beginApplyRecoveryPointAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, applyRecoveryPointInput)
+            .getSyncPoller();
     }
 
     /**
@@ -2242,8 +2260,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ApplyRecoveryPointInput applyRecoveryPointInput, Context context) {
-        return this.beginApplyRecoveryPointAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applyRecoveryPointInput, context).getSyncPoller();
+        return this
+            .beginApplyRecoveryPointAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, applyRecoveryPointInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2293,7 +2313,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         ApplyRecoveryPointInput applyRecoveryPointInput, Context context) {
         return beginApplyRecoveryPointAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, applyRecoveryPointInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2524,8 +2544,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        return this.beginFailoverCancelAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getSyncPoller();
+        return this
+            .beginFailoverCancelAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName)
+            .getSyncPoller();
     }
 
     /**
@@ -2548,8 +2570,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
-        return this.beginFailoverCancelAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getSyncPoller();
+        return this
+            .beginFailoverCancelAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2821,8 +2845,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        return this.beginFailoverCommitAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getSyncPoller();
+        return this
+            .beginFailoverCommitAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName)
+            .getSyncPoller();
     }
 
     /**
@@ -2845,8 +2871,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
-        return this.beginFailoverCommitAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getSyncPoller();
+        return this
+            .beginFailoverCommitAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3134,8 +3162,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, PlannedFailoverInput failoverInput) {
-        return this.beginPlannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput).getSyncPoller();
+        return this
+            .beginPlannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, failoverInput)
+            .getSyncPoller();
     }
 
     /**
@@ -3159,8 +3189,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, PlannedFailoverInput failoverInput, Context context) {
-        return this.beginPlannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput, context).getSyncPoller();
+        return this
+            .beginPlannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, failoverInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3453,8 +3485,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, disableProtectionInput).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, disableProtectionInput)
+            .getSyncPoller();
     }
 
     /**
@@ -3478,8 +3512,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, disableProtectionInput, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, disableProtectionInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3529,7 +3565,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         DisableProtectionInput disableProtectionInput, Context context) {
         return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, disableProtectionInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3773,8 +3809,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, RemoveDisksInput removeDisksInput) {
-        return this.beginRemoveDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, removeDisksInput).getSyncPoller();
+        return this
+            .beginRemoveDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, removeDisksInput)
+            .getSyncPoller();
     }
 
     /**
@@ -3798,8 +3836,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, RemoveDisksInput removeDisksInput, Context context) {
-        return this.beginRemoveDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, removeDisksInput, context).getSyncPoller();
+        return this
+            .beginRemoveDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, removeDisksInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3849,7 +3889,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         RemoveDisksInput removeDisksInput, Context context) {
         return beginRemoveDisksAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, removeDisksInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4084,8 +4124,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        return this.beginRepairReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getSyncPoller();
+        return this
+            .beginRepairReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName)
+            .getSyncPoller();
     }
 
     /**
@@ -4109,8 +4151,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
-        return this.beginRepairReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getSyncPoller();
+        return this
+            .beginRepairReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4401,8 +4445,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
-        return this.beginReprotectAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, reprotectInput).getSyncPoller();
+        return this
+            .beginReprotectAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, reprotectInput)
+            .getSyncPoller();
     }
 
     /**
@@ -4426,8 +4472,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ReverseReplicationInput reprotectInput, Context context) {
-        return this.beginReprotectAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, reprotectInput, context).getSyncPoller();
+        return this
+            .beginReprotectAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, reprotectInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4724,8 +4772,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginResolveHealthErrors(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput) {
-        return this.beginResolveHealthErrorsAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, resolveHealthInput).getSyncPoller();
+        return this
+            .beginResolveHealthErrorsAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, resolveHealthInput)
+            .getSyncPoller();
     }
 
     /**
@@ -4750,8 +4800,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         beginResolveHealthErrors(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput,
             Context context) {
-        return this.beginResolveHealthErrorsAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, resolveHealthInput, context).getSyncPoller();
+        return this
+            .beginResolveHealthErrorsAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, resolveHealthInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4801,7 +4853,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         ResolveHealthInput resolveHealthInput, Context context) {
         return beginResolveHealthErrorsAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, resolveHealthInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5051,8 +5103,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, SwitchProviderInput switchProviderInput) {
-        return this.beginSwitchProviderAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, switchProviderInput).getSyncPoller();
+        return this
+            .beginSwitchProviderAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, switchProviderInput)
+            .getSyncPoller();
     }
 
     /**
@@ -5076,8 +5130,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, SwitchProviderInput switchProviderInput, Context context) {
-        return this.beginSwitchProviderAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, switchProviderInput, context).getSyncPoller();
+        return this
+            .beginSwitchProviderAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, switchProviderInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5127,7 +5183,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         SwitchProviderInput switchProviderInput, Context context) {
         return beginSwitchProviderAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, switchProviderInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5375,8 +5431,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, TestFailoverInput testfailoverInput) {
-        return this.beginTestFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, testfailoverInput).getSyncPoller();
+        return this
+            .beginTestFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, testfailoverInput)
+            .getSyncPoller();
     }
 
     /**
@@ -5400,8 +5458,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, TestFailoverInput testfailoverInput, Context context) {
-        return this.beginTestFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, testfailoverInput, context).getSyncPoller();
+        return this
+            .beginTestFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, testfailoverInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5451,7 +5511,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         TestFailoverInput testfailoverInput, Context context) {
         return beginTestFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, testfailoverInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5697,8 +5757,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginTestFailoverCleanup(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput) {
-        return this.beginTestFailoverCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, cleanupInput).getSyncPoller();
+        return this
+            .beginTestFailoverCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, cleanupInput)
+            .getSyncPoller();
     }
 
     /**
@@ -5723,8 +5785,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         beginTestFailoverCleanup(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput,
             Context context) {
-        return this.beginTestFailoverCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, cleanupInput, context).getSyncPoller();
+        return this
+            .beginTestFailoverCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, cleanupInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6020,8 +6084,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UnplannedFailoverInput failoverInput) {
-        return this.beginUnplannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput).getSyncPoller();
+        return this
+            .beginUnplannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, failoverInput)
+            .getSyncPoller();
     }
 
     /**
@@ -6045,8 +6111,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UnplannedFailoverInput failoverInput, Context context) {
-        return this.beginUnplannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput, context).getSyncPoller();
+        return this
+            .beginUnplannedFailoverAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, failoverInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6345,8 +6413,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateAppliance(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        return this.beginUpdateApplianceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applianceUpdateInput).getSyncPoller();
+        return this
+            .beginUpdateApplianceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, applianceUpdateInput)
+            .getSyncPoller();
     }
 
     /**
@@ -6371,8 +6441,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput,
         Context context) {
-        return this.beginUpdateApplianceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applianceUpdateInput, context).getSyncPoller();
+        return this
+            .beginUpdateApplianceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, applianceUpdateInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6422,7 +6494,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput, Context context) {
         return beginUpdateApplianceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, applianceUpdateInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6677,8 +6749,10 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         beginUpdateMobilityService(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName,
             UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        return this.beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest).getSyncPoller();
+        return this
+            .beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, updateMobilityServiceRequest)
+            .getSyncPoller();
     }
 
     /**
@@ -6704,8 +6778,9 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         beginUpdateMobilityService(String resourceName, String resourceGroupName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName,
             UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context) {
-        return this.beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, context)
+        return this
+            .beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, updateMobilityServiceRequest, context)
             .getSyncPoller();
     }
 
@@ -6732,7 +6807,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         UpdateMobilityServiceRequest updateMobilityServiceRequest) {
         return beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, updateMobilityServiceRequest).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6759,7 +6834,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context) {
         return beginUpdateMobilityServiceAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
             replicatedProtectedItemName, updateMobilityServiceRequest, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

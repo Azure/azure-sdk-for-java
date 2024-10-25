@@ -30,11 +30,16 @@ public final class IpConfigInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpConfigInputDetails model = new IpConfigInputDetails().withIpConfigName("pelmcuvhixbjxyf").withIsPrimary(false)
-            .withIsSeletedForFailover(false).withRecoverySubnetName("ool").withRecoveryStaticIpAddress("tpkiwkkbnujry")
+        IpConfigInputDetails model = new IpConfigInputDetails().withIpConfigName("pelmcuvhixbjxyf")
+            .withIsPrimary(false)
+            .withIsSeletedForFailover(false)
+            .withRecoverySubnetName("ool")
+            .withRecoveryStaticIpAddress("tpkiwkkbnujry")
             .withRecoveryPublicIpAddressId("tylbfpncurdoiw")
             .withRecoveryLBBackendAddressPoolIds(Arrays.asList("htywubxcbihwq", "nfdn"))
-            .withTfoSubnetName("jchrdgoihxumw").withTfoStaticIpAddress("ond").withTfoPublicIpAddressId("luudfdlwggytsb")
+            .withTfoSubnetName("jchrdgoihxumw")
+            .withTfoStaticIpAddress("ond")
+            .withTfoPublicIpAddressId("luudfdlwggytsb")
             .withTfoLBBackendAddressPoolIds(Arrays.asList("vvt", "seinqfiuf", "qknp", "rgnepttwqmsniffc"));
         model = BinaryData.fromObject(model).toObject(IpConfigInputDetails.class);
         Assertions.assertEquals("pelmcuvhixbjxyf", model.ipConfigName());

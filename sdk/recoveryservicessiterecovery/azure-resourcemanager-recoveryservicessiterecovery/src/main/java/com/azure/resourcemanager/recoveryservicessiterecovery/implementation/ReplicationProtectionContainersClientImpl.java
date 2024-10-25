@@ -700,8 +700,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            creationInput, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -723,7 +725,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     private Mono<ProtectionContainerInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput) {
         return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -976,8 +979,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return this.beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, discoverProtectableItemRequest).getSyncPoller();
+        return this
+            .beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest)
+            .getSyncPoller();
     }
 
     /**
@@ -1000,8 +1005,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
-        return this.beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, discoverProtectableItemRequest, context).getSyncPoller();
+        return this
+            .beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1541,8 +1548,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput) {
-        return this.beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            switchInput).getSyncPoller();
+        return this
+            .beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                switchInput)
+            .getSyncPoller();
     }
 
     /**
@@ -1565,8 +1574,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput, Context context) {
-        return this.beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
-            switchInput, context).getSyncPoller();
+        return this
+            .beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                switchInput, context)
+            .getSyncPoller();
     }
 
     /**

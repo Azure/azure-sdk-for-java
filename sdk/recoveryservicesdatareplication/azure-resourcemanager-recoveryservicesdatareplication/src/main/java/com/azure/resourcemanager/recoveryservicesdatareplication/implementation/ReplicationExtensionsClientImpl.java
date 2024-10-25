@@ -52,9 +52,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationExtensionsClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ReplicationExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ReplicationExtensionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,75 +64,54 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ReplicationExtensionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationExtensionModelInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicationExtensionModelInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("replicationExtensionName") String replicationExtensionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("replicationExtensionName") String replicationExtensionName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ReplicationExtensionModelInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("replicationExtensionName") String replicationExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ReplicationExtensionModelInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicationExtensionModelCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("replicationExtensionName") String replicationExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationExtensionModelCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationExtensionModelCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -151,19 +129,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationExtensionModelInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    private Mono<Response<ReplicationExtensionModelInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String replicationExtensionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,24 +147,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            replicationExtensionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, replicationExtensionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -210,19 +173,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationExtensionModelInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
+    private Mono<Response<ReplicationExtensionModelInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String replicationExtensionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,22 +191,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                replicationExtensionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            replicationExtensionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -264,8 +214,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the details of the replication extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationExtensionModelInner> getAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    private Mono<ReplicationExtensionModelInner> getAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         return getWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -285,8 +235,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the details of the replication extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicationExtensionModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
+    public Response<ReplicationExtensionModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, context).block();
     }
 
@@ -304,8 +254,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the details of the replication extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationExtensionModelInner get(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    public ReplicationExtensionModelInner get(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         return getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE).getValue();
     }
 
@@ -324,22 +274,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, ReplicationExtensionModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,9 +292,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
@@ -359,18 +301,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            replicationExtensionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    vaultName, replicationExtensionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -390,23 +322,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, ReplicationExtensionModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -416,26 +340,16 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                replicationExtensionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            replicationExtensionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -454,20 +368,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
+        String resourceGroupName, String vaultName, String replicationExtensionName,
         ReplicationExtensionModelInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body);
-        return this
-            .client
-            .<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReplicationExtensionModelInner.class,
-                ReplicationExtensionModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body);
+        return this.client.<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReplicationExtensionModelInner.class, ReplicationExtensionModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -484,19 +391,14 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link PollerFlux} for polling of replication extension model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreateAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    private PollerFlux<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner>
+        beginCreateAsync(String resourceGroupName, String vaultName, String replicationExtensionName) {
         final ReplicationExtensionModelInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body);
-        return this
-            .client
-            .<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReplicationExtensionModelInner.class,
-                ReplicationExtensionModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body);
+        return this.client.<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReplicationExtensionModelInner.class, ReplicationExtensionModelInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -516,22 +418,14 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context) {
+        String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body, context);
-        return this
-            .client
-            .<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReplicationExtensionModelInner.class,
-                ReplicationExtensionModelInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, body, context);
+        return this.client.<ReplicationExtensionModelInner, ReplicationExtensionModelInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReplicationExtensionModelInner.class, ReplicationExtensionModelInner.class,
+            context);
     }
 
     /**
@@ -548,8 +442,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link SyncPoller} for polling of replication extension model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    public SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner>
+        beginCreate(String resourceGroupName, String vaultName, String replicationExtensionName) {
         final ReplicationExtensionModelInner body = null;
         return this.beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body).getSyncPoller();
     }
@@ -571,13 +465,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body, context)
+        String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context) {
+        return this.beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body, context)
             .getSyncPoller();
     }
 
@@ -596,13 +486,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationExtensionModelInner> createAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body) {
-        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body)
-            .last()
+    private Mono<ReplicationExtensionModelInner> createAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, ReplicationExtensionModelInner body) {
+        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -620,11 +506,10 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationExtensionModelInner> createAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    private Mono<ReplicationExtensionModelInner> createAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         final ReplicationExtensionModelInner body = null;
-        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -644,14 +529,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationExtensionModelInner> createAsync(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body, context)
-            .last()
+    private Mono<ReplicationExtensionModelInner> createAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, ReplicationExtensionModelInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, vaultName, replicationExtensionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -669,8 +549,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationExtensionModelInner create(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    public ReplicationExtensionModelInner create(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         final ReplicationExtensionModelInner body = null;
         return createAsync(resourceGroupName, vaultName, replicationExtensionName, body).block();
     }
@@ -691,12 +571,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return replication extension model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationExtensionModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context) {
+    public ReplicationExtensionModelInner create(String resourceGroupName, String vaultName,
+        String replicationExtensionName, ReplicationExtensionModelInner body, Context context) {
         return createAsync(resourceGroupName, vaultName, replicationExtensionName, body, context).block();
     }
 
@@ -714,19 +590,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -736,24 +608,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            replicationExtensionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, replicationExtensionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -772,19 +633,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -794,22 +651,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (replicationExtensionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                replicationExtensionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            replicationExtensionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -826,14 +674,12 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -851,14 +697,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, replicationExtensionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -875,8 +720,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName).getSyncPoller();
     }
 
@@ -895,8 +740,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName, context).getSyncPoller();
     }
 
@@ -915,8 +760,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String replicationExtensionName) {
-        return beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -935,10 +779,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String replicationExtensionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, vaultName, replicationExtensionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -991,19 +834,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationExtensionModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<PagedResponse<ReplicationExtensionModelInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1014,26 +853,10 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReplicationExtensionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReplicationExtensionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1052,19 +875,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationExtensionModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<ReplicationExtensionModelInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1076,23 +895,10 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1109,8 +915,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationExtensionModelInner> listAsync(String resourceGroupName, String vaultName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1127,10 +933,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the list of replication extensions in the given vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationExtensionModelInner> listAsync(
-        String resourceGroupName, String vaultName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
+    private PagedFlux<ReplicationExtensionModelInner> listAsync(String resourceGroupName, String vaultName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1165,8 +970,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @return the list of replication extensions in the given vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationExtensionModelInner> list(
-        String resourceGroupName, String vaultName, Context context) {
+    public PagedIterable<ReplicationExtensionModelInner> list(String resourceGroupName, String vaultName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
     }
 
@@ -1187,23 +992,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReplicationExtensionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReplicationExtensionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1220,29 +1015,19 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationExtensionModelInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReplicationExtensionModelInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

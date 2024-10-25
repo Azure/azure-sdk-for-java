@@ -31,11 +31,16 @@ public final class HyperVReplicaBluePolicyDetailsTests {
     public void testSerialize() throws Exception {
         HyperVReplicaBluePolicyDetails model
             = new HyperVReplicaBluePolicyDetails().withReplicationFrequencyInSeconds(2136761436)
-                .withRecoveryPoints(1535856297).withApplicationConsistentSnapshotFrequencyInHours(834618815)
-                .withCompression("uajgcqwulynk").withInitialReplicationMethod("cfdruwsikxx")
-                .withOnlineReplicationStartTime("lhuulriqb").withOfflineReplicationImportPath("kvjgbzs")
-                .withOfflineReplicationExportPath("br").withReplicationPort(1636269751)
-                .withAllowedAuthenticationType(1781145950).withReplicaDeletionOption("hcdjwsuoardnagt");
+                .withRecoveryPoints(1535856297)
+                .withApplicationConsistentSnapshotFrequencyInHours(834618815)
+                .withCompression("uajgcqwulynk")
+                .withInitialReplicationMethod("cfdruwsikxx")
+                .withOnlineReplicationStartTime("lhuulriqb")
+                .withOfflineReplicationImportPath("kvjgbzs")
+                .withOfflineReplicationExportPath("br")
+                .withReplicationPort(1636269751)
+                .withAllowedAuthenticationType(1781145950)
+                .withReplicaDeletionOption("hcdjwsuoardnagt");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBluePolicyDetails.class);
         Assertions.assertEquals(2136761436, model.replicationFrequencyInSeconds());
         Assertions.assertEquals(1535856297, model.recoveryPoints());

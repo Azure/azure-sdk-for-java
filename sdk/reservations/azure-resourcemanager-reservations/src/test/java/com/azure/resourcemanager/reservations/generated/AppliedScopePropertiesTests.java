@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AppliedScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppliedScopeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"qsrxybzqqed\",\"managementGroupId\":\"tbciqfouflmm\",\"subscriptionId\":\"zsm\",\"resourceGroupId\":\"mglougpbkw\",\"displayName\":\"utduqktapspwgcu\"}")
-                .toObject(AppliedScopeProperties.class);
+        AppliedScopeProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"qsrxybzqqed\",\"managementGroupId\":\"tbciqfouflmm\",\"subscriptionId\":\"zsm\",\"resourceGroupId\":\"mglougpbkw\",\"displayName\":\"utduqktapspwgcu\"}")
+            .toObject(AppliedScopeProperties.class);
         Assertions.assertEquals("qsrxybzqqed", model.tenantId());
         Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
         Assertions.assertEquals("zsm", model.subscriptionId());
@@ -25,13 +23,11 @@ public final class AppliedScopePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedScopeProperties model =
-            new AppliedScopeProperties()
-                .withTenantId("qsrxybzqqed")
-                .withManagementGroupId("tbciqfouflmm")
-                .withSubscriptionId("zsm")
-                .withResourceGroupId("mglougpbkw")
-                .withDisplayName("utduqktapspwgcu");
+        AppliedScopeProperties model = new AppliedScopeProperties().withTenantId("qsrxybzqqed")
+            .withManagementGroupId("tbciqfouflmm")
+            .withSubscriptionId("zsm")
+            .withResourceGroupId("mglougpbkw")
+            .withDisplayName("utduqktapspwgcu");
         model = BinaryData.fromObject(model).toObject(AppliedScopeProperties.class);
         Assertions.assertEquals("qsrxybzqqed", model.tenantId());
         Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
