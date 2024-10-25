@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,6 +37,7 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
      * @param name a name to look for.
      * @return the corresponding CallLocatorKindInternal.
      */
+    @JsonCreator
     public static CallLocatorKindInternal fromString(String name) {
         return fromString(name, CallLocatorKindInternal.class);
     }

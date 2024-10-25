@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
-import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
@@ -49,6 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
 /**
  * Client builder that creates CallAutomationAsyncClient and CallAutomationClient.
  *
@@ -56,10 +56,13 @@ import java.util.Objects;
  */
 
 @ServiceClientBuilder(serviceClients = { CallAutomationClient.class, CallAutomationAsyncClient.class })
-public final class CallAutomationClientBuilder
-    implements AzureKeyCredentialTrait<CallAutomationClientBuilder>, ConfigurationTrait<CallAutomationClientBuilder>,
-    ConnectionStringTrait<CallAutomationClientBuilder>, EndpointTrait<CallAutomationClientBuilder>,
-    HttpTrait<CallAutomationClientBuilder>, TokenCredentialTrait<CallAutomationClientBuilder> {
+public final class CallAutomationClientBuilder implements
+    AzureKeyCredentialTrait<CallAutomationClientBuilder>,
+    ConfigurationTrait<CallAutomationClientBuilder>,
+    ConnectionStringTrait<CallAutomationClientBuilder>,
+    EndpointTrait<CallAutomationClientBuilder>,
+    HttpTrait<CallAutomationClientBuilder>,
+    TokenCredentialTrait<CallAutomationClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callautomation.properties";
@@ -67,7 +70,6 @@ public final class CallAutomationClientBuilder
     private final ClientLogger logger = new ClientLogger(CallAutomationClientBuilder.class);
     private String connectionString;
     private String endpoint;
-    private String pmaEndpoint;
     private String hostName;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
@@ -98,17 +100,6 @@ public final class CallAutomationClientBuilder
     @Override
     public CallAutomationClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        return this;
-    }
-
-    /**
-     * Set pma endpoint override of the service.
-     *
-     * @param pmaEndpoint url of the service.
-     * @return CallAutomationClientBuilder object.
-     */
-    public CallAutomationClientBuilder pmaEndpoint(String pmaEndpoint) {
-        this.pmaEndpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
         return this;
     }
 
@@ -319,7 +310,7 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
     }
 
     /**
@@ -342,8 +333,8 @@ public final class CallAutomationClientBuilder
         boolean isTokenCredentialSet = tokenCredential != null;
         boolean isCustomEndpointUsed;
 
-        String customEndpointEnabled
-            = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED", "false");
+        String customEndpointEnabled = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED",
+            "false");
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
         if (!(isConnectionStringSet && isEndpointSet && isCustomEndpointUsed)) {
@@ -351,8 +342,8 @@ public final class CallAutomationClientBuilder
         }
 
         if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'connectionString' and 'endpoint' are set. Just one may be used."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -395,14 +386,8 @@ public final class CallAutomationClientBuilder
             builderPipeline = createHttpPipeline(httpClient, isCustomEndpointUsed);
         }
 
-        AzureCommunicationCallAutomationServiceImplBuilder clientBuilder
-            = new AzureCommunicationCallAutomationServiceImplBuilder();
-
-        if (pmaEndpoint != null) {
-            clientBuilder.endpoint(pmaEndpoint).pipeline(builderPipeline);
-        } else {
-            clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-        }
+        AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
     }
@@ -420,30 +405,23 @@ public final class CallAutomationClientBuilder
         return this;
     }
 
-    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies(boolean isCustomEndpointUsed)
-        throws MalformedURLException {
+    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies(boolean isCustomEndpointUsed) throws MalformedURLException {
         if (tokenCredential != null && azureKeyCredential != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
 
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            if (pmaEndpoint != null) {
-                pipelinePolicies.add(new CustomBearerTokenAuthenticationPolicy(tokenCredential, endpoint,
-                    "https://communication.azure.com//.default"));
-            } else {
-                pipelinePolicies.add(
-                    new BearerTokenAuthenticationPolicy(tokenCredential, "https://communication.azure.com//.default"));
-            }
+            pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                "https://communication.azure.com//.default"));
             Map<String, String> httpHeaders = new HashMap<>();
             httpHeaders.put("x-ms-host", hostName);
             pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
         } else if (azureKeyCredential != null) {
             if (isCustomEndpointUsed) {
                 String acsEndpoint = (new CommunicationConnectionString(connectionString)).getEndpoint();
-                pipelinePolicies
-                    .add(new CustomHmacAuthenticationPolicy(azureKeyCredential, (new URL(acsEndpoint)).getHost()));
+                pipelinePolicies.add(new CustomHmacAuthenticationPolicy(azureKeyCredential, (new URL(acsEndpoint)).getHost()));
             } else {
                 pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
             }
@@ -482,7 +460,8 @@ public final class CallAutomationClientBuilder
         try {
             policyList.addAll(createHttpPipelineAuthPolicies(isCustomEndpointUsed));
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid ACS Endpoint exception: " + e));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Invalid ACS Endpoint exception: " + e));
         }
 
         policyList.add(new CookiePolicy());
@@ -495,8 +474,7 @@ public final class CallAutomationClientBuilder
         // Add logging policy
         policyList.add(new HttpLoggingPolicy(getHttpLogOptions()));
 
-        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient)
             .build();
     }
 

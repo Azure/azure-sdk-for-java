@@ -5,30 +5,31 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ResultInformation model.
  */
 @Fluent
-public final class ResultInformation implements JsonSerializable<ResultInformation> {
+public final class ResultInformation {
     /*
-     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result
+     * was unexpected.
      */
+    @JsonProperty(value = "code")
     private Integer code;
 
     /*
-     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this
+     * result was unexpected.
      */
+    @JsonProperty(value = "subCode")
     private Integer subCode;
 
     /*
      * Detail message that describes the current result.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -99,47 +100,5 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     public ResultInformation setMessage(String message) {
         this.message = message;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("code", this.code);
-        jsonWriter.writeNumberField("subCode", this.subCode);
-        jsonWriter.writeStringField("message", this.message);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResultInformation from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResultInformation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResultInformation.
-     */
-    public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResultInformation deserializedResultInformation = new ResultInformation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedResultInformation.code = reader.getNullable(JsonReader::getInt);
-                } else if ("subCode".equals(fieldName)) {
-                    deserializedResultInformation.subCode = reader.getNullable(JsonReader::getInt);
-                } else if ("message".equals(fieldName)) {
-                    deserializedResultInformation.message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedResultInformation;
-        });
     }
 }

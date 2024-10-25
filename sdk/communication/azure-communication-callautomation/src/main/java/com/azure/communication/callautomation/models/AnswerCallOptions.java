@@ -20,16 +20,6 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
     /*
      * AI options for the call.
      */
@@ -70,15 +60,6 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionConfiguration.
-     */
-    public TranscriptionOptions getTranscriptionConfiguration() {
-        return transcriptionOptions;
-    }
-
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
@@ -87,23 +68,12 @@ public final class AnswerCallOptions {
         return operationContext;
     }
 
-    /**
-     * Set the transcription configuration.
+     /**
+     * Set the operationContext.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param operationContext the operationContext to set
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
-    /**
-    * Set the operationContext.
-    *
-    * @param operationContext the operationContext to set
-    * @return the AnswerCallOptions object itself.
-    */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -126,26 +96,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }
