@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkDisplayTextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkDisplayText model =
-            BinaryData.fromString("{\"value\":\"ihleos\",\"localizedValue\":\"w\"}").toObject(LinkDisplayText.class);
+        LinkDisplayText model
+            = BinaryData.fromString("{\"value\":\"ihleos\",\"localizedValue\":\"w\"}").toObject(LinkDisplayText.class);
         Assertions.assertEquals("ihleos", model.value());
         Assertions.assertEquals("w", model.localizedValue());
     }

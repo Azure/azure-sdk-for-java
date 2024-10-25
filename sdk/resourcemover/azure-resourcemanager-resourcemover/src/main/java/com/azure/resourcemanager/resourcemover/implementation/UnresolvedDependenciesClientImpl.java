@@ -45,9 +45,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @param client the instance of the service client containing this operation class.
      */
     UnresolvedDependenciesClientImpl(ResourceMoverServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(UnresolvedDependenciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(UnresolvedDependenciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,32 +57,25 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
     @Host("{$host}")
     @ServiceInterface(name = "ResourceMoverService")
     public interface UnresolvedDependenciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/unresolvedDependencies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/unresolvedDependencies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UnresolvedDependencyCollection>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<UnresolvedDependencyCollection>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("dependencyLevel") DependencyLevel dependencyLevel,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("dependencyLevel") DependencyLevel dependencyLevel, @QueryParam("$orderby") String orderby,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UnresolvedDependencyCollection>> getNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -101,23 +93,15 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter) {
+    private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(String resourceGroupName,
+        String moveCollectionName, DependencyLevel dependencyLevel, String orderby, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -130,28 +114,10 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            dependencyLevel,
-                            orderby,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<UnresolvedDependencyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    moveCollectionName, dependencyLevel, orderby, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<UnresolvedDependencyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -171,24 +137,15 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(String resourceGroupName,
+        String moveCollectionName, DependencyLevel dependencyLevel, String orderby, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,26 +158,10 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                dependencyLevel,
-                orderby,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, moveCollectionName,
+                dependencyLevel, orderby, this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -237,12 +178,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @return a list of unresolved dependencies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UnresolvedDependencyInner> getAsync(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter) {
+    private PagedFlux<UnresolvedDependencyInner> getAsync(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter) {
         return new PagedFlux<>(
             () -> getSinglePageAsync(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter),
             nextLink -> getNextSinglePageAsync(nextLink));
@@ -283,13 +220,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @return a list of unresolved dependencies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UnresolvedDependencyInner> getAsync(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context) {
+    private PagedFlux<UnresolvedDependencyInner> getAsync(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context) {
         return new PagedFlux<>(
             () -> getSinglePageAsync(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter, context),
             nextLink -> getNextSinglePageAsync(nextLink, context));
@@ -328,13 +260,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UnresolvedDependencyInner> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context) {
+    public PagedIterable<UnresolvedDependencyInner> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context) {
         return new PagedIterable<>(
             getAsync(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter, context));
     }
@@ -356,23 +283,13 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UnresolvedDependencyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.getNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<UnresolvedDependencyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -394,23 +311,13 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -13,8 +13,7 @@ public final class AvailabilityStatusImpl implements AvailabilityStatus {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    AvailabilityStatusImpl(
-        AvailabilityStatusInner innerObject,
+    AvailabilityStatusImpl(AvailabilityStatusInner innerObject,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

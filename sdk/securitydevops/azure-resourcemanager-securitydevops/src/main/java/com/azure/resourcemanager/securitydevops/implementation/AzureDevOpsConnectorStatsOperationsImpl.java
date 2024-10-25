@@ -20,22 +20,18 @@ public final class AzureDevOpsConnectorStatsOperationsImpl implements AzureDevOp
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public AzureDevOpsConnectorStatsOperationsImpl(
-        AzureDevOpsConnectorStatsOperationsClient innerClient,
+    public AzureDevOpsConnectorStatsOperationsImpl(AzureDevOpsConnectorStatsOperationsClient innerClient,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AzureDevOpsConnectorStatsListResponse> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
-        Response<AzureDevOpsConnectorStatsListResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, azureDevOpsConnectorName, context);
+    public Response<AzureDevOpsConnectorStatsListResponse> getWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
+        Response<AzureDevOpsConnectorStatsListResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, azureDevOpsConnectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureDevOpsConnectorStatsListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -43,8 +39,8 @@ public final class AzureDevOpsConnectorStatsOperationsImpl implements AzureDevOp
     }
 
     public AzureDevOpsConnectorStatsListResponse get(String resourceGroupName, String azureDevOpsConnectorName) {
-        AzureDevOpsConnectorStatsListResponseInner inner =
-            this.serviceClient().get(resourceGroupName, azureDevOpsConnectorName);
+        AzureDevOpsConnectorStatsListResponseInner inner
+            = this.serviceClient().get(resourceGroupName, azureDevOpsConnectorName);
         if (inner != null) {
             return new AzureDevOpsConnectorStatsListResponseImpl(inner, this.manager());
         } else {

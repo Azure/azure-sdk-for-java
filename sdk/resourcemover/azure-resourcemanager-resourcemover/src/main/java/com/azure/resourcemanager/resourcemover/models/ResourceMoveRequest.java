@@ -106,10 +106,8 @@ public final class ResourceMoveRequest {
      */
     public void validate() {
         if (moveResources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property moveResources in model ResourceMoveRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property moveResources in model ResourceMoveRequest"));
         }
     }
 

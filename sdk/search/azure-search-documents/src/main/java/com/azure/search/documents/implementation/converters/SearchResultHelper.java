@@ -17,15 +17,19 @@ import java.util.Map;
 public final class SearchResultHelper {
     private static SearchResultAccessor accessor;
 
-    private SearchResultHelper() { }
+    private SearchResultHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SearchResult} instance.
      */
     public interface SearchResultAccessor {
         void setAdditionalProperties(SearchResult searchResult, SearchDocument additionalProperties);
+
         void setHighlights(SearchResult searchResult, Map<String, List<String>> highlights);
+
         void setJsonSerializer(SearchResult searchResult, JsonSerializer jsonSerializer);
+
         void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
             List<QueryCaptionResult> captions);
     }

@@ -81,8 +81,8 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
      */
-    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(
-        SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
+    public SchemaRegistryJsonSchemaSerializerBuilder
+        schemaRegistryClient(SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
     }
@@ -94,8 +94,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
      */
-    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(
-        SchemaRegistryClient schemaRegistryClient) {
+    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(SchemaRegistryClient schemaRegistryClient) {
         this.schemaRegistryClient = schemaRegistryClient;
         return this;
     }
@@ -125,8 +124,8 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      */
     public SchemaRegistryJsonSchemaSerializer buildSerializer() {
         if (Objects.isNull(schemaRegistryAsyncClient) && Objects.isNull(schemaRegistryClient)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException(
-                "'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException("'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
         }
 
         if (Objects.isNull(jsonSchemaGenerator)) {
@@ -136,25 +135,22 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
 
         if (isAutoRegister && CoreUtils.isNullOrEmpty(schemaGroup)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
-        final JsonSerializer serializerAdapterToUse = jsonSerializer != null
-            ? jsonSerializer
-            : JsonSerializerProviders.createInstance(true);
+        final JsonSerializer serializerAdapterToUse
+            = jsonSerializer != null ? jsonSerializer : JsonSerializerProviders.createInstance(true);
 
         if (Objects.isNull(serializerAdapterToUse)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("Unable to find JsonSerializer to use. Pass one "
-                + "into SchemaRegistryJsonSchemaSerializerBuilder.serializer() before "
-                + "building the serializer."));
+                + "into SchemaRegistryJsonSchemaSerializerBuilder.serializer() before " + "building the serializer."));
         }
 
-        final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
-            serializerAdapterToUse);
+        final SerializerOptions options
+            = new SerializerOptions(schemaGroup, isAutoRegister, 100, serializerAdapterToUse);
 
         return new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, schemaRegistryClient,
             jsonSchemaGenerator, options);
     }
 }
-

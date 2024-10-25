@@ -21,8 +21,8 @@ public interface AzureDevOpsProjects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureDevOpsProject> list(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName);
+    PagedIterable<AzureDevOpsProject> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName);
 
     /**
      * The list operation.
@@ -36,8 +36,8 @@ public interface AzureDevOpsProjects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureDevOpsProject> list(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName, Context context);
+    PagedIterable<AzureDevOpsProject> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -52,12 +52,8 @@ public interface AzureDevOpsProjects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure DevOps Project Proxy Resource along with {@link Response}.
      */
-    Response<AzureDevOpsProject> getWithResponse(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        Context context);
+    Response<AzureDevOpsProject> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -71,10 +67,7 @@ public interface AzureDevOpsProjects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure DevOps Project Proxy Resource.
      */
-    AzureDevOpsProject get(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
+    AzureDevOpsProject get(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
         String azureDevOpsProjectName);
 
     /**

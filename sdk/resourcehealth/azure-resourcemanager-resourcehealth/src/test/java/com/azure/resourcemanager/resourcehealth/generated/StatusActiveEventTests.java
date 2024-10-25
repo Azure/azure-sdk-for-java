@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StatusActiveEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StatusActiveEvent model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"ahhxvrh\",\"description\":\"kwpjgwwspughftqs\",\"trackingId\":\"qxujxukndxd\",\"startTime\":\"2021-02-07T08:06:06Z\",\"cloud\":\"guufzd\",\"severity\":\"Information\",\"stage\":\"Active\",\"published\":true,\"lastModifiedTime\":\"2021-02-25T10:39:49Z\",\"impacts\":[{\"id\":\"tzingamvpph\",\"name\":\"zqzudph\",\"regions\":[{\"id\":\"dkfw\",\"name\":\"wcvtbvkayhmtnvyq\"}]},{\"id\":\"tkzwpcnpwzc\",\"name\":\"esgvvsccyaj\",\"regions\":[{\"id\":\"hwyg\",\"name\":\"vdnkfxusem\"},{\"id\":\"zrmuhapfcqdps\",\"name\":\"qvpsvuoymg\"}]},{\"id\":\"elvezrypq\",\"name\":\"feo\",\"regions\":[{\"id\":\"wkyhkobopgxe\",\"name\":\"owepbqpcrfkb\"},{\"id\":\"csnjvcdwxlpqekft\",\"name\":\"htjsying\"}]},{\"id\":\"qatmtdhtmdvy\",\"name\":\"ikdgszywkbir\",\"regions\":[{\"id\":\"hlhkjoqrvqqaatj\",\"name\":\"rv\"},{\"id\":\"upmfiibfg\",\"name\":\"ioolvrwxkvtkkgll\"},{\"id\":\"jygvjayvbl\",\"name\":\"vkzuhbxvvyhgso\"}]}]}")
-                .toObject(StatusActiveEvent.class);
+        StatusActiveEvent model = BinaryData.fromString(
+            "{\"title\":\"ahhxvrh\",\"description\":\"kwpjgwwspughftqs\",\"trackingId\":\"qxujxukndxd\",\"startTime\":\"2021-02-07T08:06:06Z\",\"cloud\":\"guufzd\",\"severity\":\"Information\",\"stage\":\"Active\",\"published\":true,\"lastModifiedTime\":\"2021-02-25T10:39:49Z\",\"impacts\":[{\"id\":\"tzingamvpph\",\"name\":\"zqzudph\",\"regions\":[{\"id\":\"dkfw\",\"name\":\"wcvtbvkayhmtnvyq\"}]},{\"id\":\"tkzwpcnpwzc\",\"name\":\"esgvvsccyaj\",\"regions\":[{\"id\":\"hwyg\",\"name\":\"vdnkfxusem\"},{\"id\":\"zrmuhapfcqdps\",\"name\":\"qvpsvuoymg\"}]},{\"id\":\"elvezrypq\",\"name\":\"feo\",\"regions\":[{\"id\":\"wkyhkobopgxe\",\"name\":\"owepbqpcrfkb\"},{\"id\":\"csnjvcdwxlpqekft\",\"name\":\"htjsying\"}]},{\"id\":\"qatmtdhtmdvy\",\"name\":\"ikdgszywkbir\",\"regions\":[{\"id\":\"hlhkjoqrvqqaatj\",\"name\":\"rv\"},{\"id\":\"upmfiibfg\",\"name\":\"ioolvrwxkvtkkgll\"},{\"id\":\"jygvjayvbl\",\"name\":\"vkzuhbxvvyhgso\"}]}]}")
+            .toObject(StatusActiveEvent.class);
         Assertions.assertEquals("ahhxvrh", model.title());
         Assertions.assertEquals("kwpjgwwspughftqs", model.description());
         Assertions.assertEquals("qxujxukndxd", model.trackingId());
@@ -39,50 +37,32 @@ public final class StatusActiveEventTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatusActiveEvent model =
-            new StatusActiveEvent()
-                .withTitle("ahhxvrh")
-                .withDescription("kwpjgwwspughftqs")
-                .withTrackingId("qxujxukndxd")
-                .withStartTime(OffsetDateTime.parse("2021-02-07T08:06:06Z"))
-                .withCloud("guufzd")
-                .withSeverity(SeverityValues.INFORMATION)
-                .withStage(StageValues.ACTIVE)
-                .withPublished(true)
-                .withLastModifiedTime(OffsetDateTime.parse("2021-02-25T10:39:49Z"))
-                .withImpacts(
-                    Arrays
-                        .asList(
-                            new EmergingIssueImpact()
-                                .withId("tzingamvpph")
-                                .withName("zqzudph")
-                                .withRegions(
-                                    Arrays.asList(new ImpactedRegion().withId("dkfw").withName("wcvtbvkayhmtnvyq"))),
-                            new EmergingIssueImpact()
-                                .withId("tkzwpcnpwzc")
-                                .withName("esgvvsccyaj")
-                                .withRegions(
-                                    Arrays
-                                        .asList(
-                                            new ImpactedRegion().withId("hwyg").withName("vdnkfxusem"),
-                                            new ImpactedRegion().withId("zrmuhapfcqdps").withName("qvpsvuoymg"))),
-                            new EmergingIssueImpact()
-                                .withId("elvezrypq")
-                                .withName("feo")
-                                .withRegions(
-                                    Arrays
-                                        .asList(
-                                            new ImpactedRegion().withId("wkyhkobopgxe").withName("owepbqpcrfkb"),
-                                            new ImpactedRegion().withId("csnjvcdwxlpqekft").withName("htjsying"))),
-                            new EmergingIssueImpact()
-                                .withId("qatmtdhtmdvy")
-                                .withName("ikdgszywkbir")
-                                .withRegions(
-                                    Arrays
-                                        .asList(
-                                            new ImpactedRegion().withId("hlhkjoqrvqqaatj").withName("rv"),
-                                            new ImpactedRegion().withId("upmfiibfg").withName("ioolvrwxkvtkkgll"),
-                                            new ImpactedRegion().withId("jygvjayvbl").withName("vkzuhbxvvyhgso")))));
+        StatusActiveEvent model = new StatusActiveEvent().withTitle("ahhxvrh")
+            .withDescription("kwpjgwwspughftqs")
+            .withTrackingId("qxujxukndxd")
+            .withStartTime(OffsetDateTime.parse("2021-02-07T08:06:06Z"))
+            .withCloud("guufzd")
+            .withSeverity(SeverityValues.INFORMATION)
+            .withStage(StageValues.ACTIVE)
+            .withPublished(true)
+            .withLastModifiedTime(OffsetDateTime.parse("2021-02-25T10:39:49Z"))
+            .withImpacts(Arrays.asList(
+                new EmergingIssueImpact().withId("tzingamvpph")
+                    .withName("zqzudph")
+                    .withRegions(Arrays.asList(new ImpactedRegion().withId("dkfw").withName("wcvtbvkayhmtnvyq"))),
+                new EmergingIssueImpact().withId("tkzwpcnpwzc")
+                    .withName("esgvvsccyaj")
+                    .withRegions(Arrays.asList(new ImpactedRegion().withId("hwyg").withName("vdnkfxusem"),
+                        new ImpactedRegion().withId("zrmuhapfcqdps").withName("qvpsvuoymg"))),
+                new EmergingIssueImpact().withId("elvezrypq")
+                    .withName("feo")
+                    .withRegions(Arrays.asList(new ImpactedRegion().withId("wkyhkobopgxe").withName("owepbqpcrfkb"),
+                        new ImpactedRegion().withId("csnjvcdwxlpqekft").withName("htjsying"))),
+                new EmergingIssueImpact().withId("qatmtdhtmdvy")
+                    .withName("ikdgszywkbir")
+                    .withRegions(Arrays.asList(new ImpactedRegion().withId("hlhkjoqrvqqaatj").withName("rv"),
+                        new ImpactedRegion().withId("upmfiibfg").withName("ioolvrwxkvtkkgll"),
+                        new ImpactedRegion().withId("jygvjayvbl").withName("vkzuhbxvvyhgso")))));
         model = BinaryData.fromObject(model).toObject(StatusActiveEvent.class);
         Assertions.assertEquals("ahhxvrh", model.title());
         Assertions.assertEquals("kwpjgwwspughftqs", model.description());

@@ -45,8 +45,7 @@ public final class SearchIndexerDataSources {
         }
 
         return createSearchIndexerDataSource(dataSourceName, SearchIndexerDataSourceType.AZURE_SQL, sqlConnectionString,
-            tableOrViewName, null,
-            description, changeDetectionPolicy, deletionDetectionPolicy);
+            tableOrViewName, null, description, changeDetectionPolicy, deletionDetectionPolicy);
     }
 
     /**
@@ -61,8 +60,7 @@ public final class SearchIndexerDataSources {
      */
     public static SearchIndexerDataSourceConnection createFromAzureSql(String dataSourceName,
         String sqlConnectionString, String tableOrViewName) {
-        return createFromAzureSql(dataSourceName, sqlConnectionString, tableOrViewName, null,
-            null, null);
+        return createFromAzureSql(dataSourceName, sqlConnectionString, tableOrViewName, null, null, null);
     }
 
     /**
@@ -206,12 +204,11 @@ public final class SearchIndexerDataSources {
             throw new IllegalArgumentException("'cosmosConnectionString' cannot be null or empty.");
         }
 
-        DataChangeDetectionPolicy changeDetectionPolicy = useChangeDetection
-            ? new HighWaterMarkChangeDetectionPolicy("_ts") : null;
+        DataChangeDetectionPolicy changeDetectionPolicy
+            = useChangeDetection ? new HighWaterMarkChangeDetectionPolicy("_ts") : null;
 
         return createSearchIndexerDataSource(dataSourceName, SearchIndexerDataSourceType.COSMOS_DB,
-            cosmosConnectionString, collectionName, query,
-            description, changeDetectionPolicy, deletionDetectionPolicy);
+            cosmosConnectionString, collectionName, query, description, changeDetectionPolicy, deletionDetectionPolicy);
     }
 
     /**
@@ -250,8 +247,7 @@ public final class SearchIndexerDataSources {
      */
     public static SearchIndexerDataSourceConnection createFromCosmos(String dataSourceName,
         String cosmosConnectionString, String collectionName) {
-        return createFromCosmos(dataSourceName, cosmosConnectionString, collectionName, null,
-            true, null, null);
+        return createFromCosmos(dataSourceName, cosmosConnectionString, collectionName, null, true, null, null);
     }
 
     /*
@@ -262,10 +258,9 @@ public final class SearchIndexerDataSources {
         String description, DataChangeDetectionPolicy dataChangeDetectionPolicy,
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         return new SearchIndexerDataSourceConnection(name, type, connectionString,
-            new SearchIndexerDataContainer(dataSourceName).setQuery(dataSourceQuery))
-            .setDescription(description)
-            .setDataChangeDetectionPolicy(dataChangeDetectionPolicy)
-            .setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
+            new SearchIndexerDataContainer(dataSourceName).setQuery(dataSourceQuery)).setDescription(description)
+                .setDataChangeDetectionPolicy(dataChangeDetectionPolicy)
+                .setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
     }
 
     private SearchIndexerDataSources() {

@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlServerResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Sql/servers\",\"targetResourceName\":\"gdtpnapnyiro\",\"targetResourceGroupName\":\"hpigv\"}")
-                .toObject(SqlServerResourceSettings.class);
+        SqlServerResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Sql/servers\",\"targetResourceName\":\"gdtpnapnyiro\",\"targetResourceGroupName\":\"hpigv\"}")
+            .toObject(SqlServerResourceSettings.class);
         Assertions.assertEquals("gdtpnapnyiro", model.targetResourceName());
         Assertions.assertEquals("hpigv", model.targetResourceGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerResourceSettings model =
-            new SqlServerResourceSettings().withTargetResourceName("gdtpnapnyiro").withTargetResourceGroupName("hpigv");
+        SqlServerResourceSettings model = new SqlServerResourceSettings().withTargetResourceName("gdtpnapnyiro")
+            .withTargetResourceGroupName("hpigv");
         model = BinaryData.fromObject(model).toObject(SqlServerResourceSettings.class);
         Assertions.assertEquals("gdtpnapnyiro", model.targetResourceName());
         Assertions.assertEquals("hpigv", model.targetResourceGroupName());

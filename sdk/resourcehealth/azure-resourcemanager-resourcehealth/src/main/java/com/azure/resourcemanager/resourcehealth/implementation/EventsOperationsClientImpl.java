@@ -44,8 +44,8 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      * @param client the instance of the service client containing this operation class.
      */
     EventsOperationsClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy.create(EventsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,72 +56,51 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface EventsOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("queryStartTime") String queryStartTime,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listByTenantId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listByTenantId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("queryStartTime") String queryStartTime, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySingleResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Events>> listBySingleResource(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySubscriptionIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listBySubscriptionIdNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listByTenantIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listByTenantIdNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySingleResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listBySingleResourceNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -140,39 +119,19 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+                queryStartTime, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -193,37 +152,20 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                queryStartTime,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -240,8 +182,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listAsync(String filter, String queryStartTime) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
@@ -256,8 +197,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     private PagedFlux<EventInner> listAsync() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
@@ -276,8 +216,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listAsync(String filter, String queryStartTime, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime, context),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink, context));
     }
 
@@ -329,32 +268,15 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTenantId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTenantId(this.client.getEndpoint(), this.client.getApiVersion(),
+                filter, queryStartTime, accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -373,28 +295,19 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(
-        String filter, String queryStartTime, Context context) {
+    private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTenantId(
-                this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTenantId(this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -411,8 +324,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listByTenantIdAsync(String filter, String queryStartTime) {
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink));
     }
 
@@ -427,8 +339,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     private PagedFlux<EventInner> listByTenantIdAsync() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink));
     }
 
@@ -447,8 +358,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listByTenantIdAsync(String filter, String queryStartTime, Context context) {
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime, context),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime, context),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink, context));
     }
 
@@ -503,35 +413,18 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySingleResource(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySingleResource(this.client.getEndpoint(), resourceUri,
+                this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -553,13 +446,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(
-        String resourceUri, String filter, Context context) {
+    private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -567,17 +458,10 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySingleResource(
-                this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySingleResource(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -597,8 +481,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri, String filter) {
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink));
     }
 
@@ -618,8 +501,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink));
     }
 
@@ -641,8 +523,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter, context),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter, context),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink, context));
     }
 
@@ -703,24 +584,15 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -742,24 +614,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -779,23 +641,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -817,24 +670,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -854,24 +697,15 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -893,23 +727,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

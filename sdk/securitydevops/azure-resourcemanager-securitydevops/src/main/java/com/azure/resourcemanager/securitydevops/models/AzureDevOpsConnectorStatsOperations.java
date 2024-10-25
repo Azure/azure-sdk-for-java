@@ -20,8 +20,8 @@ public interface AzureDevOpsConnectorStatsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<AzureDevOpsConnectorStatsListResponse> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    Response<AzureDevOpsConnectorStatsListResponse> getWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context);
 
     /**
      * Returns the summary of the AzureDevOps Connector Stats.

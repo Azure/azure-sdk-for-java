@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  * since it would disable JSON conversion. An example of a scenario where this is useful is when mapping between a
  * string field in Azure AI Search and an enum property.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldBuilderIgnore {
 }

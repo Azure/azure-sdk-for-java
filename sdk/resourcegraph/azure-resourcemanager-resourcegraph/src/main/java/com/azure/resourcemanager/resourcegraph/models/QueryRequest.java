@@ -155,9 +155,8 @@ public final class QueryRequest {
      */
     public void validate() {
         if (query() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property query in model QueryRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property query in model QueryRequest"));
         }
         if (options() != null) {
             options().validate();

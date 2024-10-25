@@ -53,9 +53,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @param client the instance of the service client containing this operation class.
      */
     AzureDevOpsConnectorsClientImpl(MicrosoftSecurityDevOpsImpl client) {
-        this.service =
-            RestProxy
-                .create(AzureDevOpsConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureDevOpsConnectorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,112 +65,87 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSecurityDev")
     private interface AzureDevOpsConnectorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureDevOpsConnectorListResponse>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AzureDevOpsConnectorListResponse>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureDevOpsConnectorName") String azureDevOpsConnectorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureDevOpsConnectorName") String azureDevOpsConnectorName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AzureDevOpsConnectorInner azureDevOpsConnector,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureDevOpsConnectorName") String azureDevOpsConnectorName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AzureDevOpsConnectorInner azureDevOpsConnector,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors/{azureDevOpsConnectorName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureDevOpsConnectorName") String azureDevOpsConnectorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.SecurityDevOps/azureDevOpsConnectors")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureDevOpsConnectorListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AzureDevOpsConnectorListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureDevOpsConnectorListResponse>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureDevOpsConnectorListResponse>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -184,19 +158,15 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<AzureDevOpsConnectorInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,25 +174,10 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AzureDevOpsConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AzureDevOpsConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -237,19 +192,15 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -258,22 +209,10 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -287,8 +226,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureDevOpsConnectorInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -304,8 +242,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureDevOpsConnectorInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -349,42 +286,29 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureDevOpsConnectorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, azureDevOpsConnectorName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -400,40 +324,28 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    private Mono<Response<AzureDevOpsConnectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureDevOpsConnectorName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureDevOpsConnectorName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -447,8 +359,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorInner> getByResourceGroupAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private Mono<AzureDevOpsConnectorInner> getByResourceGroupAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureDevOpsConnectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -465,8 +377,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureDevOpsConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    public Response<AzureDevOpsConnectorInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, context).block();
     }
 
@@ -497,28 +409,23 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         if (azureDevOpsConnector == null) {
             return Mono
@@ -528,18 +435,9 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureDevOpsConnectorName,
-                            this.client.getApiVersion(),
-                            azureDevOpsConnector,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, azureDevOpsConnectorName, this.client.getApiVersion(), azureDevOpsConnector, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -556,31 +454,23 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         if (azureDevOpsConnector == null) {
             return Mono
@@ -590,16 +480,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureDevOpsConnectorName,
-                this.client.getApiVersion(),
-                azureDevOpsConnector,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureDevOpsConnectorName, this.client.getApiVersion(), azureDevOpsConnector, accept, context);
     }
 
     /**
@@ -616,16 +498,11 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
-        return this
-            .client
-            .<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureDevOpsConnectorInner.class,
-                AzureDevOpsConnectorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
+        return this.client.<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureDevOpsConnectorInner.class, AzureDevOpsConnectorInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -642,21 +519,13 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
+        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context);
-        return this
-            .client
-            .<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureDevOpsConnectorInner.class,
-                AzureDevOpsConnectorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            azureDevOpsConnectorName, azureDevOpsConnector, context);
+        return this.client.<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureDevOpsConnectorInner.class, AzureDevOpsConnectorInner.class, context);
     }
 
     /**
@@ -691,9 +560,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
+        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context)
             .getSyncPoller();
@@ -711,10 +578,9 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorInner> createOrUpdateAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector)
-            .last()
+    private Mono<AzureDevOpsConnectorInner> createOrUpdateAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -731,11 +597,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
+    private Mono<AzureDevOpsConnectorInner> createOrUpdateAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -753,8 +616,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureDevOpsConnectorInner createOrUpdate(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
+    public AzureDevOpsConnectorInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector) {
         return createOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector).block();
     }
 
@@ -771,11 +634,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureDevOpsConnectorInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
+    public AzureDevOpsConnectorInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
         return createOrUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context).block();
     }
 
@@ -791,28 +651,23 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         if (azureDevOpsConnector != null) {
             azureDevOpsConnector.validate();
@@ -820,17 +675,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureDevOpsConnectorName,
-                            this.client.getApiVersion(),
-                            azureDevOpsConnector,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    azureDevOpsConnectorName, this.client.getApiVersion(), azureDevOpsConnector, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -847,47 +693,31 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         if (azureDevOpsConnector != null) {
             azureDevOpsConnector.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureDevOpsConnectorName,
-                this.client.getApiVersion(),
-                azureDevOpsConnector,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureDevOpsConnectorName, this.client.getApiVersion(), azureDevOpsConnector, accept, context);
     }
 
     /**
@@ -904,16 +734,11 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdateAsync(
         String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
-        return this
-            .client
-            .<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureDevOpsConnectorInner.class,
-                AzureDevOpsConnectorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
+        return this.client.<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureDevOpsConnectorInner.class, AzureDevOpsConnectorInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -927,19 +752,14 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdateAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner>
+        beginUpdateAsync(String resourceGroupName, String azureDevOpsConnectorName) {
         final AzureDevOpsConnectorInner azureDevOpsConnector = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
-        return this
-            .client
-            .<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureDevOpsConnectorInner.class,
-                AzureDevOpsConnectorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector);
+        return this.client.<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureDevOpsConnectorInner.class, AzureDevOpsConnectorInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -956,21 +776,13 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdateAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
+        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context);
-        return this
-            .client
-            .<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureDevOpsConnectorInner.class,
-                AzureDevOpsConnectorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context);
+        return this.client.<AzureDevOpsConnectorInner, AzureDevOpsConnectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureDevOpsConnectorInner.class, AzureDevOpsConnectorInner.class, context);
     }
 
     /**
@@ -984,8 +796,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    public SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner>
+        beginUpdate(String resourceGroupName, String azureDevOpsConnectorName) {
         final AzureDevOpsConnectorInner azureDevOpsConnector = null;
         return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector).getSyncPoller();
     }
@@ -1004,9 +816,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
+        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector,
         Context context) {
         return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context)
             .getSyncPoller();
@@ -1024,10 +834,9 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorInner> updateAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector) {
-        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector)
-            .last()
+    private Mono<AzureDevOpsConnectorInner> updateAsync(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector) {
+        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1044,8 +853,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureDevOpsConnectorInner> updateAsync(String resourceGroupName, String azureDevOpsConnectorName) {
         final AzureDevOpsConnectorInner azureDevOpsConnector = null;
-        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector)
-            .last()
+        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1062,13 +870,9 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorInner> updateAsync(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context)
-            .last()
+    private Mono<AzureDevOpsConnectorInner> updateAsync(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
+        return beginUpdateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1101,11 +905,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureDevOpsConnectorInner update(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context) {
+    public AzureDevOpsConnectorInner update(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector, Context context) {
         return updateAsync(resourceGroupName, azureDevOpsConnectorName, azureDevOpsConnector, context).block();
     }
 
@@ -1120,42 +921,28 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureDevOpsConnectorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, azureDevOpsConnectorName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1171,40 +958,28 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureDevOpsConnectorName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureDevOpsConnectorName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1218,13 +993,11 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureDevOpsConnectorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1239,14 +1012,13 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1276,8 +1048,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureDevOpsConnectorName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, azureDevOpsConnectorName, context).getSyncPoller();
     }
 
@@ -1293,8 +1065,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String azureDevOpsConnectorName) {
-        return beginDeleteAsync(resourceGroupName, azureDevOpsConnectorName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, azureDevOpsConnectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1311,8 +1082,7 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String azureDevOpsConnectorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureDevOpsConnectorName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, azureDevOpsConnectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1355,37 +1125,19 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureDevOpsConnectorInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AzureDevOpsConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AzureDevOpsConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1401,35 +1153,20 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureDevOpsConnectorInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1441,8 +1178,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureDevOpsConnectorInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1456,8 +1193,8 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureDevOpsConnectorInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1502,24 +1239,15 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureDevOpsConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AzureDevOpsConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1535,30 +1263,20 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1577,24 +1295,15 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureDevOpsConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AzureDevOpsConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1610,29 +1319,19 @@ public final class AzureDevOpsConnectorsClientImpl implements AzureDevOpsConnect
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureDevOpsConnectorInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

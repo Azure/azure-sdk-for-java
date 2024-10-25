@@ -118,8 +118,8 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return The updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
-    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryClient(
-            SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
+    public SchemaRegistryApacheAvroSerializerBuilder
+        schemaRegistryClient(SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
     }
@@ -141,15 +141,15 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
         }
 
         if (isAutoRegister && CoreUtils.isNullOrEmpty(schemaGroup)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
-        final boolean useAvroSpecificReader = avroSpecificReader == null
-                ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
+        final boolean useAvroSpecificReader
+            = avroSpecificReader == null ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
         final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, MAX_CACHE_SIZE);
-        final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, EncoderFactory.get(),
-                DecoderFactory.get());
+        final AvroSerializer codec
+            = new AvroSerializer(useAvroSpecificReader, EncoderFactory.get(), DecoderFactory.get());
 
         return new SchemaRegistryApacheAvroSerializer(schemaRegistryAsyncClient, codec, options);
     }

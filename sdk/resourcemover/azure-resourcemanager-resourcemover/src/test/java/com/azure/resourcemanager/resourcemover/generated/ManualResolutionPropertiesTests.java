@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManualResolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManualResolutionProperties model =
-            BinaryData.fromString("{\"targetId\":\"nfnbacfionlebxe\"}").toObject(ManualResolutionProperties.class);
+        ManualResolutionProperties model
+            = BinaryData.fromString("{\"targetId\":\"nfnbacfionlebxe\"}").toObject(ManualResolutionProperties.class);
         Assertions.assertEquals("nfnbacfionlebxe", model.targetId());
     }
 

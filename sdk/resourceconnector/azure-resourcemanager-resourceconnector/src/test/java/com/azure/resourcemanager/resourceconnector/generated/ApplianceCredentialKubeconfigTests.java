@@ -10,9 +10,8 @@ import com.azure.resourcemanager.resourceconnector.models.ApplianceCredentialKub
 public final class ApplianceCredentialKubeconfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceCredentialKubeconfig model =
-            BinaryData
-                .fromString("{\"name\":\"clusterCustomerUser\",\"value\":\"xinpmqnjaq\"}")
+        ApplianceCredentialKubeconfig model
+            = BinaryData.fromString("{\"name\":\"clusterCustomerUser\",\"value\":\"xinpmqnjaq\"}")
                 .toObject(ApplianceCredentialKubeconfig.class);
     }
 

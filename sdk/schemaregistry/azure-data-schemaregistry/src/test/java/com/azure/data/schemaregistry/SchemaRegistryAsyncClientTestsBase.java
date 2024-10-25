@@ -36,20 +36,20 @@ class SchemaRegistryAsyncClientTestsBase {
      * 2. Gets the schema
      * 3. Verifies that the contents are the same.
      */
-    void registerAndGetSchema(SchemaRegistryAsyncClient client1, SchemaRegistryAsyncClient client2,
-        String schemaName, String schemaContent) {
+    void registerAndGetSchema(SchemaRegistryAsyncClient client1, SchemaRegistryAsyncClient client2, String schemaName,
+        String schemaContent) {
 
         // Arrange
         final String schemaContentNoWhitespace = WHITESPACE_PATTERN.matcher(schemaContent).replaceAll("");
         final AtomicReference<String> schemaId = new AtomicReference<>();
-
 
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContent, schemaFormat))
             .assertNext(response -> {
                 assertNotNull(response.getId());
                 schemaId.set(response.getId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -57,17 +57,15 @@ class SchemaRegistryAsyncClientTestsBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        StepVerifier.create(client2.getSchema(schemaIdToGet))
-            .assertNext(schema -> {
-                assertNotNull(schema.getProperties());
-                assertEquals(schemaIdToGet, schema.getProperties().getId());
-                assertEquals(schemaFormat, schema.getProperties().getFormat());
+        StepVerifier.create(client2.getSchema(schemaIdToGet)).assertNext(schema -> {
+            assertNotNull(schema.getProperties());
+            assertEquals(schemaIdToGet, schema.getProperties().getId());
+            assertEquals(schemaFormat, schema.getProperties().getFormat());
 
-                // Replace white space.
-                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getDefinition()).replaceAll("");
-                assertEquals(schemaContentNoWhitespace, actualContents);
-            })
-            .verifyComplete();
+            // Replace white space.
+            final String actualContents = WHITESPACE_PATTERN.matcher(schema.getDefinition()).replaceAll("");
+            assertEquals(schemaContentNoWhitespace, actualContents);
+        }).verifyComplete();
     }
 
     /**
@@ -86,14 +84,16 @@ class SchemaRegistryAsyncClientTestsBase {
                 assertEquals(schemaFormat, response.getFormat());
                 assertNotNull(response.getId());
                 schemaId.set(response.getId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, schemaFormat))
             .assertNext(response -> {
                 assertEquals(schemaFormat, response.getFormat());
                 assertNotNull(response.getId());
                 schemaId2.set(response.getId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -109,8 +109,8 @@ class SchemaRegistryAsyncClientTestsBase {
     /**
      * Verifies that we can register a schema and then get it by its schema group, name, and content.
      */
-    void registerAndGetSchemaId(SchemaRegistryAsyncClient client1, SchemaRegistryAsyncClient client2,
-        String schemaName, String schemaContent) {
+    void registerAndGetSchemaId(SchemaRegistryAsyncClient client1, SchemaRegistryAsyncClient client2, String schemaName,
+        String schemaContent) {
         final AtomicReference<String> schemaId = new AtomicReference<>();
 
         // Act & Assert
@@ -119,7 +119,8 @@ class SchemaRegistryAsyncClientTestsBase {
                 assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
                 assertEquals(1, response.getVersion());
                 schemaId.set(response.getId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -148,7 +149,8 @@ class SchemaRegistryAsyncClientTestsBase {
 
                 final HttpResponseException exception = (HttpResponseException) error;
                 assertEquals(400, exception.getResponse().getStatusCode());
-            }).verify();
+            })
+            .verify();
     }
 
     /**

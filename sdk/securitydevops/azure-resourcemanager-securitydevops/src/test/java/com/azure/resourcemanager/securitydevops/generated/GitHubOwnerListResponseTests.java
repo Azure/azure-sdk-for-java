@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubOwnerListResponseTests {
     @Test
     public void testDeserialize() {
-        GitHubOwnerListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"ownerUrl\":\"vvtpgvdfgio\"},\"id\":\"ftutqxlngxlefgu\",\"name\":\"nxkrx\",\"type\":\"qmi\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"rvqdra\"},\"id\":\"jybige\",\"name\":\"oqfbowskanyk\",\"type\":\"zlcuiywgqywgndrv\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"pphrcgynco\"},\"id\":\"ecfvmm\",\"name\":\"oo\",\"type\":\"sxlzevgbmqj\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"pmivkwlzu\"},\"id\":\"c\",\"name\":\"wnfnbacf\",\"type\":\"onlebxetqgtzxdpn\"}],\"nextLink\":\"qqwx\"}")
-                .toObject(GitHubOwnerListResponse.class);
+        GitHubOwnerListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"ownerUrl\":\"vvtpgvdfgio\"},\"id\":\"ftutqxlngxlefgu\",\"name\":\"nxkrx\",\"type\":\"qmi\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"rvqdra\"},\"id\":\"jybige\",\"name\":\"oqfbowskanyk\",\"type\":\"zlcuiywgqywgndrv\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"pphrcgynco\"},\"id\":\"ecfvmm\",\"name\":\"oo\",\"type\":\"sxlzevgbmqj\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"pmivkwlzu\"},\"id\":\"c\",\"name\":\"wnfnbacf\",\"type\":\"onlebxetqgtzxdpn\"}],\"nextLink\":\"qqwx\"}")
+            .toObject(GitHubOwnerListResponse.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals("vvtpgvdfgio", model.value().get(0).properties().ownerUrl());
         Assertions.assertEquals("qqwx", model.nextLink());
@@ -28,32 +26,19 @@ public final class GitHubOwnerListResponseTests {
 
     @Test
     public void testSerialize() {
-        GitHubOwnerListResponse model =
-            new GitHubOwnerListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GitHubOwnerInner()
-                                .withProperties(
-                                    new GitHubOwnerProperties()
-                                        .withProvisioningState(ProvisioningState.FAILED)
-                                        .withOwnerUrl("vvtpgvdfgio")),
-                            new GitHubOwnerInner()
-                                .withProperties(
-                                    new GitHubOwnerProperties()
-                                        .withProvisioningState(ProvisioningState.CANCELED)
-                                        .withOwnerUrl("rvqdra")),
-                            new GitHubOwnerInner()
-                                .withProperties(
-                                    new GitHubOwnerProperties()
-                                        .withProvisioningState(ProvisioningState.CANCELED)
-                                        .withOwnerUrl("pphrcgynco")),
-                            new GitHubOwnerInner()
-                                .withProperties(
-                                    new GitHubOwnerProperties()
-                                        .withProvisioningState(ProvisioningState.CANCELED)
-                                        .withOwnerUrl("pmivkwlzu"))))
-                .withNextLink("qqwx");
+        GitHubOwnerListResponse model = new GitHubOwnerListResponse().withValue(Arrays.asList(
+            new GitHubOwnerInner()
+                .withProperties(new GitHubOwnerProperties().withProvisioningState(ProvisioningState.FAILED)
+                    .withOwnerUrl("vvtpgvdfgio")),
+            new GitHubOwnerInner().withProperties(
+                new GitHubOwnerProperties().withProvisioningState(ProvisioningState.CANCELED).withOwnerUrl("rvqdra")),
+            new GitHubOwnerInner()
+                .withProperties(new GitHubOwnerProperties().withProvisioningState(ProvisioningState.CANCELED)
+                    .withOwnerUrl("pphrcgynco")),
+            new GitHubOwnerInner()
+                .withProperties(new GitHubOwnerProperties().withProvisioningState(ProvisioningState.CANCELED)
+                    .withOwnerUrl("pmivkwlzu"))))
+            .withNextLink("qqwx");
         model = BinaryData.fromObject(model).toObject(GitHubOwnerListResponse.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals("vvtpgvdfgio", model.value().get(0).properties().ownerUrl());

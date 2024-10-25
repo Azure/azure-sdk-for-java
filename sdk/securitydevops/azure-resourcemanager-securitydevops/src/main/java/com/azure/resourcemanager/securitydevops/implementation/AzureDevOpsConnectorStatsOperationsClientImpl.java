@@ -41,12 +41,8 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
      * @param client the instance of the service client containing this operation class.
      */
     AzureDevOpsConnectorStatsOperationsClientImpl(MicrosoftSecurityDevOpsImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AzureDevOpsConnectorStatsOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureDevOpsConnectorStatsOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,20 +53,16 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSecurityDev")
     private interface AzureDevOpsConnectorStatsOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/azureDevOpsConnectors/{azureDevOpsConnectorName}/stats")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/azureDevOpsConnectors/{azureDevOpsConnectorName}/stats")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureDevOpsConnectorName") String azureDevOpsConnectorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,42 +76,28 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> getWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureDevOpsConnectorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, azureDevOpsConnectorName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -135,40 +113,28 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    private Mono<Response<AzureDevOpsConnectorStatsListResponseInner>> getWithResponseAsync(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureDevOpsConnectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureDevOpsConnectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureDevOpsConnectorName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureDevOpsConnectorName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -182,8 +148,8 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureDevOpsConnectorStatsListResponseInner> getAsync(
-        String resourceGroupName, String azureDevOpsConnectorName) {
+    private Mono<AzureDevOpsConnectorStatsListResponseInner> getAsync(String resourceGroupName,
+        String azureDevOpsConnectorName) {
         return getWithResponseAsync(resourceGroupName, azureDevOpsConnectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -200,8 +166,8 @@ public final class AzureDevOpsConnectorStatsOperationsClientImpl implements Azur
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureDevOpsConnectorStatsListResponseInner> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
+    public Response<AzureDevOpsConnectorStatsListResponseInner> getWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context) {
         return getWithResponseAsync(resourceGroupName, azureDevOpsConnectorName, context).block();
     }
 

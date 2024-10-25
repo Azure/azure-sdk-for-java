@@ -20,24 +20,18 @@ public final class EventOperationsImpl implements EventOperations {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public EventOperationsImpl(
-        EventOperationsClient innerClient,
+    public EventOperationsImpl(EventOperationsClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
-        Response<EventInner> inner =
-            this
-                .serviceClient()
-                .getBySubscriptionIdAndTrackingIdWithResponse(eventTrackingId, filter, queryStartTime, context);
+    public Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context) {
+        Response<EventInner> inner = this.serviceClient()
+            .getBySubscriptionIdAndTrackingIdWithResponse(eventTrackingId, filter, queryStartTime, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,15 +47,12 @@ public final class EventOperationsImpl implements EventOperations {
         }
     }
 
-    public Response<Event> fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, Context context) {
-        Response<EventInner> inner =
-            this.serviceClient().fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(eventTrackingId, context);
+    public Response<Event> fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId,
+        Context context) {
+        Response<EventInner> inner
+            = this.serviceClient().fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(eventTrackingId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,17 +68,12 @@ public final class EventOperationsImpl implements EventOperations {
         }
     }
 
-    public Response<Event> getByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
-        Response<EventInner> inner =
-            this
-                .serviceClient()
-                .getByTenantIdAndTrackingIdWithResponse(eventTrackingId, filter, queryStartTime, context);
+    public Response<Event> getByTenantIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context) {
+        Response<EventInner> inner = this.serviceClient()
+            .getByTenantIdAndTrackingIdWithResponse(eventTrackingId, filter, queryStartTime, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -104,13 +90,10 @@ public final class EventOperationsImpl implements EventOperations {
     }
 
     public Response<Event> fetchDetailsByTenantIdAndTrackingIdWithResponse(String eventTrackingId, Context context) {
-        Response<EventInner> inner =
-            this.serviceClient().fetchDetailsByTenantIdAndTrackingIdWithResponse(eventTrackingId, context);
+        Response<EventInner> inner
+            = this.serviceClient().fetchDetailsByTenantIdAndTrackingIdWithResponse(eventTrackingId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventImpl(inner.getValue(), this.manager()));
         } else {
             return null;

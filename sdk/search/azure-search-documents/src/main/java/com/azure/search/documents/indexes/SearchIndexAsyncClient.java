@@ -415,14 +415,12 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the service client configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer)
-            .buildAsyncClient();
+        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer).buildAsyncClient();
     }
 
     static SearchClientBuilder getSearchClientBuilder(String indexName, String endpoint,
         SearchServiceVersion serviceVersion, HttpPipeline httpPipeline, JsonSerializer serializer) {
-        return new SearchClientBuilder()
-            .endpoint(endpoint)
+        return new SearchClientBuilder().endpoint(endpoint)
             .indexName(indexName)
             .serviceVersion(serviceVersion)
             .pipeline(httpPipeline)
@@ -606,8 +604,7 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> getIndexStatisticsWithResponse(indexName, context));
     }
 
-    Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName,
-        Context context) {
+    Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName, Context context) {
         try {
             return restClient.getIndexes()
                 .getStatisticsWithResponseAsync(indexName, null, context)
@@ -735,8 +732,8 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged) {
-        return withContext(context ->
-            createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, context));
+        return withContext(
+            context -> createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, context));
     }
 
     Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
@@ -802,8 +799,8 @@ public final class SearchIndexAsyncClient {
             return monoError(LOGGER, new NullPointerException("'index' cannot be null."));
         }
 
-        return withContext(context -> deleteIndexWithResponse(index.getName(), onlyIfUnchanged ? index.getETag() : null,
-            context));
+        return withContext(
+            context -> deleteIndexWithResponse(index.getName(), onlyIfUnchanged ? index.getETag() : null, context));
     }
 
     Mono<Response<Void>> deleteIndexWithResponse(String indexName, String eTag, Context context) {
@@ -840,8 +837,8 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions) {
         try {
-            return new PagedFlux<>(() -> withContext(context ->
-                analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1094,12 +1091,11 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged) {
-        return withContext(context ->
-            createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, context));
+        return withContext(context -> createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, context));
     }
 
-    Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, Context context) {
+    Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
+        Context context) {
         try {
             Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
             String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
@@ -1130,8 +1126,8 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return withContext(context -> deleteSynonymMapWithResponse(synonymMapName, null, context)
-            .flatMap(FluxUtil::toMono));
+        return withContext(
+            context -> deleteSynonymMapWithResponse(synonymMapName, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -1177,8 +1173,7 @@ public final class SearchIndexAsyncClient {
         return FieldBuilder.build(model, options);
     }
 
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
-        Context context) {
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag, Context context) {
         try {
             return restClient.getSynonymMaps()
                 .deleteWithResponseAsync(synonymMapName, etag, null, null, context)
@@ -1212,7 +1207,6 @@ public final class SearchIndexAsyncClient {
     public Mono<SearchServiceStatistics> getServiceStatistics() {
         return getServiceStatisticsWithResponse().map(Response::getValue);
     }
-
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.

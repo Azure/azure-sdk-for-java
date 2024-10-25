@@ -55,8 +55,8 @@ public interface GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubOwnerInner> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context);
+    Response<GitHubOwnerInner> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, Context context);
 
     /**
      * Returns a monitored GitHub repository.
@@ -85,8 +85,8 @@ public interface GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner);
+    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner);
 
     /**
      * Create or update a monitored GitHub owner.
@@ -102,12 +102,8 @@ public interface GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context);
+    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context);
 
     /**
      * Create or update a monitored GitHub owner.
@@ -122,8 +118,8 @@ public interface GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubOwnerInner createOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner);
+    GitHubOwnerInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner);
 
     /**
      * Create or update a monitored GitHub owner.
@@ -139,12 +135,8 @@ public interface GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubOwnerInner createOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context);
+    GitHubOwnerInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner, Context context);
 
     /**
      * Patch a monitored GitHub repository.
@@ -158,8 +150,8 @@ public interface GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName);
+    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName);
 
     /**
      * Patch a monitored GitHub repository.
@@ -175,12 +167,8 @@ public interface GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context);
+    SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context);
 
     /**
      * Patch a monitored GitHub repository.
@@ -210,10 +198,6 @@ public interface GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubOwnerInner update(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context);
+    GitHubOwnerInner update(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner, Context context);
 }

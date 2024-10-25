@@ -55,11 +55,10 @@ public class SearchRequestUrlRewriterPolicyTests {
     }
 
     public static Stream<Arguments> correctUrlRewriteSupplier() {
-        HttpClient urlRewriteHttpClient =
-            request -> Mono.error(new UrlRewriteException("Url rewritten", request.getUrl().toString()));
+        HttpClient urlRewriteHttpClient
+            = request -> Mono.error(new UrlRewriteException("Url rewritten", request.getUrl().toString()));
 
-        SearchClientBuilder searchClientBuilder = new SearchClientBuilder()
-            .indexName("test")
+        SearchClientBuilder searchClientBuilder = new SearchClientBuilder().indexName("test")
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
@@ -68,21 +67,21 @@ public class SearchRequestUrlRewriterPolicyTests {
         SearchClient searchClient = searchClientBuilder.buildClient();
         SearchAsyncClient searchAsyncClient = searchClientBuilder.buildAsyncClient();
 
-        SearchIndexClientBuilder searchIndexClientBuilder = new SearchIndexClientBuilder()
-            .endpoint("https://test.search.windows.net")
-            .credential(new MockTokenCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-            .addPolicy(new SearchRequestUrlRewriterPolicy())
-            .httpClient(urlRewriteHttpClient);
+        SearchIndexClientBuilder searchIndexClientBuilder
+            = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
+                .credential(new MockTokenCredential())
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+                .addPolicy(new SearchRequestUrlRewriterPolicy())
+                .httpClient(urlRewriteHttpClient);
         SearchIndexClient searchIndexClient = searchIndexClientBuilder.buildClient();
         SearchIndexAsyncClient searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
 
-        SearchIndexerClientBuilder searchIndexerClientBuilder = new SearchIndexerClientBuilder()
-            .endpoint("https://test.search.windows.net")
-            .credential(new MockTokenCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-            .addPolicy(new SearchRequestUrlRewriterPolicy())
-            .httpClient(urlRewriteHttpClient);
+        SearchIndexerClientBuilder searchIndexerClientBuilder
+            = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
+                .credential(new MockTokenCredential())
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+                .addPolicy(new SearchRequestUrlRewriterPolicy())
+                .httpClient(urlRewriteHttpClient);
         SearchIndexerClient searchIndexerClient = searchIndexerClientBuilder.buildClient();
         SearchIndexerAsyncClient searchIndexerAsyncClient = searchIndexerClientBuilder.buildAsyncClient();
 
@@ -104,18 +103,24 @@ public class SearchRequestUrlRewriterPolicyTests {
         String skillsetUrl = "https://test.search.windows.net/skillsets/skillset";
 
         return Stream.of(
-            Arguments.of(toCallable(() -> searchClient.indexDocumentsWithResponse(new IndexDocumentsBatch<>(), null,
-                Context.NONE)), docsUrl + "/search.index"),
-            Arguments.of(toCallable(() -> searchClient.getDocumentWithResponse("test", SearchDocument.class, null,
-                Context.NONE)), docsUrl + "/test"),
+            Arguments.of(
+                toCallable(
+                    () -> searchClient.indexDocumentsWithResponse(new IndexDocumentsBatch<>(), null, Context.NONE)),
+                docsUrl + "/search.index"),
+            Arguments.of(
+                toCallable(
+                    () -> searchClient.getDocumentWithResponse("test", SearchDocument.class, null, Context.NONE)),
+                docsUrl + "/test"),
             Arguments.of(toCallable(() -> searchClient.getDocumentCountWithResponse(Context.NONE)),
                 docsUrl + "/$count"),
             Arguments.of(toCallable(() -> searchClient.search("search", null, Context.NONE).iterator().hasNext()),
                 docsUrl + "/search.post.search"),
-            Arguments.of(toCallable(() -> searchClient.suggest("suggest", "suggester", null, Context.NONE)
-                .iterator().hasNext()), docsUrl + "/seach.post.suggest"),
-            Arguments.of(toCallable(() -> searchClient.autocomplete("autocomplete", "suggester", null, Context.NONE)
-                .iterator().hasNext()), docsUrl + "/search.post.autocomplete"),
+            Arguments.of(
+                toCallable(() -> searchClient.suggest("suggest", "suggester", null, Context.NONE).iterator().hasNext()),
+                docsUrl + "/seach.post.suggest"),
+            Arguments.of(toCallable(
+                () -> searchClient.autocomplete("autocomplete", "suggester", null, Context.NONE).iterator().hasNext()),
+                docsUrl + "/search.post.autocomplete"),
 
             Arguments.of(toCallable(searchAsyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch<>(), null)),
                 docsUrl + "/search.index"),
@@ -137,8 +142,9 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/indexes"),
             Arguments.of(toCallable(() -> searchIndexClient.listIndexNames(Context.NONE).iterator().hasNext()),
                 "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(() -> searchIndexClient.createOrUpdateIndexWithResponse(index, false, false,
-                Context.NONE)), indexUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexClient.createOrUpdateIndexWithResponse(index, false, false, Context.NONE)),
+                indexUrl),
             Arguments.of(toCallable(() -> searchIndexClient.deleteIndexWithResponse(index, true, Context.NONE)),
                 indexUrl),
             Arguments.of(toCallable(() -> searchIndexClient.analyzeText("index", null, Context.NONE)),
@@ -151,10 +157,13 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/synonymmaps"),
             Arguments.of(toCallable(() -> searchIndexClient.listSynonymMapNames(Context.NONE).iterator().hasNext()),
                 "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(() -> searchIndexClient.createOrUpdateSynonymMapWithResponse(synonymMap, false,
-                Context.NONE)), synonymMapUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.deleteSynonymMapWithResponse(synonymMap, true,
-                Context.NONE)), synonymMapUrl),
+            Arguments.of(
+                toCallable(
+                    () -> searchIndexClient.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE)),
+                synonymMapUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexClient.deleteSynonymMapWithResponse(synonymMap, true, Context.NONE)),
+                synonymMapUrl),
             Arguments.of(toCallable(() -> searchIndexClient.getServiceStatisticsWithResponse(Context.NONE)),
                 "https://test.search.windows.net/servicestats"),
 
@@ -185,20 +194,27 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/servicestats"),
             Arguments.of(toCallable(() -> searchIndexerClient.createOrUpdateDataSourceConnectionWithResponse(dataSource,
                 true, Context.NONE)), dataSourceUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.createDataSourceConnectionWithResponse(dataSource,
-                Context.NONE)), "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(() -> searchIndexerClient.getDataSourceConnectionWithResponse("datasource",
-                Context.NONE)), dataSourceUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.listDataSourceConnections(Context.NONE).iterator()
-                .hasNext()), "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(() -> searchIndexerClient.listDataSourceConnectionNames(Context.NONE).iterator()
-                .hasNext()), "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(() -> searchIndexerClient.deleteDataSourceConnectionWithResponse(dataSource, true,
-                Context.NONE)), dataSourceUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.createDataSourceConnectionWithResponse(dataSource, Context.NONE)),
+                "https://test.search.windows.net/datasources"),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.getDataSourceConnectionWithResponse("datasource", Context.NONE)),
+                dataSourceUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.listDataSourceConnections(Context.NONE).iterator().hasNext()),
+                "https://test.search.windows.net/datasources"),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.listDataSourceConnectionNames(Context.NONE).iterator().hasNext()),
+                "https://test.search.windows.net/datasources"),
+            Arguments.of(
+                toCallable(
+                    () -> searchIndexerClient.deleteDataSourceConnectionWithResponse(dataSource, true, Context.NONE)),
+                dataSourceUrl),
             Arguments.of(toCallable(() -> searchIndexerClient.createIndexerWithResponse(indexer, Context.NONE)),
                 "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(() -> searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false,
-                Context.NONE)), indexerUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)),
+                indexerUrl),
             Arguments.of(toCallable(() -> searchIndexerClient.listIndexers(Context.NONE).iterator().hasNext()),
                 "https://test.search.windows.net/indexers"),
             Arguments.of(toCallable(() -> searchIndexerClient.listIndexerNames(Context.NONE).iterator().hasNext()),
@@ -221,13 +237,15 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/skillsets"),
             Arguments.of(toCallable(() -> searchIndexerClient.listSkillsetNames(Context.NONE).iterator().hasNext()),
                 "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(() -> searchIndexerClient.createOrUpdateSkillsetWithResponse(skillset, false,
-                Context.NONE)), skillsetUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.createOrUpdateSkillsetWithResponse(skillset, false, Context.NONE)),
+                skillsetUrl),
             Arguments.of(toCallable(() -> searchIndexerClient.deleteSkillsetWithResponse(skillset, true, Context.NONE)),
                 skillsetUrl),
 
-            Arguments.of(toCallable(searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource,
-                true)), dataSourceUrl),
+            Arguments.of(
+                toCallable(searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, true)),
+                dataSourceUrl),
             Arguments.of(toCallable(searchIndexerAsyncClient.createDataSourceConnectionWithResponse(dataSource)),
                 "https://test.search.windows.net/datasources"),
             Arguments.of(toCallable(searchIndexerAsyncClient.getDataSourceConnectionWithResponse("datasource")),
@@ -264,8 +282,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(skillset, false)),
                 skillsetUrl),
             Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl)
-        );
+            Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl));
     }
 
     private static Callable<?> toCallable(Supplier<?> apiCall) {
@@ -282,6 +299,7 @@ public class SearchRequestUrlRewriterPolicyTests {
 
     private static final class UrlRewriteException extends RuntimeException {
         private final String rewrittenUrl;
+
         UrlRewriteException(String message, String rewrittenUrl) {
             super(message);
 

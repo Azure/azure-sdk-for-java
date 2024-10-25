@@ -10,10 +10,6 @@ module com.azure.resourcemanager.securitydevops {
     exports com.azure.resourcemanager.securitydevops.fluent.models;
     exports com.azure.resourcemanager.securitydevops.models;
 
-    opens com.azure.resourcemanager.securitydevops.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.securitydevops.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.securitydevops.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.securitydevops.models to com.azure.core, com.fasterxml.jackson.databind;
 }

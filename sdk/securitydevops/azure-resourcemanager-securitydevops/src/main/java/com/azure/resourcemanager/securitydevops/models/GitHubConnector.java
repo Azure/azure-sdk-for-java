@@ -91,17 +91,16 @@ public interface GitHubConnector {
     GitHubConnectorInner innerModel();
 
     /** The entirety of the GitHubConnector definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The GitHubConnector definition stages. */
     interface DefinitionStages {
         /** The first stage of the GitHubConnector definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the GitHubConnector definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -120,6 +119,7 @@ public interface GitHubConnector {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the GitHubConnector definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -130,6 +130,7 @@ public interface GitHubConnector {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the GitHubConnector definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -150,6 +151,7 @@ public interface GitHubConnector {
              */
             GitHubConnector create(Context context);
         }
+
         /** The stage of the GitHubConnector definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -160,6 +162,7 @@ public interface GitHubConnector {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the GitHubConnector definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -173,6 +176,7 @@ public interface GitHubConnector {
             WithCreate withProperties(GitHubConnectorProperties properties);
         }
     }
+
     /**
      * Begins update for the GitHubConnector resource.
      *
@@ -197,6 +201,7 @@ public interface GitHubConnector {
          */
         GitHubConnector apply(Context context);
     }
+
     /** The GitHubConnector update stages. */
     interface UpdateStages {
         /** The stage of the GitHubConnector update allowing to specify tags. */
@@ -209,6 +214,7 @@ public interface GitHubConnector {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the GitHubConnector update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -222,6 +228,7 @@ public interface GitHubConnector {
             Update withProperties(GitHubConnectorProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

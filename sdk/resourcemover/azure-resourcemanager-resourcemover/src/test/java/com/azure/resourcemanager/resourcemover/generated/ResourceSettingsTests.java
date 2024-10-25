@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"ResourceSettings\",\"targetResourceName\":\"hm\",\"targetResourceGroupName\":\"u\"}")
-                .toObject(ResourceSettings.class);
+        ResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"ResourceSettings\",\"targetResourceName\":\"hm\",\"targetResourceGroupName\":\"u\"}")
+            .toObject(ResourceSettings.class);
         Assertions.assertEquals("hm", model.targetResourceName());
         Assertions.assertEquals("u", model.targetResourceGroupName());
     }

@@ -106,9 +106,8 @@ public final class PrepareRequest {
      */
     public void validate() {
         if (moveResources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property moveResources in model PrepareRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property moveResources in model PrepareRequest"));
         }
     }
 

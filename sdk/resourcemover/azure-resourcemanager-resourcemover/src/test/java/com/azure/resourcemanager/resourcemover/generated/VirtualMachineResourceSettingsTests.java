@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Compute/virtualMachines\",\"tags\":{\"azyxoegukg\":\"ldngkpoci\",\"mrbpizcdrqj\":\"npiucgygevqznty\",\"yhxdeoejzicwi\":\"dpydn\"},\"userManagedIdentities\":[\"ttgzfbis\",\"cbkhajdeyeamdph\"],\"targetAvailabilityZone\":\"NA\",\"targetVmSize\":\"pbuxwgipwhon\",\"targetAvailabilitySetId\":\"kgshwa\",\"targetResourceName\":\"ixzbinjeputtmryw\",\"targetResourceGroupName\":\"zoqftiyqzrnkcqvy\"}")
-                .toObject(VirtualMachineResourceSettings.class);
+        VirtualMachineResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Compute/virtualMachines\",\"tags\":{\"azyxoegukg\":\"ldngkpoci\",\"mrbpizcdrqj\":\"npiucgygevqznty\",\"yhxdeoejzicwi\":\"dpydn\"},\"userManagedIdentities\":[\"ttgzfbis\",\"cbkhajdeyeamdph\"],\"targetAvailabilityZone\":\"NA\",\"targetVmSize\":\"pbuxwgipwhon\",\"targetAvailabilitySetId\":\"kgshwa\",\"targetResourceName\":\"ixzbinjeputtmryw\",\"targetResourceGroupName\":\"zoqftiyqzrnkcqvy\"}")
+            .toObject(VirtualMachineResourceSettings.class);
         Assertions.assertEquals("ixzbinjeputtmryw", model.targetResourceName());
         Assertions.assertEquals("zoqftiyqzrnkcqvy", model.targetResourceGroupName());
         Assertions.assertEquals("ldngkpoci", model.tags().get("azyxoegukg"));
@@ -31,9 +29,8 @@ public final class VirtualMachineResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineResourceSettings model =
-            new VirtualMachineResourceSettings()
-                .withTargetResourceName("ixzbinjeputtmryw")
+        VirtualMachineResourceSettings model
+            = new VirtualMachineResourceSettings().withTargetResourceName("ixzbinjeputtmryw")
                 .withTargetResourceGroupName("zoqftiyqzrnkcqvy")
                 .withTags(mapOf("azyxoegukg", "ldngkpoci", "mrbpizcdrqj", "npiucgygevqznty", "yhxdeoejzicwi", "dpydn"))
                 .withUserManagedIdentities(Arrays.asList("ttgzfbis", "cbkhajdeyeamdph"))

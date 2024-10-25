@@ -72,18 +72,19 @@ public final class IndexBatchException extends AzureException {
     }
 
     private static String createMessage(IndexDocumentsResult result) {
-        long failedResultCount = result.getResults().stream()
-            .filter(r -> !r.isSucceeded())
-            .count();
+        long failedResultCount = result.getResults().stream().filter(r -> !r.isSucceeded()).count();
         return String.format(MESSAGE_FORMAT, failedResultCount, result.getResults().size());
     }
 
     private <T> List<IndexAction<T>> doFindFailedActionsToRetry(IndexBatchBase<T> originBatch,
         Function<T, String> keySelector) {
-        Set<String> uniqueRetriableKeys = getIndexingResults().stream().filter(result ->
-            isRetriableStatusCode(result.getStatusCode())).map(IndexingResult::getKey).collect(Collectors.toSet());
-        return originBatch.getActions().stream().filter(action -> isActionIncluded(action,
-            uniqueRetriableKeys, keySelector))
+        Set<String> uniqueRetriableKeys = getIndexingResults().stream()
+            .filter(result -> isRetriableStatusCode(result.getStatusCode()))
+            .map(IndexingResult::getKey)
+            .collect(Collectors.toSet());
+        return originBatch.getActions()
+            .stream()
+            .filter(action -> isActionIncluded(action, uniqueRetriableKeys, keySelector))
             .collect(Collectors.toList());
     }
 

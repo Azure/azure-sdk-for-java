@@ -11,22 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EventPropertiesArticleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventPropertiesArticle model =
-            BinaryData
-                .fromString(
-                    "{\"articleContent\":\"gvraeaen\",\"articleId\":\"nzar\",\"parameters\":\"datalquuijfqkacewii\"}")
-                .toObject(EventPropertiesArticle.class);
+        EventPropertiesArticle model = BinaryData
+            .fromString(
+                "{\"articleContent\":\"gvraeaen\",\"articleId\":\"nzar\",\"parameters\":\"datalquuijfqkacewii\"}")
+            .toObject(EventPropertiesArticle.class);
         Assertions.assertEquals("gvraeaen", model.articleContent());
         Assertions.assertEquals("nzar", model.articleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventPropertiesArticle model =
-            new EventPropertiesArticle()
-                .withArticleContent("gvraeaen")
-                .withArticleId("nzar")
-                .withParameters("datalquuijfqkacewii");
+        EventPropertiesArticle model = new EventPropertiesArticle().withArticleContent("gvraeaen")
+            .withArticleId("nzar")
+            .withParameters("datalquuijfqkacewii");
         model = BinaryData.fromObject(model).toObject(EventPropertiesArticle.class);
         Assertions.assertEquals("gvraeaen", model.articleContent());
         Assertions.assertEquals("nzar", model.articleId());

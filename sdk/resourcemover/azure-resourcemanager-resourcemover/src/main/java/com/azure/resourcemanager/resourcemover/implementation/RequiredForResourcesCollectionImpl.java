@@ -14,8 +14,7 @@ public final class RequiredForResourcesCollectionImpl implements RequiredForReso
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    RequiredForResourcesCollectionImpl(
-        RequiredForResourcesCollectionInner innerObject,
+    RequiredForResourcesCollectionImpl(RequiredForResourcesCollectionInner innerObject,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

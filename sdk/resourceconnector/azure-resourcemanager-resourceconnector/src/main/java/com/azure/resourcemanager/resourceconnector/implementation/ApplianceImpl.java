@@ -114,20 +114,16 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Appliance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -143,27 +139,22 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .updateWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .updateWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Appliance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .updateWithResponse(resourceGroupName, resourceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .updateWithResponse(resourceGroupName, resourceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApplianceImpl(
-        ApplianceInner innerObject,
+    ApplianceImpl(ApplianceInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -172,28 +163,23 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Appliance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
     public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context) {
-        return serviceManager
-            .appliances()
+        return serviceManager.appliances()
             .listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
     }
 

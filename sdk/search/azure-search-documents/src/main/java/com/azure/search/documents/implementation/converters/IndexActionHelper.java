@@ -13,13 +13,15 @@ import java.util.Map;
 public final class IndexActionHelper {
     private static IndexActionAccessor accessor;
 
-    private IndexActionHelper() { }
+    private IndexActionHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link IndexAction} instance.
      */
     public interface IndexActionAccessor {
         <U> void setProperties(IndexAction<U> indexAction, Map<String, Object> properties);
+
         <U> Map<String, Object> getProperties(IndexAction<U> indexAction);
     }
 

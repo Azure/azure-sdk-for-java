@@ -521,8 +521,8 @@ public final class AvailabilityStatusProperties {
      * @param recentlyResolved the recentlyResolved value to set.
      * @return the AvailabilityStatusProperties object itself.
      */
-    public AvailabilityStatusProperties withRecentlyResolved(
-        AvailabilityStatusPropertiesRecentlyResolved recentlyResolved) {
+    public AvailabilityStatusProperties
+        withRecentlyResolved(AvailabilityStatusPropertiesRecentlyResolved recentlyResolved) {
         this.recentlyResolved = recentlyResolved;
         return this;
     }

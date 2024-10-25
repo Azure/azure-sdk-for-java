@@ -20,16 +20,16 @@ import java.util.regex.Pattern;
  * Helper to access private-package methods of models.
  */
 public final class SchemaRegistryHelper {
-    private static final HashMap<String, com.azure.data.schemaregistry.implementation.models.SchemaFormat>
-        SCHEMA_FORMAT_HASH_MAP = new HashMap<>();
+    private static final HashMap<String, com.azure.data.schemaregistry.implementation.models.SchemaFormat> SCHEMA_FORMAT_HASH_MAP
+        = new HashMap<>();
     private static final Pattern SCHEMA_FORMAT_PATTERN = Pattern.compile("\\s");
 
     private static SchemaRegistryModelsAccessor accessor;
 
     static {
         com.azure.data.schemaregistry.implementation.models.SchemaFormat.values().forEach(value -> {
-            final String mimeTypeLower = SCHEMA_FORMAT_PATTERN.matcher(value.toString()).replaceAll("")
-                .toLowerCase(Locale.ROOT);
+            final String mimeTypeLower
+                = SCHEMA_FORMAT_PATTERN.matcher(value.toString()).replaceAll("").toLowerCase(Locale.ROOT);
 
             SCHEMA_FORMAT_HASH_MAP.put(mimeTypeLower, value);
         });
@@ -88,8 +88,8 @@ public final class SchemaRegistryHelper {
             deserializedHeaders.getSchemaVersion());
     }
 
-    public static com.azure.data.schemaregistry.implementation.models.SchemaFormat getContentType(
-        SchemaFormat schemaFormat) {
+    public static com.azure.data.schemaregistry.implementation.models.SchemaFormat
+        getContentType(SchemaFormat schemaFormat) {
         Objects.requireNonNull(schemaFormat, "'schemaFormat' cannot be null.'");
 
         if (schemaFormat == SchemaFormat.AVRO) {
@@ -114,12 +114,11 @@ public final class SchemaRegistryHelper {
             return null;
         }
 
-        final String replaced = SCHEMA_FORMAT_PATTERN.matcher(contentType).replaceAll("")
-            .toLowerCase(Locale.ROOT);
+        final String replaced = SCHEMA_FORMAT_PATTERN.matcher(contentType).replaceAll("").toLowerCase(Locale.ROOT);
 
         // Default value if nothing matches is CUSTOM.
-        final com.azure.data.schemaregistry.implementation.models.SchemaFormat implementationFormat =
-            SCHEMA_FORMAT_HASH_MAP.getOrDefault(replaced,
+        final com.azure.data.schemaregistry.implementation.models.SchemaFormat implementationFormat
+            = SCHEMA_FORMAT_HASH_MAP.getOrDefault(replaced,
                 com.azure.data.schemaregistry.implementation.models.SchemaFormat.TEXT_PLAIN_CHARSET_UTF8);
 
         if (com.azure.data.schemaregistry.implementation.models.SchemaFormat.APPLICATION_JSON_SERIALIZATION_AVRO
@@ -133,4 +132,3 @@ public final class SchemaRegistryHelper {
         }
     }
 }
-

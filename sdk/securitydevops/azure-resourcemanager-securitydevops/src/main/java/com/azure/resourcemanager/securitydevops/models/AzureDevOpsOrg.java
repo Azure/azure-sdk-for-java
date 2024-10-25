@@ -63,11 +63,13 @@ public interface AzureDevOpsOrg {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AzureDevOpsOrg definition stages. */
     interface DefinitionStages {
         /** The first stage of the AzureDevOpsOrg definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AzureDevOpsOrg definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +81,7 @@ public interface AzureDevOpsOrg {
              */
             WithCreate withExistingAzureDevOpsConnector(String resourceGroupName, String azureDevOpsConnectorName);
         }
+
         /**
          * The stage of the AzureDevOpsOrg definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface AzureDevOpsOrg {
              */
             AzureDevOpsOrg create(Context context);
         }
+
         /** The stage of the AzureDevOpsOrg definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -110,6 +114,7 @@ public interface AzureDevOpsOrg {
             WithCreate withProperties(AzureDevOpsOrgProperties properties);
         }
     }
+
     /**
      * Begins update for the AzureDevOpsOrg resource.
      *
@@ -134,6 +139,7 @@ public interface AzureDevOpsOrg {
          */
         AzureDevOpsOrg apply(Context context);
     }
+
     /** The AzureDevOpsOrg update stages. */
     interface UpdateStages {
         /** The stage of the AzureDevOpsOrg update allowing to specify properties. */
@@ -147,6 +153,7 @@ public interface AzureDevOpsOrg {
             Update withProperties(AzureDevOpsOrgProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

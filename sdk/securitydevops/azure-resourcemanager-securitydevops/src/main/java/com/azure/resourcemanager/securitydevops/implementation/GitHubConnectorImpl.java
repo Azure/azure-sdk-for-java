@@ -81,20 +81,16 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
     }
 
     public GitHubConnector create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .createOrUpdate(resourceGroupName, gitHubConnectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GitHubConnector create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .createOrUpdate(resourceGroupName, gitHubConnectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, this.innerModel(), context);
         return this;
     }
 
@@ -109,25 +105,20 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
     }
 
     public GitHubConnector apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .update(resourceGroupName, gitHubConnectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .update(resourceGroupName, gitHubConnectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GitHubConnector apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .update(resourceGroupName, gitHubConnectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .update(resourceGroupName, gitHubConnectorName, this.innerModel(), context);
         return this;
     }
 
-    GitHubConnectorImpl(
-        GitHubConnectorInner innerObject,
+    GitHubConnectorImpl(GitHubConnectorInner innerObject,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -136,22 +127,18 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
     }
 
     public GitHubConnector refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GitHubConnector refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, context)
+            .getValue();
         return this;
     }
 

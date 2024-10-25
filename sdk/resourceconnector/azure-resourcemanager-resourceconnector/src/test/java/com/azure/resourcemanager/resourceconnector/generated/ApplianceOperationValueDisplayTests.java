@@ -10,11 +10,10 @@ import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceOperat
 public final class ApplianceOperationValueDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceOperationValueDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"o\",\"operation\":\"dkfo\",\"provider\":\"nygj\",\"resource\":\"jddeqsrdeupewnw\"}")
-                .toObject(ApplianceOperationValueDisplay.class);
+        ApplianceOperationValueDisplay model = BinaryData
+            .fromString(
+                "{\"description\":\"o\",\"operation\":\"dkfo\",\"provider\":\"nygj\",\"resource\":\"jddeqsrdeupewnw\"}")
+            .toObject(ApplianceOperationValueDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

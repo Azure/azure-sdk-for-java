@@ -33,62 +33,46 @@ public final class EmergingIssuesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"refreshTimestamp\":\"2021-03-03T01:39:50Z\",\"statusBanners\":[{\"title\":\"tobkauxofshfph\",\"message\":\"nulaiywzejywhsl\",\"cloud\":\"ojpllndnpdwrpqaf\",\"lastModifiedTime\":\"2021-05-07T14:23:25Z\"},{\"title\":\"snnfhyetefyp\",\"message\":\"octfjgtixrjvzuyt\",\"cloud\":\"mlmuowol\",\"lastModifiedTime\":\"2021-10-18T09:49:12Z\"}],\"statusActiveEvents\":[{\"title\":\"p\",\"description\":\"nszonwpngaj\",\"trackingId\":\"nixjawrtmjfjmy\",\"startTime\":\"2021-04-05T08:29:20Z\",\"cloud\":\"zhcoxovnekhe\",\"severity\":\"Error\",\"stage\":\"Resolve\",\"published\":false,\"lastModifiedTime\":\"2021-06-11T07:28:09Z\",\"impacts\":[{},{},{},{}]},{\"title\":\"xrdcqtj\",\"description\":\"dt\",\"trackingId\":\"epu\",\"startTime\":\"2021-12-03T10:50:59Z\",\"cloud\":\"jtcvuwkasizies\",\"severity\":\"Warning\",\"stage\":\"Active\",\"published\":false,\"lastModifiedTime\":\"2021-02-18T13:25:08Z\",\"impacts\":[{},{}]}]},\"id\":\"xeygtuhxuic\",\"name\":\"uewmrswnjlxuzrhw\",\"type\":\"usxjbaqehg\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"refreshTimestamp\":\"2021-03-03T01:39:50Z\",\"statusBanners\":[{\"title\":\"tobkauxofshfph\",\"message\":\"nulaiywzejywhsl\",\"cloud\":\"ojpllndnpdwrpqaf\",\"lastModifiedTime\":\"2021-05-07T14:23:25Z\"},{\"title\":\"snnfhyetefyp\",\"message\":\"octfjgtixrjvzuyt\",\"cloud\":\"mlmuowol\",\"lastModifiedTime\":\"2021-10-18T09:49:12Z\"}],\"statusActiveEvents\":[{\"title\":\"p\",\"description\":\"nszonwpngaj\",\"trackingId\":\"nixjawrtmjfjmy\",\"startTime\":\"2021-04-05T08:29:20Z\",\"cloud\":\"zhcoxovnekhe\",\"severity\":\"Error\",\"stage\":\"Resolve\",\"published\":false,\"lastModifiedTime\":\"2021-06-11T07:28:09Z\",\"impacts\":[{},{},{},{}]},{\"title\":\"xrdcqtj\",\"description\":\"dt\",\"trackingId\":\"epu\",\"startTime\":\"2021-12-03T10:50:59Z\",\"cloud\":\"jtcvuwkasizies\",\"severity\":\"Warning\",\"stage\":\"Active\",\"published\":false,\"lastModifiedTime\":\"2021-02-18T13:25:08Z\",\"impacts\":[{},{}]}]},\"id\":\"xeygtuhxuic\",\"name\":\"uewmrswnjlxuzrhw\",\"type\":\"usxjbaqehg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ResourceHealthManager manager =
-            ResourceHealthManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ResourceHealthManager manager = ResourceHealthManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EmergingIssuesGetResult> response =
-            manager.emergingIssues().list(com.azure.core.util.Context.NONE);
+        PagedIterable<EmergingIssuesGetResult> response
+            = manager.emergingIssues().list(com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-03T01:39:50Z"), response.iterator().next().refreshTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T01:39:50Z"),
+            response.iterator().next().refreshTimestamp());
         Assertions.assertEquals("tobkauxofshfph", response.iterator().next().statusBanners().get(0).title());
         Assertions.assertEquals("nulaiywzejywhsl", response.iterator().next().statusBanners().get(0).message());
         Assertions.assertEquals("ojpllndnpdwrpqaf", response.iterator().next().statusBanners().get(0).cloud());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-07T14:23:25Z"),
-                response.iterator().next().statusBanners().get(0).lastModifiedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T14:23:25Z"),
+            response.iterator().next().statusBanners().get(0).lastModifiedTime());
         Assertions.assertEquals("p", response.iterator().next().statusActiveEvents().get(0).title());
         Assertions.assertEquals("nszonwpngaj", response.iterator().next().statusActiveEvents().get(0).description());
         Assertions.assertEquals("nixjawrtmjfjmy", response.iterator().next().statusActiveEvents().get(0).trackingId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-04-05T08:29:20Z"),
-                response.iterator().next().statusActiveEvents().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T08:29:20Z"),
+            response.iterator().next().statusActiveEvents().get(0).startTime());
         Assertions.assertEquals("zhcoxovnekhe", response.iterator().next().statusActiveEvents().get(0).cloud());
-        Assertions
-            .assertEquals(SeverityValues.ERROR, response.iterator().next().statusActiveEvents().get(0).severity());
+        Assertions.assertEquals(SeverityValues.ERROR,
+            response.iterator().next().statusActiveEvents().get(0).severity());
         Assertions.assertEquals(StageValues.RESOLVE, response.iterator().next().statusActiveEvents().get(0).stage());
         Assertions.assertEquals(false, response.iterator().next().statusActiveEvents().get(0).published());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-11T07:28:09Z"),
-                response.iterator().next().statusActiveEvents().get(0).lastModifiedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T07:28:09Z"),
+            response.iterator().next().statusActiveEvents().get(0).lastModifiedTime());
     }
 }

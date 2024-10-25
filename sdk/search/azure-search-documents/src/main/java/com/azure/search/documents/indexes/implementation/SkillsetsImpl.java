@@ -264,7 +264,7 @@ public final class SkillsetsImpl {
         Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
         return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -291,7 +291,7 @@ public final class SkillsetsImpl {
         Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -351,7 +351,7 @@ public final class SkillsetsImpl {
         Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
         return createOrUpdateWithResponse(skillsetName, skillset, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, Context.NONE)
-            .getValue();
+                .getValue();
     }
 
     /**

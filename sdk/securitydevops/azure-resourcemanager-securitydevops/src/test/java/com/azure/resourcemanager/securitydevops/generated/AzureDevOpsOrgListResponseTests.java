@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsOrgListResponseTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsOrgListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoDiscovery\":\"Disabled\"},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"}],\"nextLink\":\"l\"}")
-                .toObject(AzureDevOpsOrgListResponse.class);
+        AzureDevOpsOrgListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoDiscovery\":\"Disabled\"},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"}],\"nextLink\":\"l\"}")
+            .toObject(AzureDevOpsOrgListResponse.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.value().get(0).properties().autoDiscovery());
         Assertions.assertEquals("l", model.nextLink());
@@ -29,16 +27,10 @@ public final class AzureDevOpsOrgListResponseTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsOrgListResponse model =
-            new AzureDevOpsOrgListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureDevOpsOrgInner()
-                                .withProperties(
-                                    new AzureDevOpsOrgProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withAutoDiscovery(AutoDiscovery.DISABLED))))
+        AzureDevOpsOrgListResponse model
+            = new AzureDevOpsOrgListResponse().withValue(Arrays.asList(new AzureDevOpsOrgInner()
+                .withProperties(new AzureDevOpsOrgProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withAutoDiscovery(AutoDiscovery.DISABLED))))
                 .withNextLink("l");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgListResponse.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());

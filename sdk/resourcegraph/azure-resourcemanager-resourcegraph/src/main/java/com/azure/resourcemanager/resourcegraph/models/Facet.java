@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Facet")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FacetResult", value = FacetResult.class),
-    @JsonSubTypes.Type(name = "FacetError", value = FacetError.class)
-})
+    @JsonSubTypes.Type(name = "FacetError", value = FacetError.class) })
 @Fluent
 public class Facet {
     /*
@@ -61,9 +60,8 @@ public class Facet {
      */
     public void validate() {
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expression in model Facet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expression in model Facet"));
         }
     }
 

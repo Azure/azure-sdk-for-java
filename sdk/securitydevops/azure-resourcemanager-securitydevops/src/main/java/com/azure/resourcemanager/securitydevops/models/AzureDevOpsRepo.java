@@ -63,11 +63,13 @@ public interface AzureDevOpsRepo {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AzureDevOpsRepo definition stages. */
     interface DefinitionStages {
         /** The first stage of the AzureDevOpsRepo definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AzureDevOpsRepo definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,12 +81,10 @@ public interface AzureDevOpsRepo {
              * @param azureDevOpsProjectName Name of the AzureDevOps Project.
              * @return the next definition stage.
              */
-            WithCreate withExistingProject(
-                String resourceGroupName,
-                String azureDevOpsConnectorName,
-                String azureDevOpsOrgName,
-                String azureDevOpsProjectName);
+            WithCreate withExistingProject(String resourceGroupName, String azureDevOpsConnectorName,
+                String azureDevOpsOrgName, String azureDevOpsProjectName);
         }
+
         /**
          * The stage of the AzureDevOpsRepo definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -105,6 +105,7 @@ public interface AzureDevOpsRepo {
              */
             AzureDevOpsRepo create(Context context);
         }
+
         /** The stage of the AzureDevOpsRepo definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -116,6 +117,7 @@ public interface AzureDevOpsRepo {
             WithCreate withProperties(AzureDevOpsRepoProperties properties);
         }
     }
+
     /**
      * Begins update for the AzureDevOpsRepo resource.
      *
@@ -140,6 +142,7 @@ public interface AzureDevOpsRepo {
          */
         AzureDevOpsRepo apply(Context context);
     }
+
     /** The AzureDevOpsRepo update stages. */
     interface UpdateStages {
         /** The stage of the AzureDevOpsRepo update allowing to specify properties. */
@@ -153,6 +156,7 @@ public interface AzureDevOpsRepo {
             Update withProperties(AzureDevOpsRepoProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

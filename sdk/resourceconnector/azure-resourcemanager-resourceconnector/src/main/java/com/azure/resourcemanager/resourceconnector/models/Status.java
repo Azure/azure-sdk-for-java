@@ -95,8 +95,8 @@ public final class Status extends ExpandableStringEnum<Status> {
     public static final Status UPGRADE_COMPLETE = fromString("UpgradeComplete");
 
     /** Static value UpgradeClusterExtensionFailedToDelete for Status. */
-    public static final Status UPGRADE_CLUSTER_EXTENSION_FAILED_TO_DELETE =
-        fromString("UpgradeClusterExtensionFailedToDelete");
+    public static final Status UPGRADE_CLUSTER_EXTENSION_FAILED_TO_DELETE
+        = fromString("UpgradeClusterExtensionFailedToDelete");
 
     /** Static value UpgradeFailed for Status. */
     public static final Status UPGRADE_FAILED = fromString("UpgradeFailed");

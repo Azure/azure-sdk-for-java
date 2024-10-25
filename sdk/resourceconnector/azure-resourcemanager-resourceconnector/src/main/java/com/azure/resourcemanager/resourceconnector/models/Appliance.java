@@ -134,11 +134,8 @@ public interface Appliance {
     ApplianceInner innerModel();
 
     /** The entirety of the Appliance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Appliance definition stages. */
@@ -182,12 +179,8 @@ public interface Appliance {
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithDistro,
-                DefinitionStages.WithInfrastructureConfig,
-                DefinitionStages.WithPublicKey,
-                DefinitionStages.WithVersion {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithDistro,
+            DefinitionStages.WithInfrastructureConfig, DefinitionStages.WithPublicKey, DefinitionStages.WithVersion {
             /**
              * Executes the create request.
              *

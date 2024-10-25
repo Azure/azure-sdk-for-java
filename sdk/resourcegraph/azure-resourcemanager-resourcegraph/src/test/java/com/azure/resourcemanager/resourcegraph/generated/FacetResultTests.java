@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 public final class FacetResultTests {
     @Test
     public void testDeserialize() {
-        FacetResult model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"FacetResult\",\"totalRecords\":8819753813869121711,\"count\":1725970823,\"expression\":\"qnjaqwix\"}")
-                .toObject(FacetResult.class);
+        FacetResult model = BinaryData.fromString(
+            "{\"resultType\":\"FacetResult\",\"totalRecords\":8819753813869121711,\"count\":1725970823,\"expression\":\"qnjaqwix\"}")
+            .toObject(FacetResult.class);
         Assertions.assertEquals("qnjaqwix", model.expression());
         Assertions.assertEquals(8819753813869121711L, model.totalRecords());
         Assertions.assertEquals(1725970823, model.count());
@@ -24,8 +22,8 @@ public final class FacetResultTests {
 
     @Test
     public void testSerialize() {
-        FacetResult model =
-            new FacetResult().withExpression("qnjaqwix").withTotalRecords(8819753813869121711L).withCount(1725970823);
+        FacetResult model
+            = new FacetResult().withExpression("qnjaqwix").withTotalRecords(8819753813869121711L).withCount(1725970823);
         model = BinaryData.fromObject(model).toObject(FacetResult.class);
         Assertions.assertEquals("qnjaqwix", model.expression());
         Assertions.assertEquals(8819753813869121711L, model.totalRecords());

@@ -43,8 +43,8 @@ public interface MoveResourcesClient {
      * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MoveResourceInner> list(
-        String resourceGroupName, String moveCollectionName, String filter, Context context);
+    PagedIterable<MoveResourceInner> list(String resourceGroupName, String moveCollectionName, String filter,
+        Context context);
 
     /**
      * Creates or updates a Move Resource in the move collection.
@@ -58,8 +58,8 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
-        String resourceGroupName, String moveCollectionName, String moveResourceName);
+    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(String resourceGroupName,
+        String moveCollectionName, String moveResourceName);
 
     /**
      * Creates or updates a Move Resource in the move collection.
@@ -75,12 +75,8 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
-        String resourceGroupName,
-        String moveCollectionName,
-        String moveResourceName,
-        MoveResourceInner body,
-        Context context);
+    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(String resourceGroupName,
+        String moveCollectionName, String moveResourceName, MoveResourceInner body, Context context);
 
     /**
      * Creates or updates a Move Resource in the move collection.
@@ -110,12 +106,8 @@ public interface MoveResourcesClient {
      * @return defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MoveResourceInner create(
-        String resourceGroupName,
-        String moveCollectionName,
-        String moveResourceName,
-        MoveResourceInner body,
-        Context context);
+    MoveResourceInner create(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        MoveResourceInner body, Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
@@ -129,8 +121,8 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, String moveResourceName);
 
     /**
      * Deletes a Move Resource from the move collection.
@@ -145,8 +137,8 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, String moveResourceName, Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
@@ -175,8 +167,8 @@ public interface MoveResourcesClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner delete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    OperationStatusInner delete(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
 
     /**
      * Gets the Move Resource.
@@ -191,8 +183,8 @@ public interface MoveResourcesClient {
      * @return the Move Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveResourceInner> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    Response<MoveResourceInner> getWithResponse(String resourceGroupName, String moveCollectionName,
+        String moveResourceName, Context context);
 
     /**
      * Gets the Move Resource.

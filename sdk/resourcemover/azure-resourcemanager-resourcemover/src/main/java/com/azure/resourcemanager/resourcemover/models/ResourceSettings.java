@@ -32,8 +32,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "resourceGroups", value = ResourceGroupResourceSettings.class),
     @JsonSubTypes.Type(name = "Microsoft.Network/publicIPAddresses", value = PublicIpAddressResourceSettings.class),
     @JsonSubTypes.Type(name = "Microsoft.KeyVault/vaults", value = KeyVaultResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Compute/diskEncryptionSets", value = DiskEncryptionSetResourceSettings.class)
-})
+    @JsonSubTypes.Type(
+        name = "Microsoft.Compute/diskEncryptionSets",
+        value = DiskEncryptionSetResourceSettings.class) })
 @Fluent
 public class ResourceSettings {
     /*

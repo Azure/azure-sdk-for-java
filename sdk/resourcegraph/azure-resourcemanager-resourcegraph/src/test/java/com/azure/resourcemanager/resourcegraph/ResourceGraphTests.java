@@ -26,14 +26,14 @@ public class ResourceGraphTests extends TestProxyTestBase {
     @DoNotRecord(skipInPlayback = true)
     public void queryTest() {
         // requires a Azure Subscription
-        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+        String subscriptionId
+            = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
-        ResourceGraphManager manager = ResourceGraphManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        ResourceGraphManager manager = ResourceGraphManager.authenticate(new DefaultAzureCredentialBuilder().build(),
+            new AzureProfile(AzureEnvironment.AZURE));
 
         // @embedmeStart
-        QueryRequest queryRequest = new QueryRequest()
-            .withSubscriptions(Collections.singletonList(subscriptionId))
+        QueryRequest queryRequest = new QueryRequest().withSubscriptions(Collections.singletonList(subscriptionId))
             .withQuery("Resources | project name, type | limit 5 | order by name asc");
         // table format
         queryRequest.withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.TABLE));

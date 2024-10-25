@@ -33,8 +33,8 @@ public interface ImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
@@ -47,8 +47,8 @@ public interface ImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the subscription by an event along with {@link Response}.
      */
-    Response<EventImpactedResource> getWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context);
+    Response<EventImpactedResource> getWithResponse(String eventTrackingId, String impactedResourceName,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
@@ -85,8 +85,8 @@ public interface ImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventImpactedResource> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
@@ -99,8 +99,8 @@ public interface ImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the tenant by an event along with {@link Response}.
      */
-    Response<EventImpactedResource> getByTenantIdWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context);
+    Response<EventImpactedResource> getByTenantIdWithResponse(String eventTrackingId, String impactedResourceName,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the tenant by an event.

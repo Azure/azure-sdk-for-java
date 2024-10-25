@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationListResultTests {
     @Test
     public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"siznto\",\"display\":{\"provider\":\"a\",\"resource\":\"ajpsquc\",\"operation\":\"o\",\"description\":\"dkfo\"},\"origin\":\"nygj\"},{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"},{\"name\":\"cryuan\",\"display\":{\"provider\":\"xzdxtayrlhmwh\",\"resource\":\"mrqobmtukknr\",\"operation\":\"tihfx\",\"description\":\"jbpzvgnwzsymg\"},\"origin\":\"uf\"},{\"name\":\"zk\",\"display\":{\"provider\":\"bihanuf\",\"resource\":\"cbjy\",\"operation\":\"git\",\"description\":\"qhabifpikxwcz\"},\"origin\":\"scnpqxuhivy\"}]}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"siznto\",\"display\":{\"provider\":\"a\",\"resource\":\"ajpsquc\",\"operation\":\"o\",\"description\":\"dkfo\"},\"origin\":\"nygj\"},{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"},{\"name\":\"cryuan\",\"display\":{\"provider\":\"xzdxtayrlhmwh\",\"resource\":\"mrqobmtukknr\",\"operation\":\"tihfx\",\"description\":\"jbpzvgnwzsymg\"},\"origin\":\"uf\"},{\"name\":\"zk\",\"display\":{\"provider\":\"bihanuf\",\"resource\":\"cbjy\",\"operation\":\"git\",\"description\":\"qhabifpikxwcz\"},\"origin\":\"scnpqxuhivy\"}]}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals("siznto", model.value().get(0).name());
         Assertions.assertEquals("a", model.value().get(0).display().provider());
         Assertions.assertEquals("ajpsquc", model.value().get(0).display().resource());
@@ -30,47 +28,31 @@ public final class OperationListResultTests {
 
     @Test
     public void testSerialize() {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner()
-                                .withName("siznto")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("a")
-                                        .withResource("ajpsquc")
-                                        .withOperation("o")
-                                        .withDescription("dkfo"))
-                                .withOrigin("nygj"),
-                            new OperationInner()
-                                .withName("jddeqsrdeupewnw")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("tjzyflus")
-                                        .withResource("hmofc")
-                                        .withOperation("smy")
-                                        .withDescription("kdtmlxhekuk"))
-                                .withOrigin("txukcdmp"),
-                            new OperationInner()
-                                .withName("cryuan")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("xzdxtayrlhmwh")
-                                        .withResource("mrqobmtukknr")
-                                        .withOperation("tihfx")
-                                        .withDescription("jbpzvgnwzsymg"))
-                                .withOrigin("uf"),
-                            new OperationInner()
-                                .withName("zk")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("bihanuf")
-                                        .withResource("cbjy")
-                                        .withOperation("git")
-                                        .withDescription("qhabifpikxwcz"))
-                                .withOrigin("scnpqxuhivy")));
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationInner().withName("siznto")
+                .withDisplay(new OperationDisplay().withProvider("a")
+                    .withResource("ajpsquc")
+                    .withOperation("o")
+                    .withDescription("dkfo"))
+                .withOrigin("nygj"),
+            new OperationInner().withName("jddeqsrdeupewnw")
+                .withDisplay(new OperationDisplay().withProvider("tjzyflus")
+                    .withResource("hmofc")
+                    .withOperation("smy")
+                    .withDescription("kdtmlxhekuk"))
+                .withOrigin("txukcdmp"),
+            new OperationInner().withName("cryuan")
+                .withDisplay(new OperationDisplay().withProvider("xzdxtayrlhmwh")
+                    .withResource("mrqobmtukknr")
+                    .withOperation("tihfx")
+                    .withDescription("jbpzvgnwzsymg"))
+                .withOrigin("uf"),
+            new OperationInner().withName("zk")
+                .withDisplay(new OperationDisplay().withProvider("bihanuf")
+                    .withResource("cbjy")
+                    .withOperation("git")
+                    .withDescription("qhabifpikxwcz"))
+                .withOrigin("scnpqxuhivy")));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("siznto", model.value().get(0).name());
         Assertions.assertEquals("a", model.value().get(0).display().provider());

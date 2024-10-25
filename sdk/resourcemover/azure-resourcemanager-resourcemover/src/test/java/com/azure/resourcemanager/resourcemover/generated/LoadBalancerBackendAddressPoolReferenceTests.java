@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancerBackendAddressPoolReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerBackendAddressPoolReference model =
-            BinaryData
-                .fromString("{\"name\":\"elmqk\",\"sourceArmResourceId\":\"hahvljuahaq\"}")
+        LoadBalancerBackendAddressPoolReference model
+            = BinaryData.fromString("{\"name\":\"elmqk\",\"sourceArmResourceId\":\"hahvljuahaq\"}")
                 .toObject(LoadBalancerBackendAddressPoolReference.class);
         Assertions.assertEquals("hahvljuahaq", model.sourceArmResourceId());
         Assertions.assertEquals("elmqk", model.name());
@@ -21,8 +20,8 @@ public final class LoadBalancerBackendAddressPoolReferenceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerBackendAddressPoolReference model =
-            new LoadBalancerBackendAddressPoolReference().withSourceArmResourceId("hahvljuahaq").withName("elmqk");
+        LoadBalancerBackendAddressPoolReference model
+            = new LoadBalancerBackendAddressPoolReference().withSourceArmResourceId("hahvljuahaq").withName("elmqk");
         model = BinaryData.fromObject(model).toObject(LoadBalancerBackendAddressPoolReference.class);
         Assertions.assertEquals("hahvljuahaq", model.sourceArmResourceId());
         Assertions.assertEquals("elmqk", model.name());

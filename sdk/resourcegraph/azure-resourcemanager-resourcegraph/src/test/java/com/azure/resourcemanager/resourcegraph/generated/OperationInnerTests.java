@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationInnerTests {
     @Test
     public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"iwbybrkxvdumjg\",\"display\":{\"provider\":\"wvukx\",\"resource\":\"udccsnhsjc\",\"operation\":\"ejhkry\",\"description\":\"napczwlokjy\"},\"origin\":\"kkvnipjox\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"iwbybrkxvdumjg\",\"display\":{\"provider\":\"wvukx\",\"resource\":\"udccsnhsjc\",\"operation\":\"ejhkry\",\"description\":\"napczwlokjy\"},\"origin\":\"kkvnipjox\"}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("iwbybrkxvdumjg", model.name());
         Assertions.assertEquals("wvukx", model.display().provider());
         Assertions.assertEquals("udccsnhsjc", model.display().resource());
@@ -28,16 +26,12 @@ public final class OperationInnerTests {
 
     @Test
     public void testSerialize() {
-        OperationInner model =
-            new OperationInner()
-                .withName("iwbybrkxvdumjg")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("wvukx")
-                        .withResource("udccsnhsjc")
-                        .withOperation("ejhkry")
-                        .withDescription("napczwlokjy"))
-                .withOrigin("kkvnipjox");
+        OperationInner model = new OperationInner().withName("iwbybrkxvdumjg")
+            .withDisplay(new OperationDisplay().withProvider("wvukx")
+                .withResource("udccsnhsjc")
+                .withOperation("ejhkry")
+                .withDescription("napczwlokjy"))
+            .withOrigin("kkvnipjox");
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("iwbybrkxvdumjg", model.name());
         Assertions.assertEquals("wvukx", model.display().provider());

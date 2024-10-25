@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataEntityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"rq\",\"dependsOn\":[\"dckzywbiexz\",\"eyueaxibxujwb\",\"qwalmuzyoxaepd\",\"zjancuxr\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"iwdjswztsdbpgn\",\"displayName\":\"txhp\",\"resourceTypes\":[\"zpfzabglc\",\"hxw\"]},{\"id\":\"tyq\",\"displayName\":\"lbbovplw\",\"resourceTypes\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"]}]}")
-                .toObject(MetadataEntityProperties.class);
+        MetadataEntityProperties model = BinaryData.fromString(
+            "{\"displayName\":\"rq\",\"dependsOn\":[\"dckzywbiexz\",\"eyueaxibxujwb\",\"qwalmuzyoxaepd\",\"zjancuxr\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"iwdjswztsdbpgn\",\"displayName\":\"txhp\",\"resourceTypes\":[\"zpfzabglc\",\"hxw\"]},{\"id\":\"tyq\",\"displayName\":\"lbbovplw\",\"resourceTypes\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"]}]}")
+            .toObject(MetadataEntityProperties.class);
         Assertions.assertEquals("rq", model.displayName());
         Assertions.assertEquals("dckzywbiexz", model.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, model.applicableScenarios().get(0));
@@ -29,22 +27,16 @@ public final class MetadataEntityPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataEntityProperties model =
-            new MetadataEntityProperties()
-                .withDisplayName("rq")
-                .withDependsOn(Arrays.asList("dckzywbiexz", "eyueaxibxujwb", "qwalmuzyoxaepd", "zjancuxr"))
-                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
-                .withSupportedValues(
-                    Arrays
-                        .asList(
-                            new MetadataSupportedValueDetail()
-                                .withId("iwdjswztsdbpgn")
-                                .withDisplayName("txhp")
-                                .withResourceTypes(Arrays.asList("zpfzabglc", "hxw")),
-                            new MetadataSupportedValueDetail()
-                                .withId("tyq")
-                                .withDisplayName("lbbovplw")
-                                .withResourceTypes(Arrays.asList("vgyuguos", "mkfssxqukkfplgm", "sxnkjzkdeslpvlo"))));
+        MetadataEntityProperties model = new MetadataEntityProperties().withDisplayName("rq")
+            .withDependsOn(Arrays.asList("dckzywbiexz", "eyueaxibxujwb", "qwalmuzyoxaepd", "zjancuxr"))
+            .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
+            .withSupportedValues(Arrays.asList(
+                new MetadataSupportedValueDetail().withId("iwdjswztsdbpgn")
+                    .withDisplayName("txhp")
+                    .withResourceTypes(Arrays.asList("zpfzabglc", "hxw")),
+                new MetadataSupportedValueDetail().withId("tyq")
+                    .withDisplayName("lbbovplw")
+                    .withResourceTypes(Arrays.asList("vgyuguos", "mkfssxqukkfplgm", "sxnkjzkdeslpvlo"))));
         model = BinaryData.fromObject(model).toObject(MetadataEntityProperties.class);
         Assertions.assertEquals("rq", model.displayName());
         Assertions.assertEquals("dckzywbiexz", model.dependsOn().get(0));

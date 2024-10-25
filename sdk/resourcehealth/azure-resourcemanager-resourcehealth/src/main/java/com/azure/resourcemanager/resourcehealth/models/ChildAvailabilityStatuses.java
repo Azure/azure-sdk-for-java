@@ -25,8 +25,8 @@ public interface ChildAvailabilityStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return current availability status for a single resource along with {@link Response}.
      */
-    Response<AvailabilityStatus> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context);
+    Response<AvailabilityStatus> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context);
 
     /**
      * Gets current availability status for a single resource.

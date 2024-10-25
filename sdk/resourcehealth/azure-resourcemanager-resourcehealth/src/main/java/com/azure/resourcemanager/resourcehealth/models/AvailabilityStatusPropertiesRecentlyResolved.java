@@ -51,8 +51,8 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
      * @param unavailableOccuredTime the unavailableOccuredTime value to set.
      * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withUnavailableOccuredTime(
-        OffsetDateTime unavailableOccuredTime) {
+    public AvailabilityStatusPropertiesRecentlyResolved
+        withUnavailableOccuredTime(OffsetDateTime unavailableOccuredTime) {
         this.unavailableOccuredTime = unavailableOccuredTime;
         return this;
     }

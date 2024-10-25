@@ -100,8 +100,10 @@ public final class ScoringParameter {
      */
     @Override
     public String toString() {
-        String flattenValue = values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
-            .map(ScoringParameter::escapeValue).collect(Collectors.joining(COMMA));
+        String flattenValue = values.stream()
+            .filter(value -> !CoreUtils.isNullOrEmpty(value))
+            .map(ScoringParameter::escapeValue)
+            .collect(Collectors.joining(COMMA));
         if (CoreUtils.isNullOrEmpty(flattenValue)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("There must be at least one valid value for scoring parameter values."));

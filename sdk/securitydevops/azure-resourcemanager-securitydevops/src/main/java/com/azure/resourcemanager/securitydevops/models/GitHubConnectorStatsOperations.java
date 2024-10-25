@@ -20,8 +20,8 @@ public interface GitHubConnectorStatsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<GitHubConnectorStatsListResponse> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    Response<GitHubConnectorStatsListResponse> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        Context context);
 
     /**
      * Returns the summary of the GitHub Connector Stats.

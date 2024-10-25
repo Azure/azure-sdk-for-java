@@ -385,6 +385,7 @@ public final class SearchIndexClient {
         this.serializer = serializer;
         this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
+
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
@@ -523,11 +524,9 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> getIndexWithResponse(String indexName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .getWithResponse(indexName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().getWithResponse(indexName, null, context), LOGGER);
     }
-
-
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
@@ -576,8 +575,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .getStatisticsWithResponse(indexName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().getStatisticsWithResponse(indexName, null, context), LOGGER);
     }
 
     /**
@@ -635,8 +634,8 @@ public final class SearchIndexClient {
     }
 
     private PagedResponse<SearchIndex> listIndexesWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .listSinglePage(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().listSinglePage(select, null, context), LOGGER);
     }
 
     /**
@@ -686,8 +685,8 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -755,8 +754,8 @@ public final class SearchIndexClient {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.getIndexes().createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime,
-                ifMatch, null, null, context);
+            return restClient.getIndexes()
+                .createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime, ifMatch, null, null, context);
         }, LOGGER);
     }
 
@@ -777,8 +776,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .deleteWithResponse(indexName, null, null, null, Context.NONE), LOGGER);
+        Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().deleteWithResponse(indexName, null, null, null, Context.NONE), LOGGER);
     }
 
     /**
@@ -807,8 +806,7 @@ public final class SearchIndexClient {
     public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             String etag = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.getIndexes()
-                .deleteWithResponse(index.getName(), etag, null, null, context);
+            return restClient.getIndexes().deleteWithResponse(index.getName(), etag, null, null, context);
         }, LOGGER);
     }
 
@@ -876,9 +874,10 @@ public final class SearchIndexClient {
 
     private PagedResponse<AnalyzedTokenInfo> analyzeTextWithResponse(String indexName,
         AnalyzeTextOptions analyzeTextOptions, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
-            .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null,
-                context)), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
+                .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)),
+            LOGGER);
     }
 
     /**
@@ -933,8 +932,7 @@ public final class SearchIndexClient {
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
-            return restClient.getSynonymMaps()
-                .createWithResponse(synonymMap, null, context);
+            return restClient.getSynonymMaps().createWithResponse(synonymMap, null, context);
         }, LOGGER);
     }
 
@@ -985,8 +983,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .getWithResponse(synonymMapName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().getWithResponse(synonymMapName, null, context), LOGGER);
     }
 
     /**
@@ -1037,16 +1035,16 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     private Response<ListSynonymMapsResult> listSynonymMapsWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .listWithResponse(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -1096,8 +1094,8 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1155,13 +1153,13 @@ public final class SearchIndexClient {
      * @return a response containing the synonym map that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, Context context) {
+    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
+        Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
             String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
-            return restClient.getSynonymMaps().createOrUpdateWithResponse(synonymMap.getName(), synonymMap, ifMatch,
-                null, null, context);
+            return restClient.getSynonymMaps()
+                .createOrUpdateWithResponse(synonymMap.getName(), synonymMap, ifMatch, null, null, context);
         }, LOGGER);
     }
 
@@ -1182,8 +1180,9 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .deleteWithResponse(synonymMapName, null, null, null, Context.NONE), LOGGER);
+        Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().deleteWithResponse(synonymMapName, null, null, null, Context.NONE),
+            LOGGER);
     }
 
     /**
@@ -1212,8 +1211,9 @@ public final class SearchIndexClient {
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .deleteWithResponse(synonymMap.getName(), etag, null, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().deleteWithResponse(synonymMap.getName(), etag, null, null, context),
+            LOGGER);
     }
 
     /**
@@ -1260,8 +1260,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getServiceStatisticsWithResponse(null,
-            context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getServiceStatisticsWithResponse(null, context), LOGGER);
     }
 
     /**

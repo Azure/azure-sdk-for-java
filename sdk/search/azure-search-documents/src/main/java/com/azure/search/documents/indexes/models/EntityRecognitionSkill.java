@@ -179,9 +179,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean includeTypelessEntities) {
         if (includeTypelessEntities != null && version == EntityRecognitionSkillVersion.V3) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(
-                    "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'."));
         }
 
         if (v1Skill != null) {

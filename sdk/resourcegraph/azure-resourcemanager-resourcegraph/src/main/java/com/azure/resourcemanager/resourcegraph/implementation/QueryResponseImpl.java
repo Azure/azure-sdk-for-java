@@ -16,8 +16,8 @@ public final class QueryResponseImpl implements QueryResponse {
 
     private final com.azure.resourcemanager.resourcegraph.ResourceGraphManager serviceManager;
 
-    QueryResponseImpl(
-        QueryResponseInner innerObject, com.azure.resourcemanager.resourcegraph.ResourceGraphManager serviceManager) {
+    QueryResponseImpl(QueryResponseInner innerObject,
+        com.azure.resourcemanager.resourcegraph.ResourceGraphManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

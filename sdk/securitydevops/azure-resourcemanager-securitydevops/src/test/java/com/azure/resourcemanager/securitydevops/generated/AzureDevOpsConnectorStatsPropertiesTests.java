@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsConnectorStatsPropertiesTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsConnectorStatsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"orgsCount\":3878609364909572691,\"projectsCount\":313278106119438402,\"reposCount\":7863810899973495328}")
-                .toObject(AzureDevOpsConnectorStatsProperties.class);
+        AzureDevOpsConnectorStatsProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"orgsCount\":3878609364909572691,\"projectsCount\":313278106119438402,\"reposCount\":7863810899973495328}")
+            .toObject(AzureDevOpsConnectorStatsProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals(3878609364909572691L, model.orgsCount());
         Assertions.assertEquals(313278106119438402L, model.projectsCount());
@@ -26,9 +24,8 @@ public final class AzureDevOpsConnectorStatsPropertiesTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsConnectorStatsProperties model =
-            new AzureDevOpsConnectorStatsProperties()
-                .withProvisioningState(ProvisioningState.CANCELED)
+        AzureDevOpsConnectorStatsProperties model
+            = new AzureDevOpsConnectorStatsProperties().withProvisioningState(ProvisioningState.CANCELED)
                 .withOrgsCount(3878609364909572691L)
                 .withProjectsCount(313278106119438402L)
                 .withReposCount(7863810899973495328L);

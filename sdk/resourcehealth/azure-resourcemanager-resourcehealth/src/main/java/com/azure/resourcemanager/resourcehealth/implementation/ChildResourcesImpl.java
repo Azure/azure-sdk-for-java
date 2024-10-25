@@ -19,8 +19,7 @@ public final class ChildResourcesImpl implements ChildResources {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public ChildResourcesImpl(
-        ChildResourcesClient innerClient,
+    public ChildResourcesImpl(ChildResourcesClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

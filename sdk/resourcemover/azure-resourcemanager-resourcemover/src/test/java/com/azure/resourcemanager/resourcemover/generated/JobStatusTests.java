@@ -10,10 +10,8 @@ import com.azure.resourcemanager.resourcemover.models.JobStatus;
 public final class JobStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobStatus model =
-            BinaryData
-                .fromString("{\"jobName\":\"InitialSync\",\"jobProgress\":\"kanyktzlcuiywg\"}")
-                .toObject(JobStatus.class);
+        JobStatus model = BinaryData.fromString("{\"jobName\":\"InitialSync\",\"jobProgress\":\"kanyktzlcuiywg\"}")
+            .toObject(JobStatus.class);
     }
 
     @org.junit.jupiter.api.Test

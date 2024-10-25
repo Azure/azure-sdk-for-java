@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MoveResourceDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MoveResourceDependency model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"wgndrvynhzgpp\",\"resolutionStatus\":\"cgyncocpecf\",\"resolutionType\":\"Manual\",\"dependencyType\":\"RequiredForPrepare\",\"manualResolution\":{\"targetId\":\"sxlzevgbmqj\"},\"automaticResolution\":{\"moveResourceId\":\"c\"},\"isOptional\":\"mivkwlzuvcc\"}")
-                .toObject(MoveResourceDependency.class);
+        MoveResourceDependency model = BinaryData.fromString(
+            "{\"id\":\"wgndrvynhzgpp\",\"resolutionStatus\":\"cgyncocpecf\",\"resolutionType\":\"Manual\",\"dependencyType\":\"RequiredForPrepare\",\"manualResolution\":{\"targetId\":\"sxlzevgbmqj\"},\"automaticResolution\":{\"moveResourceId\":\"c\"},\"isOptional\":\"mivkwlzuvcc\"}")
+            .toObject(MoveResourceDependency.class);
         Assertions.assertEquals("wgndrvynhzgpp", model.id());
         Assertions.assertEquals("cgyncocpecf", model.resolutionStatus());
         Assertions.assertEquals(ResolutionType.MANUAL, model.resolutionType());
@@ -31,15 +29,13 @@ public final class MoveResourceDependencyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MoveResourceDependency model =
-            new MoveResourceDependency()
-                .withId("wgndrvynhzgpp")
-                .withResolutionStatus("cgyncocpecf")
-                .withResolutionType(ResolutionType.MANUAL)
-                .withDependencyType(DependencyType.REQUIRED_FOR_PREPARE)
-                .withManualResolution(new ManualResolutionProperties().withTargetId("sxlzevgbmqj"))
-                .withAutomaticResolution(new AutomaticResolutionProperties().withMoveResourceId("c"))
-                .withIsOptional("mivkwlzuvcc");
+        MoveResourceDependency model = new MoveResourceDependency().withId("wgndrvynhzgpp")
+            .withResolutionStatus("cgyncocpecf")
+            .withResolutionType(ResolutionType.MANUAL)
+            .withDependencyType(DependencyType.REQUIRED_FOR_PREPARE)
+            .withManualResolution(new ManualResolutionProperties().withTargetId("sxlzevgbmqj"))
+            .withAutomaticResolution(new AutomaticResolutionProperties().withMoveResourceId("c"))
+            .withIsOptional("mivkwlzuvcc");
         model = BinaryData.fromObject(model).toObject(MoveResourceDependency.class);
         Assertions.assertEquals("wgndrvynhzgpp", model.id());
         Assertions.assertEquals("cgyncocpecf", model.resolutionStatus());

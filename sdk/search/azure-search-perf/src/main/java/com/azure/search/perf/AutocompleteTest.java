@@ -34,7 +34,8 @@ public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
     @Override
     public void run() {
         AtomicInteger count = new AtomicInteger();
-        searchClient.autocomplete("historic", SUGGESTER_NAME).iterator()
+        searchClient.autocomplete("historic", SUGGESTER_NAME)
+            .iterator()
             .forEachRemaining(ignored -> count.incrementAndGet());
 
         assert count.get() > 0;
@@ -44,8 +45,7 @@ public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
     public Mono<Void> runAsync() {
         return searchAsyncClient.autocomplete("historic", SUGGESTER_NAME)
             .count()
-            .flatMap(count -> count > 0
-                ? Mono.empty()
-                : Mono.error(new RuntimeException("Expected autocomplete results.")));
+            .flatMap(
+                count -> count > 0 ? Mono.empty() : Mono.error(new RuntimeException("Expected autocomplete results.")));
     }
 }

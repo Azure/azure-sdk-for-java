@@ -34,8 +34,8 @@ public class SearchServiceTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponseSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
-        SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
-            .getValue();
+        SearchServiceStatistics searchServiceStatistics
+            = serviceClient.getServiceStatisticsWithResponse(Context.NONE).getValue();
         validateServiceStatistics(searchServiceStatistics);
     }
 

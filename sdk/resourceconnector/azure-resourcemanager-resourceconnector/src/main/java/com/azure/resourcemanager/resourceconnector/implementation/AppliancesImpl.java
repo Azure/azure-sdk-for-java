@@ -31,8 +31,7 @@ public final class AppliancesImpl implements Appliances {
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    public AppliancesImpl(
-        AppliancesClient innerClient,
+    public AppliancesImpl(AppliancesClient innerClient,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -59,13 +58,10 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public Response<ApplianceGetTelemetryConfigResult> getTelemetryConfigWithResponse(Context context) {
-        Response<ApplianceGetTelemetryConfigResultInner> inner =
-            this.serviceClient().getTelemetryConfigWithResponse(context);
+        Response<ApplianceGetTelemetryConfigResultInner> inner
+            = this.serviceClient().getTelemetryConfigWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplianceGetTelemetryConfigResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -91,15 +87,12 @@ public final class AppliancesImpl implements Appliances {
         return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
-    public Response<Appliance> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ApplianceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<Appliance> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<ApplianceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplianceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -123,15 +116,12 @@ public final class AppliancesImpl implements Appliances {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
     }
 
-    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ApplianceListCredentialResultsInner> inner =
-            this.serviceClient().listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<ApplianceListCredentialResultsInner> inner
+            = this.serviceClient().listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplianceListCredentialResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -139,8 +129,8 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public ApplianceListCredentialResults listClusterUserCredential(String resourceGroupName, String resourceName) {
-        ApplianceListCredentialResultsInner inner =
-            this.serviceClient().listClusterUserCredential(resourceGroupName, resourceName);
+        ApplianceListCredentialResultsInner inner
+            = this.serviceClient().listClusterUserCredential(resourceGroupName, resourceName);
         if (inner != null) {
             return new ApplianceListCredentialResultsImpl(inner, this.manager());
         } else {
@@ -148,15 +138,12 @@ public final class AppliancesImpl implements Appliances {
         }
     }
 
-    public Response<ApplianceListKeysResults> listKeysWithResponse(
-        String resourceGroupName, String resourceName, String artifactType, Context context) {
-        Response<ApplianceListKeysResultsInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
+    public Response<ApplianceListKeysResults> listKeysWithResponse(String resourceGroupName, String resourceName,
+        String artifactType, Context context) {
+        Response<ApplianceListKeysResultsInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplianceListKeysResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -172,15 +159,12 @@ public final class AppliancesImpl implements Appliances {
         }
     }
 
-    public Response<UpgradeGraph> getUpgradeGraphWithResponse(
-        String resourceGroupName, String resourceName, String upgradeGraph, Context context) {
-        Response<UpgradeGraphInner> inner =
-            this.serviceClient().getUpgradeGraphWithResponse(resourceGroupName, resourceName, upgradeGraph, context);
+    public Response<UpgradeGraph> getUpgradeGraphWithResponse(String resourceGroupName, String resourceName,
+        String upgradeGraph, Context context) {
+        Response<UpgradeGraphInner> inner
+            = this.serviceClient().getUpgradeGraphWithResponse(resourceGroupName, resourceName, upgradeGraph, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UpgradeGraphImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -199,18 +183,13 @@ public final class AppliancesImpl implements Appliances {
     public Appliance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
@@ -218,18 +197,13 @@ public final class AppliancesImpl implements Appliances {
     public Response<Appliance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
@@ -237,18 +211,13 @@ public final class AppliancesImpl implements Appliances {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
@@ -256,18 +225,13 @@ public final class AppliancesImpl implements Appliances {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }

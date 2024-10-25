@@ -201,8 +201,8 @@ public final class NicIpConfigurationResourceSettings {
      * @param loadBalancerNatRules the loadBalancerNatRules value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
-    public NicIpConfigurationResourceSettings withLoadBalancerNatRules(
-        List<LoadBalancerNatRuleReference> loadBalancerNatRules) {
+    public NicIpConfigurationResourceSettings
+        withLoadBalancerNatRules(List<LoadBalancerNatRuleReference> loadBalancerNatRules) {
         this.loadBalancerNatRules = loadBalancerNatRules;
         return this;
     }

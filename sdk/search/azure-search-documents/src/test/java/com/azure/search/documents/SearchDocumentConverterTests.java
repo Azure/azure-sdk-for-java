@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SearchDocumentConverterTests {
 
     private static final String TEST_DATE_STRING = "2016-10-10T17:41:05.123-07:00";
-    private static final OffsetDateTime TEST_DATE = OffsetDateTime.of(2016, 10, 10, 17, 41,
-        5, 123 * 1_000_000, ZoneOffset.of("-07:00"));
+    private static final OffsetDateTime TEST_DATE
+        = OffsetDateTime.of(2016, 10, 10, 17, 41, 5, 123 * 1_000_000, ZoneOffset.of("-07:00"));
 
     private static SearchDocument deserialize(String json) {
         // Deserialization of the search result is done with azure-core (using Jackson as well)
@@ -46,14 +46,15 @@ public class SearchDocumentConverterTests {
 
     private static void cleanupODataAnnotation(SearchDocument searchDocument) {
         // Skip OData @search annotations. These are deserialized separately.
-        List<String> keysToRemove = searchDocument.keySet().stream().filter(key -> key.startsWith("@search"))
-            .collect(Collectors.toList());
+        List<String> keysToRemove
+            = searchDocument.keySet().stream().filter(key -> key.startsWith("@search")).collect(Collectors.toList());
         keysToRemove.forEach(searchDocument::remove);
     }
 
     @Test
     public void annotationsAreExcludedFromDocument() {
-        String json = "{ \"@search.score\": 3.25, \"field1\": \"value1\", \"field2\": 123, \"@search.someOtherAnnotation\": { \"a\": \"b\" }, \"field3\": 2.78 }";
+        String json
+            = "{ \"@search.score\": 3.25, \"field1\": \"value1\", \"field2\": 123, \"@search.someOtherAnnotation\": { \"a\": \"b\" }, \"field3\": 2.78 }";
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("field1", "value1");
         expectedDoc.put("field2", 123);
@@ -65,7 +66,8 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void canReadNullValues() {
-        String json = "{\"field1\": null,\"field2\": [ \"hello\", null ], \"field3\": [ null, 123, null ], \"field4\": [ null, { \"name\": \"Bob\" } ]}";
+        String json
+            = "{\"field1\": null,\"field2\": [ \"hello\", null ], \"field3\": [ null, 123, null ], \"field4\": [ null, { \"name\": \"Bob\" } ]}";
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("field1", null);
         expectedDoc.put("field2", Arrays.asList("hello", null));
@@ -117,13 +119,12 @@ public class SearchDocumentConverterTests {
         }
     }
 
-
     @Test
     public void canReadGeoPoint() {
         String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-            new GeoPoint(-122.131577, 47.678581)));
+        SearchDocument expectedDoc
+            = new SearchDocument(Collections.singletonMap("field", new GeoPoint(-122.131577, 47.678581)));
 
         SearchDocument actualDoc = deserialize(json);
         expectedDoc.forEach((key, value) -> assertObjectEquals(value, actualDoc.get(key), false, "properties"));
@@ -159,7 +160,8 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void canReadComplexCollection() {
-        String json = "{\"stores\" : [{\"name\" : \"North\", \"address\" : {\"city\" : \"Vancouver\", \"country\": \"Canada\"}, \"location\": {\"type\" : \"Point\", \"coordinates\": [-121, 49]}},{\"name\" : \"South\", \"address\" : {\"city\": \"Seattle\", \"country\" : \"USA\"}, \"location\" : {\"type\" : \"Point\", \"coordinates\": [-122.5, 47.6]}}]}";
+        String json
+            = "{\"stores\" : [{\"name\" : \"North\", \"address\" : {\"city\" : \"Vancouver\", \"country\": \"Canada\"}, \"location\": {\"type\" : \"Point\", \"coordinates\": [-121, 49]}},{\"name\" : \"South\", \"address\" : {\"city\": \"Seattle\", \"country\" : \"USA\"}, \"location\" : {\"type\" : \"Point\", \"coordinates\": [-122.5, 47.6]}}]}";
 
         SearchDocument storeAddress1 = new SearchDocument();
         storeAddress1.put("city", "Vancouver");
@@ -187,7 +189,8 @@ public class SearchDocumentConverterTests {
         store2.put("address", storeAddress2);
         store2.put("location", storeLocation2);
 
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
+        SearchDocument expectedDoc
+            = new SearchDocument(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
 
         SearchDocument actualDoc = deserialize(json);
         assertEquals(expectedDoc, actualDoc);
@@ -196,8 +199,8 @@ public class SearchDocumentConverterTests {
     @Test
     public void canReadArraysOfMixedTypes() {
         // Azure AI Search won't return payloads like this; This test is only for pinning purposes.
-        String json =
-            "{\"field\": [\"hello\", 123, 3.25, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
+        String json
+            = "{\"field\": [\"hello\", 123, 3.25, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
                 + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
                 + "{ \"name\": \"Arthur\", \"quest\": null }] }";
 
@@ -216,7 +219,12 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void dateTimeStringsAreReadAsDateTime() {
-        String json = "{\"field1\":\"".concat(TEST_DATE_STRING).concat("\",\"field2\" : [\"").concat(TEST_DATE_STRING).concat("\", \"").concat(TEST_DATE_STRING).concat("\"]}");
+        String json = "{\"field1\":\"".concat(TEST_DATE_STRING)
+            .concat("\",\"field2\" : [\"")
+            .concat(TEST_DATE_STRING)
+            .concat("\", \"")
+            .concat(TEST_DATE_STRING)
+            .concat("\"]}");
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("field1", TEST_DATE);
         expectedDoc.put("field2", Arrays.asList(TEST_DATE, TEST_DATE));
@@ -253,7 +261,8 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void specialDoublesAreReadAsStrings() {
-        String json = "{\"field1\" : \"NaN\", \"field2\": \"INF\", \"field3\": \"-INF\", \"field4\": [\"NaN\", \"INF\", \"-INF\"], \"field5\": {\"value\":\"-INF\"}}";
+        String json
+            = "{\"field1\" : \"NaN\", \"field2\": \"INF\", \"field3\": \"-INF\", \"field4\": [\"NaN\", \"INF\", \"-INF\"], \"field5\": {\"value\":\"-INF\"}}";
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("field1", "NaN");
         expectedDoc.put("field2", "INF");
@@ -268,8 +277,8 @@ public class SearchDocumentConverterTests {
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
         String json = "{ \"field\": [ \"hello\", \"".concat(TEST_DATE_STRING).concat("\", \"123\" ] }}");
-        SearchDocument expectedDoc = new SearchDocument(
-            Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "123")));
+        SearchDocument expectedDoc
+            = new SearchDocument(Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "123")));
 
         SearchDocument actualDoc = deserialize(json);
         assertMapEquals(expectedDoc, actualDoc, false);

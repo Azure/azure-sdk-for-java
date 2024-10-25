@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancerNatRuleReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerNatRuleReference model =
-            BinaryData
-                .fromString("{\"name\":\"c\",\"sourceArmResourceId\":\"hmdua\"}")
-                .toObject(LoadBalancerNatRuleReference.class);
+        LoadBalancerNatRuleReference model = BinaryData.fromString("{\"name\":\"c\",\"sourceArmResourceId\":\"hmdua\"}")
+            .toObject(LoadBalancerNatRuleReference.class);
         Assertions.assertEquals("hmdua", model.sourceArmResourceId());
         Assertions.assertEquals("c", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerNatRuleReference model =
-            new LoadBalancerNatRuleReference().withSourceArmResourceId("hmdua").withName("c");
+        LoadBalancerNatRuleReference model
+            = new LoadBalancerNatRuleReference().withSourceArmResourceId("hmdua").withName("c");
         model = BinaryData.fromObject(model).toObject(LoadBalancerNatRuleReference.class);
         Assertions.assertEquals("hmdua", model.sourceArmResourceId());
         Assertions.assertEquals("c", model.name());

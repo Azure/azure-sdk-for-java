@@ -10,11 +10,9 @@ import com.azure.resourcemanager.resourceconnector.models.SupportedVersionMetada
 public final class SupportedVersionMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedVersionMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"catalogVersion\":{\"data\":{\"audience\":\"bexppb\",\"catalog\":\"q\",\"offer\":\"ol\",\"version\":\"fpsalgbqu\"},\"name\":\"gjyjgzjaoyfhrtxi\",\"namespace\":\"erkujys\"}}")
-                .toObject(SupportedVersionMetadata.class);
+        SupportedVersionMetadata model = BinaryData.fromString(
+            "{\"catalogVersion\":{\"data\":{\"audience\":\"bexppb\",\"catalog\":\"q\",\"offer\":\"ol\",\"version\":\"fpsalgbqu\"},\"name\":\"gjyjgzjaoyfhrtxi\",\"namespace\":\"erkujys\"}}")
+            .toObject(SupportedVersionMetadata.class);
     }
 
     @org.junit.jupiter.api.Test

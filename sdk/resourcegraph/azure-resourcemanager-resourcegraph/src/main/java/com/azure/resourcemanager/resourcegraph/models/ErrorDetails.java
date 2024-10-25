@@ -31,7 +31,8 @@ public final class ErrorDetails {
     /*
      * Error details.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of ErrorDetails class. */
     public ErrorDetails() {
@@ -113,14 +114,12 @@ public final class ErrorDetails {
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property code in model ErrorDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property code in model ErrorDetails"));
         }
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model ErrorDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property message in model ErrorDetails"));
         }
     }
 

@@ -63,11 +63,13 @@ public interface GitHubOwner {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GitHubOwner definition stages. */
     interface DefinitionStages {
         /** The first stage of the GitHubOwner definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GitHubOwner definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +81,7 @@ public interface GitHubOwner {
              */
             WithCreate withExistingGitHubConnector(String resourceGroupName, String gitHubConnectorName);
         }
+
         /**
          * The stage of the GitHubOwner definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface GitHubOwner {
              */
             GitHubOwner create(Context context);
         }
+
         /** The stage of the GitHubOwner definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -110,6 +114,7 @@ public interface GitHubOwner {
             WithCreate withProperties(GitHubOwnerProperties properties);
         }
     }
+
     /**
      * Begins update for the GitHubOwner resource.
      *
@@ -134,6 +139,7 @@ public interface GitHubOwner {
          */
         GitHubOwner apply(Context context);
     }
+
     /** The GitHubOwner update stages. */
     interface UpdateStages {
         /** The stage of the GitHubOwner update allowing to specify properties. */
@@ -147,6 +153,7 @@ public interface GitHubOwner {
             Update withProperties(GitHubOwnerProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

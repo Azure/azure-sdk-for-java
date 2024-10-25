@@ -27,8 +27,8 @@ public class VectorSearchEmbeddings {
     public static final List<Float> DEFAULT_VECTORIZE_DESCRIPTION;
 
     static {
-        InputStream stream = VectorSearchEmbeddings.class.getClassLoader()
-            .getResourceAsStream("VectorSearchEmbeddings.json");
+        InputStream stream
+            = VectorSearchEmbeddings.class.getClassLoader().getResourceAsStream("VectorSearchEmbeddings.json");
 
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
             Map<String, List<Float>> embeddings = jsonReader.readMap(reader -> reader.readArray(JsonReader::getFloat));

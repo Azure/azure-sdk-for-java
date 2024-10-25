@@ -18,8 +18,7 @@ public final class ApplianceListKeysResultsImpl implements ApplianceListKeysResu
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    ApplianceListKeysResultsImpl(
-        ApplianceListKeysResultsInner innerObject,
+    ApplianceListKeysResultsImpl(ApplianceListKeysResultsInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

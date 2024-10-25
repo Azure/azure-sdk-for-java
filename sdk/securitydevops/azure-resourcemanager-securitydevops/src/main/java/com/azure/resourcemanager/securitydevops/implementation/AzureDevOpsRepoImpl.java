@@ -57,11 +57,8 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
 
     private String azureDevOpsRepoName;
 
-    public AzureDevOpsRepoImpl withExistingProject(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName) {
+    public AzureDevOpsRepoImpl withExistingProject(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName) {
         this.resourceGroupName = resourceGroupName;
         this.azureDevOpsConnectorName = azureDevOpsConnectorName;
         this.azureDevOpsOrgName = azureDevOpsOrgName;
@@ -70,34 +67,18 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
     }
 
     public AzureDevOpsRepo create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .createOrUpdate(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsRepo create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .createOrUpdate(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, this.innerModel(), context);
         return this;
     }
 
@@ -112,39 +93,22 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
     }
 
     public AzureDevOpsRepo apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .update(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .update(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsRepo apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .update(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .update(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, this.innerModel(), context);
         return this;
     }
 
-    AzureDevOpsRepoImpl(
-        AzureDevOpsRepoInner innerObject,
+    AzureDevOpsRepoImpl(AzureDevOpsRepoInner innerObject,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -156,34 +120,20 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
     }
 
     public AzureDevOpsRepo refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .getWithResponse(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureDevOpsRepo refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsRepoes()
-                .getWithResponse(
-                    resourceGroupName,
-                    azureDevOpsConnectorName,
-                    azureDevOpsOrgName,
-                    azureDevOpsProjectName,
-                    azureDevOpsRepoName,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsRepoes()
+            .getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName,
+                azureDevOpsRepoName, context)
+            .getValue();
         return this;
     }
 

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NsgSecurityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NsgSecurityRule model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"vfadmws\",\"access\":\"r\",\"description\":\"xpvgo\",\"destinationAddressPrefix\":\"lf\",\"destinationPortRange\":\"sgwbnbbeld\",\"direction\":\"k\",\"priority\":585337534,\"protocol\":\"io\",\"sourceAddressPrefix\":\"qhakauhashsf\",\"sourcePortRange\":\"osow\"}")
-                .toObject(NsgSecurityRule.class);
+        NsgSecurityRule model = BinaryData.fromString(
+            "{\"name\":\"vfadmws\",\"access\":\"r\",\"description\":\"xpvgo\",\"destinationAddressPrefix\":\"lf\",\"destinationPortRange\":\"sgwbnbbeld\",\"direction\":\"k\",\"priority\":585337534,\"protocol\":\"io\",\"sourceAddressPrefix\":\"qhakauhashsf\",\"sourcePortRange\":\"osow\"}")
+            .toObject(NsgSecurityRule.class);
         Assertions.assertEquals("vfadmws", model.name());
         Assertions.assertEquals("r", model.access());
         Assertions.assertEquals("xpvgo", model.description());
@@ -30,18 +28,16 @@ public final class NsgSecurityRuleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NsgSecurityRule model =
-            new NsgSecurityRule()
-                .withName("vfadmws")
-                .withAccess("r")
-                .withDescription("xpvgo")
-                .withDestinationAddressPrefix("lf")
-                .withDestinationPortRange("sgwbnbbeld")
-                .withDirection("k")
-                .withPriority(585337534)
-                .withProtocol("io")
-                .withSourceAddressPrefix("qhakauhashsf")
-                .withSourcePortRange("osow");
+        NsgSecurityRule model = new NsgSecurityRule().withName("vfadmws")
+            .withAccess("r")
+            .withDescription("xpvgo")
+            .withDestinationAddressPrefix("lf")
+            .withDestinationPortRange("sgwbnbbeld")
+            .withDirection("k")
+            .withPriority(585337534)
+            .withProtocol("io")
+            .withSourceAddressPrefix("qhakauhashsf")
+            .withSourcePortRange("osow");
         model = BinaryData.fromObject(model).toObject(NsgSecurityRule.class);
         Assertions.assertEquals("vfadmws", model.name());
         Assertions.assertEquals("r", model.access());

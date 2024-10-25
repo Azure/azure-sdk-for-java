@@ -27,8 +27,8 @@ public interface EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventInner> getBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<EventInner> getBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context);
 
     /**
      * Service health event in the subscription by event tracking id.
@@ -84,8 +84,8 @@ public interface EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventInner> getByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<EventInner> getByTenantIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context);
 
     /**
      * Service health event in the tenant by event tracking id.

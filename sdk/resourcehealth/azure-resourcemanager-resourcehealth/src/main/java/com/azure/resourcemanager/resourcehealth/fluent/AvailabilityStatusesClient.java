@@ -64,8 +64,8 @@ public interface AvailabilityStatusesClient {
      * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailabilityStatusInner> listByResourceGroup(
-        String resourceGroupName, String filter, String expand, Context context);
+    PagedIterable<AvailabilityStatusInner> listByResourceGroup(String resourceGroupName, String filter, String expand,
+        Context context);
 
     /**
      * Gets current availability status for a single resource.
@@ -85,8 +85,8 @@ public interface AvailabilityStatusesClient {
      * @return current availability status for a single resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilityStatusInner> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context);
+    Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context);
 
     /**
      * Gets current availability status for a single resource.

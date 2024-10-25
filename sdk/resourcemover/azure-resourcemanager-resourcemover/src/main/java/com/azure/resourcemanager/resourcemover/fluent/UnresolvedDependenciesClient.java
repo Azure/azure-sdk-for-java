@@ -41,11 +41,6 @@ public interface UnresolvedDependenciesClient {
      * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UnresolvedDependencyInner> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context);
+    PagedIterable<UnresolvedDependencyInner> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context);
 }

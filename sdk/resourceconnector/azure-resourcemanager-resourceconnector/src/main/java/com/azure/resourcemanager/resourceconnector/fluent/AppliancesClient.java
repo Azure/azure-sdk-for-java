@@ -138,8 +138,8 @@ public interface AppliancesClient {
      * @return the details of an Appliance with a specified resource group and name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplianceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets an Appliance.
@@ -170,8 +170,8 @@ public interface AppliancesClient {
      * @return the {@link SyncPoller} for polling of appliances definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters);
+    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ApplianceInner parameters);
 
     /**
      * Creates or updates an Appliance.
@@ -188,8 +188,8 @@ public interface AppliancesClient {
      * @return the {@link SyncPoller} for polling of appliances definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters, Context context);
+    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ApplianceInner parameters, Context context);
 
     /**
      * Creates or updates an Appliance.
@@ -222,8 +222,8 @@ public interface AppliancesClient {
      * @return appliances definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplianceInner createOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters, Context context);
+    ApplianceInner createOrUpdate(String resourceGroupName, String resourceName, ApplianceInner parameters,
+        Context context);
 
     /**
      * Deletes an Appliance.
@@ -300,8 +300,8 @@ public interface AppliancesClient {
      * @return appliances definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, PatchableAppliance parameters, Context context);
+    Response<ApplianceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        PatchableAppliance parameters, Context context);
 
     /**
      * Updates an Appliance.
@@ -333,8 +333,8 @@ public interface AppliancesClient {
      * @return the List Cluster User Credential appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceListCredentialResultsInner> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplianceListCredentialResultsInner> listClusterUserCredentialWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns the cluster user credential.
@@ -366,8 +366,8 @@ public interface AppliancesClient {
      * @return the List Cluster Keys Results appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceListKeysResultsInner> listKeysWithResponse(
-        String resourceGroupName, String resourceName, String artifactType, Context context);
+    Response<ApplianceListKeysResultsInner> listKeysWithResponse(String resourceGroupName, String resourceName,
+        String artifactType, Context context);
 
     /**
      * Gets the management config.
@@ -400,8 +400,8 @@ public interface AppliancesClient {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpgradeGraphInner> getUpgradeGraphWithResponse(
-        String resourceGroupName, String resourceName, String upgradeGraph, Context context);
+    Response<UpgradeGraphInner> getUpgradeGraphWithResponse(String resourceGroupName, String resourceName,
+        String upgradeGraph, Context context);
 
     /**
      * Gets an Appliance upgrade graph.

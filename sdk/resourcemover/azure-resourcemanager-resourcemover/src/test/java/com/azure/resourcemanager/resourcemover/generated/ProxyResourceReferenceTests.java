@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ProxyResourceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProxyResourceReference model =
-            BinaryData
-                .fromString("{\"name\":\"axibxujw\",\"sourceArmResourceId\":\"hqwa\"}")
-                .toObject(ProxyResourceReference.class);
+        ProxyResourceReference model = BinaryData.fromString("{\"name\":\"axibxujw\",\"sourceArmResourceId\":\"hqwa\"}")
+            .toObject(ProxyResourceReference.class);
         Assertions.assertEquals("hqwa", model.sourceArmResourceId());
         Assertions.assertEquals("axibxujw", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProxyResourceReference model =
-            new ProxyResourceReference().withSourceArmResourceId("hqwa").withName("axibxujw");
+        ProxyResourceReference model
+            = new ProxyResourceReference().withSourceArmResourceId("hqwa").withName("axibxujw");
         model = BinaryData.fromObject(model).toObject(ProxyResourceReference.class);
         Assertions.assertEquals("hqwa", model.sourceArmResourceId());
         Assertions.assertEquals("axibxujw", model.name());

@@ -106,9 +106,8 @@ public final class CommitRequest {
      */
     public void validate() {
         if (moveResources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property moveResources in model CommitRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property moveResources in model CommitRequest"));
         }
     }
 

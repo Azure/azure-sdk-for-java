@@ -38,8 +38,8 @@ public interface ImpactedResourcesClient {
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
@@ -53,8 +53,8 @@ public interface ImpactedResourcesClient {
      * @return the specific impacted resource in the subscription by an event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventImpactedResourceInner> getWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context);
+    Response<EventImpactedResourceInner> getWithResponse(String eventTrackingId, String impactedResourceName,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
@@ -94,8 +94,8 @@ public interface ImpactedResourcesClient {
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
@@ -109,8 +109,8 @@ public interface ImpactedResourcesClient {
      * @return the specific impacted resource in the tenant by an event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventImpactedResourceInner> getByTenantIdWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context);
+    Response<EventImpactedResourceInner> getByTenantIdWithResponse(String eventTrackingId, String impactedResourceName,
+        Context context);
 
     /**
      * Gets the specific impacted resource in the tenant by an event.

@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  * An annotation that directs {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions)} to turn the
  * field or method into a searchable {@link SearchField field}.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SearchableField {
     /**
@@ -97,7 +97,7 @@ public @interface SearchableField {
      *
      * @return The {@link SynonymMap} names that will be associated with the {@link SearchField field}.
      */
-    String[] synonymMapNames() default {};
+    String[] synonymMapNames() default { };
 
     /**
      * The dimensionality of the vector field.

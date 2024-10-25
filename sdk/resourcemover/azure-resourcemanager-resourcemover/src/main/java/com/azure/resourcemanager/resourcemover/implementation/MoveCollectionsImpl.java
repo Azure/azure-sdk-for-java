@@ -30,8 +30,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    public MoveCollectionsImpl(
-        MoveCollectionsClient innerClient,
+    public MoveCollectionsImpl(MoveCollectionsClient innerClient,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -55,15 +54,12 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public Response<MoveCollection> getByResourceGroupWithResponse(
-        String resourceGroupName, String moveCollectionName, Context context) {
-        Response<MoveCollectionInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, context);
+    public Response<MoveCollection> getByResourceGroupWithResponse(String resourceGroupName, String moveCollectionName,
+        Context context) {
+        Response<MoveCollectionInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MoveCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -88,8 +84,8 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus prepare(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
+    public OperationStatus prepare(String resourceGroupName, String moveCollectionName, PrepareRequest body,
+        Context context) {
         OperationStatusInner inner = this.serviceClient().prepare(resourceGroupName, moveCollectionName, body, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
@@ -107,10 +103,10 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus initiateMove(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().initiateMove(resourceGroupName, moveCollectionName, body, context);
+    public OperationStatus initiateMove(String resourceGroupName, String moveCollectionName, ResourceMoveRequest body,
+        Context context) {
+        OperationStatusInner inner
+            = this.serviceClient().initiateMove(resourceGroupName, moveCollectionName, body, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -127,8 +123,8 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus commit(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
+    public OperationStatus commit(String resourceGroupName, String moveCollectionName, CommitRequest body,
+        Context context) {
         OperationStatusInner inner = this.serviceClient().commit(resourceGroupName, moveCollectionName, body, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
@@ -146,8 +142,8 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus discard(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
+    public OperationStatus discard(String resourceGroupName, String moveCollectionName, DiscardRequest body,
+        Context context) {
         OperationStatusInner inner = this.serviceClient().discard(resourceGroupName, moveCollectionName, body, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
@@ -166,8 +162,8 @@ public final class MoveCollectionsImpl implements MoveCollections {
     }
 
     public OperationStatus resolveDependencies(String resourceGroupName, String moveCollectionName, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().resolveDependencies(resourceGroupName, moveCollectionName, context);
+        OperationStatusInner inner
+            = this.serviceClient().resolveDependencies(resourceGroupName, moveCollectionName, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -184,10 +180,10 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus bulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().bulkRemove(resourceGroupName, moveCollectionName, body, context);
+    public OperationStatus bulkRemove(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body,
+        Context context) {
+        OperationStatusInner inner
+            = this.serviceClient().bulkRemove(resourceGroupName, moveCollectionName, body, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -215,25 +211,22 @@ public final class MoveCollectionsImpl implements MoveCollections {
         return Utils.mapPage(inner, inner1 -> new MoveCollectionImpl(inner1, this.manager()));
     }
 
-    public Response<RequiredForResourcesCollection> listRequiredForWithResponse(
-        String resourceGroupName, String moveCollectionName, String sourceId, Context context) {
-        Response<RequiredForResourcesCollectionInner> inner =
-            this.serviceClient().listRequiredForWithResponse(resourceGroupName, moveCollectionName, sourceId, context);
+    public Response<RequiredForResourcesCollection> listRequiredForWithResponse(String resourceGroupName,
+        String moveCollectionName, String sourceId, Context context) {
+        Response<RequiredForResourcesCollectionInner> inner = this.serviceClient()
+            .listRequiredForWithResponse(resourceGroupName, moveCollectionName, sourceId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RequiredForResourcesCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RequiredForResourcesCollection listRequiredFor(
-        String resourceGroupName, String moveCollectionName, String sourceId) {
-        RequiredForResourcesCollectionInner inner =
-            this.serviceClient().listRequiredFor(resourceGroupName, moveCollectionName, sourceId);
+    public RequiredForResourcesCollection listRequiredFor(String resourceGroupName, String moveCollectionName,
+        String sourceId) {
+        RequiredForResourcesCollectionInner inner
+            = this.serviceClient().listRequiredFor(resourceGroupName, moveCollectionName, sourceId);
         if (inner != null) {
             return new RequiredForResourcesCollectionImpl(inner, this.manager());
         } else {
@@ -244,19 +237,13 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public MoveCollection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, Context.NONE).getValue();
     }
@@ -264,19 +251,13 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public Response<MoveCollection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, context);
     }
@@ -284,19 +265,13 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
         return this.delete(resourceGroupName, moveCollectionName, Context.NONE);
     }
@@ -304,19 +279,13 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
         return this.delete(resourceGroupName, moveCollectionName, context);
     }

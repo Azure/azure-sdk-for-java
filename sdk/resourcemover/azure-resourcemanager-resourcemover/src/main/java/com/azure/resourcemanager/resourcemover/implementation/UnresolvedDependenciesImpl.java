@@ -20,28 +20,22 @@ public final class UnresolvedDependenciesImpl implements UnresolvedDependencies 
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    public UnresolvedDependenciesImpl(
-        UnresolvedDependenciesClient innerClient,
+    public UnresolvedDependenciesImpl(UnresolvedDependenciesClient innerClient,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName) {
-        PagedIterable<UnresolvedDependencyInner> inner =
-            this.serviceClient().get(resourceGroupName, moveCollectionName);
+        PagedIterable<UnresolvedDependencyInner> inner
+            = this.serviceClient().get(resourceGroupName, moveCollectionName);
         return Utils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UnresolvedDependency> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context) {
-        PagedIterable<UnresolvedDependencyInner> inner =
-            this.serviceClient().get(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter, context);
+    public PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context) {
+        PagedIterable<UnresolvedDependencyInner> inner = this.serviceClient()
+            .get(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter, context);
         return Utils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
     }
 
