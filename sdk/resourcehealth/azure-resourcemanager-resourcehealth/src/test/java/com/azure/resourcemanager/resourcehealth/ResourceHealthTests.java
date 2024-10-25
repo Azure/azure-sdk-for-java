@@ -23,7 +23,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
@@ -60,12 +59,10 @@ public class ResourceHealthTests extends TestProxyTestBase {
 
         ComputeManager computeManager = ComputeManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         ResourceHealthManager resourceHealthManager = ResourceHealthManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         registeredProvider(resourceManager, Arrays.asList("Microsoft.Compute", "Microsoft.ResourceHealth"));
