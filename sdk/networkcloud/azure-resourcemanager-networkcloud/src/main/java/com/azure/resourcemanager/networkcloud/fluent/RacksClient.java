@@ -118,8 +118,8 @@ public interface RacksClient {
      *     cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters);
+    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters);
 
     /**
      * Create or update the rack.
@@ -138,8 +138,8 @@ public interface RacksClient {
      *     cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context);
+    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters, Context context);
 
     /**
      * Create or update the rack.
@@ -274,8 +274,8 @@ public interface RacksClient {
      *     cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context);
+    SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context);
 
     /**
      * Patch the rack.
@@ -309,6 +309,6 @@ public interface RacksClient {
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RackInner update(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context);
+    RackInner update(String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters,
+        Context context);
 }

@@ -47,8 +47,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @param client the instance of the service client containing this operation class.
      */
     RecommendedActionsClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RecommendedActionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RecommendedActionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,49 +59,36 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     private interface RecommendedActionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecommendationActionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<RecommendationActionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("advisorName") String advisorName,
-            @PathParam("recommendedActionName") String recommendedActionName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("recommendedActionName") String recommendedActionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/advisors/{advisorName}/recommendedActions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/advisors/{advisorName}/recommendedActions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecommendationActionsResultList>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("advisorName") String advisorName,
-            @QueryParam("sessionId") String sessionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RecommendationActionsResultList>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("advisorName") String advisorName, @QueryParam("sessionId") String sessionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecommendationActionsResultList>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -117,19 +104,15 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return represents a Recommendation Action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendationActionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
+    private Mono<Response<RecommendationActionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String advisorName, String recommendedActionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -148,19 +131,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            advisorName,
-                            recommendedActionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, advisorName, recommendedActionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -178,23 +150,15 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return represents a Recommendation Action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendationActionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String advisorName,
-        String recommendedActionName,
-        Context context) {
+    private Mono<Response<RecommendationActionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String advisorName, String recommendedActionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,17 +177,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                advisorName,
-                recommendedActionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, advisorName, recommendedActionName, accept, context);
     }
 
     /**
@@ -239,17 +194,16 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return represents a Recommendation Action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecommendationActionInner> getAsync(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
+    private Mono<RecommendationActionInner> getAsync(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName) {
         return getWithResponseAsync(resourceGroupName, serverName, advisorName, recommendedActionName)
-            .flatMap(
-                (Response<RecommendationActionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<RecommendationActionInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -265,8 +219,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return represents a Recommendation Action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationActionInner get(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
+    public RecommendationActionInner get(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName) {
         return getAsync(resourceGroupName, serverName, advisorName, recommendedActionName).block();
     }
 
@@ -284,12 +238,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return represents a Recommendation Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecommendationActionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String advisorName,
-        String recommendedActionName,
-        Context context) {
+    public Response<RecommendationActionInner> getWithResponse(String resourceGroupName, String serverName,
+        String advisorName, String recommendedActionName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, advisorName, recommendedActionName, context).block();
     }
 
@@ -307,19 +257,15 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, String advisorName, String sessionId) {
+    private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, String advisorName, String sessionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -335,27 +281,10 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            advisorName,
-                            sessionId,
-                            accept,
-                            context))
-            .<PagedResponse<RecommendationActionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, serverName, advisorName, sessionId, accept, context))
+            .<PagedResponse<RecommendationActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -374,19 +303,15 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context) {
+    private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, String advisorName, String sessionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -402,25 +327,10 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                advisorName,
-                sessionId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, advisorName, sessionId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -436,10 +346,9 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return a list of recommendation actions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationActionInner> listByServerAsync(
-        String resourceGroupName, String serverName, String advisorName, String sessionId) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, advisorName, sessionId),
+    private PagedFlux<RecommendationActionInner> listByServerAsync(String resourceGroupName, String serverName,
+        String advisorName, String sessionId) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, advisorName, sessionId),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -455,11 +364,10 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return a list of recommendation actions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationActionInner> listByServerAsync(
-        String resourceGroupName, String serverName, String advisorName) {
+    private PagedFlux<RecommendationActionInner> listByServerAsync(String resourceGroupName, String serverName,
+        String advisorName) {
         final String sessionId = null;
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, advisorName, sessionId),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, advisorName, sessionId),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -477,8 +385,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return a list of recommendation actions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationActionInner> listByServerAsync(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context) {
+    private PagedFlux<RecommendationActionInner> listByServerAsync(String resourceGroupName, String serverName,
+        String advisorName, String sessionId, Context context) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName, advisorName, sessionId, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
@@ -496,8 +404,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return a list of recommendation actions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationActionInner> listByServer(
-        String resourceGroupName, String serverName, String advisorName) {
+    public PagedIterable<RecommendationActionInner> listByServer(String resourceGroupName, String serverName,
+        String advisorName) {
         final String sessionId = null;
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, advisorName, sessionId));
     }
@@ -516,8 +424,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @return a list of recommendation actions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationActionInner> listByServer(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context) {
+    public PagedIterable<RecommendationActionInner> listByServer(String resourceGroupName, String serverName,
+        String advisorName, String sessionId, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, advisorName, sessionId, context));
     }
 
@@ -537,23 +445,14 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecommendationActionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RecommendationActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -569,29 +468,19 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationActionInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RecommendationActionInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

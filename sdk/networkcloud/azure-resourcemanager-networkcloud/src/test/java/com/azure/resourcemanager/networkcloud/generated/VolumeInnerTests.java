@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeInner model =
-            BinaryData
-                .fromString(
-                    "{\"extendedLocation\":{\"name\":\"qzinkfkbg\",\"type\":\"z\"},\"properties\":{\"attachedTo\":[\"xeqoc\",\"jmygvk\",\"qkjjeokbz\",\"fezrx\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"rtle\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"bkwvzg\",\"sizeMiB\":3286584437525688934},\"location\":\"fbzdixzmqpnoda\",\"tags\":{\"tmcg\":\"qhewj\"},\"id\":\"bostzel\",\"name\":\"dlat\",\"type\":\"tmzlbiojlv\"}")
-                .toObject(VolumeInner.class);
+        VolumeInner model = BinaryData.fromString(
+            "{\"extendedLocation\":{\"name\":\"qzinkfkbg\",\"type\":\"z\"},\"properties\":{\"attachedTo\":[\"xeqoc\",\"jmygvk\",\"qkjjeokbz\",\"fezrx\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"rtle\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"bkwvzg\",\"sizeMiB\":3286584437525688934},\"location\":\"fbzdixzmqpnoda\",\"tags\":{\"tmcg\":\"qhewj\"},\"id\":\"bostzel\",\"name\":\"dlat\",\"type\":\"tmzlbiojlv\"}")
+            .toObject(VolumeInner.class);
         Assertions.assertEquals("fbzdixzmqpnoda", model.location());
         Assertions.assertEquals("qhewj", model.tags().get("tmcg"));
         Assertions.assertEquals("qzinkfkbg", model.extendedLocation().name());
@@ -28,12 +26,10 @@ public final class VolumeInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeInner model =
-            new VolumeInner()
-                .withLocation("fbzdixzmqpnoda")
-                .withTags(mapOf("tmcg", "qhewj"))
-                .withExtendedLocation(new ExtendedLocation().withName("qzinkfkbg").withType("z"))
-                .withSizeMiB(3286584437525688934L);
+        VolumeInner model = new VolumeInner().withLocation("fbzdixzmqpnoda")
+            .withTags(mapOf("tmcg", "qhewj"))
+            .withExtendedLocation(new ExtendedLocation().withName("qzinkfkbg").withType("z"))
+            .withSizeMiB(3286584437525688934L);
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
         Assertions.assertEquals("fbzdixzmqpnoda", model.location());
         Assertions.assertEquals("qhewj", model.tags().get("tmcg"));

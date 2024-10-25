@@ -250,15 +250,12 @@ public final class TrunkedNetworkProperties {
      */
     public void validate() {
         if (isolationDomainIds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property isolationDomainIds in model TrunkedNetworkProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property isolationDomainIds in model TrunkedNetworkProperties"));
         }
         if (vlans() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vlans in model TrunkedNetworkProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vlans in model TrunkedNetworkProperties"));
         }
     }
 

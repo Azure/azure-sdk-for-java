@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.NetworkInterface;
 public final class NetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterface model =
-            BinaryData
-                .fromString(
-                    "{\"address\":\"qbmfpjbabwidf\",\"deviceConnectionType\":\"PCI\",\"model\":\"puunnoxyhkxgqd\",\"physicalSlot\":944157000221842248,\"portCount\":5806792787635363155,\"portSpeed\":5765762750940696001,\"vendor\":\"a\"}")
-                .toObject(NetworkInterface.class);
+        NetworkInterface model = BinaryData.fromString(
+            "{\"address\":\"qbmfpjbabwidf\",\"deviceConnectionType\":\"PCI\",\"model\":\"puunnoxyhkxgqd\",\"physicalSlot\":944157000221842248,\"portCount\":5806792787635363155,\"portSpeed\":5765762750940696001,\"vendor\":\"a\"}")
+            .toObject(NetworkInterface.class);
     }
 
     @org.junit.jupiter.api.Test
