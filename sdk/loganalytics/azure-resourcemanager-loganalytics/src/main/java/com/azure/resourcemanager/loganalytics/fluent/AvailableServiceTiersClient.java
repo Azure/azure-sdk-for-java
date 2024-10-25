@@ -25,8 +25,8 @@ public interface AvailableServiceTiersClient {
      * @return the available service tiers for the workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<AvailableServiceTierInner>> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<List<AvailableServiceTierInner>> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Gets the available service tiers for the workspace.

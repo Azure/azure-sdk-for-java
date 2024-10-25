@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInviteFollowerResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInviteFollowerResultInner model =
-            BinaryData.fromString("{\"generatedInvitation\":\"c\"}").toObject(DatabaseInviteFollowerResultInner.class);
+        DatabaseInviteFollowerResultInner model = BinaryData.fromString("{\"generatedInvitation\":\"c\"}")
+            .toObject(DatabaseInviteFollowerResultInner.class);
         Assertions.assertEquals("c", model.generatedInvitation());
     }
 

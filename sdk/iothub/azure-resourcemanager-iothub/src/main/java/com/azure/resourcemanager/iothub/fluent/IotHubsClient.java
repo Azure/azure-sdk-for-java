@@ -30,8 +30,8 @@ public interface IotHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginManualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput);
+    SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput);
 
     /**
      * Manually initiate a failover for the IoT Hub to its secondary region
@@ -51,8 +51,8 @@ public interface IotHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginManualFailover(
-        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context);
+    SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
+        FailoverInput failoverInput, Context context);
 
     /**
      * Manually initiate a failover for the IoT Hub to its secondary region

@@ -164,18 +164,16 @@ public final class HttpUtil {
         SSLContext sslContext = null;
 
         try {
-            sslContext = SSLContexts.custom()
-                .loadTrustMaterial(keyStore, null)
-                .build();
+            sslContext = SSLContexts.custom().loadTrustMaterial(keyStore, null).build();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             LOGGER.log(WARNING, "Unable to build the SSL context.", e);
         }
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory =
-            new SSLConnectionSocketFactory(sslContext, (HostnameVerifier) null);
+        SSLConnectionSocketFactory sslConnectionSocketFactory
+            = new SSLConnectionSocketFactory(sslContext, (HostnameVerifier) null);
 
-        PoolingHttpClientConnectionManager manager =
-            new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
+        PoolingHttpClientConnectionManager manager
+            = new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", PlainConnectionSocketFactory.getSocketFactory())
                 .register("https", sslConnectionSocketFactory)
                 .build());

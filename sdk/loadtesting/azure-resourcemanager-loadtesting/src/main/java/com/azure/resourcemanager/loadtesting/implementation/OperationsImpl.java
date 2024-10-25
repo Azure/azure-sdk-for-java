@@ -19,8 +19,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
