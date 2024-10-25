@@ -1,14 +1,12 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.5.1 (2024-10-25)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Other Changes
+
+- `remoteVolumeResourceId` in `ReplicationObject` class is not always required.
 
 ## 1.5.0 (2024-10-21)
 
