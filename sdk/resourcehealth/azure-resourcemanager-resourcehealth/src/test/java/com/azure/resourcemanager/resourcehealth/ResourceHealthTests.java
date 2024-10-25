@@ -150,7 +150,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
         resourceProviderNamespaces.forEach(resourceProviderNamespace -> {
             Provider provider = resourceManager.providers().getByName(resourceProviderNamespace);
             if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                && !"Registering".equalsIgnoreCase(provider.registrationState()) ) {
+                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
                 provider = resourceManager.providers().register(resourceProviderNamespace);
             }
             while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
