@@ -1,6 +1,6 @@
 # Release History
 
-## 12.28.1 (2024-10-08)
+## 12.28.2 (Unreleased)
 
 ### Bugs Fixed
 - Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
