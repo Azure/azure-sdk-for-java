@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resourcehealth;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -44,20 +45,23 @@ public class ResourceHealthTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void resourceHealthTest() {
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
         ResourceManager resourceManager = ResourceManager
             .configure()
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(credential, profile)
             .withDefaultSubscription();
 
         ComputeManager computeManager = ComputeManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         ResourceHealthManager resourceHealthManager = ResourceHealthManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
