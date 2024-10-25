@@ -42,9 +42,10 @@ public final class SuggestPagedIterable extends PagedIterableBase<SuggestResult,
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public SuggestPagedIterable(Supplier<SuggestPagedResponse> firstPageRetriever,
-        Function<String, SuggestPagedResponse> nextPageRetriever) {
-        super(() -> (continuationToken, pageSize) -> continuationToken == null
-            ? firstPageRetriever.get()
-            : nextPageRetriever.apply(continuationToken));
+                               Function<String, SuggestPagedResponse> nextPageRetriever) {
+        super(() -> (continuationToken, pageSize) ->
+            continuationToken == null
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken));
     }
 }
