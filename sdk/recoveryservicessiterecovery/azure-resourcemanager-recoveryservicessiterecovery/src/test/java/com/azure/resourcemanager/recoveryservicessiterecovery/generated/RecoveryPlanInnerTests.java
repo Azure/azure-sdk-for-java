@@ -69,17 +69,22 @@ public final class RecoveryPlanInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanInner model = new RecoveryPlanInner()
-            .withProperties(new RecoveryPlanProperties().withFriendlyName("znnhd").withPrimaryFabricId("ktgj")
-                .withPrimaryFabricFriendlyName("gguxhemlwyw").withRecoveryFabricId("eczgfb")
-                .withRecoveryFabricFriendlyName("klelssxb").withFailoverDeploymentModel("c")
+            .withProperties(new RecoveryPlanProperties().withFriendlyName("znnhd")
+                .withPrimaryFabricId("ktgj")
+                .withPrimaryFabricFriendlyName("gguxhemlwyw")
+                .withRecoveryFabricId("eczgfb")
+                .withRecoveryFabricFriendlyName("klelssxb")
+                .withFailoverDeploymentModel("c")
                 .withReplicationProviders(Arrays.asList("ujksrlsmdesqplpv", "jcdoewb", "dyvt"))
                 .withAllowedOperations(Arrays.asList("xvgpiude", "gfsxzec", "axwk", "fykhvuhxepmru"))
                 .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-01-01T13:09:47Z"))
                 .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-01-21T20:15:20Z"))
                 .withLastTestFailoverTime(OffsetDateTime.parse("2021-07-09T17:03:36Z"))
-                .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("slujdjltym").withJobId("vguihywar")
+                .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("slujdjltym")
+                    .withJobId("vguihywar")
                     .withStartTime(OffsetDateTime.parse("2021-09-29T23:23Z")))
-                .withCurrentScenarioStatus("hkixkykxdssj").withCurrentScenarioStatusDescription("mmuc")
+                .withCurrentScenarioStatus("hkixkykxdssj")
+                .withCurrentScenarioStatusDescription("mmuc")
                 .withGroups(Arrays.asList(
                     new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
                         .withReplicationProtectedItems(Arrays.asList(
@@ -95,7 +100,8 @@ public final class RecoveryPlanInnerTests {
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("kccuzgy")
+                            new RecoveryPlanAction()
+                                .withActionName("kccuzgy")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
                                     ReplicationProtectedItemOperation.SWITCH_PROTECTION))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
@@ -120,7 +126,8 @@ public final class RecoveryPlanInnerTests {
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("gvgovpbbttefjo")
+                            new RecoveryPlanAction()
+                                .withActionName("gvgovpbbttefjo")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMMIT,
                                     ReplicationProtectedItemOperation.DISABLE_PROTECTION,
                                     ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
@@ -151,11 +158,10 @@ public final class RecoveryPlanInnerTests {
                             new RecoveryPlanAction().withActionName("g")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
                                     ReplicationProtectedItemOperation.SWITCH_PROTECTION))
-                                .withFailoverDirections(
-                                    Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                        PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                        PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                        PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
                             new RecoveryPlanAction().withActionName("l")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
@@ -178,7 +184,8 @@ public final class RecoveryPlanInnerTests {
                                     ReplicationProtectedItemOperation.CHANGE_PIT))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("omacluzvxnqmhr")
+                            new RecoveryPlanAction()
+                                .withActionName("omacluzvxnqmhr")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))

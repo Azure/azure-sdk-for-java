@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingEntityScaleUnitTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingEntityScaleUnit model =
-            BinaryData.fromString("{\"scaleUnit\":1232330236}").toObject(StreamingEntityScaleUnit.class);
+        StreamingEntityScaleUnit model
+            = BinaryData.fromString("{\"scaleUnit\":1232330236}").toObject(StreamingEntityScaleUnit.class);
         Assertions.assertEquals(1232330236, model.scaleUnit());
     }
 

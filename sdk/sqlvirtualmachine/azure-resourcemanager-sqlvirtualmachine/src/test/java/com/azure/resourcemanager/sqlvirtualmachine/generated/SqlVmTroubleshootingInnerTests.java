@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlVmTroubleshootingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVmTroubleshootingInner model =
-            BinaryData
-                .fromString(
-                    "{\"startTimeUtc\":\"2021-10-23T12:01:36Z\",\"endTimeUtc\":\"2021-04-15T11:53:36Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"cohslkev\"}},\"virtualMachineResourceId\":\"ggzfbu\"}")
-                .toObject(SqlVmTroubleshootingInner.class);
+        SqlVmTroubleshootingInner model = BinaryData.fromString(
+            "{\"startTimeUtc\":\"2021-10-23T12:01:36Z\",\"endTimeUtc\":\"2021-04-15T11:53:36Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"cohslkev\"}},\"virtualMachineResourceId\":\"ggzfbu\"}")
+            .toObject(SqlVmTroubleshootingInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T12:01:36Z"), model.startTimeUtc());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T11:53:36Z"), model.endTimeUtc());
         Assertions.assertEquals(TroubleshootingScenario.UNHEALTHY_REPLICA, model.troubleshootingScenario());
@@ -28,14 +26,12 @@ public final class SqlVmTroubleshootingInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlVmTroubleshootingInner model =
-            new SqlVmTroubleshootingInner()
-                .withStartTimeUtc(OffsetDateTime.parse("2021-10-23T12:01:36Z"))
+        SqlVmTroubleshootingInner model
+            = new SqlVmTroubleshootingInner().withStartTimeUtc(OffsetDateTime.parse("2021-10-23T12:01:36Z"))
                 .withEndTimeUtc(OffsetDateTime.parse("2021-04-15T11:53:36Z"))
                 .withTroubleshootingScenario(TroubleshootingScenario.UNHEALTHY_REPLICA)
-                .withProperties(
-                    new TroubleshootingAdditionalProperties()
-                        .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("cohslkev")));
+                .withProperties(new TroubleshootingAdditionalProperties()
+                    .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("cohslkev")));
         model = BinaryData.fromObject(model).toObject(SqlVmTroubleshootingInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T12:01:36Z"), model.startTimeUtc());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T11:53:36Z"), model.endTimeUtc());

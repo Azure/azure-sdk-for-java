@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class KustomizationDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustomizationDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"qkwpyeicxmqc\",\"path\":\"q\",\"dependsOn\":[\"hix\",\"igdtopbob\",\"og\",\"m\"],\"timeoutInSeconds\":495685925173240949,\"syncIntervalInSeconds\":1066773928950935617,\"retryIntervalInSeconds\":5747639335856339043,\"prune\":true,\"force\":true,\"wait\":false,\"postBuild\":{\"substitute\":{\"iotkftutqxl\":\"f\",\"mi\":\"gxlefgugnxkrxd\"},\"substituteFrom\":[{\"kind\":\"zrvqdr\",\"name\":\"hjybigehoqfbo\",\"optional\":true}]}}")
-                .toObject(KustomizationDefinition.class);
+        KustomizationDefinition model = BinaryData.fromString(
+            "{\"name\":\"qkwpyeicxmqc\",\"path\":\"q\",\"dependsOn\":[\"hix\",\"igdtopbob\",\"og\",\"m\"],\"timeoutInSeconds\":495685925173240949,\"syncIntervalInSeconds\":1066773928950935617,\"retryIntervalInSeconds\":5747639335856339043,\"prune\":true,\"force\":true,\"wait\":false,\"postBuild\":{\"substitute\":{\"iotkftutqxl\":\"f\",\"mi\":\"gxlefgugnxkrxd\"},\"substituteFrom\":[{\"kind\":\"zrvqdr\",\"name\":\"hjybigehoqfbo\",\"optional\":true}]}}")
+            .toObject(KustomizationDefinition.class);
         Assertions.assertEquals("q", model.path());
         Assertions.assertEquals("hix", model.dependsOn().get(0));
         Assertions.assertEquals(495685925173240949L, model.timeoutInSeconds());
@@ -37,26 +35,17 @@ public final class KustomizationDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustomizationDefinition model =
-            new KustomizationDefinition()
-                .withPath("q")
-                .withDependsOn(Arrays.asList("hix", "igdtopbob", "og", "m"))
-                .withTimeoutInSeconds(495685925173240949L)
-                .withSyncIntervalInSeconds(1066773928950935617L)
-                .withRetryIntervalInSeconds(5747639335856339043L)
-                .withPrune(true)
-                .withForce(true)
-                .withEnableWait(false)
-                .withPostBuild(
-                    new PostBuildDefinition()
-                        .withSubstitute(mapOf("iotkftutqxl", "f", "mi", "gxlefgugnxkrxd"))
-                        .withSubstituteFrom(
-                            Arrays
-                                .asList(
-                                    new SubstituteFromDefinition()
-                                        .withKind("zrvqdr")
-                                        .withName("hjybigehoqfbo")
-                                        .withOptional(true))));
+        KustomizationDefinition model = new KustomizationDefinition().withPath("q")
+            .withDependsOn(Arrays.asList("hix", "igdtopbob", "og", "m"))
+            .withTimeoutInSeconds(495685925173240949L)
+            .withSyncIntervalInSeconds(1066773928950935617L)
+            .withRetryIntervalInSeconds(5747639335856339043L)
+            .withPrune(true)
+            .withForce(true)
+            .withEnableWait(false)
+            .withPostBuild(new PostBuildDefinition().withSubstitute(mapOf("iotkftutqxl", "f", "mi", "gxlefgugnxkrxd"))
+                .withSubstituteFrom(Arrays.asList(
+                    new SubstituteFromDefinition().withKind("zrvqdr").withName("hjybigehoqfbo").withOptional(true))));
         model = BinaryData.fromObject(model).toObject(KustomizationDefinition.class);
         Assertions.assertEquals("q", model.path());
         Assertions.assertEquals("hix", model.dependsOn().get(0));

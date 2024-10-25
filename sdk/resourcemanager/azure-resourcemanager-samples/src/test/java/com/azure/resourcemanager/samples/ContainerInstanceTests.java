@@ -27,7 +27,8 @@ public class ContainerInstanceTests extends SamplesTestBase {
     public void testManageContainerInstanceWithManualAzureFileShareMountCreation() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageContainerInstanceWithManualAzureFileShareMountCreation.runSample(azureResourceManager));
+            Assertions.assertTrue(
+                ManageContainerInstanceWithManualAzureFileShareMountCreation.runSample(azureResourceManager));
         }
     }
 
@@ -40,10 +41,12 @@ public class ContainerInstanceTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator() throws InterruptedException, JSchException, IOException {
+    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator()
+        throws InterruptedException, JSchException, IOException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.runSample(azureResourceManager, "", ""));
+            Assertions.assertTrue(ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator
+                .runSample(azureResourceManager, "", ""));
         }
     }
 

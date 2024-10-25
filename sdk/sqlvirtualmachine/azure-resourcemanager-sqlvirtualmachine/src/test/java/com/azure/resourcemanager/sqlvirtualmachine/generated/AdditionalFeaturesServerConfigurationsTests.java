@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AdditionalFeaturesServerConfigurationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalFeaturesServerConfigurations model =
-            BinaryData
-                .fromString("{\"isRServicesEnabled\":true}")
-                .toObject(AdditionalFeaturesServerConfigurations.class);
+        AdditionalFeaturesServerConfigurations model = BinaryData.fromString("{\"isRServicesEnabled\":true}")
+            .toObject(AdditionalFeaturesServerConfigurations.class);
         Assertions.assertEquals(true, model.isRServicesEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalFeaturesServerConfigurations model =
-            new AdditionalFeaturesServerConfigurations().withIsRServicesEnabled(true);
+        AdditionalFeaturesServerConfigurations model
+            = new AdditionalFeaturesServerConfigurations().withIsRServicesEnabled(true);
         model = BinaryData.fromObject(model).toObject(AdditionalFeaturesServerConfigurations.class);
         Assertions.assertEquals(true, model.isRServicesEnabled());
     }

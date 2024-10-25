@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureADOnlyAuthenticationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureADOnlyAuthenticationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"azureADOnlyAuthentication\":true,\"state\":\"InConsistent\",\"creationDate\":\"2021-07-30T08:26:42Z\"},\"id\":\"gjxpybczmehmt\",\"name\":\"opb\",\"type\":\"phrupidgsybbejhp\"}")
-                .toObject(AzureADOnlyAuthenticationInner.class);
+        AzureADOnlyAuthenticationInner model = BinaryData.fromString(
+            "{\"properties\":{\"azureADOnlyAuthentication\":true,\"state\":\"InConsistent\",\"creationDate\":\"2021-07-30T08:26:42Z\"},\"id\":\"gjxpybczmehmt\",\"name\":\"opb\",\"type\":\"phrupidgsybbejhp\"}")
+            .toObject(AzureADOnlyAuthenticationInner.class);
         Assertions.assertEquals(true, model.azureADOnlyAuthentication());
     }
 

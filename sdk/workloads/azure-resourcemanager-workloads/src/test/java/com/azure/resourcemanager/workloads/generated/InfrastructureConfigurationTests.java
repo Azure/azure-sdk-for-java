@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InfrastructureConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InfrastructureConfiguration model =
-            BinaryData
-                .fromString("{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"khly\"}")
-                .toObject(InfrastructureConfiguration.class);
+        InfrastructureConfiguration model = BinaryData
+            .fromString("{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"khly\"}")
+            .toObject(InfrastructureConfiguration.class);
         Assertions.assertEquals("khly", model.appResourceGroup());
     }
 

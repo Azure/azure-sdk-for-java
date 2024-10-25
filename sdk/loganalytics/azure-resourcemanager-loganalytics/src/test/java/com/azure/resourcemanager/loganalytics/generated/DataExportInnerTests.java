@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataExportInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataExportInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataExportId\":\"ovm\",\"tableNames\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"destination\":{\"resourceId\":\"kcciwwzjuqkhr\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"ku\"}},\"enable\":false,\"createdDate\":\"kg\",\"lastModifiedDate\":\"auu\"},\"id\":\"mjmvxieduugidyjr\",\"name\":\"f\",\"type\":\"y\"}")
-                .toObject(DataExportInner.class);
+        DataExportInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataExportId\":\"ovm\",\"tableNames\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"destination\":{\"resourceId\":\"kcciwwzjuqkhr\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"ku\"}},\"enable\":false,\"createdDate\":\"kg\",\"lastModifiedDate\":\"auu\"},\"id\":\"mjmvxieduugidyjr\",\"name\":\"f\",\"type\":\"y\"}")
+            .toObject(DataExportInner.class);
         Assertions.assertEquals("ovm", model.dataExportId());
         Assertions.assertEquals("kacspkw", model.tableNames().get(0));
         Assertions.assertEquals(false, model.enable());
@@ -28,15 +26,13 @@ public final class DataExportInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportInner model =
-            new DataExportInner()
-                .withDataExportId("ovm")
-                .withTableNames(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"))
-                .withEnable(false)
-                .withCreatedDate("kg")
-                .withLastModifiedDate("auu")
-                .withResourceId("kcciwwzjuqkhr")
-                .withEventHubName("ku");
+        DataExportInner model = new DataExportInner().withDataExportId("ovm")
+            .withTableNames(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"))
+            .withEnable(false)
+            .withCreatedDate("kg")
+            .withLastModifiedDate("auu")
+            .withResourceId("kcciwwzjuqkhr")
+            .withEventHubName("ku");
         model = BinaryData.fromObject(model).toObject(DataExportInner.class);
         Assertions.assertEquals("ovm", model.dataExportId());
         Assertions.assertEquals("kacspkw", model.tableNames().get(0));

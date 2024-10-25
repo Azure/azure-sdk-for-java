@@ -54,8 +54,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @param client the instance of the service client containing this operation class.
      */
     TestLinesClientImpl(MicrosoftVoiceServicesImpl client) {
-        this.service =
-            RestProxy.create(TestLinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TestLinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,91 +66,65 @@ public final class TestLinesClientImpl implements TestLinesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftVoiceServic")
     public interface TestLinesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TestLineListResult>> listByCommunicationsGateway(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TestLineListResult>> listByCommunicationsGateway(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationsGatewayName") String communicationsGatewayName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TestLineInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TestLineInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationsGatewayName") String communicationsGatewayName,
-            @PathParam("testLineName") String testLineName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("testLineName") String testLineName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationsGatewayName") String communicationsGatewayName,
-            @PathParam("testLineName") String testLineName,
-            @BodyParam("application/json") TestLineInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("testLineName") String testLineName, @BodyParam("application/json") TestLineInner resource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationsGatewayName") String communicationsGatewayName,
-            @PathParam("testLineName") String testLineName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("testLineName") String testLineName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{communicationsGatewayName}/testLines/{testLineName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TestLineInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TestLineInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationsGatewayName") String communicationsGatewayName,
-            @PathParam("testLineName") String testLineName,
-            @BodyParam("application/json") TestLineUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("testLineName") String testLineName, @BodyParam("application/json") TestLineUpdate properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TestLineListResult>> listByCommunicationsGatewayNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -165,52 +139,31 @@ public final class TestLinesClientImpl implements TestLinesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(
-        String resourceGroupName, String communicationsGatewayName) {
+    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(String resourceGroupName,
+        String communicationsGatewayName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByCommunicationsGateway(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationsGatewayName,
-                            accept,
-                            context))
-            .<PagedResponse<TestLineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByCommunicationsGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, accept, context))
+            .<PagedResponse<TestLineInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -227,50 +180,31 @@ public final class TestLinesClientImpl implements TestLinesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(
-        String resourceGroupName, String communicationsGatewayName, Context context) {
+    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(String resourceGroupName,
+        String communicationsGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCommunicationsGateway(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationsGatewayName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCommunicationsGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -284,8 +218,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TestLineInner> listByCommunicationsGatewayAsync(
-        String resourceGroupName, String communicationsGatewayName) {
+    private PagedFlux<TestLineInner> listByCommunicationsGatewayAsync(String resourceGroupName,
+        String communicationsGatewayName) {
         return new PagedFlux<>(
             () -> listByCommunicationsGatewaySinglePageAsync(resourceGroupName, communicationsGatewayName),
             nextLink -> listByCommunicationsGatewayNextSinglePageAsync(nextLink));
@@ -303,8 +237,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TestLineInner> listByCommunicationsGatewayAsync(
-        String resourceGroupName, String communicationsGatewayName, Context context) {
+    private PagedFlux<TestLineInner> listByCommunicationsGatewayAsync(String resourceGroupName,
+        String communicationsGatewayName, Context context) {
         return new PagedFlux<>(
             () -> listByCommunicationsGatewaySinglePageAsync(resourceGroupName, communicationsGatewayName, context),
             nextLink -> listByCommunicationsGatewayNextSinglePageAsync(nextLink, context));
@@ -321,8 +255,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TestLineInner> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName) {
+    public PagedIterable<TestLineInner> listByCommunicationsGateway(String resourceGroupName,
+        String communicationsGatewayName) {
         return new PagedIterable<>(listByCommunicationsGatewayAsync(resourceGroupName, communicationsGatewayName));
     }
 
@@ -338,8 +272,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TestLineInner> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName, Context context) {
+    public PagedIterable<TestLineInner> listByCommunicationsGateway(String resourceGroupName,
+        String communicationsGatewayName, Context context) {
         return new PagedIterable<>(
             listByCommunicationsGatewayAsync(resourceGroupName, communicationsGatewayName, context));
     }
@@ -356,47 +290,32 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestLineInner>> getWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName) {
+    private Mono<Response<TestLineInner>> getWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationsGatewayName,
-                            testLineName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, testLineName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -413,45 +332,31 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestLineInner>> getWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
+    private Mono<Response<TestLineInner>> getWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationsGatewayName,
-                testLineName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationsGatewayName, testLineName, accept, context);
     }
 
     /**
@@ -466,8 +371,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestLineInner> getAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName) {
+    private Mono<TestLineInner> getAsync(String resourceGroupName, String communicationsGatewayName,
+        String testLineName) {
         return getWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -485,8 +390,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TestLineInner> getWithResponse(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
+    public Response<TestLineInner> getWithResponse(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, Context context) {
         return getWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, context).block();
     }
 
@@ -519,29 +424,23 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
@@ -553,19 +452,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationsGatewayName,
-                            testLineName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, testLineName, resource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -583,33 +472,23 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
@@ -621,17 +500,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationsGatewayName,
-                testLineName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, testLineName, resource,
+            accept, context);
     }
 
     /**
@@ -647,18 +518,12 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link PollerFlux} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, resource);
-        return this
-            .client
-            .<TestLineInner, TestLineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TestLineInner.class,
-                TestLineInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, resource);
+        return this.client.<TestLineInner, TestLineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TestLineInner.class, TestLineInner.class, this.client.getContext());
     }
 
     /**
@@ -675,20 +540,13 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link PollerFlux} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context) {
+    private PollerFlux<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, communicationsGatewayName, testLineName, resource, context);
-        return this
-            .client
-            .<TestLineInner, TestLineInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TestLineInner.class, TestLineInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            communicationsGatewayName, testLineName, resource, context);
+        return this.client.<TestLineInner, TestLineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TestLineInner.class, TestLineInner.class, context);
     }
 
     /**
@@ -704,10 +562,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link SyncPoller} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource)
+    public SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource)
             .getSyncPoller();
     }
 
@@ -725,12 +582,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link SyncPoller} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context) {
+    public SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource, context)
             .getSyncPoller();
@@ -749,10 +602,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestLineInner> createOrUpdateAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource)
-            .last()
+    private Mono<TestLineInner> createOrUpdateAsync(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, TestLineInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -770,12 +622,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestLineInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context) {
+    private Mono<TestLineInner> createOrUpdateAsync(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, TestLineInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -794,8 +642,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestLineInner createOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource) {
+    public TestLineInner createOrUpdate(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineInner resource) {
         return createOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource).block();
     }
 
@@ -813,12 +661,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestLineInner createOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context) {
+    public TestLineInner createOrUpdate(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, communicationsGatewayName, testLineName, resource, context)
             .block();
     }
@@ -835,47 +679,32 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationsGatewayName,
-                            testLineName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, testLineName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -892,45 +721,31 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationsGatewayName,
-                testLineName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationsGatewayName, testLineName, accept, context);
     }
 
     /**
@@ -945,14 +760,12 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -968,14 +781,13 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -990,8 +802,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, String testLineName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        String testLineName) {
         return this.beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName).getSyncPoller();
     }
 
@@ -1008,10 +820,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName, context)
             .getSyncPoller();
     }
 
@@ -1028,8 +839,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String communicationsGatewayName, String testLineName) {
-        return beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1046,10 +856,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, communicationsGatewayName, testLineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1080,8 +889,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context) {
+    public void delete(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        Context context) {
         deleteAsync(resourceGroupName, communicationsGatewayName, testLineName, context).block();
     }
 
@@ -1098,29 +907,23 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestLineInner>> updateWithResponseAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineUpdate properties) {
+    private Mono<Response<TestLineInner>> updateWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
@@ -1132,19 +935,9 @@ public final class TestLinesClientImpl implements TestLinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationsGatewayName,
-                            testLineName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationsGatewayName, testLineName, properties,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1162,33 +955,23 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestLineInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineUpdate properties,
-        Context context) {
+    private Mono<Response<TestLineInner>> updateWithResponseAsync(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationsGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter communicationsGatewayName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationsGatewayName is required and cannot be null."));
         }
         if (testLineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter testLineName is required and cannot be null."));
@@ -1200,17 +983,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationsGatewayName,
-                testLineName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationsGatewayName, testLineName, properties, accept, context);
     }
 
     /**
@@ -1226,8 +1000,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestLineInner> updateAsync(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineUpdate properties) {
+    private Mono<TestLineInner> updateAsync(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, TestLineUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1246,12 +1020,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TestLineInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineUpdate properties,
-        Context context) {
+    public Response<TestLineInner> updateWithResponse(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, TestLineUpdate properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, communicationsGatewayName, testLineName, properties, context)
             .block();
     }
@@ -1269,8 +1039,8 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestLineInner update(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineUpdate properties) {
+    public TestLineInner update(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineUpdate properties) {
         return updateWithResponse(resourceGroupName, communicationsGatewayName, testLineName, properties, Context.NONE)
             .getValue();
     }
@@ -1292,25 +1062,14 @@ public final class TestLinesClientImpl implements TestLinesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listByCommunicationsGatewayNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TestLineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listByCommunicationsGatewayNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TestLineInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1327,29 +1086,19 @@ public final class TestLinesClientImpl implements TestLinesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewayNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewayNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByCommunicationsGatewayNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByCommunicationsGatewayNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

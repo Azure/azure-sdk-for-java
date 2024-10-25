@@ -13,9 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to tenant management API.
  */
 @Fluent
-public interface PolicyDefinitions extends
-        SupportsListing<PolicyDefinition>,
-        SupportsGettingByName<PolicyDefinition>,
-        SupportsCreating<PolicyDefinition.DefinitionStages.Blank>,
-        SupportsDeletingByName {
+public interface PolicyDefinitions extends SupportsListing<PolicyDefinition>, SupportsGettingByName<PolicyDefinition>,
+    SupportsCreating<PolicyDefinition.DefinitionStages.Blank>, SupportsDeletingByName {
 }

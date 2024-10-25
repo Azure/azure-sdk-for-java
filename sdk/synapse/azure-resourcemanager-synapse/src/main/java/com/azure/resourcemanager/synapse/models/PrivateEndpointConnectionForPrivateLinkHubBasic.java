@@ -83,8 +83,8 @@ public final class PrivateEndpointConnectionForPrivateLinkHubBasic {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionForPrivateLinkHubBasic object itself.
      */
-    public PrivateEndpointConnectionForPrivateLinkHubBasic withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionForPrivateLinkHubBasic
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionProperties();
         }

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeDataFlowPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            BinaryData
-                .fromString(
-                    "{\"computeType\":\"General\",\"coreCount\":1277865813,\"timeToLive\":92922352,\"cleanup\":true,\"\":{\"bdweade\":\"datad\",\"mvmmagoaqylkjz\":\"datazmwntopagt\"}}")
-                .toObject(IntegrationRuntimeDataFlowProperties.class);
+        IntegrationRuntimeDataFlowProperties model = BinaryData.fromString(
+            "{\"computeType\":\"General\",\"coreCount\":1277865813,\"timeToLive\":92922352,\"cleanup\":true,\"\":{\"bdweade\":\"datad\",\"mvmmagoaqylkjz\":\"datazmwntopagt\"}}")
+            .toObject(IntegrationRuntimeDataFlowProperties.class);
         Assertions.assertEquals(DataFlowComputeType.GENERAL, model.computeType());
         Assertions.assertEquals(1277865813, model.coreCount());
         Assertions.assertEquals(92922352, model.timeToLive());
@@ -27,9 +25,8 @@ public final class IntegrationRuntimeDataFlowPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            new IntegrationRuntimeDataFlowProperties()
-                .withComputeType(DataFlowComputeType.GENERAL)
+        IntegrationRuntimeDataFlowProperties model
+            = new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.GENERAL)
                 .withCoreCount(1277865813)
                 .withTimeToLive(92922352)
                 .withCleanup(true)

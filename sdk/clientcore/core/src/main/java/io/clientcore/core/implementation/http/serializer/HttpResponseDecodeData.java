@@ -35,7 +35,6 @@ public interface HttpResponseDecodeData {
         Type token = this.getReturnType();
         Type headersType = null;
 
-
         return headersType;
     }
 

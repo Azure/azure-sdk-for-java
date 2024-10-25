@@ -54,7 +54,8 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /*
      * Connection information for encrypting the on-premises data source credentials.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeConnectionInfoInner class. */
     public IntegrationRuntimeConnectionInfoInner() {

@@ -59,8 +59,8 @@ public interface PrivateLinkResourcesOperationsClient {
      * @return private link resource in workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Resource

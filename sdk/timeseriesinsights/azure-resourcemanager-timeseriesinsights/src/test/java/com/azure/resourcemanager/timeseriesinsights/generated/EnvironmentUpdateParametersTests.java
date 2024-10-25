@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EnvironmentUpdateParameters\",\"tags\":{\"uvfqawrlyxwj\":\"ujysvle\",\"nwbxgjvtbvpyssz\":\"cpr\",\"guhmuouqfpr\":\"nruj\",\"nguitnwuizgazxu\":\"zw\"}}")
-                .toObject(EnvironmentUpdateParameters.class);
+        EnvironmentUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EnvironmentUpdateParameters\",\"tags\":{\"uvfqawrlyxwj\":\"ujysvle\",\"nwbxgjvtbvpyssz\":\"cpr\",\"guhmuouqfpr\":\"nruj\",\"nguitnwuizgazxu\":\"zw\"}}")
+            .toObject(EnvironmentUpdateParameters.class);
         Assertions.assertEquals("ujysvle", model.tags().get("uvfqawrlyxwj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentUpdateParameters model =
-            new EnvironmentUpdateParameters()
-                .withTags(
-                    mapOf(
-                        "uvfqawrlyxwj",
-                        "ujysvle",
-                        "nwbxgjvtbvpyssz",
-                        "cpr",
-                        "guhmuouqfpr",
-                        "nruj",
-                        "nguitnwuizgazxu",
-                        "zw"));
+        EnvironmentUpdateParameters model = new EnvironmentUpdateParameters().withTags(
+            mapOf("uvfqawrlyxwj", "ujysvle", "nwbxgjvtbvpyssz", "cpr", "guhmuouqfpr", "nruj", "nguitnwuizgazxu", "zw"));
         model = BinaryData.fromObject(model).toObject(EnvironmentUpdateParameters.class);
         Assertions.assertEquals("ujysvle", model.tags().get("uvfqawrlyxwj"));
     }

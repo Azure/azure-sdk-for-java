@@ -29,33 +29,27 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
 
     /** Container interface for all of the definitions related to a container registry source trigger. */
     interface Definition
-        extends RegistrySourceTrigger.DefinitionStages.Blank,
-            RegistrySourceTrigger.DefinitionStages.RepositoryUrl,
-            RegistrySourceTrigger.DefinitionStages.TriggerEventsDefinition,
-            RegistrySourceTrigger.DefinitionStages.RepositoryBranchAndAuth,
-            RegistrySourceTrigger.DefinitionStages.TriggerStatusDefinition,
-            RegistrySourceTrigger.DefinitionStages.SourceTriggerAttachable {
+        extends RegistrySourceTrigger.DefinitionStages.Blank, RegistrySourceTrigger.DefinitionStages.RepositoryUrl,
+        RegistrySourceTrigger.DefinitionStages.TriggerEventsDefinition,
+        RegistrySourceTrigger.DefinitionStages.RepositoryBranchAndAuth,
+        RegistrySourceTrigger.DefinitionStages.TriggerStatusDefinition,
+        RegistrySourceTrigger.DefinitionStages.SourceTriggerAttachable {
     }
 
     /** Container interface for all of the updates related to a container registry source trigger. */
-    interface Update
-        extends RegistrySourceTrigger.UpdateStages.SourceControlType,
-            RegistrySourceTrigger.UpdateStages.RepositoryUrl,
-            RegistrySourceTrigger.UpdateStages.TriggerEventsDefinition,
-            RegistrySourceTrigger.UpdateStages.RepositoryBranchAndAuth,
-            RegistrySourceTrigger.UpdateStages.TriggerStatusDefinition,
-            Settable<RegistryTask.Update> {
+    interface Update extends RegistrySourceTrigger.UpdateStages.SourceControlType,
+        RegistrySourceTrigger.UpdateStages.RepositoryUrl, RegistrySourceTrigger.UpdateStages.TriggerEventsDefinition,
+        RegistrySourceTrigger.UpdateStages.RepositoryBranchAndAuth,
+        RegistrySourceTrigger.UpdateStages.TriggerStatusDefinition, Settable<RegistryTask.Update> {
     }
 
     /** Container interface for defining a new trigger during a task update. */
-    interface UpdateDefinition
-        extends RegistrySourceTrigger.UpdateDefinitionStages.Blank,
-            RegistrySourceTrigger.UpdateDefinitionStages.RepositoryUrl,
-            RegistrySourceTrigger.UpdateDefinitionStages.TriggerEventsDefinition,
-            RegistrySourceTrigger.UpdateDefinitionStages.RepositoryBranchAndAuth,
-            RegistrySourceTrigger.UpdateDefinitionStages.TriggerStatusDefinition,
-            RegistrySourceTrigger.UpdateDefinitionStages.SourceTriggerAttachable,
-            Settable<RegistryTask.Update> {
+    interface UpdateDefinition extends RegistrySourceTrigger.UpdateDefinitionStages.Blank,
+        RegistrySourceTrigger.UpdateDefinitionStages.RepositoryUrl,
+        RegistrySourceTrigger.UpdateDefinitionStages.TriggerEventsDefinition,
+        RegistrySourceTrigger.UpdateDefinitionStages.RepositoryBranchAndAuth,
+        RegistrySourceTrigger.UpdateDefinitionStages.TriggerStatusDefinition,
+        RegistrySourceTrigger.UpdateDefinitionStages.SourceTriggerAttachable, Settable<RegistryTask.Update> {
     }
 
     /** Grouping of source trigger definition stages. */
@@ -162,8 +156,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
              * @param expiresIn time in seconds that the token remains valid.
              * @return the next stage of the container registry source trigger definition.
              */
-            SourceTriggerAttachable withRepositoryAuthentication(
-                TokenType tokenType, String token, String refreshToken, String scope, int expiresIn);
+            SourceTriggerAttachable withRepositoryAuthentication(TokenType tokenType, String token, String refreshToken,
+                String scope, int expiresIn);
         }
 
         /**
@@ -197,11 +191,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
          * The stage of the definition which contains all the minimum required inputs for the resource to be attached,
          * but also allows for any other optional settings to be specified.
          */
-        interface SourceTriggerAttachable
-            extends RepositoryBranchAndAuth,
-                TriggerEventsDefinition,
-                TriggerStatusDefinition,
-                Attachable.InDefinition<RegistryTask.DefinitionStages.TaskCreatable> {
+        interface SourceTriggerAttachable extends RepositoryBranchAndAuth, TriggerEventsDefinition,
+            TriggerStatusDefinition, Attachable.InDefinition<RegistryTask.DefinitionStages.TaskCreatable> {
         }
     }
 
@@ -229,8 +220,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
              * @param sourceControl the source control the user wishes to use.
              * @return the next stage of the container registry source trigger definition.
              */
-            Update withSourceControl(
-                com.azure.resourcemanager.containerregistry.models.SourceControlType sourceControl);
+            Update
+                withSourceControl(com.azure.resourcemanager.containerregistry.models.SourceControlType sourceControl);
         }
 
         /**
@@ -309,8 +300,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
              * @param expiresIn time in seconds that the token remains valid.
              * @return the next stage of the container registry source trigger definition.
              */
-            Update withRepositoryAuthentication(
-                TokenType tokenType, String token, String refreshToken, String scope, int expiresIn);
+            Update withRepositoryAuthentication(TokenType tokenType, String token, String refreshToken, String scope,
+                int expiresIn);
         }
 
         /** The stage of the container registry source trigger update allowing to specify the status of the trigger. */
@@ -443,8 +434,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
              * @param expiresIn time in seconds that the token remains valid.
              * @return the next stage of the container registry source trigger definition.
              */
-            SourceTriggerAttachable withRepositoryAuthentication(
-                TokenType tokenType, String token, String refreshToken, String scope, int expiresIn);
+            SourceTriggerAttachable withRepositoryAuthentication(TokenType tokenType, String token, String refreshToken,
+                String scope, int expiresIn);
         }
 
         /**
@@ -478,11 +469,8 @@ public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
          * The stage of the definition which contains all the minimum required inputs for the resource to be attached,
          * but also allows for any other optional settings to be specified.
          */
-        interface SourceTriggerAttachable
-            extends RepositoryBranchAndAuth,
-                TriggerEventsDefinition,
-                TriggerStatusDefinition,
-                Attachable.InUpdate<RegistryTask.Update> {
+        interface SourceTriggerAttachable extends RepositoryBranchAndAuth, TriggerEventsDefinition,
+            TriggerStatusDefinition, Attachable.InUpdate<RegistryTask.Update> {
         }
     }
 }

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkConfiguration model =
-            BinaryData.fromString("{\"isSecondaryIpEnabled\":false}").toObject(NetworkConfiguration.class);
+        NetworkConfiguration model
+            = BinaryData.fromString("{\"isSecondaryIpEnabled\":false}").toObject(NetworkConfiguration.class);
         Assertions.assertEquals(false, model.isSecondaryIpEnabled());
     }
 

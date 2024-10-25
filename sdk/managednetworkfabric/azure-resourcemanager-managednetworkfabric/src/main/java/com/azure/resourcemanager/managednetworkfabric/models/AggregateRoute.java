@@ -48,9 +48,8 @@ public final class AggregateRoute {
      */
     public void validate() {
         if (prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property prefix in model AggregateRoute"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property prefix in model AggregateRoute"));
         }
     }
 

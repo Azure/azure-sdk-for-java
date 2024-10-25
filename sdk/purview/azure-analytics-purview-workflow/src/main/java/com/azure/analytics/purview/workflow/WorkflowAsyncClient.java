@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowClientBuilder.class, isAsync = true)
 public final class WorkflowAsyncClient {
-    @Generated private final WorkflowsOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowAsyncClient class.
@@ -131,10 +132,10 @@ public final class WorkflowAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceWithResponse(
-            String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceWithResponseAsync(
-                workflowId, workflowCreateOrUpdateCommand, requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceWithResponse(String workflowId,
+        BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceWithResponseAsync(workflowId, workflowCreateOrUpdateCommand,
+            requestOptions);
     }
 
     /**
@@ -205,8 +206,8 @@ public final class WorkflowAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateWithResponse(
-            String workflowId, BinaryData workflowValidateQuery, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> validateWithResponse(String workflowId, BinaryData workflowValidateQuery,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateWithResponseAsync(workflowId, workflowValidateQuery, requestOptions);
     }
 }

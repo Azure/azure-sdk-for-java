@@ -10,8 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
  * Type representing authorization rule of an event hub namespace.
  */
 @Fluent
-public interface EventHubNamespaceAuthorizationRule
-        extends AuthorizationRule<EventHubNamespaceAuthorizationRule> {
+public interface EventHubNamespaceAuthorizationRule extends AuthorizationRule<EventHubNamespaceAuthorizationRule> {
     /**
      * @return the resource group of the namespace where parent event hub resides.
      */
@@ -66,9 +65,7 @@ public interface EventHubNamespaceAuthorizationRule
         /**
          * Stage of the authorization rule definition allowing to specify access policy.
          */
-        interface WithAccessPolicy extends AuthorizationRule
-                .DefinitionStages
-                .WithListenOrSendOrManage<WithCreate> {
+        interface WithAccessPolicy extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<WithCreate> {
 
         }
 
@@ -84,18 +81,14 @@ public interface EventHubNamespaceAuthorizationRule
     /**
      * The entirety of the event hub namespace authorization rule definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithNamespace,
-            DefinitionStages.WithAccessPolicy,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithNamespace,
+        DefinitionStages.WithAccessPolicy, DefinitionStages.WithCreate {
     }
 
     /**
      * The entirety of the event hub namespace authorization rule update.
      */
-    interface Update extends
-        Appliable<EventHubNamespaceAuthorizationRule>,
+    interface Update extends Appliable<EventHubNamespaceAuthorizationRule>,
         AuthorizationRule.UpdateStages.WithListenOrSendOrManage<EventHubNamespaceAuthorizationRule.Update> {
     }
 }

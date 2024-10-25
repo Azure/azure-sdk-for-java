@@ -214,9 +214,8 @@ public final class SparkConfigurationInfo {
      */
     public void validate() {
         if (configs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property configs in model SparkConfigurationInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property configs in model SparkConfigurationInfo"));
         }
     }
 

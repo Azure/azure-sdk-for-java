@@ -43,8 +43,8 @@ public class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToMa
      * @param desiredState the desiredState value to set.
      * @return the ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity object itself.
      */
-    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity withDesiredState(
-        DesiredState desiredState) {
+    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
+        withDesiredState(DesiredState desiredState) {
         this.desiredState = desiredState;
         return this;
     }

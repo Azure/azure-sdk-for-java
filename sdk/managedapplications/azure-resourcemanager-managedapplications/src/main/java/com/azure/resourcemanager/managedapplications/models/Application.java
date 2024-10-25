@@ -230,12 +230,8 @@ public interface Application {
     ApplicationInner innerModel();
 
     /** The entirety of the Application definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithKind,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithKind, DefinitionStages.WithCreate {
     }
 
     /** The Application definition stages. */
@@ -290,16 +286,10 @@ public interface Application {
          * The stage of the Application definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithManagedBy,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithPlan,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithManagedResourceGroupId,
-                DefinitionStages.WithApplicationDefinitionId,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithJitAccessPolicy {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithManagedBy,
+            DefinitionStages.WithSku, DefinitionStages.WithPlan, DefinitionStages.WithIdentity,
+            DefinitionStages.WithManagedResourceGroupId, DefinitionStages.WithApplicationDefinitionId,
+            DefinitionStages.WithParameters, DefinitionStages.WithJitAccessPolicy {
             /**
              * Executes the create request.
              *
@@ -428,16 +418,9 @@ public interface Application {
 
     /** The template for Application update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithManagedBy,
-            UpdateStages.WithSku,
-            UpdateStages.WithPlan,
-            UpdateStages.WithKind,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithManagedResourceGroupId,
-            UpdateStages.WithApplicationDefinitionId,
-            UpdateStages.WithParameters,
-            UpdateStages.WithJitAccessPolicy {
+        extends UpdateStages.WithTags, UpdateStages.WithManagedBy, UpdateStages.WithSku, UpdateStages.WithPlan,
+        UpdateStages.WithKind, UpdateStages.WithIdentity, UpdateStages.WithManagedResourceGroupId,
+        UpdateStages.WithApplicationDefinitionId, UpdateStages.WithParameters, UpdateStages.WithJitAccessPolicy {
         /**
          * Executes the update request.
          *

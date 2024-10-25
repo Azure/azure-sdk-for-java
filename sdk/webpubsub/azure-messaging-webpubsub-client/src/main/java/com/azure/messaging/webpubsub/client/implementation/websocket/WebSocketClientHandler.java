@@ -71,9 +71,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof FullHttpResponse) {
             FullHttpResponse response = (FullHttpResponse) msg;
             throw loggerReference.get()
-                .logExceptionAsError(new IllegalStateException(
-                    "Unexpected FullHttpResponse (getStatus=" + response.status() + ", content=" + response.content()
-                        .toString(CharsetUtil.UTF_8) + ')'));
+                .logExceptionAsError(new IllegalStateException("Unexpected FullHttpResponse (getStatus="
+                    + response.status() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')'));
         }
 
         WebSocketFrame frame = (WebSocketFrame) msg;

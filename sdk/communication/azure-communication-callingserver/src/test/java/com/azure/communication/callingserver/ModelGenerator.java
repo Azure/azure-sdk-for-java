@@ -8,19 +8,15 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callingserver.implementation.models.CommunicationUserIdentifierModel;
 
-
 public class ModelGenerator {
     static CommunicationIdentifierModel generateUserIdentifierModel(String userId) {
-        return new CommunicationIdentifierModel()
-            .setRawId("rawId")
+        return new CommunicationIdentifierModel().setRawId("rawId")
             .setKind(CommunicationIdentifierModelKind.COMMUNICATION_USER)
-            .setCommunicationUser(new CommunicationUserIdentifierModel()
-                .setId(userId));
+            .setCommunicationUser(new CommunicationUserIdentifierModel().setId(userId));
     }
 
     static AcsCallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted) {
-        return new AcsCallParticipantInternal()
-            .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
+        return new AcsCallParticipantInternal().setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
             .setIsMuted(isMuted);
     }
 }

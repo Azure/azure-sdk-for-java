@@ -48,14 +48,19 @@ public final class AccountsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Account response = manager.accounts().define("bznorcjxvsnby").withRegion("fblj").withExistingResourceGroup("gr")
+        Account response = manager.accounts()
+            .define("bznorcjxvsnby")
+            .withRegion("fblj")
+            .withExistingResourceGroup("gr")
             .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
             .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.ENABLED))
+                .withScalableExecution(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.ENABLED))
             .create();
 
         Assertions.assertEquals("txgcpodgmaajr", response.location());

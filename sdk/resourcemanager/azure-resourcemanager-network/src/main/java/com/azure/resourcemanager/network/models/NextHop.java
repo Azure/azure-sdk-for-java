@@ -40,11 +40,8 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
     String routeTableId();
 
     /** The entirety of next hop parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResource,
-            DefinitionStages.WithSourceIP,
-            DefinitionStages.WithDestinationIP,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithTargetResource, DefinitionStages.WithSourceIP,
+        DefinitionStages.WithDestinationIP, DefinitionStages.WithExecute {
     }
 
     /** Grouping of next hop definition stages. */

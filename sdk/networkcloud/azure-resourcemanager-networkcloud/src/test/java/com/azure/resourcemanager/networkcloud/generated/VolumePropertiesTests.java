@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"attachedTo\":[\"bbpneqvcwwy\",\"urmochpprprs\",\"mo\",\"ayzejnhlbkpbz\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ljhah\",\"provisioningState\":\"Failed\",\"serialNumber\":\"h\",\"sizeMiB\":2977319405795581090}")
-                .toObject(VolumeProperties.class);
+        VolumeProperties model = BinaryData.fromString(
+            "{\"attachedTo\":[\"bbpneqvcwwy\",\"urmochpprprs\",\"mo\",\"ayzejnhlbkpbz\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ljhah\",\"provisioningState\":\"Failed\",\"serialNumber\":\"h\",\"sizeMiB\":2977319405795581090}")
+            .toObject(VolumeProperties.class);
         Assertions.assertEquals(2977319405795581090L, model.sizeMiB());
     }
 

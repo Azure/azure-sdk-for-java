@@ -208,10 +208,8 @@ public final class SparkConfigurationResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SparkConfigurationResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SparkConfigurationResourceInner"));
         } else {
             innerProperties().validate();
         }

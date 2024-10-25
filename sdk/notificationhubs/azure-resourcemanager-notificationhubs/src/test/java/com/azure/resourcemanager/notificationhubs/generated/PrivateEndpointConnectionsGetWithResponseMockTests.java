@@ -46,12 +46,14 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
-            .getWithResponse("okixrjqcir", "zpfrla", "szrnwo", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("okixrjqcir", "zpfrla", "szrnwo", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(PrivateEndpointConnectionProvisioningState.DELETED,
             response.properties().provisioningState());

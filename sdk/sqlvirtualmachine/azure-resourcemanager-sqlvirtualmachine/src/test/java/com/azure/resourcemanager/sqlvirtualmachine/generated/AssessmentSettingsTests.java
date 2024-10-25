@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AssessmentSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssessmentSettings model =
-            BinaryData
-                .fromString(
-                    "{\"enable\":true,\"runImmediately\":true,\"schedule\":{\"enable\":false,\"weeklyInterval\":972559338,\"monthlyOccurrence\":364064517,\"dayOfWeek\":\"Saturday\",\"startTime\":\"auu\"}}")
-                .toObject(AssessmentSettings.class);
+        AssessmentSettings model = BinaryData.fromString(
+            "{\"enable\":true,\"runImmediately\":true,\"schedule\":{\"enable\":false,\"weeklyInterval\":972559338,\"monthlyOccurrence\":364064517,\"dayOfWeek\":\"Saturday\",\"startTime\":\"auu\"}}")
+            .toObject(AssessmentSettings.class);
         Assertions.assertEquals(true, model.enable());
         Assertions.assertEquals(true, model.runImmediately());
         Assertions.assertEquals(false, model.schedule().enable());
@@ -29,17 +27,13 @@ public final class AssessmentSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssessmentSettings model =
-            new AssessmentSettings()
-                .withEnable(true)
-                .withRunImmediately(true)
-                .withSchedule(
-                    new Schedule()
-                        .withEnable(false)
-                        .withWeeklyInterval(972559338)
-                        .withMonthlyOccurrence(364064517)
-                        .withDayOfWeek(AssessmentDayOfWeek.SATURDAY)
-                        .withStartTime("auu"));
+        AssessmentSettings model = new AssessmentSettings().withEnable(true)
+            .withRunImmediately(true)
+            .withSchedule(new Schedule().withEnable(false)
+                .withWeeklyInterval(972559338)
+                .withMonthlyOccurrence(364064517)
+                .withDayOfWeek(AssessmentDayOfWeek.SATURDAY)
+                .withStartTime("auu"));
         model = BinaryData.fromObject(model).toObject(AssessmentSettings.class);
         Assertions.assertEquals(true, model.enable());
         Assertions.assertEquals(true, model.runImmediately());

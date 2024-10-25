@@ -195,8 +195,8 @@ public final class ManagementGroupDetails {
      * @param managementGroupAncestorsChain the managementGroupAncestorsChain value to set.
      * @return the ManagementGroupDetails object itself.
      */
-    public ManagementGroupDetails withManagementGroupAncestorsChain(
-        List<ManagementGroupPathElement> managementGroupAncestorsChain) {
+    public ManagementGroupDetails
+        withManagementGroupAncestorsChain(List<ManagementGroupPathElement> managementGroupAncestorsChain) {
         this.managementGroupAncestorsChain = managementGroupAncestorsChain;
         return this;
     }

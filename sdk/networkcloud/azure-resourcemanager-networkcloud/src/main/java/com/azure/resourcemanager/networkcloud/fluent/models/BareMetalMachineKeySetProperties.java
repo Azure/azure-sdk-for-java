@@ -270,34 +270,24 @@ public final class BareMetalMachineKeySetProperties {
      */
     public void validate() {
         if (azureGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureGroupId in model BareMetalMachineKeySetProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property azureGroupId in model BareMetalMachineKeySetProperties"));
         }
         if (expiration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expiration in model BareMetalMachineKeySetProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expiration in model BareMetalMachineKeySetProperties"));
         }
         if (jumpHostsAllowed() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jumpHostsAllowed in model BareMetalMachineKeySetProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property jumpHostsAllowed in model BareMetalMachineKeySetProperties"));
         }
         if (privilegeLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privilegeLevel in model BareMetalMachineKeySetProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privilegeLevel in model BareMetalMachineKeySetProperties"));
         }
         if (userList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userList in model BareMetalMachineKeySetProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userList in model BareMetalMachineKeySetProperties"));
         } else {
             userList().forEach(e -> e.validate());
         }

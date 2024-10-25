@@ -30,8 +30,8 @@ public interface IpCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(
-        String resourceGroupName, String ipCommunityName, IpCommunityInner body);
+    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(String resourceGroupName,
+        String ipCommunityName, IpCommunityInner body);
 
     /**
      * Create an IP Community.
@@ -48,8 +48,8 @@ public interface IpCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(
-        String resourceGroupName, String ipCommunityName, IpCommunityInner body, Context context);
+    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(String resourceGroupName,
+        String ipCommunityName, IpCommunityInner body, Context context);
 
     /**
      * Create an IP Community.
@@ -98,8 +98,8 @@ public interface IpCommunitiesClient {
      * @return the IP Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpCommunityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipCommunityName, Context context);
+    Response<IpCommunityInner> getByResourceGroupWithResponse(String resourceGroupName, String ipCommunityName,
+        Context context);
 
     /**
      * Gets an IP Community.
@@ -130,8 +130,8 @@ public interface IpCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(
-        String resourceGroupName, String ipCommunityName, IpCommunityPatch body);
+    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(String resourceGroupName,
+        String ipCommunityName, IpCommunityPatch body);
 
     /**
      * Updates an IP Community.
@@ -148,8 +148,8 @@ public interface IpCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(
-        String resourceGroupName, String ipCommunityName, IpCommunityPatch body, Context context);
+    SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(String resourceGroupName,
+        String ipCommunityName, IpCommunityPatch body, Context context);
 
     /**
      * Updates an IP Community.

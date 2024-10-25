@@ -148,7 +148,9 @@ import static com.azure.security.keyvault.secrets.implementation.models.SecretsM
  * @see PollerFlux
  * @see PagedFlux
  */
-@ServiceClient(builder = SecretClientBuilder.class, isAsync = true,
+@ServiceClient(
+    builder = SecretClientBuilder.class,
+    isAsync = true,
     serviceInterfaces = SecretClientImpl.SecretClientService.class)
 public final class SecretAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(SecretAsyncClient.class);
@@ -287,12 +289,13 @@ public final class SecretAsyncClient {
         try {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
-                return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        null, null, null)
+                return implClient
+                    .setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(), null, null, null)
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
-                return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
+                return implClient
+                    .setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
                         secretProperties.getTags(), secretProperties.getContentType(),
                         createSecretAttributes(secretProperties))
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
@@ -514,9 +517,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
-            return implClient.updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(),
-                secretProperties.getVersion(), secretProperties.getContentType(),
-                    createSecretAttributes(secretProperties), secretProperties.getTags())
+            return implClient
+                .updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(), secretProperties.getVersion(),
+                    secretProperties.getContentType(), createSecretAttributes(secretProperties),
+                    secretProperties.getTags())
                 .map(response -> new SimpleResponse<>(response, createSecretProperties(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -567,11 +571,11 @@ public final class SecretAsyncClient {
             : ex;
     }
 
-    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> deletePollOperation(
-        String name) {
+    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>>
+        deletePollOperation(String name) {
         return pollingContext -> implClient.getDeletedSecretAsync(vaultUrl, name)
             .map(bundle -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createDeletedSecret(bundle)))
+                createDeletedSecret(bundle)))
             .onErrorResume(HttpResponseException.class, exception -> {
                 if (exception.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -749,8 +753,8 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1), recoverActivationOperation(name),
-            recoverPollOperation(name), (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
+        return new PollerFlux<>(Duration.ofSeconds(1), recoverActivationOperation(name), recoverPollOperation(name),
+            (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
@@ -766,8 +770,8 @@ public final class SecretAsyncClient {
             : ex;
     }
 
-    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> recoverPollOperation(
-        String name) {
+    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>>
+        recoverPollOperation(String name) {
         return pollingContext -> implClient.getSecretWithResponseAsync(vaultUrl, name, null)
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultSecret(response.getValue())))
@@ -950,8 +954,9 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
-        return new PagedFlux<>(maxResults -> implClient.getSecretsSinglePageAsync(vaultUrl, maxResults)
-            .map(SecretAsyncClient::mapSecretItemPage),
+        return new PagedFlux<>(
+            maxResults -> implClient.getSecretsSinglePageAsync(vaultUrl, maxResults)
+                .map(SecretAsyncClient::mapSecretItemPage),
             (continuationToken, maxResults) -> implClient.getSecretsNextSinglePageAsync(continuationToken, vaultUrl)
                 .map(SecretAsyncClient::mapSecretItemPage));
     }
@@ -976,10 +981,12 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        return new PagedFlux<>(maxResults -> implClient.getDeletedSecretsSinglePageAsync(vaultUrl, maxResults)
-            .map(SecretAsyncClient::mapDeletedSecretItemPage),
-            (continuationToken, maxResults) -> implClient.getDeletedSecretsNextSinglePageAsync(continuationToken,
-                vaultUrl).map(SecretAsyncClient::mapDeletedSecretItemPage));
+        return new PagedFlux<>(
+            maxResults -> implClient.getDeletedSecretsSinglePageAsync(vaultUrl, maxResults)
+                .map(SecretAsyncClient::mapDeletedSecretItemPage),
+            (continuationToken, maxResults) -> implClient
+                .getDeletedSecretsNextSinglePageAsync(continuationToken, vaultUrl)
+                .map(SecretAsyncClient::mapDeletedSecretItemPage));
     }
 
     static PagedResponse<DeletedSecret> mapDeletedSecretItemPage(PagedResponse<DeletedSecretItem> page) {
@@ -1021,10 +1028,12 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
-        return new PagedFlux<>(maxResults -> implClient.getSecretVersionsSinglePageAsync(vaultUrl, name, maxResults)
-            .map(SecretAsyncClient::mapSecretItemPage),
-            (continuationToken, maxResults) -> implClient.getSecretVersionsNextSinglePageAsync(continuationToken,
-                vaultUrl).map(SecretAsyncClient::mapSecretItemPage));
+        return new PagedFlux<>(
+            maxResults -> implClient.getSecretVersionsSinglePageAsync(vaultUrl, name, maxResults)
+                .map(SecretAsyncClient::mapSecretItemPage),
+            (continuationToken, maxResults) -> implClient
+                .getSecretVersionsNextSinglePageAsync(continuationToken, vaultUrl)
+                .map(SecretAsyncClient::mapSecretItemPage));
     }
 
     static PagedResponse<SecretProperties> mapSecretItemPage(PagedResponse<SecretItem> page) {

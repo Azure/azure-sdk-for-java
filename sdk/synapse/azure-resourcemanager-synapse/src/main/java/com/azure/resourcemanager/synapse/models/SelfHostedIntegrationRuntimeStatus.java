@@ -24,8 +24,8 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      * Self-hosted integration runtime status type properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
-        new SelfHostedIntegrationRuntimeStatusTypeProperties();
+    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties
+        = new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
     /** Creates an instance of SelfHostedIntegrationRuntimeStatus class. */
     public SelfHostedIntegrationRuntimeStatus() {
@@ -301,10 +301,8 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
         } else {
             innerTypeProperties().validate();
         }

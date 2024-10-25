@@ -75,27 +75,21 @@ public final class ApplianceListKeysResultsInner {
      */
     public void validate() {
         if (artifactProfiles() != null) {
-            artifactProfiles()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            artifactProfiles().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (kubeconfigs() != null) {
             kubeconfigs().forEach(e -> e.validate());
         }
         if (sshKeys() != null) {
-            sshKeys()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            sshKeys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

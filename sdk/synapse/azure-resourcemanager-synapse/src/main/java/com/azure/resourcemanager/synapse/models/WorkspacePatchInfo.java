@@ -123,8 +123,8 @@ public final class WorkspacePatchInfo {
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspacePatchInfo object itself.
      */
-    public WorkspacePatchInfo withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspacePatchInfo
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspacePatchProperties();
         }
@@ -147,8 +147,8 @@ public final class WorkspacePatchInfo {
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspacePatchInfo object itself.
      */
-    public WorkspacePatchInfo withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspacePatchInfo
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspacePatchProperties();
         }

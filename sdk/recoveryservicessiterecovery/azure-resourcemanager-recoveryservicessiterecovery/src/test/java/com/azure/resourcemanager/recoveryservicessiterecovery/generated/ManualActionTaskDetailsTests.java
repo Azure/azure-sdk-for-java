@@ -22,7 +22,8 @@ public final class ManualActionTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManualActionTaskDetails model = new ManualActionTaskDetails().withName("fajfreprfvmki")
-            .withInstructions("teyrqshi").withObservation("cejo");
+            .withInstructions("teyrqshi")
+            .withObservation("cejo");
         model = BinaryData.fromObject(model).toObject(ManualActionTaskDetails.class);
         Assertions.assertEquals("fajfreprfvmki", model.name());
         Assertions.assertEquals("teyrqshi", model.instructions());

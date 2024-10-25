@@ -64,8 +64,8 @@ public interface CommunicationsGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a CommunicationsGateway along with {@link Response}.
      */
-    Response<CommunicationsGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    Response<CommunicationsGateway> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationsGatewayName, Context context);
 
     /**
      * Get a CommunicationsGateway.

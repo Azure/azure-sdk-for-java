@@ -21,26 +21,25 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String spName = generateRandomResourceName("sp", 20);
         // Disable `$.appId` sanitizer for this test
         interceptorManager.removeSanitizers("AZSDK3432");
-        ServicePrincipal sp =
-            authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
+        ServicePrincipal sp = authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 
         try {
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
-            RoleAssignment roleAssignment =
-                authorizationManager
-                    .roleAssignments()
-                    .define(roleAssignmentName)
-                    .forServicePrincipal(sp)
-                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(resourceManager.subscriptionId())
-                    .withDescription("contributor role")
-                    .create();
+            RoleAssignment roleAssignment = authorizationManager.roleAssignments()
+                .define(roleAssignmentName)
+                .forServicePrincipal(sp)
+                .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                .withSubscriptionScope(resourceManager.subscriptionId())
+                .withDescription("contributor role")
+                .create();
 
             Assertions.assertNotNull(roleAssignment);
 
             List<RoleAssignment> roleAssignments = authorizationManager.roleAssignments()
-                .listByServicePrincipal(sp.id()).stream().collect(Collectors.toList());
+                .listByServicePrincipal(sp.id())
+                .stream()
+                .collect(Collectors.toList());
 
             Assertions.assertEquals(1, roleAssignments.size());
             RoleAssignment roleAssignment1 = roleAssignments.iterator().next();
@@ -54,8 +53,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
             Assertions.assertEquals("contributor role", roleAssignment1.description());
         } finally {
             authorizationManager.servicePrincipals().deleteById(sp.id());
-            authorizationManager
-                .applications()
+            authorizationManager.applications()
                 .deleteById(authorizationManager.applications().getByName(sp.applicationId()).id());
         }
     }

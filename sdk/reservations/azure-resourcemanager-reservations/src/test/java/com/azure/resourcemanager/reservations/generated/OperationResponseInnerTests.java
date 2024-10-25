@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"mtxpsiebtfh\",\"isDataAction\":false,\"display\":{\"provider\":\"pskrdqmh\",\"resource\":\"dhtldwkyz\",\"operation\":\"utknc\",\"description\":\"cwsvlxotog\"},\"origin\":\"rupqsxvnmicy\",\"properties\":\"dataceoveilovno\"}")
-                .toObject(OperationResponseInner.class);
+        OperationResponseInner model = BinaryData.fromString(
+            "{\"name\":\"mtxpsiebtfh\",\"isDataAction\":false,\"display\":{\"provider\":\"pskrdqmh\",\"resource\":\"dhtldwkyz\",\"operation\":\"utknc\",\"description\":\"cwsvlxotog\"},\"origin\":\"rupqsxvnmicy\",\"properties\":\"dataceoveilovno\"}")
+            .toObject(OperationResponseInner.class);
         Assertions.assertEquals("mtxpsiebtfh", model.name());
         Assertions.assertEquals(false, model.isDataAction());
         Assertions.assertEquals("pskrdqmh", model.display().provider());
@@ -28,18 +26,14 @@ public final class OperationResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResponseInner model =
-            new OperationResponseInner()
-                .withName("mtxpsiebtfh")
-                .withIsDataAction(false)
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("pskrdqmh")
-                        .withResource("dhtldwkyz")
-                        .withOperation("utknc")
-                        .withDescription("cwsvlxotog"))
-                .withOrigin("rupqsxvnmicy")
-                .withProperties("dataceoveilovno");
+        OperationResponseInner model = new OperationResponseInner().withName("mtxpsiebtfh")
+            .withIsDataAction(false)
+            .withDisplay(new OperationDisplay().withProvider("pskrdqmh")
+                .withResource("dhtldwkyz")
+                .withOperation("utknc")
+                .withDescription("cwsvlxotog"))
+            .withOrigin("rupqsxvnmicy")
+            .withProperties("dataceoveilovno");
         model = BinaryData.fromObject(model).toObject(OperationResponseInner.class);
         Assertions.assertEquals("mtxpsiebtfh", model.name());
         Assertions.assertEquals(false, model.isDataAction());

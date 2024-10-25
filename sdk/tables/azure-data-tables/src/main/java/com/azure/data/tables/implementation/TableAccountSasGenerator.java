@@ -38,7 +38,7 @@ public class TableAccountSasGenerator {
      * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
      */
     public TableAccountSasGenerator(TableAccountSasSignatureValues sasValues,
-                                    AzureNamedKeyCredential azureNamedKeyCredential) {
+        AzureNamedKeyCredential azureNamedKeyCredential) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
         Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
         Objects.requireNonNull(sasValues.getServices(), "'services' in 'sasValues' cannot be null.");
@@ -77,17 +77,13 @@ public class TableAccountSasGenerator {
     }
 
     private String stringToSign(final AzureNamedKeyCredential azureNamedKeyCredential) {
-        return String.join("\n",
-            azureNamedKeyCredential.getAzureNamedKey().getName(),
+        return String.join("\n", azureNamedKeyCredential.getAzureNamedKey().getName(),
             TableAccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
+            this.services, resourceTypes,
             this.startTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
-            "" // Account SAS requires an additional newline character
+            this.protocol == null ? "" : this.protocol.toString(), this.version, "" // Account SAS requires an additional newline character
         );
     }
 

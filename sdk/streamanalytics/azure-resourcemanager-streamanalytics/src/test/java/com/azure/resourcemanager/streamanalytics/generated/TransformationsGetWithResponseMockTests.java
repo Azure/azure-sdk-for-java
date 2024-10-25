@@ -44,12 +44,14 @@ public final class TransformationsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Transformation response = manager.transformations()
-            .getWithResponse("auy", "vluwmncsttij", "y", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("auy", "vluwmncsttij", "y", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("xz", response.id());
         Assertions.assertEquals("vhxnk", response.name());

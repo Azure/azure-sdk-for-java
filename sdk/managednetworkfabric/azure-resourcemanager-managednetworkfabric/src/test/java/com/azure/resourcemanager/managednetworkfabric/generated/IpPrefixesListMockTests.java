@@ -33,43 +33,33 @@ public final class IpPrefixesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4323285940907635783,\"networkPrefix\":\"vzfznfgpb\",\"condition\":\"Range\",\"subnetMaskLength\":\"pympdjieask\"}],\"annotation\":\"qclnfusrgnoskkhb\"},\"location\":\"phlyyuahvyeikb\",\"tags\":{\"jnohafwm\":\"rurgbqaucpck\",\"xtugpeamet\":\"pgjl\",\"m\":\"dwxf\"},\"id\":\"xccfegsav\",\"name\":\"ghoucvka\",\"type\":\"dhoo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4323285940907635783,\"networkPrefix\":\"vzfznfgpb\",\"condition\":\"Range\",\"subnetMaskLength\":\"pympdjieask\"}],\"annotation\":\"qclnfusrgnoskkhb\"},\"location\":\"phlyyuahvyeikb\",\"tags\":{\"jnohafwm\":\"rurgbqaucpck\",\"xtugpeamet\":\"pgjl\",\"m\":\"dwxf\"},\"id\":\"xccfegsav\",\"name\":\"ghoucvka\",\"type\":\"dhoo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IpPrefix> response = manager.ipPrefixes().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("phlyyuahvyeikb", response.iterator().next().location());
         Assertions.assertEquals("rurgbqaucpck", response.iterator().next().tags().get("jnohafwm"));
-        Assertions
-            .assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().ipPrefixRules().get(0).action());
-        Assertions
-            .assertEquals(4323285940907635783L, response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT,
+            response.iterator().next().ipPrefixRules().get(0).action());
+        Assertions.assertEquals(4323285940907635783L,
+            response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
         Assertions.assertEquals("vzfznfgpb", response.iterator().next().ipPrefixRules().get(0).networkPrefix());
         Assertions.assertEquals(Condition.RANGE, response.iterator().next().ipPrefixRules().get(0).condition());
         Assertions.assertEquals("pympdjieask", response.iterator().next().ipPrefixRules().get(0).subnetMaskLength());

@@ -44,15 +44,12 @@ public final class AuthenticationRecord {
 
     private String clientId;
 
-
-    AuthenticationRecord() { }
+    AuthenticationRecord() {
+    }
 
     AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
-        this(authenticationResult.account().environment(),
-            authenticationResult.account().homeAccountId(),
-            authenticationResult.account().username(),
-            tenantId,
-            clientId);
+        this(authenticationResult.account().environment(), authenticationResult.account().homeAccountId(),
+            authenticationResult.account().username(), tenantId, clientId);
     }
 
     AuthenticationRecord(String authority, String homeAccountId, String userName, String tenantId, String clientId) {

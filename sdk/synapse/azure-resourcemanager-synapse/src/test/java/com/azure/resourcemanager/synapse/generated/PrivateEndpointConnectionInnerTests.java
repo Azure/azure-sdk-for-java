@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"aodxo\"},\"privateLinkServiceConnectionState\":{\"status\":\"dxkqpx\",\"description\":\"ajionpimexgstxg\",\"actionsRequired\":\"odgmaajrmvdjwz\"},\"provisioningState\":\"ovmclwhijcoejct\"},\"id\":\"zaqsqsycbkbfk\",\"name\":\"ukdkexxppofmxa\",\"type\":\"c\"}")
-                .toObject(PrivateEndpointConnectionInner.class);
+        PrivateEndpointConnectionInner model = BinaryData.fromString(
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"aodxo\"},\"privateLinkServiceConnectionState\":{\"status\":\"dxkqpx\",\"description\":\"ajionpimexgstxg\",\"actionsRequired\":\"odgmaajrmvdjwz\"},\"provisioningState\":\"ovmclwhijcoejct\"},\"id\":\"zaqsqsycbkbfk\",\"name\":\"ukdkexxppofmxa\",\"type\":\"c\"}")
+            .toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals("dxkqpx", model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("ajionpimexgstxg", model.privateLinkServiceConnectionState().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionInner model =
-            new PrivateEndpointConnectionInner()
-                .withPrivateEndpoint(new PrivateEndpoint())
+        PrivateEndpointConnectionInner model
+            = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus("dxkqpx").withDescription("ajionpimexgstxg"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);

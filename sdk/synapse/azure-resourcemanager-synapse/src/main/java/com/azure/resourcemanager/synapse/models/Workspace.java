@@ -237,17 +237,16 @@ public interface Workspace {
     WorkspaceInner innerModel();
 
     /** The entirety of the Workspace definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The Workspace definition stages. */
     interface DefinitionStages {
         /** The first stage of the Workspace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Workspace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -266,6 +265,7 @@ public interface Workspace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Workspace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -276,28 +276,20 @@ public interface Workspace {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithDefaultDataLakeStorage,
-                DefinitionStages.WithSqlAdministratorLoginPassword,
-                DefinitionStages.WithManagedResourceGroupName,
-                DefinitionStages.WithSqlAdministratorLogin,
-                DefinitionStages.WithVirtualNetworkProfile,
-                DefinitionStages.WithManagedVirtualNetwork,
-                DefinitionStages.WithPrivateEndpointConnections,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithManagedVirtualNetworkSettings,
-                DefinitionStages.WithWorkspaceRepositoryConfiguration,
-                DefinitionStages.WithPurviewConfiguration,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithCspWorkspaceAdminProperties,
-                DefinitionStages.WithAzureADOnlyAuthentication,
-                DefinitionStages.WithTrustedServiceBypassEnabled {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithSqlAdministratorLoginPassword,
+            DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithSqlAdministratorLogin,
+            DefinitionStages.WithVirtualNetworkProfile, DefinitionStages.WithManagedVirtualNetwork,
+            DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithEncryption,
+            DefinitionStages.WithManagedVirtualNetworkSettings, DefinitionStages.WithWorkspaceRepositoryConfiguration,
+            DefinitionStages.WithPurviewConfiguration, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithCspWorkspaceAdminProperties, DefinitionStages.WithAzureADOnlyAuthentication,
+            DefinitionStages.WithTrustedServiceBypassEnabled {
             /**
              * Executes the create request.
              *
@@ -313,6 +305,7 @@ public interface Workspace {
              */
             Workspace create(Context context);
         }
+
         /** The stage of the Workspace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -323,6 +316,7 @@ public interface Workspace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -333,6 +327,7 @@ public interface Workspace {
              */
             WithCreate withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the Workspace definition allowing to specify defaultDataLakeStorage. */
         interface WithDefaultDataLakeStorage {
             /**
@@ -343,6 +338,7 @@ public interface Workspace {
              */
             WithCreate withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage);
         }
+
         /** The stage of the Workspace definition allowing to specify sqlAdministratorLoginPassword. */
         interface WithSqlAdministratorLoginPassword {
             /**
@@ -353,6 +349,7 @@ public interface Workspace {
              */
             WithCreate withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword);
         }
+
         /** The stage of the Workspace definition allowing to specify managedResourceGroupName. */
         interface WithManagedResourceGroupName {
             /**
@@ -369,6 +366,7 @@ public interface Workspace {
              */
             WithCreate withManagedResourceGroupName(String managedResourceGroupName);
         }
+
         /** The stage of the Workspace definition allowing to specify sqlAdministratorLogin. */
         interface WithSqlAdministratorLogin {
             /**
@@ -379,6 +377,7 @@ public interface Workspace {
              */
             WithCreate withSqlAdministratorLogin(String sqlAdministratorLogin);
         }
+
         /** The stage of the Workspace definition allowing to specify virtualNetworkProfile. */
         interface WithVirtualNetworkProfile {
             /**
@@ -389,6 +388,7 @@ public interface Workspace {
              */
             WithCreate withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile);
         }
+
         /** The stage of the Workspace definition allowing to specify managedVirtualNetwork. */
         interface WithManagedVirtualNetwork {
             /**
@@ -401,6 +401,7 @@ public interface Workspace {
              */
             WithCreate withManagedVirtualNetwork(String managedVirtualNetwork);
         }
+
         /** The stage of the Workspace definition allowing to specify privateEndpointConnections. */
         interface WithPrivateEndpointConnections {
             /**
@@ -411,6 +412,7 @@ public interface Workspace {
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
+
         /** The stage of the Workspace definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -421,6 +423,7 @@ public interface Workspace {
              */
             WithCreate withEncryption(EncryptionDetails encryption);
         }
+
         /** The stage of the Workspace definition allowing to specify managedVirtualNetworkSettings. */
         interface WithManagedVirtualNetworkSettings {
             /**
@@ -431,6 +434,7 @@ public interface Workspace {
              */
             WithCreate withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
         }
+
         /** The stage of the Workspace definition allowing to specify workspaceRepositoryConfiguration. */
         interface WithWorkspaceRepositoryConfiguration {
             /**
@@ -439,9 +443,10 @@ public interface Workspace {
              * @param workspaceRepositoryConfiguration Git integration settings.
              * @return the next definition stage.
              */
-            WithCreate withWorkspaceRepositoryConfiguration(
-                WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
+            WithCreate
+                withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
         }
+
         /** The stage of the Workspace definition allowing to specify purviewConfiguration. */
         interface WithPurviewConfiguration {
             /**
@@ -452,6 +457,7 @@ public interface Workspace {
              */
             WithCreate withPurviewConfiguration(PurviewConfiguration purviewConfiguration);
         }
+
         /** The stage of the Workspace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -462,6 +468,7 @@ public interface Workspace {
              */
             WithCreate withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Workspace definition allowing to specify cspWorkspaceAdminProperties. */
         interface WithCspWorkspaceAdminProperties {
             /**
@@ -473,6 +480,7 @@ public interface Workspace {
              */
             WithCreate withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties);
         }
+
         /** The stage of the Workspace definition allowing to specify azureADOnlyAuthentication. */
         interface WithAzureADOnlyAuthentication {
             /**
@@ -485,6 +493,7 @@ public interface Workspace {
              */
             WithCreate withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication);
         }
+
         /** The stage of the Workspace definition allowing to specify trustedServiceBypassEnabled. */
         interface WithTrustedServiceBypassEnabled {
             /**
@@ -496,6 +505,7 @@ public interface Workspace {
             WithCreate withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled);
         }
     }
+
     /**
      * Begins update for the Workspace resource.
      *
@@ -505,14 +515,9 @@ public interface Workspace {
 
     /** The template for Workspace update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSqlAdministratorLoginPassword,
-            UpdateStages.WithManagedVirtualNetworkSettings,
-            UpdateStages.WithWorkspaceRepositoryConfiguration,
-            UpdateStages.WithPurviewConfiguration,
-            UpdateStages.WithEncryption,
-            UpdateStages.WithPublicNetworkAccess {
+        extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSqlAdministratorLoginPassword,
+        UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithWorkspaceRepositoryConfiguration,
+        UpdateStages.WithPurviewConfiguration, UpdateStages.WithEncryption, UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -528,6 +533,7 @@ public interface Workspace {
          */
         Workspace apply(Context context);
     }
+
     /** The Workspace update stages. */
     interface UpdateStages {
         /** The stage of the Workspace update allowing to specify tags. */
@@ -540,6 +546,7 @@ public interface Workspace {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -550,6 +557,7 @@ public interface Workspace {
              */
             Update withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the Workspace update allowing to specify sqlAdministratorLoginPassword. */
         interface WithSqlAdministratorLoginPassword {
             /**
@@ -560,6 +568,7 @@ public interface Workspace {
              */
             Update withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword);
         }
+
         /** The stage of the Workspace update allowing to specify managedVirtualNetworkSettings. */
         interface WithManagedVirtualNetworkSettings {
             /**
@@ -570,6 +579,7 @@ public interface Workspace {
              */
             Update withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings);
         }
+
         /** The stage of the Workspace update allowing to specify workspaceRepositoryConfiguration. */
         interface WithWorkspaceRepositoryConfiguration {
             /**
@@ -578,9 +588,10 @@ public interface Workspace {
              * @param workspaceRepositoryConfiguration Git integration settings.
              * @return the next definition stage.
              */
-            Update withWorkspaceRepositoryConfiguration(
-                WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
+            Update
+                withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration);
         }
+
         /** The stage of the Workspace update allowing to specify purviewConfiguration. */
         interface WithPurviewConfiguration {
             /**
@@ -591,6 +602,7 @@ public interface Workspace {
              */
             Update withPurviewConfiguration(PurviewConfiguration purviewConfiguration);
         }
+
         /** The stage of the Workspace update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -601,6 +613,7 @@ public interface Workspace {
              */
             Update withEncryption(EncryptionDetails encryption);
         }
+
         /** The stage of the Workspace update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -612,6 +625,7 @@ public interface Workspace {
             Update withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

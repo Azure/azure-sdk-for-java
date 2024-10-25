@@ -20,8 +20,7 @@ public final class OperationsDiscoveriesImpl implements OperationsDiscoveries {
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    public OperationsDiscoveriesImpl(
-        OperationsDiscoveriesClient innerClient,
+    public OperationsDiscoveriesImpl(OperationsDiscoveriesClient innerClient,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class OperationsDiscoveriesImpl implements OperationsDiscoveries {
     public Response<OperationsDiscoveryCollection> getWithResponse(Context context) {
         Response<OperationsDiscoveryCollectionInner> inner = this.serviceClient().getWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationsDiscoveryCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -15,32 +15,32 @@ public final class ReplicationObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationObject model = BinaryData.fromString(
-            "{\"replicationId\":\"ftpvjzbexil\",\"endpointType\":\"src\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"q\",\"remotePath\":{\"externalHostName\":\"wpmqt\",\"serverName\":\"ruoujmk\",\"volumeName\":\"jhwqytjrybnw\"},\"remoteVolumeRegion\":\"wgdrjervnaenqp\"}")
+            "{\"replicationId\":\"exilzznfqqnvwpmq\",\"endpointType\":\"src\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"jmkcjhwqytj\",\"remotePath\":{\"externalHostName\":\"bnw\",\"serverName\":\"ewgdrjervn\",\"volumeName\":\"enq\"},\"remoteVolumeRegion\":\"hin\"}")
             .toObject(ReplicationObject.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
-        Assertions.assertEquals("q", model.remoteVolumeResourceId());
-        Assertions.assertEquals("wpmqt", model.remotePath().externalHostname());
-        Assertions.assertEquals("ruoujmk", model.remotePath().serverName());
-        Assertions.assertEquals("jhwqytjrybnw", model.remotePath().volumeName());
-        Assertions.assertEquals("wgdrjervnaenqp", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("jmkcjhwqytj", model.remoteVolumeResourceId());
+        Assertions.assertEquals("bnw", model.remotePath().externalHostname());
+        Assertions.assertEquals("ewgdrjervn", model.remotePath().serverName());
+        Assertions.assertEquals("enq", model.remotePath().volumeName());
+        Assertions.assertEquals("hin", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationObject model = new ReplicationObject().withEndpointType(EndpointType.SRC)
-            .withReplicationSchedule(ReplicationSchedule.DAILY)
-            .withRemoteVolumeResourceId("q")
+            .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
+            .withRemoteVolumeResourceId("jmkcjhwqytj")
             .withRemotePath(
-                new RemotePath().withExternalHostname("wpmqt").withServerName("ruoujmk").withVolumeName("jhwqytjrybnw"))
-            .withRemoteVolumeRegion("wgdrjervnaenqp");
+                new RemotePath().withExternalHostname("bnw").withServerName("ewgdrjervn").withVolumeName("enq"))
+            .withRemoteVolumeRegion("hin");
         model = BinaryData.fromObject(model).toObject(ReplicationObject.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
-        Assertions.assertEquals("q", model.remoteVolumeResourceId());
-        Assertions.assertEquals("wpmqt", model.remotePath().externalHostname());
-        Assertions.assertEquals("ruoujmk", model.remotePath().serverName());
-        Assertions.assertEquals("jhwqytjrybnw", model.remotePath().volumeName());
-        Assertions.assertEquals("wgdrjervnaenqp", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("jmkcjhwqytj", model.remoteVolumeResourceId());
+        Assertions.assertEquals("bnw", model.remotePath().externalHostname());
+        Assertions.assertEquals("ewgdrjervn", model.remotePath().serverName());
+        Assertions.assertEquals("enq", model.remotePath().volumeName());
+        Assertions.assertEquals("hin", model.remoteVolumeRegion());
     }
 }

@@ -23,8 +23,8 @@ public interface InternetGatewayRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Internet Gateway Rule resource along with {@link Response}.
      */
-    Response<InternetGatewayRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayRuleName, Context context);
+    Response<InternetGatewayRule> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayRuleName, Context context);
 
     /**
      * Gets an Internet Gateway Rule.

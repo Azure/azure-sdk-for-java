@@ -92,8 +92,8 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
                 }
             }
 
-            claimsBuilder.expirationTime(
-                Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
+            claimsBuilder
+                .expirationTime(Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
 
             final JWTClaimsSet claims = claimsBuilder.build();
 

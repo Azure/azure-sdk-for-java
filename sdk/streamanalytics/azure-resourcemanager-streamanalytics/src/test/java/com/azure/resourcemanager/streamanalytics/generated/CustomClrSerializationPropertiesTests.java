@@ -20,8 +20,9 @@ public final class CustomClrSerializationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomClrSerializationProperties model = new CustomClrSerializationProperties()
-            .withSerializationDllPath("mypyynpcdpu").withSerializationClassName("zgmwznmabikns");
+        CustomClrSerializationProperties model
+            = new CustomClrSerializationProperties().withSerializationDllPath("mypyynpcdpu")
+                .withSerializationClassName("zgmwznmabikns");
         model = BinaryData.fromObject(model).toObject(CustomClrSerializationProperties.class);
         Assertions.assertEquals("mypyynpcdpu", model.serializationDllPath());
         Assertions.assertEquals("zgmwznmabikns", model.serializationClassName());

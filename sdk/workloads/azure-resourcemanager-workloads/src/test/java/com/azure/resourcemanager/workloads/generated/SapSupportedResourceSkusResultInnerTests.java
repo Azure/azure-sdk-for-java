@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSupportedResourceSkusResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSupportedResourceSkusResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"supportedSkus\":[{\"vmSku\":\"ejhphoyc\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true}]}")
-                .toObject(SapSupportedResourceSkusResultInner.class);
+        SapSupportedResourceSkusResultInner model = BinaryData.fromString(
+            "{\"supportedSkus\":[{\"vmSku\":\"ejhphoyc\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true}]}")
+            .toObject(SapSupportedResourceSkusResultInner.class);
         Assertions.assertEquals("ejhphoyc", model.supportedSkus().get(0).vmSku());
         Assertions.assertEquals(true, model.supportedSkus().get(0).isAppServerCertified());
         Assertions.assertEquals(true, model.supportedSkus().get(0).isDatabaseCertified());
@@ -25,15 +23,10 @@ public final class SapSupportedResourceSkusResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSupportedResourceSkusResultInner model =
-            new SapSupportedResourceSkusResultInner()
-                .withSupportedSkus(
-                    Arrays
-                        .asList(
-                            new SapSupportedSku()
-                                .withVmSku("ejhphoyc")
-                                .withIsAppServerCertified(true)
-                                .withIsDatabaseCertified(true)));
+        SapSupportedResourceSkusResultInner model = new SapSupportedResourceSkusResultInner()
+            .withSupportedSkus(Arrays.asList(new SapSupportedSku().withVmSku("ejhphoyc")
+                .withIsAppServerCertified(true)
+                .withIsDatabaseCertified(true)));
         model = BinaryData.fromObject(model).toObject(SapSupportedResourceSkusResultInner.class);
         Assertions.assertEquals("ejhphoyc", model.supportedSkus().get(0).vmSku());
         Assertions.assertEquals(true, model.supportedSkus().get(0).isAppServerCertified());

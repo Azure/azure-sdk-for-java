@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class H265VideoLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        H265VideoLayer model =
-            BinaryData
-                .fromString(
-                    "{\"bitrate\":316416057,\"maxBitrate\":1651090930,\"bFrames\":1264679400,\"frameRate\":\"ao\",\"slices\":886290907,\"adaptiveBFrame\":false,\"width\":\"yyysfgdotcubi\",\"height\":\"uipwoqonmacje\",\"label\":\"izsh\"}")
-                .toObject(H265VideoLayer.class);
+        H265VideoLayer model = BinaryData.fromString(
+            "{\"bitrate\":316416057,\"maxBitrate\":1651090930,\"bFrames\":1264679400,\"frameRate\":\"ao\",\"slices\":886290907,\"adaptiveBFrame\":false,\"width\":\"yyysfgdotcubi\",\"height\":\"uipwoqonmacje\",\"label\":\"izsh\"}")
+            .toObject(H265VideoLayer.class);
         Assertions.assertEquals("yyysfgdotcubi", model.width());
         Assertions.assertEquals("uipwoqonmacje", model.height());
         Assertions.assertEquals("izsh", model.label());
@@ -29,17 +27,15 @@ public final class H265VideoLayerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        H265VideoLayer model =
-            new H265VideoLayer()
-                .withWidth("yyysfgdotcubi")
-                .withHeight("uipwoqonmacje")
-                .withLabel("izsh")
-                .withBitrate(316416057)
-                .withMaxBitrate(1651090930)
-                .withBFrames(1264679400)
-                .withFrameRate("ao")
-                .withSlices(886290907)
-                .withAdaptiveBFrame(false);
+        H265VideoLayer model = new H265VideoLayer().withWidth("yyysfgdotcubi")
+            .withHeight("uipwoqonmacje")
+            .withLabel("izsh")
+            .withBitrate(316416057)
+            .withMaxBitrate(1651090930)
+            .withBFrames(1264679400)
+            .withFrameRate("ao")
+            .withSlices(886290907)
+            .withAdaptiveBFrame(false);
         model = BinaryData.fromObject(model).toObject(H265VideoLayer.class);
         Assertions.assertEquals("yyysfgdotcubi", model.width());
         Assertions.assertEquals("uipwoqonmacje", model.height());

@@ -16,8 +16,7 @@ public final class SearchGetSchemaResponseImpl implements SearchGetSchemaRespons
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    SearchGetSchemaResponseImpl(
-        SearchGetSchemaResponseInner innerObject,
+    SearchGetSchemaResponseImpl(SearchGetSchemaResponseInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

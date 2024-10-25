@@ -26,13 +26,15 @@ public final class FqdnListGlobalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FqdnListGlobalRulestackResourceListResult model
-            = new FqdnListGlobalRulestackResourceListResult()
-                .withValue(Arrays.asList(
-                    new FqdnListGlobalRulestackResourceInner().withDescription("jh")
-                        .withFqdnList(Arrays.asList("daj", "nysounqe")).withEtag("noae")
-                        .withAuditComment("fhyhltrpmopjmcma"),
-                    new FqdnListGlobalRulestackResourceInner().withDescription("whrdxwzywqsmbsu")
-                        .withFqdnList(Arrays.asList("xim")).withEtag("yocf").withAuditComment("ksymd")))
+            = new FqdnListGlobalRulestackResourceListResult().withValue(Arrays.asList(
+                new FqdnListGlobalRulestackResourceInner().withDescription("jh")
+                    .withFqdnList(Arrays.asList("daj", "nysounqe"))
+                    .withEtag("noae")
+                    .withAuditComment("fhyhltrpmopjmcma"),
+                new FqdnListGlobalRulestackResourceInner().withDescription("whrdxwzywqsmbsu")
+                    .withFqdnList(Arrays.asList("xim"))
+                    .withEtag("yocf")
+                    .withAuditComment("ksymd")))
                 .withNextLink("rm");
         model = BinaryData.fromObject(model).toObject(FqdnListGlobalRulestackResourceListResult.class);
         Assertions.assertEquals("jh", model.value().get(0).description());

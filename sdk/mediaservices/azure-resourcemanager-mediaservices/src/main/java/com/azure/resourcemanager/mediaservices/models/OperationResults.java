@@ -25,13 +25,8 @@ public interface OperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation result.
      */
-    Response<AssetTrack> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    Response<AssetTrack> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId, Context context);
 
     /**
      * Get operation result.
@@ -48,6 +43,6 @@ public interface OperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation result.
      */
-    AssetTrack get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureResourceSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceSkuInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"ndslgnayqigynduh\",\"sku\":{\"name\":\"Standard_EC8as_v5+1TB_PS\",\"capacity\":1238517729,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":918393543,\"maximum\":1117250592,\"default\":1615397265}}")
-                .toObject(AzureResourceSkuInner.class);
+        AzureResourceSkuInner model = BinaryData.fromString(
+            "{\"resourceType\":\"ndslgnayqigynduh\",\"sku\":{\"name\":\"Standard_EC8as_v5+1TB_PS\",\"capacity\":1238517729,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":918393543,\"maximum\":1117250592,\"default\":1615397265}}")
+            .toObject(AzureResourceSkuInner.class);
         Assertions.assertEquals("ndslgnayqigynduh", model.resourceType());
         Assertions.assertEquals(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS, model.sku().name());
         Assertions.assertEquals(1238517729, model.sku().capacity());
@@ -33,20 +31,14 @@ public final class AzureResourceSkuInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureResourceSkuInner model =
-            new AzureResourceSkuInner()
-                .withResourceType("ndslgnayqigynduh")
-                .withSku(
-                    new AzureSku()
-                        .withName(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS)
-                        .withCapacity(1238517729)
-                        .withTier(AzureSkuTier.STANDARD))
-                .withCapacity(
-                    new AzureCapacity()
-                        .withScaleType(AzureScaleType.MANUAL)
-                        .withMinimum(918393543)
-                        .withMaximum(1117250592)
-                        .withDefaultProperty(1615397265));
+        AzureResourceSkuInner model = new AzureResourceSkuInner().withResourceType("ndslgnayqigynduh")
+            .withSku(new AzureSku().withName(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS)
+                .withCapacity(1238517729)
+                .withTier(AzureSkuTier.STANDARD))
+            .withCapacity(new AzureCapacity().withScaleType(AzureScaleType.MANUAL)
+                .withMinimum(918393543)
+                .withMaximum(1117250592)
+                .withDefaultProperty(1615397265));
         model = BinaryData.fromObject(model).toObject(AzureResourceSkuInner.class);
         Assertions.assertEquals("ndslgnayqigynduh", model.resourceType());
         Assertions.assertEquals(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS, model.sku().name());

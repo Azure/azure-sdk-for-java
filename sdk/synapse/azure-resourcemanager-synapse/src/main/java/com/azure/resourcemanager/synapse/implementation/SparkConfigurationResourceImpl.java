@@ -16,8 +16,8 @@ public final class SparkConfigurationResourceImpl implements SparkConfigurationR
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SparkConfigurationResourceImpl(
-        SparkConfigurationResourceInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SparkConfigurationResourceImpl(SparkConfigurationResourceInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

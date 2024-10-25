@@ -38,15 +38,14 @@ public final class MonitoringTagRulesPropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringTagRulesPropertiesInner model = new MonitoringTagRulesPropertiesInner()
-            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
-                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-                .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                .withFilteringTags(Arrays.asList(
-                    new FilteringTag().withName("kpoc").withValue("azyxoegukg").withAction(TagAction.INCLUDE),
-                    new FilteringTag().withName("ucgygevqz").withValue("yp").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("izcdrqjsd").withValue("dnfyhxdeoejzicwi")
-                        .withAction(TagAction.INCLUDE))))
+        MonitoringTagRulesPropertiesInner model = new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules()
+            .withSendAadLogs(SendAadLogsStatus.DISABLED)
+            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
+            .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("kpoc").withValue("azyxoegukg").withAction(TagAction.INCLUDE),
+                new FilteringTag().withName("ucgygevqz").withValue("yp").withAction(TagAction.EXCLUDE),
+                new FilteringTag().withName("izcdrqjsd").withValue("dnfyhxdeoejzicwi").withAction(TagAction.INCLUDE))))
             .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
                 .withFilteringTags(Arrays.asList(
                     new FilteringTag().withName("ishc").withValue("hajdeyeamdpha").withAction(TagAction.EXCLUDE),

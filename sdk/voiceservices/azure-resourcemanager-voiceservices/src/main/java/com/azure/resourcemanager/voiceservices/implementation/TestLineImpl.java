@@ -96,21 +96,17 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
     }
 
     public TestLine create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .createOrUpdate(
-                    resourceGroupName, communicationsGatewayName, testLineName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .createOrUpdate(resourceGroupName, communicationsGatewayName, testLineName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public TestLine create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .createOrUpdate(resourceGroupName, communicationsGatewayName, testLineName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .createOrUpdate(resourceGroupName, communicationsGatewayName, testLineName, this.innerModel(), context);
         return this;
     }
 
@@ -126,29 +122,24 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
     }
 
     public TestLine apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .updateWithResponse(
-                    resourceGroupName, communicationsGatewayName, testLineName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .updateWithResponse(resourceGroupName, communicationsGatewayName, testLineName, updateProperties,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public TestLine apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .updateWithResponse(
-                    resourceGroupName, communicationsGatewayName, testLineName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .updateWithResponse(resourceGroupName, communicationsGatewayName, testLineName, updateProperties, context)
+            .getValue();
         return this;
     }
 
-    TestLineImpl(
-        TestLineInner innerObject, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
+    TestLineImpl(TestLineInner innerObject,
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -157,22 +148,18 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
     }
 
     public TestLine refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .getWithResponse(resourceGroupName, communicationsGatewayName, testLineName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .getWithResponse(resourceGroupName, communicationsGatewayName, testLineName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TestLine refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTestLines()
-                .getWithResponse(resourceGroupName, communicationsGatewayName, testLineName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTestLines()
+            .getWithResponse(resourceGroupName, communicationsGatewayName, testLineName, context)
+            .getValue();
         return this;
     }
 

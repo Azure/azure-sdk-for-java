@@ -14,8 +14,7 @@ public final class AsyncOperationResultImpl implements AsyncOperationResult {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    AsyncOperationResultImpl(
-        AsyncOperationResultInner innerObject,
+    AsyncOperationResultImpl(AsyncOperationResultInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -18,16 +18,10 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to traffic manager profile management API in Azure. */
 public interface TrafficManagerProfiles
-    extends SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
-        SupportsListing<TrafficManagerProfile>,
-        SupportsListingByResourceGroup<TrafficManagerProfile>,
-        SupportsGettingByResourceGroup<TrafficManagerProfile>,
-        SupportsGettingById<TrafficManagerProfile>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<TrafficManagerProfile>,
-        SupportsBatchDeletion,
-        HasManager<TrafficManager> {
+    extends SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>, SupportsListing<TrafficManagerProfile>,
+    SupportsListingByResourceGroup<TrafficManagerProfile>, SupportsGettingByResourceGroup<TrafficManagerProfile>,
+    SupportsGettingById<TrafficManagerProfile>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<TrafficManagerProfile>, SupportsBatchDeletion, HasManager<TrafficManager> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.

@@ -49,13 +49,16 @@ public final class DeviceGroupsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DeviceGroup response = manager.deviceGroups().define("gge")
+        DeviceGroup response = manager.deviceGroups()
+            .define("gge")
             .withExistingProduct("glrvimjwosytxi", "cskfcktqumiekk", "zzikhlyfjhdg")
-            .withProperties(new DeviceGroupProperties().withDescription("nyga").withOsFeedType(OSFeedType.RETAIL)
+            .withProperties(new DeviceGroupProperties().withDescription("nyga")
+                .withOsFeedType(OSFeedType.RETAIL)
                 .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE))

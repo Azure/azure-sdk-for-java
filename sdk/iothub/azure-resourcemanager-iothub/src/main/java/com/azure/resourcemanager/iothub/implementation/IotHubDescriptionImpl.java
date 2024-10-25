@@ -107,20 +107,16 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, Context.NONE);
         return this;
     }
 
     public IotHubDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, context);
         return this;
     }
 
@@ -137,25 +133,21 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .update(resourceGroupName, resourceName, updateIotHubTags, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .update(resourceGroupName, resourceName, updateIotHubTags, Context.NONE);
         return this;
     }
 
     public IotHubDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .update(resourceGroupName, resourceName, updateIotHubTags, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .update(resourceGroupName, resourceName, updateIotHubTags, context);
         return this;
     }
 
-    IotHubDescriptionImpl(
-        IotHubDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    IotHubDescriptionImpl(IotHubDescriptionInner innerObject,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -163,22 +155,18 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IotHubDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotHubResources()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
@@ -190,10 +178,9 @@ public final class IotHubDescriptionImpl
         return serviceManager.iotHubResources().listKeys(resourceGroupName, resourceName, context);
     }
 
-    public Response<JobResponse> exportDevicesWithResponse(
-        ExportDevicesRequest exportDevicesParameters, Context context) {
-        return serviceManager
-            .iotHubResources()
+    public Response<JobResponse> exportDevicesWithResponse(ExportDevicesRequest exportDevicesParameters,
+        Context context) {
+        return serviceManager.iotHubResources()
             .exportDevicesWithResponse(resourceGroupName, resourceName, exportDevicesParameters, context);
     }
 
@@ -201,10 +188,9 @@ public final class IotHubDescriptionImpl
         return serviceManager.iotHubResources().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
     }
 
-    public Response<JobResponse> importDevicesWithResponse(
-        ImportDevicesRequest importDevicesParameters, Context context) {
-        return serviceManager
-            .iotHubResources()
+    public Response<JobResponse> importDevicesWithResponse(ImportDevicesRequest importDevicesParameters,
+        Context context) {
+        return serviceManager.iotHubResources()
             .importDevicesWithResponse(resourceGroupName, resourceName, importDevicesParameters, context);
     }
 

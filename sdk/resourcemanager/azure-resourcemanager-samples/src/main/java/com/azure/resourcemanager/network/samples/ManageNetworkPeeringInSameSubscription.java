@@ -78,21 +78,24 @@ public final class ManageNetworkPeeringInSameSubscription {
 
             System.out.println("Creating two virtual networks in the same region and subscription...");
 
-            Creatable<Network> networkADefinition = azureResourceManager.networks().define(vnetAName)
-                    .withRegion(region)
-                    .withNewResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("subnet1", "10.0.0.0/28")
-                    .withSubnet("subnet2", "10.0.0.16/28");
+            Creatable<Network> networkADefinition = azureResourceManager.networks()
+                .define(vnetAName)
+                .withRegion(region)
+                .withNewResourceGroup(resourceGroupName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .withSubnet("subnet2", "10.0.0.16/28");
 
-            Creatable<Network> networkBDefinition = azureResourceManager.networks().define(vnetBName)
-                    .withRegion(region)
-                    .withNewResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.1.0.0/27")
-                    .withSubnet("subnet3", "10.1.0.0/27");
+            Creatable<Network> networkBDefinition = azureResourceManager.networks()
+                .define(vnetBName)
+                .withRegion(region)
+                .withNewResourceGroup(resourceGroupName)
+                .withAddressSpace("10.1.0.0/27")
+                .withSubnet("subnet3", "10.1.0.0/27");
 
             // Create the networks in parallel for better performance
-            CreatedResources<Network> created = azureResourceManager.networks().create(Arrays.asList(networkADefinition, networkBDefinition));
+            CreatedResources<Network> created
+                = azureResourceManager.networks().create(Arrays.asList(networkADefinition, networkBDefinition));
 
             // Print virtual network details
             for (Network network : created.values()) {
@@ -107,15 +110,10 @@ public final class ManageNetworkPeeringInSameSubscription {
             //=============================================================
             // Peer the two networks using default settings
 
-            System.out.println(
-                    "Peering the networks using default settings...\n"
-                            + "- Network access enabled\n"
-                            + "- Traffic forwarding disabled\n"
-                            + "- Gateway use (transit) by the peered network disabled");
+            System.out.println("Peering the networks using default settings...\n" + "- Network access enabled\n"
+                + "- Traffic forwarding disabled\n" + "- Gateway use (transit) by the peered network disabled");
 
-            NetworkPeering peeringAB = networkA.peerings().define(peeringABName)
-                    .withRemoteNetwork(networkB)
-                    .create(); // This implicitly creates a matching peering object on network B as well, if both networks are in the same subscription
+            NetworkPeering peeringAB = networkA.peerings().define(peeringABName).withRemoteNetwork(networkB).create(); // This implicitly creates a matching peering object on network B as well, if both networks are in the same subscription
 
             // Print network details showing new peering
             System.out.println("Created a peering");
@@ -126,12 +124,10 @@ public final class ManageNetworkPeeringInSameSubscription {
             // Update a the peering disallowing access from B to A but allowing traffic forwarding from B to A
 
             System.out.println("Updating the peering ...");
-            peeringAB.update()
-                    .withoutAccessFromEitherNetwork()
-                    .withTrafficForwardingFromRemoteNetwork()
-                    .apply();
+            peeringAB.update().withoutAccessFromEitherNetwork().withTrafficForwardingFromRemoteNetwork().apply();
 
-            System.out.println("Updated the peering to disallow network access between B and A but allow traffic forwarding from B to A.");
+            System.out.println(
+                "Updated the peering to disallow network access between B and A but allow traffic forwarding from B to A.");
 
             //=============================================================
             // Show the new network information
@@ -179,8 +175,7 @@ public final class ManageNetworkPeeringInSameSubscription {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -56,33 +56,37 @@ public final class StorageTaskInnerTests {
     public void testSerialize() throws Exception {
         StorageTaskInner model
             = new StorageTaskInner().withLocation("fxxypininmayhuy")
-                .withTags(
-                    mapOf("inuvamiheogn", "podepoo", "usivye", "rxzxtheo"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
-                            mapOf("hab", new UserAssignedIdentity())))
-                .withProperties(new StorageTaskProperties().withEnabled(true).withDescription("wczbys")
+                .withTags(mapOf("inuvamiheogn", "podepoo", "usivye", "rxzxtheo"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("hab", new UserAssignedIdentity())))
+                .withProperties(new StorageTaskProperties().withEnabled(true)
+                    .withDescription("wczbys")
                     .withAction(new StorageTaskAction()
-                        .withIfProperty(new IfCondition().withCondition("npqxuh").withOperations(
-                            Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
-                                .withParameters(mapOf("tfwvukxgaudc", "iwbybrkxvdumjg"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
+                        .withIfProperty(new IfCondition().withCondition("npqxuh")
+                            .withOperations(Arrays
+                                .asList(new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
+                                    .withParameters(mapOf("tfwvukxgaudc", "iwbybrkxvdumjg"))
+                                    .withOnSuccess(OnSuccess.CONTINUE)
+                                    .withOnFailure(OnFailure.BREAK))))
                         .withElseProperty(new ElseCondition().withOperations(Arrays.asList(
                             new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
                                 .withParameters(mapOf("kryhtnapczwlokj", "j", "jnchgej", "emkkvnipjox"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK),
                             new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                                 .withParameters(mapOf("o", "zyde", "wixjsprozvcp", "wyahuxinpmqnja", "atscmd",
                                     "tegjvwmf", "zkrwfn", "pjhulsuuvmkj"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK),
                             new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
                                 .withParameters(mapOf("jdpvwryo", "w", "hbcryffdfdosyge", "psoacctazakljl"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK),
                             new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
                                 .withParameters(mapOf("vdphlxaolthqtr", "msbzjhcrz", "gvfcj", "qjbpfzfsin",
                                     "xjtfelluwfzit", "wzo", "qfpjk", "np"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))));
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK))))));
         model = BinaryData.fromObject(model).toObject(StorageTaskInner.class);
         Assertions.assertEquals("fxxypininmayhuy", model.location());
         Assertions.assertEquals("podepoo", model.tags().get("inuvamiheogn"));

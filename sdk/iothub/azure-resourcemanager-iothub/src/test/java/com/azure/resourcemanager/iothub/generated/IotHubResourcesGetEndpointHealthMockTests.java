@@ -32,54 +32,38 @@ public final class IotHubResourcesGetEndpointHealthMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"endpointId\":\"qhuexm\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"stvlzywemhzrnc\",\"lastKnownErrorTime\":\"Fri,"
+        String responseStr
+            = "{\"value\":[{\"endpointId\":\"qhuexm\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"stvlzywemhzrnc\",\"lastKnownErrorTime\":\"Fri,"
                 + " 07 May 2021 09:46:11 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sat, 26 Dec 2020 03:14:52"
                 + " GMT\",\"lastSendAttemptTime\":\"Wed, 10 Mar 2021 02:09:12 GMT\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EndpointHealthData> response =
-            manager
-                .iotHubResources()
-                .getEndpointHealth("mhairsbrgzdwmsw", "ypqwdxggiccc", com.azure.core.util.Context.NONE);
+        PagedIterable<EndpointHealthData> response = manager.iotHubResources()
+            .getEndpointHealth("mhairsbrgzdwmsw", "ypqwdxggiccc", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qhuexm", response.iterator().next().endpointId());
         Assertions.assertEquals(EndpointHealthStatus.DEGRADED, response.iterator().next().healthStatus());
         Assertions.assertEquals("stvlzywemhzrnc", response.iterator().next().lastKnownError());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-07T09:46:11Z"), response.iterator().next().lastKnownErrorTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2020-12-26T03:14:52Z"),
-                response.iterator().next().lastSuccessfulSendAttemptTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-03-10T02:09:12Z"), response.iterator().next().lastSendAttemptTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T09:46:11Z"),
+            response.iterator().next().lastKnownErrorTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T03:14:52Z"),
+            response.iterator().next().lastSuccessfulSendAttemptTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T02:09:12Z"),
+            response.iterator().next().lastSendAttemptTime());
     }
 }

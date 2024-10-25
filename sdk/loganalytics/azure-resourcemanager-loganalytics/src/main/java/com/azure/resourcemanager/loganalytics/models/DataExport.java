@@ -130,14 +130,9 @@ public interface DataExport {
          * The stage of the DataExport definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDataExportId,
-                DefinitionStages.WithTableNames,
-                DefinitionStages.WithEnable,
-                DefinitionStages.WithCreatedDate,
-                DefinitionStages.WithLastModifiedDate,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithEventHubName {
+        interface WithCreate extends DefinitionStages.WithDataExportId, DefinitionStages.WithTableNames,
+            DefinitionStages.WithEnable, DefinitionStages.WithCreatedDate, DefinitionStages.WithLastModifiedDate,
+            DefinitionStages.WithResourceId, DefinitionStages.WithEventHubName {
             /**
              * Executes the create request.
              *
@@ -245,14 +240,9 @@ public interface DataExport {
     DataExport.Update update();
 
     /** The template for DataExport update. */
-    interface Update
-        extends UpdateStages.WithDataExportId,
-            UpdateStages.WithTableNames,
-            UpdateStages.WithEnable,
-            UpdateStages.WithCreatedDate,
-            UpdateStages.WithLastModifiedDate,
-            UpdateStages.WithResourceId,
-            UpdateStages.WithEventHubName {
+    interface Update extends UpdateStages.WithDataExportId, UpdateStages.WithTableNames, UpdateStages.WithEnable,
+        UpdateStages.WithCreatedDate, UpdateStages.WithLastModifiedDate, UpdateStages.WithResourceId,
+        UpdateStages.WithEventHubName {
         /**
          * Executes the update request.
          *

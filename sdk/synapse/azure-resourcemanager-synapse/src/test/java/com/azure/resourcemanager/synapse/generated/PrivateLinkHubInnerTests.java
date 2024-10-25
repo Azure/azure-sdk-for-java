@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"ounqecano\",\"privateEndpointConnections\":[{\"id\":\"fhyhltrpmopjmcma\"}]},\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}")
-                .toObject(PrivateLinkHubInner.class);
+        PrivateLinkHubInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"ounqecano\",\"privateEndpointConnections\":[{\"id\":\"fhyhltrpmopjmcma\"}]},\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}")
+            .toObject(PrivateLinkHubInner.class);
         Assertions.assertEquals("okth", model.location());
         Assertions.assertEquals("uaodsfcpk", model.tags().get("xodpuozmyzydagfu"));
         Assertions.assertEquals("ounqecano", model.provisioningState());
@@ -25,11 +23,9 @@ public final class PrivateLinkHubInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInner model =
-            new PrivateLinkHubInner()
-                .withLocation("okth")
-                .withTags(mapOf("xodpuozmyzydagfu", "uaodsfcpk", "dxwzywqsmbsurexi", "xbezyiuokktwh"))
-                .withProvisioningState("ounqecano");
+        PrivateLinkHubInner model = new PrivateLinkHubInner().withLocation("okth")
+            .withTags(mapOf("xodpuozmyzydagfu", "uaodsfcpk", "dxwzywqsmbsurexi", "xbezyiuokktwh"))
+            .withProvisioningState("ounqecano");
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInner.class);
         Assertions.assertEquals("okth", model.location());
         Assertions.assertEquals("uaodsfcpk", model.tags().get("xodpuozmyzydagfu"));

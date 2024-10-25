@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"wjzrnfygxgisp\",\"displayName\":\"vtz\",\"displayDescription\":\"ufubl\",\"unit\":\"fxqeof\",\"dimensions\":[{\"name\":\"jhqjbasvmsmjqul\",\"displayName\":\"sntnbybkzgcw\"}],\"aggregationType\":\"clxxwrljdo\",\"availabilities\":[{\"timeGrain\":\"qvkoc\",\"blobDuration\":\"jdkwtnhxbnjb\"},{\"timeGrain\":\"sqrglssainq\",\"blobDuration\":\"wnzlljfmppeeb\"},{\"timeGrain\":\"gxsabkyq\",\"blobDuration\":\"ujitcjcz\"}],\"category\":\"evndh\",\"resourceIdDimensionNameOverride\":\"wpdappdsbdkv\"}")
-                .toObject(MetricSpecification.class);
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"wjzrnfygxgisp\",\"displayName\":\"vtz\",\"displayDescription\":\"ufubl\",\"unit\":\"fxqeof\",\"dimensions\":[{\"name\":\"jhqjbasvmsmjqul\",\"displayName\":\"sntnbybkzgcw\"}],\"aggregationType\":\"clxxwrljdo\",\"availabilities\":[{\"timeGrain\":\"qvkoc\",\"blobDuration\":\"jdkwtnhxbnjb\"},{\"timeGrain\":\"sqrglssainq\",\"blobDuration\":\"wnzlljfmppeeb\"},{\"timeGrain\":\"gxsabkyq\",\"blobDuration\":\"ujitcjcz\"}],\"category\":\"evndh\",\"resourceIdDimensionNameOverride\":\"wpdappdsbdkv\"}")
+            .toObject(MetricSpecification.class);
         Assertions.assertEquals("wjzrnfygxgisp", model.name());
         Assertions.assertEquals("vtz", model.displayName());
         Assertions.assertEquals("ufubl", model.displayDescription());
@@ -34,23 +32,18 @@ public final class MetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification()
-                .withName("wjzrnfygxgisp")
-                .withDisplayName("vtz")
-                .withDisplayDescription("ufubl")
-                .withUnit("fxqeof")
-                .withDimensions(
-                    Arrays.asList(new Dimension().withName("jhqjbasvmsmjqul").withDisplayName("sntnbybkzgcw")))
-                .withAggregationType("clxxwrljdo")
-                .withAvailabilities(
-                    Arrays
-                        .asList(
-                            new MetricAvailability().withTimeGrain("qvkoc").withBlobDuration("jdkwtnhxbnjb"),
-                            new MetricAvailability().withTimeGrain("sqrglssainq").withBlobDuration("wnzlljfmppeeb"),
-                            new MetricAvailability().withTimeGrain("gxsabkyq").withBlobDuration("ujitcjcz")))
-                .withCategory("evndh")
-                .withResourceIdDimensionNameOverride("wpdappdsbdkv");
+        MetricSpecification model = new MetricSpecification().withName("wjzrnfygxgisp")
+            .withDisplayName("vtz")
+            .withDisplayDescription("ufubl")
+            .withUnit("fxqeof")
+            .withDimensions(Arrays.asList(new Dimension().withName("jhqjbasvmsmjqul").withDisplayName("sntnbybkzgcw")))
+            .withAggregationType("clxxwrljdo")
+            .withAvailabilities(
+                Arrays.asList(new MetricAvailability().withTimeGrain("qvkoc").withBlobDuration("jdkwtnhxbnjb"),
+                    new MetricAvailability().withTimeGrain("sqrglssainq").withBlobDuration("wnzlljfmppeeb"),
+                    new MetricAvailability().withTimeGrain("gxsabkyq").withBlobDuration("ujitcjcz")))
+            .withCategory("evndh")
+            .withResourceIdDimensionNameOverride("wpdappdsbdkv");
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
         Assertions.assertEquals("wjzrnfygxgisp", model.name());
         Assertions.assertEquals("vtz", model.displayName());

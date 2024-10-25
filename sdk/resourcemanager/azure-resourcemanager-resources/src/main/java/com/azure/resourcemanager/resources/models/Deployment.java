@@ -30,14 +30,8 @@ import java.util.List;
  * An immutable client-side representation of an Azure deployment.
  */
 @Fluent
-public interface Deployment extends
-        Indexable,
-        Refreshable<Deployment>,
-        Updatable<Deployment.Update>,
-        HasInnerModel<DeploymentExtendedInner>,
-        HasManager<ResourceManager>,
-        HasName,
-        HasId {
+public interface Deployment extends Indexable, Refreshable<Deployment>, Updatable<Deployment.Update>,
+    HasInnerModel<DeploymentExtendedInner>, HasManager<ResourceManager>, HasName, HasId {
 
     /**
      * @return the name of this deployment's resource group
@@ -153,13 +147,8 @@ public interface Deployment extends
     /**
      * Container interface for all the deployment definitions.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithTemplate,
-            DefinitionStages.WithParameters,
-            DefinitionStages.WithMode,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithTemplate,
+        DefinitionStages.WithParameters, DefinitionStages.WithMode, DefinitionStages.WithCreate {
     }
 
     /**
@@ -384,26 +373,17 @@ public interface Deployment extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
      */
-    interface Update extends
-            Appliable<Deployment>,
-            UpdateStages.WithTemplate,
-            UpdateStages.WithParameters,
-            UpdateStages.WithMode {
+    interface Update
+        extends Appliable<Deployment>, UpdateStages.WithTemplate, UpdateStages.WithParameters, UpdateStages.WithMode {
     }
 
     /**
      * Container interface for all the deployment execution.
      */
-    interface Execution extends
-            ExecutionStages.Blank,
-            ExecutionStages.WithExecute,
-            ExecutionStages.WithWhatIf,
-            ExecutionStages.WithWhatIfDeploymentMode,
-            ExecutionStages.WithWhatIfLocation,
-            ExecutionStages.WithWhatIfOnErrorDeploymentType,
-            ExecutionStages.WithWhatIfParameter,
-            ExecutionStages.WithWhatIfResultFormat,
-            ExecutionStages.WithWhatIfTemplate {
+    interface Execution extends ExecutionStages.Blank, ExecutionStages.WithExecute, ExecutionStages.WithWhatIf,
+        ExecutionStages.WithWhatIfDeploymentMode, ExecutionStages.WithWhatIfLocation,
+        ExecutionStages.WithWhatIfOnErrorDeploymentType, ExecutionStages.WithWhatIfParameter,
+        ExecutionStages.WithWhatIfResultFormat, ExecutionStages.WithWhatIfTemplate {
     }
 
     /**
@@ -419,14 +399,8 @@ public interface Deployment extends
         /**
          * A deployment execution allowing What-if parameters to be specified.
          */
-        interface WithWhatIf extends
-                WithExecute,
-                WithWhatIfDeploymentMode,
-                WithWhatIfLocation,
-                WithWhatIfOnErrorDeploymentType,
-                WithWhatIfParameter,
-                WithWhatIfResultFormat,
-                WithWhatIfTemplate {
+        interface WithWhatIf extends WithExecute, WithWhatIfDeploymentMode, WithWhatIfLocation,
+            WithWhatIfOnErrorDeploymentType, WithWhatIfParameter, WithWhatIfResultFormat, WithWhatIfTemplate {
             /**
              * Specifies the type of information to log for debugging.
              *
@@ -578,7 +552,6 @@ public interface Deployment extends
              * @return the next stage of the execution.
              */
             Mono<WhatIfOperationResult> whatIfAsync();
-
 
             /**
              * Gets changes that will be made by the deployment if executed at the scope of the subscription.

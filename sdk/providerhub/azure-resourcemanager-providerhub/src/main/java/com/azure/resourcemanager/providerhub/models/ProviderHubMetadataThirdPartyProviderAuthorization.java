@@ -16,8 +16,8 @@ public final class ProviderHubMetadataThirdPartyProviderAuthorization extends Th
 
     /** {@inheritDoc} */
     @Override
-    public ProviderHubMetadataThirdPartyProviderAuthorization withAuthorizations(
-        List<LightHouseAuthorization> authorizations) {
+    public ProviderHubMetadataThirdPartyProviderAuthorization
+        withAuthorizations(List<LightHouseAuthorization> authorizations) {
         super.withAuthorizations(authorizations);
         return this;
     }

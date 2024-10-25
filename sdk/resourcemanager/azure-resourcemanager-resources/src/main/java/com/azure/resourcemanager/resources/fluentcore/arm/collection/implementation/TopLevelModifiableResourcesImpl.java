@@ -31,17 +31,9 @@ import java.util.Collection;
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
  */
-public abstract class TopLevelModifiableResourcesImpl<
-        T extends GroupableResource<ManagerT, InnerT>,
-        ImplT extends T,
-        InnerT extends Resource,
-        InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete<?>,
-        ManagerT extends Manager<?>>
-        extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
-        implements
-        SupportsListing<T>,
-        SupportsListingByResourceGroup<T>,
-        SupportsBatchDeletion {
+public abstract class TopLevelModifiableResourcesImpl<T extends GroupableResource<ManagerT, InnerT>, ImplT extends T, InnerT extends Resource, InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete<?>, ManagerT extends Manager<?>>
+    extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
+    implements SupportsListing<T>, SupportsListingByResourceGroup<T>, SupportsBatchDeletion {
 
     protected TopLevelModifiableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
@@ -87,8 +79,8 @@ public abstract class TopLevelModifiableResourcesImpl<
     @Override
     public PagedFlux<T> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }

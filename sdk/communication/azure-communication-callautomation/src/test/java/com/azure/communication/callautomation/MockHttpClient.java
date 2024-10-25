@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class MockHttpClient extends NoOpHttpClient {
     public static final String THROW_TEST_EXCEPTION = "exception";
     private ArrayList<SimpleEntry<String, Integer>> responses = new ArrayList<SimpleEntry<String, Integer>>();
-    private final ArrayList<HttpRequest> requests  = new ArrayList<HttpRequest>();
+    private final ArrayList<HttpRequest> requests = new ArrayList<HttpRequest>();
 
     public MockHttpClient(ArrayList<SimpleEntry<String, Integer>> responses) {
         this.responses = responses;
@@ -34,12 +34,14 @@ public class MockHttpClient extends NoOpHttpClient {
         if (responses.size() > 0) {
             SimpleEntry<String, Integer> entry = responses.get(0);
             responses.remove(entry);
-            HttpResponse response = CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue());
+            HttpResponse response
+                = CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue());
             if (entry.getKey().startsWith(THROW_TEST_EXCEPTION)) {
                 return Mono.error(new HttpResponseException("Mock error", response));
             }
 
-            return Mono.just(CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue()));
+            return Mono
+                .just(CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue()));
         }
 
         return Mono.just(CallAutomationUnitTestBase.generateMockResponse("", request, 500));

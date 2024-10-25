@@ -21,8 +21,8 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
 
     private final com.azure.resourcemanager.signalr.SignalRManager serviceManager;
 
-    public SignalRCustomCertificatesImpl(
-        SignalRCustomCertificatesClient innerClient, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
+    public SignalRCustomCertificatesImpl(SignalRCustomCertificatesClient innerClient,
+        com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,20 +33,17 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
     }
 
     public PagedIterable<CustomCertificate> list(String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<CustomCertificateInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
+        PagedIterable<CustomCertificateInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
         return Utils.mapPage(inner, inner1 -> new CustomCertificateImpl(inner1, this.manager()));
     }
 
-    public Response<CustomCertificate> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context) {
-        Response<CustomCertificateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, certificateName, context);
+    public Response<CustomCertificate> getWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, Context context) {
+        Response<CustomCertificateInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, certificateName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomCertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,8 +59,8 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, certificateName, context);
     }
 
@@ -74,27 +71,18 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
     public CustomCertificate getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "customCertificates");
         if (certificateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
     }
@@ -102,27 +90,18 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
     public Response<CustomCertificate> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "customCertificates");
         if (certificateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, certificateName, context);
     }
@@ -130,27 +109,18 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "customCertificates");
         if (certificateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE);
     }
@@ -158,27 +128,18 @@ public final class SignalRCustomCertificatesImpl implements SignalRCustomCertifi
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "customCertificates");
         if (certificateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customCertificates'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, resourceName, certificateName, context);
     }

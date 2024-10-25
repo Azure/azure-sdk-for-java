@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTranscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTranscription model =
-            BinaryData
-                .fromString(
-                    "{\"language\":\"yqagvrvm\",\"inputTrackSelection\":[{\"property\":\"kghimdblxgwimfnj\",\"operation\":\"j\",\"value\":\"mszkkfo\"}],\"outputTranscriptionTrack\":{\"trackName\":\"eyfkzikfja\"}}")
-                .toObject(LiveEventTranscription.class);
+        LiveEventTranscription model = BinaryData.fromString(
+            "{\"language\":\"yqagvrvm\",\"inputTrackSelection\":[{\"property\":\"kghimdblxgwimfnj\",\"operation\":\"j\",\"value\":\"mszkkfo\"}],\"outputTranscriptionTrack\":{\"trackName\":\"eyfkzikfja\"}}")
+            .toObject(LiveEventTranscription.class);
         Assertions.assertEquals("yqagvrvm", model.language());
         Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());
         Assertions.assertEquals("j", model.inputTrackSelection().get(0).operation());
@@ -28,17 +26,11 @@ public final class LiveEventTranscriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTranscription model =
-            new LiveEventTranscription()
-                .withLanguage("yqagvrvm")
-                .withInputTrackSelection(
-                    Arrays
-                        .asList(
-                            new LiveEventInputTrackSelection()
-                                .withProperty("kghimdblxgwimfnj")
-                                .withOperation("j")
-                                .withValue("mszkkfo")))
-                .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("eyfkzikfja"));
+        LiveEventTranscription model = new LiveEventTranscription().withLanguage("yqagvrvm")
+            .withInputTrackSelection(Arrays.asList(new LiveEventInputTrackSelection().withProperty("kghimdblxgwimfnj")
+                .withOperation("j")
+                .withValue("mszkkfo")))
+            .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("eyfkzikfja"));
         model = BinaryData.fromObject(model).toObject(LiveEventTranscription.class);
         Assertions.assertEquals("yqagvrvm", model.language());
         Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());

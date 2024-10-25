@@ -179,11 +179,11 @@ public final class InputStreamBinaryData extends BinaryData {
 
     private static InputStreamBinaryData readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
+                INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, byteBuffers);
+            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
+                byteBuffers);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }

@@ -26,13 +26,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionCheckNameRequest dataConnectionName, Context context);
 
     /**
      * Checks that the data connection name is valid and is not already in use.
@@ -47,12 +42,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DataConnectionCheckNameRequest dataConnectionName);
 
     /**
      * Checks that the data connection parameters are valid.
@@ -67,12 +58,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result.
      */
-    DataConnectionValidationListResult dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters);
+    DataConnectionValidationListResult dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters);
 
     /**
      * Checks that the data connection parameters are valid.
@@ -88,13 +75,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result.
      */
-    DataConnectionValidationListResult dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context);
+    DataConnectionValidationListResult dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters, Context context);
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
@@ -108,8 +90,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataConnection> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName);
+    PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName);
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
@@ -124,8 +106,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataConnection> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context);
 
     /**
      * Returns a data connection.
@@ -141,13 +123,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection along with {@link Response}.
      */
-    Response<DataConnection> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context);
+    Response<DataConnection> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, Context context);
 
     /**
      * Returns a data connection.
@@ -162,11 +139,7 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection.
      */
-    DataConnection get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    DataConnection get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName);
 
     /**
@@ -183,13 +156,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection.
      */
-    DataConnection createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters);
+    DataConnection createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters);
 
     /**
      * Creates or updates a data connection.
@@ -206,14 +174,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection.
      */
-    DataConnection createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    DataConnection createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context);
 
     /**
      * Updates a data connection.
@@ -229,13 +191,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection.
      */
-    DataConnection update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters);
+    DataConnection update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters);
 
     /**
      * Updates a data connection.
@@ -252,14 +209,8 @@ public interface KustoPoolDataConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a data connection.
      */
-    DataConnection update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    DataConnection update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters, Context context);
 
     /**
      * Deletes the data connection with the given name.
@@ -273,11 +224,7 @@ public interface KustoPoolDataConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName);
 
     /**
@@ -293,11 +240,6 @@ public interface KustoPoolDataConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        String dataConnectionName, Context context);
 }

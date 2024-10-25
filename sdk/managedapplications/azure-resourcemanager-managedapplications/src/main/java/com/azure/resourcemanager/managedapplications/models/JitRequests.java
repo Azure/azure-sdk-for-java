@@ -20,8 +20,8 @@ public interface JitRequests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the JIT request along with {@link Response}.
      */
-    Response<JitRequestDefinition> getByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context);
+    Response<JitRequestDefinition> getByResourceGroupWithResponse(String resourceGroupName, String jitRequestName,
+        Context context);
 
     /**
      * Gets the JIT request.

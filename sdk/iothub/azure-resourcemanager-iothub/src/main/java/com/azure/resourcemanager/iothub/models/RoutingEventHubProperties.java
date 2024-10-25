@@ -265,9 +265,8 @@ public final class RoutingEventHubProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RoutingEventHubProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RoutingEventHubProperties"));
         }
     }
 

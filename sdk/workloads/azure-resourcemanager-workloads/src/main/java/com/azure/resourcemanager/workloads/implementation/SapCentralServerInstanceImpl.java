@@ -150,29 +150,24 @@ public final class SapCentralServerInstanceImpl
 
     private UpdateSapCentralInstanceRequest updateBody;
 
-    public SapCentralServerInstanceImpl withExistingSapVirtualInstance(
-        String resourceGroupName, String sapVirtualInstanceName) {
+    public SapCentralServerInstanceImpl withExistingSapVirtualInstance(String resourceGroupName,
+        String sapVirtualInstanceName) {
         this.resourceGroupName = resourceGroupName;
         this.sapVirtualInstanceName = sapVirtualInstanceName;
         return this;
     }
 
     public SapCentralServerInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .create(
-                    resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapCentralServerInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -188,25 +183,20 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, Context.NONE);
         return this;
     }
 
     public SapCentralServerInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, context);
         return this;
     }
 
-    SapCentralServerInstanceImpl(
-        SapCentralServerInstanceInner innerObject,
+    SapCentralServerInstanceImpl(SapCentralServerInstanceInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -216,46 +206,38 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapCentralServerInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context)
+            .getValue();
         return this;
     }
 
     public OperationStatusResult startInstance() {
-        return serviceManager
-            .sapCentralInstances()
+        return serviceManager.sapCentralInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
     }
 
     public OperationStatusResult startInstance(Context context) {
-        return serviceManager
-            .sapCentralInstances()
+        return serviceManager.sapCentralInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
     }
 
     public OperationStatusResult stopInstance() {
-        return serviceManager
-            .sapCentralInstances()
+        return serviceManager.sapCentralInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
     }
 
     public OperationStatusResult stopInstance(StopRequest body, Context context) {
-        return serviceManager
-            .sapCentralInstances()
+        return serviceManager.sapCentralInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
     }
 
@@ -294,8 +276,8 @@ public final class SapCentralServerInstanceImpl
         return this;
     }
 
-    public SapCentralServerInstanceImpl withEnqueueReplicationServerProperties(
-        EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
+    public SapCentralServerInstanceImpl
+        withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         this.innerModel().withEnqueueReplicationServerProperties(enqueueReplicationServerProperties);
         return this;
     }

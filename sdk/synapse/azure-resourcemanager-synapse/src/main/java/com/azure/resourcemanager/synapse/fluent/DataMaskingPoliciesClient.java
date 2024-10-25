@@ -26,12 +26,8 @@ public interface DataMaskingPoliciesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataMaskingPolicyInner parameters,
-        Context context);
+    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataMaskingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool data masking policy.
@@ -46,8 +42,8 @@ public interface DataMaskingPoliciesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters);
+    DataMaskingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        DataMaskingPolicyInner parameters);
 
     /**
      * Gets a Sql pool data masking policy.
@@ -62,8 +58,8 @@ public interface DataMaskingPoliciesClient {
      * @return a Sql pool data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<DataMaskingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Gets a Sql pool data masking policy.

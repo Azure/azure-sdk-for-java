@@ -29,8 +29,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return a SQL virtual machine group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlVirtualMachineGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    Response<SqlVirtualMachineGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context);
 
     /**
      * Gets a SQL virtual machine group.
@@ -77,9 +77,7 @@ public interface SqlVirtualMachineGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        SqlVirtualMachineGroupInner parameters,
+        String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupInner parameters,
         Context context);
 
     /**
@@ -95,8 +93,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return a SQL virtual machine group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineGroupInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupInner parameters);
+    SqlVirtualMachineGroupInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        SqlVirtualMachineGroupInner parameters);
 
     /**
      * Creates or updates a SQL virtual machine group.
@@ -112,11 +110,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return a SQL virtual machine group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineGroupInner createOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        SqlVirtualMachineGroupInner parameters,
-        Context context);
+    SqlVirtualMachineGroupInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        SqlVirtualMachineGroupInner parameters, Context context);
 
     /**
      * Deletes a SQL virtual machine group.
@@ -145,8 +140,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Deletes a SQL virtual machine group.
@@ -206,9 +201,7 @@ public interface SqlVirtualMachineGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        SqlVirtualMachineGroupUpdate parameters,
+        String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupUpdate parameters,
         Context context);
 
     /**
@@ -224,8 +217,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return a SQL virtual machine group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineGroupInner update(
-        String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupUpdate parameters);
+    SqlVirtualMachineGroupInner update(String resourceGroupName, String sqlVirtualMachineGroupName,
+        SqlVirtualMachineGroupUpdate parameters);
 
     /**
      * Updates SQL virtual machine group tags.
@@ -241,11 +234,8 @@ public interface SqlVirtualMachineGroupsClient {
      * @return a SQL virtual machine group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineGroupInner update(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        SqlVirtualMachineGroupUpdate parameters,
-        Context context);
+    SqlVirtualMachineGroupInner update(String resourceGroupName, String sqlVirtualMachineGroupName,
+        SqlVirtualMachineGroupUpdate parameters, Context context);
 
     /**
      * Gets all SQL virtual machine groups in a resource group.

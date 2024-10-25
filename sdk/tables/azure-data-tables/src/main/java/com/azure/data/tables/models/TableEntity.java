@@ -215,16 +215,17 @@ public final class TableEntity {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (TablesConstants.TIMESTAMP_KEY.equals(key) && value != null && !(value instanceof OffsetDateTime)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be an OffsetDateTime.", key)));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' must be an OffsetDateTime.", key)));
         }
 
-        if ((TablesConstants.ODATA_ETAG_KEY.equals(key) || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
-            || TablesConstants.ODATA_ID_KEY.equals(key) || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null
-            && !(value instanceof String)) {
+        if ((TablesConstants.ODATA_ETAG_KEY.equals(key)
+            || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
+            || TablesConstants.ODATA_ID_KEY.equals(key)
+            || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null && !(value instanceof String)) {
 
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be a String.", key)));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException(String.format("'%s' must be a String.", key)));
         }
     }
 

@@ -42,8 +42,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String location, KustoPoolCheckNameRequest kustoPoolName, Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String location,
+        KustoPoolCheckNameRequest kustoPoolName, Context context);
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
@@ -70,8 +70,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto pools operation response along with {@link Response}.
      */
-    Response<KustoPoolListResult> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<KustoPoolListResult> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * List Kusto pools
@@ -99,8 +99,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto pool along with {@link Response}.
      */
-    Response<KustoPool> getWithResponse(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    Response<KustoPool> getWithResponse(String workspaceName, String kustoPoolName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets a Kusto pool.
@@ -201,8 +201,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureResourceSku> listSkusByResource(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<AzureResourceSku> listSkusByResource(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns the SKUs available for the provided resource.
@@ -216,8 +216,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureResourceSku> listSkusByResource(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<AzureResourceSku> listSkusByResource(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
@@ -230,8 +230,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LanguageExtension> listLanguageExtensions(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<LanguageExtension> listLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
@@ -245,8 +245,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LanguageExtension> listLanguageExtensions(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<LanguageExtension> listLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Add a list of language extensions that can run within KQL queries.
@@ -259,10 +259,7 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    void addLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
         LanguageExtensionsList languageExtensionsToAdd);
 
     /**
@@ -277,12 +274,8 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToAdd,
-        Context context);
+    void addLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context);
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
@@ -295,10 +288,7 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void removeLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    void removeLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
         LanguageExtensionsList languageExtensionsToRemove);
 
     /**
@@ -313,12 +303,8 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void removeLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context);
+    void removeLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
+        LanguageExtensionsList languageExtensionsToRemove, Context context);
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
@@ -331,8 +317,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
@@ -346,8 +332,8 @@ public interface KustoPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
@@ -360,10 +346,7 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    void detachFollowerDatabases(String workspaceName, String kustoPoolName, String resourceGroupName,
         FollowerDatabaseDefinitionInner followerDatabaseToRemove);
 
     /**
@@ -378,12 +361,8 @@ public interface KustoPools {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context);
+    void detachFollowerDatabases(String workspaceName, String kustoPoolName, String resourceGroupName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context);
 
     /**
      * Gets a Kusto pool.

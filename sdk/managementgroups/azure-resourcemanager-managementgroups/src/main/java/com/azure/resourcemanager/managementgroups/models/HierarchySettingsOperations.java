@@ -70,8 +70,8 @@ public interface HierarchySettingsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
-    Response<HierarchySettings> createOrUpdateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettings> createOrUpdateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
@@ -96,8 +96,8 @@ public interface HierarchySettingsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
-    Response<HierarchySettings> updateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettings> updateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link LoadBalancers}. */
-public class LoadBalancersImpl
-    extends TopLevelModifiableResourcesImpl<
-        LoadBalancer, LoadBalancerImpl, LoadBalancerInner, LoadBalancersClient, NetworkManager>
+public class LoadBalancersImpl extends
+    TopLevelModifiableResourcesImpl<LoadBalancer, LoadBalancerImpl, LoadBalancerInner, LoadBalancersClient, NetworkManager>
     implements LoadBalancers {
 
     public LoadBalancersImpl(final NetworkManager networkManager) {

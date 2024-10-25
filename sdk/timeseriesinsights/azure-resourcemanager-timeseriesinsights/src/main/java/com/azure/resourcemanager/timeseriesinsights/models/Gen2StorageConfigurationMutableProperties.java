@@ -54,10 +54,8 @@ public final class Gen2StorageConfigurationMutableProperties {
      */
     public void validate() {
         if (managementKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementKey in model Gen2StorageConfigurationMutableProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managementKey in model Gen2StorageConfigurationMutableProperties"));
         }
     }
 

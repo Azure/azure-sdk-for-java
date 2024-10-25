@@ -16,38 +16,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"zytqjtwhauunfpr\",\"\":{}},\"etag\":\"etlxsm\",\"id\":\"pddouifamowaziyn\",\"name\":\"nlqwzdvpiwhx\",\"type\":\"szdtmaajquh\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"ylr\",\"\":{}},\"etag\":\"ty\",\"id\":\"jbmzyospspsh\",\"name\":\"kfkyjp\",\"type\":\"sp\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"ssdfpp\",\"\":{}},\"etag\":\"tieyujtvczkcny\",\"id\":\"rxmunjdxvgln\",\"name\":\"vxlx\",\"type\":\"aglqivbgkcvkh\"}],\"nextLink\":\"vuqd\"}")
-                .toObject(IntegrationRuntimeListResponse.class);
+        IntegrationRuntimeListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"zytqjtwhauunfpr\",\"\":{}},\"etag\":\"etlxsm\",\"id\":\"pddouifamowaziyn\",\"name\":\"nlqwzdvpiwhx\",\"type\":\"szdtmaajquh\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"ylr\",\"\":{}},\"etag\":\"ty\",\"id\":\"jbmzyospspsh\",\"name\":\"kfkyjp\",\"type\":\"sp\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"ssdfpp\",\"\":{}},\"etag\":\"tieyujtvczkcny\",\"id\":\"rxmunjdxvgln\",\"name\":\"vxlx\",\"type\":\"aglqivbgkcvkh\"}],\"nextLink\":\"vuqd\"}")
+            .toObject(IntegrationRuntimeListResponse.class);
         Assertions.assertEquals("zytqjtwhauunfpr", model.value().get(0).properties().description());
         Assertions.assertEquals("vuqd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeListResponse model =
-            new IntegrationRuntimeListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IntegrationRuntimeResourceInner()
-                                .withProperties(
-                                    new IntegrationRuntime()
-                                        .withDescription("zytqjtwhauunfpr")
-                                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-                            new IntegrationRuntimeResourceInner()
-                                .withProperties(
-                                    new IntegrationRuntime()
-                                        .withDescription("ylr")
-                                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-                            new IntegrationRuntimeResourceInner()
-                                .withProperties(
-                                    new IntegrationRuntime()
-                                        .withDescription("ssdfpp")
-                                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
-                .withNextLink("vuqd");
+        IntegrationRuntimeListResponse model = new IntegrationRuntimeListResponse().withValue(Arrays.asList(
+            new IntegrationRuntimeResourceInner()
+                .withProperties(new IntegrationRuntime().withDescription("zytqjtwhauunfpr")
+                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+            new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("ylr")
+                .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+            new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("ssdfpp")
+                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
+            .withNextLink("vuqd");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeListResponse.class);
         Assertions.assertEquals("zytqjtwhauunfpr", model.value().get(0).properties().description());
         Assertions.assertEquals("vuqd", model.nextLink());

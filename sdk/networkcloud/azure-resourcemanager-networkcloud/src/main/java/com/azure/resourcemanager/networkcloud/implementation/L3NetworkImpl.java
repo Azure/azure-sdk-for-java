@@ -165,20 +165,16 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .createOrUpdate(resourceGroupName, l3NetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .createOrUpdate(resourceGroupName, l3NetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public L3Network create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .createOrUpdate(resourceGroupName, l3NetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .createOrUpdate(resourceGroupName, l3NetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -194,27 +190,23 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .updateWithResponse(resourceGroupName, l3NetworkName, updateL3NetworkUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .updateWithResponse(resourceGroupName, l3NetworkName, updateL3NetworkUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public L3Network apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .updateWithResponse(resourceGroupName, l3NetworkName, updateL3NetworkUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .updateWithResponse(resourceGroupName, l3NetworkName, updateL3NetworkUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    L3NetworkImpl(
-        L3NetworkInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    L3NetworkImpl(L3NetworkInner innerObject,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -222,22 +214,18 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
     }
 
     public L3Network refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public L3Network refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL3Networks()
-                .getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL3Networks()
+            .getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context)
+            .getValue();
         return this;
     }
 
