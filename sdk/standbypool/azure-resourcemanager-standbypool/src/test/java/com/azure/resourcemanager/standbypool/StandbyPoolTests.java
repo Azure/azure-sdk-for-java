@@ -21,8 +21,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
@@ -39,10 +38,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 import java.util.Random;
 
 public class StandbyPoolTests extends TestProxyTestBase {
@@ -69,13 +65,13 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
         standbyPoolManager = StandbyPoolManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         computeManager = ComputeManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-
-        registeredProviders(resourceManager, Arrays.asList("Microsoft.Compute", "Microsoft.StandbyPool"));
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -188,19 +184,5 @@ public class StandbyPoolTests extends TestProxyTestBase {
             throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
         }
         return sshPublicKey;
-    }
-
-    private static void registeredProviders(ResourceManager resourceManager, List<String> resourceProviderNamespaces) {
-        resourceProviderNamespaces.forEach(resourceProviderNamespace -> {
-            Provider provider = resourceManager.providers().getByName(resourceProviderNamespace);
-            if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
-                resourceManager.providers().register(resourceProviderNamespace);
-            }
-            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                provider = resourceManager.providers().getByName(resourceProviderNamespace);
-            }
-        });
     }
 }
