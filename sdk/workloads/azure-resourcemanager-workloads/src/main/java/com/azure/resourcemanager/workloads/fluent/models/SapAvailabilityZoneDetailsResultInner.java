@@ -37,8 +37,8 @@ public final class SapAvailabilityZoneDetailsResultInner {
      * @param availabilityZonePairs the availabilityZonePairs value to set.
      * @return the SapAvailabilityZoneDetailsResultInner object itself.
      */
-    public SapAvailabilityZoneDetailsResultInner withAvailabilityZonePairs(
-        List<SapAvailabilityZonePair> availabilityZonePairs) {
+    public SapAvailabilityZoneDetailsResultInner
+        withAvailabilityZonePairs(List<SapAvailabilityZonePair> availabilityZonePairs) {
         this.availabilityZonePairs = availabilityZonePairs;
         return this;
     }

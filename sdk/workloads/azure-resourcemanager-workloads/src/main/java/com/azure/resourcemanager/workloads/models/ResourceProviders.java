@@ -22,8 +22,8 @@ public interface ResourceProviders {
      * @return sAP sizing recommendations by providing input SAPS for application tier and memory required for database
      *     tier along with {@link Response}.
      */
-    Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(
-        String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context);
+    Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(String location,
+        SapSizingRecommendationRequest sapSizingRecommendation, Context context);
 
     /**
      * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database
@@ -49,8 +49,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SAP supported SKUs for ASCS, Application and Database tier along with {@link Response}.
      */
-    Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(
-        String location, SapSupportedSkusRequest sapSupportedSku, Context context);
+    Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(String location,
+        SapSupportedSkusRequest sapSupportedSku, Context context);
 
     /**
      * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
@@ -74,8 +74,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Disk Configuration Layout prod/non-prod SAP System along with {@link Response}.
      */
-    Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
+    Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
 
     /**
      * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
@@ -99,8 +99,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the recommended SAP Availability Zone Pair Details for your region along with {@link Response}.
      */
-    Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(
-        String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
+    Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(String location,
+        SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
 
     /**
      * Get the recommended SAP Availability Zone Pair Details for your region.

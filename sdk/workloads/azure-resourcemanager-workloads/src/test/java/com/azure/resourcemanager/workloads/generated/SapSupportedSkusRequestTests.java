@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSupportedSkusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSupportedSkusRequest model =
-            BinaryData
-                .fromString(
-                    "{\"appLocation\":\"h\",\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"deploymentType\":\"SingleServer\",\"databaseType\":\"HANA\",\"highAvailabilityType\":\"AvailabilityZone\"}")
-                .toObject(SapSupportedSkusRequest.class);
+        SapSupportedSkusRequest model = BinaryData.fromString(
+            "{\"appLocation\":\"h\",\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"deploymentType\":\"SingleServer\",\"databaseType\":\"HANA\",\"highAvailabilityType\":\"AvailabilityZone\"}")
+            .toObject(SapSupportedSkusRequest.class);
         Assertions.assertEquals("h", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
@@ -31,14 +29,12 @@ public final class SapSupportedSkusRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSupportedSkusRequest model =
-            new SapSupportedSkusRequest()
-                .withAppLocation("h")
-                .withEnvironment(SapEnvironmentType.NON_PROD)
-                .withSapProduct(SapProductType.OTHER)
-                .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                .withDatabaseType(SapDatabaseType.HANA)
-                .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE);
+        SapSupportedSkusRequest model = new SapSupportedSkusRequest().withAppLocation("h")
+            .withEnvironment(SapEnvironmentType.NON_PROD)
+            .withSapProduct(SapProductType.OTHER)
+            .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+            .withDatabaseType(SapDatabaseType.HANA)
+            .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE);
         model = BinaryData.fromObject(model).toObject(SapSupportedSkusRequest.class);
         Assertions.assertEquals("h", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());

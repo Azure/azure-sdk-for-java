@@ -156,8 +156,8 @@ public final class SapVirtualInstanceProperties {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
-    public SapVirtualInstanceProperties withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public SapVirtualInstanceProperties
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -214,22 +214,16 @@ public final class SapVirtualInstanceProperties {
      */
     public void validate() {
         if (environment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property environment in model SapVirtualInstanceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property environment in model SapVirtualInstanceProperties"));
         }
         if (sapProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapProduct in model SapVirtualInstanceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sapProduct in model SapVirtualInstanceProperties"));
         }
         if (configuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property configuration in model SapVirtualInstanceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property configuration in model SapVirtualInstanceProperties"));
         } else {
             configuration().validate();
         }
