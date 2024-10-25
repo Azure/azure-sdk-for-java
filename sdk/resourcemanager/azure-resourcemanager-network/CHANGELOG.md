@@ -1,16 +1,10 @@
 # Release History
 
-## 2.44.0-beta.1 (Unreleased)
+## 2.44.0 (2024-10-25)
 
 ### Features Added
 
 - Supported `addressPrefixes` for `Subnet`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.43.0 (2024-09-27)
 
