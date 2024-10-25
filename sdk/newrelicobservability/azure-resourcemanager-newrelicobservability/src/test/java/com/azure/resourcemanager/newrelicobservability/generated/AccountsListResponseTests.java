@@ -25,8 +25,11 @@ public final class AccountsListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountsListResponse model = new AccountsListResponse().withValue(Arrays.asList(new AccountResourceInner()
-            .withOrganizationId("ithxqhabifpi").withAccountId("wczbys").withAccountName("pqxu").withRegion("vyq")))
+        AccountsListResponse model = new AccountsListResponse()
+            .withValue(Arrays.asList(new AccountResourceInner().withOrganizationId("ithxqhabifpi")
+                .withAccountId("wczbys")
+                .withAccountName("pqxu")
+                .withRegion("vyq")))
             .withNextLink("gaudcc");
         model = BinaryData.fromObject(model).toObject(AccountsListResponse.class);
         Assertions.assertEquals("ithxqhabifpi", model.value().get(0).organizationId());

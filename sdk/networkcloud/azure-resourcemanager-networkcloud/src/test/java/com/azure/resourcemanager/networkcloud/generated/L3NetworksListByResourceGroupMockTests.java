@@ -34,37 +34,27 @@ public final class L3NetworksListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"apeqiscrpil\",\"type\":\"ftr\"},\"properties\":{\"associatedResourceIds\":[\"jdaahuqimldahlfx\",\"muifmuadjnfsn\",\"skiioshjgczetybn\"],\"clusterId\":\"ztlcgc\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fjvmy\",\"hybridAksClustersAssociatedIds\":[\"ebecuvlbefv\",\"cljkxpyl\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"wpsyxjij\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"vrbkerdkdkgaw\",\"ipv6ConnectedPrefix\":\"jxildfkcef\",\"l3IsolationDomainId\":\"ygzqpjoisfmn\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"nxumentqo\",\"tw\",\"ymxymu\"],\"vlan\":2243722311789555333},\"location\":\"qtow\",\"tags\":{\"ajcywhjqw\":\"sycoybajasqub\",\"ymjzpwdlvwtiws\":\"chqohtfxcpupuk\"},\"id\":\"osaonhqnamppu\",\"name\":\"tassaekewna\",\"type\":\"eajbkajlcyizyddc\"}]}";
+        String responseStr
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"apeqiscrpil\",\"type\":\"ftr\"},\"properties\":{\"associatedResourceIds\":[\"jdaahuqimldahlfx\",\"muifmuadjnfsn\",\"skiioshjgczetybn\"],\"clusterId\":\"ztlcgc\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fjvmy\",\"hybridAksClustersAssociatedIds\":[\"ebecuvlbefv\",\"cljkxpyl\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"wpsyxjij\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"vrbkerdkdkgaw\",\"ipv6ConnectedPrefix\":\"jxildfkcef\",\"l3IsolationDomainId\":\"ygzqpjoisfmn\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"nxumentqo\",\"tw\",\"ymxymu\"],\"vlan\":2243722311789555333},\"location\":\"qtow\",\"tags\":{\"ajcywhjqw\":\"sycoybajasqub\",\"ymjzpwdlvwtiws\":\"chqohtfxcpupuk\"},\"id\":\"osaonhqnamppu\",\"name\":\"tassaekewna\",\"type\":\"eajbkajlcyizyddc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<L3Network> response =
-            manager.l3Networks().listByResourceGroup("xcbccwkqmt", com.azure.core.util.Context.NONE);
+        PagedIterable<L3Network> response
+            = manager.l3Networks().listByResourceGroup("xcbccwkqmt", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qtow", response.iterator().next().location());
         Assertions.assertEquals("sycoybajasqub", response.iterator().next().tags().get("ajcywhjqw"));

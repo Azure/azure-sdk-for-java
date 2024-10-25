@@ -14,7 +14,8 @@ import java.util.List;
 /** The properties of a query statistic. */
 @Fluent
 public final class QueryStatisticProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryStatisticProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryStatisticProperties.class);
 
     /*
      * Database query identifier.

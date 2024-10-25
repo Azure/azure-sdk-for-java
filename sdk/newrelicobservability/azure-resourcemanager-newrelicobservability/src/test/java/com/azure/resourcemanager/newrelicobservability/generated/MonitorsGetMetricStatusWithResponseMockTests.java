@@ -45,15 +45,18 @@ public final class MonitorsGetMetricStatusWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MetricsStatusResponse response = manager.monitors()
-            .getMetricStatusWithResponse("jervnaenqpehi", "doy",
-                new MetricsStatusRequest().withAzureResourceIds(Arrays.asList("fthnzdn", "sl")).withUserEmail("nayqi"),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        MetricsStatusResponse response
+            = manager.monitors()
+                .getMetricStatusWithResponse("jervnaenqpehi", "doy",
+                    new MetricsStatusRequest().withAzureResourceIds(Arrays.asList("fthnzdn", "sl"))
+                        .withUserEmail("nayqi"),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("duhavhqlkt", response.azureResourceIds().get(0));
     }

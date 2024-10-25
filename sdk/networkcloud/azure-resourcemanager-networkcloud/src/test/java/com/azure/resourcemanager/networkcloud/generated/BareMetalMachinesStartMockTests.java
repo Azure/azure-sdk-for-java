@@ -30,37 +30,27 @@ public final class BareMetalMachinesStartMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"lnf\",\"resourceId\":\"y\",\"name\":\"vqdbpbhfck\",\"status\":\"vezcrcssbzhdd\",\"percentComplete\":47.65451,\"startTime\":\"2021-01-18T21:27:07Z\",\"endTime\":\"2021-11-16T04:37:45Z\",\"operations\":[{\"id\":\"alehpav\",\"resourceId\":\"ugiqjtiogqg\",\"name\":\"inic\",\"status\":\"teajohiyg\",\"percentComplete\":5.8400393,\"startTime\":\"2021-02-10T23:40:39Z\",\"endTime\":\"2021-03-08T08:00:31Z\",\"operations\":[{\"id\":\"ykm\",\"resourceId\":\"p\",\"name\":\"xqcsehch\",\"status\":\"hufmpq\",\"percentComplete\":1.5317738,\"startTime\":\"2021-06-18T05:18:44Z\",\"endTime\":\"2021-10-17T04:58:08Z\",\"operations\":[{\"status\":\"ulodsaeuzanhsfnh\"}]},{\"id\":\"wphpzfngqj\",\"resourceId\":\"idftujwjjufwbe\",\"name\":\"k\",\"status\":\"orhtss\",\"percentComplete\":74.679276,\"startTime\":\"2021-06-15T07:22:19Z\",\"endTime\":\"2021-08-02T13:56:45Z\",\"operations\":[{\"status\":\"zcvjytiqswbqerz\"},{\"status\":\"xiytxtdgukvl\"}]},{\"id\":\"tgdstyouambe\",\"resourceId\":\"esw\",\"name\":\"weg\",\"status\":\"mut\",\"percentComplete\":19.082249,\"startTime\":\"2021-10-05T19:49:24Z\",\"endTime\":\"2021-05-23T20:36:12Z\",\"operations\":[{\"status\":\"gijiitnspxlzd\"},{\"status\":\"sygrijwa\"},{\"status\":\"ufanray\"},{\"status\":\"fueqfrojs\"}]}]}]}";
+        String responseStr
+            = "{\"id\":\"lnf\",\"resourceId\":\"y\",\"name\":\"vqdbpbhfck\",\"status\":\"vezcrcssbzhdd\",\"percentComplete\":47.65451,\"startTime\":\"2021-01-18T21:27:07Z\",\"endTime\":\"2021-11-16T04:37:45Z\",\"operations\":[{\"id\":\"alehpav\",\"resourceId\":\"ugiqjtiogqg\",\"name\":\"inic\",\"status\":\"teajohiyg\",\"percentComplete\":5.8400393,\"startTime\":\"2021-02-10T23:40:39Z\",\"endTime\":\"2021-03-08T08:00:31Z\",\"operations\":[{\"id\":\"ykm\",\"resourceId\":\"p\",\"name\":\"xqcsehch\",\"status\":\"hufmpq\",\"percentComplete\":1.5317738,\"startTime\":\"2021-06-18T05:18:44Z\",\"endTime\":\"2021-10-17T04:58:08Z\",\"operations\":[{\"status\":\"ulodsaeuzanhsfnh\"}]},{\"id\":\"wphpzfngqj\",\"resourceId\":\"idftujwjjufwbe\",\"name\":\"k\",\"status\":\"orhtss\",\"percentComplete\":74.679276,\"startTime\":\"2021-06-15T07:22:19Z\",\"endTime\":\"2021-08-02T13:56:45Z\",\"operations\":[{\"status\":\"zcvjytiqswbqerz\"},{\"status\":\"xiytxtdgukvl\"}]},{\"id\":\"tgdstyouambe\",\"resourceId\":\"esw\",\"name\":\"weg\",\"status\":\"mut\",\"percentComplete\":19.082249,\"startTime\":\"2021-10-05T19:49:24Z\",\"endTime\":\"2021-05-23T20:36:12Z\",\"operations\":[{\"status\":\"gijiitnspxlzd\"},{\"status\":\"sygrijwa\"},{\"status\":\"ufanray\"},{\"status\":\"fueqfrojs\"}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager.bareMetalMachines().start("vjreuykbbmnw", "gltbxoeeo", com.azure.core.util.Context.NONE);
+        OperationStatusResult response
+            = manager.bareMetalMachines().start("vjreuykbbmnw", "gltbxoeeo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lnf", response.id());
         Assertions.assertEquals("vqdbpbhfck", response.name());
@@ -78,16 +68,11 @@ public final class BareMetalMachinesStartMockTests {
         Assertions.assertEquals("xqcsehch", response.operations().get(0).operations().get(0).name());
         Assertions.assertEquals("hufmpq", response.operations().get(0).operations().get(0).status());
         Assertions.assertEquals(1.5317738F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-18T05:18:44Z"),
-                response.operations().get(0).operations().get(0).startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-17T04:58:08Z"),
-                response.operations().get(0).operations().get(0).endTime());
-        Assertions
-            .assertEquals(
-                "ulodsaeuzanhsfnh", response.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T05:18:44Z"),
+            response.operations().get(0).operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T04:58:08Z"),
+            response.operations().get(0).operations().get(0).endTime());
+        Assertions.assertEquals("ulodsaeuzanhsfnh",
+            response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

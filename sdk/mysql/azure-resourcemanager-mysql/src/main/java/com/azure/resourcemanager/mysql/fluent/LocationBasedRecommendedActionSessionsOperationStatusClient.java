@@ -40,6 +40,6 @@ public interface LocationBasedRecommendedActionSessionsOperationStatusClient {
      * @return recommendation action session operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context);
 }

@@ -19,8 +19,8 @@ import com.azure.perf.test.core.PerfStressTest;
  * Base class for Azure Monitor Query performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    public static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-            + "or system properties.%n";
+    public static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
 
     protected final LogsQueryClient logsQueryClient;
     protected final LogsQueryAsyncClient logsQueryAsyncClient;
@@ -34,11 +34,11 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     public ServiceTest(TOptions options) {
         super(options);
 
-        LogsQueryClientBuilder logsQueryClientBuilder = new LogsQueryClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build());
+        LogsQueryClientBuilder logsQueryClientBuilder
+            = new LogsQueryClientBuilder().credential(new DefaultAzureCredentialBuilder().build());
 
-        MetricsQueryClientBuilder metricsQueryClientBuilder = new MetricsQueryClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build());
+        MetricsQueryClientBuilder metricsQueryClientBuilder
+            = new MetricsQueryClientBuilder().credential(new DefaultAzureCredentialBuilder().build());
         this.logsQueryClient = logsQueryClientBuilder.buildClient();
         this.logsQueryAsyncClient = logsQueryClientBuilder.buildAsyncClient();
 

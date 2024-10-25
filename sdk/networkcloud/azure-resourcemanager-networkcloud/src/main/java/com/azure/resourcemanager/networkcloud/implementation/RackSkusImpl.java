@@ -21,8 +21,8 @@ public final class RackSkusImpl implements RackSkus {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public RackSkusImpl(
-        RackSkusClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public RackSkusImpl(RackSkusClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,10 +40,7 @@ public final class RackSkusImpl implements RackSkus {
     public Response<RackSku> getWithResponse(String rackSkuName, Context context) {
         Response<RackSkuInner> inner = this.serviceClient().getWithResponse(rackSkuName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RackSkuImpl(inner.getValue(), this.manager()));
         } else {
             return null;

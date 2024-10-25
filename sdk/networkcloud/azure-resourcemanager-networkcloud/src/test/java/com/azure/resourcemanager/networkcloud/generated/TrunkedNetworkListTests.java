@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TrunkedNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrunkedNetworkList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"aimlnwiaaom\",\"value\":[{\"extendedLocation\":{\"name\":\"eazulcs\",\"type\":\"thwwn\"},\"properties\":{\"associatedResourceIds\":[\"l\"],\"clusterId\":\"swpchwahfbousn\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"fewetwlyxgncx\",\"hybridAksClustersAssociatedIds\":[\"hdjhlimmbcx\",\"h\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"rxvxcjzh\",\"isolationDomainIds\":[\"zxfpxtgqsc\",\"avft\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"azkmtgguwp\"],\"vlans\":[767059263997452674,7517246226041881019]},\"location\":\"vmmghfcfiwrxgk\",\"tags\":{\"zqodfvpgshox\":\"vyi\",\"zflbqvg\":\"sgbpfgzdjtx\",\"sdtutnwlduyc\":\"qvlgafcqusrdvetn\",\"kuqgsjjxundxgket\":\"uzhyrmewipmvekdx\"},\"id\":\"zhhzjhfjmhvvmu\",\"name\":\"gpmuneqsxvmhfbuz\",\"type\":\"yihsasbhudypohyu\"},{\"extendedLocation\":{\"name\":\"ms\",\"type\":\"ynsqyrpfoobr\"},\"properties\":{\"associatedResourceIds\":[\"y\"],\"clusterId\":\"jnygq\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"qzdz\",\"hybridAksClustersAssociatedIds\":[\"la\",\"hnfhqlyvijouwi\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"yzunbixxrtikv\",\"isolationDomainIds\":[\"wpgclrcivt\",\"oxfrkenxpmyyefr\",\"mpdnqqskawa\"],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"bnpqfrtqlkzme\",\"nitgvkxlz\"],\"vlans\":[3259590014708036910,6287019732891771770,642502013923819576,8171214397183496400]},\"location\":\"zxwhcansymoyqhlw\",\"tags\":{\"wasqvdaeyyg\":\"ivbkbxgomfaj\"},\"id\":\"xakjsqzhzb\",\"name\":\"zkgimsid\",\"type\":\"asi\"}]}")
-                .toObject(TrunkedNetworkList.class);
+        TrunkedNetworkList model = BinaryData.fromString(
+            "{\"nextLink\":\"aimlnwiaaom\",\"value\":[{\"extendedLocation\":{\"name\":\"eazulcs\",\"type\":\"thwwn\"},\"properties\":{\"associatedResourceIds\":[\"l\"],\"clusterId\":\"swpchwahfbousn\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"fewetwlyxgncx\",\"hybridAksClustersAssociatedIds\":[\"hdjhlimmbcx\",\"h\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"rxvxcjzh\",\"isolationDomainIds\":[\"zxfpxtgqsc\",\"avft\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"azkmtgguwp\"],\"vlans\":[767059263997452674,7517246226041881019]},\"location\":\"vmmghfcfiwrxgk\",\"tags\":{\"zqodfvpgshox\":\"vyi\",\"zflbqvg\":\"sgbpfgzdjtx\",\"sdtutnwlduyc\":\"qvlgafcqusrdvetn\",\"kuqgsjjxundxgket\":\"uzhyrmewipmvekdx\"},\"id\":\"zhhzjhfjmhvvmu\",\"name\":\"gpmuneqsxvmhfbuz\",\"type\":\"yihsasbhudypohyu\"},{\"extendedLocation\":{\"name\":\"ms\",\"type\":\"ynsqyrpfoobr\"},\"properties\":{\"associatedResourceIds\":[\"y\"],\"clusterId\":\"jnygq\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"qzdz\",\"hybridAksClustersAssociatedIds\":[\"la\",\"hnfhqlyvijouwi\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"yzunbixxrtikv\",\"isolationDomainIds\":[\"wpgclrcivt\",\"oxfrkenxpmyyefr\",\"mpdnqqskawa\"],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"bnpqfrtqlkzme\",\"nitgvkxlz\"],\"vlans\":[3259590014708036910,6287019732891771770,642502013923819576,8171214397183496400]},\"location\":\"zxwhcansymoyqhlw\",\"tags\":{\"wasqvdaeyyg\":\"ivbkbxgomfaj\"},\"id\":\"xakjsqzhzb\",\"name\":\"zkgimsid\",\"type\":\"asi\"}]}")
+            .toObject(TrunkedNetworkList.class);
         Assertions.assertEquals("aimlnwiaaom", model.nextLink());
         Assertions.assertEquals("vmmghfcfiwrxgk", model.value().get(0).location());
         Assertions.assertEquals("vyi", model.value().get(0).tags().get("zqodfvpgshox"));
@@ -35,43 +33,24 @@ public final class TrunkedNetworkListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkList model =
-            new TrunkedNetworkList()
-                .withNextLink("aimlnwiaaom")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TrunkedNetworkInner()
-                                .withLocation("vmmghfcfiwrxgk")
-                                .withTags(
-                                    mapOf(
-                                        "zqodfvpgshox",
-                                        "vyi",
-                                        "zflbqvg",
-                                        "sgbpfgzdjtx",
-                                        "sdtutnwlduyc",
-                                        "qvlgafcqusrdvetn",
-                                        "kuqgsjjxundxgket",
-                                        "uzhyrmewipmvekdx"))
-                                .withExtendedLocation(new ExtendedLocation().withName("eazulcs").withType("thwwn"))
-                                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                                .withInterfaceName("rxvxcjzh")
-                                .withIsolationDomainIds(Arrays.asList("zxfpxtgqsc", "avft"))
-                                .withVlans(Arrays.asList(767059263997452674L, 7517246226041881019L)),
-                            new TrunkedNetworkInner()
-                                .withLocation("zxwhcansymoyqhlw")
-                                .withTags(mapOf("wasqvdaeyyg", "ivbkbxgomfaj"))
-                                .withExtendedLocation(new ExtendedLocation().withName("ms").withType("ynsqyrpfoobr"))
-                                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                                .withInterfaceName("yzunbixxrtikv")
-                                .withIsolationDomainIds(Arrays.asList("wpgclrcivt", "oxfrkenxpmyyefr", "mpdnqqskawa"))
-                                .withVlans(
-                                    Arrays
-                                        .asList(
-                                            3259590014708036910L,
-                                            6287019732891771770L,
-                                            642502013923819576L,
-                                            8171214397183496400L))));
+        TrunkedNetworkList model = new TrunkedNetworkList().withNextLink("aimlnwiaaom")
+            .withValue(Arrays.asList(
+                new TrunkedNetworkInner().withLocation("vmmghfcfiwrxgk")
+                    .withTags(mapOf("zqodfvpgshox", "vyi", "zflbqvg", "sgbpfgzdjtx", "sdtutnwlduyc", "qvlgafcqusrdvetn",
+                        "kuqgsjjxundxgket", "uzhyrmewipmvekdx"))
+                    .withExtendedLocation(new ExtendedLocation().withName("eazulcs").withType("thwwn"))
+                    .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+                    .withInterfaceName("rxvxcjzh")
+                    .withIsolationDomainIds(Arrays.asList("zxfpxtgqsc", "avft"))
+                    .withVlans(Arrays.asList(767059263997452674L, 7517246226041881019L)),
+                new TrunkedNetworkInner().withLocation("zxwhcansymoyqhlw")
+                    .withTags(mapOf("wasqvdaeyyg", "ivbkbxgomfaj"))
+                    .withExtendedLocation(new ExtendedLocation().withName("ms").withType("ynsqyrpfoobr"))
+                    .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+                    .withInterfaceName("yzunbixxrtikv")
+                    .withIsolationDomainIds(Arrays.asList("wpgclrcivt", "oxfrkenxpmyyefr", "mpdnqqskawa"))
+                    .withVlans(Arrays.asList(3259590014708036910L, 6287019732891771770L, 642502013923819576L,
+                        8171214397183496400L))));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkList.class);
         Assertions.assertEquals("aimlnwiaaom", model.nextLink());
         Assertions.assertEquals("vmmghfcfiwrxgk", model.value().get(0).location());

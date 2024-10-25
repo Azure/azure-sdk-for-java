@@ -91,8 +91,8 @@ public interface StorageAppliancesClient {
      * @return properties of the provided storage appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageApplianceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageApplianceName, Context context);
+    Response<StorageApplianceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String storageApplianceName, Context context);
 
     /**
      * Retrieve the storage appliance.
@@ -125,8 +125,8 @@ public interface StorageAppliancesClient {
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters);
+    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters);
 
     /**
      * Create or update the storage appliance.
@@ -145,11 +145,8 @@ public interface StorageAppliancesClient {
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
-        Context context);
+    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters, Context context);
 
     /**
      * Create or update the storage appliance.
@@ -166,8 +163,8 @@ public interface StorageAppliancesClient {
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageApplianceInner createOrUpdate(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters);
+    StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters);
 
     /**
      * Create or update the storage appliance.
@@ -185,11 +182,8 @@ public interface StorageAppliancesClient {
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageApplianceInner createOrUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
-        Context context);
+    StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, Context context);
 
     /**
      * Delete the storage appliance.
@@ -222,8 +216,8 @@ public interface StorageAppliancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageApplianceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Delete the storage appliance.
@@ -271,8 +265,8 @@ public interface StorageAppliancesClient {
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(
-        String resourceGroupName, String storageApplianceName);
+    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+        String storageApplianceName);
 
     /**
      * Patch the storage appliance.
@@ -291,11 +285,8 @@ public interface StorageAppliancesClient {
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Patch the storage appliance.
@@ -329,11 +320,8 @@ public interface StorageAppliancesClient {
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageApplianceInner update(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context);
+    StorageApplianceInner update(String resourceGroupName, String storageApplianceName,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -348,8 +336,8 @@ public interface StorageAppliancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -365,8 +353,8 @@ public interface StorageAppliancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -397,8 +385,8 @@ public interface StorageAppliancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner disableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResultInner disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -413,8 +401,8 @@ public interface StorageAppliancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -432,8 +420,7 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnableRemoteVendorManagement(
-        String resourceGroupName,
-        String storageApplianceName,
+        String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
 
@@ -467,9 +454,7 @@ public interface StorageAppliancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner enableRemoteVendorManagement(
-        String resourceGroupName,
-        String storageApplianceName,
+    OperationStatusResultInner enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
 }

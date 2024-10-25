@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Display metadata associated with the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
      * Operation resource provider name.

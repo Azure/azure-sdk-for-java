@@ -304,30 +304,22 @@ public final class StorageApplianceProperties {
      */
     public void validate() {
         if (administratorCredentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorCredentials in model StorageApplianceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property administratorCredentials in model StorageApplianceProperties"));
         } else {
             administratorCredentials().validate();
         }
         if (rackId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rackId in model StorageApplianceProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackId in model StorageApplianceProperties"));
         }
         if (serialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serialNumber in model StorageApplianceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serialNumber in model StorageApplianceProperties"));
         }
         if (storageApplianceSkuId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageApplianceSkuId in model StorageApplianceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageApplianceSkuId in model StorageApplianceProperties"));
         }
     }
 

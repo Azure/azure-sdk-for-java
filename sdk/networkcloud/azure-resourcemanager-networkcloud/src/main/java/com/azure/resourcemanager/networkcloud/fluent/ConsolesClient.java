@@ -45,8 +45,8 @@ public interface ConsolesClient {
      * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConsoleInner> listByVirtualMachine(
-        String resourceGroupName, String virtualMachineName, Context context);
+    PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Retrieve the virtual machine console.
@@ -63,8 +63,8 @@ public interface ConsolesClient {
      * @return properties of the provided virtual machine console along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConsoleInner> getWithResponse(
-        String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    Response<ConsoleInner> getWithResponse(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context);
 
     /**
      * Retrieve the virtual machine console.
@@ -98,8 +98,8 @@ public interface ConsolesClient {
      *     virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualMachineName, String consoleName, ConsoleInner consoleParameters);
+    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualMachineName, String consoleName, ConsoleInner consoleParameters);
 
     /**
      * Create or update the virtual machine console.
@@ -118,12 +118,8 @@ public interface ConsolesClient {
      *     virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        String consoleName,
-        ConsoleInner consoleParameters,
-        Context context);
+    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualMachineName, String consoleName, ConsoleInner consoleParameters, Context context);
 
     /**
      * Create or update the virtual machine console.
@@ -140,8 +136,8 @@ public interface ConsolesClient {
      * @return console represents the console of an on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConsoleInner createOrUpdate(
-        String resourceGroupName, String virtualMachineName, String consoleName, ConsoleInner consoleParameters);
+    ConsoleInner createOrUpdate(String resourceGroupName, String virtualMachineName, String consoleName,
+        ConsoleInner consoleParameters);
 
     /**
      * Create or update the virtual machine console.
@@ -159,12 +155,8 @@ public interface ConsolesClient {
      * @return console represents the console of an on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConsoleInner createOrUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        String consoleName,
-        ConsoleInner consoleParameters,
-        Context context);
+    ConsoleInner createOrUpdate(String resourceGroupName, String virtualMachineName, String consoleName,
+        ConsoleInner consoleParameters, Context context);
 
     /**
      * Delete the virtual machine console.
@@ -180,8 +172,8 @@ public interface ConsolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineName, String consoleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+        String consoleName);
 
     /**
      * Delete the virtual machine console.
@@ -198,8 +190,8 @@ public interface ConsolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+        String consoleName, Context context);
 
     /**
      * Delete the virtual machine console.
@@ -248,8 +240,8 @@ public interface ConsolesClient {
      *     virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName, String consoleName);
+    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName, String virtualMachineName,
+        String consoleName);
 
     /**
      * Patch the virtual machine console.
@@ -269,12 +261,8 @@ public interface ConsolesClient {
      *     virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        String consoleName,
-        ConsolePatchParameters consoleUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName, String virtualMachineName,
+        String consoleName, ConsolePatchParameters consoleUpdateParameters, Context context);
 
     /**
      * Patch the virtual machine console.
@@ -310,10 +298,6 @@ public interface ConsolesClient {
      * @return console represents the console of an on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConsoleInner update(
-        String resourceGroupName,
-        String virtualMachineName,
-        String consoleName,
-        ConsolePatchParameters consoleUpdateParameters,
-        Context context);
+    ConsoleInner update(String resourceGroupName, String virtualMachineName, String consoleName,
+        ConsolePatchParameters consoleUpdateParameters, Context context);
 }

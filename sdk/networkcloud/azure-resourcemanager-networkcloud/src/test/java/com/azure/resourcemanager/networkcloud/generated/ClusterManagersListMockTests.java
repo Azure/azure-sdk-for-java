@@ -31,34 +31,24 @@ public final class ClusterManagersListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"kl\",\"availabilityZones\":[\"rvtxvcmufunlc\",\"xxvir\"],\"clusterVersions\":[{\"supportExpiryDate\":\"gjgvr\",\"targetClusterVersion\":\"vpygglp\"},{\"supportExpiryDate\":\"rdcueljtiahx\",\"targetClusterVersion\":\"q\"},{\"supportExpiryDate\":\"arvsx\",\"targetClusterVersion\":\"bglcjkayspthzodu\"},{\"supportExpiryDate\":\"lmjtg\",\"targetClusterVersion\":\"ioskkfmkmfdjxyxg\"}],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"vjcteoedlrslsk\",\"fabricControllerId\":\"zpxvjnzdpvoc\",\"managedResourceGroupConfiguration\":{\"location\":\"pcnab\",\"name\":\"fsnggytexvzilm\"},\"managerExtendedLocation\":{\"name\":\"vzkwwwncknr\",\"type\":\"dajlskzpt\"},\"provisioningState\":\"Provisioning\",\"vmSize\":\"weucyrth\"},\"location\":\"lehmcgcjeinueho\",\"tags\":{\"zfivfokpysthhzag\":\"vfejvqnttmbqda\",\"rlhgenuze\":\"fwy\",\"zlsmmdqgmihzpim\":\"gvkvebaqszll\",\"gxsvtza\":\"qrhnxtminkl\"},\"id\":\"hzvqnsqktcmbjwz\",\"name\":\"oslpky\",\"type\":\"tglwkzpgajsqjc\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"kl\",\"availabilityZones\":[\"rvtxvcmufunlc\",\"xxvir\"],\"clusterVersions\":[{\"supportExpiryDate\":\"gjgvr\",\"targetClusterVersion\":\"vpygglp\"},{\"supportExpiryDate\":\"rdcueljtiahx\",\"targetClusterVersion\":\"q\"},{\"supportExpiryDate\":\"arvsx\",\"targetClusterVersion\":\"bglcjkayspthzodu\"},{\"supportExpiryDate\":\"lmjtg\",\"targetClusterVersion\":\"ioskkfmkmfdjxyxg\"}],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"vjcteoedlrslsk\",\"fabricControllerId\":\"zpxvjnzdpvoc\",\"managedResourceGroupConfiguration\":{\"location\":\"pcnab\",\"name\":\"fsnggytexvzilm\"},\"managerExtendedLocation\":{\"name\":\"vzkwwwncknr\",\"type\":\"dajlskzpt\"},\"provisioningState\":\"Provisioning\",\"vmSize\":\"weucyrth\"},\"location\":\"lehmcgcjeinueho\",\"tags\":{\"zfivfokpysthhzag\":\"vfejvqnttmbqda\",\"rlhgenuze\":\"fwy\",\"zlsmmdqgmihzpim\":\"gvkvebaqszll\",\"gxsvtza\":\"qrhnxtminkl\"},\"id\":\"hzvqnsqktcmbjwz\",\"name\":\"oslpky\",\"type\":\"tglwkzpgajsqjc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ClusterManager> response = manager.clusterManagers().list(com.azure.core.util.Context.NONE);
 
@@ -68,8 +58,8 @@ public final class ClusterManagersListMockTests {
         Assertions.assertEquals("rvtxvcmufunlc", response.iterator().next().availabilityZones().get(0));
         Assertions.assertEquals("zpxvjnzdpvoc", response.iterator().next().fabricControllerId());
         Assertions.assertEquals("pcnab", response.iterator().next().managedResourceGroupConfiguration().location());
-        Assertions
-            .assertEquals("fsnggytexvzilm", response.iterator().next().managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("fsnggytexvzilm",
+            response.iterator().next().managedResourceGroupConfiguration().name());
         Assertions.assertEquals("weucyrth", response.iterator().next().vmSize());
     }
 }

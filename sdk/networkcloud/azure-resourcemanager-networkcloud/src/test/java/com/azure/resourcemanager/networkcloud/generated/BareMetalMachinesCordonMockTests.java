@@ -32,43 +32,29 @@ public final class BareMetalMachinesCordonMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"hpwpgddeimawzovg\",\"resourceId\":\"um\",\"name\":\"kjcjcaztbwsnsqow\",\"status\":\"wcoml\",\"percentComplete\":86.88219,\"startTime\":\"2021-01-28T06:56:23Z\",\"endTime\":\"2020-12-24T11:01:09Z\",\"operations\":[{\"id\":\"wka\",\"resourceId\":\"ejyfdvlvhbwrnfx\",\"name\":\"ddpqt\",\"status\":\"ehnmnaoyankco\",\"percentComplete\":66.584496,\"startTime\":\"2021-11-11T14:26:20Z\",\"endTime\":\"2020-12-21T02:54:41Z\",\"operations\":[{\"id\":\"tmhdroznnhdr\",\"resourceId\":\"tgjcsgguxheml\",\"name\":\"waeeczgfb\",\"status\":\"kklelssxblycs\",\"percentComplete\":97.138306,\"startTime\":\"2021-09-07T10:55:25Z\",\"endTime\":\"2021-05-07T05:55:26Z\",\"operations\":[{\"status\":\"mdesqp\"},{\"status\":\"pvmjcdoewbid\"},{\"status\":\"vteo\"},{\"status\":\"xvgpiude\"}]}]},{\"id\":\"xzecpaxwkufykhvu\",\"resourceId\":\"epmrut\",\"name\":\"abaobnslujdjltym\",\"status\":\"mvguihywart\",\"percentComplete\":92.43603,\"startTime\":\"2021-12-07T20:59:05Z\",\"endTime\":\"2021-09-30T07:37:28Z\",\"operations\":[{\"id\":\"xdssjpemmucfxhi\",\"resourceId\":\"flrmymyi\",\"name\":\"qlhris\",\"status\":\"sl\",\"percentComplete\":62.140095,\"startTime\":\"2021-11-23T09:33:48Z\",\"endTime\":\"2021-02-14T14:33:49Z\",\"operations\":[{\"status\":\"gxuugqkctotio\"},{\"status\":\"l\"},{\"status\":\"teqdptj\"},{\"status\":\"wdtgukranblw\"}]},{\"id\":\"lkccuzgygqwa\",\"resourceId\":\"iul\",\"name\":\"niiprglvaw\",\"status\":\"wzdufypivlsbb\",\"percentComplete\":23.44007,\"startTime\":\"2021-03-15T11:33:56Z\",\"endTime\":\"2021-10-19T14:27:25Z\",\"operations\":[{\"status\":\"foxx\"},{\"status\":\"ubvphavpmhbrbqgv\"},{\"status\":\"ovpbbttefjoknssq\"},{\"status\":\"zqedikdfrdbi\"}]},{\"id\":\"jgeihfqlggwfi\",\"resourceId\":\"cxmjpbyephmg\",\"name\":\"ljvrcmyfqipgxhnp\",\"status\":\"myqwcab\",\"percentComplete\":7.8104677,\"startTime\":\"2021-05-17T14:24:30Z\",\"endTime\":\"2021-07-31T09:28:56Z\",\"operations\":[{\"status\":\"swlpaugmrmfj\"},{\"status\":\"rxwtoaukhfkvc\"}]},{\"id\":\"zmoaeds\",\"resourceId\":\"wuived\",\"name\":\"gyeewxeiq\",\"status\":\"psmgo\",\"percentComplete\":0.2232194,\"startTime\":\"2021-11-14T16:38:14Z\",\"endTime\":\"2021-08-09T00:37:15Z\",\"operations\":[{\"status\":\"rgmsplzga\"}]}]},{\"id\":\"hhvnewgnxkymp\",\"resourceId\":\"nxrjkixtwbtaoy\",\"name\":\"yghs\",\"status\":\"xcy\",\"percentComplete\":62.703003,\"startTime\":\"2021-02-25T18:08:40Z\",\"endTime\":\"2021-06-25T22:51:05Z\",\"operations\":[{\"id\":\"xycphdrwjjkh\",\"resourceId\":\"omacluzvxnqmhr\",\"name\":\"pd\",\"status\":\"wmkoisq\",\"percentComplete\":36.727757,\"startTime\":\"2021-10-05T03:23:13Z\",\"endTime\":\"2021-06-29T15:08:13Z\",\"operations\":[{\"status\":\"mcs\"},{\"status\":\"p\"},{\"status\":\"bkdq\"}]},{\"id\":\"zsylollgt\",\"resourceId\":\"zzydmxzjijpvua\",\"name\":\"kihcirlde\",\"status\":\"xrdcoxnbkkja\",\"percentComplete\":30.950945,\"startTime\":\"2021-06-29T10:28:45Z\",\"endTime\":\"2021-11-23T12:35:58Z\",\"operations\":[{\"status\":\"bpizxqltgr\"}]},{\"id\":\"ypxrx\",\"resourceId\":\"fihwu\",\"name\":\"ctafsrbxrblm\",\"status\":\"iowxi\",\"percentComplete\":3.0665696,\"startTime\":\"2021-11-04T17:34:13Z\",\"endTime\":\"2021-03-30T11:15:20Z\",\"operations\":[{\"status\":\"nepzwakls\"},{\"status\":\"sbq\"}]},{\"id\":\"gwwrxaomzis\",\"resourceId\":\"rrczezkhhltnj\",\"name\":\"hqo\",\"status\":\"wjqo\",\"percentComplete\":68.41727,\"startTime\":\"2021-07-31T20:48:08Z\",\"endTime\":\"2021-08-01T05:40:59Z\",\"operations\":[{\"status\":\"msplbyr\"}]}]}]}";
+        String responseStr
+            = "{\"id\":\"hpwpgddeimawzovg\",\"resourceId\":\"um\",\"name\":\"kjcjcaztbwsnsqow\",\"status\":\"wcoml\",\"percentComplete\":86.88219,\"startTime\":\"2021-01-28T06:56:23Z\",\"endTime\":\"2020-12-24T11:01:09Z\",\"operations\":[{\"id\":\"wka\",\"resourceId\":\"ejyfdvlvhbwrnfx\",\"name\":\"ddpqt\",\"status\":\"ehnmnaoyankco\",\"percentComplete\":66.584496,\"startTime\":\"2021-11-11T14:26:20Z\",\"endTime\":\"2020-12-21T02:54:41Z\",\"operations\":[{\"id\":\"tmhdroznnhdr\",\"resourceId\":\"tgjcsgguxheml\",\"name\":\"waeeczgfb\",\"status\":\"kklelssxblycs\",\"percentComplete\":97.138306,\"startTime\":\"2021-09-07T10:55:25Z\",\"endTime\":\"2021-05-07T05:55:26Z\",\"operations\":[{\"status\":\"mdesqp\"},{\"status\":\"pvmjcdoewbid\"},{\"status\":\"vteo\"},{\"status\":\"xvgpiude\"}]}]},{\"id\":\"xzecpaxwkufykhvu\",\"resourceId\":\"epmrut\",\"name\":\"abaobnslujdjltym\",\"status\":\"mvguihywart\",\"percentComplete\":92.43603,\"startTime\":\"2021-12-07T20:59:05Z\",\"endTime\":\"2021-09-30T07:37:28Z\",\"operations\":[{\"id\":\"xdssjpemmucfxhi\",\"resourceId\":\"flrmymyi\",\"name\":\"qlhris\",\"status\":\"sl\",\"percentComplete\":62.140095,\"startTime\":\"2021-11-23T09:33:48Z\",\"endTime\":\"2021-02-14T14:33:49Z\",\"operations\":[{\"status\":\"gxuugqkctotio\"},{\"status\":\"l\"},{\"status\":\"teqdptj\"},{\"status\":\"wdtgukranblw\"}]},{\"id\":\"lkccuzgygqwa\",\"resourceId\":\"iul\",\"name\":\"niiprglvaw\",\"status\":\"wzdufypivlsbb\",\"percentComplete\":23.44007,\"startTime\":\"2021-03-15T11:33:56Z\",\"endTime\":\"2021-10-19T14:27:25Z\",\"operations\":[{\"status\":\"foxx\"},{\"status\":\"ubvphavpmhbrbqgv\"},{\"status\":\"ovpbbttefjoknssq\"},{\"status\":\"zqedikdfrdbi\"}]},{\"id\":\"jgeihfqlggwfi\",\"resourceId\":\"cxmjpbyephmg\",\"name\":\"ljvrcmyfqipgxhnp\",\"status\":\"myqwcab\",\"percentComplete\":7.8104677,\"startTime\":\"2021-05-17T14:24:30Z\",\"endTime\":\"2021-07-31T09:28:56Z\",\"operations\":[{\"status\":\"swlpaugmrmfj\"},{\"status\":\"rxwtoaukhfkvc\"}]},{\"id\":\"zmoaeds\",\"resourceId\":\"wuived\",\"name\":\"gyeewxeiq\",\"status\":\"psmgo\",\"percentComplete\":0.2232194,\"startTime\":\"2021-11-14T16:38:14Z\",\"endTime\":\"2021-08-09T00:37:15Z\",\"operations\":[{\"status\":\"rgmsplzga\"}]}]},{\"id\":\"hhvnewgnxkymp\",\"resourceId\":\"nxrjkixtwbtaoy\",\"name\":\"yghs\",\"status\":\"xcy\",\"percentComplete\":62.703003,\"startTime\":\"2021-02-25T18:08:40Z\",\"endTime\":\"2021-06-25T22:51:05Z\",\"operations\":[{\"id\":\"xycphdrwjjkh\",\"resourceId\":\"omacluzvxnqmhr\",\"name\":\"pd\",\"status\":\"wmkoisq\",\"percentComplete\":36.727757,\"startTime\":\"2021-10-05T03:23:13Z\",\"endTime\":\"2021-06-29T15:08:13Z\",\"operations\":[{\"status\":\"mcs\"},{\"status\":\"p\"},{\"status\":\"bkdq\"}]},{\"id\":\"zsylollgt\",\"resourceId\":\"zzydmxzjijpvua\",\"name\":\"kihcirlde\",\"status\":\"xrdcoxnbkkja\",\"percentComplete\":30.950945,\"startTime\":\"2021-06-29T10:28:45Z\",\"endTime\":\"2021-11-23T12:35:58Z\",\"operations\":[{\"status\":\"bpizxqltgr\"}]},{\"id\":\"ypxrx\",\"resourceId\":\"fihwu\",\"name\":\"ctafsrbxrblm\",\"status\":\"iowxi\",\"percentComplete\":3.0665696,\"startTime\":\"2021-11-04T17:34:13Z\",\"endTime\":\"2021-03-30T11:15:20Z\",\"operations\":[{\"status\":\"nepzwakls\"},{\"status\":\"sbq\"}]},{\"id\":\"gwwrxaomzis\",\"resourceId\":\"rrczezkhhltnj\",\"name\":\"hqo\",\"status\":\"wjqo\",\"percentComplete\":68.41727,\"startTime\":\"2021-07-31T20:48:08Z\",\"endTime\":\"2021-08-01T05:40:59Z\",\"operations\":[{\"status\":\"msplbyr\"}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager
-                .bareMetalMachines()
-                .cordon(
-                    "jkxibda",
-                    "hrkmdyomkxfbvfbh",
-                    new BareMetalMachineCordonParameters().withEvacuate(BareMetalMachineEvacuate.TRUE),
-                    com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.bareMetalMachines()
+            .cordon("jkxibda", "hrkmdyomkxfbvfbh",
+                new BareMetalMachineCordonParameters().withEvacuate(BareMetalMachineEvacuate.TRUE),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("hpwpgddeimawzovg", response.id());
         Assertions.assertEquals("kjcjcaztbwsnsqow", response.name());
@@ -86,15 +72,11 @@ public final class BareMetalMachinesCordonMockTests {
         Assertions.assertEquals("waeeczgfb", response.operations().get(0).operations().get(0).name());
         Assertions.assertEquals("kklelssxblycs", response.operations().get(0).operations().get(0).status());
         Assertions.assertEquals(97.138306F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-07T10:55:25Z"),
-                response.operations().get(0).operations().get(0).startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-07T05:55:26Z"),
-                response.operations().get(0).operations().get(0).endTime());
-        Assertions
-            .assertEquals("mdesqp", response.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T10:55:25Z"),
+            response.operations().get(0).operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T05:55:26Z"),
+            response.operations().get(0).operations().get(0).endTime());
+        Assertions.assertEquals("mdesqp",
+            response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

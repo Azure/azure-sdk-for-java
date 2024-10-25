@@ -47,8 +47,8 @@ public interface AgentPoolsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AgentPoolInner> listByKubernetesCluster(
-        String resourceGroupName, String kubernetesClusterName, Context context);
+    PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
+        Context context);
 
     /**
      * Retrieve the Kubernetes cluster agent pool.
@@ -65,8 +65,8 @@ public interface AgentPoolsClient {
      * @return properties of the provided Kubernetes cluster agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentPoolInner> getWithResponse(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context);
+    Response<AgentPoolInner> getWithResponse(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context);
 
     /**
      * Retrieve the Kubernetes cluster agent pool.
@@ -99,11 +99,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters);
 
     /**
      * Create or update the Kubernetes cluster agent pool.
@@ -121,12 +118,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, Context context);
 
     /**
      * Create or update the Kubernetes cluster agent pool.
@@ -143,10 +136,7 @@ public interface AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner createOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
+    AgentPoolInner createOrUpdate(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
         AgentPoolInner agentPoolParameters);
 
     /**
@@ -165,12 +155,8 @@ public interface AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner createOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context);
+    AgentPoolInner createOrUpdate(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        AgentPoolInner agentPoolParameters, Context context);
 
     /**
      * Delete the Kubernetes cluster agent pool.
@@ -186,8 +172,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName);
 
     /**
      * Delete the Kubernetes cluster agent pool.
@@ -204,8 +190,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context);
 
     /**
      * Delete the Kubernetes cluster agent pool.
@@ -253,8 +239,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName);
 
     /**
      * Patch the Kubernetes cluster agent pool.
@@ -273,11 +259,8 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters,
         Context context);
 
     /**
@@ -314,10 +297,6 @@ public interface AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner update(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
-        Context context);
+    AgentPoolInner update(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        AgentPoolPatchParameters agentPoolUpdateParameters, Context context);
 }

@@ -55,8 +55,8 @@ public interface BareMetalMachineKeySets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bare metal machine key set of the provided cluster along with {@link Response}.
      */
-    Response<BareMetalMachineKeySet> getWithResponse(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context);
+    Response<BareMetalMachineKeySet> getWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.

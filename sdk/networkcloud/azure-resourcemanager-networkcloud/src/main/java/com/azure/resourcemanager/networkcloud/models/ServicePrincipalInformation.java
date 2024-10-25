@@ -131,28 +131,20 @@ public final class ServicePrincipalInformation {
      */
     public void validate() {
         if (applicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationId in model ServicePrincipalInformation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property applicationId in model ServicePrincipalInformation"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model ServicePrincipalInformation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property password in model ServicePrincipalInformation"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ServicePrincipalInformation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalId in model ServicePrincipalInformation"));
         }
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model ServicePrincipalInformation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tenantId in model ServicePrincipalInformation"));
         }
     }
 

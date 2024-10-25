@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 /** Represents a Wait Statistic. */
 @Fluent
 public final class WaitStatisticInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticInner.class);
 
     /*
      * The properties of a wait statistic.

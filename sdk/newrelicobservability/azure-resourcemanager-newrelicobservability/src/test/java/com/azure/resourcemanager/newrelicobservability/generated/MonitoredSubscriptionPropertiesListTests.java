@@ -32,46 +32,67 @@ public final class MonitoredSubscriptionPropertiesListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredSubscriptionPropertiesList model = new MonitoredSubscriptionPropertiesList()
-            .withValue(Arrays.asList(
-                new MonitoredSubscriptionPropertiesInner().withProperties(new SubscriptionList()
-                    .withPatchOperation(PatchOperation.ADD_COMPLETE)
+        MonitoredSubscriptionPropertiesList model = new MonitoredSubscriptionPropertiesList().withValue(Arrays.asList(
+            new MonitoredSubscriptionPropertiesInner()
+                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ADD_COMPLETE)
                     .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("kx").withStatus(Status.DELETING)
-                            .withError("pbh").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("tkcxywnytnrsy").withStatus(Status.ACTIVE)
-                            .withError("dybyxczfclhaa").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("abphlw").withStatus(Status.ACTIVE)
-                            .withError("ktsthsucocmny").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("t").withStatus(Status.ACTIVE)
-                            .withError("wrqpue").withTagRules(new MonitoringTagRulesPropertiesInner())))),
-                new MonitoredSubscriptionPropertiesInner().withProperties(new SubscriptionList()
-                    .withPatchOperation(PatchOperation.DELETE_COMPLETE)
-                    .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("epdkzja").withStatus(Status.IN_PROGRESS)
-                            .withError("rhdwbavxbniw").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("wz").withStatus(Status.FAILED)
-                            .withError("pgn").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("x").withStatus(Status.FAILED)
-                            .withError("bzpfzab").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("uhxwtctyqiklbbov")
-                            .withStatus(Status.FAILED).withError("bhvgy")
+                        new MonitoredSubscriptionInner().withSubscriptionId("kx")
+                            .withStatus(Status.DELETING)
+                            .withError("pbh")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("tkcxywnytnrsy")
+                            .withStatus(Status.ACTIVE)
+                            .withError("dybyxczfclhaa")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("abphlw")
+                            .withStatus(Status.ACTIVE)
+                            .withError("ktsthsucocmny")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("t")
+                            .withStatus(Status.ACTIVE)
+                            .withError("wrqpue")
                             .withTagRules(new MonitoringTagRulesPropertiesInner())))),
-                new MonitoredSubscriptionPropertiesInner()
-                    .withProperties(
-                        new SubscriptionList().withPatchOperation(PatchOperation.ACTIVE).withMonitoredSubscriptionList(
-                            Arrays.asList(new MonitoredSubscriptionInner().withSubscriptionId("deslp")
-                                .withStatus(Status.IN_PROGRESS).withError("wiyighxpkdw")
-                                .withTagRules(new MonitoringTagRulesPropertiesInner())))),
-                new MonitoredSubscriptionPropertiesInner().withProperties(new SubscriptionList()
-                    .withPatchOperation(PatchOperation.ACTIVE)
+            new MonitoredSubscriptionPropertiesInner()
+                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
                     .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("xpsiebtfhvpes").withStatus(Status.FAILED)
-                            .withError("rdqmhjjdhtldwkyz").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("tkncwsc").withStatus(Status.DELETING)
-                            .withError("xotogtwrupqsxv").withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("cykvceo").withStatus(Status.ACTIVE)
-                            .withError("ovnotyfjfcnjbkcn").withTagRules(new MonitoringTagRulesPropertiesInner()))))))
+                        new MonitoredSubscriptionInner().withSubscriptionId("epdkzja")
+                            .withStatus(Status.IN_PROGRESS)
+                            .withError("rhdwbavxbniw")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("wz")
+                            .withStatus(Status.FAILED)
+                            .withError("pgn")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("x")
+                            .withStatus(Status.FAILED)
+                            .withError("bzpfzab")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("uhxwtctyqiklbbov")
+                            .withStatus(Status.FAILED)
+                            .withError("bhvgy")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner())))),
+            new MonitoredSubscriptionPropertiesInner()
+                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ACTIVE)
+                    .withMonitoredSubscriptionList(
+                        Arrays.asList(new MonitoredSubscriptionInner().withSubscriptionId("deslp")
+                            .withStatus(Status.IN_PROGRESS)
+                            .withError("wiyighxpkdw")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner())))),
+            new MonitoredSubscriptionPropertiesInner()
+                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ACTIVE)
+                    .withMonitoredSubscriptionList(Arrays.asList(
+                        new MonitoredSubscriptionInner().withSubscriptionId("xpsiebtfhvpes")
+                            .withStatus(Status.FAILED)
+                            .withError("rdqmhjjdhtldwkyz")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("tkncwsc")
+                            .withStatus(Status.DELETING)
+                            .withError("xotogtwrupqsxv")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
+                        new MonitoredSubscriptionInner().withSubscriptionId("cykvceo")
+                            .withStatus(Status.ACTIVE)
+                            .withError("ovnotyfjfcnjbkcn")
+                            .withTagRules(new MonitoringTagRulesPropertiesInner()))))))
             .withNextLink("sbj");
         model = BinaryData.fromObject(model).toObject(MonitoredSubscriptionPropertiesList.class);
         Assertions.assertEquals(PatchOperation.ADD_COMPLETE, model.value().get(0).properties().patchOperation());

@@ -36,8 +36,7 @@ public final class ModelsRepositoryImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ModelsRepositoryImpl(ModelsRepositoryAPIImpl client) {
-        this.service =
-            RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -51,22 +50,18 @@ public final class ModelsRepositoryImpl {
      * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getModelFromPathWithResponseAsync(
-        String path, Context context) {
+    public Mono<byte[]> getModelFromPathWithResponseAsync(String path, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (path == null) {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
         }
 
-        return service.getModelFromPath(
-            this.client.getHost(), path, context)
-            .onErrorMap(error ->
-                new AzureException(
-                    String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, path),
-                    error));
+        return service.getModelFromPath(this.client.getHost(), path, context)
+            .onErrorMap(
+                error -> new AzureException(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, path), error));
     }
 
     /**
@@ -78,10 +73,7 @@ public final class ModelsRepositoryImpl {
     private interface ModelsRepositoryService {
 
         @Get("{path}")
-        @ExpectedResponses({200})
-        Mono<byte[]> getModelFromPath(
-            @HostParam("$host") String host,
-            @PathParam("path") String path,
-            Context context);
+        @ExpectedResponses({ 200 })
+        Mono<byte[]> getModelFromPath(@HostParam("$host") String host, @PathParam("path") String path, Context context);
     }
 }

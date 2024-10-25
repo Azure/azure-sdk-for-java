@@ -25,12 +25,15 @@ public final class AppServicesListResponseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppServicesListResponse model = new AppServicesListResponse().withValue(Arrays.asList(
-            new AppServiceInfoInner().withAzureResourceId("ionpimexg").withAgentVersion("xgcp")
+            new AppServiceInfoInner().withAzureResourceId("ionpimexg")
+                .withAgentVersion("xgcp")
                 .withAgentStatus("gmaajrm"),
             new AppServiceInfoInner().withAzureResourceId("jwzrl").withAgentVersion("mcl").withAgentStatus("ijcoejctb"),
-            new AppServiceInfoInner().withAzureResourceId("qsqsy").withAgentVersion("kbfkg")
+            new AppServiceInfoInner().withAzureResourceId("qsqsy")
+                .withAgentVersion("kbfkg")
                 .withAgentStatus("dkexxppofm"),
-            new AppServiceInfoInner().withAzureResourceId("x").withAgentVersion("jpgd")
+            new AppServiceInfoInner().withAzureResourceId("x")
+                .withAgentVersion("jpgd")
                 .withAgentStatus("ocjjxhvpmouexh")))
             .withNextLink("xibqeojnx");
         model = BinaryData.fromObject(model).toObject(AppServicesListResponse.class);

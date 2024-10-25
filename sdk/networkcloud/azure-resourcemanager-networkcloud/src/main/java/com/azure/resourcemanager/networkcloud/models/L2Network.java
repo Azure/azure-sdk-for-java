@@ -171,12 +171,8 @@ public interface L2Network {
 
     /** The entirety of the L2Network definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithL2IsolationDomainId,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithL2IsolationDomainId, DefinitionStages.WithCreate {
     }
 
     /** The L2Network definition stages. */
@@ -246,10 +242,8 @@ public interface L2Network {
          * The stage of the L2Network definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithHybridAksPluginType,
-                DefinitionStages.WithInterfaceName {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithHybridAksPluginType,
+            DefinitionStages.WithInterfaceName {
             /**
              * Executes the create request.
              *

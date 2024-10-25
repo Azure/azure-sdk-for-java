@@ -34,21 +34,16 @@ public final class TagRuleListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagRuleListResult model
-            = new TagRuleListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TagRuleInner()
-                                .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
-                                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                                    .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                                    .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag())))
-                                .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
-                                    .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
-                                        new FilteringTag(), new FilteringTag()))
-                                    .withUserEmail("stkiiuxhqyud"))))
-                .withNextLink("exxbczwtr");
+        TagRuleListResult model = new TagRuleListResult().withValue(Arrays.asList(new TagRuleInner()
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag())))
+            .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
+                .withFilteringTags(
+                    Arrays.asList(new FilteringTag(), new FilteringTag(), new FilteringTag(), new FilteringTag()))
+                .withUserEmail("stkiiuxhqyud"))))
+            .withNextLink("exxbczwtr");
         model = BinaryData.fromObject(model).toObject(TagRuleListResult.class);
         Assertions.assertEquals(SendAadLogsStatus.ENABLED, model.value().get(0).logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED,

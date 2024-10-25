@@ -51,10 +51,8 @@ public final class KubernetesClusterRestartNodeParameters {
      */
     public void validate() {
         if (nodeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nodeName in model KubernetesClusterRestartNodeParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property nodeName in model KubernetesClusterRestartNodeParameters"));
         }
     }
 

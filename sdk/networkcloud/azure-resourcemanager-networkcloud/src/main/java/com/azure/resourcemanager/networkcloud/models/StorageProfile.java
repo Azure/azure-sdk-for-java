@@ -83,9 +83,8 @@ public final class StorageProfile {
      */
     public void validate() {
         if (osDisk() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property osDisk in model StorageProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property osDisk in model StorageProfile"));
         } else {
             osDisk().validate();
         }

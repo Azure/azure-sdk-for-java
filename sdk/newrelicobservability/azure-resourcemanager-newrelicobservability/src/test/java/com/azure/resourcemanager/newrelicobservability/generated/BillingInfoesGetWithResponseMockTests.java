@@ -44,12 +44,14 @@ public final class BillingInfoesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BillingInfoResponse response = manager.billingInfoes()
-            .getWithResponse("gkopkwhojvpajqgx", "smocmbq", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("gkopkwhojvpajqgx", "smocmbq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("mkcxozapvh", response.marketplaceSaasInfo().marketplaceSubscriptionId());
         Assertions.assertEquals("xprglyatddc", response.marketplaceSaasInfo().marketplaceSubscriptionName());

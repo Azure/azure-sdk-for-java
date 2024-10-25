@@ -365,10 +365,8 @@ public final class L3NetworkProperties {
      */
     public void validate() {
         if (l3IsolationDomainId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property l3IsolationDomainId in model L3NetworkProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property l3IsolationDomainId in model L3NetworkProperties"));
         }
     }
 

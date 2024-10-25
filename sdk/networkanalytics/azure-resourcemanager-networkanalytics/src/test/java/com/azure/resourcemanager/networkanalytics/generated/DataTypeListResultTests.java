@@ -28,18 +28,22 @@ public final class DataTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataTypeListResult model = new DataTypeListResult().withValue(Arrays.asList(
-            new DataTypeInner().withProperties(
-                new DataTypeProperties().withState(DataTypeState.RUNNING).withStorageOutputRetention(1906498488)
-                    .withDatabaseCacheRetention(1750107554).withDatabaseRetention(1611277697)),
-            new DataTypeInner().withProperties(
-                new DataTypeProperties().withState(DataTypeState.RUNNING).withStorageOutputRetention(183805680)
-                    .withDatabaseCacheRetention(957799467).withDatabaseRetention(822789925)),
-            new DataTypeInner().withProperties(
-                new DataTypeProperties().withState(DataTypeState.RUNNING).withStorageOutputRetention(182574553)
-                    .withDatabaseCacheRetention(1621494681).withDatabaseRetention(466984415)),
-            new DataTypeInner().withProperties(
-                new DataTypeProperties().withState(DataTypeState.STOPPED).withStorageOutputRetention(830050857)
-                    .withDatabaseCacheRetention(1193107670).withDatabaseRetention(980316888))))
+            new DataTypeInner().withProperties(new DataTypeProperties().withState(DataTypeState.RUNNING)
+                .withStorageOutputRetention(1906498488)
+                .withDatabaseCacheRetention(1750107554)
+                .withDatabaseRetention(1611277697)),
+            new DataTypeInner().withProperties(new DataTypeProperties().withState(DataTypeState.RUNNING)
+                .withStorageOutputRetention(183805680)
+                .withDatabaseCacheRetention(957799467)
+                .withDatabaseRetention(822789925)),
+            new DataTypeInner().withProperties(new DataTypeProperties().withState(DataTypeState.RUNNING)
+                .withStorageOutputRetention(182574553)
+                .withDatabaseCacheRetention(1621494681)
+                .withDatabaseRetention(466984415)),
+            new DataTypeInner().withProperties(new DataTypeProperties().withState(DataTypeState.STOPPED)
+                .withStorageOutputRetention(830050857)
+                .withDatabaseCacheRetention(1193107670)
+                .withDatabaseRetention(980316888))))
             .withNextLink("f");
         model = BinaryData.fromObject(model).toObject(DataTypeListResult.class);
         Assertions.assertEquals(DataTypeState.RUNNING, model.value().get(0).properties().state());

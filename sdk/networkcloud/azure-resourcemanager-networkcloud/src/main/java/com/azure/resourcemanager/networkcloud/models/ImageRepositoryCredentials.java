@@ -100,22 +100,16 @@ public final class ImageRepositoryCredentials {
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model ImageRepositoryCredentials"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model ImageRepositoryCredentials"));
         }
         if (registryUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property registryUrl in model ImageRepositoryCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property registryUrl in model ImageRepositoryCredentials"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model ImageRepositoryCredentials"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model ImageRepositoryCredentials"));
         }
     }
 

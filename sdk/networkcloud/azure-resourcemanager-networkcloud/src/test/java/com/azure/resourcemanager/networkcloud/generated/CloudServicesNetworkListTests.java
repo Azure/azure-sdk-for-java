@@ -19,47 +19,30 @@ import org.junit.jupiter.api.Assertions;
 public final class CloudServicesNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudServicesNetworkList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"yypnddhsgcbacphe\",\"value\":[{\"extendedLocation\":{\"name\":\"tynqgoul\",\"type\":\"ndlik\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"gfgibm\",\"endpoints\":[{\"domainName\":\"gakeqsr\"}]}],\"associatedResourceIds\":[\"zqqedq\",\"tbciqfouflmm\",\"kzsmodm\",\"lougpbkw\"],\"clusterId\":\"utduqktapspwgcu\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"mkdo\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"bmdg\",\"endpoints\":[{\"domainName\":\"jfddgmbmbe\"}]},{\"category\":\"ppbhtqqrolfp\",\"endpoints\":[{\"domainName\":\"s\"},{\"domainName\":\"lgbquxig\"},{\"domainName\":\"yjgzjaoyfhrtxiln\"}]},{\"category\":\"rkujy\",\"endpoints\":[{\"domainName\":\"l\"},{\"domainName\":\"juvf\"},{\"domainName\":\"awrlyx\"}]}],\"hybridAksClustersAssociatedIds\":[\"cpr\",\"nwbxgjvtbvpyssz\"],\"interfaceName\":\"rujqg\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"uqfprwzw\",\"nguitnwuizgazxu\"]},\"location\":\"zuckyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}]}")
-                .toObject(CloudServicesNetworkList.class);
+        CloudServicesNetworkList model = BinaryData.fromString(
+            "{\"nextLink\":\"yypnddhsgcbacphe\",\"value\":[{\"extendedLocation\":{\"name\":\"tynqgoul\",\"type\":\"ndlik\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"gfgibm\",\"endpoints\":[{\"domainName\":\"gakeqsr\"}]}],\"associatedResourceIds\":[\"zqqedq\",\"tbciqfouflmm\",\"kzsmodm\",\"lougpbkw\"],\"clusterId\":\"utduqktapspwgcu\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"mkdo\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"bmdg\",\"endpoints\":[{\"domainName\":\"jfddgmbmbe\"}]},{\"category\":\"ppbhtqqrolfp\",\"endpoints\":[{\"domainName\":\"s\"},{\"domainName\":\"lgbquxig\"},{\"domainName\":\"yjgzjaoyfhrtxiln\"}]},{\"category\":\"rkujy\",\"endpoints\":[{\"domainName\":\"l\"},{\"domainName\":\"juvf\"},{\"domainName\":\"awrlyx\"}]}],\"hybridAksClustersAssociatedIds\":[\"cpr\",\"nwbxgjvtbvpyssz\"],\"interfaceName\":\"rujqg\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"uqfprwzw\",\"nguitnwuizgazxu\"]},\"location\":\"zuckyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}]}")
+            .toObject(CloudServicesNetworkList.class);
         Assertions.assertEquals("yypnddhsgcbacphe", model.nextLink());
         Assertions.assertEquals("zuckyfi", model.value().get(0).location());
         Assertions.assertEquals("idf", model.value().get(0).tags().get("zwdzuh"));
         Assertions.assertEquals("tynqgoul", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals("ndlik", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals("gfgibm", model.value().get(0).additionalEgressEndpoints().get(0).category());
-        Assertions
-            .assertEquals(
-                "gakeqsr", model.value().get(0).additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions
-            .assertEquals(
-                CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
-                model.value().get(0).enableDefaultEgressEndpoints());
+        Assertions.assertEquals("gakeqsr",
+            model.value().get(0).additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+            model.value().get(0).enableDefaultEgressEndpoints());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudServicesNetworkList model =
-            new CloudServicesNetworkList()
-                .withNextLink("yypnddhsgcbacphe")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CloudServicesNetworkInner()
-                                .withLocation("zuckyfi")
-                                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
-                                .withExtendedLocation(new ExtendedLocation().withName("tynqgoul").withType("ndlik"))
-                                .withAdditionalEgressEndpoints(
-                                    Arrays
-                                        .asList(
-                                            new EgressEndpoint()
-                                                .withCategory("gfgibm")
-                                                .withEndpoints(
-                                                    Arrays.asList(new EndpointDependency().withDomainName("gakeqsr")))))
-                                .withEnableDefaultEgressEndpoints(
-                                    CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE)));
+        CloudServicesNetworkList model = new CloudServicesNetworkList().withNextLink("yypnddhsgcbacphe")
+            .withValue(Arrays.asList(new CloudServicesNetworkInner().withLocation("zuckyfi")
+                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+                .withExtendedLocation(new ExtendedLocation().withName("tynqgoul").withType("ndlik"))
+                .withAdditionalEgressEndpoints(Arrays.asList(new EgressEndpoint().withCategory("gfgibm")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("gakeqsr")))))
+                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE)));
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkList.class);
         Assertions.assertEquals("yypnddhsgcbacphe", model.nextLink());
         Assertions.assertEquals("zuckyfi", model.value().get(0).location());
@@ -67,13 +50,10 @@ public final class CloudServicesNetworkListTests {
         Assertions.assertEquals("tynqgoul", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals("ndlik", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals("gfgibm", model.value().get(0).additionalEgressEndpoints().get(0).category());
-        Assertions
-            .assertEquals(
-                "gakeqsr", model.value().get(0).additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions
-            .assertEquals(
-                CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
-                model.value().get(0).enableDefaultEgressEndpoints());
+        Assertions.assertEquals("gakeqsr",
+            model.value().get(0).additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+            model.value().get(0).enableDefaultEgressEndpoints());
     }
 
     // Use "Map.of" if available

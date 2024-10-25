@@ -19,7 +19,6 @@ public final class CustomModel {
     private String operationName;
     private String operationId;
 
-
     /**
      * Returns the time the log event was generated.
      * @return the time the log event was generated.

@@ -60,6 +60,6 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource for MySQL server along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String serverName, String groupName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String serverName, String groupName,
+        Context context);
 }

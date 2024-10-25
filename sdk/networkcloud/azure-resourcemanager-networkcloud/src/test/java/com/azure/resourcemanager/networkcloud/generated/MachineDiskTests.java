@@ -10,9 +10,8 @@ import com.azure.resourcemanager.networkcloud.models.MachineDisk;
 public final class MachineDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineDisk model =
-            BinaryData
-                .fromString("{\"capacityGB\":7660460034004399095,\"connection\":\"SAS\",\"type\":\"HDD\"}")
+        MachineDisk model
+            = BinaryData.fromString("{\"capacityGB\":7660460034004399095,\"connection\":\"SAS\",\"type\":\"HDD\"}")
                 .toObject(MachineDisk.class);
     }
 

@@ -48,10 +48,8 @@ public final class ClusterUpdateVersionParameters {
      */
     public void validate() {
         if (targetClusterVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetClusterVersion in model ClusterUpdateVersionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetClusterVersion in model ClusterUpdateVersionParameters"));
         }
     }
 

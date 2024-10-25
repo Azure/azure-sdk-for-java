@@ -52,10 +52,8 @@ public final class AadConfiguration {
      */
     public void validate() {
         if (adminGroupObjectIds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminGroupObjectIds in model AadConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminGroupObjectIds in model AadConfiguration"));
         }
     }
 

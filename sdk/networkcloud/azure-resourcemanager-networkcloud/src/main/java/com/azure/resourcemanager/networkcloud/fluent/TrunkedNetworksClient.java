@@ -87,8 +87,8 @@ public interface TrunkedNetworksClient {
      * @return properties of the provided trunked network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrunkedNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String trunkedNetworkName, Context context);
+    Response<TrunkedNetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String trunkedNetworkName,
+        Context context);
 
     /**
      * Retrieve the trunked network.
@@ -120,8 +120,8 @@ public interface TrunkedNetworksClient {
      *     isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters);
+    SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters);
 
     /**
      * Create or update the trunked network.
@@ -139,11 +139,8 @@ public interface TrunkedNetworksClient {
      *     isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
-        Context context);
+    SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters, Context context);
 
     /**
      * Create or update the trunked network.
@@ -160,8 +157,8 @@ public interface TrunkedNetworksClient {
      *     create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrunkedNetworkInner createOrUpdate(
-        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters);
+    TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters);
 
     /**
      * Create or update the trunked network.
@@ -179,11 +176,8 @@ public interface TrunkedNetworksClient {
      *     create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrunkedNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
-        Context context);
+    TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters, Context context);
 
     /**
      * Delete the trunked network.
@@ -214,8 +208,8 @@ public interface TrunkedNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trunkedNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
+        Context context);
 
     /**
      * Delete the trunked network.
@@ -262,11 +256,8 @@ public interface TrunkedNetworksClient {
      *     create a trunked network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrunkedNetworkInner> updateWithResponse(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
-        Context context);
+    Response<TrunkedNetworkInner> updateWithResponse(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters, Context context);
 
     /**
      * Patch the trunked network.

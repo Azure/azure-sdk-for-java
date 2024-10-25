@@ -12,8 +12,8 @@ public final class NameAvailabilityImpl implements NameAvailability {
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    NameAvailabilityImpl(
-        NameAvailabilityInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    NameAvailabilityImpl(NameAvailabilityInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

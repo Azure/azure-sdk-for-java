@@ -27,7 +27,8 @@ public final class PrivateEndpointConnectionPropertiesTests {
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model = new PrivateEndpointConnectionProperties()
             .withProvisioningState(PrivateEndpointConnectionProvisioningState.DELETING)
-            .withPrivateEndpoint(new RemotePrivateEndpointConnection()).withPrivateLinkServiceConnectionState(
+            .withPrivateEndpoint(new RemotePrivateEndpointConnection())
+            .withPrivateLinkServiceConnectionState(
                 new RemotePrivateLinkServiceConnectionState().withStatus(PrivateLinkConnectionStatus.DISCONNECTED));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
         Assertions.assertEquals(PrivateEndpointConnectionProvisioningState.DELETING, model.provisioningState());

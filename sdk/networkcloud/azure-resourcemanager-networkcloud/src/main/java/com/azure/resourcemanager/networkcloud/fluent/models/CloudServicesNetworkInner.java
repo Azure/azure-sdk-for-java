@@ -261,10 +261,8 @@ public final class CloudServicesNetworkInner extends Resource {
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property extendedLocation in model CloudServicesNetworkInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property extendedLocation in model CloudServicesNetworkInner"));
         } else {
             extendedLocation().validate();
         }

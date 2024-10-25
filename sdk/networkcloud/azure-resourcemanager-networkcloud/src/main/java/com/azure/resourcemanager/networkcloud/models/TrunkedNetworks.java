@@ -76,8 +76,8 @@ public interface TrunkedNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided trunked network along with {@link Response}.
      */
-    Response<TrunkedNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String trunkedNetworkName, Context context);
+    Response<TrunkedNetwork> getByResourceGroupWithResponse(String resourceGroupName, String trunkedNetworkName,
+        Context context);
 
     /**
      * Retrieve the trunked network.

@@ -33,7 +33,8 @@ class HttpModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded, Context context) {
+    public Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded,
+        Context context) {
         return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
             try {
@@ -49,16 +50,14 @@ class HttpModelFetcher implements ModelFetcher {
 
             logger.info(StatusStrings.FETCHING_MODEL_CONTENT, tryContentPath);
 
-            return evaluatePath(tryContentPath, context)
-                .onErrorResume(error -> {
-                    if (!work.isEmpty()) {
-                        return evaluatePath(work.poll(), context);
-                    } else {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath));
-                        return Mono.error(error);
-                    }
-                })
-                .map(s -> new FetchModelResult().setPath(tryContentPath).setDefinition(s));
+            return evaluatePath(tryContentPath, context).onErrorResume(error -> {
+                if (!work.isEmpty()) {
+                    return evaluatePath(work.poll(), context);
+                } else {
+                    logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath));
+                    return Mono.error(error);
+                }
+            }).map(s -> new FetchModelResult().setPath(tryContentPath).setDefinition(s));
         });
     }
 
@@ -69,28 +68,25 @@ class HttpModelFetcher implements ModelFetcher {
 
             logger.info(StatusStrings.FETCHING_METADATA_CONTENT, tryContentPath);
 
-            return evaluatePath(tryContentPath, context)
-                .onErrorResume(error -> {
-                    logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s",
-                        tryContentPath, error.getMessage()));
-                    return Mono.error(error);
-                })
-                .map(s -> {
-                    try {
-                        return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
-                    } catch (IOException e) {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
-                        return null;
-                    }
-                });
+            return evaluatePath(tryContentPath, context).onErrorResume(error -> {
+                logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s", tryContentPath,
+                    error.getMessage()));
+                return Mono.error(error);
+            }).map(s -> {
+                try {
+                    return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
+                } catch (IOException e) {
+                    logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
+                    return null;
+                }
+            });
         } catch (MalformedURLException | URISyntaxException e) {
             return Mono.error(new AzureException(e));
         }
     }
 
     private Mono<String> evaluatePath(String tryContentPath, Context context) {
-        return protocolLayer
-            .getModelsRepository()
+        return protocolLayer.getModelsRepository()
             .getModelFromPathWithResponseAsync(tryContentPath, context)
             .flatMap(response -> {
                 String stringResponse = new String(response, StandardCharsets.UTF_8);

@@ -30,7 +30,8 @@ public final class PrivateEndpointConnectionResourceInnerTests {
         PrivateEndpointConnectionResourceInner model
             = new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
                 .withProvisioningState(PrivateEndpointConnectionProvisioningState.SUCCEEDED)
-                .withPrivateEndpoint(new RemotePrivateEndpointConnection()).withPrivateLinkServiceConnectionState(
+                .withPrivateEndpoint(new RemotePrivateEndpointConnection())
+                .withPrivateLinkServiceConnectionState(
                     new RemotePrivateLinkServiceConnectionState().withStatus(PrivateLinkConnectionStatus.REJECTED)));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionResourceInner.class);
         Assertions.assertEquals(PrivateEndpointConnectionProvisioningState.SUCCEEDED,

@@ -76,8 +76,8 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided virtual machine along with {@link Response}.
      */
-    Response<VirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<VirtualMachine> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Retrieve the virtual machine.
@@ -148,11 +148,8 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult powerOff(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
-        Context context);
+    OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName,
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the virtual machine.

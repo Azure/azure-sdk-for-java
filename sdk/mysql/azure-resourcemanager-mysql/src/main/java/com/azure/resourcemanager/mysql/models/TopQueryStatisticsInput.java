@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 /** Input to get top query statistics. */
 @Fluent
 public final class TopQueryStatisticsInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsInput.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopQueryStatisticsInput.class);
 
     /*
      * The properties of a wait statistics input.
@@ -176,10 +177,8 @@ public final class TopQueryStatisticsInput {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model TopQueryStatisticsInput"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model TopQueryStatisticsInput"));
         } else {
             innerProperties().validate();
         }

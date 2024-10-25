@@ -33,45 +33,33 @@ public final class VolumesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"kvbos\",\"type\":\"jfdizhrjqfya\"},\"properties\":{\"attachedTo\":[\"slyekcgn\",\"uarlcjiwgsxfaioc\",\"dgujjgnfgrzxbarc\",\"paefzqsy\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"njcytesmfucrtfod\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"uzmzivrtrfzh\",\"sizeMiB\":4810474092378413108},\"location\":\"hjud\",\"tags\":{\"xbqssgfenffdxbvw\":\"yrudmahswtvd\"},\"id\":\"qjchivd\",\"name\":\"ija\",\"type\":\"xndmuvar\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"kvbos\",\"type\":\"jfdizhrjqfya\"},\"properties\":{\"attachedTo\":[\"slyekcgn\",\"uarlcjiwgsxfaioc\",\"dgujjgnfgrzxbarc\",\"paefzqsy\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"njcytesmfucrtfod\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"uzmzivrtrfzh\",\"sizeMiB\":4810474092378413108},\"location\":\"hjud\",\"tags\":{\"xbqssgfenffdxbvw\":\"yrudmahswtvd\"},\"id\":\"qjchivd\",\"name\":\"ija\",\"type\":\"xndmuvar\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Volume response =
-            manager
-                .volumes()
-                .define("zkgtzqn")
-                .withRegion("nrjdszdbu")
-                .withExistingResourceGroup("pkvegeatt")
-                .withExtendedLocation(new ExtendedLocation().withName("qsttewuvcysjeuf").withType("x"))
-                .withSizeMiB(2762545810950883647L)
-                .withTags(mapOf("fwjnoxuoxtfn", "iqppoqvgpnewuh", "gvsnv", "essfepgckncj", "mjymjnh", "tqdx"))
-                .create();
+        Volume response = manager.volumes()
+            .define("zkgtzqn")
+            .withRegion("nrjdszdbu")
+            .withExistingResourceGroup("pkvegeatt")
+            .withExtendedLocation(new ExtendedLocation().withName("qsttewuvcysjeuf").withType("x"))
+            .withSizeMiB(2762545810950883647L)
+            .withTags(mapOf("fwjnoxuoxtfn", "iqppoqvgpnewuh", "gvsnv", "essfepgckncj", "mjymjnh", "tqdx"))
+            .create();
 
         Assertions.assertEquals("hjud", response.location());
         Assertions.assertEquals("yrudmahswtvd", response.tags().get("xbqssgfenffdxbvw"));

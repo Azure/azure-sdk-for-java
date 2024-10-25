@@ -138,12 +138,8 @@ public interface Volume {
 
     /** The entirety of the Volume definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithSizeMiB,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithSizeMiB, DefinitionStages.WithCreate {
     }
 
     /** The Volume definition stages. */

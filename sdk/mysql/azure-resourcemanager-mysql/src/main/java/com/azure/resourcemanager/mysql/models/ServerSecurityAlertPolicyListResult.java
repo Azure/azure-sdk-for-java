@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of the server's security alert policies. */
 @Immutable
 public final class ServerSecurityAlertPolicyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyListResult.class);
 
     /*
      * Array of results.

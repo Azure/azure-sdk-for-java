@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Properties of a virtual network rule. */
 @Fluent
 public final class VirtualNetworkRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleProperties.class);
 
     /*
      * The ARM resource id of the virtual network subnet.
@@ -92,10 +93,8 @@ public final class VirtualNetworkRuleProperties {
      */
     public void validate() {
         if (virtualNetworkSubnetId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetworkSubnetId in model VirtualNetworkRuleProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualNetworkSubnetId in model VirtualNetworkRuleProperties"));
         }
     }
 }

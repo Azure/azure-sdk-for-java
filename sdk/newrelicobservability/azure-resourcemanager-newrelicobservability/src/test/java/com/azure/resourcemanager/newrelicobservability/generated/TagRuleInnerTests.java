@@ -38,19 +38,18 @@ public final class TagRuleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagRuleInner model = new TagRuleInner()
-            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
-                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                .withFilteringTags(Arrays.asList(
-                    new FilteringTag().withName("yokacspkw").withValue("zdobpxjmflbvvnch")
-                        .withAction(TagAction.INCLUDE),
-                    new FilteringTag().withName("iwwzjuqk").withValue("sa").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("uo").withValue("skghsauuimj").withAction(TagAction.EXCLUDE))))
+        TagRuleInner model = new TagRuleInner().withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+            .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("yokacspkw").withValue("zdobpxjmflbvvnch").withAction(TagAction.INCLUDE),
+                new FilteringTag().withName("iwwzjuqk").withValue("sa").withAction(TagAction.EXCLUDE),
+                new FilteringTag().withName("uo").withValue("skghsauuimj").withAction(TagAction.EXCLUDE))))
             .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
                 .withFilteringTags(Arrays.asList(
                     new FilteringTag().withName("idyjrrfbyaosvexc").withValue("npc").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("ohslkevlegg").withValue("buhfmvfaxkffeiit")
+                    new FilteringTag().withName("ohslkevlegg")
+                        .withValue("buhfmvfaxkffeiit")
                         .withAction(TagAction.INCLUDE)))
                 .withUserEmail("ez"));
         model = BinaryData.fromObject(model).toObject(TagRuleInner.class);

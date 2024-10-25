@@ -23,7 +23,8 @@ public final class ContainerSaSTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerSaS model = new ContainerSaS().withStartTimestamp(OffsetDateTime.parse("2021-09-15T05:38:02Z"))
-            .withExpiryTimestamp(OffsetDateTime.parse("2021-05-02T14:53:40Z")).withIpAddress("v");
+            .withExpiryTimestamp(OffsetDateTime.parse("2021-05-02T14:53:40Z"))
+            .withIpAddress("v");
         model = BinaryData.fromObject(model).toObject(ContainerSaS.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T05:38:02Z"), model.startTimestamp());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:53:40Z"), model.expiryTimestamp());

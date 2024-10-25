@@ -84,14 +84,12 @@ public final class EgressEndpoint {
      */
     public void validate() {
         if (category() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property category in model EgressEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property category in model EgressEndpoint"));
         }
         if (endpoints() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoints in model EgressEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endpoints in model EgressEndpoint"));
         } else {
             endpoints().forEach(e -> e.validate());
         }

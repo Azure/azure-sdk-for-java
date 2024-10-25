@@ -156,14 +156,9 @@ public interface Console {
     ConsoleInner innerModel();
 
     /** The entirety of the Console definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithEnabled,
-            DefinitionStages.WithSshPublicKey,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithExtendedLocation, DefinitionStages.WithEnabled,
+        DefinitionStages.WithSshPublicKey, DefinitionStages.WithCreate {
     }
 
     /** The Console definition stages. */
@@ -302,11 +297,8 @@ public interface Console {
     Console.Update update();
 
     /** The template for Console update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithEnabled,
-            UpdateStages.WithExpiration,
-            UpdateStages.WithSshPublicKey {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithEnabled, UpdateStages.WithExpiration,
+        UpdateStages.WithSshPublicKey {
         /**
          * Executes the update request.
          *

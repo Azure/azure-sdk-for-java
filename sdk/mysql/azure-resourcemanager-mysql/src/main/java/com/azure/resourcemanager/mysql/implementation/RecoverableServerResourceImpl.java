@@ -12,8 +12,8 @@ public final class RecoverableServerResourceImpl implements RecoverableServerRes
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    RecoverableServerResourceImpl(
-        RecoverableServerResourceInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    RecoverableServerResourceImpl(RecoverableServerResourceInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

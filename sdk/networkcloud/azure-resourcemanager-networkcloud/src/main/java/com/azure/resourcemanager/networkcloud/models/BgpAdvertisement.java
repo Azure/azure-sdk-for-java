@@ -136,9 +136,8 @@ public final class BgpAdvertisement {
      */
     public void validate() {
         if (ipAddressPools() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipAddressPools in model BgpAdvertisement"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipAddressPools in model BgpAdvertisement"));
         }
     }
 

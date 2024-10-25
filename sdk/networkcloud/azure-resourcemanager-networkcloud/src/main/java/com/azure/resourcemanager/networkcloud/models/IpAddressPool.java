@@ -133,14 +133,12 @@ public final class IpAddressPool {
      */
     public void validate() {
         if (addresses() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property addresses in model IpAddressPool"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property addresses in model IpAddressPool"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model IpAddressPool"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model IpAddressPool"));
         }
     }
 

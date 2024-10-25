@@ -14,14 +14,15 @@ import com.azure.resourcemanager.mysql.models.PerformanceTierProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedPerformanceTiersImpl implements LocationBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
 
     private final LocationBasedPerformanceTiersClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public LocationBasedPerformanceTiersImpl(
-        LocationBasedPerformanceTiersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public LocationBasedPerformanceTiersImpl(LocationBasedPerformanceTiersClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

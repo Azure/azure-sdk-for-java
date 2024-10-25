@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of query texts. */
 @Immutable
 public final class QueryTextsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextsResultList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryTextsResultList.class);
 
     /*
      * The list of query texts.

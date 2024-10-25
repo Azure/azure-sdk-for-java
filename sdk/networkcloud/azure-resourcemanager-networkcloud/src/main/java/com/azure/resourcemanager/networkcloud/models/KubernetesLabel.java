@@ -74,14 +74,12 @@ public final class KubernetesLabel {
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model KubernetesLabel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model KubernetesLabel"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model KubernetesLabel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model KubernetesLabel"));
         }
     }
 

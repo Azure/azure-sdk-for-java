@@ -16,14 +16,15 @@ import com.azure.resourcemanager.mysql.models.NameAvailabilityRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilitiesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CheckNameAvailabilitiesImpl.class);
 
     private final CheckNameAvailabilitiesClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public CheckNameAvailabilitiesImpl(
-        CheckNameAvailabilitiesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public CheckNameAvailabilitiesImpl(CheckNameAvailabilitiesClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,15 +38,12 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         }
     }
 
-    public Response<NameAvailability> executeWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context) {
-        Response<NameAvailabilityInner> inner =
-            this.serviceClient().executeWithResponse(nameAvailabilityRequest, context);
+    public Response<NameAvailability> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
+        Context context) {
+        Response<NameAvailabilityInner> inner
+            = this.serviceClient().executeWithResponse(nameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

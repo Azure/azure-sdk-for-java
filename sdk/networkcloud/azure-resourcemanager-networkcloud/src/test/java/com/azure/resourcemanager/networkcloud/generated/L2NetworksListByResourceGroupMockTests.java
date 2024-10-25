@@ -32,37 +32,27 @@ public final class L2NetworksListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"jw\",\"type\":\"w\"},\"properties\":{\"associatedResourceIds\":[\"ratjhdhzybspij\",\"frzgdkkagvwukhs\",\"s\"],\"clusterId\":\"orfmzhwilzz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"mriprlk\",\"hybridAksClustersAssociatedIds\":[\"yttlrcxiv\",\"bkut\",\"umltwjflu\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"pvzlqywauyqnj\",\"l2IsolationDomainId\":\"khmocgjs\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"rhwv\"]},\"location\":\"qqgglj\",\"tags\":{\"rbctbhpjhxpcvrd\":\"sjrclrvtzq\",\"it\":\"y\"},\"id\":\"n\",\"name\":\"qady\",\"type\":\"zjahwriuomz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"jw\",\"type\":\"w\"},\"properties\":{\"associatedResourceIds\":[\"ratjhdhzybspij\",\"frzgdkkagvwukhs\",\"s\"],\"clusterId\":\"orfmzhwilzz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"mriprlk\",\"hybridAksClustersAssociatedIds\":[\"yttlrcxiv\",\"bkut\",\"umltwjflu\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"pvzlqywauyqnj\",\"l2IsolationDomainId\":\"khmocgjs\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"rhwv\"]},\"location\":\"qqgglj\",\"tags\":{\"rbctbhpjhxpcvrd\":\"sjrclrvtzq\",\"it\":\"y\"},\"id\":\"n\",\"name\":\"qady\",\"type\":\"zjahwriuomz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<L2Network> response =
-            manager.l2Networks().listByResourceGroup("yv", com.azure.core.util.Context.NONE);
+        PagedIterable<L2Network> response
+            = manager.l2Networks().listByResourceGroup("yv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qqgglj", response.iterator().next().location());
         Assertions.assertEquals("sjrclrvtzq", response.iterator().next().tags().get("rbctbhpjhxpcvrd"));

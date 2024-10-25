@@ -145,8 +145,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult deploy(
-        String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
+    OperationStatusResult deploy(String resourceGroupName, String clusterName,
+        ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
      * Update the cluster version.
@@ -161,8 +161,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult updateVersion(
-        String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
+    OperationStatusResult updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
      * Update the cluster version.
@@ -178,11 +178,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult updateVersion(
-        String resourceGroupName,
-        String clusterName,
-        ClusterUpdateVersionParameters clusterUpdateVersionParameters,
-        Context context);
+    OperationStatusResult updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context);
 
     /**
      * Retrieve the cluster.

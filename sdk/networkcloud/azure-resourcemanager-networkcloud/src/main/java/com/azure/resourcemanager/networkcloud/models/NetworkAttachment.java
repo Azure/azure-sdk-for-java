@@ -256,16 +256,12 @@ public final class NetworkAttachment {
      */
     public void validate() {
         if (attachedNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attachedNetworkId in model NetworkAttachment"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property attachedNetworkId in model NetworkAttachment"));
         }
         if (ipAllocationMethod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipAllocationMethod in model NetworkAttachment"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ipAllocationMethod in model NetworkAttachment"));
         }
     }
 

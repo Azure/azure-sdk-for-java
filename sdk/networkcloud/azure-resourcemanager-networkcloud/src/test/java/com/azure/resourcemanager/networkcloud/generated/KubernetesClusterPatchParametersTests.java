@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class KubernetesClusterPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KubernetesClusterPatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"controlPlaneNodeConfiguration\":{\"count\":1324024361512589812},\"kubernetesVersion\":\"rrouuxvnsasbcry\"},\"tags\":{\"xnazpmkml\":\"izrxklob\"}}")
-                .toObject(KubernetesClusterPatchParameters.class);
+        KubernetesClusterPatchParameters model = BinaryData.fromString(
+            "{\"properties\":{\"controlPlaneNodeConfiguration\":{\"count\":1324024361512589812},\"kubernetesVersion\":\"rrouuxvnsasbcry\"},\"tags\":{\"xnazpmkml\":\"izrxklob\"}}")
+            .toObject(KubernetesClusterPatchParameters.class);
         Assertions.assertEquals("izrxklob", model.tags().get("xnazpmkml"));
         Assertions.assertEquals(1324024361512589812L, model.controlPlaneNodeConfiguration().count());
         Assertions.assertEquals("rrouuxvnsasbcry", model.kubernetesVersion());
@@ -26,9 +24,8 @@ public final class KubernetesClusterPatchParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesClusterPatchParameters model =
-            new KubernetesClusterPatchParameters()
-                .withTags(mapOf("xnazpmkml", "izrxklob"))
+        KubernetesClusterPatchParameters model
+            = new KubernetesClusterPatchParameters().withTags(mapOf("xnazpmkml", "izrxklob"))
                 .withControlPlaneNodeConfiguration(
                     new ControlPlaneNodePatchConfiguration().withCount(1324024361512589812L))
                 .withKubernetesVersion("rrouuxvnsasbcry");

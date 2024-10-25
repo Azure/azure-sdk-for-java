@@ -89,8 +89,8 @@ public final class NetworkConfiguration {
      * @param attachedNetworkConfiguration the attachedNetworkConfiguration value to set.
      * @return the NetworkConfiguration object itself.
      */
-    public NetworkConfiguration withAttachedNetworkConfiguration(
-        AttachedNetworkConfiguration attachedNetworkConfiguration) {
+    public NetworkConfiguration
+        withAttachedNetworkConfiguration(AttachedNetworkConfiguration attachedNetworkConfiguration) {
         this.attachedNetworkConfiguration = attachedNetworkConfiguration;
         return this;
     }
@@ -247,16 +247,12 @@ public final class NetworkConfiguration {
             bgpServiceLoadBalancerConfiguration().validate();
         }
         if (cloudServicesNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cloudServicesNetworkId in model NetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cloudServicesNetworkId in model NetworkConfiguration"));
         }
         if (cniNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cniNetworkId in model NetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property cniNetworkId in model NetworkConfiguration"));
         }
     }
 

@@ -14,7 +14,8 @@ import java.util.Map;
 /** Represents a server to be created. */
 @Fluent
 public final class ServerForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerForCreate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerForCreate.class);
 
     /*
      * The Azure Active Directory identity of the server.
@@ -160,16 +161,14 @@ public final class ServerForCreate {
             sku().validate();
         }
         if (properties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model ServerForCreate"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model ServerForCreate"));
         } else {
             properties().validate();
         }
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model ServerForCreate"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model ServerForCreate"));
         }
     }
 }

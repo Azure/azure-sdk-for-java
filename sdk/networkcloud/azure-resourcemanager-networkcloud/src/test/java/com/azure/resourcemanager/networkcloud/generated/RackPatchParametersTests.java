@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RackPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RackPatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"rackLocation\":\"esyds\",\"rackSerialNumber\":\"efoh\"},\"tags\":{\"mtkhlowkxxpvbr\":\"vopwndyqleallk\",\"lhikcyychunsj\":\"fjmzsyzfho\",\"hv\":\"pjrtws\"}}")
-                .toObject(RackPatchParameters.class);
+        RackPatchParameters model = BinaryData.fromString(
+            "{\"properties\":{\"rackLocation\":\"esyds\",\"rackSerialNumber\":\"efoh\"},\"tags\":{\"mtkhlowkxxpvbr\":\"vopwndyqleallk\",\"lhikcyychunsj\":\"fjmzsyzfho\",\"hv\":\"pjrtws\"}}")
+            .toObject(RackPatchParameters.class);
         Assertions.assertEquals("vopwndyqleallk", model.tags().get("mtkhlowkxxpvbr"));
         Assertions.assertEquals("esyds", model.rackLocation());
         Assertions.assertEquals("efoh", model.rackSerialNumber());
@@ -25,11 +23,10 @@ public final class RackPatchParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackPatchParameters model =
-            new RackPatchParameters()
-                .withTags(mapOf("mtkhlowkxxpvbr", "vopwndyqleallk", "lhikcyychunsj", "fjmzsyzfho", "hv", "pjrtws"))
-                .withRackLocation("esyds")
-                .withRackSerialNumber("efoh");
+        RackPatchParameters model = new RackPatchParameters()
+            .withTags(mapOf("mtkhlowkxxpvbr", "vopwndyqleallk", "lhikcyychunsj", "fjmzsyzfho", "hv", "pjrtws"))
+            .withRackLocation("esyds")
+            .withRackSerialNumber("efoh");
         model = BinaryData.fromObject(model).toObject(RackPatchParameters.class);
         Assertions.assertEquals("vopwndyqleallk", model.tags().get("mtkhlowkxxpvbr"));
         Assertions.assertEquals("esyds", model.rackLocation());

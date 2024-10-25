@@ -57,14 +57,16 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     }
 
     public MonitoredSubscriptionProperties create() {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions().createorUpdate(resourceGroupName,
-            monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitoredSubscriptionProperties create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions().createorUpdate(resourceGroupName,
-            monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -80,14 +82,16 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     }
 
     public MonitoredSubscriptionProperties apply() {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions().update(resourceGroupName,
-            monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .update(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitoredSubscriptionProperties apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions().update(resourceGroupName,
-            monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .update(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -102,14 +106,18 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     }
 
     public MonitoredSubscriptionProperties refresh() {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions()
-            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MonitoredSubscriptionProperties refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMonitoredSubscriptions()
-            .getWithResponse(resourceGroupName, monitorName, configurationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitoredSubscriptions()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, context)
+            .getValue();
         return this;
     }
 

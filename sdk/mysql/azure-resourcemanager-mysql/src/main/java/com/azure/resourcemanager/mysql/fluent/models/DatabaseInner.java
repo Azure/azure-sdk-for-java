@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a Database. */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
 
     /*
      * The properties of a database.

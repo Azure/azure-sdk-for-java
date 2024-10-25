@@ -44,12 +44,14 @@ public final class NotificationHubsDebugSendWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DebugSendResponse response = manager.notificationHubs()
-            .debugSendWithResponse("hgw", "apnedgfbcvkc", "q", com.azure.core.util.Context.NONE).getValue();
+            .debugSendWithResponse("hgw", "apnedgfbcvkc", "q", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("odfvuefywsbp", response.location());
         Assertions.assertEquals("wyhrfouyftaakc", response.tags().get("wiyzvqtmnubexkp"));

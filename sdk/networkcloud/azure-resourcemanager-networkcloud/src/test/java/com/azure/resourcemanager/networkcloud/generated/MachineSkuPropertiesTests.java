@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.fluent.models.MachineSkuProperties
 public final class MachineSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineSkuProperties model =
-            BinaryData
-                .fromString(
-                    "{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":5344178861543099367,\"cpuSockets\":539445643734318038,\"disks\":[{\"capacityGB\":5962561191870222416,\"connection\":\"PCIE\",\"type\":\"HDD\"}],\"generation\":\"te\",\"hardwareVersion\":\"bfhjxakvvjgsl\",\"memoryCapacityGB\":7061120771289849082,\"model\":\"mywwtkgkxnyed\",\"networkInterfaces\":[{\"address\":\"vudtjuewbcihx\",\"deviceConnectionType\":\"PCI\",\"model\":\"c\",\"physicalSlot\":8836529440782745734,\"portCount\":6013611534399993244,\"portSpeed\":8334210528088520370,\"vendor\":\"akkud\"},{\"address\":\"xgwjplmagstcyoh\",\"deviceConnectionType\":\"PCI\",\"model\":\"rkdbdgiogsjkmnwq\",\"physicalSlot\":6833853370140143589,\"portCount\":7156428016747730929,\"portSpeed\":8649178950235367695,\"vendor\":\"iacegfnmn\"},{\"address\":\"pmvmemfnczdwvv\",\"deviceConnectionType\":\"PCI\",\"model\":\"lllchpodb\",\"physicalSlot\":5385185048993104627,\"portCount\":6308319060236104883,\"portSpeed\":9209137872063887003,\"vendor\":\"uvsj\"}],\"totalThreads\":5391692794732202921,\"vendor\":\"ystuluqyp\"}")
-                .toObject(MachineSkuProperties.class);
+        MachineSkuProperties model = BinaryData.fromString(
+            "{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":5344178861543099367,\"cpuSockets\":539445643734318038,\"disks\":[{\"capacityGB\":5962561191870222416,\"connection\":\"PCIE\",\"type\":\"HDD\"}],\"generation\":\"te\",\"hardwareVersion\":\"bfhjxakvvjgsl\",\"memoryCapacityGB\":7061120771289849082,\"model\":\"mywwtkgkxnyed\",\"networkInterfaces\":[{\"address\":\"vudtjuewbcihx\",\"deviceConnectionType\":\"PCI\",\"model\":\"c\",\"physicalSlot\":8836529440782745734,\"portCount\":6013611534399993244,\"portSpeed\":8334210528088520370,\"vendor\":\"akkud\"},{\"address\":\"xgwjplmagstcyoh\",\"deviceConnectionType\":\"PCI\",\"model\":\"rkdbdgiogsjkmnwq\",\"physicalSlot\":6833853370140143589,\"portCount\":7156428016747730929,\"portSpeed\":8649178950235367695,\"vendor\":\"iacegfnmn\"},{\"address\":\"pmvmemfnczdwvv\",\"deviceConnectionType\":\"PCI\",\"model\":\"lllchpodb\",\"physicalSlot\":5385185048993104627,\"portCount\":6308319060236104883,\"portSpeed\":9209137872063887003,\"vendor\":\"uvsj\"}],\"totalThreads\":5391692794732202921,\"vendor\":\"ystuluqyp\"}")
+            .toObject(MachineSkuProperties.class);
     }
 
     @org.junit.jupiter.api.Test

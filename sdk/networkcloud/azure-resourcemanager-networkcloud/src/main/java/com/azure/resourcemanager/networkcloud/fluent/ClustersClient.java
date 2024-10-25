@@ -88,8 +88,8 @@ public interface ClustersClient {
      * @return properties of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Retrieve the cluster.
@@ -120,8 +120,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner clusterParameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner clusterParameters);
 
     /**
      * Create or update the cluster.
@@ -138,8 +138,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner clusterParameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner clusterParameters, Context context);
 
     /**
      * Create or update the cluster.
@@ -172,8 +172,8 @@ public interface ClustersClient {
      * @return cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner createOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner clusterParameters, Context context);
+    ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner clusterParameters,
+        Context context);
 
     /**
      * Delete the cluster.
@@ -267,8 +267,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterPatchParameters clusterUpdateParameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterPatchParameters clusterUpdateParameters, Context context);
 
     /**
      * Patch the cluster.
@@ -302,8 +302,8 @@ public interface ClustersClient {
      * @return cluster represents the on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(
-        String resourceGroupName, String clusterName, ClusterPatchParameters clusterUpdateParameters, Context context);
+    ClusterInner update(String resourceGroupName, String clusterName, ClusterPatchParameters clusterUpdateParameters,
+        Context context);
 
     /**
      * Deploy the cluster to the rack.
@@ -318,8 +318,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(
-        String resourceGroupName, String clusterName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(String resourceGroupName,
+        String clusterName);
 
     /**
      * Deploy the cluster to the rack.
@@ -336,8 +336,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(
-        String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(String resourceGroupName,
+        String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
      * Deploy the cluster to the rack.
@@ -369,8 +369,8 @@ public interface ClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner deploy(
-        String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
+    OperationStatusResultInner deploy(String resourceGroupName, String clusterName,
+        ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
      * Update the cluster version.
@@ -405,9 +405,7 @@ public interface ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUpdateVersion(
-        String resourceGroupName,
-        String clusterName,
-        ClusterUpdateVersionParameters clusterUpdateVersionParameters,
+        String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters,
         Context context);
 
     /**
@@ -424,8 +422,8 @@ public interface ClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner updateVersion(
-        String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
+    OperationStatusResultInner updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
      * Update the cluster version.
@@ -442,9 +440,6 @@ public interface ClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner updateVersion(
-        String resourceGroupName,
-        String clusterName,
-        ClusterUpdateVersionParameters clusterUpdateVersionParameters,
-        Context context);
+    OperationStatusResultInner updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context);
 }

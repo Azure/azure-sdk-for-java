@@ -169,12 +169,8 @@ public interface ClusterManager {
     ClusterManagerInner innerModel();
 
     /** The entirety of the ClusterManager definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithFabricControllerId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithFabricControllerId, DefinitionStages.WithCreate {
     }
 
     /** The ClusterManager definition stages. */
@@ -230,12 +226,9 @@ public interface ClusterManager {
          * The stage of the ClusterManager definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAnalyticsWorkspaceId,
-                DefinitionStages.WithAvailabilityZones,
-                DefinitionStages.WithManagedResourceGroupConfiguration,
-                DefinitionStages.WithVmSize {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnalyticsWorkspaceId,
+            DefinitionStages.WithAvailabilityZones, DefinitionStages.WithManagedResourceGroupConfiguration,
+            DefinitionStages.WithVmSize {
             /**
              * Executes the create request.
              *

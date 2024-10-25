@@ -193,14 +193,12 @@ public final class ConsoleProperties {
      */
     public void validate() {
         if (enabled() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property enabled in model ConsoleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property enabled in model ConsoleProperties"));
         }
         if (sshPublicKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sshPublicKey in model ConsoleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sshPublicKey in model ConsoleProperties"));
         } else {
             sshPublicKey().validate();
         }

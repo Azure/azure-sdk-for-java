@@ -143,20 +143,16 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
     }
 
     public L2Network create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .createOrUpdate(resourceGroupName, l2NetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .createOrUpdate(resourceGroupName, l2NetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public L2Network create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .createOrUpdate(resourceGroupName, l2NetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .createOrUpdate(resourceGroupName, l2NetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -172,27 +168,23 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
     }
 
     public L2Network apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .updateWithResponse(resourceGroupName, l2NetworkName, updateL2NetworkUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .updateWithResponse(resourceGroupName, l2NetworkName, updateL2NetworkUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public L2Network apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .updateWithResponse(resourceGroupName, l2NetworkName, updateL2NetworkUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .updateWithResponse(resourceGroupName, l2NetworkName, updateL2NetworkUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    L2NetworkImpl(
-        L2NetworkInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    L2NetworkImpl(L2NetworkInner innerObject,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -200,22 +192,18 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
     }
 
     public L2Network refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public L2Network refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getL2Networks()
-                .getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getL2Networks()
+            .getByResourceGroupWithResponse(resourceGroupName, l2NetworkName, context)
+            .getValue();
         return this;
     }
 

@@ -47,14 +47,16 @@ public final class MonitorsListAppServicesMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AppServiceInfo> response = manager.monitors().listAppServices(
-            "r", "gccymvaolpssl", new AppServicesGetRequest()
-                .withAzureResourceIds(Arrays.asList("mmdnbbglzps", "iydmcwyhzdxs")).withUserEmail("adbzmnvdfznud"),
-            com.azure.core.util.Context.NONE);
+        PagedIterable<AppServiceInfo> response = manager.monitors()
+            .listAppServices("r", "gccymvaolpssl",
+                new AppServicesGetRequest().withAzureResourceIds(Arrays.asList("mmdnbbglzps", "iydmcwyhzdxs"))
+                    .withUserEmail("adbzmnvdfznud"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("dvxzbncblylpst", response.iterator().next().azureResourceId());
         Assertions.assertEquals("hh", response.iterator().next().agentVersion());

@@ -78,8 +78,8 @@ public interface CloudServicesNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided cloud services network along with {@link Response}.
      */
-    Response<CloudServicesNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServicesNetworkName, Context context);
+    Response<CloudServicesNetwork> getByResourceGroupWithResponse(String resourceGroupName,
+        String cloudServicesNetworkName, Context context);
 
     /**
      * Retrieve the cloud services network.

@@ -157,20 +157,16 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
     }
 
     public TrunkedNetwork create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .createOrUpdate(resourceGroupName, trunkedNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .createOrUpdate(resourceGroupName, trunkedNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TrunkedNetwork create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .createOrUpdate(resourceGroupName, trunkedNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .createOrUpdate(resourceGroupName, trunkedNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -186,29 +182,24 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
     }
 
     public TrunkedNetwork apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .updateWithResponse(
-                    resourceGroupName, trunkedNetworkName, updateTrunkedNetworkUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .updateWithResponse(resourceGroupName, trunkedNetworkName, updateTrunkedNetworkUpdateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public TrunkedNetwork apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .updateWithResponse(
-                    resourceGroupName, trunkedNetworkName, updateTrunkedNetworkUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .updateWithResponse(resourceGroupName, trunkedNetworkName, updateTrunkedNetworkUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    TrunkedNetworkImpl(
-        TrunkedNetworkInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    TrunkedNetworkImpl(TrunkedNetworkInner innerObject,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -216,22 +207,18 @@ public final class TrunkedNetworkImpl implements TrunkedNetwork, TrunkedNetwork.
     }
 
     public TrunkedNetwork refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TrunkedNetwork refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrunkedNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrunkedNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, context)
+            .getValue();
         return this;
     }
 

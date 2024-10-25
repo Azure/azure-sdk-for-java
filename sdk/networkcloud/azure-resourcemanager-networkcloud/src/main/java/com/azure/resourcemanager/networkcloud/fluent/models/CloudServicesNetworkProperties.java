@@ -104,8 +104,8 @@ public final class CloudServicesNetworkProperties {
      * @param additionalEgressEndpoints the additionalEgressEndpoints value to set.
      * @return the CloudServicesNetworkProperties object itself.
      */
-    public CloudServicesNetworkProperties withAdditionalEgressEndpoints(
-        List<EgressEndpoint> additionalEgressEndpoints) {
+    public CloudServicesNetworkProperties
+        withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints) {
         this.additionalEgressEndpoints = additionalEgressEndpoints;
         return this;
     }

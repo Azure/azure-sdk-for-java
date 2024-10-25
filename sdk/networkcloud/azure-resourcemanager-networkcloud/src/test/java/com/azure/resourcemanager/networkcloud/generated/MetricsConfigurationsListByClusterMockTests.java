@@ -31,37 +31,27 @@ public final class MetricsConfigurationsListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"qvcml\",\"type\":\"exbzbqufpnezsjza\"},\"properties\":{\"collectionInterval\":1012603329347113753,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"r\",\"disabledMetrics\":[\"gzmsimehtc\",\"uwdhtq\",\"hyhnimxtns\",\"gi\"],\"enabledMetrics\":[\"mwnwnghojovkey\"],\"provisioningState\":\"Accepted\"},\"location\":\"jixxfsfpcrtn\",\"tags\":{\"ijte\":\"efx\",\"cnw\":\"dveywetkrhlol\",\"tlrnrdet\":\"pfgsvbbvaqdljnp\",\"e\":\"wevxeh\"},\"id\":\"dxljzvdovbrble\",\"name\":\"lprdaqccddcbnygd\",\"type\":\"c\"}]}";
+        String responseStr
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"qvcml\",\"type\":\"exbzbqufpnezsjza\"},\"properties\":{\"collectionInterval\":1012603329347113753,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"r\",\"disabledMetrics\":[\"gzmsimehtc\",\"uwdhtq\",\"hyhnimxtns\",\"gi\"],\"enabledMetrics\":[\"mwnwnghojovkey\"],\"provisioningState\":\"Accepted\"},\"location\":\"jixxfsfpcrtn\",\"tags\":{\"ijte\":\"efx\",\"cnw\":\"dveywetkrhlol\",\"tlrnrdet\":\"pfgsvbbvaqdljnp\",\"e\":\"wevxeh\"},\"id\":\"dxljzvdovbrble\",\"name\":\"lprdaqccddcbnygd\",\"type\":\"c\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ClusterMetricsConfiguration> response =
-            manager.metricsConfigurations().listByCluster("xwwvcmmpeg", "y", com.azure.core.util.Context.NONE);
+        PagedIterable<ClusterMetricsConfiguration> response
+            = manager.metricsConfigurations().listByCluster("xwwvcmmpeg", "y", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("jixxfsfpcrtn", response.iterator().next().location());
         Assertions.assertEquals("efx", response.iterator().next().tags().get("ijte"));

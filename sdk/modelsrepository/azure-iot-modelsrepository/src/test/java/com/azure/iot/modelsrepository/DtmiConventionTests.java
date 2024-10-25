@@ -17,8 +17,7 @@ class DtmiConventionTests {
         "dtmi:com:example:Model;1, dtmi/com/example/model-1.json",
         "dtmi:com:example:Model:1, ",
         "'',",
-        ","
-    })
+        "," })
     public void dtmiToPathTest(String input, String expected) {
 
         if (expected == null) {
@@ -37,15 +36,15 @@ class DtmiConventionTests {
         "file:///path/to/repository/,   file:///path/to/repository/dtmi/com/example/thermostat-1.json",
         "file://path/to/RepoSitory,     file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json",
         "C:/path/to/repository/,        C:/path/to/repository/dtmi/com/example/thermostat-1.json",
-        "//server//repository,          //server//repository/dtmi/com/example/thermostat-1.json"
-    })
+        "//server//repository,          //server//repository/dtmi/com/example/thermostat-1.json" })
     public void getModelUriTests(String repository, String expectedUri) {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
         URI repositoryUri = TestHelper.convertToUri(repository);
 
         if (expectedUri == null || expectedUri.isEmpty()) {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.getModelUri(dtmi, repositoryUri, false));
+            Assertions.assertThrows(IllegalArgumentException.class,
+                () -> DtmiConventions.getModelUri(dtmi, repositoryUri, false));
             return;
         }
 
@@ -60,13 +59,13 @@ class DtmiConventionTests {
         "file:///path/to/repository/,   file:///path/to/repository/metadata.json",
         "file://path/to/RepoSitory,     file://path/to/RepoSitory/metadata.json",
         "C:/path/to/repository/,        C:/path/to/repository/metadata.json",
-        "//server//repository,          //server//repository/metadata.json"
-    })
+        "//server//repository,          //server//repository/metadata.json" })
     public void getMetadataUriTests(String repository, String expectedUri) {
         URI repositoryUri = TestHelper.convertToUri(repository);
 
         if (expectedUri == null || expectedUri.isEmpty()) {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.getMetadataUri(repositoryUri));
+            Assertions.assertThrows(IllegalArgumentException.class,
+                () -> DtmiConventions.getMetadataUri(repositoryUri));
             return;
         }
 
@@ -82,8 +81,7 @@ class DtmiConventionTests {
         "dtmi:com:example::Thermostat;1, false",
         "com:example:Thermostat;1, false",
         "'', false",
-        "null, false"
-    })
+        "null, false" })
     public void isValidDtmi(String dtmi, boolean expected) {
         Assertions.assertEquals(expected, DtmiConventions.isValidDtmi(dtmi));
     }

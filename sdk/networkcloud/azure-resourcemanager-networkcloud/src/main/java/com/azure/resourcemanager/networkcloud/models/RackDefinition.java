@@ -217,19 +217,16 @@ public final class RackDefinition {
             bareMetalMachineConfigurationData().forEach(e -> e.validate());
         }
         if (networkRackId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property networkRackId in model RackDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property networkRackId in model RackDefinition"));
         }
         if (rackSerialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rackSerialNumber in model RackDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackSerialNumber in model RackDefinition"));
         }
         if (rackSkuId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rackSkuId in model RackDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackSkuId in model RackDefinition"));
         }
         if (storageApplianceConfigurationData() != null) {
             storageApplianceConfigurationData().forEach(e -> e.validate());

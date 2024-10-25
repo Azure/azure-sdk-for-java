@@ -32,34 +32,24 @@ public final class TrunkedNetworksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"hzwxq\",\"type\":\"ejp\"},\"properties\":{\"associatedResourceIds\":[\"hvtozyagjjnxkb\",\"lh\",\"yxg\"],\"clusterId\":\"klvqzrwtrdgscn\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"nsgnwxlwmez\",\"hybridAksClustersAssociatedIds\":[\"xpthceopvkvt\",\"fve\",\"obpbokhmm\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"arnggcjfwblqh\",\"isolationDomainIds\":[\"asmcolmugpyvaos\",\"kluwz\",\"eygzvtyevjhu\",\"nobguqisqsqkpdmi\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"mlviqcpszpmcvqdv\",\"dmvxyrxdhgvqojb\"],\"vlans\":[2010350344823941297,6106416782592877568,4720543683832895411]},\"location\":\"mbtple\",\"tags\":{\"dawsxmrsz\":\"oyidoxznvgvdtmuu\",\"erxrzutylcurza\":\"knimxlp\",\"qaeht\":\"mnb\"},\"id\":\"bjmbnvynfaooeac\",\"name\":\"edcgl\",\"type\":\"kakddidahzllrqm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"hzwxq\",\"type\":\"ejp\"},\"properties\":{\"associatedResourceIds\":[\"hvtozyagjjnxkb\",\"lh\",\"yxg\"],\"clusterId\":\"klvqzrwtrdgscn\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"nsgnwxlwmez\",\"hybridAksClustersAssociatedIds\":[\"xpthceopvkvt\",\"fve\",\"obpbokhmm\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"arnggcjfwblqh\",\"isolationDomainIds\":[\"asmcolmugpyvaos\",\"kluwz\",\"eygzvtyevjhu\",\"nobguqisqsqkpdmi\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"mlviqcpszpmcvqdv\",\"dmvxyrxdhgvqojb\"],\"vlans\":[2010350344823941297,6106416782592877568,4720543683832895411]},\"location\":\"mbtple\",\"tags\":{\"dawsxmrsz\":\"oyidoxznvgvdtmuu\",\"erxrzutylcurza\":\"knimxlp\",\"qaeht\":\"mnb\"},\"id\":\"bjmbnvynfaooeac\",\"name\":\"edcgl\",\"type\":\"kakddidahzllrqm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TrunkedNetwork> response = manager.trunkedNetworks().list(com.azure.core.util.Context.NONE);
 

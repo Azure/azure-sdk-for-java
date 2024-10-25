@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RacksPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RacksPatchProperties model =
-            BinaryData
-                .fromString("{\"rackLocation\":\"icphvtrrmhw\",\"rackSerialNumber\":\"fdpyflubh\"}")
+        RacksPatchProperties model
+            = BinaryData.fromString("{\"rackLocation\":\"icphvtrrmhw\",\"rackSerialNumber\":\"fdpyflubh\"}")
                 .toObject(RacksPatchProperties.class);
         Assertions.assertEquals("icphvtrrmhw", model.rackLocation());
         Assertions.assertEquals("fdpyflubh", model.rackSerialNumber());
@@ -21,8 +20,8 @@ public final class RacksPatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RacksPatchProperties model =
-            new RacksPatchProperties().withRackLocation("icphvtrrmhw").withRackSerialNumber("fdpyflubh");
+        RacksPatchProperties model
+            = new RacksPatchProperties().withRackLocation("icphvtrrmhw").withRackSerialNumber("fdpyflubh");
         model = BinaryData.fromObject(model).toObject(RacksPatchProperties.class);
         Assertions.assertEquals("icphvtrrmhw", model.rackLocation());
         Assertions.assertEquals("fdpyflubh", model.rackSerialNumber());

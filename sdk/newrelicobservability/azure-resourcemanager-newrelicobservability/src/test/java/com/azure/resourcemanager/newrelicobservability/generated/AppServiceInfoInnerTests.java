@@ -22,7 +22,8 @@ public final class AppServiceInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppServiceInfoInner model = new AppServiceInfoInner().withAzureResourceId("zvddntwndeicbtwn")
-            .withAgentVersion("aoqvuh").withAgentStatus("cffcyddglmj");
+            .withAgentVersion("aoqvuh")
+            .withAgentStatus("cffcyddglmj");
         model = BinaryData.fromObject(model).toObject(AppServiceInfoInner.class);
         Assertions.assertEquals("zvddntwndeicbtwn", model.azureResourceId());
         Assertions.assertEquals("aoqvuh", model.agentVersion());

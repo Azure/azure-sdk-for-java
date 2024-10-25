@@ -17,14 +17,15 @@ import com.azure.resourcemanager.mysql.models.WaitStatisticsInput;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WaitStatisticsImpl implements WaitStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticsImpl.class);
 
     private final WaitStatisticsClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public WaitStatisticsImpl(
-        WaitStatisticsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public WaitStatisticsImpl(WaitStatisticsClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,32 +39,29 @@ public final class WaitStatisticsImpl implements WaitStatistics {
         }
     }
 
-    public Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context) {
-        Response<WaitStatisticInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
+    public Response<WaitStatistic> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context) {
+        Response<WaitStatisticInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WaitStatisticImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
         return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
         return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 

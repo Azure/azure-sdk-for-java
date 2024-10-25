@@ -17,14 +17,15 @@ import com.azure.resourcemanager.mysql.models.TopQueryStatisticsInput;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopQueryStatisticsImpl implements TopQueryStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopQueryStatisticsImpl.class);
 
     private final TopQueryStatisticsClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public TopQueryStatisticsImpl(
-        TopQueryStatisticsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public TopQueryStatisticsImpl(TopQueryStatisticsClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,32 +39,29 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
         }
     }
 
-    public Response<QueryStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context) {
-        Response<QueryStatisticInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, queryStatisticId, context);
+    public Response<QueryStatistic> getWithResponse(String resourceGroupName, String serverName,
+        String queryStatisticId, Context context) {
+        Response<QueryStatisticInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, queryStatisticId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryStatisticImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
-        PagedIterable<QueryStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
+    public PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters) {
+        PagedIterable<QueryStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
         return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
-        PagedIterable<QueryStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
+    public PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context) {
+        PagedIterable<QueryStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
         return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 

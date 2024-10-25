@@ -154,15 +154,9 @@ public interface Rack {
 
     /** The entirety of the Rack definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAvailabilityZone,
-            DefinitionStages.WithRackLocation,
-            DefinitionStages.WithRackSerialNumber,
-            DefinitionStages.WithRackSkuId,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithAvailabilityZone, DefinitionStages.WithRackLocation,
+        DefinitionStages.WithRackSerialNumber, DefinitionStages.WithRackSkuId, DefinitionStages.WithCreate {
     }
 
     /** The Rack definition stages. */

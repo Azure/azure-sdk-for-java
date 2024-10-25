@@ -35,8 +35,8 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a configuration of server along with {@link Response}.
      */
-    Response<Configuration> getWithResponse(
-        String resourceGroupName, String serverName, String configurationName, Context context);
+    Response<Configuration> getWithResponse(String resourceGroupName, String serverName, String configurationName,
+        Context context);
 
     /**
      * List all the configurations in a given server.

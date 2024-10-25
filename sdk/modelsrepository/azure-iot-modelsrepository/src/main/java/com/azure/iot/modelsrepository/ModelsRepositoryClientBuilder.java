@@ -45,17 +45,16 @@ import java.util.Objects;
  * and {@link ModelsRepositoryAsyncClient}, call {@link #buildClient() buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
-@ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})
-public final class ModelsRepositoryClientBuilder implements
-    ConfigurationTrait<ModelsRepositoryClientBuilder>,
-    HttpTrait<ModelsRepositoryClientBuilder> {
+@ServiceClientBuilder(serviceClients = { ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class })
+public final class ModelsRepositoryClientBuilder
+    implements ConfigurationTrait<ModelsRepositoryClientBuilder>, HttpTrait<ModelsRepositoryClientBuilder> {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
 
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";    
+    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";
     private static URI globalRepositoryUri;
 
     static {
@@ -103,14 +102,9 @@ public final class ModelsRepositoryClientBuilder implements
         this.repositoryEndpoint = globalRepositoryUri;
     }
 
-    private static HttpPipeline constructPipeline(
-        HttpLogOptions httpLogOptions,
-        ClientOptions clientOptions,
-        HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies,
-        HttpPipelinePolicy retryPolicy,
-        Configuration configuration,
-        Map<String, String> properties) {
+    private static HttpPipeline constructPipeline(HttpLogOptions httpLogOptions, ClientOptions clientOptions,
+        HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies, HttpPipelinePolicy retryPolicy,
+        Configuration configuration, Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -119,9 +113,8 @@ public final class ModelsRepositoryClientBuilder implements
 
         // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
         // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
-        String applicationId = clientOptions == null
-            ? httpLogOptions.getApplicationId()
-            : clientOptions.getApplicationId();
+        String applicationId
+            = clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
 
@@ -142,8 +135,8 @@ public final class ModelsRepositoryClientBuilder implements
         // If client options has headers configured, add a policy for each
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            clientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
@@ -161,12 +154,11 @@ public final class ModelsRepositoryClientBuilder implements
         if (clientOptions != null) {
             tracingOptions = clientOptions.getTracingOptions();
         }
-        
+
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .build();
@@ -203,24 +195,15 @@ public final class ModelsRepositoryClientBuilder implements
         }
 
         // Default is exponential backoff
-        HttpPipelinePolicy retryPolicy = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy,
-            retryOptions, DEFAULT_RETRY_POLICY);
+        HttpPipelinePolicy retryPolicy
+            = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, retryOptions, DEFAULT_RETRY_POLICY);
 
         if (this.httpPipeline == null) {
-            this.httpPipeline = constructPipeline(
-                this.httpLogOptions,
-                this.clientOptions,
-                this.httpClient,
-                this.additionalPolicies,
-                retryPolicy,
-                buildConfiguration,
-                this.properties);
+            this.httpPipeline = constructPipeline(this.httpLogOptions, this.clientOptions, this.httpClient,
+                this.additionalPolicies, retryPolicy, buildConfiguration, this.properties);
         }
 
-        return new ModelsRepositoryAsyncClient(
-            this.repositoryEndpoint,
-            this.httpPipeline,
-            serviceVersion,
+        return new ModelsRepositoryAsyncClient(this.repositoryEndpoint, this.httpPipeline, serviceVersion,
             this.modelDependencyResolution);
     }
 
@@ -230,7 +213,8 @@ public final class ModelsRepositoryClientBuilder implements
      * @param modelDependencyResolution A DependencyResolutionOption value to force model resolution behavior.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder modelDependencyResolution(ModelDependencyResolution modelDependencyResolution) {
+    public ModelsRepositoryClientBuilder
+        modelDependencyResolution(ModelDependencyResolution modelDependencyResolution) {
         this.modelDependencyResolution = modelDependencyResolution;
         return this;
     }

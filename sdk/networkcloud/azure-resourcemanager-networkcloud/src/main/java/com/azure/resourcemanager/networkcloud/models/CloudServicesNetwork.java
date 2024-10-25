@@ -180,12 +180,8 @@ public interface CloudServicesNetwork {
     CloudServicesNetworkInner innerModel();
 
     /** The entirety of the CloudServicesNetwork definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
     }
 
     /** The CloudServicesNetwork definition stages. */
@@ -244,10 +240,8 @@ public interface CloudServicesNetwork {
          * The stage of the CloudServicesNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAdditionalEgressEndpoints,
-                DefinitionStages.WithEnableDefaultEgressEndpoints {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAdditionalEgressEndpoints,
+            DefinitionStages.WithEnableDefaultEgressEndpoints {
             /**
              * Executes the create request.
              *
@@ -311,10 +305,8 @@ public interface CloudServicesNetwork {
     CloudServicesNetwork.Update update();
 
     /** The template for CloudServicesNetwork update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithAdditionalEgressEndpoints,
-            UpdateStages.WithEnableDefaultEgressEndpoints {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAdditionalEgressEndpoints,
+        UpdateStages.WithEnableDefaultEgressEndpoints {
         /**
          * Executes the update request.
          *

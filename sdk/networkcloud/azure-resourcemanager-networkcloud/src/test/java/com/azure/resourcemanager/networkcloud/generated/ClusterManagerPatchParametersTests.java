@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterManagerPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterManagerPatchParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"uunfprnjletlxsm\":\"tczytqjtwh\",\"nlqwzdvpiwhx\":\"pddouifamowaziyn\"}}")
-                .toObject(ClusterManagerPatchParameters.class);
+        ClusterManagerPatchParameters model = BinaryData
+            .fromString("{\"tags\":{\"uunfprnjletlxsm\":\"tczytqjtwh\",\"nlqwzdvpiwhx\":\"pddouifamowaziyn\"}}")
+            .toObject(ClusterManagerPatchParameters.class);
         Assertions.assertEquals("tczytqjtwh", model.tags().get("uunfprnjletlxsm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterManagerPatchParameters model =
-            new ClusterManagerPatchParameters()
-                .withTags(mapOf("uunfprnjletlxsm", "tczytqjtwh", "nlqwzdvpiwhx", "pddouifamowaziyn"));
+        ClusterManagerPatchParameters model = new ClusterManagerPatchParameters()
+            .withTags(mapOf("uunfprnjletlxsm", "tczytqjtwh", "nlqwzdvpiwhx", "pddouifamowaziyn"));
         model = BinaryData.fromObject(model).toObject(ClusterManagerPatchParameters.class);
         Assertions.assertEquals("tczytqjtwh", model.tags().get("uunfprnjletlxsm"));
     }

@@ -87,8 +87,8 @@ public interface ClusterManagersClient {
      * @return the properties of the provided cluster manager along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterManagerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterManagerName, Context context);
+    Response<ClusterManagerInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterManagerName,
+        Context context);
 
     /**
      * Retrieve the cluster manager.
@@ -120,8 +120,8 @@ public interface ClusterManagersClient {
      *     on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters);
+    SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterManagerName, ClusterManagerInner clusterManagerParameters);
 
     /**
      * Create or update the cluster manager.
@@ -139,11 +139,8 @@ public interface ClusterManagersClient {
      *     on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterManagerName,
-        ClusterManagerInner clusterManagerParameters,
-        Context context);
+    SyncPoller<PollResult<ClusterManagerInner>, ClusterManagerInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterManagerName, ClusterManagerInner clusterManagerParameters, Context context);
 
     /**
      * Create or update the cluster manager.
@@ -159,8 +156,8 @@ public interface ClusterManagersClient {
      * @return clusterManager represents a control-plane to manage one or more on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterManagerInner createOrUpdate(
-        String resourceGroupName, String clusterManagerName, ClusterManagerInner clusterManagerParameters);
+    ClusterManagerInner createOrUpdate(String resourceGroupName, String clusterManagerName,
+        ClusterManagerInner clusterManagerParameters);
 
     /**
      * Create or update the cluster manager.
@@ -177,11 +174,8 @@ public interface ClusterManagersClient {
      * @return clusterManager represents a control-plane to manage one or more on-premises clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterManagerInner createOrUpdate(
-        String resourceGroupName,
-        String clusterManagerName,
-        ClusterManagerInner clusterManagerParameters,
-        Context context);
+    ClusterManagerInner createOrUpdate(String resourceGroupName, String clusterManagerName,
+        ClusterManagerInner clusterManagerParameters, Context context);
 
     /**
      * Delete the cluster manager.
@@ -212,8 +206,8 @@ public interface ClusterManagersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterManagerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterManagerName,
+        Context context);
 
     /**
      * Delete the cluster manager.
@@ -261,11 +255,8 @@ public interface ClusterManagersClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterManagerInner> updateWithResponse(
-        String resourceGroupName,
-        String clusterManagerName,
-        ClusterManagerPatchParameters clusterManagerUpdateParameters,
-        Context context);
+    Response<ClusterManagerInner> updateWithResponse(String resourceGroupName, String clusterManagerName,
+        ClusterManagerPatchParameters clusterManagerUpdateParameters, Context context);
 
     /**
      * Patch the cluster manager.

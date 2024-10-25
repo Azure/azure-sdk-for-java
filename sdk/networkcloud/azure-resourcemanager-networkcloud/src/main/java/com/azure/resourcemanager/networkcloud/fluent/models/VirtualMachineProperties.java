@@ -260,8 +260,8 @@ public final class VirtualMachineProperties {
      * @param cloudServicesNetworkAttachment the cloudServicesNetworkAttachment value to set.
      * @return the VirtualMachineProperties object itself.
      */
-    public VirtualMachineProperties withCloudServicesNetworkAttachment(
-        NetworkAttachment cloudServicesNetworkAttachment) {
+    public VirtualMachineProperties
+        withCloudServicesNetworkAttachment(NetworkAttachment cloudServicesNetworkAttachment) {
         this.cloudServicesNetworkAttachment = cloudServicesNetworkAttachment;
         return this;
     }
@@ -330,8 +330,8 @@ public final class VirtualMachineProperties {
      * @param isolateEmulatorThread the isolateEmulatorThread value to set.
      * @return the VirtualMachineProperties object itself.
      */
-    public VirtualMachineProperties withIsolateEmulatorThread(
-        VirtualMachineIsolateEmulatorThread isolateEmulatorThread) {
+    public VirtualMachineProperties
+        withIsolateEmulatorThread(VirtualMachineIsolateEmulatorThread isolateEmulatorThread) {
         this.isolateEmulatorThread = isolateEmulatorThread;
         return this;
     }
@@ -585,8 +585,8 @@ public final class VirtualMachineProperties {
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachineProperties object itself.
      */
-    public VirtualMachineProperties withVmImageRepositoryCredentials(
-        ImageRepositoryCredentials vmImageRepositoryCredentials) {
+    public VirtualMachineProperties
+        withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
         this.vmImageRepositoryCredentials = vmImageRepositoryCredentials;
         return this;
     }
@@ -607,16 +607,12 @@ public final class VirtualMachineProperties {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminUsername in model VirtualMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminUsername in model VirtualMachineProperties"));
         }
         if (cloudServicesNetworkAttachment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cloudServicesNetworkAttachment in model VirtualMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cloudServicesNetworkAttachment in model VirtualMachineProperties"));
         } else {
             cloudServicesNetworkAttachment().validate();
         }
@@ -630,18 +626,14 @@ public final class VirtualMachineProperties {
             sshPublicKeys().forEach(e -> e.validate());
         }
         if (storageProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageProfile in model VirtualMachineProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageProfile in model VirtualMachineProperties"));
         } else {
             storageProfile().validate();
         }
         if (vmImage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmImage in model VirtualMachineProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmImage in model VirtualMachineProperties"));
         }
         if (vmImageRepositoryCredentials() != null) {
             vmImageRepositoryCredentials().validate();

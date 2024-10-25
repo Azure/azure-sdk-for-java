@@ -309,22 +309,12 @@ public interface BareMetalMachine {
     BareMetalMachineInner innerModel();
 
     /** The entirety of the BareMetalMachine definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithBmcConnectionString,
-            DefinitionStages.WithBmcCredentials,
-            DefinitionStages.WithBmcMacAddress,
-            DefinitionStages.WithBootMacAddress,
-            DefinitionStages.WithMachineDetails,
-            DefinitionStages.WithMachineName,
-            DefinitionStages.WithMachineSkuId,
-            DefinitionStages.WithRackId,
-            DefinitionStages.WithRackSlot,
-            DefinitionStages.WithSerialNumber,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithBmcConnectionString, DefinitionStages.WithBmcCredentials,
+        DefinitionStages.WithBmcMacAddress, DefinitionStages.WithBootMacAddress, DefinitionStages.WithMachineDetails,
+        DefinitionStages.WithMachineName, DefinitionStages.WithMachineSkuId, DefinitionStages.WithRackId,
+        DefinitionStages.WithRackSlot, DefinitionStages.WithSerialNumber, DefinitionStages.WithCreate {
     }
 
     /** The BareMetalMachine definition stages. */
@@ -646,8 +636,8 @@ public interface BareMetalMachine {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult powerOff(
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
+    OperationStatusResult powerOff(BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
+        Context context);
 
     /**
      * Reimage the bare metal machine.
@@ -749,8 +739,8 @@ public interface BareMetalMachine {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runCommand(
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
+    OperationStatusResult runCommand(BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
+        Context context);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -765,8 +755,8 @@ public interface BareMetalMachine {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runDataExtracts(
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
+    OperationStatusResult
+        runDataExtracts(BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -798,8 +788,8 @@ public interface BareMetalMachine {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runReadCommands(
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
+    OperationStatusResult
+        runReadCommands(BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
      * Run read-only commands against a bare metal machine.

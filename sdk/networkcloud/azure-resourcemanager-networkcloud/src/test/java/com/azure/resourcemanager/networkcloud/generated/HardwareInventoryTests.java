@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 public final class HardwareInventoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareInventory model =
-            BinaryData
-                .fromString(
-                    "{\"additionalHostInformation\":\"s\",\"interfaces\":[{\"linkStatus\":\"v\",\"macAddress\":\"jrwzox\",\"name\":\"tfell\",\"networkInterfaceId\":\"fziton\"},{\"linkStatus\":\"qfpjk\",\"macAddress\":\"xofpdvhpfxxypi\",\"name\":\"nmayhuybb\",\"networkInterfaceId\":\"odepoogin\"},{\"linkStatus\":\"amiheognarxz\",\"macAddress\":\"heotusiv\",\"name\":\"v\",\"networkInterfaceId\":\"iqihn\"}],\"nics\":[{\"lldpNeighbor\":{\"portDescription\":\"wjzrnfygxgisp\",\"portName\":\"vtz\",\"systemDescription\":\"ufubl\",\"systemName\":\"fxqeof\"},\"macAddress\":\"e\",\"name\":\"hqjbasvmsmj\"},{\"lldpNeighbor\":{\"portDescription\":\"ngsntnbybk\",\"portName\":\"cwrwclxxwrljdous\",\"systemDescription\":\"qvkoc\",\"systemName\":\"jdkwtnhxbnjb\"},\"macAddress\":\"sqrglssainq\",\"name\":\"wnzlljfmppeeb\"}]}")
-                .toObject(HardwareInventory.class);
+        HardwareInventory model = BinaryData.fromString(
+            "{\"additionalHostInformation\":\"s\",\"interfaces\":[{\"linkStatus\":\"v\",\"macAddress\":\"jrwzox\",\"name\":\"tfell\",\"networkInterfaceId\":\"fziton\"},{\"linkStatus\":\"qfpjk\",\"macAddress\":\"xofpdvhpfxxypi\",\"name\":\"nmayhuybb\",\"networkInterfaceId\":\"odepoogin\"},{\"linkStatus\":\"amiheognarxz\",\"macAddress\":\"heotusiv\",\"name\":\"v\",\"networkInterfaceId\":\"iqihn\"}],\"nics\":[{\"lldpNeighbor\":{\"portDescription\":\"wjzrnfygxgisp\",\"portName\":\"vtz\",\"systemDescription\":\"ufubl\",\"systemName\":\"fxqeof\"},\"macAddress\":\"e\",\"name\":\"hqjbasvmsmj\"},{\"lldpNeighbor\":{\"portDescription\":\"ngsntnbybk\",\"portName\":\"cwrwclxxwrljdous\",\"systemDescription\":\"qvkoc\",\"systemName\":\"jdkwtnhxbnjb\"},\"macAddress\":\"sqrglssainq\",\"name\":\"wnzlljfmppeeb\"}]}")
+            .toObject(HardwareInventory.class);
     }
 
     @org.junit.jupiter.api.Test

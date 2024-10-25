@@ -234,30 +234,22 @@ public final class BareMetalMachineConfigurationData {
      */
     public void validate() {
         if (bmcCredentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bmcCredentials in model BareMetalMachineConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bmcCredentials in model BareMetalMachineConfigurationData"));
         } else {
             bmcCredentials().validate();
         }
         if (bmcMacAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bmcMacAddress in model BareMetalMachineConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bmcMacAddress in model BareMetalMachineConfigurationData"));
         }
         if (bootMacAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bootMacAddress in model BareMetalMachineConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bootMacAddress in model BareMetalMachineConfigurationData"));
         }
         if (serialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serialNumber in model BareMetalMachineConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serialNumber in model BareMetalMachineConfigurationData"));
         }
     }
 

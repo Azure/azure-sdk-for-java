@@ -112,10 +112,8 @@ public final class BareMetalMachineRunCommandParameters {
      */
     public void validate() {
         if (script() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property script in model BareMetalMachineRunCommandParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property script in model BareMetalMachineRunCommandParameters"));
         }
     }
 

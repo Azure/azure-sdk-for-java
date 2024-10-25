@@ -164,8 +164,8 @@ public final class KubernetesClusterInner extends Resource {
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the KubernetesClusterInner object itself.
      */
-    public KubernetesClusterInner withAdministratorConfiguration(
-        AdministratorConfiguration administratorConfiguration) {
+    public KubernetesClusterInner
+        withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubernetesClusterProperties();
         }
@@ -241,8 +241,8 @@ public final class KubernetesClusterInner extends Resource {
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterInner object itself.
      */
-    public KubernetesClusterInner withControlPlaneNodeConfiguration(
-        ControlPlaneNodeConfiguration controlPlaneNodeConfiguration) {
+    public KubernetesClusterInner
+        withControlPlaneNodeConfiguration(ControlPlaneNodeConfiguration controlPlaneNodeConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubernetesClusterProperties();
         }
@@ -298,8 +298,8 @@ public final class KubernetesClusterInner extends Resource {
      * @param initialAgentPoolConfigurations the initialAgentPoolConfigurations value to set.
      * @return the KubernetesClusterInner object itself.
      */
-    public KubernetesClusterInner withInitialAgentPoolConfigurations(
-        List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations) {
+    public KubernetesClusterInner
+        withInitialAgentPoolConfigurations(List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubernetesClusterProperties();
         }
@@ -353,8 +353,8 @@ public final class KubernetesClusterInner extends Resource {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the KubernetesClusterInner object itself.
      */
-    public KubernetesClusterInner withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public KubernetesClusterInner
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubernetesClusterProperties();
         }
@@ -418,18 +418,14 @@ public final class KubernetesClusterInner extends Resource {
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property extendedLocation in model KubernetesClusterInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property extendedLocation in model KubernetesClusterInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model KubernetesClusterInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model KubernetesClusterInner"));
         } else {
             innerProperties().validate();
         }

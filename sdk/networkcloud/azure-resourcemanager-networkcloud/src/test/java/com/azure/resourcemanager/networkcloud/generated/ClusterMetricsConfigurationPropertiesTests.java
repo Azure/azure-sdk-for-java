@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMetricsConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMetricsConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"collectionInterval\":8246168361887444991,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lontacnpq\",\"disabledMetrics\":[\"htuevrhrljy\",\"ogwxhnsduugwb\",\"reur\"],\"enabledMetrics\":[\"fuarenlvhht\",\"lnvnafvvkyfedev\",\"bo\"],\"provisioningState\":\"Provisioning\"}")
-                .toObject(ClusterMetricsConfigurationProperties.class);
+        ClusterMetricsConfigurationProperties model = BinaryData.fromString(
+            "{\"collectionInterval\":8246168361887444991,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lontacnpq\",\"disabledMetrics\":[\"htuevrhrljy\",\"ogwxhnsduugwb\",\"reur\"],\"enabledMetrics\":[\"fuarenlvhht\",\"lnvnafvvkyfedev\",\"bo\"],\"provisioningState\":\"Provisioning\"}")
+            .toObject(ClusterMetricsConfigurationProperties.class);
         Assertions.assertEquals(8246168361887444991L, model.collectionInterval());
         Assertions.assertEquals("fuarenlvhht", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterMetricsConfigurationProperties model =
-            new ClusterMetricsConfigurationProperties()
-                .withCollectionInterval(8246168361887444991L)
+        ClusterMetricsConfigurationProperties model
+            = new ClusterMetricsConfigurationProperties().withCollectionInterval(8246168361887444991L)
                 .withEnabledMetrics(Arrays.asList("fuarenlvhht", "lnvnafvvkyfedev", "bo"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationProperties.class);
         Assertions.assertEquals(8246168361887444991L, model.collectionInterval());

@@ -12,5 +12,6 @@ import java.net.URI;
 
 interface ModelFetcher {
     Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded, Context context);
+
     Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context);
 }

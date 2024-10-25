@@ -20,8 +20,8 @@ public interface ServerParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations.
      */
-    ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
@@ -35,6 +35,6 @@ public interface ServerParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations.
      */
-    ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context);
+    ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context);
 }

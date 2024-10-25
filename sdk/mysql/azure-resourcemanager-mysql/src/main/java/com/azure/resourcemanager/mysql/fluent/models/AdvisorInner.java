@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a recommendation action advisor. */
 @Fluent
 public final class AdvisorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AdvisorInner.class);
 
     /*
      * The properties of a recommendation action advisor.

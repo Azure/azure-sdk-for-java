@@ -89,8 +89,8 @@ public interface VirtualMachinesClient {
      * @return properties of the provided virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<VirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Retrieve the virtual machine.
@@ -122,8 +122,8 @@ public interface VirtualMachinesClient {
      *     machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualMachineName, VirtualMachineInner virtualMachineParameters);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualMachineName, VirtualMachineInner virtualMachineParameters);
 
     /**
      * Create or update the virtual machine.
@@ -141,11 +141,8 @@ public interface VirtualMachinesClient {
      *     machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineParameters,
-        Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualMachineName, VirtualMachineInner virtualMachineParameters, Context context);
 
     /**
      * Create or update the virtual machine.
@@ -161,8 +158,8 @@ public interface VirtualMachinesClient {
      * @return virtualMachine represents the on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner createOrUpdate(
-        String resourceGroupName, String virtualMachineName, VirtualMachineInner virtualMachineParameters);
+    VirtualMachineInner createOrUpdate(String resourceGroupName, String virtualMachineName,
+        VirtualMachineInner virtualMachineParameters);
 
     /**
      * Create or update the virtual machine.
@@ -179,11 +176,8 @@ public interface VirtualMachinesClient {
      * @return virtualMachine represents the on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner createOrUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineParameters,
-        Context context);
+    VirtualMachineInner createOrUpdate(String resourceGroupName, String virtualMachineName,
+        VirtualMachineInner virtualMachineParameters, Context context);
 
     /**
      * Delete the virtual machine.
@@ -214,8 +208,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Delete the virtual machine.
@@ -261,8 +255,8 @@ public interface VirtualMachinesClient {
      *     machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName);
 
     /**
      * Patch the virtual machine.
@@ -281,11 +275,8 @@ public interface VirtualMachinesClient {
      *     machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePatchParameters virtualMachineUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName, VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
 
     /**
      * Patch the virtual machine.
@@ -319,11 +310,8 @@ public interface VirtualMachinesClient {
      * @return virtualMachine represents the on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner update(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePatchParameters virtualMachineUpdateParameters,
-        Context context);
+    VirtualMachineInner update(String resourceGroupName, String virtualMachineName,
+        VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
 
     /**
      * Power off the virtual machine.
@@ -338,8 +326,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOff(String resourceGroupName, String virtualMachineName);
 
     /**
      * Power off the virtual machine.
@@ -357,10 +345,8 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
-        Context context);
+        String resourceGroupName, String virtualMachineName,
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context);
 
     /**
      * Power off the virtual machine.
@@ -392,11 +378,8 @@ public interface VirtualMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner powerOff(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
-        Context context);
+    OperationStatusResultInner powerOff(String resourceGroupName, String virtualMachineName,
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the virtual machine.
@@ -411,8 +394,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String virtualMachineName);
 
     /**
      * Reimage the virtual machine.
@@ -428,8 +411,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String virtualMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Reimage the virtual machine.
@@ -475,8 +458,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String virtualMachineName);
 
     /**
      * Restart the virtual machine.
@@ -492,8 +475,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String virtualMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Restart the virtual machine.
@@ -539,8 +522,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String virtualMachineName);
 
     /**
      * Start the virtual machine.
@@ -556,8 +539,8 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String virtualMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String virtualMachineName, Context context);
 
     /**
      * Start the virtual machine.

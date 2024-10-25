@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolPatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"count\":1064127963046156604,\"upgradeSettings\":{\"maxSurge\":\"fsv\"}},\"tags\":{\"gahxkumasjcaa\":\"vbopfppdbwnu\",\"ehqepvufhbzehe\":\"fdmmcpug\"}}")
-                .toObject(AgentPoolPatchParameters.class);
+        AgentPoolPatchParameters model = BinaryData.fromString(
+            "{\"properties\":{\"count\":1064127963046156604,\"upgradeSettings\":{\"maxSurge\":\"fsv\"}},\"tags\":{\"gahxkumasjcaa\":\"vbopfppdbwnu\",\"ehqepvufhbzehe\":\"fdmmcpug\"}}")
+            .toObject(AgentPoolPatchParameters.class);
         Assertions.assertEquals("vbopfppdbwnu", model.tags().get("gahxkumasjcaa"));
         Assertions.assertEquals(1064127963046156604L, model.count());
         Assertions.assertEquals("fsv", model.upgradeSettings().maxSurge());
@@ -26,11 +24,10 @@ public final class AgentPoolPatchParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolPatchParameters model =
-            new AgentPoolPatchParameters()
-                .withTags(mapOf("gahxkumasjcaa", "vbopfppdbwnu", "ehqepvufhbzehe", "fdmmcpug"))
-                .withCount(1064127963046156604L)
-                .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("fsv"));
+        AgentPoolPatchParameters model = new AgentPoolPatchParameters()
+            .withTags(mapOf("gahxkumasjcaa", "vbopfppdbwnu", "ehqepvufhbzehe", "fdmmcpug"))
+            .withCount(1064127963046156604L)
+            .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("fsv"));
         model = BinaryData.fromObject(model).toObject(AgentPoolPatchParameters.class);
         Assertions.assertEquals("vbopfppdbwnu", model.tags().get("gahxkumasjcaa"));
         Assertions.assertEquals(1064127963046156604L, model.count());

@@ -39,8 +39,8 @@ public interface MetricsConfigurations {
      * @return a list of metrics configurations for the provided cluster as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<ClusterMetricsConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
@@ -56,8 +56,8 @@ public interface MetricsConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metrics configuration of the provided cluster along with {@link Response}.
      */
-    Response<ClusterMetricsConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context);
+    Response<ClusterMetricsConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.

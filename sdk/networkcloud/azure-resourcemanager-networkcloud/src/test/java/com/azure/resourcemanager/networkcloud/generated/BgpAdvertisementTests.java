@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BgpAdvertisementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BgpAdvertisement model =
-            BinaryData
-                .fromString(
-                    "{\"advertiseToFabric\":\"True\",\"communities\":[\"abnetshh\"],\"ipAddressPools\":[\"h\",\"d\",\"lvwiwubmwmbesl\"],\"peers\":[\"wwtppj\"]}")
-                .toObject(BgpAdvertisement.class);
+        BgpAdvertisement model = BinaryData.fromString(
+            "{\"advertiseToFabric\":\"True\",\"communities\":[\"abnetshh\"],\"ipAddressPools\":[\"h\",\"d\",\"lvwiwubmwmbesl\"],\"peers\":[\"wwtppj\"]}")
+            .toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
         Assertions.assertEquals("abnetshh", model.communities().get(0));
         Assertions.assertEquals("h", model.ipAddressPools().get(0));
@@ -26,12 +24,10 @@ public final class BgpAdvertisementTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BgpAdvertisement model =
-            new BgpAdvertisement()
-                .withAdvertiseToFabric(AdvertiseToFabric.TRUE)
-                .withCommunities(Arrays.asList("abnetshh"))
-                .withIpAddressPools(Arrays.asList("h", "d", "lvwiwubmwmbesl"))
-                .withPeers(Arrays.asList("wwtppj"));
+        BgpAdvertisement model = new BgpAdvertisement().withAdvertiseToFabric(AdvertiseToFabric.TRUE)
+            .withCommunities(Arrays.asList("abnetshh"))
+            .withIpAddressPools(Arrays.asList("h", "d", "lvwiwubmwmbesl"))
+            .withPeers(Arrays.asList("wwtppj"));
         model = BinaryData.fromObject(model).toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
         Assertions.assertEquals("abnetshh", model.communities().get(0));

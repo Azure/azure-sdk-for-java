@@ -78,8 +78,8 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided storage appliance along with {@link Response}.
      */
-    Response<StorageAppliance> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageApplianceName, Context context);
+    Response<StorageAppliance> getByResourceGroupWithResponse(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Retrieve the storage appliance.
@@ -151,8 +151,8 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult disableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -182,9 +182,7 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult enableRemoteVendorManagement(
-        String resourceGroupName,
-        String storageApplianceName,
+    OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
 

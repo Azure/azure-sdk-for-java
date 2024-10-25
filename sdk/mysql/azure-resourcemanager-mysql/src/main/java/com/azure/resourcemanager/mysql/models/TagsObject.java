@@ -14,7 +14,8 @@ import java.util.Map;
 /** Tags object for patch operations. */
 @Fluent
 public final class TagsObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsObject.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TagsObject.class);
 
     /*
      * Resource tags.

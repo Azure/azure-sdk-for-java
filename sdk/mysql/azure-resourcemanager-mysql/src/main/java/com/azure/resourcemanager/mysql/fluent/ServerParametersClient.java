@@ -27,8 +27,8 @@ public interface ServerParametersClient {
      * @return a list of server configurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner> beginListUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
+        beginListUpdateConfigurations(String resourceGroupName, String serverName, ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
@@ -58,8 +58,8 @@ public interface ServerParametersClient {
      * @return a list of server configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationListResultInner listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    ConfigurationListResultInner listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
@@ -74,6 +74,6 @@ public interface ServerParametersClient {
      * @return a list of server configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationListResultInner listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context);
+    ConfigurationListResultInner listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context);
 }

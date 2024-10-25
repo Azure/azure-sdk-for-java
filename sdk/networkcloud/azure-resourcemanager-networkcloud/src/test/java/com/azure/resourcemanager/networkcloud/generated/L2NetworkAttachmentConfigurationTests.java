@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class L2NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2NetworkAttachmentConfiguration model =
-            BinaryData
-                .fromString("{\"networkId\":\"kiidzyex\",\"pluginType\":\"DPDK\"}")
+        L2NetworkAttachmentConfiguration model
+            = BinaryData.fromString("{\"networkId\":\"kiidzyex\",\"pluginType\":\"DPDK\"}")
                 .toObject(L2NetworkAttachmentConfiguration.class);
         Assertions.assertEquals("kiidzyex", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
@@ -22,8 +21,8 @@ public final class L2NetworkAttachmentConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkAttachmentConfiguration model =
-            new L2NetworkAttachmentConfiguration().withNetworkId("kiidzyex").withPluginType(KubernetesPluginType.DPDK);
+        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("kiidzyex")
+            .withPluginType(KubernetesPluginType.DPDK);
         model = BinaryData.fromObject(model).toObject(L2NetworkAttachmentConfiguration.class);
         Assertions.assertEquals("kiidzyex", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());

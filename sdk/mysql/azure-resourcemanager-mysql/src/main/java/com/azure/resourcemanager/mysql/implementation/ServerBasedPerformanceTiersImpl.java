@@ -14,14 +14,15 @@ import com.azure.resourcemanager.mysql.models.ServerBasedPerformanceTiers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
 
     private final ServerBasedPerformanceTiersClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServerBasedPerformanceTiersImpl(
-        ServerBasedPerformanceTiersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public ServerBasedPerformanceTiersImpl(ServerBasedPerformanceTiersClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,8 +33,8 @@ public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerform
     }
 
     public PagedIterable<PerformanceTierProperties> list(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<PerformanceTierPropertiesInner> inner =
-            this.serviceClient().list(resourceGroupName, serverName, context);
+        PagedIterable<PerformanceTierPropertiesInner> inner
+            = this.serviceClient().list(resourceGroupName, serverName, context);
         return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 

@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
  */
 public final class DtmiConventions {
 
-    private DtmiConventions() { }
+    private DtmiConventions() {
+    }
 
     /**
      * A DTMI has three components: scheme, path, and version. Scheme and path are separated by a colon. Path and
@@ -116,10 +117,7 @@ public final class DtmiConventions {
             throw new IllegalArgumentException(String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi));
         }
 
-        return dtmi
-            .toLowerCase(Locale.getDefault())
-            .replaceAll(":", "/")
-            .replaceAll(";", "-")
+        return dtmi.toLowerCase(Locale.getDefault()).replaceAll(":", "/").replaceAll(";", "-")
             + ModelsRepositoryConstants.JSON_EXTENSION;
     }
 }

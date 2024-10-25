@@ -196,17 +196,10 @@ public interface StorageAppliance {
     StorageApplianceInner innerModel();
 
     /** The entirety of the StorageAppliance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAdministratorCredentials,
-            DefinitionStages.WithRackId,
-            DefinitionStages.WithRackSlot,
-            DefinitionStages.WithSerialNumber,
-            DefinitionStages.WithStorageApplianceSkuId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithAdministratorCredentials, DefinitionStages.WithRackId, DefinitionStages.WithRackSlot,
+        DefinitionStages.WithSerialNumber, DefinitionStages.WithStorageApplianceSkuId, DefinitionStages.WithCreate {
     }
 
     /** The StorageAppliance definition stages. */

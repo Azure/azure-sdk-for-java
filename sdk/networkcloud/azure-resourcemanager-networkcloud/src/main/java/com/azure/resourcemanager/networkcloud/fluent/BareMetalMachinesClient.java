@@ -96,8 +96,8 @@ public interface BareMetalMachinesClient {
      * @return properties of the provided bare metal machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BareMetalMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    Response<BareMetalMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String bareMetalMachineName, Context context);
 
     /**
      * Retrieve the bare metal machine.
@@ -129,8 +129,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
 
     /**
      * Create or update the bare metal machine.
@@ -148,11 +148,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters,
-        Context context);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, Context context);
 
     /**
      * Create or update the bare metal machine.
@@ -169,8 +166,8 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner createOrUpdate(
-        String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
+    BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineInner bareMetalMachineParameters);
 
     /**
      * Create or update the bare metal machine.
@@ -188,11 +185,8 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner createOrUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters,
-        Context context);
+    BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineInner bareMetalMachineParameters, Context context);
 
     /**
      * Delete the bare metal machine.
@@ -225,8 +219,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
+        Context context);
 
     /**
      * Delete the bare metal machine.
@@ -273,8 +267,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Patch the bare metal machine.
@@ -292,11 +286,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Patch the bare metal machine.
@@ -330,11 +321,8 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner update(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters,
-        Context context);
+    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Cordon the bare metal machine.
@@ -349,8 +337,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Cordon the bare metal machine.
@@ -367,10 +355,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
         Context context);
 
     /**
@@ -403,11 +389,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner cordon(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
-        Context context);
+    OperationStatusResultInner cordon(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context);
 
     /**
      * Power off the bare metal machine.
@@ -422,8 +405,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOff(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Power off the bare metal machine.
@@ -441,10 +424,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Power off the bare metal machine.
@@ -476,11 +457,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner powerOff(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
-        Context context);
+    OperationStatusResultInner powerOff(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the bare metal machine.
@@ -495,8 +473,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Reimage the bare metal machine.
@@ -512,8 +490,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Reimage the bare metal machine.
@@ -559,8 +537,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReplace(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Replace (service) the bare metal machine.
@@ -578,10 +556,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Replace (service) the bare metal machine.
@@ -613,11 +589,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner replace(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
-        Context context);
+    OperationStatusResultInner replace(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Restart the bare metal machine.
@@ -632,8 +605,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Restart the bare metal machine.
@@ -649,8 +622,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Restart the bare metal machine.
@@ -699,8 +672,7 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
@@ -720,10 +692,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run the command on the bare metal machine.
@@ -740,9 +710,7 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
@@ -761,11 +729,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
-        Context context);
+    OperationStatusResultInner runCommand(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -784,8 +749,7 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
@@ -806,10 +770,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -827,9 +789,7 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
@@ -849,11 +809,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
-        Context context);
+    OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.
@@ -872,8 +829,7 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
@@ -894,10 +850,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.
@@ -915,9 +869,7 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
@@ -937,11 +889,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
-        Context context);
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
      * Start the bare metal machine.
@@ -956,8 +905,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Start the bare metal machine.
@@ -973,8 +922,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String bareMetalMachineName, Context context);
 
     /**
      * Start the bare metal machine.
@@ -1020,8 +969,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginUncordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Uncordon the bare metal machine.
@@ -1037,8 +986,8 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginUncordon(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Uncordon the bare metal machine.

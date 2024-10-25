@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMetricsConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMetricsConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"extendedLocation\":{\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"},\"properties\":{\"collectionInterval\":994604483308032293,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"u\",\"disabledMetrics\":[\"chrszi\",\"oyuelyetn\",\"nb\"],\"enabledMetrics\":[\"ggagfln\",\"gm\",\"rwahzjmucftbyr\"],\"provisioningState\":\"Accepted\"},\"location\":\"hkpigqfusuckzmkw\",\"tags\":{\"hjnhgwydyynfsvk\":\"noxaxmqeqal\",\"ta\":\"gbv\",\"jcpeogkhnmg\":\"arfdlpukhpyrnei\"},\"id\":\"ro\",\"name\":\"xddbhfhpfpaz\",\"type\":\"zoyw\"}")
-                .toObject(ClusterMetricsConfigurationInner.class);
+        ClusterMetricsConfigurationInner model = BinaryData.fromString(
+            "{\"extendedLocation\":{\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"},\"properties\":{\"collectionInterval\":994604483308032293,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"u\",\"disabledMetrics\":[\"chrszi\",\"oyuelyetn\",\"nb\"],\"enabledMetrics\":[\"ggagfln\",\"gm\",\"rwahzjmucftbyr\"],\"provisioningState\":\"Accepted\"},\"location\":\"hkpigqfusuckzmkw\",\"tags\":{\"hjnhgwydyynfsvk\":\"noxaxmqeqal\",\"ta\":\"gbv\",\"jcpeogkhnmg\":\"arfdlpukhpyrnei\"},\"id\":\"ro\",\"name\":\"xddbhfhpfpaz\",\"type\":\"zoyw\"}")
+            .toObject(ClusterMetricsConfigurationInner.class);
         Assertions.assertEquals("hkpigqfusuckzmkw", model.location());
         Assertions.assertEquals("noxaxmqeqal", model.tags().get("hjnhgwydyynfsvk"));
         Assertions.assertEquals("fcsserxhtvsox", model.extendedLocation().name());
@@ -30,13 +28,11 @@ public final class ClusterMetricsConfigurationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterMetricsConfigurationInner model =
-            new ClusterMetricsConfigurationInner()
-                .withLocation("hkpigqfusuckzmkw")
-                .withTags(mapOf("hjnhgwydyynfsvk", "noxaxmqeqal", "ta", "gbv", "jcpeogkhnmg", "arfdlpukhpyrnei"))
-                .withExtendedLocation(new ExtendedLocation().withName("fcsserxhtvsox").withType("lwntsjgqrs"))
-                .withCollectionInterval(994604483308032293L)
-                .withEnabledMetrics(Arrays.asList("ggagfln", "gm", "rwahzjmucftbyr"));
+        ClusterMetricsConfigurationInner model = new ClusterMetricsConfigurationInner().withLocation("hkpigqfusuckzmkw")
+            .withTags(mapOf("hjnhgwydyynfsvk", "noxaxmqeqal", "ta", "gbv", "jcpeogkhnmg", "arfdlpukhpyrnei"))
+            .withExtendedLocation(new ExtendedLocation().withName("fcsserxhtvsox").withType("lwntsjgqrs"))
+            .withCollectionInterval(994604483308032293L)
+            .withEnabledMetrics(Arrays.asList("ggagfln", "gm", "rwahzjmucftbyr"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationInner.class);
         Assertions.assertEquals("hkpigqfusuckzmkw", model.location());
         Assertions.assertEquals("noxaxmqeqal", model.tags().get("hjnhgwydyynfsvk"));

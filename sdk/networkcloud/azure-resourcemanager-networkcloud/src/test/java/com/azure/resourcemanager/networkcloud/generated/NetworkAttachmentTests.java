@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkAttachmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkAttachment model =
-            BinaryData
-                .fromString(
-                    "{\"attachedNetworkId\":\"hjpglkf\",\"defaultGateway\":\"False\",\"ipAllocationMethod\":\"Static\",\"ipv4Address\":\"euel\",\"ipv6Address\":\"hsd\",\"macAddress\":\"t\",\"networkAttachmentName\":\"fikdowwqu\"}")
-                .toObject(NetworkAttachment.class);
+        NetworkAttachment model = BinaryData.fromString(
+            "{\"attachedNetworkId\":\"hjpglkf\",\"defaultGateway\":\"False\",\"ipAllocationMethod\":\"Static\",\"ipv4Address\":\"euel\",\"ipv6Address\":\"hsd\",\"macAddress\":\"t\",\"networkAttachmentName\":\"fikdowwqu\"}")
+            .toObject(NetworkAttachment.class);
         Assertions.assertEquals("hjpglkf", model.attachedNetworkId());
         Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());
         Assertions.assertEquals(VirtualMachineIpAllocationMethod.STATIC, model.ipAllocationMethod());
@@ -28,14 +26,12 @@ public final class NetworkAttachmentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkAttachment model =
-            new NetworkAttachment()
-                .withAttachedNetworkId("hjpglkf")
-                .withDefaultGateway(DefaultGateway.FALSE)
-                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.STATIC)
-                .withIpv4Address("euel")
-                .withIpv6Address("hsd")
-                .withNetworkAttachmentName("fikdowwqu");
+        NetworkAttachment model = new NetworkAttachment().withAttachedNetworkId("hjpglkf")
+            .withDefaultGateway(DefaultGateway.FALSE)
+            .withIpAllocationMethod(VirtualMachineIpAllocationMethod.STATIC)
+            .withIpv4Address("euel")
+            .withIpv6Address("hsd")
+            .withNetworkAttachmentName("fikdowwqu");
         model = BinaryData.fromObject(model).toObject(NetworkAttachment.class);
         Assertions.assertEquals("hjpglkf", model.attachedNetworkId());
         Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());

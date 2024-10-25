@@ -35,10 +35,12 @@ public final class PlanDataListResponseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlanDataListResponse model = new PlanDataListResponse().withValue(Arrays.asList(new PlanDataResourceInner()
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.WEEKLY)
-                .withPlanDetails("mbe").withEffectiveDate(OffsetDateTime.parse("2021-10-01T04:14:33Z")))
-            .withOrgCreationSource(OrgCreationSource.NEWRELIC).withAccountCreationSource(AccountCreationSource.LIFTR)))
-            .withNextLink("n");
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.WEEKLY)
+                .withPlanDetails("mbe")
+                .withEffectiveDate(OffsetDateTime.parse("2021-10-01T04:14:33Z")))
+            .withOrgCreationSource(OrgCreationSource.NEWRELIC)
+            .withAccountCreationSource(AccountCreationSource.LIFTR))).withNextLink("n");
         model = BinaryData.fromObject(model).toObject(PlanDataListResponse.class);
         Assertions.assertEquals(UsageType.PAYG, model.value().get(0).planData().usageType());
         Assertions.assertEquals(BillingCycle.WEEKLY, model.value().get(0).planData().billingCycle());

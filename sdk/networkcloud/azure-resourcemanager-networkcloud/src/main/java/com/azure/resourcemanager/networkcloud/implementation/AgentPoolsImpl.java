@@ -21,34 +21,31 @@ public final class AgentPoolsImpl implements AgentPools {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public AgentPoolsImpl(
-        AgentPoolsClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public AgentPoolsImpl(AgentPoolsClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AgentPool> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName) {
-        PagedIterable<AgentPoolInner> inner =
-            this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName);
+        PagedIterable<AgentPoolInner> inner
+            = this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName);
         return Utils.mapPage(inner, inner1 -> new AgentPoolImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AgentPool> listByKubernetesCluster(
-        String resourceGroupName, String kubernetesClusterName, Context context) {
-        PagedIterable<AgentPoolInner> inner =
-            this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName, context);
+    public PagedIterable<AgentPool> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
+        Context context) {
+        PagedIterable<AgentPoolInner> inner
+            = this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName, context);
         return Utils.mapPage(inner, inner1 -> new AgentPoolImpl(inner1, this.manager()));
     }
 
-    public Response<AgentPool> getWithResponse(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
-        Response<AgentPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, kubernetesClusterName, agentPoolName, context);
+    public Response<AgentPool> getWithResponse(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context) {
+        Response<AgentPoolInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, kubernetesClusterName, agentPoolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AgentPoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,27 +72,18 @@ public final class AgentPoolsImpl implements AgentPools {
     public AgentPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
         String agentPoolName = Utils.getValueFromIdByName(id, "agentPools");
         if (agentPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, kubernetesClusterName, agentPoolName, Context.NONE).getValue();
     }
@@ -103,27 +91,18 @@ public final class AgentPoolsImpl implements AgentPools {
     public Response<AgentPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
         String agentPoolName = Utils.getValueFromIdByName(id, "agentPools");
         if (agentPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, kubernetesClusterName, agentPoolName, context);
     }
@@ -131,27 +110,18 @@ public final class AgentPoolsImpl implements AgentPools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
         String agentPoolName = Utils.getValueFromIdByName(id, "agentPools");
         if (agentPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
         this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, Context.NONE);
     }
@@ -159,27 +129,18 @@ public final class AgentPoolsImpl implements AgentPools {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
         String agentPoolName = Utils.getValueFromIdByName(id, "agentPools");
         if (agentPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
         this.delete(resourceGroupName, kubernetesClusterName, agentPoolName, context);
     }

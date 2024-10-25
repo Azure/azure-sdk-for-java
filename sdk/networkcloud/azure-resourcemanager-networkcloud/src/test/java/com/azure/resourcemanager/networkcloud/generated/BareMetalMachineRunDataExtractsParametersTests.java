@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachineRunDataExtractsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachineRunDataExtractsParameters model =
-            BinaryData
-                .fromString(
-                    "{\"commands\":[{\"arguments\":[\"kzruswh\",\"hczznvf\"],\"command\":\"ycjsx\"}],\"limitTimeSeconds\":653571144085928241}")
-                .toObject(BareMetalMachineRunDataExtractsParameters.class);
+        BareMetalMachineRunDataExtractsParameters model = BinaryData.fromString(
+            "{\"commands\":[{\"arguments\":[\"kzruswh\",\"hczznvf\"],\"command\":\"ycjsx\"}],\"limitTimeSeconds\":653571144085928241}")
+            .toObject(BareMetalMachineRunDataExtractsParameters.class);
         Assertions.assertEquals("kzruswh", model.commands().get(0).arguments().get(0));
         Assertions.assertEquals("ycjsx", model.commands().get(0).command());
         Assertions.assertEquals(653571144085928241L, model.limitTimeSeconds());
@@ -25,15 +23,10 @@ public final class BareMetalMachineRunDataExtractsParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BareMetalMachineRunDataExtractsParameters model =
-            new BareMetalMachineRunDataExtractsParameters()
-                .withCommands(
-                    Arrays
-                        .asList(
-                            new BareMetalMachineCommandSpecification()
-                                .withArguments(Arrays.asList("kzruswh", "hczznvf"))
-                                .withCommand("ycjsx")))
-                .withLimitTimeSeconds(653571144085928241L);
+        BareMetalMachineRunDataExtractsParameters model = new BareMetalMachineRunDataExtractsParameters().withCommands(
+            Arrays.asList(new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("kzruswh", "hczznvf"))
+                .withCommand("ycjsx")))
+            .withLimitTimeSeconds(653571144085928241L);
         model = BinaryData.fromObject(model).toObject(BareMetalMachineRunDataExtractsParameters.class);
         Assertions.assertEquals("kzruswh", model.commands().get(0).arguments().get(0));
         Assertions.assertEquals("ycjsx", model.commands().get(0).command());

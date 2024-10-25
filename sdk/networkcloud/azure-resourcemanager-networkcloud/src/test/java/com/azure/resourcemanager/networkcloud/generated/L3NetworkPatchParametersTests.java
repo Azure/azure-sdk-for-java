@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkPatchParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"ycjimryvwgcwwpbm\":\"oafcluqvox\"}}")
-                .toObject(L3NetworkPatchParameters.class);
+        L3NetworkPatchParameters model = BinaryData.fromString("{\"tags\":{\"ycjimryvwgcwwpbm\":\"oafcluqvox\"}}")
+            .toObject(L3NetworkPatchParameters.class);
         Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkPatchParameters model =
-            new L3NetworkPatchParameters().withTags(mapOf("ycjimryvwgcwwpbm", "oafcluqvox"));
+        L3NetworkPatchParameters model
+            = new L3NetworkPatchParameters().withTags(mapOf("ycjimryvwgcwwpbm", "oafcluqvox"));
         model = BinaryData.fromObject(model).toObject(L3NetworkPatchParameters.class);
         Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }

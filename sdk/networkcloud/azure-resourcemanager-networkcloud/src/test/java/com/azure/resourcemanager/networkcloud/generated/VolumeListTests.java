@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"hcmavmqfo\",\"value\":[{\"extendedLocation\":{\"name\":\"rhc\",\"type\":\"yyprotwyp\"},\"properties\":{\"attachedTo\":[\"mbxhugcmjkav\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bmftpmdt\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"tfvnz\",\"sizeMiB\":1221267442521821688},\"location\":\"otp\",\"tags\":{\"ihed\":\"vpbdbzqgq\",\"mkyi\":\"vqwt\",\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}]}")
-                .toObject(VolumeList.class);
+        VolumeList model = BinaryData.fromString(
+            "{\"nextLink\":\"hcmavmqfo\",\"value\":[{\"extendedLocation\":{\"name\":\"rhc\",\"type\":\"yyprotwyp\"},\"properties\":{\"attachedTo\":[\"mbxhugcmjkav\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bmftpmdt\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"tfvnz\",\"sizeMiB\":1221267442521821688},\"location\":\"otp\",\"tags\":{\"ihed\":\"vpbdbzqgq\",\"mkyi\":\"vqwt\",\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}]}")
+            .toObject(VolumeList.class);
         Assertions.assertEquals("hcmavmqfo", model.nextLink());
         Assertions.assertEquals("otp", model.value().get(0).location());
         Assertions.assertEquals("vpbdbzqgq", model.value().get(0).tags().get("ihed"));
@@ -31,18 +29,11 @@ public final class VolumeListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeList model =
-            new VolumeList()
-                .withNextLink("hcmavmqfo")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VolumeInner()
-                                .withLocation("otp")
-                                .withTags(
-                                    mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
-                                .withExtendedLocation(new ExtendedLocation().withName("rhc").withType("yyprotwyp"))
-                                .withSizeMiB(1221267442521821688L)));
+        VolumeList model = new VolumeList().withNextLink("hcmavmqfo")
+            .withValue(Arrays.asList(new VolumeInner().withLocation("otp")
+                .withTags(mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
+                .withExtendedLocation(new ExtendedLocation().withName("rhc").withType("yyprotwyp"))
+                .withSizeMiB(1221267442521821688L)));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
         Assertions.assertEquals("hcmavmqfo", model.nextLink());
         Assertions.assertEquals("otp", model.value().get(0).location());

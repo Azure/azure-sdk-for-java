@@ -44,15 +44,21 @@ public final class DataProductsRemoveUserRoleWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dataProducts().removeUserRoleWithResponse("dhmdua", "aex",
-            new RoleAssignmentDetailInner().withRoleId("pvfadmwsrcr").withPrincipalId("vxpvgomz").withUsername("fmisg")
-                .withDataTypeScope(Arrays.asList("nbbelda", "k", "baliourqhakauha")).withPrincipalType("hsfwxosowzxcug")
-                .withRole(DataProductUserRole.SENSITIVE_READER).withRoleAssignmentId("jooxdjebw"),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .removeUserRoleWithResponse("dhmdua", "aex",
+                new RoleAssignmentDetailInner().withRoleId("pvfadmwsrcr")
+                    .withPrincipalId("vxpvgomz")
+                    .withUsername("fmisg")
+                    .withDataTypeScope(Arrays.asList("nbbelda", "k", "baliourqhakauha"))
+                    .withPrincipalType("hsfwxosowzxcug")
+                    .withRole(DataProductUserRole.SENSITIVE_READER)
+                    .withRoleAssignmentId("jooxdjebw"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

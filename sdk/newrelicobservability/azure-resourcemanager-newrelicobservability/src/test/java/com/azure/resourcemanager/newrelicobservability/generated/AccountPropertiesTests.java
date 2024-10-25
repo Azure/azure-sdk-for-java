@@ -22,8 +22,10 @@ public final class AccountPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountProperties model = new AccountProperties().withOrganizationId("wixjsprozvcp").withAccountId("eg")
-            .withAccountName("wmfdatscmdvpjhul").withRegion("uvm");
+        AccountProperties model = new AccountProperties().withOrganizationId("wixjsprozvcp")
+            .withAccountId("eg")
+            .withAccountName("wmfdatscmdvpjhul")
+            .withRegion("uvm");
         model = BinaryData.fromObject(model).toObject(AccountProperties.class);
         Assertions.assertEquals("wixjsprozvcp", model.organizationId());
         Assertions.assertEquals("eg", model.accountId());

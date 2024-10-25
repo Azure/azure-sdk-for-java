@@ -88,8 +88,8 @@ public final class AttachedNetworkConfiguration {
      * @param trunkedNetworks the trunkedNetworks value to set.
      * @return the AttachedNetworkConfiguration object itself.
      */
-    public AttachedNetworkConfiguration withTrunkedNetworks(
-        List<TrunkedNetworkAttachmentConfiguration> trunkedNetworks) {
+    public AttachedNetworkConfiguration
+        withTrunkedNetworks(List<TrunkedNetworkAttachmentConfiguration> trunkedNetworks) {
         this.trunkedNetworks = trunkedNetworks;
         return this;
     }

@@ -125,26 +125,21 @@ public final class ClusterMetricsConfigurationImpl
     }
 
     public ClusterMetricsConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, metricsConfigurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, metricsConfigurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ClusterMetricsConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .createOrUpdate(resourceGroupName, clusterName, metricsConfigurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, metricsConfigurationName, this.innerModel(), context);
         return this;
     }
 
-    ClusterMetricsConfigurationImpl(
-        String name, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    ClusterMetricsConfigurationImpl(String name,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = new ClusterMetricsConfigurationInner();
         this.serviceManager = serviceManager;
         this.metricsConfigurationName = name;
@@ -156,35 +151,22 @@ public final class ClusterMetricsConfigurationImpl
     }
 
     public ClusterMetricsConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .update(
-                    resourceGroupName,
-                    clusterName,
-                    metricsConfigurationName,
-                    updateMetricsConfigurationUpdateParameters,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .update(resourceGroupName, clusterName, metricsConfigurationName,
+                updateMetricsConfigurationUpdateParameters, Context.NONE);
         return this;
     }
 
     public ClusterMetricsConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .update(
-                    resourceGroupName,
-                    clusterName,
-                    metricsConfigurationName,
-                    updateMetricsConfigurationUpdateParameters,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .update(resourceGroupName, clusterName, metricsConfigurationName,
+                updateMetricsConfigurationUpdateParameters, context);
         return this;
     }
 
-    ClusterMetricsConfigurationImpl(
-        ClusterMetricsConfigurationInner innerObject,
+    ClusterMetricsConfigurationImpl(ClusterMetricsConfigurationInner innerObject,
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -194,22 +176,18 @@ public final class ClusterMetricsConfigurationImpl
     }
 
     public ClusterMetricsConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ClusterMetricsConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetricsConfigurations()
-                .getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetricsConfigurations()
+            .getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, context)
+            .getValue();
         return this;
     }
 

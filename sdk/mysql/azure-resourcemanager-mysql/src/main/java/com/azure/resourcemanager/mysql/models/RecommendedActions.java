@@ -22,8 +22,8 @@ public interface RecommendedActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Recommendation Action.
      */
-    RecommendationAction get(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName);
+    RecommendationAction get(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName);
 
     /**
      * Retrieve recommended actions from the advisor.
@@ -38,8 +38,8 @@ public interface RecommendedActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Recommendation Action along with {@link Response}.
      */
-    Response<RecommendationAction> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName, Context context);
+    Response<RecommendationAction> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName, Context context);
 
     /**
      * Retrieve recommended actions from the advisor.
@@ -67,6 +67,6 @@ public interface RecommendedActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of recommendation actions.
      */
-    PagedIterable<RecommendationAction> listByServer(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context);
+    PagedIterable<RecommendationAction> listByServer(String resourceGroupName, String serverName, String advisorName,
+        String sessionId, Context context);
 }

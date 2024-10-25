@@ -131,16 +131,17 @@ public final class SharedAccessAuthorizationRuleResourceImpl implements SharedAc
     }
 
     public SharedAccessAuthorizationRuleResource create() {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getNotificationHubs().createOrUpdateAuthorizationRuleWithResponse(resourceGroupName,
-                    namespaceName, notificationHubName, authorizationRuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SharedAccessAuthorizationRuleResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
             .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
                 authorizationRuleName, this.innerModel(), context)
             .getValue();
@@ -159,16 +160,17 @@ public final class SharedAccessAuthorizationRuleResourceImpl implements SharedAc
     }
 
     public SharedAccessAuthorizationRuleResource apply() {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getNotificationHubs().createOrUpdateAuthorizationRuleWithResponse(resourceGroupName,
-                    namespaceName, notificationHubName, authorizationRuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SharedAccessAuthorizationRuleResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
             .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
                 authorizationRuleName, this.innerModel(), context)
             .getValue();
@@ -186,37 +188,43 @@ public final class SharedAccessAuthorizationRuleResourceImpl implements SharedAc
     }
 
     public SharedAccessAuthorizationRuleResource refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().getAuthorizationRuleWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, authorizationRuleName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SharedAccessAuthorizationRuleResource refresh(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().getAuthorizationRuleWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, authorizationRuleName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, context)
+            .getValue();
         return this;
     }
 
     public Response<ResourceListKeys> listKeysWithResponse(Context context) {
-        return serviceManager.notificationHubs().listKeysWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, authorizationRuleName, context);
+        return serviceManager.notificationHubs()
+            .listKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
+                context);
     }
 
     public ResourceListKeys listKeys() {
-        return serviceManager.notificationHubs().listKeys(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName);
+        return serviceManager.notificationHubs()
+            .listKeys(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName);
     }
 
     public Response<ResourceListKeys> regenerateKeysWithResponse(PolicyKeyResource parameters, Context context) {
-        return serviceManager.notificationHubs().regenerateKeysWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, authorizationRuleName, parameters, context);
+        return serviceManager.notificationHubs()
+            .regenerateKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
+                parameters, context);
     }
 
     public ResourceListKeys regenerateKeys(PolicyKeyResource parameters) {
-        return serviceManager.notificationHubs().regenerateKeys(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName, parameters);
+        return serviceManager.notificationHubs()
+            .regenerateKeys(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters);
     }
 
     public SharedAccessAuthorizationRuleResourceImpl withRegion(Region location) {

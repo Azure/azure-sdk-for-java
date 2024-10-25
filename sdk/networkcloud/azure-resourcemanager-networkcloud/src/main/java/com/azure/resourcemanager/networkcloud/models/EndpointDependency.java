@@ -74,9 +74,8 @@ public final class EndpointDependency {
      */
     public void validate() {
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property domainName in model EndpointDependency"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property domainName in model EndpointDependency"));
         }
     }
 
