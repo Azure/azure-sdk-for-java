@@ -35,9 +35,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                     event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                     event -> System.out.println("event type: " + event.getType()))
                 .thenRequest(1) // Requesting the last expected element RESPONSE_DONE
-                .then(() -> {
-                    client.stop().block();
-                })
+                .then(() -> client.stop().block())
                 .verifyComplete();
     }
 }

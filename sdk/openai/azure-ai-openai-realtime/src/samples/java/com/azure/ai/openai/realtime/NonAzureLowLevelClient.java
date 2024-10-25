@@ -1,7 +1,6 @@
 package com.azure.ai.openai.realtime;
 
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
@@ -9,17 +8,16 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-public class LowLevelClient {
+public class NonAzureLowLevelClient {
 
     public static void main(String[] args) {
-        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
+
+        String openAIKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
+        String openAIModel = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
 
         RealtimeAsyncClient client = new RealtimeClientBuilder()
-                .endpoint(endpoint)
-                .deploymentOrModelName(deploymentOrModelId)
-                .credential(new AzureKeyCredential(azureOpenaiKey))
+                .credential(new KeyCredential(openAIKey))
+                .deploymentOrModelName(openAIModel)
                 .buildAsyncClient();
 
         // We create our user input requester as a reactor.Sink
