@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScanResultClient {
-    @Generated private final ScanResultsImpl serviceClient;
+    @Generated
+    private final ScanResultsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanResultClient class.
@@ -84,8 +85,8 @@ public final class ScanResultClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> runScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         return this.serviceClient.runScanWithResponse(dataSourceName, scanName, runId, requestOptions);
     }
 
@@ -130,8 +131,8 @@ public final class ScanResultClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelScanWithResponse(dataSourceName, scanName, runId, requestOptions);
     }
 
@@ -198,8 +199,8 @@ public final class ScanResultClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listScanHistory(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listScanHistory(dataSourceName, scanName, requestOptions);
     }
 }

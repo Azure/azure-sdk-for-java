@@ -96,8 +96,9 @@ public final class FunctionsImpl implements Functions {
     public Response<Function> retrieveDefaultDefinitionWithResponse(String resourceGroupName, String jobName,
         String functionName, FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
         Context context) {
-        Response<FunctionInner> inner = this.serviceClient().retrieveDefaultDefinitionWithResponse(resourceGroupName,
-            jobName, functionName, functionRetrieveDefaultDefinitionParameters, context);
+        Response<FunctionInner> inner = this.serviceClient()
+            .retrieveDefaultDefinitionWithResponse(resourceGroupName, jobName, functionName,
+                functionRetrieveDefaultDefinitionParameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FunctionImpl(inner.getValue(), this.manager()));

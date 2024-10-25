@@ -20,8 +20,8 @@ public interface ResourceProviders {
      * @return describes the result of the request to check management group name availability along with {@link
      *     Response}.
      */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResult>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks if the specified management group name is valid and unique.

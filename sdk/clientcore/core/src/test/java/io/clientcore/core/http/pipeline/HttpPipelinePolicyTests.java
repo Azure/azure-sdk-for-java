@@ -23,11 +23,8 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policy1, policy2)
-            .build();
-
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(policy1, policy2).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
 
@@ -39,8 +36,7 @@ public class HttpPipelinePolicyTests {
     public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(policyWithDefaultSyncImplementation)
             .build();
 
@@ -85,14 +81,11 @@ public class HttpPipelinePolicyTests {
             return new HttpResponse<>(request, 200, new HttpHeaders(), null);
         };
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(badClient)
-            .policies(policy1, badPolicy1, badPolicy2)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(badClient).policies(policy1, badPolicy1, badPolicy2).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
     }
-
 
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();

@@ -33,48 +33,33 @@ public final class GenerateDetailedCostReportsCreateOperationMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"nomdrkywuhpsv\",\"name\":\"urut\",\"type\":\"exxwlalniexzsrz\",\"properties\":{\"expiryTime\":\"2021-01-06T02:49:58Z\",\"validTill\":\"2021-07-06T12:29:14Z\",\"downloadUrl\":\"bb\"}}";
+        String responseStr
+            = "{\"id\":\"nomdrkywuhpsv\",\"name\":\"urut\",\"type\":\"exxwlalniexzsrz\",\"properties\":{\"expiryTime\":\"2021-01-06T02:49:58Z\",\"validTill\":\"2021-07-06T12:29:14Z\",\"downloadUrl\":\"bb\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GenerateDetailedCostReportOperationResult response =
-            manager
-                .generateDetailedCostReports()
-                .createOperation(
-                    "xgsrboldforobw",
-                    new GenerateDetailedCostReportDefinition()
-                        .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
-                        .withTimePeriod(
-                            new GenerateDetailedCostReportTimePeriod().withStart("zbfhfovvac").withEnd("pbt"))
-                        .withBillingPeriod("dxe")
-                        .withInvoiceId("abbelawumuaslzk")
-                        .withCustomerId("rwoycqucwyh"),
-                    com.azure.core.util.Context.NONE);
+        GenerateDetailedCostReportOperationResult response = manager.generateDetailedCostReports()
+            .createOperation("xgsrboldforobw",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withTimePeriod(new GenerateDetailedCostReportTimePeriod().withStart("zbfhfovvac").withEnd("pbt"))
+                    .withBillingPeriod("dxe")
+                    .withInvoiceId("abbelawumuaslzk")
+                    .withCustomerId("rwoycqucwyh"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("nomdrkywuhpsv", response.id());
         Assertions.assertEquals("urut", response.name());

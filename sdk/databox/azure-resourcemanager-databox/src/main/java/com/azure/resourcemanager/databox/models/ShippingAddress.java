@@ -336,14 +336,12 @@ public final class ShippingAddress {
      */
     public void validate() {
         if (streetAddress1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model ShippingAddress"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property country in model ShippingAddress"));
         }
     }
 

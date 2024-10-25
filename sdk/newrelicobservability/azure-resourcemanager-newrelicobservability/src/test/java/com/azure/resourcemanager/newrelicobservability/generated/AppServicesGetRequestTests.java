@@ -21,8 +21,9 @@ public final class AppServicesGetRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServicesGetRequest model = new AppServicesGetRequest()
-            .withAzureResourceIds(Arrays.asList("sglumma", "tjaodxobnb")).withUserEmail("xkqpxo");
+        AppServicesGetRequest model
+            = new AppServicesGetRequest().withAzureResourceIds(Arrays.asList("sglumma", "tjaodxobnb"))
+                .withUserEmail("xkqpxo");
         model = BinaryData.fromObject(model).toObject(AppServicesGetRequest.class);
         Assertions.assertEquals("sglumma", model.azureResourceIds().get(0));
         Assertions.assertEquals("xkqpxo", model.userEmail());

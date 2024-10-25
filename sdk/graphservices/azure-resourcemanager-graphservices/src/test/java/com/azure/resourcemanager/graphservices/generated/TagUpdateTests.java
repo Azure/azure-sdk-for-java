@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TagUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"}}")
-                .toObject(TagUpdate.class);
+        TagUpdate model = BinaryData
+            .fromString(
+                "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"}}")
+            .toObject(TagUpdate.class);
         Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagUpdate model =
-            new TagUpdate()
-                .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"));
+        TagUpdate model = new TagUpdate()
+            .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"));
         model = BinaryData.fromObject(model).toObject(TagUpdate.class);
         Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
     }

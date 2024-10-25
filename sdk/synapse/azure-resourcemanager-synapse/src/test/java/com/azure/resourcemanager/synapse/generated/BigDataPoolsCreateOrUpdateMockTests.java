@@ -41,72 +41,53 @@ public final class BigDataPoolsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":985648973,\"enabled\":true,\"maxNodeCount\":1004177849},\"creationDate\":\"2021-05-07T09:49:36Z\",\"autoPause\":{\"delayInMinutes\":26783847,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":880047238,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":876002990,\"maxExecutors\":21089033},\"sparkEventsFolder\":\"tkutnjil\",\"nodeCount\":1110899441,\"libraryRequirements\":{\"time\":\"2021-06-03T08:07:55Z\",\"content\":\"yhtmjoduif\",\"filename\":\"lxfary\"},\"customLibraries\":[],\"sparkConfigProperties\":{\"time\":\"2021-05-20T15:40Z\",\"content\":\"zvj\",\"filename\":\"ahoyiyaxqvj\",\"configurationType\":\"File\"},\"sparkVersion\":\"tcz\",\"defaultSparkLogFolder\":\"dn\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-02-26T05:46:20Z\"},\"location\":\"bmdqrxyglae\",\"tags\":{\"riefoo\":\"flwtjdt\",\"dudgcozzomeh\":\"ycuxdtzcqip\",\"juxkqll\":\"lantolamlb\"},\"id\":\"z\",\"name\":\"pvwdtgckzdqiq\",\"type\":\"lrat\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":985648973,\"enabled\":true,\"maxNodeCount\":1004177849},\"creationDate\":\"2021-05-07T09:49:36Z\",\"autoPause\":{\"delayInMinutes\":26783847,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":880047238,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":876002990,\"maxExecutors\":21089033},\"sparkEventsFolder\":\"tkutnjil\",\"nodeCount\":1110899441,\"libraryRequirements\":{\"time\":\"2021-06-03T08:07:55Z\",\"content\":\"yhtmjoduif\",\"filename\":\"lxfary\"},\"customLibraries\":[],\"sparkConfigProperties\":{\"time\":\"2021-05-20T15:40Z\",\"content\":\"zvj\",\"filename\":\"ahoyiyaxqvj\",\"configurationType\":\"File\"},\"sparkVersion\":\"tcz\",\"defaultSparkLogFolder\":\"dn\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-02-26T05:46:20Z\"},\"location\":\"bmdqrxyglae\",\"tags\":{\"riefoo\":\"flwtjdt\",\"dudgcozzomeh\":\"ycuxdtzcqip\",\"juxkqll\":\"lantolamlb\"},\"id\":\"z\",\"name\":\"pvwdtgckzdqiq\",\"type\":\"lrat\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BigDataPoolResourceInfo response =
-            manager
-                .bigDataPools()
-                .define("afofu")
-                .withRegion("wfldsiuorinik")
-                .withExistingWorkspace("hnzrsbkkzovlzdm", "fmfws")
-                .withTags(mapOf("iwm", "pks"))
-                .withProvisioningState("immovzwd")
-                .withAutoScale(
-                    new AutoScaleProperties()
-                        .withMinNodeCount(1674817788)
-                        .withEnabled(false)
-                        .withMaxNodeCount(1123352219))
-                .withAutoPause(new AutoPauseProperties().withDelayInMinutes(960263436).withEnabled(true))
-                .withIsComputeIsolationEnabled(false)
-                .withIsAutotuneEnabled(false)
-                .withSessionLevelPackagesEnabled(false)
-                .withDynamicExecutorAllocation(
-                    new DynamicExecutorAllocation()
-                        .withEnabled(true)
-                        .withMinExecutors(420672272)
-                        .withMaxExecutors(1302381284))
-                .withSparkEventsFolder("aq")
-                .withNodeCount(806621998)
-                .withLibraryRequirements(new LibraryRequirements().withContent("qoq").withFilename("movsfbpbvz"))
-                .withCustomLibraries(Arrays.asList())
-                .withSparkConfigProperties(
-                    new SparkConfigProperties()
-                        .withContent("vsmcwo")
-                        .withFilename("axdtnqif")
-                        .withConfigurationType(ConfigurationType.FILE))
-                .withSparkVersion("roiauesugmo")
-                .withDefaultSparkLogFolder("cjycb")
-                .withNodeSize(NodeSize.XLARGE)
-                .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA)
-                .withForce(false)
-                .create();
+        BigDataPoolResourceInfo response = manager.bigDataPools()
+            .define("afofu")
+            .withRegion("wfldsiuorinik")
+            .withExistingWorkspace("hnzrsbkkzovlzdm", "fmfws")
+            .withTags(mapOf("iwm", "pks"))
+            .withProvisioningState("immovzwd")
+            .withAutoScale(
+                new AutoScaleProperties().withMinNodeCount(1674817788).withEnabled(false).withMaxNodeCount(1123352219))
+            .withAutoPause(new AutoPauseProperties().withDelayInMinutes(960263436).withEnabled(true))
+            .withIsComputeIsolationEnabled(false)
+            .withIsAutotuneEnabled(false)
+            .withSessionLevelPackagesEnabled(false)
+            .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(true)
+                .withMinExecutors(420672272)
+                .withMaxExecutors(1302381284))
+            .withSparkEventsFolder("aq")
+            .withNodeCount(806621998)
+            .withLibraryRequirements(new LibraryRequirements().withContent("qoq").withFilename("movsfbpbvz"))
+            .withCustomLibraries(Arrays.asList())
+            .withSparkConfigProperties(new SparkConfigProperties().withContent("vsmcwo")
+                .withFilename("axdtnqif")
+                .withConfigurationType(ConfigurationType.FILE))
+            .withSparkVersion("roiauesugmo")
+            .withDefaultSparkLogFolder("cjycb")
+            .withNodeSize(NodeSize.XLARGE)
+            .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA)
+            .withForce(false)
+            .create();
 
         Assertions.assertEquals("bmdqrxyglae", response.location());
         Assertions.assertEquals("flwtjdt", response.tags().get("riefoo"));

@@ -19,16 +19,13 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchPropertiesRenewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchPropertiesRenewProperties model =
-            BinaryData
-                .fromString(
-                    "{\"purchaseProperties\":{\"sku\":{\"name\":\"pdkzjancuxr\"},\"location\":\"wbavxbniwdj\",\"properties\":{\"reservedResourceType\":\"VirtualMachineSoftware\",\"billingScopeId\":\"dbpgnxytxhp\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":686718071,\"displayName\":\"b\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"xwtctyqiklbbovpl\"],\"renew\":true,\"reviewDateTime\":\"2021-01-10T00:04:32Z\"}}}")
-                .toObject(PatchPropertiesRenewProperties.class);
+        PatchPropertiesRenewProperties model = BinaryData.fromString(
+            "{\"purchaseProperties\":{\"sku\":{\"name\":\"pdkzjancuxr\"},\"location\":\"wbavxbniwdj\",\"properties\":{\"reservedResourceType\":\"VirtualMachineSoftware\",\"billingScopeId\":\"dbpgnxytxhp\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":686718071,\"displayName\":\"b\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"xwtctyqiklbbovpl\"],\"renew\":true,\"reviewDateTime\":\"2021-01-10T00:04:32Z\"}}}")
+            .toObject(PatchPropertiesRenewProperties.class);
         Assertions.assertEquals("pdkzjancuxr", model.purchaseProperties().sku().name());
         Assertions.assertEquals("wbavxbniwdj", model.purchaseProperties().location());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE, model.purchaseProperties().reservedResourceType());
+        Assertions.assertEquals(ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE,
+            model.purchaseProperties().reservedResourceType());
         Assertions.assertEquals("dbpgnxytxhp", model.purchaseProperties().billingScopeId());
         Assertions.assertEquals(ReservationTerm.P5Y, model.purchaseProperties().term());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.purchaseProperties().billingPlan());
@@ -37,34 +34,30 @@ public final class PatchPropertiesRenewPropertiesTests {
         Assertions.assertEquals(AppliedScopeType.SHARED, model.purchaseProperties().appliedScopeType());
         Assertions.assertEquals("xwtctyqiklbbovpl", model.purchaseProperties().appliedScopes().get(0));
         Assertions.assertEquals(true, model.purchaseProperties().renew());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-10T00:04:32Z"), model.purchaseProperties().reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T00:04:32Z"),
+            model.purchaseProperties().reviewDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchPropertiesRenewProperties model =
-            new PatchPropertiesRenewProperties()
-                .withPurchaseProperties(
-                    new PurchaseRequest()
-                        .withSku(new SkuName().withName("pdkzjancuxr"))
-                        .withLocation("wbavxbniwdj")
-                        .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE)
-                        .withBillingScopeId("dbpgnxytxhp")
-                        .withTerm(ReservationTerm.P5Y)
-                        .withBillingPlan(ReservationBillingPlan.UPFRONT)
-                        .withQuantity(686718071)
-                        .withDisplayName("b")
-                        .withAppliedScopeType(AppliedScopeType.SHARED)
-                        .withAppliedScopes(Arrays.asList("xwtctyqiklbbovpl"))
-                        .withRenew(true)
-                        .withReviewDateTime(OffsetDateTime.parse("2021-01-10T00:04:32Z")));
+        PatchPropertiesRenewProperties model = new PatchPropertiesRenewProperties()
+            .withPurchaseProperties(new PurchaseRequest().withSku(new SkuName().withName("pdkzjancuxr"))
+                .withLocation("wbavxbniwdj")
+                .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE)
+                .withBillingScopeId("dbpgnxytxhp")
+                .withTerm(ReservationTerm.P5Y)
+                .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                .withQuantity(686718071)
+                .withDisplayName("b")
+                .withAppliedScopeType(AppliedScopeType.SHARED)
+                .withAppliedScopes(Arrays.asList("xwtctyqiklbbovpl"))
+                .withRenew(true)
+                .withReviewDateTime(OffsetDateTime.parse("2021-01-10T00:04:32Z")));
         model = BinaryData.fromObject(model).toObject(PatchPropertiesRenewProperties.class);
         Assertions.assertEquals("pdkzjancuxr", model.purchaseProperties().sku().name());
         Assertions.assertEquals("wbavxbniwdj", model.purchaseProperties().location());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE, model.purchaseProperties().reservedResourceType());
+        Assertions.assertEquals(ReservedResourceType.VIRTUAL_MACHINE_SOFTWARE,
+            model.purchaseProperties().reservedResourceType());
         Assertions.assertEquals("dbpgnxytxhp", model.purchaseProperties().billingScopeId());
         Assertions.assertEquals(ReservationTerm.P5Y, model.purchaseProperties().term());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.purchaseProperties().billingPlan());
@@ -73,7 +66,7 @@ public final class PatchPropertiesRenewPropertiesTests {
         Assertions.assertEquals(AppliedScopeType.SHARED, model.purchaseProperties().appliedScopeType());
         Assertions.assertEquals("xwtctyqiklbbovpl", model.purchaseProperties().appliedScopes().get(0));
         Assertions.assertEquals(true, model.purchaseProperties().renew());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-10T00:04:32Z"), model.purchaseProperties().reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T00:04:32Z"),
+            model.purchaseProperties().reviewDateTime());
     }
 }

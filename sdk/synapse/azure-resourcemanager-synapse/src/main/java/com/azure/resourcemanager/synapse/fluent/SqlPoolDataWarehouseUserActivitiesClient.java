@@ -32,12 +32,8 @@ public interface SqlPoolDataWarehouseUserActivitiesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataWarehouseUserActivitiesInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName,
-        Context context);
+    Response<DataWarehouseUserActivitiesInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName, Context context);
 
     /**
      * Get SQL pool user activities
@@ -54,9 +50,6 @@ public interface SqlPoolDataWarehouseUserActivitiesClient {
      * @return the user activities of a SQL pool which includes running and suspended queries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataWarehouseUserActivitiesInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    DataWarehouseUserActivitiesInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
         DataWarehouseUserActivityName dataWarehouseUserActivityName);
 }

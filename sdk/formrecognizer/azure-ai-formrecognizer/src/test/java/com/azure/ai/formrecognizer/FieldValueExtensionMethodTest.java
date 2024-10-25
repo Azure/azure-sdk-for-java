@@ -29,8 +29,7 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toDateFromDate() {
         LocalDate inputDate = LocalDate.of(2006, 6, 6);
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(inputDate, FieldValueType.DATE), 0);
+        FormField formField = new FormField(null, null, null, new FieldValue(inputDate, FieldValueType.DATE), 0);
         LocalDate actualDate = formField.getValue().asDate();
         assertEquals(inputDate, actualDate);
     }
@@ -41,13 +40,12 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toDateFromString() {
         String inputDateString = "2006/06/06";
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(inputDateString, FieldValueType.STRING), 0);
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                formField.getValue().asDate());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as DATE from field value "
-            + "of type STRING");
+        FormField formField
+            = new FormField(null, null, null, new FieldValue(inputDateString, FieldValueType.STRING), 0);
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class, () -> formField.getValue().asDate());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as DATE from field value " + "of type STRING");
     }
 
     /**
@@ -55,11 +53,9 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toDateFromNull() {
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.DATE), 0);
+        FormField formField = new FormField(null, null, null, new FieldValue(null, FieldValueType.DATE), 0);
         assertNull(formField.getValue().asDate());
     }
-
 
     /**
      * Test for {@link FieldValue#asTime()} to TIME.
@@ -67,8 +63,7 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toTimeFromTime() {
         LocalTime inputTime = LocalTime.parse("13:59:00", DateTimeFormatter.ofPattern("HH:mm:ss"));
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(inputTime, FieldValueType.TIME), 0);
+        FormField formField = new FormField(null, null, null, new FieldValue(inputTime, FieldValueType.TIME), 0);
         LocalTime actualTime = formField.getValue().asTime();
         assertEquals(inputTime, actualTime);
     }
@@ -79,13 +74,12 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toTimeFromString() {
         String inputTimeString = "13:59:00";
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(inputTimeString, FieldValueType.STRING), 0);
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                formField.getValue().asTime());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as TIME from field"
-            + " value of type STRING");
+        FormField formField
+            = new FormField(null, null, null, new FieldValue(inputTimeString, FieldValueType.STRING), 0);
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class, () -> formField.getValue().asTime());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as TIME from field" + " value of type STRING");
     }
 
     /**
@@ -93,19 +87,17 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toTimeFromNull() {
-        assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.TIME), 0).getValue().asTime());
+        assertNull(new FormField(null, null, null, new FieldValue(null, FieldValueType.TIME), 0).getValue().asTime());
     }
-
 
     /**
      * Test for {@link FieldValue#asList()} to list.
      */
     @Test
     public void toListFromList() {
-        List<FormField> inputList = new ArrayList<>(Collections.singletonList(new FormField(null, null, null, null, 0)));
-        FormField formField = new FormField(null, null, null,
-            new FieldValue(inputList, FieldValueType.LIST), 0);
+        List<FormField> inputList
+            = new ArrayList<>(Collections.singletonList(new FormField(null, null, null, null, 0)));
+        FormField formField = new FormField(null, null, null, new FieldValue(inputList, FieldValueType.LIST), 0);
         List<FormField> actualList = formField.getValue().asList();
         assertEquals(inputList, actualList);
     }
@@ -116,12 +108,11 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toListFromString() {
         String test = "testString";
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(test, FieldValueType.STRING), 0).getValue().asList());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as a LIST from field value "
-            + "of type STRING");
+        final UnsupportedOperationException unsupportedOperationException = assertThrows(
+            UnsupportedOperationException.class,
+            () -> new FormField(null, null, null, new FieldValue(test, FieldValueType.STRING), 0).getValue().asList());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as a LIST from field value " + "of type STRING");
     }
 
     /**
@@ -138,9 +129,9 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toPhoneNumberFromPhoneNumber() {
         String phoneNumber = "19876543210";
-        String actualPhoneNumber = new FormField(null, null, null,
-            new FieldValue(phoneNumber, FieldValueType.PHONE_NUMBER), 0)
-            .getValue().asPhoneNumber();
+        String actualPhoneNumber
+            = new FormField(null, null, null, new FieldValue(phoneNumber, FieldValueType.PHONE_NUMBER), 0).getValue()
+                .asPhoneNumber();
         assertEquals(phoneNumber, actualPhoneNumber);
     }
 
@@ -150,13 +141,12 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toPhoneNumberFromString() {
         String phoneNumber = "19876543210";
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(phoneNumber, FieldValueType.STRING), 0)
-                    .getValue().asPhoneNumber());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as aPHONE_NUMBER "
-            + "from field value of type STRING");
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class,
+                () -> new FormField(null, null, null, new FieldValue(phoneNumber, FieldValueType.STRING), 0).getValue()
+                    .asPhoneNumber());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as aPHONE_NUMBER " + "from field value of type STRING");
     }
 
     /**
@@ -164,8 +154,8 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toPhoneNumberFromNull() {
-        assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.PHONE_NUMBER), 0).getValue().asPhoneNumber());
+        assertNull(new FormField(null, null, null, new FieldValue(null, FieldValueType.PHONE_NUMBER), 0).getValue()
+            .asPhoneNumber());
     }
 
     /**
@@ -178,8 +168,8 @@ public class FieldValueExtensionMethodTest {
                 put("key", new FormField(null, null, null, null, 0));
             }
         };
-        Map<String, FormField> actualMap = new FormField(null, null, null,
-            new FieldValue(inputMap, FieldValueType.MAP), 0).getValue().asMap();
+        Map<String, FormField> actualMap
+            = new FormField(null, null, null, new FieldValue(inputMap, FieldValueType.MAP), 0).getValue().asMap();
         assertEquals(inputMap, actualMap);
     }
 
@@ -189,12 +179,11 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toMapFromString() {
         String str = "1";
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(str, FieldValueType.STRING), 0).getValue().asMap());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as a MAP from field "
-            + "value of type STRING");
+        final UnsupportedOperationException unsupportedOperationException = assertThrows(
+            UnsupportedOperationException.class,
+            () -> new FormField(null, null, null, new FieldValue(str, FieldValueType.STRING), 0).getValue().asMap());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as a MAP from field " + "value of type STRING");
     }
 
     /**
@@ -202,8 +191,7 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toMapFromNull() {
-        assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.MAP), 0).getValue().asMap());
+        assertNull(new FormField(null, null, null, new FieldValue(null, FieldValueType.MAP), 0).getValue().asMap());
     }
 
     /**
@@ -212,8 +200,8 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toFloatFromFloat() {
         Float inputFloat = 2.2f;
-        Float actualDoubleValue = new FormField(null, null, null,
-            new FieldValue(inputFloat, FieldValueType.FLOAT), 0).getValue().asFloat();
+        Float actualDoubleValue
+            = new FormField(null, null, null, new FieldValue(inputFloat, FieldValueType.FLOAT), 0).getValue().asFloat();
         assertEquals(inputFloat, actualDoubleValue);
     }
 
@@ -223,12 +211,12 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toFloatFromString() {
         String floatString = "2.2";
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(floatString, FieldValueType.STRING), 0).getValue().asFloat());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as FLOAT from "
-            + "field value of type STRING");
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class,
+                () -> new FormField(null, null, null, new FieldValue(floatString, FieldValueType.STRING), 0).getValue()
+                    .asFloat());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as FLOAT from " + "field value of type STRING");
     }
 
     /**
@@ -236,8 +224,7 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toFloatFromNull() {
-        assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.FLOAT), 0).getValue().asFloat());
+        assertNull(new FormField(null, null, null, new FieldValue(null, FieldValueType.FLOAT), 0).getValue().asFloat());
     }
 
     /**
@@ -246,8 +233,8 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toLongFromLong() {
         long inputLong = 22;
-        Long actualLongValue = new FormField(null, null, null,
-            new FieldValue(inputLong, FieldValueType.LONG), 0).getValue().asLong();
+        Long actualLongValue
+            = new FormField(null, null, null, new FieldValue(inputLong, FieldValueType.LONG), 0).getValue().asLong();
         assertEquals(inputLong, actualLongValue);
     }
 
@@ -257,12 +244,13 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toLongFromString() {
         String inputLongString = "22";
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(inputLongString, FieldValueType.STRING), 0).getValue().asLong());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as LONG from field value of "
-            + "type STRING");
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class,
+                () -> new FormField(null, null, null, new FieldValue(inputLongString, FieldValueType.STRING), 0)
+                    .getValue()
+                    .asLong());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as LONG from field value of " + "type STRING");
     }
 
     /**
@@ -270,8 +258,7 @@ public class FieldValueExtensionMethodTest {
      */
     @Test
     public void toLongFromNull() {
-        assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.LONG), 0).getValue().asLong());
+        assertNull(new FormField(null, null, null, new FieldValue(null, FieldValueType.LONG), 0).getValue().asLong());
     }
 
     /**
@@ -280,12 +267,12 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toStringFromTime() {
         LocalTime inputTime = LocalTime.parse("13:59:00", DateTimeFormatter.ofPattern("HH:mm:ss"));
-        final UnsupportedOperationException unsupportedOperationException =
-            assertThrows(UnsupportedOperationException.class, () ->
-                new FormField(null, null, null,
-                    new FieldValue(inputTime, FieldValueType.TIME), 0).getValue().asString());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as STRING from field "
-            + "value of type TIME");
+        final UnsupportedOperationException unsupportedOperationException
+            = assertThrows(UnsupportedOperationException.class,
+                () -> new FormField(null, null, null, new FieldValue(inputTime, FieldValueType.TIME), 0).getValue()
+                    .asString());
+        assertEquals(unsupportedOperationException.getMessage(),
+            "Cannot get field as STRING from field " + "value of type TIME");
     }
 
     /**
@@ -294,8 +281,9 @@ public class FieldValueExtensionMethodTest {
     @Test
     public void toStringFromString() {
         String stringValue = "String value";
-        String actualStringValue = new FormField(null, null, null,
-            new FieldValue(stringValue, FieldValueType.STRING), 0).getValue().asString();
+        String actualStringValue
+            = new FormField(null, null, null, new FieldValue(stringValue, FieldValueType.STRING), 0).getValue()
+                .asString();
         assertEquals(stringValue, actualStringValue);
     }
 }

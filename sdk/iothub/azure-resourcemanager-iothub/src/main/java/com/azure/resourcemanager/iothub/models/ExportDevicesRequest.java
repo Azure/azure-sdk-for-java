@@ -212,10 +212,8 @@ public final class ExportDevicesRequest {
      */
     public void validate() {
         if (exportBlobContainerUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
         }
         if (identity() != null) {
             identity().validate();

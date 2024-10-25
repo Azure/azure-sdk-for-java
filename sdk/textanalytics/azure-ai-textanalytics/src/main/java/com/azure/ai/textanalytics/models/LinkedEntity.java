@@ -60,7 +60,7 @@ public final class LinkedEntity {
      * @param dataSource The data source used to extract entity linking, such as Wiki/Bing etc.
      */
     public LinkedEntity(String name, IterableStream<LinkedEntityMatch> matches, String language,
-                        String dataSourceEntityId, String url, String dataSource) {
+        String dataSourceEntityId, String url, String dataSource) {
         this.name = name;
         this.matches = matches;
         this.language = language;
@@ -70,8 +70,8 @@ public final class LinkedEntity {
     }
 
     static {
-        LinkedEntityPropertiesHelper.setAccessor(
-            (entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
+        LinkedEntityPropertiesHelper
+            .setAccessor((entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
     }
 
     /**

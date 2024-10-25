@@ -21,12 +21,8 @@ public final class MediaServicesOperationResultsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MediaServicesOperationResultsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        MediaServiceInner value,
-        MediaServicesOperationResultsGetHeaders headers) {
+    public MediaServicesOperationResultsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        MediaServiceInner value, MediaServicesOperationResultsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

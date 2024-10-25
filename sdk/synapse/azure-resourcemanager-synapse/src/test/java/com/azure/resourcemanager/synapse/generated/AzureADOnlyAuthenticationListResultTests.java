@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationListRes
 public final class AzureADOnlyAuthenticationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureADOnlyAuthenticationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"azureADOnlyAuthentication\":false,\"state\":\"Consistent\",\"creationDate\":\"2021-03-23T13:19:49Z\"},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"}],\"nextLink\":\"oizh\"}")
-                .toObject(AzureADOnlyAuthenticationListResult.class);
+        AzureADOnlyAuthenticationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"azureADOnlyAuthentication\":false,\"state\":\"Consistent\",\"creationDate\":\"2021-03-23T13:19:49Z\"},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"}],\"nextLink\":\"oizh\"}")
+            .toObject(AzureADOnlyAuthenticationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

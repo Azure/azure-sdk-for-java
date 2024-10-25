@@ -35,46 +35,31 @@ public final class EnvironmentsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"S1\",\"capacity\":1098465372},\"location\":\"klwndnhjdauwhv\",\"tags\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"id\":\"khfxobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}";
+        String responseStr
+            = "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"S1\",\"capacity\":1098465372},\"location\":\"klwndnhjdauwhv\",\"tags\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"id\":\"khfxobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EnvironmentResource response =
-            manager
-                .environments()
-                .createOrUpdate(
-                    "jueiotwmcdytd",
-                    "wit",
-                    new EnvironmentCreateOrUpdateParameters()
-                        .withLocation("jawgqwg")
-                        .withTags(mapOf("fbkp", "isk"))
-                        .withSku(new Sku().withName(SkuName.P1).withCapacity(1070997174)),
-                    com.azure.core.util.Context.NONE);
+        EnvironmentResource response = manager.environments()
+            .createOrUpdate("jueiotwmcdytd", "wit",
+                new EnvironmentCreateOrUpdateParameters().withLocation("jawgqwg")
+                    .withTags(mapOf("fbkp", "isk"))
+                    .withSku(new Sku().withName(SkuName.P1).withCapacity(1070997174)),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("klwndnhjdauwhv", response.location());
         Assertions.assertEquals("zbtd", response.tags().get("xujznbmpowu"));

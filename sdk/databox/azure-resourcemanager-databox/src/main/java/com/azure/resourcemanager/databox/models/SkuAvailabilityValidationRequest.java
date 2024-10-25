@@ -138,28 +138,20 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     public void validate() {
         super.validate();
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceType in model SkuAvailabilityValidationRequest"));
         }
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferType in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property transferType in model SkuAvailabilityValidationRequest"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property country in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property country in model SkuAvailabilityValidationRequest"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property location in model SkuAvailabilityValidationRequest"));
         }
     }
 

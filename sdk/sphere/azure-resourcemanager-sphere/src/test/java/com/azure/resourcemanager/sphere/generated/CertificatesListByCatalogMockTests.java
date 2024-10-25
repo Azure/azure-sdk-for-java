@@ -44,12 +44,14 @@ public final class CertificatesListByCatalogMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Certificate> response = manager.certificates().listByCatalog("ytkblmpew", "wfbkrvrns",
-            "shqjohxcrsbf", 249445305, 1210534043, 1966093769, com.azure.core.util.Context.NONE);
+        PagedIterable<Certificate> response = manager.certificates()
+            .listByCatalog("ytkblmpew", "wfbkrvrns", "shqjohxcrsbf", 249445305, 1210534043, 1966093769,
+                com.azure.core.util.Context.NONE);
 
     }
 }

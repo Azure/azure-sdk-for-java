@@ -39,8 +39,8 @@ public interface PortalRevisions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of portal revisions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PortalRevisionContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<PortalRevisionContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the developer portal revision specified by its identifier.
@@ -55,8 +55,8 @@ public interface PortalRevisions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal revision specified by its identifier.
      */
-    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context);
+    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context);
 
     /**
      * Gets the developer portal revision specified by its identifier.
@@ -84,8 +84,8 @@ public interface PortalRevisions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal's revision specified by its identifier.
      */
-    Response<PortalRevisionContract> getWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context);
+    Response<PortalRevisionContract> getWithResponse(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context);
 
     /**
      * Gets the developer portal's revision specified by its identifier.

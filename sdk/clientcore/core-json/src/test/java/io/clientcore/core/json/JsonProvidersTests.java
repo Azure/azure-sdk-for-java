@@ -32,17 +32,16 @@ public class JsonProvidersTests {
     @MethodSource("nullJsonSupplier")
     public void nullJsonThrowsNullPointerException(Method creator, boolean useOptions) {
         if (useOptions) {
-            assertThrows(NullPointerException.class, () -> PUBLIC_LOOKUP.unreflect(creator)
-                .invokeWithArguments(null, new JsonOptions()));
+            assertThrows(NullPointerException.class,
+                () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(null, new JsonOptions()));
         } else {
-            assertThrows(NullPointerException.class, () -> PUBLIC_LOOKUP.unreflect(creator)
-                .invokeWithArguments((Object) null));
+            assertThrows(NullPointerException.class,
+                () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments((Object) null));
         }
     }
 
     private static Stream<Arguments> nullJsonSupplier() throws NoSuchMethodException {
-        return Stream.of(
-            Arguments.of(JsonProviders.class.getDeclaredMethod("createReader", byte[].class), false),
+        return Stream.of(Arguments.of(JsonProviders.class.getDeclaredMethod("createReader", byte[].class), false),
             Arguments.of(JsonProviders.class.getDeclaredMethod("createReader", byte[].class, JsonOptions.class), true),
             Arguments.of(JsonProviders.class.getDeclaredMethod("createReader", String.class), false),
             Arguments.of(JsonProviders.class.getDeclaredMethod("createReader", String.class, JsonOptions.class), true),
@@ -55,16 +54,15 @@ public class JsonProvidersTests {
             Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", OutputStream.class, JsonOptions.class),
                 true),
             Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", Writer.class), false),
-            Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class), true)
-        );
+            Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class), true));
     }
 
     @ParameterizedTest
     @MethodSource("nonNullJsonSupplier")
     public <T> void nullJsonOptionsThrowsNullPointerException(Method creator, T json, boolean useOptions) {
         if (useOptions) {
-            assertThrows(NullPointerException.class, () -> PUBLIC_LOOKUP.unreflect(creator)
-                .invokeWithArguments(json, null));
+            assertThrows(NullPointerException.class,
+                () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(json, null));
         } else {
             assertDoesNotThrow(() -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(json));
         }
@@ -103,7 +101,6 @@ public class JsonProvidersTests {
             Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", Writer.class), new StringWriter(),
                 false),
             Arguments.of(JsonProviders.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class),
-                new StringWriter(), true)
-        );
+                new StringWriter(), true));
     }
 }

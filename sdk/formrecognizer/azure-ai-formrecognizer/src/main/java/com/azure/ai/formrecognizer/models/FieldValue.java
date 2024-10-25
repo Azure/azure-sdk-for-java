@@ -54,33 +54,43 @@ public final class FieldValue {
             case STRING:
                 formFieldString = (String) value;
                 break;
+
             case DATE:
                 formFieldDate = (LocalDate) value;
                 break;
+
             case TIME:
                 formFieldTime = (LocalTime) value;
                 break;
+
             case PHONE_NUMBER:
                 formFieldPhoneNumber = (String) value;
                 break;
+
             case FLOAT:
                 formFieldFloat = (Float) value;
                 break;
+
             case LONG:
                 formFieldLong = (Long) value;
                 break;
+
             case LIST:
                 formFieldList = (List<FormField>) value;
                 break;
+
             case MAP:
                 formFieldMap = (Map<String, FormField>) value;
                 break;
+
             case SELECTION_MARK_STATE:
                 selectionMarkState = (SelectionMarkState) value;
                 break;
+
             case COUNTRY_REGION:
                 formFieldCountryRegion = (String) value;
                 break;
+
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
         }
@@ -103,8 +113,8 @@ public final class FieldValue {
      */
     public String asString() {
         if (STRING != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", STRING, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String
+                .format("Cannot get field as " + "%s from field value of type %s", STRING, this.getValueType()))));
         }
         return this.formFieldString;
     }
@@ -117,8 +127,8 @@ public final class FieldValue {
      */
     public Long asLong() {
         if (LONG != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", LONG, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(
+                String.format("Cannot get field as " + "%s from field value of type %s", LONG, this.getValueType()))));
         }
         return this.formFieldLong;
     }
@@ -131,8 +141,8 @@ public final class FieldValue {
      */
     public Float asFloat() {
         if (FLOAT != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", FLOAT, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(
+                String.format("Cannot get field as " + "%s from field value of type %s", FLOAT, this.getValueType()))));
         }
         return this.formFieldFloat;
     }
@@ -145,8 +155,8 @@ public final class FieldValue {
      */
     public LocalDate asDate() {
         if (DATE != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", DATE, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(
+                String.format("Cannot get field as " + "%s from field value of type %s", DATE, this.getValueType()))));
         }
         return this.formFieldDate;
     }
@@ -159,8 +169,8 @@ public final class FieldValue {
      */
     public LocalTime asTime() {
         if (TIME != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", TIME, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(
+                String.format("Cannot get field as " + "%s from field value of type %s", TIME, this.getValueType()))));
         }
         return this.formFieldTime;
     }
@@ -174,8 +184,8 @@ public final class FieldValue {
      */
     public String asPhoneNumber() {
         if (PHONE_NUMBER != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a"
-                + "%s from field value of type %s", PHONE_NUMBER, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
+                "Cannot get field as a" + "%s from field value of type %s", PHONE_NUMBER, this.getValueType()))));
         }
         return this.formFieldPhoneNumber;
     }
@@ -188,8 +198,8 @@ public final class FieldValue {
      */
     public List<FormField> asList() {
         if (LIST != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
-                + "%s from field value of type %s", LIST, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String
+                .format("Cannot get field as a " + "%s from field value of type %s", LIST, this.getValueType()))));
         }
         return this.formFieldList;
     }
@@ -202,8 +212,8 @@ public final class FieldValue {
      */
     public Map<String, FormField> asMap() {
         if (MAP != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
-                + "%s from field value of type %s", MAP, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(
+                String.format("Cannot get field as a " + "%s from field value of type %s", MAP, this.getValueType()))));
         }
         return this.formFieldMap;
     }
@@ -217,8 +227,9 @@ public final class FieldValue {
      */
     public SelectionMarkState asSelectionMarkState() {
         if (SELECTION_MARK_STATE != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
-                "Cannot get field as a %s from field value of type %s", SELECTION_MARK_STATE, this.getValueType()))));
+            throw logger.logExceptionAsError(
+                (new UnsupportedOperationException(String.format("Cannot get field as a %s from field value of type %s",
+                    SELECTION_MARK_STATE, this.getValueType()))));
         }
         return this.selectionMarkState;
     }
@@ -232,8 +243,8 @@ public final class FieldValue {
      */
     public String asCountryRegion() {
         if (COUNTRY_REGION != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
-                "Cannot get field as a %s from field value of type %s", COUNTRY_REGION, this.getValueType()))));
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String
+                .format("Cannot get field as a %s from field value of type %s", COUNTRY_REGION, this.getValueType()))));
         }
         return this.formFieldCountryRegion;
     }

@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JpgFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JpgFormat model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.JpgFormat\",\"filenamePattern\":\"xsspuunnoxyhk\"}")
-                .toObject(JpgFormat.class);
+        JpgFormat model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.JpgFormat\",\"filenamePattern\":\"xsspuunnoxyhk\"}")
+            .toObject(JpgFormat.class);
         Assertions.assertEquals("xsspuunnoxyhk", model.filenamePattern());
     }
 

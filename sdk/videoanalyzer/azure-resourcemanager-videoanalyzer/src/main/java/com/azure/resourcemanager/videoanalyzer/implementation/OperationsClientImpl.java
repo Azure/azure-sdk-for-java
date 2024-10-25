@@ -38,8 +38,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,15 +50,12 @@ public final class OperationsClientImpl implements OperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface OperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Media/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationCollectionInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationCollectionInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -71,10 +68,8 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationCollectionInner>> listWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -95,10 +90,8 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationCollectionInner>> listWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

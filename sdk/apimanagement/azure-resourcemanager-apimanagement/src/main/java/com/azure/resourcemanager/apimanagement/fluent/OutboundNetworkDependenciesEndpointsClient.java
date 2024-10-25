@@ -28,8 +28,8 @@ public interface OutboundNetworkDependenciesEndpointsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OutboundEnvironmentEndpointListInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<OutboundEnvironmentEndpointListInner> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.

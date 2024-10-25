@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ServiceManagedResourcesSettings model. */
 @Fluent
 public final class ServiceManagedResourcesSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceManagedResourcesSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServiceManagedResourcesSettings.class);
 
     /*
      * The settings for the service managed cosmosdb account.

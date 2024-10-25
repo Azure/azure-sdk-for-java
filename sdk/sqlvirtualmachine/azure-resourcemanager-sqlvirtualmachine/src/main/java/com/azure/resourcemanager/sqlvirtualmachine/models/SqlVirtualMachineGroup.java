@@ -133,17 +133,16 @@ public interface SqlVirtualMachineGroup {
     SqlVirtualMachineGroupInner innerModel();
 
     /** The entirety of the SqlVirtualMachineGroup definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The SqlVirtualMachineGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the SqlVirtualMachineGroup definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -162,6 +161,7 @@ public interface SqlVirtualMachineGroup {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -173,15 +173,13 @@ public interface SqlVirtualMachineGroup {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the SqlVirtualMachineGroup definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSqlImageOffer,
-                DefinitionStages.WithSqlImageSku,
-                DefinitionStages.WithWsfcDomainProfile {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSqlImageOffer,
+            DefinitionStages.WithSqlImageSku, DefinitionStages.WithWsfcDomainProfile {
             /**
              * Executes the create request.
              *
@@ -197,6 +195,7 @@ public interface SqlVirtualMachineGroup {
              */
             SqlVirtualMachineGroup create(Context context);
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -207,6 +206,7 @@ public interface SqlVirtualMachineGroup {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify sqlImageOffer. */
         interface WithSqlImageOffer {
             /**
@@ -218,6 +218,7 @@ public interface SqlVirtualMachineGroup {
              */
             WithCreate withSqlImageOffer(String sqlImageOffer);
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify sqlImageSku. */
         interface WithSqlImageSku {
             /**
@@ -228,6 +229,7 @@ public interface SqlVirtualMachineGroup {
              */
             WithCreate withSqlImageSku(SqlVmGroupImageSku sqlImageSku);
         }
+
         /** The stage of the SqlVirtualMachineGroup definition allowing to specify wsfcDomainProfile. */
         interface WithWsfcDomainProfile {
             /**
@@ -239,6 +241,7 @@ public interface SqlVirtualMachineGroup {
             WithCreate withWsfcDomainProfile(WsfcDomainProfile wsfcDomainProfile);
         }
     }
+
     /**
      * Begins update for the SqlVirtualMachineGroup resource.
      *
@@ -263,6 +266,7 @@ public interface SqlVirtualMachineGroup {
          */
         SqlVirtualMachineGroup apply(Context context);
     }
+
     /** The SqlVirtualMachineGroup update stages. */
     interface UpdateStages {
         /** The stage of the SqlVirtualMachineGroup update allowing to specify tags. */
@@ -276,6 +280,7 @@ public interface SqlVirtualMachineGroup {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

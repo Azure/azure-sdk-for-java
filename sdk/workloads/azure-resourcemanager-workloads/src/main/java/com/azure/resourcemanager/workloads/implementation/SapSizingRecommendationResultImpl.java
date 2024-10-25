@@ -12,8 +12,7 @@ public final class SapSizingRecommendationResultImpl implements SapSizingRecomme
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapSizingRecommendationResultImpl(
-        SapSizingRecommendationResultInner innerObject,
+    SapSizingRecommendationResultImpl(SapSizingRecommendationResultInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

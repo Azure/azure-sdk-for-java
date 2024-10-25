@@ -34,37 +34,27 @@ public final class SapVirtualInstancesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ctxtgzukxi\"},\"status\":\"Running\",\"health\":\"Unknown\",\"state\":\"DiscoveryPending\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"n\",\"tags\":{\"okqdzfvaz\":\"cpjuisa\",\"ajlkatnw\":\"vjlfrqtt\",\"kqqfk\":\"yiopi\",\"dmligovibrxk\":\"vscx\"},\"id\":\"mloazuru\",\"name\":\"cbgoor\",\"type\":\"te\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ctxtgzukxi\"},\"status\":\"Running\",\"health\":\"Unknown\",\"state\":\"DiscoveryPending\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"n\",\"tags\":{\"okqdzfvaz\":\"cpjuisa\",\"ajlkatnw\":\"vjlfrqtt\",\"kqqfk\":\"yiopi\",\"dmligovibrxk\":\"vscx\"},\"id\":\"mloazuru\",\"name\":\"cbgoor\",\"type\":\"te\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SapVirtualInstance> response =
-            manager.sapVirtualInstances().list(com.azure.core.util.Context.NONE);
+        PagedIterable<SapVirtualInstance> response
+            = manager.sapVirtualInstances().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("n", response.iterator().next().location());
         Assertions.assertEquals("cpjuisa", response.iterator().next().tags().get("okqdzfvaz"));

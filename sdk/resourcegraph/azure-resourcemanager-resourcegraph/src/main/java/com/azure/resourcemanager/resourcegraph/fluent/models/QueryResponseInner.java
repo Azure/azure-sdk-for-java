@@ -187,15 +187,12 @@ public final class QueryResponseInner {
      */
     public void validate() {
         if (resultTruncated() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resultTruncated in model QueryResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resultTruncated in model QueryResponseInner"));
         }
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
         }
         if (facets() != null) {
             facets().forEach(e -> e.validate());

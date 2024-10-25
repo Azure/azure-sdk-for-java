@@ -23,7 +23,8 @@ public final class AzureActiveDirectoryTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureActiveDirectory model = new AzureActiveDirectory().withTenantId("cmsxaobhdxbm")
-            .withClusterApplication("ioq").withClientApplication("ehtbm");
+            .withClusterApplication("ioq")
+            .withClientApplication("ehtbm");
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectory.class);
         Assertions.assertEquals("cmsxaobhdxbm", model.tenantId());
         Assertions.assertEquals("ioq", model.clusterApplication());

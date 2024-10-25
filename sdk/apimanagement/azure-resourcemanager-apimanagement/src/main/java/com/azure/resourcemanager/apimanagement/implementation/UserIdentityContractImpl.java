@@ -12,8 +12,7 @@ public final class UserIdentityContractImpl implements UserIdentityContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    UserIdentityContractImpl(
-        UserIdentityContractInner innerObject,
+    UserIdentityContractImpl(UserIdentityContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

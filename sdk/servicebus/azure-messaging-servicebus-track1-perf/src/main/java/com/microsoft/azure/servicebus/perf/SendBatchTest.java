@@ -22,7 +22,8 @@ public class SendBatchTest extends ServiceBatchTest<ServiceBusStressOptions> {
      */
     public SendBatchTest(ServiceBusStressOptions options) {
         super(options);
-        messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+        messages
+            = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
     }
 
     @Override

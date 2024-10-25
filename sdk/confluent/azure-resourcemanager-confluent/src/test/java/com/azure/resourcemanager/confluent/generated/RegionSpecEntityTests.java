@@ -23,8 +23,10 @@ public final class RegionSpecEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionSpecEntity model = new RegionSpecEntity().withName("czuhxacpqjlihh").withCloud("spskasdvlmfwdgz")
-            .withRegionName("lucvpam").withPackages(Arrays.asList("euzvx", "risjnhnytxifqjz", "xmrhu"));
+        RegionSpecEntity model = new RegionSpecEntity().withName("czuhxacpqjlihh")
+            .withCloud("spskasdvlmfwdgz")
+            .withRegionName("lucvpam")
+            .withPackages(Arrays.asList("euzvx", "risjnhnytxifqjz", "xmrhu"));
         model = BinaryData.fromObject(model).toObject(RegionSpecEntity.class);
         Assertions.assertEquals("czuhxacpqjlihh", model.name());
         Assertions.assertEquals("spskasdvlmfwdgz", model.cloud());

@@ -28,8 +28,8 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a list of Sql pool's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolSecurityAlertPolicyInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<SqlPoolSecurityAlertPolicyInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * List Sql pool's security alert policies
@@ -46,8 +46,8 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a list of Sql pool's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolSecurityAlertPolicyInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolSecurityAlertPolicyInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get a Sql pool's security alert policy
@@ -65,12 +65,8 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a Sql pool's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context);
+    Response<SqlPoolSecurityAlertPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
 
     /**
      * Get a Sql pool's security alert policy
@@ -87,10 +83,7 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a Sql pool's security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolSecurityAlertPolicyInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    SqlPoolSecurityAlertPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
         SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
@@ -110,12 +103,8 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a Sql pool security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolSecurityAlertPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        SqlPoolSecurityAlertPolicyInner parameters,
+    Response<SqlPoolSecurityAlertPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SecurityAlertPolicyName securityAlertPolicyName, SqlPoolSecurityAlertPolicyInner parameters,
         Context context);
 
     /**
@@ -134,10 +123,6 @@ public interface SqlPoolSecurityAlertPoliciesClient {
      * @return a Sql pool security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        SqlPoolSecurityAlertPolicyInner parameters);
+    SqlPoolSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SecurityAlertPolicyName securityAlertPolicyName, SqlPoolSecurityAlertPolicyInner parameters);
 }

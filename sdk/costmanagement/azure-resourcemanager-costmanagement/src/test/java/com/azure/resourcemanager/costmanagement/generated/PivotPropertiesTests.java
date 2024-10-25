@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PivotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PivotProperties model =
-            BinaryData.fromString("{\"type\":\"TagKey\",\"name\":\"rzayv\"}").toObject(PivotProperties.class);
+        PivotProperties model
+            = BinaryData.fromString("{\"type\":\"TagKey\",\"name\":\"rzayv\"}").toObject(PivotProperties.class);
         Assertions.assertEquals(PivotType.TAG_KEY, model.type());
         Assertions.assertEquals("rzayv", model.name());
     }

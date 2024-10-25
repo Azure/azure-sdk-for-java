@@ -141,8 +141,8 @@ public final class VpnConfigurationPatchablePropertiesOptionAProperties extends 
 
     /** {@inheritDoc} */
     @Override
-    public VpnConfigurationPatchablePropertiesOptionAProperties withBfdConfiguration(
-        BfdConfiguration bfdConfiguration) {
+    public VpnConfigurationPatchablePropertiesOptionAProperties
+        withBfdConfiguration(BfdConfiguration bfdConfiguration) {
         super.withBfdConfiguration(bfdConfiguration);
         return this;
     }

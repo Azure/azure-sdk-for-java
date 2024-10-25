@@ -28,8 +28,8 @@ public interface TagRulesClient {
      * @return a TagRule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagRuleInner> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<TagRuleInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a TagRule.
@@ -58,8 +58,8 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of tag rules for a monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource);
+    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName, String monitorName,
+        String ruleSetName, TagRuleInner resource);
 
     /**
      * Create a TagRule.
@@ -75,8 +75,8 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of tag rules for a monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context);
+    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName, String monitorName,
+        String ruleSetName, TagRuleInner resource, Context context);
 
     /**
      * Create a TagRule.
@@ -91,8 +91,8 @@ public interface TagRulesClient {
      * @return tag rules for a monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagRuleInner createOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource);
+    TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName,
+        TagRuleInner resource);
 
     /**
      * Create a TagRule.
@@ -108,8 +108,8 @@ public interface TagRulesClient {
      * @return tag rules for a monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagRuleInner createOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context);
+    TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource,
+        Context context);
 
     /**
      * Delete a TagRule.
@@ -138,8 +138,8 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Delete a TagRule.

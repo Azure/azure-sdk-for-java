@@ -22,15 +22,16 @@ public final class HealthcareEntityRelationRole {
     private HealthcareEntity entity;
 
     static {
-        HealthcareEntityRelationRolePropertiesHelper.setAccessor(
-            new HealthcareEntityRelationRolePropertiesHelper.HealthcareEntityRelationRoleAccessor() {
+        HealthcareEntityRelationRolePropertiesHelper
+            .setAccessor(new HealthcareEntityRelationRolePropertiesHelper.HealthcareEntityRelationRoleAccessor() {
                 @Override
                 public void setName(HealthcareEntityRelationRole healthcareEntityRelationRole, String name) {
                     healthcareEntityRelationRole.setName(name);
                 }
 
                 @Override
-                public void setEntity(HealthcareEntityRelationRole healthcareEntityRelationRole, HealthcareEntity entity) {
+                public void setEntity(HealthcareEntityRelationRole healthcareEntityRelationRole,
+                    HealthcareEntity entity) {
                     healthcareEntityRelationRole.setEntity(entity);
                 }
             });

@@ -179,19 +179,16 @@ public final class ContactDetails {
      */
     public void validate() {
         if (contactName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactName in model ContactDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contactName in model ContactDetails"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ContactDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property phone in model ContactDetails"));
         }
         if (emailList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
         }
         if (notificationPreference() != null) {
             notificationPreference().forEach(e -> e.validate());

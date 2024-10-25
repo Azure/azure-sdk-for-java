@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = ApprovalClientBuilder.class)
 public final class ApprovalClient {
-    @Generated private final ApprovalsImpl serviceClient;
+    @Generated
+    private final ApprovalsImpl serviceClient;
 
     /**
      * Initializes an instance of ApprovalClient class.
@@ -54,8 +55,8 @@ public final class ApprovalClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> approveWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Response<Void> approveWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         return this.serviceClient.approveWithResponse(taskId, approvalResponseComment, requestOptions);
     }
 
@@ -81,8 +82,8 @@ public final class ApprovalClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Response<Void> rejectWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         return this.serviceClient.rejectWithResponse(taskId, approvalResponseComment, requestOptions);
     }
 }

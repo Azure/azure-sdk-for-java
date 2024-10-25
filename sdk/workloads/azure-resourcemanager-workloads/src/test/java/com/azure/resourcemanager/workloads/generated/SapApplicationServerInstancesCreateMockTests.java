@@ -32,43 +32,31 @@ public final class SapApplicationServerInstancesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"instanceNo\":\"wcobie\",\"subnet\":\"tmninw\",\"hostname\":\"zcilnghg\",\"kernelVersion\":\"ejjtbxqmul\",\"kernelPatch\":\"lxqzvn\",\"ipAddress\":\"sbycucrwnamikz\",\"gatewayPort\":1725483024927981139,\"icmHttpPort\":3252438714549406945,\"icmHttpsPort\":4275672432001300092,\"loadBalancerDetails\":{\"id\":\"gfuhokzrusw\"},\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"jsxjwwix\",\"tags\":{\"ehaohdjhh\":\"mwmxqhndvnoamld\",\"coxpelnjeta\":\"lzok\",\"g\":\"ltsxoatf\"},\"id\":\"pnpbswveflocc\",\"name\":\"rmozihmipgawt\",\"type\":\"xp\"}";
+        String responseStr
+            = "{\"properties\":{\"instanceNo\":\"wcobie\",\"subnet\":\"tmninw\",\"hostname\":\"zcilnghg\",\"kernelVersion\":\"ejjtbxqmul\",\"kernelPatch\":\"lxqzvn\",\"ipAddress\":\"sbycucrwnamikz\",\"gatewayPort\":1725483024927981139,\"icmHttpPort\":3252438714549406945,\"icmHttpsPort\":4275672432001300092,\"loadBalancerDetails\":{\"id\":\"gfuhokzrusw\"},\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"jsxjwwix\",\"tags\":{\"ehaohdjhh\":\"mwmxqhndvnoamld\",\"coxpelnjeta\":\"lzok\",\"g\":\"ltsxoatf\"},\"id\":\"pnpbswveflocc\",\"name\":\"rmozihmipgawt\",\"type\":\"xp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapApplicationServerInstance response =
-            manager
-                .sapApplicationServerInstances()
-                .define("xjwet")
-                .withRegion("epttaqu")
-                .withExistingSapVirtualInstance("elfwy", "wl")
-                .withTags(mapOf("gehkfkimrtixokff", "wemxswvruunzz", "qwhix", "yinljqe"))
-                .create();
+        SapApplicationServerInstance response = manager.sapApplicationServerInstances()
+            .define("xjwet")
+            .withRegion("epttaqu")
+            .withExistingSapVirtualInstance("elfwy", "wl")
+            .withTags(mapOf("gehkfkimrtixokff", "wemxswvruunzz", "qwhix", "yinljqe"))
+            .create();
 
         Assertions.assertEquals("jsxjwwix", response.location());
         Assertions.assertEquals("mwmxqhndvnoamld", response.tags().get("ehaohdjhh"));

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -124,14 +125,19 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeJsonField("analyzeResult", this.analyzeResult);
         return jsonWriter.writeEndObject();
     }
@@ -155,11 +161,11 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
                 if ("status".equals(fieldName)) {
                     deserializedAnalyzeOperationResult.status = OperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedAnalyzeOperationResult.createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAnalyzeOperationResult.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedAnalyzeOperationResult.lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAnalyzeOperationResult.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("analyzeResult".equals(fieldName)) {
                     deserializedAnalyzeOperationResult.analyzeResult = AnalyzeResult.fromJson(reader);
                 } else {

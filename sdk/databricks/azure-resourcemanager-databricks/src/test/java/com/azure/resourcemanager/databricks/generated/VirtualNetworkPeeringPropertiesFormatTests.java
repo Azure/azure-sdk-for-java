@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkPeeringPropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkPeeringPropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"iqzbq\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"vmyokacspkwl\"]},\"remoteVirtualNetwork\":{\"id\":\"dobpxjmflbvvn\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"cciw\",\"zjuqkhrsaj\",\"wkuofoskghsauu\",\"mjmvxieduugidyjr\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(VirtualNetworkPeeringPropertiesFormat.class);
+        VirtualNetworkPeeringPropertiesFormat model = BinaryData.fromString(
+            "{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"iqzbq\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"vmyokacspkwl\"]},\"remoteVirtualNetwork\":{\"id\":\"dobpxjmflbvvn\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"cciw\",\"zjuqkhrsaj\",\"wkuofoskghsauu\",\"mjmvxieduugidyjr\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(VirtualNetworkPeeringPropertiesFormat.class);
         Assertions.assertEquals(true, model.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, model.allowForwardedTraffic());
         Assertions.assertEquals(true, model.allowGatewayTransit());
@@ -32,9 +30,8 @@ public final class VirtualNetworkPeeringPropertiesFormatTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkPeeringPropertiesFormat model =
-            new VirtualNetworkPeeringPropertiesFormat()
-                .withAllowVirtualNetworkAccess(true)
+        VirtualNetworkPeeringPropertiesFormat model
+            = new VirtualNetworkPeeringPropertiesFormat().withAllowVirtualNetworkAccess(true)
                 .withAllowForwardedTraffic(true)
                 .withAllowGatewayTransit(true)
                 .withUseRemoteGateways(true)
@@ -43,10 +40,8 @@ public final class VirtualNetworkPeeringPropertiesFormatTests {
                 .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("vmyokacspkwl")))
                 .withRemoteVirtualNetwork(
                     new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("dobpxjmflbvvn"))
-                .withRemoteAddressSpace(
-                    new AddressSpace()
-                        .withAddressPrefixes(
-                            Arrays.asList("cciw", "zjuqkhrsaj", "wkuofoskghsauu", "mjmvxieduugidyjr")));
+                .withRemoteAddressSpace(new AddressSpace()
+                    .withAddressPrefixes(Arrays.asList("cciw", "zjuqkhrsaj", "wkuofoskghsauu", "mjmvxieduugidyjr")));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPeeringPropertiesFormat.class);
         Assertions.assertEquals(true, model.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, model.allowForwardedTraffic());

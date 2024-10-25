@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"ndo\"}").toObject(DataConnectionCheckNameRequest.class);
+        DataConnectionCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"ndo\"}").toObject(DataConnectionCheckNameRequest.class);
         Assertions.assertEquals("ndo", model.name());
     }
 

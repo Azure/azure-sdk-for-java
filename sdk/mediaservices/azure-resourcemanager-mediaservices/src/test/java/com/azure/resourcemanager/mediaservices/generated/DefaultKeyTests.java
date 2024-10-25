@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultKey model =
-            BinaryData.fromString("{\"label\":\"ewgdrjervn\",\"policyName\":\"nqpeh\"}").toObject(DefaultKey.class);
+        DefaultKey model
+            = BinaryData.fromString("{\"label\":\"ewgdrjervn\",\"policyName\":\"nqpeh\"}").toObject(DefaultKey.class);
         Assertions.assertEquals("ewgdrjervn", model.label());
         Assertions.assertEquals("nqpeh", model.policyName());
     }

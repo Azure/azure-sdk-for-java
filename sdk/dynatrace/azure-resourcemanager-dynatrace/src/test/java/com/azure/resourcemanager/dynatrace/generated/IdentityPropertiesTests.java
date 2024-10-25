@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"wyahuxinpmqnja\",\"principalId\":\"ixjsprozvcputeg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ozkrwfndiodjpslw\":{\"clientId\":\"fdatsc\",\"principalId\":\"dvpjhulsuuvmk\"},\"hbcryffdfdosyge\":{\"clientId\":\"jdpvwryo\",\"principalId\":\"psoacctazakljl\"},\"hqtrgqjbpf\":{\"clientId\":\"paojakhmsbzjh\",\"principalId\":\"rzevdphlxaol\"}}}")
-                .toObject(IdentityProperties.class);
+        IdentityProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"wyahuxinpmqnja\",\"principalId\":\"ixjsprozvcputeg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ozkrwfndiodjpslw\":{\"clientId\":\"fdatsc\",\"principalId\":\"dvpjhulsuuvmk\"},\"hbcryffdfdosyge\":{\"clientId\":\"jdpvwryo\",\"principalId\":\"psoacctazakljl\"},\"hqtrgqjbpf\":{\"clientId\":\"paojakhmsbzjh\",\"principalId\":\"rzevdphlxaol\"}}}")
+            .toObject(IdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
         Assertions.assertEquals("fdatsc", model.userAssignedIdentities().get("ozkrwfndiodjpslw").clientId());
         Assertions.assertEquals("dvpjhulsuuvmk", model.userAssignedIdentities().get("ozkrwfndiodjpslw").principalId());
@@ -27,17 +25,11 @@ public final class IdentityPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProperties model =
-            new IdentityProperties()
-                .withType(ManagedIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "ozkrwfndiodjpslw",
-                        new UserAssignedIdentity().withClientId("fdatsc").withPrincipalId("dvpjhulsuuvmk"),
-                        "hbcryffdfdosyge",
-                        new UserAssignedIdentity().withClientId("jdpvwryo").withPrincipalId("psoacctazakljl"),
-                        "hqtrgqjbpf",
-                        new UserAssignedIdentity().withClientId("paojakhmsbzjh").withPrincipalId("rzevdphlxaol")));
+        IdentityProperties model = new IdentityProperties().withType(ManagedIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("ozkrwfndiodjpslw",
+                new UserAssignedIdentity().withClientId("fdatsc").withPrincipalId("dvpjhulsuuvmk"), "hbcryffdfdosyge",
+                new UserAssignedIdentity().withClientId("jdpvwryo").withPrincipalId("psoacctazakljl"), "hqtrgqjbpf",
+                new UserAssignedIdentity().withClientId("paojakhmsbzjh").withPrincipalId("rzevdphlxaol")));
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
         Assertions.assertEquals("fdatsc", model.userAssignedIdentities().get("ozkrwfndiodjpslw").clientId());

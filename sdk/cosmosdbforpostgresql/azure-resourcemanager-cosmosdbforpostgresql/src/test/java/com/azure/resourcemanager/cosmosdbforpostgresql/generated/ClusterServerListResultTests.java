@@ -30,18 +30,38 @@ public final class ClusterServerListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterServerListResult model = new ClusterServerListResult().withValue(Arrays.asList(
-            new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("th")
-                .withPostgresqlVersion("hab").withCitusVersion("pikxwczbyscnpqxu").withServerEdition("vyq")
-                .withStorageQuotaInMb(649847293).withVCores(992034682).withEnableHa(false),
-            new ClusterServerInner().withRole(ServerRole.WORKER).withAvailabilityZone("pmqnja")
-                .withPostgresqlVersion("ixjsprozvcputeg").withCitusVersion("wmfdatscmdvpjhul").withServerEdition("uvm")
-                .withStorageQuotaInMb(2017964411).withVCores(37430274).withEnableHa(true),
-            new ClusterServerInner().withRole(ServerRole.WORKER).withAvailabilityZone("trg")
-                .withPostgresqlVersion("bpf").withCitusVersion("s").withServerEdition("zgvfcjrwz")
-                .withStorageQuotaInMb(1151751299).withVCores(1189950130).withEnableHa(true),
-            new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("jzrnf")
-                .withPostgresqlVersion("xgispemvtzfkufu").withCitusVersion("jofxqe").withServerEdition("jaeq")
-                .withStorageQuotaInMb(1946289710).withVCores(158340850).withEnableHa(false)));
+            new ClusterServerInner().withRole(ServerRole.COORDINATOR)
+                .withAvailabilityZone("th")
+                .withPostgresqlVersion("hab")
+                .withCitusVersion("pikxwczbyscnpqxu")
+                .withServerEdition("vyq")
+                .withStorageQuotaInMb(649847293)
+                .withVCores(992034682)
+                .withEnableHa(false),
+            new ClusterServerInner().withRole(ServerRole.WORKER)
+                .withAvailabilityZone("pmqnja")
+                .withPostgresqlVersion("ixjsprozvcputeg")
+                .withCitusVersion("wmfdatscmdvpjhul")
+                .withServerEdition("uvm")
+                .withStorageQuotaInMb(2017964411)
+                .withVCores(37430274)
+                .withEnableHa(true),
+            new ClusterServerInner().withRole(ServerRole.WORKER)
+                .withAvailabilityZone("trg")
+                .withPostgresqlVersion("bpf")
+                .withCitusVersion("s")
+                .withServerEdition("zgvfcjrwz")
+                .withStorageQuotaInMb(1151751299)
+                .withVCores(1189950130)
+                .withEnableHa(true),
+            new ClusterServerInner().withRole(ServerRole.COORDINATOR)
+                .withAvailabilityZone("jzrnf")
+                .withPostgresqlVersion("xgispemvtzfkufu")
+                .withCitusVersion("jofxqe")
+                .withServerEdition("jaeq")
+                .withStorageQuotaInMb(1946289710)
+                .withVCores(158340850)
+                .withEnableHa(false)));
         model = BinaryData.fromObject(model).toObject(ClusterServerListResult.class);
         Assertions.assertEquals(ServerRole.COORDINATOR, model.value().get(0).role());
         Assertions.assertEquals("th", model.value().get(0).availabilityZone());

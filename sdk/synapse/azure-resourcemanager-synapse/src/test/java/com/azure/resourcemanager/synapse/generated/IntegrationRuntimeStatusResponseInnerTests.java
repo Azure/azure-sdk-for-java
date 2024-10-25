@@ -13,22 +13,16 @@ import java.util.Map;
 public final class IntegrationRuntimeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cpzgpxtiv\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"knidib\",\"state\":\"Offline\",\"\":{\"r\":\"datap\",\"rmzvupo\":\"datagovfgpikqmhhaow\"}}}")
-                .toObject(IntegrationRuntimeStatusResponseInner.class);
+        IntegrationRuntimeStatusResponseInner model = BinaryData.fromString(
+            "{\"name\":\"cpzgpxtiv\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"knidib\",\"state\":\"Offline\",\"\":{\"r\":\"datap\",\"rmzvupo\":\"datagovfgpikqmhhaow\"}}}")
+            .toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            new IntegrationRuntimeStatusResponseInner()
-                .withProperties(
-                    new IntegrationRuntimeStatus()
-                        .withAdditionalProperties(
-                            mapOf(
-                                "dataFactoryName", "knidib", "state", "Offline", "type", "IntegrationRuntimeStatus")));
+        IntegrationRuntimeStatusResponseInner model = new IntegrationRuntimeStatusResponseInner()
+            .withProperties(new IntegrationRuntimeStatus().withAdditionalProperties(
+                mapOf("dataFactoryName", "knidib", "state", "Offline", "type", "IntegrationRuntimeStatus")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 

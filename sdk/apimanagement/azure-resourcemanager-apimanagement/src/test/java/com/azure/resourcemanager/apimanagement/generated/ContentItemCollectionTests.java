@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.ContentItemCollection;
 public final class ContentItemCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentItemCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"rthcfjzh\":\"datatojrulfucte\",\"tzzbeq\":\"datalyubqjrostvrjeq\",\"alx\":\"dataztr\",\"absr\":\"datad\"},\"id\":\"rsnrhp\",\"name\":\"a\",\"type\":\"iwkkvya\"},{\"properties\":{\"qmmlivrjjxnwx\":\"datavvcsemsvuvdjkqxe\",\"jxlehzlx\":\"datachp\",\"w\":\"datagfquwz\",\"pjxljtxb\":\"dataibelwcerwkw\"},\"id\":\"sqtbxxniu\",\"name\":\"sdzhgbdgzpagsec\",\"type\":\"adbuwqrgxfllmqiy\"},{\"properties\":{\"mxpymdjf\":\"dataoellnkkiiwvmt\",\"nlduwzorxsbm\":\"dataaxroqvqpilrgunc\",\"x\":\"dataaqklxy\",\"tuubwyvpjb\":\"dataqvfqepdxc\"},\"id\":\"wcpjqduqgi\",\"name\":\"exkydfb\",\"type\":\"lj\"}],\"nextLink\":\"huerkjddvrglie\"}")
-                .toObject(ContentItemCollection.class);
+        ContentItemCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"rthcfjzh\":\"datatojrulfucte\",\"tzzbeq\":\"datalyubqjrostvrjeq\",\"alx\":\"dataztr\",\"absr\":\"datad\"},\"id\":\"rsnrhp\",\"name\":\"a\",\"type\":\"iwkkvya\"},{\"properties\":{\"qmmlivrjjxnwx\":\"datavvcsemsvuvdjkqxe\",\"jxlehzlx\":\"datachp\",\"w\":\"datagfquwz\",\"pjxljtxb\":\"dataibelwcerwkw\"},\"id\":\"sqtbxxniu\",\"name\":\"sdzhgbdgzpagsec\",\"type\":\"adbuwqrgxfllmqiy\"},{\"properties\":{\"mxpymdjf\":\"dataoellnkkiiwvmt\",\"nlduwzorxsbm\":\"dataaxroqvqpilrgunc\",\"x\":\"dataaqklxy\",\"tuubwyvpjb\":\"dataqvfqepdxc\"},\"id\":\"wcpjqduqgi\",\"name\":\"exkydfb\",\"type\":\"lj\"}],\"nextLink\":\"huerkjddvrglie\"}")
+            .toObject(ContentItemCollection.class);
     }
 
     @org.junit.jupiter.api.Test

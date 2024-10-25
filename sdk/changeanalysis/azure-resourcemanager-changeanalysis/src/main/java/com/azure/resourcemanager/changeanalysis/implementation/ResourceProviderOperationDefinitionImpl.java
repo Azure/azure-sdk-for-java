@@ -13,8 +13,7 @@ public final class ResourceProviderOperationDefinitionImpl implements ResourcePr
 
     private final com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager;
 
-    ResourceProviderOperationDefinitionImpl(
-        ResourceProviderOperationDefinitionInner innerObject,
+    ResourceProviderOperationDefinitionImpl(ResourceProviderOperationDefinitionInner innerObject,
         com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

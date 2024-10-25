@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportTimePeriod model =
-            BinaryData
-                .fromString("{\"from\":\"2021-06-04T05:06:09Z\",\"to\":\"2021-05-09T06:54:09Z\"}")
+        ExportTimePeriod model
+            = BinaryData.fromString("{\"from\":\"2021-06-04T05:06:09Z\",\"to\":\"2021-05-09T06:54:09Z\"}")
                 .toObject(ExportTimePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T05:06:09Z"), model.from());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T06:54:09Z"), model.to());
@@ -22,10 +21,8 @@ public final class ExportTimePeriodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportTimePeriod model =
-            new ExportTimePeriod()
-                .withFrom(OffsetDateTime.parse("2021-06-04T05:06:09Z"))
-                .withTo(OffsetDateTime.parse("2021-05-09T06:54:09Z"));
+        ExportTimePeriod model = new ExportTimePeriod().withFrom(OffsetDateTime.parse("2021-06-04T05:06:09Z"))
+            .withTo(OffsetDateTime.parse("2021-05-09T06:54:09Z"));
         model = BinaryData.fromObject(model).toObject(ExportTimePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T05:06:09Z"), model.from());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T06:54:09Z"), model.to());

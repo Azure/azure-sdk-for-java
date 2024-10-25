@@ -80,16 +80,12 @@ public final class UserTokenParameterProperties {
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model UserTokenParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyType in model UserTokenParameterProperties"));
         }
         if (expiry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expiry in model UserTokenParameterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expiry in model UserTokenParameterProperties"));
         }
     }
 

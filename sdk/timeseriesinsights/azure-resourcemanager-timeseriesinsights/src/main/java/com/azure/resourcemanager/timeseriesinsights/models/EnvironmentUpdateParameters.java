@@ -21,8 +21,7 @@ import java.util.Map;
 @JsonTypeName("EnvironmentUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Gen1", value = Gen1EnvironmentUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentUpdateParameters.class)
-})
+    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentUpdateParameters.class) })
 @Fluent
 public class EnvironmentUpdateParameters {
     /*

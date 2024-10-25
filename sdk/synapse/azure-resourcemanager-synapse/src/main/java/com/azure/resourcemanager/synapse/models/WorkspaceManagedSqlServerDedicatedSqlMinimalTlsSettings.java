@@ -25,9 +25,7 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated Sql Minimal Tls Settings Info.
      */
-    DedicatedSQLminimalTlsSettings update(
-        String resourceGroupName,
-        String workspaceName,
+    DedicatedSQLminimalTlsSettings update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters);
 
@@ -46,12 +44,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated Sql Minimal Tls Settings Info.
      */
-    DedicatedSQLminimalTlsSettings update(
-        String resourceGroupName,
-        String workspaceName,
+    DedicatedSQLminimalTlsSettings update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context);
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context);
 
     /**
      * Get server's minimal tls settings.
@@ -67,8 +62,8 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's minimal tls settings along with {@link Response}.
      */
-    Response<DedicatedSQLminimalTlsSettings> getWithResponse(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context);
+    Response<DedicatedSQLminimalTlsSettings> getWithResponse(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName, Context context);
 
     /**
      * Get server's minimal tls settings.
@@ -83,8 +78,8 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's minimal tls settings.
      */
-    DedicatedSQLminimalTlsSettings get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName);
+    DedicatedSQLminimalTlsSettings get(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName);
 
     /**
      * List workspace server's minimal tls settings.

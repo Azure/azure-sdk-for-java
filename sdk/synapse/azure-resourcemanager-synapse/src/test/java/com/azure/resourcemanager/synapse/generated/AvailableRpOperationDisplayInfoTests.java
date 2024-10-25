@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableRpOperationDisplayInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableRpOperationDisplayInfo model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"odjpslwejd\",\"resource\":\"wryoqpsoacc\",\"provider\":\"zakljlahbc\",\"operation\":\"ffdfdosygexpa\"}")
-                .toObject(AvailableRpOperationDisplayInfo.class);
+        AvailableRpOperationDisplayInfo model = BinaryData.fromString(
+            "{\"description\":\"odjpslwejd\",\"resource\":\"wryoqpsoacc\",\"provider\":\"zakljlahbc\",\"operation\":\"ffdfdosygexpa\"}")
+            .toObject(AvailableRpOperationDisplayInfo.class);
         Assertions.assertEquals("odjpslwejd", model.description());
         Assertions.assertEquals("wryoqpsoacc", model.resource());
         Assertions.assertEquals("zakljlahbc", model.provider());
@@ -24,12 +22,10 @@ public final class AvailableRpOperationDisplayInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableRpOperationDisplayInfo model =
-            new AvailableRpOperationDisplayInfo()
-                .withDescription("odjpslwejd")
-                .withResource("wryoqpsoacc")
-                .withProvider("zakljlahbc")
-                .withOperation("ffdfdosygexpa");
+        AvailableRpOperationDisplayInfo model = new AvailableRpOperationDisplayInfo().withDescription("odjpslwejd")
+            .withResource("wryoqpsoacc")
+            .withProvider("zakljlahbc")
+            .withOperation("ffdfdosygexpa");
         model = BinaryData.fromObject(model).toObject(AvailableRpOperationDisplayInfo.class);
         Assertions.assertEquals("odjpslwejd", model.description());
         Assertions.assertEquals("wryoqpsoacc", model.resource());

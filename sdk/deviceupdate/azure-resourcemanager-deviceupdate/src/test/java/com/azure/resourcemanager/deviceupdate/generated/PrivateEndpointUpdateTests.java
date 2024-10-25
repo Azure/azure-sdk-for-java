@@ -23,8 +23,10 @@ public final class PrivateEndpointUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointUpdate model = new PrivateEndpointUpdate().withId("gdknnqv").withLocation("znqntoru")
-            .withImmutableSubscriptionId("gsahmkycgrauw").withImmutableResourceId("etaebu")
+        PrivateEndpointUpdate model = new PrivateEndpointUpdate().withId("gdknnqv")
+            .withLocation("znqntoru")
+            .withImmutableSubscriptionId("gsahmkycgrauw")
+            .withImmutableResourceId("etaebu")
             .withVnetTrafficTag("vdmovsmzlxwabm");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointUpdate.class);
         Assertions.assertEquals("gdknnqv", model.id());

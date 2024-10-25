@@ -10,8 +10,7 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class JsonGeneratorDelegate extends JsonGenerator
-{
+public class JsonGeneratorDelegate extends JsonGenerator {
     /**
      * Delegate object that method calls are delegated to.
      */
@@ -51,29 +50,63 @@ public class JsonGeneratorDelegate extends JsonGenerator
     /**********************************************************************
      */
 
-    @Override public ObjectCodec getCodec() { return delegate.getCodec(); }
+    @Override
+    public ObjectCodec getCodec() {
+        return delegate.getCodec();
+    }
 
-    @Override public JsonGenerator setCodec(ObjectCodec oc) {
+    @Override
+    public JsonGenerator setCodec(ObjectCodec oc) {
         delegate.setCodec(oc);
         return this;
     }
 
-    @Override public void setSchema(FormatSchema schema) { delegate.setSchema(schema); }
-    @Override public FormatSchema getSchema() { return delegate.getSchema(); }
-    @Override public Version version() { return delegate.version(); }
-    @Override public Object getOutputTarget() { return delegate.getOutputTarget(); }
-    @Override public int getOutputBuffered() { return delegate.getOutputBuffered(); }
+    @Override
+    public void setSchema(FormatSchema schema) {
+        delegate.setSchema(schema);
+    }
 
-    @Override public void assignCurrentValue(Object v) { delegate.assignCurrentValue(v); }
-    @Override public Object currentValue() { return delegate.currentValue(); }
+    @Override
+    public FormatSchema getSchema() {
+        return delegate.getSchema();
+    }
+
+    @Override
+    public Version version() {
+        return delegate.version();
+    }
+
+    @Override
+    public Object getOutputTarget() {
+        return delegate.getOutputTarget();
+    }
+
+    @Override
+    public int getOutputBuffered() {
+        return delegate.getOutputBuffered();
+    }
+
+    @Override
+    public void assignCurrentValue(Object v) {
+        delegate.assignCurrentValue(v);
+    }
+
+    @Override
+    public Object currentValue() {
+        return delegate.currentValue();
+    }
 
     // TODO: deprecate in 2.14 or later
     @Override
-    public void setCurrentValue(Object v) { delegate.setCurrentValue(v); }
+    public void setCurrentValue(Object v) {
+        delegate.setCurrentValue(v);
+    }
 
     // TODO: deprecate in 2.14 or later
     @Override
-    public Object getCurrentValue() { return delegate.getCurrentValue(); }
+    public Object getCurrentValue() {
+        return delegate.getCurrentValue();
+    }
 
     /*
     /**********************************************************************
@@ -82,22 +115,34 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public boolean canUseSchema(FormatSchema schema) { return delegate.canUseSchema(schema); }
+    public boolean canUseSchema(FormatSchema schema) {
+        return delegate.canUseSchema(schema);
+    }
 
     @Override
-    public boolean canWriteTypeId() { return delegate.canWriteTypeId(); }
+    public boolean canWriteTypeId() {
+        return delegate.canWriteTypeId();
+    }
 
     @Override
-    public boolean canWriteObjectId() { return delegate.canWriteObjectId(); }
+    public boolean canWriteObjectId() {
+        return delegate.canWriteObjectId();
+    }
 
     @Override
-    public boolean canWriteBinaryNatively() { return delegate.canWriteBinaryNatively(); }
+    public boolean canWriteBinaryNatively() {
+        return delegate.canWriteBinaryNatively();
+    }
 
     @Override
-    public boolean canOmitFields() { return delegate.canOmitFields(); }
+    public boolean canOmitFields() {
+        return delegate.canOmitFields();
+    }
 
     @Override
-    public boolean canWriteFormattedNumbers() { return delegate.canWriteFormattedNumbers(); }
+    public boolean canWriteFormattedNumbers() {
+        return delegate.canWriteFormattedNumbers();
+    }
 
     @Override
     public JacksonFeatureSet<StreamWriteCapability> getWriteCapabilities() {
@@ -123,13 +168,17 @@ public class JsonGeneratorDelegate extends JsonGenerator
     }
 
     @Override
-    public boolean isEnabled(Feature f) { return delegate.isEnabled(f); }
+    public boolean isEnabled(Feature f) {
+        return delegate.isEnabled(f);
+    }
 
     // final, can't override (and no need to)
     //public final JsonGenerator configure(Feature f, boolean state)
 
     @Override
-    public int getFeatureMask() { return delegate.getFeatureMask(); }
+    public int getFeatureMask() {
+        return delegate.getFeatureMask();
+    }
 
     @Override
     @Deprecated
@@ -163,29 +212,43 @@ public class JsonGeneratorDelegate extends JsonGenerator
     }
 
     @Override
-    public PrettyPrinter getPrettyPrinter() { return delegate.getPrettyPrinter(); }
+    public PrettyPrinter getPrettyPrinter() {
+        return delegate.getPrettyPrinter();
+    }
 
     @Override
-    public JsonGenerator useDefaultPrettyPrinter() { delegate.useDefaultPrettyPrinter();
-        return this; }
+    public JsonGenerator useDefaultPrettyPrinter() {
+        delegate.useDefaultPrettyPrinter();
+        return this;
+    }
 
     @Override
-    public JsonGenerator setHighestNonEscapedChar(int charCode) { delegate.setHighestNonEscapedChar(charCode);
-        return this; }
+    public JsonGenerator setHighestNonEscapedChar(int charCode) {
+        delegate.setHighestNonEscapedChar(charCode);
+        return this;
+    }
 
     @Override
-    public int getHighestEscapedChar() { return delegate.getHighestEscapedChar(); }
+    public int getHighestEscapedChar() {
+        return delegate.getHighestEscapedChar();
+    }
 
     @Override
-    public CharacterEscapes getCharacterEscapes() {  return delegate.getCharacterEscapes(); }
+    public CharacterEscapes getCharacterEscapes() {
+        return delegate.getCharacterEscapes();
+    }
 
     @Override
-    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) { delegate.setCharacterEscapes(esc);
-        return this; }
+    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) {
+        delegate.setCharacterEscapes(esc);
+        return this;
+    }
 
     @Override
-    public JsonGenerator setRootValueSeparator(SerializableString sep) { delegate.setRootValueSeparator(sep);
-        return this; }
+    public JsonGenerator setRootValueSeparator(SerializableString sep) {
+        delegate.setRootValueSeparator(sep);
+        return this;
+    }
 
     /*
     /**********************************************************************
@@ -194,26 +257,40 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public void writeStartArray() throws IOException { delegate.writeStartArray(); }
+    public void writeStartArray() throws IOException {
+        delegate.writeStartArray();
+    }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void writeStartArray(int size) throws IOException { delegate.writeStartArray(size); }
+    public void writeStartArray(int size) throws IOException {
+        delegate.writeStartArray(size);
+    }
 
     @Override
-    public void writeStartArray(Object forValue) throws IOException { delegate.writeStartArray(forValue); }
+    public void writeStartArray(Object forValue) throws IOException {
+        delegate.writeStartArray(forValue);
+    }
 
     @Override
-    public void writeStartArray(Object forValue, int size) throws IOException { delegate.writeStartArray(forValue, size); }
+    public void writeStartArray(Object forValue, int size) throws IOException {
+        delegate.writeStartArray(forValue, size);
+    }
 
     @Override
-    public void writeEndArray() throws IOException { delegate.writeEndArray(); }
+    public void writeEndArray() throws IOException {
+        delegate.writeEndArray();
+    }
 
     @Override
-    public void writeStartObject() throws IOException { delegate.writeStartObject(); }
+    public void writeStartObject() throws IOException {
+        delegate.writeStartObject();
+    }
 
     @Override
-    public void writeStartObject(Object forValue) throws IOException { delegate.writeStartObject(forValue); }
+    public void writeStartObject(Object forValue) throws IOException {
+        delegate.writeStartObject(forValue);
+    }
 
     @Override
     public void writeStartObject(Object forValue, int size) throws IOException {
@@ -221,7 +298,9 @@ public class JsonGeneratorDelegate extends JsonGenerator
     }
 
     @Override
-    public void writeEndObject() throws IOException { delegate.writeEndObject(); }
+    public void writeEndObject() throws IOException {
+        delegate.writeEndObject();
+    }
 
     @Override
     public void writeFieldName(String name) throws IOException {
@@ -265,7 +344,9 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public void writeString(String text) throws IOException { delegate.writeString(text); }
+    public void writeString(String text) throws IOException {
+        delegate.writeString(text);
+    }
 
     @Override
     public void writeString(Reader reader, int len) throws IOException {
@@ -273,16 +354,24 @@ public class JsonGeneratorDelegate extends JsonGenerator
     }
 
     @Override
-    public void writeString(char[] text, int offset, int len) throws IOException { delegate.writeString(text, offset, len); }
+    public void writeString(char[] text, int offset, int len) throws IOException {
+        delegate.writeString(text, offset, len);
+    }
 
     @Override
-    public void writeString(SerializableString text) throws IOException { delegate.writeString(text); }
+    public void writeString(SerializableString text) throws IOException {
+        delegate.writeString(text);
+    }
 
     @Override
-    public void writeRawUTF8String(byte[] text, int offset, int length) throws IOException { delegate.writeRawUTF8String(text, offset, length); }
+    public void writeRawUTF8String(byte[] text, int offset, int length) throws IOException {
+        delegate.writeRawUTF8String(text, offset, length);
+    }
 
     @Override
-    public void writeUTF8String(byte[] text, int offset, int length) throws IOException { delegate.writeUTF8String(text, offset, length); }
+    public void writeUTF8String(byte[] text, int offset, int length) throws IOException {
+        delegate.writeUTF8String(text, offset, length);
+    }
 
     /*
     /**********************************************************************
@@ -291,34 +380,54 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public void writeRaw(String text) throws IOException { delegate.writeRaw(text); }
+    public void writeRaw(String text) throws IOException {
+        delegate.writeRaw(text);
+    }
 
     @Override
-    public void writeRaw(String text, int offset, int len) throws IOException { delegate.writeRaw(text, offset, len); }
+    public void writeRaw(String text, int offset, int len) throws IOException {
+        delegate.writeRaw(text, offset, len);
+    }
 
     @Override
-    public void writeRaw(SerializableString raw) throws IOException { delegate.writeRaw(raw); }
+    public void writeRaw(SerializableString raw) throws IOException {
+        delegate.writeRaw(raw);
+    }
 
     @Override
-    public void writeRaw(char[] text, int offset, int len) throws IOException { delegate.writeRaw(text, offset, len); }
+    public void writeRaw(char[] text, int offset, int len) throws IOException {
+        delegate.writeRaw(text, offset, len);
+    }
 
     @Override
-    public void writeRaw(char c) throws IOException { delegate.writeRaw(c); }
+    public void writeRaw(char c) throws IOException {
+        delegate.writeRaw(c);
+    }
 
     @Override
-    public void writeRawValue(String text) throws IOException { delegate.writeRawValue(text); }
+    public void writeRawValue(String text) throws IOException {
+        delegate.writeRawValue(text);
+    }
 
     @Override
-    public void writeRawValue(String text, int offset, int len) throws IOException { delegate.writeRawValue(text, offset, len); }
+    public void writeRawValue(String text, int offset, int len) throws IOException {
+        delegate.writeRawValue(text, offset, len);
+    }
 
     @Override
-    public void writeRawValue(char[] text, int offset, int len) throws IOException { delegate.writeRawValue(text, offset, len); }
+    public void writeRawValue(char[] text, int offset, int len) throws IOException {
+        delegate.writeRawValue(text, offset, len);
+    }
 
     @Override
-    public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException { delegate.writeBinary(b64variant, data, offset, len); }
+    public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException {
+        delegate.writeBinary(b64variant, data, offset, len);
+    }
 
     @Override
-    public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException { return delegate.writeBinary(b64variant, data, dataLength); }
+    public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException {
+        return delegate.writeBinary(b64variant, data, dataLength);
+    }
 
     /*
     /**********************************************************************
@@ -327,37 +436,60 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public void writeNumber(short v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(short v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(int v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(int v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(long v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(long v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(BigInteger v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(BigInteger v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(double v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(double v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(float v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(float v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(BigDecimal v) throws IOException { delegate.writeNumber(v); }
+    public void writeNumber(BigDecimal v) throws IOException {
+        delegate.writeNumber(v);
+    }
 
     @Override
-    public void writeNumber(String encodedValue) throws IOException, UnsupportedOperationException { delegate.writeNumber(encodedValue); }
+    public void writeNumber(String encodedValue) throws IOException, UnsupportedOperationException {
+        delegate.writeNumber(encodedValue);
+    }
 
     @Override
-    public void writeNumber(char[] encodedValueBuffer, int offset, int length) throws IOException, UnsupportedOperationException { delegate.writeNumber(encodedValueBuffer, offset, length); }
+    public void writeNumber(char[] encodedValueBuffer, int offset, int length)
+        throws IOException, UnsupportedOperationException {
+        delegate.writeNumber(encodedValueBuffer, offset, length);
+    }
 
     @Override
-    public void writeBoolean(boolean state) throws IOException { delegate.writeBoolean(state); }
+    public void writeBoolean(boolean state) throws IOException {
+        delegate.writeBoolean(state);
+    }
 
     @Override
-    public void writeNull() throws IOException { delegate.writeNull(); }
+    public void writeNull() throws IOException {
+        delegate.writeNull();
+    }
 
     /*
     /**********************************************************************
@@ -368,16 +500,16 @@ public class JsonGeneratorDelegate extends JsonGenerator
     // 04-Oct-2019, tatu: Reminder: these should NOT be delegated, unless matching
     //    methods in `FilteringGeneratorDelegate` are re-defined to "split" calls again
 
-//    public void writeBinaryField(String fieldName, byte[] data) throws IOException {
-//    public void writeBooleanField(String fieldName, boolean value) throws IOException {
-//    public void writeNullField(String fieldName) throws IOException {
-//    public void writeStringField(String fieldName, String value) throws IOException {
-//    public void writeNumberField(String fieldName, short value) throws IOException {
+    //    public void writeBinaryField(String fieldName, byte[] data) throws IOException {
+    //    public void writeBooleanField(String fieldName, boolean value) throws IOException {
+    //    public void writeNullField(String fieldName) throws IOException {
+    //    public void writeStringField(String fieldName, String value) throws IOException {
+    //    public void writeNumberField(String fieldName, short value) throws IOException {
 
-//    public void writeArrayFieldStart(String fieldName) throws IOException {
-//    public void writeObjectFieldStart(String fieldName) throws IOException {
-//    public void writeObjectField(String fieldName, Object pojo) throws IOException {
-//    public void writePOJOField(String fieldName, Object pojo) throws IOException {
+    //    public void writeArrayFieldStart(String fieldName) throws IOException {
+    //    public void writeObjectFieldStart(String fieldName) throws IOException {
+    //    public void writeObjectField(String fieldName, Object pojo) throws IOException {
+    //    public void writePOJOField(String fieldName, Object pojo) throws IOException {
 
     // Sole exception being this method as it is not a "combo" method
 
@@ -393,16 +525,24 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Override
-    public void writeObjectId(Object id) throws IOException { delegate.writeObjectId(id); }
+    public void writeObjectId(Object id) throws IOException {
+        delegate.writeObjectId(id);
+    }
 
     @Override
-    public void writeObjectRef(Object id) throws IOException { delegate.writeObjectRef(id); }
+    public void writeObjectRef(Object id) throws IOException {
+        delegate.writeObjectRef(id);
+    }
 
     @Override
-    public void writeTypeId(Object id) throws IOException { delegate.writeTypeId(id); }
+    public void writeTypeId(Object id) throws IOException {
+        delegate.writeTypeId(id);
+    }
 
     @Override
-    public void writeEmbeddedObject(Object object) throws IOException { delegate.writeEmbeddedObject(object); }
+    public void writeEmbeddedObject(Object object) throws IOException {
+        delegate.writeEmbeddedObject(object);
+    }
 
     /*
     /**********************************************************************
@@ -467,14 +607,18 @@ public class JsonGeneratorDelegate extends JsonGenerator
 
     @Override
     public void copyCurrentEvent(JsonParser p) throws IOException {
-        if (delegateCopyMethods) delegate.copyCurrentEvent(p);
-        else super.copyCurrentEvent(p);
+        if (delegateCopyMethods)
+            delegate.copyCurrentEvent(p);
+        else
+            super.copyCurrentEvent(p);
     }
 
     @Override
     public void copyCurrentStructure(JsonParser p) throws IOException {
-        if (delegateCopyMethods) delegate.copyCurrentStructure(p);
-        else super.copyCurrentStructure(p);
+        if (delegateCopyMethods)
+            delegate.copyCurrentStructure(p);
+        else
+            super.copyCurrentStructure(p);
     }
 
     /*
@@ -483,7 +627,10 @@ public class JsonGeneratorDelegate extends JsonGenerator
     /**********************************************************************
      */
 
-    @Override public JsonStreamContext getOutputContext() { return delegate.getOutputContext(); }
+    @Override
+    public JsonStreamContext getOutputContext() {
+        return delegate.getOutputContext();
+    }
 
     /*
     /**********************************************************************
@@ -491,10 +638,20 @@ public class JsonGeneratorDelegate extends JsonGenerator
     /**********************************************************************
      */
 
-    @Override public void flush() throws IOException { delegate.flush(); }
-    @Override public void close() throws IOException { delegate.close(); }
+    @Override
+    public void flush() throws IOException {
+        delegate.flush();
+    }
 
-    @Override public boolean isClosed() { return delegate.isClosed(); }
+    @Override
+    public void close() throws IOException {
+        delegate.close();
+    }
+
+    @Override
+    public boolean isClosed() {
+        return delegate.isClosed();
+    }
 
     /*
     /**********************************************************************
@@ -503,12 +660,16 @@ public class JsonGeneratorDelegate extends JsonGenerator
      */
 
     @Deprecated // since 2.11
-    public JsonGenerator getDelegate() { return delegate; }
+    public JsonGenerator getDelegate() {
+        return delegate;
+    }
 
     /**
      * @return Underlying generator that calls are delegated to
      *
      * @since 2.11
      */
-    public JsonGenerator delegate() { return delegate; }
+    public JsonGenerator delegate() {
+        return delegate;
+    }
 }

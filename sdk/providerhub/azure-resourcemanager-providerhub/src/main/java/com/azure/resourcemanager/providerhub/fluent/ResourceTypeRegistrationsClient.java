@@ -27,8 +27,8 @@ public interface ResourceTypeRegistrationsClient {
      * @return a resource type details in the given subscription and provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceTypeRegistrationInner> getWithResponse(
-        String providerNamespace, String resourceType, Context context);
+    Response<ResourceTypeRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
+        Context context);
 
     /**
      * Gets a resource type details in the given subscription and provider.
@@ -56,8 +56,8 @@ public interface ResourceTypeRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
+    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
 
     /**
      * Creates or updates a resource type.
@@ -89,8 +89,8 @@ public interface ResourceTypeRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
+    ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties);
 
     /**
      * Creates or updates a resource type.
@@ -106,8 +106,8 @@ public interface ResourceTypeRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context);
+    ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties, Context context);
 
     /**
      * Deletes a resource type.

@@ -51,14 +51,8 @@ public interface UserSubscriptionsClient {
      * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<SubscriptionContractInner> list(String resourceGroupName, String serviceName, String userId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the specified Subscription entity associated with a particular user.
@@ -75,8 +69,8 @@ public interface UserSubscriptionsClient {
      * @return the specified Subscription entity associated with a particular user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserSubscriptionsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String userId, String sid, Context context);
+    UserSubscriptionsGetResponse getWithResponse(String resourceGroupName, String serviceName, String userId,
+        String sid, Context context);
 
     /**
      * Gets the specified Subscription entity associated with a particular user.

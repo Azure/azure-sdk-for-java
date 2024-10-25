@@ -21,8 +21,8 @@ public final class MetadatasImpl implements Metadatas {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public MetadatasImpl(
-        MetadatasClient innerClient, com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
+    public MetadatasImpl(MetadatasClient innerClient,
+        com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,10 +40,7 @@ public final class MetadatasImpl implements Metadatas {
     public Response<MetadataEntity> getEntityWithResponse(String name, Context context) {
         Response<MetadataEntityInner> inner = this.serviceClient().getEntityWithResponse(name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MetadataEntityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

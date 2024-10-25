@@ -46,9 +46,10 @@ public final class AccountsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Account> response = manager.accounts().list(com.azure.core.util.Context.NONE);
 

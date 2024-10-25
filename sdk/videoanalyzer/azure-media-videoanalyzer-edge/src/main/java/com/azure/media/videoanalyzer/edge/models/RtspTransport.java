@@ -5,29 +5,49 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RtspTransport. */
+/**
+ * Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP, the RTP packets are interleaved
+ * on the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged through long lived HTTP connections, and
+ * the RTP packages are interleaved in the HTTP connections alongside the RTSP messages.
+ */
 public final class RtspTransport extends ExpandableStringEnum<RtspTransport> {
-    /** Static value http for RtspTransport. */
+    /**
+     * HTTP transport. RTSP messages are exchanged over long running HTTP requests and RTP packets are interleaved
+     * within the HTTP channel.
+     */
     public static final RtspTransport HTTP = fromString("http");
 
-    /** Static value tcp for RtspTransport. */
+    /**
+     * TCP transport. RTSP is used directly over TCP and RTP packets are interleaved within the TCP channel.
+     */
     public static final RtspTransport TCP = fromString("tcp");
 
     /**
+     * Creates a new instance of RtspTransport value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RtspTransport() {
+    }
+
+    /**
      * Creates or finds a RtspTransport from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RtspTransport.
      */
-    @JsonCreator
     public static RtspTransport fromString(String name) {
         return fromString(name, RtspTransport.class);
     }
 
-    /** @return known RtspTransport values. */
+    /**
+     * Gets known RtspTransport values.
+     * 
+     * @return known RtspTransport values.
+     */
     public static Collection<RtspTransport> values() {
         return values(RtspTransport.class);
     }

@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = ResourceSetRulesClientBuilder.class)
 public final class ResourceSetRulesClient {
-    @Generated private final ResourceSetRulesImpl serviceClient;
+    @Generated
+    private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRulesClient class.
@@ -365,8 +366,8 @@ public final class ResourceSetRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(BinaryData resourceSetRuleConfig,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions);
     }
 

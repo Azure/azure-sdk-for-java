@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Folder", value = SsisFolder.class),
     @JsonSubTypes.Type(name = "Project", value = SsisProject.class),
     @JsonSubTypes.Type(name = "Package", value = SsisPackage.class),
-    @JsonSubTypes.Type(name = "Environment", value = SsisEnvironment.class)
-})
+    @JsonSubTypes.Type(name = "Environment", value = SsisEnvironment.class) })
 @Fluent
 public class SsisObjectMetadata {
     /*

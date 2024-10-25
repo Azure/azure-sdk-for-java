@@ -26,12 +26,8 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime along with {@link Response}.
      */
-    Response<IntegrationRuntimeResource> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String ifNoneMatch,
-        Context context);
+    Response<IntegrationRuntimeResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String ifNoneMatch, Context context);
 
     /**
      * Get integration runtime
@@ -91,8 +87,8 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> upgradeWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<Void> upgradeWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Upgrade integration runtime
@@ -135,8 +131,8 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationRuntimeResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<IntegrationRuntimeResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Start integration runtime
@@ -151,8 +147,8 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponse start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Start integration runtime
@@ -168,8 +164,8 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    IntegrationRuntimeStatusResponse start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Stop integration runtime
@@ -216,8 +212,8 @@ public interface IntegrationRuntimes {
      *     Response}.
      */
     Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
-        listOutboundNetworkDependenciesEndpointsWithResponse(
-            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String workspaceName,
+            String integrationRuntimeName, Context context);
 
     /**
      * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
@@ -258,8 +254,8 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void enableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Disable interactive query in integration runtime.
@@ -284,8 +280,8 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void disableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void disableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Get integration runtime

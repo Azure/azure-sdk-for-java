@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The NotebookPreparationError model. */
 @Fluent
 public final class NotebookPreparationError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookPreparationError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NotebookPreparationError.class);
 
     /*
      * The errorMessage property.

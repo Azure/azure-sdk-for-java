@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"fiqgeaar\"}").toObject(KustoPoolCheckNameRequest.class);
+        KustoPoolCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"fiqgeaar\"}").toObject(KustoPoolCheckNameRequest.class);
         Assertions.assertEquals("fiqgeaar", model.name());
     }
 

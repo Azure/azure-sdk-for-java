@@ -14,6 +14,7 @@ public class RocketShippingInfo extends ShippingInfo {
     public RocketShippingInfo(String shipmentId) {
         super(shipmentId);
     }
+
     /**
      * @return the rocket number.
      */

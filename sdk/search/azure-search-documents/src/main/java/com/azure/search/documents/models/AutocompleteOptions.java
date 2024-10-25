@@ -11,8 +11,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Parameter group.

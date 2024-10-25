@@ -22,12 +22,8 @@ public interface KustoPoolChildResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        DatabaseCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
@@ -41,6 +37,6 @@ public interface KustoPoolChildResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String workspaceName, String kustoPoolName, String resourceGroupName,
+        DatabaseCheckNameRequest resourceName);
 }

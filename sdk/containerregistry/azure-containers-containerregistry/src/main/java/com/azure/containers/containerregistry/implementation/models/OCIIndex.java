@@ -26,7 +26,8 @@ public final class OCIIndex extends Manifest {
     private OciAnnotations annotations;
 
     /** Creates an instance of OCIIndex class. */
-    public OCIIndex() {}
+    public OCIIndex() {
+    }
 
     /**
      * Get the manifests property: List of OCI image layer information.
@@ -93,27 +94,26 @@ public final class OCIIndex extends Manifest {
      * @throws IOException If an error occurs while reading the OCIIndex.
      */
     public static OCIIndex fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OCIIndex deserializedOCIIndex = new OCIIndex();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OCIIndex deserializedOCIIndex = new OCIIndex();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("schemaVersion".equals(fieldName)) {
-                            deserializedOCIIndex.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                        } else if ("manifests".equals(fieldName)) {
-                            List<ManifestListAttributes> manifests =
-                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                            deserializedOCIIndex.manifests = manifests;
-                        } else if ("annotations".equals(fieldName)) {
-                            deserializedOCIIndex.annotations = OciAnnotations.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("schemaVersion".equals(fieldName)) {
+                    deserializedOCIIndex.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                } else if ("manifests".equals(fieldName)) {
+                    List<ManifestListAttributes> manifests
+                        = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                    deserializedOCIIndex.manifests = manifests;
+                } else if ("annotations".equals(fieldName)) {
+                    deserializedOCIIndex.annotations = OciAnnotations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedOCIIndex;
-                });
+            return deserializedOCIIndex;
+        });
     }
 }

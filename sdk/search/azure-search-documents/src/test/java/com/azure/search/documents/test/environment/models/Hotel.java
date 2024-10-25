@@ -134,7 +134,6 @@ public class Hotel {
         return this;
     }
 
-
     public Boolean parkingIncluded() {
         return this.parkingIncluded;
     }

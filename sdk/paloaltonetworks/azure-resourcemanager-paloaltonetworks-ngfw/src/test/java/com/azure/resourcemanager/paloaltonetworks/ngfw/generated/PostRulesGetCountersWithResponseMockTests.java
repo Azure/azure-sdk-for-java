@@ -44,12 +44,14 @@ public final class PostRulesGetCountersWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RuleCounter response = manager.postRules()
-            .getCountersWithResponse("gpiudeug", "sxze", "paxwkufyk", com.azure.core.util.Context.NONE).getValue();
+            .getCountersWithResponse("gpiudeug", "sxze", "paxwkufyk", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("vuhx", response.priority());
         Assertions.assertEquals("mrutznabaobnsluj", response.ruleStackName());

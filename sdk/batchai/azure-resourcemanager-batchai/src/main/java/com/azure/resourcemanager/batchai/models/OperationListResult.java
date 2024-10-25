@@ -14,7 +14,8 @@ import java.util.List;
 /** Contains the list of all operations supported by BatchAI resource provider. */
 @Immutable
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationListResult.class);
 
     /*
      * The list of operations supported by the resource provider.

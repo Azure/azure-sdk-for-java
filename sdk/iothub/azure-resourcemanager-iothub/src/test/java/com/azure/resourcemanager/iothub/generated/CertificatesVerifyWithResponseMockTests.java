@@ -31,49 +31,31 @@ public final class CertificatesVerifyWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"subject\":\"gufhyaomtbg\",\"expiry\":\"Sat, 24 Apr 2021 04:26:41"
-                + " GMT\",\"thumbprint\":\"grvk\",\"isVerified\":true,\"created\":\"Wed, 20 Jan 2021 03:53:05"
-                + " GMT\",\"updated\":\"Tue, 28 Sep 2021 04:32:09"
-                + " GMT\",\"certificate\":\"jbibg\"},\"etag\":\"fxumv\",\"id\":\"cluyovwxnbkf\",\"name\":\"zzxscyhwzdgiruj\",\"type\":\"zbomvzzbtdcqvpni\"}";
+        String responseStr = "{\"properties\":{\"subject\":\"gufhyaomtbg\",\"expiry\":\"Sat, 24 Apr 2021 04:26:41"
+            + " GMT\",\"thumbprint\":\"grvk\",\"isVerified\":true,\"created\":\"Wed, 20 Jan 2021 03:53:05"
+            + " GMT\",\"updated\":\"Tue, 28 Sep 2021 04:32:09"
+            + " GMT\",\"certificate\":\"jbibg\"},\"etag\":\"fxumv\",\"id\":\"cluyovwxnbkf\",\"name\":\"zzxscyhwzdgiruj\",\"type\":\"zbomvzzbtdcqvpni\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateDescription response =
-            manager
-                .certificates()
-                .verifyWithResponse(
-                    "nopqgikyzirtx",
-                    "yuxzejntpsewgi",
-                    "ilqu",
-                    "rydxtqm",
-                    new CertificateVerificationDescription().withCertificate("ox"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        CertificateDescription response = manager.certificates()
+            .verifyWithResponse("nopqgikyzirtx", "yuxzejntpsewgi", "ilqu", "rydxtqm",
+                new CertificateVerificationDescription().withCertificate("ox"), com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(true, response.properties().isVerified());
         Assertions.assertEquals("jbibg", response.properties().certificate());

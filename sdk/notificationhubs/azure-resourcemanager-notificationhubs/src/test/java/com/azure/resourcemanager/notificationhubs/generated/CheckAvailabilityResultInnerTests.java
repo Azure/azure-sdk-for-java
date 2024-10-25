@@ -30,12 +30,15 @@ public final class CheckAvailabilityResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckAvailabilityResultInner model
-            = new CheckAvailabilityResultInner().withIsAvailiable(true).withLocation("kwm")
-                .withTags(mapOf("psqucmpoyf", "tsizntocipaoua", "knygjofjddeq", "kfo", "upewnwreitjzy", "rd", "ofcqhsm",
-                    "lusarh"))
-                .withSku(new Sku().withName(SkuName.STANDARD).withTier("dtmlxhekuksjt").withSize("kc")
-                    .withFamily("parcry").withCapacity(1654422017));
+        CheckAvailabilityResultInner model = new CheckAvailabilityResultInner().withIsAvailiable(true)
+            .withLocation("kwm")
+            .withTags(mapOf("psqucmpoyf", "tsizntocipaoua", "knygjofjddeq", "kfo", "upewnwreitjzy", "rd", "ofcqhsm",
+                "lusarh"))
+            .withSku(new Sku().withName(SkuName.STANDARD)
+                .withTier("dtmlxhekuksjt")
+                .withSize("kc")
+                .withFamily("parcry")
+                .withCapacity(1654422017));
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityResultInner.class);
         Assertions.assertEquals(true, model.isAvailiable());
         Assertions.assertEquals("kwm", model.location());

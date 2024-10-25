@@ -42,8 +42,8 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ForecastsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ForecastsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ForecastsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,31 +54,25 @@ public final class ForecastsClientImpl implements ForecastsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface ForecastsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.CostManagement/forecast")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForecastResultInner>> usage(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ForecastResultInner>> usage(@HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "scope", encoded = true) String scope,
-            @BodyParam("application/json") ForecastDefinition parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ForecastDefinition parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/forecast")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForecastResultInner>> externalCloudProviderUsage(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ForecastResultInner>> externalCloudProviderUsage(@HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
             @PathParam("externalCloudProviderType") ExternalCloudProviderType externalCloudProviderType,
             @PathParam("externalCloudProviderId") String externalCloudProviderId,
-            @BodyParam("application/json") ForecastDefinition parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ForecastDefinition parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -109,13 +103,11 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
-        String scope, ForecastDefinition parameters, String filter) {
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(String scope, ForecastDefinition parameters,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -127,17 +119,8 @@ public final class ForecastsClientImpl implements ForecastsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .usage(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            scope,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.usage(this.client.getEndpoint(), filter, this.client.getApiVersion(), scope,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -169,13 +152,11 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
-        String scope, ForecastDefinition parameters, String filter, Context context) {
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(String scope, ForecastDefinition parameters,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -187,8 +168,8 @@ public final class ForecastsClientImpl implements ForecastsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .usage(this.client.getEndpoint(), filter, this.client.getApiVersion(), scope, parameters, accept, context);
+        return service.usage(this.client.getEndpoint(), filter, this.client.getApiVersion(), scope, parameters, accept,
+            context);
     }
 
     /**
@@ -248,8 +229,8 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ForecastResultInner> usageWithResponse(
-        String scope, ForecastDefinition parameters, String filter, Context context) {
+    public Response<ForecastResultInner> usageWithResponse(String scope, ForecastDefinition parameters, String filter,
+        Context context) {
         return usageWithResponseAsync(scope, parameters, filter, context).block();
     }
 
@@ -301,26 +282,19 @@ public final class ForecastsClientImpl implements ForecastsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter) {
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
+        ForecastDefinition parameters, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -329,18 +303,9 @@ public final class ForecastsClientImpl implements ForecastsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .externalCloudProviderUsage(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            externalCloudProviderType,
-                            externalCloudProviderId,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.externalCloudProviderUsage(this.client.getEndpoint(), filter,
+                this.client.getApiVersion(), externalCloudProviderType, externalCloudProviderId, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -364,27 +329,19 @@ public final class ForecastsClientImpl implements ForecastsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter,
-        Context context) {
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
+        ForecastDefinition parameters, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -393,16 +350,8 @@ public final class ForecastsClientImpl implements ForecastsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .externalCloudProviderUsage(
-                this.client.getEndpoint(),
-                filter,
-                this.client.getApiVersion(),
-                externalCloudProviderType,
-                externalCloudProviderId,
-                parameters,
-                accept,
-                context);
+        return service.externalCloudProviderUsage(this.client.getEndpoint(), filter, this.client.getApiVersion(),
+            externalCloudProviderType, externalCloudProviderId, parameters, accept, context);
     }
 
     /**
@@ -421,13 +370,11 @@ public final class ForecastsClientImpl implements ForecastsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ForecastResultInner> externalCloudProviderUsageAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
         ForecastDefinition parameters) {
         final String filter = null;
-        return externalCloudProviderUsageWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters, filter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return externalCloudProviderUsageWithResponseAsync(externalCloudProviderType, externalCloudProviderId,
+            parameters, filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -450,14 +397,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ForecastResultInner> externalCloudProviderUsageWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter,
-        Context context) {
-        return externalCloudProviderUsageWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters, filter, context)
-            .block();
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
+        ForecastDefinition parameters, String filter, Context context) {
+        return externalCloudProviderUsageWithResponseAsync(externalCloudProviderType, externalCloudProviderId,
+            parameters, filter, context).block();
     }
 
     /**
@@ -475,13 +418,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ForecastResultInner externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters) {
+    public ForecastResultInner externalCloudProviderUsage(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, ForecastDefinition parameters) {
         final String filter = null;
-        return externalCloudProviderUsageWithResponse(
-                externalCloudProviderType, externalCloudProviderId, parameters, filter, Context.NONE)
-            .getValue();
+        return externalCloudProviderUsageWithResponse(externalCloudProviderType, externalCloudProviderId, parameters,
+            filter, Context.NONE).getValue();
     }
 }

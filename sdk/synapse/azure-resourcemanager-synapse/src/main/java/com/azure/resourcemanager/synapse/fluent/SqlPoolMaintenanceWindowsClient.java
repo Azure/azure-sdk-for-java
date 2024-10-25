@@ -26,12 +26,8 @@ public interface SqlPoolMaintenanceWindowsClient {
      * @return a SQL pool's Maintenance Windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceWindowsInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        Context context);
+    Response<MaintenanceWindowsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, Context context);
 
     /**
      * Get a SQL pool's Maintenance Windows.
@@ -46,8 +42,8 @@ public interface SqlPoolMaintenanceWindowsClient {
      * @return a SQL pool's Maintenance Windows.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MaintenanceWindowsInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName);
+    MaintenanceWindowsInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName);
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
@@ -64,13 +60,8 @@ public interface SqlPoolMaintenanceWindowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context);
+    Response<Void> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
@@ -85,10 +76,6 @@ public interface SqlPoolMaintenanceWindowsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters);
+    void createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters);
 }

@@ -45,9 +45,10 @@ public final class ReplicationProtectionContainersListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProtectionContainer> response
             = manager.replicationProtectionContainers().list("dexquaw", "xizbfzet", com.azure.core.util.Context.NONE);

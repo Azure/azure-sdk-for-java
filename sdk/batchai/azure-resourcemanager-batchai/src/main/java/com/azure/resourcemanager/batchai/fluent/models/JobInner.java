@@ -40,7 +40,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class JobInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobInner.class);
 
     /*
      * Scheduling priority associated with the job.

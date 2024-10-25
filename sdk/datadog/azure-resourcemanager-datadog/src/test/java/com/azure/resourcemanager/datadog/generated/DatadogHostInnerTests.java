@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogHostInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogHostInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"bacphejko\",\"aliases\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"apps\":[\"akeqs\",\"xybz\"],\"meta\":{\"agentVersion\":\"dqytbciqfouflmm\",\"installMethod\":{\"tool\":\"smodmgloug\",\"toolVersion\":\"kwtmutduqktapspw\",\"installerVersion\":\"uertumk\"},\"logsAgent\":{\"transport\":\"vqwhbmdgbbjfd\"}}}")
-                .toObject(DatadogHostInner.class);
+        DatadogHostInner model = BinaryData.fromString(
+            "{\"name\":\"bacphejko\",\"aliases\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"apps\":[\"akeqs\",\"xybz\"],\"meta\":{\"agentVersion\":\"dqytbciqfouflmm\",\"installMethod\":{\"tool\":\"smodmgloug\",\"toolVersion\":\"kwtmutduqktapspw\",\"installerVersion\":\"uertumk\"},\"logsAgent\":{\"transport\":\"vqwhbmdgbbjfd\"}}}")
+            .toObject(DatadogHostInner.class);
         Assertions.assertEquals("bacphejko", model.name());
         Assertions.assertEquals("qgoulznd", model.aliases().get(0));
         Assertions.assertEquals("akeqs", model.apps().get(0));
@@ -32,20 +30,14 @@ public final class DatadogHostInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogHostInner model =
-            new DatadogHostInner()
-                .withName("bacphejko")
-                .withAliases(Arrays.asList("qgoulznd", "i", "wyqkgfgibm"))
-                .withApps(Arrays.asList("akeqs", "xybz"))
-                .withMeta(
-                    new DatadogHostMetadata()
-                        .withAgentVersion("dqytbciqfouflmm")
-                        .withInstallMethod(
-                            new DatadogInstallMethod()
-                                .withTool("smodmgloug")
-                                .withToolVersion("kwtmutduqktapspw")
-                                .withInstallerVersion("uertumk"))
-                        .withLogsAgent(new DatadogLogsAgent().withTransport("vqwhbmdgbbjfd")));
+        DatadogHostInner model = new DatadogHostInner().withName("bacphejko")
+            .withAliases(Arrays.asList("qgoulznd", "i", "wyqkgfgibm"))
+            .withApps(Arrays.asList("akeqs", "xybz"))
+            .withMeta(new DatadogHostMetadata().withAgentVersion("dqytbciqfouflmm")
+                .withInstallMethod(new DatadogInstallMethod().withTool("smodmgloug")
+                    .withToolVersion("kwtmutduqktapspw")
+                    .withInstallerVersion("uertumk"))
+                .withLogsAgent(new DatadogLogsAgent().withTransport("vqwhbmdgbbjfd")));
         model = BinaryData.fromObject(model).toObject(DatadogHostInner.class);
         Assertions.assertEquals("bacphejko", model.name());
         Assertions.assertEquals("qgoulznd", model.aliases().get(0));

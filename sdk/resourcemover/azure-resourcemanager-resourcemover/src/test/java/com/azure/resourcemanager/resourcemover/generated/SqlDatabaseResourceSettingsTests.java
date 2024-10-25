@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlDatabaseResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlDatabaseResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Sql/servers/databases\",\"tags\":{\"ymjhxxjyngudivkr\":\"qjhhkxbpv\",\"szjfauvjfdxxivet\":\"swbxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"zoneRedundant\":\"Enable\",\"targetResourceName\":\"lmpewwwfbkr\",\"targetResourceGroupName\":\"nsvs\"}")
-                .toObject(SqlDatabaseResourceSettings.class);
+        SqlDatabaseResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Sql/servers/databases\",\"tags\":{\"ymjhxxjyngudivkr\":\"qjhhkxbpv\",\"szjfauvjfdxxivet\":\"swbxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"zoneRedundant\":\"Enable\",\"targetResourceName\":\"lmpewwwfbkr\",\"targetResourceGroupName\":\"nsvs\"}")
+            .toObject(SqlDatabaseResourceSettings.class);
         Assertions.assertEquals("lmpewwwfbkr", model.targetResourceName());
         Assertions.assertEquals("nsvs", model.targetResourceGroupName());
         Assertions.assertEquals("qjhhkxbpv", model.tags().get("ymjhxxjyngudivkr"));
@@ -27,21 +25,11 @@ public final class SqlDatabaseResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlDatabaseResourceSettings model =
-            new SqlDatabaseResourceSettings()
-                .withTargetResourceName("lmpewwwfbkr")
-                .withTargetResourceGroupName("nsvs")
-                .withTags(
-                    mapOf(
-                        "ymjhxxjyngudivkr",
-                        "qjhhkxbpv",
-                        "szjfauvjfdxxivet",
-                        "swbxqz",
-                        "qaqtdoqmcbxvwvxy",
-                        "t",
-                        "obl",
-                        "lqbhsf"))
-                .withZoneRedundant(ZoneRedundant.ENABLE);
+        SqlDatabaseResourceSettings model = new SqlDatabaseResourceSettings().withTargetResourceName("lmpewwwfbkr")
+            .withTargetResourceGroupName("nsvs")
+            .withTags(mapOf("ymjhxxjyngudivkr", "qjhhkxbpv", "szjfauvjfdxxivet", "swbxqz", "qaqtdoqmcbxvwvxy", "t",
+                "obl", "lqbhsf"))
+            .withZoneRedundant(ZoneRedundant.ENABLE);
         model = BinaryData.fromObject(model).toObject(SqlDatabaseResourceSettings.class);
         Assertions.assertEquals("lmpewwwfbkr", model.targetResourceName());
         Assertions.assertEquals("nsvs", model.targetResourceGroupName());

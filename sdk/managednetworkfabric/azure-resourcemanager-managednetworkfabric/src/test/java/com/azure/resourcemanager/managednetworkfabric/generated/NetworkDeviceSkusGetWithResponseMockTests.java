@@ -32,37 +32,27 @@ public final class NetworkDeviceSkusGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"model\":\"cbogsfovk\",\"manufacturer\":\"miy\",\"supportedVersions\":[{\"version\":\"rukcyyaalbk\",\"vendorOsVersion\":\"zqazdlrkvitz\",\"vendorFirmwareVersion\":\"fqbxmnnidotm\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"TS\"],\"interfaces\":[{\"identifier\":\"ttqhpvaru\",\"interfaceType\":\"uwj\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"fpqqllavzlhjgm\",\"interfaceType\":\"dblapqraczvtniwf\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Updating\"},\"id\":\"xmyibx\",\"name\":\"ceg\",\"type\":\"ttgxkxt\"}";
+        String responseStr
+            = "{\"properties\":{\"model\":\"cbogsfovk\",\"manufacturer\":\"miy\",\"supportedVersions\":[{\"version\":\"rukcyyaalbk\",\"vendorOsVersion\":\"zqazdlrkvitz\",\"vendorFirmwareVersion\":\"fqbxmnnidotm\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"TS\"],\"interfaces\":[{\"identifier\":\"ttqhpvaru\",\"interfaceType\":\"uwj\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"fpqqllavzlhjgm\",\"interfaceType\":\"dblapqraczvtniwf\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Updating\"},\"id\":\"xmyibx\",\"name\":\"ceg\",\"type\":\"ttgxkxt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkDeviceSku response =
-            manager.networkDeviceSkus().getWithResponse("phxmwwvxcaicb", com.azure.core.util.Context.NONE).getValue();
+        NetworkDeviceSku response
+            = manager.networkDeviceSkus().getWithResponse("phxmwwvxcaicb", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("cbogsfovk", response.model());
         Assertions.assertEquals("miy", response.manufacturer());

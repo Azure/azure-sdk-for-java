@@ -71,148 +71,94 @@ public final class UsersClientImpl implements UsersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientU")
     public interface UsersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("expandGroups") Boolean expandGroups,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<UserCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("expandGroups") Boolean expandGroups, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<UsersGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<UsersGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<UsersCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("notify") Boolean notify,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UserCreateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<UsersGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<UsersUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") UserUpdateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<UsersGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("deleteSubscriptions") Boolean deleteSubscriptions,
+            @QueryParam("notify") Boolean notify, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("appType") AppType appType, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/generateSsoUrl")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrl(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/token")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<UserTokenResultInner>> getSharedAccessToken(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UserTokenParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<UsersCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("notify") Boolean notify,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UserCreateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<UsersUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UserUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("deleteSubscriptions") Boolean deleteSubscriptions,
-            @QueryParam("notify") Boolean notify,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("appType") AppType appType,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/generateSsoUrl")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrl(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/token")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserTokenResultInner>> getSharedAccessToken(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UserTokenParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UserCollection>> listByServiceNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -238,13 +184,11 @@ public final class UsersClientImpl implements UsersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Boolean expandGroups) {
+    private Mono<PagedResponse<UserContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Boolean expandGroups) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,37 +198,16 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            expandGroups,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<UserContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top,
+                    skip, expandGroups, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<UserContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -312,19 +235,11 @@ public final class UsersClientImpl implements UsersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context) {
+    private Mono<PagedResponse<UserContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Boolean expandGroups, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -334,35 +249,16 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                expandGroups,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, expandGroups,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -387,8 +283,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return paged Users list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UserContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Boolean expandGroups) {
+    private PagedFlux<UserContractInner> listByServiceAsync(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, expandGroups),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
@@ -438,18 +334,10 @@ public final class UsersClientImpl implements UsersClient {
      * @return paged Users list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UserContractInner> listByServiceAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, expandGroups, context),
-            nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
+    private PagedFlux<UserContractInner> listByServiceAsync(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, Context context) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip,
+            expandGroups, context), nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -494,14 +382,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context) {
+    public PagedIterable<UserContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, Context context) {
         return new PagedIterable<>(
             listByServiceAsync(resourceGroupName, serviceName, filter, top, skip, expandGroups, context));
     }
@@ -519,13 +401,11 @@ public final class UsersClientImpl implements UsersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId) {
+    private Mono<UsersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -538,25 +418,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                userId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -574,13 +442,11 @@ public final class UsersClientImpl implements UsersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    private Mono<UsersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -593,23 +459,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -642,8 +498,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    public UsersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String userId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, userId, context).block();
     }
 
@@ -676,10 +532,8 @@ public final class UsersClientImpl implements UsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UsersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String userId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -692,25 +546,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -727,13 +569,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return the details of the user specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    private Mono<UsersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String userId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,23 +586,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -795,8 +625,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the details of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    public UsersGetResponse getWithResponse(String resourceGroupName, String serviceName, String userId,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, userId, context).block();
     }
 
@@ -831,18 +661,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        UserCreateParameters parameters,
-        Boolean notify,
-        String ifMatch) {
+    private Mono<UsersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId, UserCreateParameters parameters, Boolean notify, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,10 +678,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -867,21 +688,9 @@ public final class UsersClientImpl implements UsersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            notify,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                userId, notify, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -901,19 +710,12 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        UserCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
+    private Mono<UsersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId, UserCreateParameters parameters, Boolean notify, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -926,10 +728,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -938,19 +738,8 @@ public final class UsersClientImpl implements UsersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                notify,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, userId, notify,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -966,8 +755,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UserContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String userId, UserCreateParameters parameters) {
+    private Mono<UserContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters) {
         final Boolean notify = null;
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, userId, parameters, notify, ifMatch)
@@ -990,17 +779,10 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        UserCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, userId, parameters, notify, ifMatch, context)
-            .block();
+    public UsersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String userId, UserCreateParameters parameters, Boolean notify, String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, userId, parameters, notify, ifMatch,
+            context).block();
     }
 
     /**
@@ -1016,13 +798,12 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String userId, UserCreateParameters parameters) {
+    public UserContractInner createOrUpdate(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters) {
         final Boolean notify = null;
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, serviceName, userId, parameters, notify, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, userId, parameters, notify, ifMatch,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1040,13 +821,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, String ifMatch, UserUpdateParameters parameters) {
+    private Mono<UsersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, UserUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1062,10 +841,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1074,20 +851,8 @@ public final class UsersClientImpl implements UsersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1107,18 +872,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        UserUpdateParameters parameters,
-        Context context) {
+    private Mono<UsersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, UserUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1134,10 +892,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1146,18 +902,8 @@ public final class UsersClientImpl implements UsersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, userId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1175,8 +921,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UserContractInner> updateAsync(
-        String resourceGroupName, String serviceName, String userId, String ifMatch, UserUpdateParameters parameters) {
+    private Mono<UserContractInner> updateAsync(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, UserUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1197,13 +943,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        UserUpdateParameters parameters,
-        Context context) {
+    public UsersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, UserUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, parameters, context).block();
     }
 
@@ -1222,8 +963,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserContractInner update(
-        String resourceGroupName, String serviceName, String userId, String ifMatch, UserUpdateParameters parameters) {
+    public UserContractInner update(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        UserUpdateParameters parameters) {
         return updateWithResponse(resourceGroupName, serviceName, userId, ifMatch, parameters, Context.NONE).getValue();
     }
 
@@ -1245,19 +986,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1273,29 +1006,14 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            deleteSubscriptions,
-                            notify,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            appType,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+                deleteSubscriptions, notify, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                appType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1318,20 +1036,11 @@ public final class UsersClientImpl implements UsersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1347,27 +1056,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                deleteSubscriptions,
-                notify,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                appType,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, userId, deleteSubscriptions,
+            notify, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), appType, accept, context);
     }
 
     /**
@@ -1388,9 +1083,8 @@ public final class UsersClientImpl implements UsersClient {
         final Boolean deleteSubscriptions = null;
         final Boolean notify = null;
         final AppType appType = null;
-        return deleteWithResponseAsync(
-                resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType)
-            .flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify,
+            appType).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1412,18 +1106,10 @@ public final class UsersClientImpl implements UsersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify,
+            appType, context).block();
     }
 
     /**
@@ -1443,8 +1129,8 @@ public final class UsersClientImpl implements UsersClient {
         final Boolean deleteSubscriptions = null;
         final Boolean notify = null;
         final AppType appType = null;
-        deleteWithResponse(
-            resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, Context.NONE);
+        deleteWithResponse(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType,
+            Context.NONE);
     }
 
     /**
@@ -1461,13 +1147,11 @@ public final class UsersClientImpl implements UsersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId) {
+    private Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrlWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1480,25 +1164,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateSsoUrl(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.generateSsoUrl(this.client.getEndpoint(), resourceGroupName, serviceName,
+                userId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1517,13 +1189,11 @@ public final class UsersClientImpl implements UsersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    private Mono<Response<GenerateSsoUrlResultInner>> generateSsoUrlWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1536,23 +1206,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateSsoUrl(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.generateSsoUrl(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1568,8 +1228,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return generate SSO Url operations response details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateSsoUrlResultInner> generateSsoUrlAsync(
-        String resourceGroupName, String serviceName, String userId) {
+    private Mono<GenerateSsoUrlResultInner> generateSsoUrlAsync(String resourceGroupName, String serviceName,
+        String userId) {
         return generateSsoUrlWithResponseAsync(resourceGroupName, serviceName, userId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1588,8 +1248,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return generate SSO Url operations response details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context) {
+    public Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(String resourceGroupName, String serviceName,
+        String userId, Context context) {
         return generateSsoUrlWithResponseAsync(resourceGroupName, serviceName, userId, context).block();
     }
 
@@ -1624,13 +1284,11 @@ public final class UsersClientImpl implements UsersClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserTokenResultInner>> getSharedAccessTokenWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters) {
+    private Mono<Response<UserTokenResultInner>> getSharedAccessTokenWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId, UserTokenParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1643,10 +1301,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1656,18 +1312,8 @@ public final class UsersClientImpl implements UsersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getSharedAccessToken(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.getSharedAccessToken(this.client.getEndpoint(), resourceGroupName, serviceName,
+                    userId, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1686,13 +1332,11 @@ public final class UsersClientImpl implements UsersClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserTokenResultInner>> getSharedAccessTokenWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context) {
+    private Mono<Response<UserTokenResultInner>> getSharedAccessTokenWithResponseAsync(String resourceGroupName,
+        String serviceName, String userId, UserTokenParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1705,10 +1349,8 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1717,17 +1359,8 @@ public final class UsersClientImpl implements UsersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSharedAccessToken(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.getSharedAccessToken(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1743,8 +1376,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the Shared Access Authorization Token for the User on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UserTokenResultInner> getSharedAccessTokenAsync(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters) {
+    private Mono<UserTokenResultInner> getSharedAccessTokenAsync(String resourceGroupName, String serviceName,
+        String userId, UserTokenParameters parameters) {
         return getSharedAccessTokenWithResponseAsync(resourceGroupName, serviceName, userId, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1763,8 +1396,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserTokenResultInner> getSharedAccessTokenWithResponse(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context) {
+    public Response<UserTokenResultInner> getSharedAccessTokenWithResponse(String resourceGroupName, String serviceName,
+        String userId, UserTokenParameters parameters, Context context) {
         return getSharedAccessTokenWithResponseAsync(resourceGroupName, serviceName, userId, parameters, context)
             .block();
     }
@@ -1782,8 +1415,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the Shared Access Authorization Token for the User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserTokenResultInner getSharedAccessToken(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters) {
+    public UserTokenResultInner getSharedAccessToken(String resourceGroupName, String serviceName, String userId,
+        UserTokenParameters parameters) {
         return getSharedAccessTokenWithResponse(resourceGroupName, serviceName, userId, parameters, Context.NONE)
             .getValue();
     }
@@ -1805,23 +1438,14 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UserContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<UserContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1843,23 +1467,13 @@ public final class UsersClientImpl implements UsersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

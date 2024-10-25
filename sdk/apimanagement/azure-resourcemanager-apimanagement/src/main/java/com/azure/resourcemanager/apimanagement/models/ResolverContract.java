@@ -94,11 +94,8 @@ public interface ResolverContract {
          * The stage of the ResolverContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithPath,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithPath,
+            DefinitionStages.WithDescription, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -170,11 +167,8 @@ public interface ResolverContract {
     ResolverContract.Update update();
 
     /** The template for ResolverContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithPath,
-            UpdateStages.WithDescription,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithPath, UpdateStages.WithDescription,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

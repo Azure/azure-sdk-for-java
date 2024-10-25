@@ -99,19 +99,16 @@ public class EventHubsConsumerInstrumentationTests {
     private TestSpanProcessor spanProcessor;
 
     private CheckpointStore checkpointStore;
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         spanProcessor = new TestSpanProcessor(FQDN, ENTITY_NAME, testInfo.getDisplayName());
         OpenTelemetry otel = OpenTelemetrySdk.builder()
-                .setTracerProvider(
-                        SdkTracerProvider.builder()
-                                .addSpanProcessor(spanProcessor)
-                                .build())
-                .build();
+            .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
+            .build();
 
         TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(otel);
-        tracer = TracerProvider.getDefaultProvider()
-                .createTracer("test", null, "Microsoft.EventHub", tracingOptions);
+        tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "Microsoft.EventHub", tracingOptions);
         meter = new TestMeter();
         checkpointStore = new SampleCheckpointStore();
     }
@@ -124,14 +121,13 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     @SuppressWarnings("try")
     public void startAsyncConsumeDisabledInstrumentation(boolean sync) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, null,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(null, null, FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
 
-        try (InstrumentationScope scope =
-                     instrumentation.startAsyncConsume(createMessage(Instant.now()), "0")) {
+        try (InstrumentationScope scope = instrumentation.startAsyncConsume(createMessage(Instant.now()), "0")) {
             assertNull(scope.getStartTime());
         }
 
@@ -143,17 +139,17 @@ public class EventHubsConsumerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void startAsyncConsumeSyncReportsLag() {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, true);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, true);
 
         int measurements = 3;
-        Integer[] lags = new Integer[]{ -10, 0, 10};
-        Integer[] expectedLags = new Integer[]{ 10, 0, 0 };
-        String[] partitionIds = new String[]{"1", "2", "3"};
+        Integer[] lags = new Integer[] { -10, 0, 10 };
+        Integer[] expectedLags = new Integer[] { 10, 0, 0 };
+        String[] partitionIds = new String[] { "1", "2", "3" };
 
         for (int i = 0; i < measurements; i++) {
-            try (InstrumentationScope scope =
-                         instrumentation.startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
+            try (InstrumentationScope scope = instrumentation
+                .startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
                 // lag is reported about received message and don't need to report processing errors
                 // so those will be ignored
                 if (i == 0) {
@@ -170,7 +166,7 @@ public class EventHubsConsumerInstrumentationTests {
         for (int i = 0; i < measurements; i++) {
             assertEquals(expectedLags[i], lag.getMeasurements().get(i).getValue(), 10);
             assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, null, null,
-                    lag.getMeasurements().get(i).getAttributes());
+                lag.getMeasurements().get(i).getAttributes());
         }
 
         // sync consumer reports spans in different instrumentation point
@@ -182,16 +178,16 @@ public class EventHubsConsumerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void startAsyncConsumeAsyncReportsLagAndSpans() {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         int measurements = 3;
-        Integer[] lags = new Integer[]{ -10, 0, 10};
-        String[] partitionIds = new String[]{"1", "2", "3"};
+        Integer[] lags = new Integer[] { -10, 0, 10 };
+        String[] partitionIds = new String[] { "1", "2", "3" };
         String[] expectedErrors = new String[3];
         for (int i = 0; i < measurements; i++) {
-            try (InstrumentationScope scope =
-                         instrumentation.startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
+            try (InstrumentationScope scope = instrumentation
+                .startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
                 // lag is reported about received message and don't need to report processing errors
                 // so those will be ignored on lag, but will be reflected on processing spans
                 if (i == 0) {
@@ -212,8 +208,8 @@ public class EventHubsConsumerInstrumentationTests {
             SpanData span = spanProcessor.getEndedSpans().get(i).toSpanData();
             assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
             Map<String, Object> attributes = attributesToMap(span.getAttributes());
-            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i],
-                PROCESS, attributes);
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i], PROCESS,
+                attributes);
             assertNotNull(attributes.get("messaging.eventhubs.message.enqueued_time"));
             assertSpanStatus(i == 0 ? "cancelled" : i == 1 ? "test" : null, span);
             assertProcessDuration(null, partitionIds[i], expectedErrors[i]);
@@ -223,8 +219,8 @@ public class EventHubsConsumerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void asyncConsumerSpansHaveLinks() throws InterruptedException {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         Instant enqueuedTime = Instant.now();
         Message message = createMessage(enqueuedTime, TRACEPARENT1);
@@ -250,11 +246,11 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     @SuppressWarnings("try")
     public void syncReceiveDisabledInstrumentation(boolean sync) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, null,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(null, null, FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
 
         Flux<PartitionEvent> events = Flux.just(createPartitionEvent(Instant.now(), null, "0"));
         instrumentation.syncReceive(events, "0");
@@ -265,36 +261,31 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     public static Stream<Arguments> syncReceiveErrors() {
-        return Stream.of(
-                Arguments.of(false, null, null, null),
-                Arguments.of(true, null, "cancelled", "cancelled"),
-                Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"),
-                Arguments.of(false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
-        );
+        return Stream.of(Arguments.of(false, null, null, null), Arguments.of(true, null, "cancelled", "cancelled"),
+            Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"), Arguments.of(
+                false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test"));
     }
 
     @ParameterizedTest
     @MethodSource("syncReceiveErrors")
     @SuppressWarnings("try")
     public void syncReceiveOneEvent(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "0";
         Flux<PartitionEvent> events = Flux.just(createPartitionEvent(Instant.now(), null, partitionId))
-                .flatMap(e -> error == null ? Mono.just(e) : Mono.error(error));
+            .flatMap(e -> error == null ? Mono.just(e) : Mono.error(error));
 
-        StepVerifier.Step<PartitionEvent> stepVerifier = StepVerifier.create(instrumentation.syncReceive(events, partitionId));
+        StepVerifier.Step<PartitionEvent> stepVerifier
+            = StepVerifier.create(instrumentation.syncReceive(events, partitionId));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
         } else if (error != null) {
             stepVerifier.expectErrorMessage(error.getMessage()).verify();
         } else {
-            stepVerifier
-                    .expectNextCount(1)
-                    .expectComplete()
-                    .verify();
+            stepVerifier.expectNextCount(1).expectComplete().verify();
         }
 
         assertOperationDuration(RECEIVE, partitionId, expectedErrorType);
@@ -305,36 +296,31 @@ public class EventHubsConsumerInstrumentationTests {
     @ParameterizedTest
     @MethodSource("syncReceiveErrors")
     @SuppressWarnings("try")
-    public void syncReceiveBatchEvent(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+    public void syncReceiveBatchEvent(boolean cancel, Throwable error, String expectedErrorType,
+        String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "1";
 
         int count = 3;
-        Flux<PartitionEvent> events = Flux.just(
-                createPartitionEvent(Instant.now(), TRACEPARENT1, partitionId),
-                createPartitionEvent(Instant.now(), TRACEPARENT2, partitionId),
-                createPartitionEvent(Instant.now(), TRACEPARENT3, partitionId));
+        Flux<PartitionEvent> events = Flux.just(createPartitionEvent(Instant.now(), TRACEPARENT1, partitionId),
+            createPartitionEvent(Instant.now(), TRACEPARENT2, partitionId),
+            createPartitionEvent(Instant.now(), TRACEPARENT3, partitionId));
 
         if (error != null) {
             events = events.concatWith(Mono.error(error));
         }
 
-        StepVerifier.Step<PartitionEvent> stepVerifier = StepVerifier.create(instrumentation.syncReceive(events, partitionId))
-                .expectNextCount(count);
+        StepVerifier.Step<PartitionEvent> stepVerifier
+            = StepVerifier.create(instrumentation.syncReceive(events, partitionId)).expectNextCount(count);
 
         if (cancel) {
-            stepVerifier
-                    .thenCancel().verify();
+            stepVerifier.thenCancel().verify();
         } else if (error != null) {
-            stepVerifier
-                    .expectErrorMessage(error.getMessage())
-                    .verify();
+            stepVerifier.expectErrorMessage(error.getMessage()).verify();
         } else {
-            stepVerifier
-                    .expectComplete()
-                    .verify();
+            stepVerifier.expectComplete().verify();
         }
 
         assertOperationDuration(RECEIVE, partitionId, expectedErrorType);
@@ -351,12 +337,14 @@ public class EventHubsConsumerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void instrumentGenericOperation() {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-            FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "1";
 
-        StepVerifier.create(instrumentation.instrumentMono(Mono.just("partition properties"), GET_PARTITION_PROPERTIES, partitionId))
+        StepVerifier
+            .create(instrumentation.instrumentMono(Mono.just("partition properties"), GET_PARTITION_PROPERTIES,
+                partitionId))
             .expectNextCount(1)
             .expectComplete()
             .verify();
@@ -368,13 +356,14 @@ public class EventHubsConsumerInstrumentationTests {
     @ParameterizedTest
     @MethodSource("genericErrors")
     @SuppressWarnings("try")
-    public void instrumentGenericOperationErrors(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-            FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+    public void instrumentGenericOperationErrors(boolean cancel, Throwable error, String expectedErrorType,
+        String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         Mono<String> operation = Mono.defer(() -> error == null ? Mono.just("eh properties") : Mono.error(error));
-        StepVerifier.FirstStep<String> stepVerifier =
-            StepVerifier.create(instrumentation.instrumentMono(operation, GET_EVENT_HUB_PROPERTIES, null));
+        StepVerifier.FirstStep<String> stepVerifier
+            = StepVerifier.create(instrumentation.instrumentMono(operation, GET_EVENT_HUB_PROPERTIES, null));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
@@ -389,24 +378,25 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     public static Stream<Arguments> processErrors() {
-        AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("test"), null);
-        return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of(new RuntimeException("test"), RuntimeException.class.getName(), "test"),
-                Arguments.of(amqpException, amqpException.getErrorCondition().getErrorCondition(), "test"),
-                Arguments.of(Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
-        );
+        AmqpException amqpException
+            = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("test"), null);
+        return Stream.of(Arguments.of(null, null, null),
+            Arguments.of(new RuntimeException("test"), RuntimeException.class.getName(), "test"),
+            Arguments.of(amqpException, amqpException.getErrorCondition().getErrorCondition(), "test"),
+            Arguments.of(Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test"));
     }
 
     @ParameterizedTest
     @MethodSource("processErrors")
     @SuppressWarnings("try")
-    public void processOneEvent(Throwable error, String expectedErrorType, String spanDescription) throws InterruptedException {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+    public void processOneEvent(Throwable error, String expectedErrorType, String spanDescription)
+        throws InterruptedException {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "0";
-        try (InstrumentationScope scope = instrumentation.startProcess(createEventContext(Instant.now(), TRACEPARENT1, partitionId))) {
+        try (InstrumentationScope scope
+            = instrumentation.startProcess(createEventContext(Instant.now(), TRACEPARENT1, partitionId))) {
             scope.setError(error);
             Thread.sleep(200);
         }
@@ -425,17 +415,16 @@ public class EventHubsConsumerInstrumentationTests {
     @ParameterizedTest
     @MethodSource("processErrors")
     @SuppressWarnings("try")
-    public void processBatch(Throwable error, String expectedErrorType, String spanDescription) throws InterruptedException {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+    public void processBatch(Throwable error, String expectedErrorType, String spanDescription)
+        throws InterruptedException {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "1";
 
         int count = 3;
-        List<EventData> events = Arrays.asList(
-                createEventData(Instant.now(), TRACEPARENT1),
-                createEventData(Instant.now(), TRACEPARENT2),
-                createEventData(Instant.now(), TRACEPARENT3));
+        List<EventData> events = Arrays.asList(createEventData(Instant.now(), TRACEPARENT1),
+            createEventData(Instant.now(), TRACEPARENT2), createEventData(Instant.now(), TRACEPARENT3));
         PartitionContext partitionContext = new PartitionContext(FQDN, ENTITY_NAME, CONSUMER_GROUP, partitionId);
         EventBatchContext batchContext = new EventBatchContext(partitionContext, events, checkpointStore, null);
 
@@ -459,20 +448,17 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     public static Stream<Arguments> genericErrors() {
-        return Stream.of(
-                Arguments.of(false, null, null, null),
-                Arguments.of(true, null, "cancelled", "cancelled"),
-                Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"),
-                Arguments.of(false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
-        );
+        return Stream.of(Arguments.of(false, null, null, null), Arguments.of(true, null, "cancelled", "cancelled"),
+            Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"), Arguments.of(
+                false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test"));
     }
 
     @Test
     public void checkpointWithDisabledInstrumentation() {
         CheckpointStore inner = new SampleCheckpointStore();
 
-        EventHubsConsumerInstrumentation disabled = new EventHubsConsumerInstrumentation(null, null,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation disabled
+            = new EventHubsConsumerInstrumentation(null, null, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         CheckpointStore instrumented = InstrumentedCheckpointStore.create(inner, disabled);
         assertSame(instrumented, inner);
@@ -482,17 +468,16 @@ public class EventHubsConsumerInstrumentationTests {
     @MethodSource("genericErrors")
     @SuppressWarnings("try")
     public void checkpoint(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "0";
 
-        CheckpointStore store = InstrumentedCheckpointStore.create(
-                new TestCheckpointStore(i -> error == null ? i : Mono.error(error)),
-                instrumentation);
+        CheckpointStore store = InstrumentedCheckpointStore
+            .create(new TestCheckpointStore(i -> error == null ? i : Mono.error(error)), instrumentation);
 
-        StepVerifier.FirstStep<Void> stepVerifier =
-                StepVerifier.create(store.updateCheckpoint(createCheckpoint(partitionId)));
+        StepVerifier.FirstStep<Void> stepVerifier
+            = StepVerifier.create(store.updateCheckpoint(createCheckpoint(partitionId)));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
@@ -509,22 +494,21 @@ public class EventHubsConsumerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void checkpointPassesContextToDownstream() {
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "0";
 
         AtomicReference<ContextView> capturedContext = new AtomicReference<>();
 
-        CheckpointStore store = InstrumentedCheckpointStore.create(
-                new TestCheckpointStore(inner -> Mono.deferContextual(ctx -> {
-                    capturedContext.set(ctx);
-                    return inner;
-                })),
-                instrumentation);
+        CheckpointStore store
+            = InstrumentedCheckpointStore.create(new TestCheckpointStore(inner -> Mono.deferContextual(ctx -> {
+                capturedContext.set(ctx);
+                return inner;
+            })), instrumentation);
 
-        StepVerifier.create(store.updateCheckpoint(createCheckpoint(partitionId))
-                        .contextWrite(ctx -> ctx.put("foo", "bar")))
+        StepVerifier
+            .create(store.updateCheckpoint(createCheckpoint(partitionId)).contextWrite(ctx -> ctx.put("foo", "bar")))
             .expectComplete()
             .verify();
 
@@ -539,25 +523,28 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     private static Checkpoint createCheckpoint(String partitionId) {
-        return new Checkpoint()
-                .setFullyQualifiedNamespace(FQDN)
-                .setEventHubName(ENTITY_NAME)
-                .setSequenceNumber(1L)
-                .setPartitionId(partitionId)
-                .setOffset(2L)
-                .setConsumerGroup(CONSUMER_GROUP);
+        return new Checkpoint().setFullyQualifiedNamespace(FQDN)
+            .setEventHubName(ENTITY_NAME)
+            .setSequenceNumber(1L)
+            .setPartitionId(partitionId)
+            .setOffset(2L)
+            .setConsumerGroup(CONSUMER_GROUP);
     }
+
     private static Message createMessage(Instant enqueuedTime) {
         Message message = Message.Factory.create();
-        message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
+        message.setMessageAnnotations(new MessageAnnotations(
+            Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
         message.setApplicationProperties(new ApplicationProperties(Collections.emptyMap()));
         return message;
     }
 
     private static Message createMessage(Instant enqueuedTime, String traceparent) {
         Message message = Message.Factory.create();
-        message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
-        message.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("traceparent", traceparent)));
+        message.setMessageAnnotations(new MessageAnnotations(
+            Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
+        message
+            .setApplicationProperties(new ApplicationProperties(Collections.singletonMap("traceparent", traceparent)));
         return message;
     }
 
@@ -576,14 +563,16 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     private static EventData createEventData(Instant enqueuedTime, String traceparent) {
-        AmqpAnnotatedMessage annotatedMessage = new AmqpAnnotatedMessage(
-                AmqpMessageBody.fromData("foo".getBytes(StandardCharsets.UTF_8)));
+        AmqpAnnotatedMessage annotatedMessage
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("foo".getBytes(StandardCharsets.UTF_8)));
         annotatedMessage.getApplicationProperties().put("traceparent", traceparent);
-        annotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+        annotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         return TestUtils.createEventData(annotatedMessage, 25L, 14L, enqueuedTime);
     }
 
-    private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType, String spanDescription) {
+    private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType,
+        String spanDescription) {
         SpanData span = assertGenericOperationSpan(RECEIVE, CLIENT, partitionId, expectedErrorType, spanDescription);
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
         assertEquals((long) expectedBatchSize, attributes.get("messaging.batch.message_count"));
@@ -598,7 +587,8 @@ public class EventHubsConsumerInstrumentationTests {
         return assertGenericOperationSpan(CHECKPOINT, INTERNAL, partitionId, expectedErrorType, spanDescription);
     }
 
-    private SpanData assertGenericOperationSpan(OperationName operation, SpanKind kind, String partitionId, String expectedErrorType, String spanDescription) {
+    private SpanData assertGenericOperationSpan(OperationName operation, SpanKind kind, String partitionId,
+        String expectedErrorType, String spanDescription) {
         assertEquals(1, spanProcessor.getEndedSpans().size());
         SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
         assertEquals(getSpanName(operation, ENTITY_NAME), span.getName());
@@ -613,16 +603,17 @@ public class EventHubsConsumerInstrumentationTests {
         TestHistogram operationDuration = meter.getHistograms().get("messaging.client.operation.duration");
         assertNotNull(operationDuration);
         assertEquals(1, operationDuration.getMeasurements().size());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                operationName, operationDuration.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, operationName,
+            operationDuration.getMeasurements().get(0).getAttributes());
     }
 
     private void assertProcessDuration(Duration duration, String partitionId, String expectedErrorType) {
         TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
-        List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements().stream()
-                        .filter(m -> partitionId.equals(m.getAttributes().get("messaging.destination.partition.id")))
-                        .collect(Collectors.toList());
+        List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements()
+            .stream()
+            .filter(m -> partitionId.equals(m.getAttributes().get("messaging.destination.partition.id")))
+            .collect(Collectors.toList());
         assertEquals(1, durationPerPartition.size());
         if (duration != null) {
             double sec = getDoubleSeconds(duration);
@@ -630,8 +621,8 @@ public class EventHubsConsumerInstrumentationTests {
             assertEquals(sec, durationPerPartition.get(0).getValue(), sec + 10);
         }
 
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                PROCESS, durationPerPartition.get(0).getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, PROCESS,
+            durationPerPartition.get(0).getAttributes());
     }
 
     private void assertConsumedCount(int count, String partitionId, String errorType, OperationName operationName) {
@@ -663,7 +654,8 @@ public class EventHubsConsumerInstrumentationTests {
         }
 
         @Override
-        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return inner.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup);
         }
 
@@ -673,7 +665,8 @@ public class EventHubsConsumerInstrumentationTests {
         }
 
         @Override
-        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return inner.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroup);
         }
 

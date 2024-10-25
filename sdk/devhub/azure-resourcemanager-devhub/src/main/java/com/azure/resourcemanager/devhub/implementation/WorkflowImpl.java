@@ -201,22 +201,18 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -232,22 +228,18 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .updateTagsWithResponse(resourceGroupName, workflowName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .updateTagsWithResponse(resourceGroupName, workflowName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .updateTagsWithResponse(resourceGroupName, workflowName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .updateTagsWithResponse(resourceGroupName, workflowName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -259,22 +251,18 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .getByResourceGroupWithResponse(resourceGroupName, workflowName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .getByResourceGroupWithResponse(resourceGroupName, workflowName, context)
+            .getValue();
         return this;
     }
 
@@ -408,10 +396,9 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         return this;
     }
 
-    public WorkflowImpl withNamespaceArtifactGenerationPropertiesNamespace(
-        String namespaceArtifactGenerationPropertiesNamespace) {
-        this
-            .innerModel()
+    public WorkflowImpl
+        withNamespaceArtifactGenerationPropertiesNamespace(String namespaceArtifactGenerationPropertiesNamespace) {
+        this.innerModel()
             .withNamespaceArtifactGenerationPropertiesNamespace(namespaceArtifactGenerationPropertiesNamespace);
         return this;
     }

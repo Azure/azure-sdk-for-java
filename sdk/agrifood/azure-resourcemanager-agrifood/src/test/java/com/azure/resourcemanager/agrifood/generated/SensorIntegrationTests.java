@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Test;
 public final class SensorIntegrationTests {
     @Test
     public void testDeserialize() {
-        SensorIntegration model =
-            BinaryData
-                .fromString("{\"enabled\":\"vkmijcmmxdcuf\",\"provisioningState\":\"Deleting\"}")
+        SensorIntegration model
+            = BinaryData.fromString("{\"enabled\":\"vkmijcmmxdcuf\",\"provisioningState\":\"Deleting\"}")
                 .toObject(SensorIntegration.class);
         Assertions.assertEquals("vkmijcmmxdcuf", model.enabled());
     }

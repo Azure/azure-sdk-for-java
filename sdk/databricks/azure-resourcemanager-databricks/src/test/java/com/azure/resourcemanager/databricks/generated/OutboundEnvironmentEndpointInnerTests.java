@@ -13,27 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"vdcsitynn\",\"endpoints\":[{\"domainName\":\"ectehf\",\"endpointDetails\":[]},{\"domainName\":\"jeyp\",\"endpointDetails\":[]},{\"domainName\":\"rkgqhcjrefo\",\"endpointDetails\":[]},{\"domainName\":\"qsl\",\"endpointDetails\":[]}]}")
-                .toObject(OutboundEnvironmentEndpointInner.class);
+        OutboundEnvironmentEndpointInner model = BinaryData.fromString(
+            "{\"category\":\"vdcsitynn\",\"endpoints\":[{\"domainName\":\"ectehf\",\"endpointDetails\":[]},{\"domainName\":\"jeyp\",\"endpointDetails\":[]},{\"domainName\":\"rkgqhcjrefo\",\"endpointDetails\":[]},{\"domainName\":\"qsl\",\"endpointDetails\":[]}]}")
+            .toObject(OutboundEnvironmentEndpointInner.class);
         Assertions.assertEquals("vdcsitynn", model.category());
         Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            new OutboundEnvironmentEndpointInner()
-                .withCategory("vdcsitynn")
-                .withEndpoints(
-                    Arrays
-                        .asList(
-                            new EndpointDependency().withDomainName("ectehf").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("jeyp").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("rkgqhcjrefo").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("qsl").withEndpointDetails(Arrays.asList())));
+        OutboundEnvironmentEndpointInner model
+            = new OutboundEnvironmentEndpointInner().withCategory("vdcsitynn")
+                .withEndpoints(Arrays.asList(
+                    new EndpointDependency().withDomainName("ectehf").withEndpointDetails(Arrays.asList()),
+                    new EndpointDependency().withDomainName("jeyp").withEndpointDetails(Arrays.asList()),
+                    new EndpointDependency().withDomainName("rkgqhcjrefo").withEndpointDetails(Arrays.asList()),
+                    new EndpointDependency().withDomainName("qsl").withEndpointDetails(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
         Assertions.assertEquals("vdcsitynn", model.category());
         Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());

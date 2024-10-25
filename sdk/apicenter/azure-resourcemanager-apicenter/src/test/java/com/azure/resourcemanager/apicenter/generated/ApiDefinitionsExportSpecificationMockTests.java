@@ -44,12 +44,14 @@ public final class ApiDefinitionsExportSpecificationMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApiSpecExportResult response = manager.apiDefinitions().exportSpecification("gseinq", "iufxqknpir",
-            "nepttwqmsni", "fcdmqnrojlpijn", "rxfrddhc", "atiz", com.azure.core.util.Context.NONE);
+        ApiSpecExportResult response = manager.apiDefinitions()
+            .exportSpecification("gseinq", "iufxqknpir", "nepttwqmsni", "fcdmqnrojlpijn", "rxfrddhc", "atiz",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ApiSpecExportResultFormat.LINK, response.format());
         Assertions.assertEquals("asxifto", response.value());

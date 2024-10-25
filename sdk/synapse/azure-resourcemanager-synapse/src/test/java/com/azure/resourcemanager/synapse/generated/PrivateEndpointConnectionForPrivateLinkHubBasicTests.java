@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionForPrivateLinkHubBasicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubBasic model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"uwiqzb\",\"properties\":{\"privateEndpoint\":{\"id\":\"ovm\"},\"privateLinkServiceConnectionState\":{\"status\":\"acspkwl\",\"description\":\"dobpxjmflbvvn\",\"actionsRequired\":\"rkcciwwzjuqk\"},\"provisioningState\":\"sa\"}}")
-                .toObject(PrivateEndpointConnectionForPrivateLinkHubBasic.class);
+        PrivateEndpointConnectionForPrivateLinkHubBasic model = BinaryData.fromString(
+            "{\"id\":\"uwiqzb\",\"properties\":{\"privateEndpoint\":{\"id\":\"ovm\"},\"privateLinkServiceConnectionState\":{\"status\":\"acspkwl\",\"description\":\"dobpxjmflbvvn\",\"actionsRequired\":\"rkcciwwzjuqk\"},\"provisioningState\":\"sa\"}}")
+            .toObject(PrivateEndpointConnectionForPrivateLinkHubBasic.class);
         Assertions.assertEquals("acspkwl", model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("dobpxjmflbvvn", model.privateLinkServiceConnectionState().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubBasic model =
-            new PrivateEndpointConnectionForPrivateLinkHubBasic()
-                .withPrivateEndpoint(new PrivateEndpoint())
+        PrivateEndpointConnectionForPrivateLinkHubBasic model
+            = new PrivateEndpointConnectionForPrivateLinkHubBasic().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus("acspkwl").withDescription("dobpxjmflbvvn"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionForPrivateLinkHubBasic.class);

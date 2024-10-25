@@ -53,9 +53,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param client the instance of the service client containing this operation class.
      */
     MonitoredSubscriptionsClientImpl(MicrosoftDatadogClientImpl client) {
-        this.service =
-            RestProxy
-                .create(MonitoredSubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MonitoredSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,81 +65,56 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftDatadogClie")
     public interface MonitoredSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoredSubscriptionPropertiesList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MonitoredSubscriptionPropertiesList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoredSubscriptionPropertiesInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MonitoredSubscriptionPropertiesInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createorUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createorUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -154,19 +128,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,21 +147,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<MonitoredSubscriptionPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<MonitoredSubscriptionPropertiesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -207,19 +166,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -231,18 +186,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -272,8 +219,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MonitoredSubscriptionPropertiesInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private PagedFlux<MonitoredSubscriptionPropertiesInner> listAsync(String resourceGroupName, String monitorName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context));
     }
 
@@ -304,8 +251,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MonitoredSubscriptionPropertiesInner> list(
-        String resourceGroupName, String monitorName, Context context) {
+    public PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
     }
 
@@ -322,19 +269,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,18 +292,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -378,19 +311,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -405,16 +334,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+            configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -430,8 +351,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> getAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<MonitoredSubscriptionPropertiesInner> getAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -450,8 +371,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitoredSubscriptionPropertiesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    public Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
     }
 
@@ -467,8 +388,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner get(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public MonitoredSubscriptionPropertiesInner get(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
     }
 
@@ -486,22 +407,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, MonitoredSubscriptionPropertiesInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -519,19 +433,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createorUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createorUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -550,23 +453,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -584,17 +479,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createorUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createorUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -612,21 +498,13 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginCreateorUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
@@ -645,16 +523,11 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateorUpdateAsync(String resourceGroupName, String monitorName, String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
@@ -673,23 +546,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            MonitoredSubscriptionPropertiesInner body,
-            Context context) {
+        beginCreateorUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
+            MonitoredSubscriptionPropertiesInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, context);
     }
 
     /**
@@ -727,14 +591,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            MonitoredSubscriptionPropertiesInner body,
-            Context context) {
-        return this
-            .beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
+        beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName,
+            MonitoredSubscriptionPropertiesInner body, Context context) {
+        return this.beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
             .getSyncPoller();
     }
 
@@ -752,13 +611,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body) {
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body) {
+        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -775,11 +630,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -798,14 +652,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
-            .last()
+    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
+        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -821,8 +670,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner createorUpdate(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+        String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
         return createorUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
     }
@@ -841,12 +690,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner createorUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
+    public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         return createorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
     }
 
@@ -864,22 +709,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -897,19 +735,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -928,23 +755,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -962,17 +781,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -990,21 +800,13 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
@@ -1023,16 +825,11 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdateAsync(String resourceGroupName, String monitorName, String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
@@ -1051,23 +848,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            MonitoredSubscriptionPropertiesInner body,
-            Context context) {
+        beginUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
+            MonitoredSubscriptionPropertiesInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
-        return this
-            .client
-            .<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MonitoredSubscriptionPropertiesInner.class,
-                MonitoredSubscriptionPropertiesInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
+            MonitoredSubscriptionPropertiesInner.class, context);
     }
 
     /**
@@ -1105,12 +893,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            MonitoredSubscriptionPropertiesInner body,
-            Context context) {
+        beginUpdate(String resourceGroupName, String monitorName, String configurationName,
+            MonitoredSubscriptionPropertiesInner body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).getSyncPoller();
     }
 
@@ -1128,13 +912,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body) {
-        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body) {
+        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1151,11 +931,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1174,14 +953,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
-            .last()
+    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
+        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1197,8 +971,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner update(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
+        String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
         return updateAsync(resourceGroupName, monitorName, configurationName, body).block();
     }
@@ -1217,12 +991,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner update(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context) {
+    public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         return updateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
     }
 
@@ -1238,19 +1008,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,18 +1031,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1293,19 +1049,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1320,16 +1072,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1344,14 +1088,12 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, monitorName, configurationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, monitorName, configurationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1367,14 +1109,13 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, monitorName, configurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, monitorName, configurationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1389,8 +1130,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String configurationName) {
         return this.beginDeleteAsync(resourceGroupName, monitorName, configurationName).getSyncPoller();
     }
 
@@ -1407,8 +1148,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, monitorName, configurationName, context).getSyncPoller();
     }
 
@@ -1425,8 +1166,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String configurationName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, configurationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, monitorName, configurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1443,10 +1183,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, configurationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String configurationName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, monitorName, configurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 

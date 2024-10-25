@@ -45,9 +45,10 @@ public final class WorkspacesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Workspace> response
             = manager.workspaces().list("kcnqxwbpo", "ulpiuj", "aasipqi", com.azure.core.util.Context.NONE);

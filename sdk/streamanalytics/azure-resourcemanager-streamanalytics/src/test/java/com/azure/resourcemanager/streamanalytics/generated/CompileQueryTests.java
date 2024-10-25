@@ -44,10 +44,15 @@ public final class CompileQueryTests {
             .withFunctions(
                 Arrays
                     .asList(
-                        new QueryFunction().withName("ied").withType("ugidyjrr").withBindingType("byao").withInputs(
-                            Arrays.asList(new FunctionInput().withDataType("xc").withIsConfigurationParameter(false)))
+                        new QueryFunction().withName("ied")
+                            .withType("ugidyjrr")
+                            .withBindingType("byao")
+                            .withInputs(Arrays
+                                .asList(new FunctionInput().withDataType("xc").withIsConfigurationParameter(false)))
                             .withOutput(new FunctionOutput().withDataType("clhocohsl")),
-                        new QueryFunction().withName("ev").withType("eggzfb").withBindingType("hfmvfaxkffe")
+                        new QueryFunction().withName("ev")
+                            .withType("eggzfb")
+                            .withBindingType("hfmvfaxkffe")
                             .withInputs(Arrays.asList(
                                 new FunctionInput().withDataType("hl").withIsConfigurationParameter(false),
                                 new FunctionInput().withDataType("yvshxmz").withIsConfigurationParameter(true),
@@ -55,17 +60,21 @@ public final class CompileQueryTests {
                                 new FunctionInput().withDataType("nspydptkoenkoukn")
                                     .withIsConfigurationParameter(true)))
                             .withOutput(new FunctionOutput().withDataType("tiukbldngkpoci")),
-                        new QueryFunction().withName("azyxoegukg").withType("npiucgygevqznty")
+                        new QueryFunction().withName("azyxoegukg")
+                            .withType("npiucgygevqznty")
                             .withBindingType("mrbpizcdrqj")
                             .withInputs(Arrays.asList(
                                 new FunctionInput().withDataType("ydnfyhxdeoejz").withIsConfigurationParameter(false),
                                 new FunctionInput().withDataType("fsj").withIsConfigurationParameter(true)))
                             .withOutput(new FunctionOutput().withDataType("fbishcbkha")),
-                        new QueryFunction().withName("deyeamdphagalpbu").withType("wgipwhono").withBindingType("kgshwa")
+                        new QueryFunction().withName("deyeamdphagalpbu")
+                            .withType("wgipwhono")
+                            .withBindingType("kgshwa")
                             .withInputs(Arrays.asList(
                                 new FunctionInput().withDataType("xzbinjeputt").withIsConfigurationParameter(false)))
                             .withOutput(new FunctionOutput().withDataType("nuzo"))))
-            .withJobType(JobType.EDGE).withCompatibilityLevel(CompatibilityLevel.ONE_ZERO);
+            .withJobType(JobType.EDGE)
+            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO);
         model = BinaryData.fromObject(model).toObject(CompileQuery.class);
         Assertions.assertEquals("iqzbq", model.query());
         Assertions.assertEquals("ovm", model.inputs().get(0).name());

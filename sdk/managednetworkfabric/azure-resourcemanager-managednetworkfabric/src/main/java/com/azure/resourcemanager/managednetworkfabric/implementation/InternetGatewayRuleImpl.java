@@ -104,25 +104,21 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public InternetGatewayRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), context);
         return this;
     }
 
-    InternetGatewayRuleImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    InternetGatewayRuleImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new InternetGatewayRuleInner();
         this.serviceManager = serviceManager;
         this.internetGatewayRuleName = name;
@@ -134,25 +130,20 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .update(resourceGroupName, internetGatewayRuleName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .update(resourceGroupName, internetGatewayRuleName, updateBody, Context.NONE);
         return this;
     }
 
     public InternetGatewayRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .update(resourceGroupName, internetGatewayRuleName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .update(resourceGroupName, internetGatewayRuleName, updateBody, context);
         return this;
     }
 
-    InternetGatewayRuleImpl(
-        InternetGatewayRuleInner innerObject,
+    InternetGatewayRuleImpl(InternetGatewayRuleInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -161,22 +152,18 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InternetGatewayRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternetGatewayRules()
-                .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternetGatewayRules()
+            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, context)
+            .getValue();
         return this;
     }
 

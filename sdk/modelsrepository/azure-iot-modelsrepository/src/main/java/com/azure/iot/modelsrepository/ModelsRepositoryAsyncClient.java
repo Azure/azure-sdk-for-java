@@ -32,23 +32,20 @@ public final class ModelsRepositoryAsyncClient {
     private final ModelDependencyResolution defaultDependencyResolutionOption;
     private final URI repositoryEndpoint;
 
-    ModelsRepositoryAsyncClient(
-        URI repositoryEndpoint,
-        HttpPipeline pipeline,
-        ModelsRepositoryServiceVersion serviceVersion,
-        ModelDependencyResolution dependencyResolutionOption) {
+    ModelsRepositoryAsyncClient(URI repositoryEndpoint, HttpPipeline pipeline,
+        ModelsRepositoryServiceVersion serviceVersion, ModelDependencyResolution dependencyResolutionOption) {
 
         this.serviceVersion = serviceVersion;
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
         this.repositoryEndpoint = repositoryEndpoint;
 
-        ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
-            .apiVersion(this.serviceVersion.toString())
-            .host(repositoryEndpoint.toString())
-            .pipeline(pipeline)
-            .serializerAdapter(JacksonAdapter.createDefaultSerializerAdapter())
-            .buildClient();
+        ModelsRepositoryAPIImpl protocolLayer
+            = new ModelsRepositoryAPIImplBuilder().apiVersion(this.serviceVersion.toString())
+                .host(repositoryEndpoint.toString())
+                .pipeline(pipeline)
+                .serializerAdapter(JacksonAdapter.createDefaultSerializerAdapter())
+                .buildClient();
 
         this.repositoryHandler = new RepositoryHandler(repositoryEndpoint, protocolLayer);
     }
@@ -126,7 +123,8 @@ public final class ModelsRepositoryAsyncClient {
         return withContext(context -> getModels(dtmis, dependencyResolution, context));
     }
 
-    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution, Context context) {
+    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution,
+        Context context) {
         return repositoryHandler.processAsync(dtmis, dependencyResolution, context);
     }
 }

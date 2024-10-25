@@ -13,23 +13,16 @@ import org.junit.jupiter.api.Test;
 public final class PrivateEndpointConnectionListResultTests {
     @Test
     public void testDeserialize() {
-        PrivateEndpointConnectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"ruwiqzbqjvsov\",\"name\":\"yokacspkw\",\"type\":\"hzdobpxjmflbvvnc\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"wwzjuqkhrsajiwku\",\"name\":\"foskghsauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"osvexcsonpclhoc\",\"name\":\"hslkevleggzf\",\"type\":\"u\"}]}")
-                .toObject(PrivateEndpointConnectionListResult.class);
+        PrivateEndpointConnectionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"ruwiqzbqjvsov\",\"name\":\"yokacspkw\",\"type\":\"hzdobpxjmflbvvnc\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"wwzjuqkhrsajiwku\",\"name\":\"foskghsauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"osvexcsonpclhoc\",\"name\":\"hslkevleggzf\",\"type\":\"u\"}]}")
+            .toObject(PrivateEndpointConnectionListResult.class);
     }
 
     @Test
     public void testSerialize() {
-        PrivateEndpointConnectionListResult model =
-            new PrivateEndpointConnectionListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner(),
-                            new PrivateEndpointConnectionInner(),
-                            new PrivateEndpointConnectionInner()));
+        PrivateEndpointConnectionListResult model
+            = new PrivateEndpointConnectionListResult().withValue(Arrays.asList(new PrivateEndpointConnectionInner(),
+                new PrivateEndpointConnectionInner(), new PrivateEndpointConnectionInner()));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
     }
 }

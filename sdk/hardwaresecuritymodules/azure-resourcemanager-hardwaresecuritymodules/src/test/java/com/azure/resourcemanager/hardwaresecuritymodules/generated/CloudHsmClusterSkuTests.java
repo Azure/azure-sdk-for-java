@@ -24,7 +24,8 @@ public final class CloudHsmClusterSkuTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudHsmClusterSku model = new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
-            .withName(CloudHsmClusterSkuName.STANDARD_B10).withCapacity(1580515344);
+            .withName(CloudHsmClusterSkuName.STANDARD_B10)
+            .withCapacity(1580515344);
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterSku.class);
         Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.family());
         Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B10, model.name());

@@ -54,9 +54,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @param client the instance of the service client containing this operation class.
      */
     CloudServicesNetworksClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy
-                .create(CloudServicesNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CloudServicesNetworksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,107 +66,80 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudCloudSer")
     public interface CloudServicesNetworksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CloudServicesNetworkList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CloudServicesNetworkList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CloudServicesNetworkInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
             @BodyParam("application/json") CloudServicesNetworkInner cloudServicesNetworkParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
             @BodyParam("application/json") CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudServicesNetworkList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudServicesNetworkList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -183,37 +155,19 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -232,35 +186,20 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -275,8 +214,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -293,8 +232,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -342,19 +281,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,25 +297,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -398,19 +318,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,22 +335,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -451,8 +355,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -471,8 +374,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -525,42 +427,28 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -579,40 +467,28 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context);
     }
 
     /**
@@ -628,8 +504,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return properties of the provided cloud services network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> getByResourceGroupAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<CloudServicesNetworkInner> getByResourceGroupAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServicesNetworkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -648,8 +524,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return properties of the provided cloud services network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    public Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context).block();
     }
 
@@ -685,53 +561,35 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter cloudServicesNetworkParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter cloudServicesNetworkParameters is required and cannot be null."));
         } else {
             cloudServicesNetworkParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            cloudServicesNetworkParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+                cloudServicesNetworkParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -751,52 +609,35 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter cloudServicesNetworkParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter cloudServicesNetworkParameters is required and cannot be null."));
         } else {
             cloudServicesNetworkParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                cloudServicesNetworkParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkParameters, accept, context);
     }
 
     /**
@@ -815,20 +656,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            cloudServicesNetworkName, cloudServicesNetworkParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -848,22 +682,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            cloudServicesNetworkName, cloudServicesNetworkParameters, context);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, context);
     }
 
     /**
@@ -882,8 +707,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters)
@@ -907,13 +731,11 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters,
+                context)
             .getSyncPoller();
     }
 
@@ -932,10 +754,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters) {
+    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -957,15 +777,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -983,9 +798,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+    public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return createOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters).block();
     }
@@ -1006,11 +819,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+    public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
             .block();
     }
@@ -1028,42 +838,28 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1081,40 +877,28 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, cloudServicesNetworkName, accept, context);
     }
 
     /**
@@ -1130,13 +914,11 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1153,14 +935,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1194,8 +975,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).getSyncPoller();
     }
 
@@ -1213,8 +994,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
-        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1233,8 +1013,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1287,48 +1066,32 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkUpdateParameters != null) {
             cloudServicesNetworkUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            cloudServicesNetworkUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+                cloudServicesNetworkUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1349,47 +1112,32 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkUpdateParameters != null) {
             cloudServicesNetworkUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                cloudServicesNetworkUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, accept, context);
     }
 
     /**
@@ -1409,19 +1157,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1439,19 +1181,14 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
+        beginUpdateAsync(String resourceGroupName, String cloudServicesNetworkName) {
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1472,22 +1209,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters, context);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, context);
     }
 
     /**
@@ -1505,11 +1233,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
+        beginUpdate(String resourceGroupName, String cloudServicesNetworkName) {
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
             .getSyncPoller();
     }
 
@@ -1531,13 +1258,11 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
+            .beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters,
+                context)
             .getSyncPoller();
     }
 
@@ -1557,9 +1282,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> updateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+    private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
             .last()
@@ -1605,15 +1328,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> updateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1653,11 +1371,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner update(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+    public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
             .block();
     }
@@ -1679,24 +1394,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1713,30 +1419,20 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1756,24 +1452,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1790,29 +1477,19 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

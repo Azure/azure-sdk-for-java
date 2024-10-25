@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactGenerationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactGenerationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"generationLanguage\":\"python\",\"languageVersion\":\"wpyeicxmqciwqvh\",\"builderVersion\":\"ixuigdtopbobj\",\"port\":\"hm\",\"appName\":\"u\",\"dockerfileOutputDirectory\":\"a\",\"manifestOutputDirectory\":\"rzayv\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"iotkftutqxl\",\"namespace\":\"xlefgugnxkrx\",\"imageTag\":\"mi\"}")
-                .toObject(ArtifactGenerationProperties.class);
+        ArtifactGenerationProperties model = BinaryData.fromString(
+            "{\"generationLanguage\":\"python\",\"languageVersion\":\"wpyeicxmqciwqvh\",\"builderVersion\":\"ixuigdtopbobj\",\"port\":\"hm\",\"appName\":\"u\",\"dockerfileOutputDirectory\":\"a\",\"manifestOutputDirectory\":\"rzayv\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"iotkftutqxl\",\"namespace\":\"xlefgugnxkrx\",\"imageTag\":\"mi\"}")
+            .toObject(ArtifactGenerationProperties.class);
         Assertions.assertEquals(GenerationLanguage.PYTHON, model.generationLanguage());
         Assertions.assertEquals("wpyeicxmqciwqvh", model.languageVersion());
         Assertions.assertEquals("ixuigdtopbobj", model.builderVersion());
@@ -37,9 +35,8 @@ public final class ArtifactGenerationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactGenerationProperties model =
-            new ArtifactGenerationProperties()
-                .withGenerationLanguage(GenerationLanguage.PYTHON)
+        ArtifactGenerationProperties model
+            = new ArtifactGenerationProperties().withGenerationLanguage(GenerationLanguage.PYTHON)
                 .withLanguageVersion("wpyeicxmqciwqvh")
                 .withBuilderVersion("ixuigdtopbobj")
                 .withPort("hm")

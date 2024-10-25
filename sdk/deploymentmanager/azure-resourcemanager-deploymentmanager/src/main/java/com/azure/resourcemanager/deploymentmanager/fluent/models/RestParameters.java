@@ -50,9 +50,8 @@ public final class RestParameters {
      */
     public void validate() {
         if (healthChecks() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property healthChecks in model RestParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property healthChecks in model RestParameters"));
         } else {
             healthChecks().forEach(e -> e.validate());
         }

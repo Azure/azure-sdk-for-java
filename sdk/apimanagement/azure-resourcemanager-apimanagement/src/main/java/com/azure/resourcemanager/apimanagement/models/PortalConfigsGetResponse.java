@@ -20,12 +20,8 @@ public final class PortalConfigsGetResponse extends ResponseBase<PortalConfigsGe
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PortalConfigsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PortalConfigContractInner value,
-        PortalConfigsGetHeaders headers) {
+    public PortalConfigsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PortalConfigContractInner value, PortalConfigsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

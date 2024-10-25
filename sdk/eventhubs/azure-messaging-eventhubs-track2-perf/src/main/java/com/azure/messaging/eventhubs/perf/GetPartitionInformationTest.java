@@ -42,12 +42,10 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
             asyncClient = createEventHubClientBuilder().buildAsyncProducerClient();
         }
 
-        return asyncClient.getPartitionProperties(options.getPartitionId())
-            .map(information -> {
-                printRuntimeInformation(information);
-                return information;
-            })
-            .then();
+        return asyncClient.getPartitionProperties(options.getPartitionId()).map(information -> {
+            printRuntimeInformation(information);
+            return information;
+        }).then();
     }
 
     @Override

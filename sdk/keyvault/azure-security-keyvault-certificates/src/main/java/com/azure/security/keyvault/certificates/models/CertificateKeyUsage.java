@@ -7,46 +7,67 @@ package com.azure.security.keyvault.certificates.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines values for CertificateKeyUsage. */
+/**
+ * Defines values for CertificateKeyUsage.
+ */
 public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateKeyUsage> {
-    /** Static value digitalSignature for CertificateKeyUsage. */
+    /**
+     * Static value digitalSignature for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage DIGITAL_SIGNATURE = fromString("digitalSignature");
 
-    /** Static value nonRepudiation for CertificateKeyUsage. */
+    /**
+     * Static value nonRepudiation for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage NON_REPUDIATION = fromString("nonRepudiation");
 
-    /** Static value keyEncipherment for CertificateKeyUsage. */
+    /**
+     * Static value keyEncipherment for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage KEY_ENCIPHERMENT = fromString("keyEncipherment");
 
-    /** Static value dataEncipherment for CertificateKeyUsage. */
+    /**
+     * Static value dataEncipherment for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage DATA_ENCIPHERMENT = fromString("dataEncipherment");
 
-    /** Static value keyAgreement for CertificateKeyUsage. */
+    /**
+     * Static value keyAgreement for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage KEY_AGREEMENT = fromString("keyAgreement");
 
-    /** Static value keyCertSign for CertificateKeyUsage. */
+    /**
+     * Static value keyCertSign for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage KEY_CERT_SIGN = fromString("keyCertSign");
 
-    /** Static value cRLSign for CertificateKeyUsage. */
+    /**
+     * Static value cRLSign for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage CRL_SIGN = fromString("cRLSign");
 
-    /** Static value encipherOnly for CertificateKeyUsage. */
+    /**
+     * Static value encipherOnly for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage ENCIPHER_ONLY = fromString("encipherOnly");
 
-    /** Static value decipherOnly for CertificateKeyUsage. */
+    /**
+     * Static value decipherOnly for CertificateKeyUsage.
+     */
     public static final CertificateKeyUsage DECIPHER_ONLY = fromString("decipherOnly");
 
     /**
      * Creates a new instance of CertificateKeyUsage value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyUsage() {}
+    public CertificateKeyUsage() {
+    }
 
     /**
      * Creates or finds a CertificateKeyUsage from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateKeyUsage.
      */
@@ -56,7 +77,7 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
 
     /**
      * Gets known CertificateKeyUsage values.
-     *
+     * 
      * @return known CertificateKeyUsage values.
      */
     public static Collection<CertificateKeyUsage> values() {

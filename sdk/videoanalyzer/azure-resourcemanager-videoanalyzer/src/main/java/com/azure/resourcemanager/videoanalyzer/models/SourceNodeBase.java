@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.SourceNodeBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.RtspSource", value = RtspSource.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoSource", value = VideoSource.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoSource", value = VideoSource.class) })
 @Fluent
 public class SourceNodeBase extends NodeBase {
     /** {@inheritDoc} */

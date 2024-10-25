@@ -24,8 +24,7 @@ import java.util.Map;
 @JsonTypeName("IntegrationRuntimeStatus")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Managed", value = ManagedIntegrationRuntimeStatus.class),
-    @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntimeStatus.class)
-})
+    @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntimeStatus.class) })
 @Fluent
 public class IntegrationRuntimeStatus {
     /*
@@ -43,7 +42,8 @@ public class IntegrationRuntimeStatus {
     /*
      * Integration runtime status.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeStatus class. */
     public IntegrationRuntimeStatus() {

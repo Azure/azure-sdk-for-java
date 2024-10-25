@@ -41,10 +41,15 @@
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
-
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>

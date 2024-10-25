@@ -94,14 +94,16 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
     }
 
     public NetworkFunction create() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions().createOrUpdate(resourceGroupName,
-            networkFunctionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .createOrUpdate(resourceGroupName, networkFunctionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkFunction create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions().createOrUpdate(resourceGroupName,
-            networkFunctionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .createOrUpdate(resourceGroupName, networkFunctionName, this.innerModel(), context);
         return this;
     }
 
@@ -117,14 +119,18 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
     }
 
     public NetworkFunction apply() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions()
-            .updateTagsWithResponse(resourceGroupName, networkFunctionName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .updateTagsWithResponse(resourceGroupName, networkFunctionName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkFunction apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions()
-            .updateTagsWithResponse(resourceGroupName, networkFunctionName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .updateTagsWithResponse(resourceGroupName, networkFunctionName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -137,14 +143,18 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
     }
 
     public NetworkFunction refresh() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions()
-            .getByResourceGroupWithResponse(resourceGroupName, networkFunctionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFunctionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkFunction refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctions()
-            .getByResourceGroupWithResponse(resourceGroupName, networkFunctionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctions()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFunctionName, context)
+            .getValue();
         return this;
     }
 

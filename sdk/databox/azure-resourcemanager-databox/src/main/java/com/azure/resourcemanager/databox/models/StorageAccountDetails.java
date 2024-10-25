@@ -61,10 +61,8 @@ public final class StorageAccountDetails extends DataAccountDetails {
     public void validate() {
         super.validate();
         if (storageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountId in model StorageAccountDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccountId in model StorageAccountDetails"));
         }
     }
 

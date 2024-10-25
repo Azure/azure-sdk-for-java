@@ -13,11 +13,10 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitRequest model =
-            BinaryData
-                .fromString(
-                    "{\"validateOnly\":true,\"moveResources\":[\"nwui\"],\"moveResourceInputType\":\"MoveResourceId\"}")
-                .toObject(CommitRequest.class);
+        CommitRequest model = BinaryData
+            .fromString(
+                "{\"validateOnly\":true,\"moveResources\":[\"nwui\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+            .toObject(CommitRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
         Assertions.assertEquals("nwui", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
@@ -25,11 +24,9 @@ public final class CommitRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitRequest model =
-            new CommitRequest()
-                .withValidateOnly(true)
-                .withMoveResources(Arrays.asList("nwui"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
+        CommitRequest model = new CommitRequest().withValidateOnly(true)
+            .withMoveResources(Arrays.asList("nwui"))
+            .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
         model = BinaryData.fromObject(model).toObject(CommitRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
         Assertions.assertEquals("nwui", model.moveResources().get(0));

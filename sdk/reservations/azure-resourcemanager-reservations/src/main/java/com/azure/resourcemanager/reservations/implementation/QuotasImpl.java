@@ -22,21 +22,18 @@ public final class QuotasImpl implements Quotas {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public QuotasImpl(
-        QuotasClient innerClient, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    public QuotasImpl(QuotasClient innerClient,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CurrentQuotaLimitBase> getWithResponse(
-        String subscriptionId, String providerId, String location, String resourceName, Context context) {
-        QuotasGetResponse inner =
-            this.serviceClient().getWithResponse(subscriptionId, providerId, location, resourceName, context);
+    public Response<CurrentQuotaLimitBase> getWithResponse(String subscriptionId, String providerId, String location,
+        String resourceName, Context context) {
+        QuotasGetResponse inner
+            = this.serviceClient().getWithResponse(subscriptionId, providerId, location, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CurrentQuotaLimitBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,48 +50,38 @@ public final class QuotasImpl implements Quotas {
     }
 
     public PagedIterable<CurrentQuotaLimitBase> list(String subscriptionId, String providerId, String location) {
-        PagedIterable<CurrentQuotaLimitBaseInner> inner =
-            this.serviceClient().list(subscriptionId, providerId, location);
+        PagedIterable<CurrentQuotaLimitBaseInner> inner
+            = this.serviceClient().list(subscriptionId, providerId, location);
         return Utils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CurrentQuotaLimitBase> list(
-        String subscriptionId, String providerId, String location, Context context) {
-        PagedIterable<CurrentQuotaLimitBaseInner> inner =
-            this.serviceClient().list(subscriptionId, providerId, location, context);
+    public PagedIterable<CurrentQuotaLimitBase> list(String subscriptionId, String providerId, String location,
+        Context context) {
+        PagedIterable<CurrentQuotaLimitBaseInner> inner
+            = this.serviceClient().list(subscriptionId, providerId, location, context);
         return Utils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
     }
 
     public CurrentQuotaLimitBase getById(String id) {
         String subscriptionId = Utils.getValueFromIdByName(id, "subscriptions");
         if (subscriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
         }
         String providerId = Utils.getValueFromIdByName(id, "resourceProviders");
         if (providerId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceProviders'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceProviders'.", id)));
         }
         String location = Utils.getValueFromIdByName(id, "locations");
         if (location == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "serviceLimits");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'serviceLimits'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceLimits'.", id)));
         }
         return this.getWithResponse(subscriptionId, providerId, location, resourceName, Context.NONE).getValue();
     }
@@ -102,33 +89,23 @@ public final class QuotasImpl implements Quotas {
     public Response<CurrentQuotaLimitBase> getByIdWithResponse(String id, Context context) {
         String subscriptionId = Utils.getValueFromIdByName(id, "subscriptions");
         if (subscriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
         }
         String providerId = Utils.getValueFromIdByName(id, "resourceProviders");
         if (providerId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceProviders'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceProviders'.", id)));
         }
         String location = Utils.getValueFromIdByName(id, "locations");
         if (location == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "serviceLimits");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'serviceLimits'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceLimits'.", id)));
         }
         return this.getWithResponse(subscriptionId, providerId, location, resourceName, context);
     }

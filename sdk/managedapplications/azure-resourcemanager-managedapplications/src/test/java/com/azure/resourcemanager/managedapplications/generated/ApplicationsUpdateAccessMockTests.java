@@ -34,52 +34,35 @@ public final class ApplicationsUpdateAccessMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"approver\":\"p\",\"metadata\":{\"originRequestId\":\"jyofdxluusdtto\",\"requestorId\":\"aboekqv\",\"tenantDisplayName\":\"lns\",\"subjectDisplayName\":\"bxwyjsflhhcaa\"},\"status\":\"Remove\",\"subStatus\":\"Failed\"}";
+        String responseStr
+            = "{\"approver\":\"p\",\"metadata\":{\"originRequestId\":\"jyofdxluusdtto\",\"requestorId\":\"aboekqv\",\"tenantDisplayName\":\"lns\",\"subjectDisplayName\":\"bxwyjsflhhcaa\"},\"status\":\"Remove\",\"subStatus\":\"Failed\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationManager manager =
-            ApplicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationManager manager = ApplicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UpdateAccessDefinition response =
-            manager
-                .applications()
-                .updateAccess(
-                    "vgqzcjrvxd",
-                    "zlmwlxkvugfhz",
-                    new UpdateAccessDefinitionInner()
-                        .withApprover("awjvzunluthnnp")
-                        .withMetadata(
-                            new JitRequestMetadata()
-                                .withOriginRequestId("xipeilpjzuaejx")
-                                .withRequestorId("ltskzbbtd")
-                                .withTenantDisplayName("mv")
-                                .withSubjectDisplayName("kgpwoz"))
-                        .withStatus(Status.NOT_SPECIFIED)
-                        .withSubStatus(Substatus.FAILED),
-                    com.azure.core.util.Context.NONE);
+        UpdateAccessDefinition response = manager.applications()
+            .updateAccess("vgqzcjrvxd", "zlmwlxkvugfhz",
+                new UpdateAccessDefinitionInner().withApprover("awjvzunluthnnp")
+                    .withMetadata(new JitRequestMetadata().withOriginRequestId("xipeilpjzuaejx")
+                        .withRequestorId("ltskzbbtd")
+                        .withTenantDisplayName("mv")
+                        .withSubjectDisplayName("kgpwoz"))
+                    .withStatus(Status.NOT_SPECIFIED)
+                    .withSubStatus(Substatus.FAILED),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("p", response.approver());
         Assertions.assertEquals("jyofdxluusdtto", response.metadata().originRequestId());

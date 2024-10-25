@@ -159,8 +159,8 @@ public final class Gen1EnvironmentResource extends EnvironmentResourceInner {
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentResource object itself.
      */
-    public Gen1EnvironmentResource withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentResource
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen1EnvironmentResourceProperties();
         }
@@ -202,10 +202,8 @@ public final class Gen1EnvironmentResource extends EnvironmentResourceInner {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model Gen1EnvironmentResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model Gen1EnvironmentResource"));
         } else {
             innerProperties().validate();
         }

@@ -14,8 +14,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.6
  */
-public interface FormatFeature
-    extends JacksonFeature // since 2.12
+public interface FormatFeature extends JacksonFeature // since 2.12
 {
     /**
      * Accessor for checking whether this feature is enabled by default.

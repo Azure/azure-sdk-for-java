@@ -21,8 +21,8 @@ public interface DataMaskingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool data masking policy along with {@link Response}.
      */
-    Response<DataMaskingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<DataMaskingPolicy> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Gets a Sql pool data masking policy.

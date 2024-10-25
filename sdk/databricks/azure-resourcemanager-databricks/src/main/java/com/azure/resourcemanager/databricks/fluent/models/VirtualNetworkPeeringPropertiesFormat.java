@@ -242,8 +242,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
-    public VirtualNetworkPeeringPropertiesFormat withRemoteVirtualNetwork(
-        VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
+    public VirtualNetworkPeeringPropertiesFormat
+        withRemoteVirtualNetwork(VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
         this.remoteVirtualNetwork = remoteVirtualNetwork;
         return this;
     }
@@ -299,11 +299,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
             databricksAddressSpace().validate();
         }
         if (remoteVirtualNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteVirtualNetwork in model"
-                            + " VirtualNetworkPeeringPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property remoteVirtualNetwork in model" + " VirtualNetworkPeeringPropertiesFormat"));
         } else {
             remoteVirtualNetwork().validate();
         }

@@ -663,9 +663,8 @@ public final class ClusterInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ClusterInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
             sku().validate();
         }

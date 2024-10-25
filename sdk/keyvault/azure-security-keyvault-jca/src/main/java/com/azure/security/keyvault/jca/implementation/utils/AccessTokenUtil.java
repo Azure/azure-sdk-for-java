@@ -96,7 +96,8 @@ public final class AccessTokenUtil {
          */
         if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
-        } else if (System.getenv(PROPERTY_IDENTITY_ENDPOINT) != null && !System.getenv(PROPERTY_IDENTITY_ENDPOINT).isEmpty()) {
+        } else if (System.getenv(PROPERTY_IDENTITY_ENDPOINT) != null
+            && !System.getenv(PROPERTY_IDENTITY_ENDPOINT).isEmpty()) {
             result = getAccessTokenOnContainerApp(resource, identity);
         } else {
             result = getAccessTokenOnOthers(resource, identity);
@@ -145,12 +146,14 @@ public final class AccessTokenUtil {
         StringBuilder requestBody = new StringBuilder();
 
         requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT).append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT).append(encodedClientSecret)
-            .append(RESOURCE_FRAGMENT).append(resource);
+            .append(CLIENT_ID_FRAGMENT)
+            .append(clientId)
+            .append(CLIENT_SECRET_FRAGMENT)
+            .append(encodedClientSecret)
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
 
-        String body =
-            HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
 
         if (body != null) {
             try {
@@ -181,7 +184,8 @@ public final class AccessTokenUtil {
 
         url.append(System.getenv("MSI_ENDPOINT"))
             .append("?api-version=2017-09-01")
-            .append(RESOURCE_FRAGMENT).append(resource);
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
 
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
@@ -224,8 +228,9 @@ public final class AccessTokenUtil {
         StringBuilder url = new StringBuilder();
 
         url.append(System.getenv(PROPERTY_IDENTITY_ENDPOINT))
-           .append("?api-version=2019-08-01")
-           .append(RESOURCE_FRAGMENT).append(resource);
+            .append("?api-version=2019-08-01")
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
 
         if (clientId != null) {
             url.append("&client_id=").append(clientId);
@@ -271,8 +276,7 @@ public final class AccessTokenUtil {
 
         StringBuilder url = new StringBuilder();
 
-        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
-           .append(RESOURCE_FRAGMENT).append(resource);
+        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL).append(RESOURCE_FRAGMENT).append(resource);
 
         if (identity != null) {
             url.append("&object_id=").append(identity);
@@ -307,8 +311,8 @@ public final class AccessTokenUtil {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
         }
 
-        Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -360,8 +364,8 @@ public final class AccessTokenUtil {
             return Collections.emptyMap();
         }
 
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
+        authenticateHeader
+            = authenticateHeader.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
 
         String[] attributes = authenticateHeader.split(", ");
         Map<String, String> attributeMap = new HashMap<>();
@@ -385,7 +389,8 @@ public final class AccessTokenUtil {
      * @return A boolean indicating if the challenge is a bearer challenge or not.
      */
     private static boolean isBearerChallenge(String authenticateHeader) {
-        return authenticateHeader != null && !authenticateHeader.isEmpty()
+        return authenticateHeader != null
+            && !authenticateHeader.isEmpty()
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT));
     }
 

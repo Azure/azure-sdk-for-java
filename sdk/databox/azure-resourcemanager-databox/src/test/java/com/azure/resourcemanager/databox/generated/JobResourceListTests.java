@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"transferType\":\"ExportFromAzure\",\"isCancellable\":false,\"isDeletable\":true,\"isShippingAddressEditable\":false,\"reverseShippingDetailsUpdate\":\"NotSupported\",\"reverseTransportPreferenceUpdate\":\"Enabled\",\"isPrepareToShipEnabled\":false,\"status\":\"DataCopy\",\"startTime\":\"2021-09-02T05:03:22Z\",\"cancellationReason\":\"napczwlokjy\",\"deliveryType\":\"Scheduled\",\"isCancellableWithoutFee\":false},\"name\":\"f\",\"id\":\"qtrgqjbpfzfsinzg\",\"type\":\"jrwzox\",\"sku\":{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"jsprozvcpute\",\"family\":\"vwmf\"},\"identity\":{\"type\":\"scmdvpjhulsuu\",\"principalId\":\"kjozkrwfnd\",\"tenantId\":\"djpslw\",\"userAssignedIdentities\":{}},\"location\":\"dpvwryoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"}},{\"properties\":{\"transferType\":\"ImportToAzure\",\"isCancellable\":true,\"isDeletable\":true,\"isShippingAddressEditable\":true,\"reverseShippingDetailsUpdate\":\"Disabled\",\"reverseTransportPreferenceUpdate\":\"NotSupported\",\"isPrepareToShipEnabled\":true,\"status\":\"Cancelled\",\"startTime\":\"2021-03-02T22:56:24Z\",\"cancellationReason\":\"kjlxofpdvhpf\",\"deliveryType\":\"NonScheduled\",\"isCancellableWithoutFee\":true},\"name\":\"lssai\",\"id\":\"wtnhxbnjbiksqr\",\"type\":\"qpjwnzlljfm\",\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"o\",\"family\":\"si\"},\"identity\":{\"type\":\"v\",\"principalId\":\"iqihn\",\"tenantId\":\"ngbwjz\",\"userAssignedIdentities\":{}},\"location\":\"fygxgispemvtzfk\",\"tags\":{\"aeqjhqjbasvms\":\"bljofxqeof\",\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\"}},{\"properties\":{\"transferType\":\"ImportToAzure\",\"isCancellable\":true,\"isDeletable\":false,\"isShippingAddressEditable\":false,\"reverseShippingDetailsUpdate\":\"Disabled\",\"reverseTransportPreferenceUpdate\":\"Disabled\",\"isPrepareToShipEnabled\":false,\"status\":\"AwaitingShipmentDetails\",\"startTime\":\"2021-06-19T04:22:24Z\",\"cancellationReason\":\"c\",\"deliveryType\":\"NonScheduled\",\"isCancellableWithoutFee\":false},\"name\":\"i\",\"id\":\"qgoulznd\",\"type\":\"wyqkgfgibm\",\"sku\":{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"utjeltmrldhugj\",\"family\":\"datqxhocdgeabl\"},\"identity\":{\"type\":\"uticndvkaozwyif\",\"principalId\":\"hxh\",\"tenantId\":\"okftyxolniwpwcuk\",\"userAssignedIdentities\":{}},\"location\":\"kgiawxklryplwck\",\"tags\":{\"koty\":\"yypnddhsgcbacphe\"}}],\"nextLink\":\"gakeqsr\"}")
-                .toObject(JobResourceList.class);
+        JobResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"transferType\":\"ExportFromAzure\",\"isCancellable\":false,\"isDeletable\":true,\"isShippingAddressEditable\":false,\"reverseShippingDetailsUpdate\":\"NotSupported\",\"reverseTransportPreferenceUpdate\":\"Enabled\",\"isPrepareToShipEnabled\":false,\"status\":\"DataCopy\",\"startTime\":\"2021-09-02T05:03:22Z\",\"cancellationReason\":\"napczwlokjy\",\"deliveryType\":\"Scheduled\",\"isCancellableWithoutFee\":false},\"name\":\"f\",\"id\":\"qtrgqjbpfzfsinzg\",\"type\":\"jrwzox\",\"sku\":{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"jsprozvcpute\",\"family\":\"vwmf\"},\"identity\":{\"type\":\"scmdvpjhulsuu\",\"principalId\":\"kjozkrwfnd\",\"tenantId\":\"djpslw\",\"userAssignedIdentities\":{}},\"location\":\"dpvwryoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"}},{\"properties\":{\"transferType\":\"ImportToAzure\",\"isCancellable\":true,\"isDeletable\":true,\"isShippingAddressEditable\":true,\"reverseShippingDetailsUpdate\":\"Disabled\",\"reverseTransportPreferenceUpdate\":\"NotSupported\",\"isPrepareToShipEnabled\":true,\"status\":\"Cancelled\",\"startTime\":\"2021-03-02T22:56:24Z\",\"cancellationReason\":\"kjlxofpdvhpf\",\"deliveryType\":\"NonScheduled\",\"isCancellableWithoutFee\":true},\"name\":\"lssai\",\"id\":\"wtnhxbnjbiksqr\",\"type\":\"qpjwnzlljfm\",\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"o\",\"family\":\"si\"},\"identity\":{\"type\":\"v\",\"principalId\":\"iqihn\",\"tenantId\":\"ngbwjz\",\"userAssignedIdentities\":{}},\"location\":\"fygxgispemvtzfk\",\"tags\":{\"aeqjhqjbasvms\":\"bljofxqeof\",\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\"}},{\"properties\":{\"transferType\":\"ImportToAzure\",\"isCancellable\":true,\"isDeletable\":false,\"isShippingAddressEditable\":false,\"reverseShippingDetailsUpdate\":\"Disabled\",\"reverseTransportPreferenceUpdate\":\"Disabled\",\"isPrepareToShipEnabled\":false,\"status\":\"AwaitingShipmentDetails\",\"startTime\":\"2021-06-19T04:22:24Z\",\"cancellationReason\":\"c\",\"deliveryType\":\"NonScheduled\",\"isCancellableWithoutFee\":false},\"name\":\"i\",\"id\":\"qgoulznd\",\"type\":\"wyqkgfgibm\",\"sku\":{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"utjeltmrldhugj\",\"family\":\"datqxhocdgeabl\"},\"identity\":{\"type\":\"uticndvkaozwyif\",\"principalId\":\"hxh\",\"tenantId\":\"okftyxolniwpwcuk\",\"userAssignedIdentities\":{}},\"location\":\"kgiawxklryplwck\",\"tags\":{\"koty\":\"yypnddhsgcbacphe\"}}],\"nextLink\":\"gakeqsr\"}")
+            .toObject(JobResourceList.class);
         Assertions.assertEquals("dpvwryoqpsoaccta", model.value().get(0).location());
         Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.value().get(0).sku().name());
@@ -38,55 +36,29 @@ public final class JobResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResourceList model =
-            new JobResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new JobResourceInner()
-                                .withLocation("dpvwryoqpsoaccta")
-                                .withTags(mapOf("dfdosygexp", "ljlahbcryf", "dphlxaolt", "ojakhmsbzjhcrze"))
-                                .withSku(
-                                    new Sku()
-                                        .withName(SkuName.DATA_BOX_CUSTOMER_DISK)
-                                        .withDisplayName("jsprozvcpute")
-                                        .withFamily("vwmf"))
-                                .withIdentity(
-                                    new ResourceIdentity()
-                                        .withType("scmdvpjhulsuu")
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withTransferType(TransferType.EXPORT_FROM_AZURE)
-                                .withDeliveryType(JobDeliveryType.SCHEDULED),
-                            new JobResourceInner()
-                                .withLocation("fygxgispemvtzfk")
-                                .withTags(
-                                    mapOf(
-                                        "aeqjhqjbasvms",
-                                        "bljofxqeof",
-                                        "gsntnbybkzgcwr",
-                                        "jqul",
-                                        "skcqvkocrcjd",
-                                        "clxxwrljdo"))
-                                .withSku(
-                                    new Sku().withName(SkuName.DATA_BOX_DISK).withDisplayName("o").withFamily("si"))
-                                .withIdentity(new ResourceIdentity().withType("v").withUserAssignedIdentities(mapOf()))
-                                .withTransferType(TransferType.IMPORT_TO_AZURE)
-                                .withDeliveryType(JobDeliveryType.NON_SCHEDULED),
-                            new JobResourceInner()
-                                .withLocation("kgiawxklryplwck")
-                                .withTags(mapOf("koty", "yypnddhsgcbacphe"))
-                                .withSku(
-                                    new Sku()
-                                        .withName(SkuName.DATA_BOX_CUSTOMER_DISK)
-                                        .withDisplayName("utjeltmrldhugj")
-                                        .withFamily("datqxhocdgeabl"))
-                                .withIdentity(
-                                    new ResourceIdentity()
-                                        .withType("uticndvkaozwyif")
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withTransferType(TransferType.IMPORT_TO_AZURE)
-                                .withDeliveryType(JobDeliveryType.NON_SCHEDULED)))
-                .withNextLink("gakeqsr");
+        JobResourceList model = new JobResourceList().withValue(Arrays.asList(new JobResourceInner()
+            .withLocation("dpvwryoqpsoaccta")
+            .withTags(mapOf("dfdosygexp", "ljlahbcryf", "dphlxaolt", "ojakhmsbzjhcrze"))
+            .withSku(
+                new Sku().withName(SkuName.DATA_BOX_CUSTOMER_DISK).withDisplayName("jsprozvcpute").withFamily("vwmf"))
+            .withIdentity(new ResourceIdentity().withType("scmdvpjhulsuu").withUserAssignedIdentities(mapOf()))
+            .withTransferType(TransferType.EXPORT_FROM_AZURE)
+            .withDeliveryType(JobDeliveryType.SCHEDULED),
+            new JobResourceInner().withLocation("fygxgispemvtzfk")
+                .withTags(mapOf("aeqjhqjbasvms", "bljofxqeof", "gsntnbybkzgcwr", "jqul", "skcqvkocrcjd", "clxxwrljdo"))
+                .withSku(new Sku().withName(SkuName.DATA_BOX_DISK).withDisplayName("o").withFamily("si"))
+                .withIdentity(new ResourceIdentity().withType("v").withUserAssignedIdentities(mapOf()))
+                .withTransferType(TransferType.IMPORT_TO_AZURE)
+                .withDeliveryType(JobDeliveryType.NON_SCHEDULED),
+            new JobResourceInner().withLocation("kgiawxklryplwck")
+                .withTags(mapOf("koty", "yypnddhsgcbacphe"))
+                .withSku(new Sku().withName(SkuName.DATA_BOX_CUSTOMER_DISK)
+                    .withDisplayName("utjeltmrldhugj")
+                    .withFamily("datqxhocdgeabl"))
+                .withIdentity(new ResourceIdentity().withType("uticndvkaozwyif").withUserAssignedIdentities(mapOf()))
+                .withTransferType(TransferType.IMPORT_TO_AZURE)
+                .withDeliveryType(JobDeliveryType.NON_SCHEDULED)))
+            .withNextLink("gakeqsr");
         model = BinaryData.fromObject(model).toObject(JobResourceList.class);
         Assertions.assertEquals("dpvwryoqpsoaccta", model.value().get(0).location());
         Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));

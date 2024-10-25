@@ -31,12 +31,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
@@ -51,10 +47,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    CheckNameResultInner checkNameAvailability(String workspaceName, String kustoPoolName, String resourceGroupName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
@@ -70,8 +63,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterPrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Lists all Kusto pool principalAssignments.
@@ -87,8 +80,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterPrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool principalAssignment.
@@ -104,12 +97,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return a Kusto pool principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterPrincipalAssignmentInner> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    Response<ClusterPrincipalAssignmentInner> getWithResponse(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool principalAssignment.
@@ -124,8 +113,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return a Kusto pool principalAssignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner get(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName);
+    ClusterPrincipalAssignmentInner get(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName);
 
     /**
      * Create a Kusto pool principalAssignment.
@@ -142,10 +131,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName,
         ClusterPrincipalAssignmentInner parameters);
 
     /**
@@ -164,12 +150,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
-        Context context);
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName,
+        ClusterPrincipalAssignmentInner parameters, Context context);
 
     /**
      * Create a Kusto pool principalAssignment.
@@ -185,12 +167,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters);
+    ClusterPrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters);
 
     /**
      * Create a Kusto pool principalAssignment.
@@ -207,12 +185,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
+    ClusterPrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters,
         Context context);
 
     /**
@@ -228,8 +202,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName);
 
     /**
      * Deletes a Kusto pool principalAssignment.
@@ -245,12 +219,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context);
 
     /**
      * Deletes a Kusto pool principalAssignment.
@@ -279,10 +249,6 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
+    void delete(String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName,
         Context context);
 }

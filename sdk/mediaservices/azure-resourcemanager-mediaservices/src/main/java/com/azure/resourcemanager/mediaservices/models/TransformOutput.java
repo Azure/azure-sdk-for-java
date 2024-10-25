@@ -116,9 +116,8 @@ public final class TransformOutput {
      */
     public void validate() {
         if (preset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property preset in model TransformOutput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property preset in model TransformOutput"));
         } else {
             preset().validate();
         }

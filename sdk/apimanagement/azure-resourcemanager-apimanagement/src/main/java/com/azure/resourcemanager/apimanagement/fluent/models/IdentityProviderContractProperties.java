@@ -156,10 +156,8 @@ public final class IdentityProviderContractProperties extends IdentityProviderBa
     public void validate() {
         super.validate();
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model IdentityProviderContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model IdentityProviderContractProperties"));
         }
     }
 

@@ -40,8 +40,8 @@ public final class RestProxyUtils {
 
         if (binaryData instanceof InputStreamBinaryData) {
             InputStream inputStream = binaryData.toStream();
-            LengthValidatingInputStream lengthValidatingInputStream =
-                new LengthValidatingInputStream(inputStream, expectedLength);
+            LengthValidatingInputStream lengthValidatingInputStream
+                = new LengthValidatingInputStream(inputStream, expectedLength);
 
             return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
         } else {

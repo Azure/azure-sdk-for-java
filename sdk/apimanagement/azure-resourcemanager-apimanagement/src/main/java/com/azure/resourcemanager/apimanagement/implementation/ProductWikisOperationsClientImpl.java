@@ -44,9 +44,8 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      * @param client the instance of the service client containing this operation class.
      */
     ProductWikisOperationsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ProductWikisOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProductWikisOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,33 +56,23 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
     public interface ProductWikisOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ProductWikisOperationsListResponse> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @PathParam("productId") String productId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<ProductWikisOperationsListResponse> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @PathParam("productId") String productId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ProductWikisOperationsListNextResponse> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -104,13 +93,11 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WikiContractInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String productId, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<WikiContractInner>> listSinglePageAsync(String resourceGroupName, String serviceName,
+        String productId, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -123,37 +110,15 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
             return Mono.error(new IllegalArgumentException("Parameter productId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            productId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<WikiContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top,
+                skip, productId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<WikiContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -176,19 +141,11 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WikiContractInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<PagedResponse<WikiContractInner>> listSinglePageAsync(String resourceGroupName, String serviceName,
+        String productId, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,35 +158,16 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
             return Mono.error(new IllegalArgumentException("Parameter productId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                productId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()));
+            .list(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, productId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()));
     }
 
     /**
@@ -250,10 +188,9 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WikiContractInner> listAsync(
-        String resourceGroupName, String serviceName, String productId, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, productId, filter, top, skip),
+    private PagedFlux<WikiContractInner> listAsync(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, productId, filter, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -274,8 +211,7 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, productId, filter, top, skip),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, productId, filter, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -298,14 +234,8 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WikiContractInner> listAsync(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<WikiContractInner> listAsync(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, productId, filter, top, skip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -350,14 +280,8 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WikiContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<WikiContractInner> list(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, productId, filter, top, skip, context));
     }
 
@@ -377,23 +301,13 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WikiContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WikiContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -414,23 +328,13 @@ public final class ProductWikisOperationsClientImpl implements ProductWikisOpera
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()));
     }
 }

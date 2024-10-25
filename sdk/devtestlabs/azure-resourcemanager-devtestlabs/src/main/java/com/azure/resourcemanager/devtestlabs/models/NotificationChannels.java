@@ -37,14 +37,8 @@ public interface NotificationChannels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NotificationChannel> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<NotificationChannel> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get notification channel.
@@ -59,8 +53,8 @@ public interface NotificationChannels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notification channel along with {@link Response}.
      */
-    Response<NotificationChannel> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<NotificationChannel> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get notification channel.
@@ -114,8 +108,8 @@ public interface NotificationChannels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> notifyWithResponse(
-        String resourceGroupName, String labName, String name, NotifyParameters notifyParameters, Context context);
+    Response<Void> notifyWithResponse(String resourceGroupName, String labName, String name,
+        NotifyParameters notifyParameters, Context context);
 
     /**
      * Send notification to provided channel.

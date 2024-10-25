@@ -25,8 +25,8 @@ public interface QuotaByCounterKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Quota Counter list representation along with {@link Response}.
      */
-    Response<QuotaCounterCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, String quotaCounterKey, Context context);
+    Response<QuotaCounterCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, Context context);
 
     /**
      * Lists a collection of current quota counter periods associated with the counter-key configured in the policy on
@@ -62,12 +62,8 @@ public interface QuotaByCounterKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Quota Counter list representation along with {@link Response}.
      */
-    Response<QuotaCounterCollection> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context);
+    Response<QuotaCounterCollection> updateWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, QuotaCounterValueUpdateContract parameters, Context context);
 
     /**
      * Updates all the quota counter values specified with the existing quota counter key to a value in the specified
@@ -85,9 +81,6 @@ public interface QuotaByCounterKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Quota Counter list representation.
      */
-    QuotaCounterCollection update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
+    QuotaCounterCollection update(String resourceGroupName, String serviceName, String quotaCounterKey,
         QuotaCounterValueUpdateContract parameters);
 }

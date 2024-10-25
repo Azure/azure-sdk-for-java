@@ -48,9 +48,10 @@ public final class ApplicationsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplicationResource> response
             = manager.applications().list("ksbpimlqoljx", "cgxxlxs", com.azure.core.util.Context.NONE);
@@ -78,14 +79,33 @@ public final class ApplicationsListMockTests {
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
         Assertions.assertEquals(false,
             response.iterator().next().upgradePolicy().applicationHealthPolicy().considerWarningAsError());
-        Assertions.assertEquals(677641870, response.iterator().next().upgradePolicy().applicationHealthPolicy()
-            .maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(984375294, response.iterator().next().upgradePolicy().applicationHealthPolicy()
-            .defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(1628077523, response.iterator().next().upgradePolicy().applicationHealthPolicy()
-            .defaultServiceTypeHealthPolicy().maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(482170286, response.iterator().next().upgradePolicy().applicationHealthPolicy()
-            .defaultServiceTypeHealthPolicy().maxPercentUnhealthyReplicasPerPartition());
+        Assertions.assertEquals(677641870,
+            response.iterator()
+                .next()
+                .upgradePolicy()
+                .applicationHealthPolicy()
+                .maxPercentUnhealthyDeployedApplications());
+        Assertions.assertEquals(984375294,
+            response.iterator()
+                .next()
+                .upgradePolicy()
+                .applicationHealthPolicy()
+                .defaultServiceTypeHealthPolicy()
+                .maxPercentUnhealthyServices());
+        Assertions.assertEquals(1628077523,
+            response.iterator()
+                .next()
+                .upgradePolicy()
+                .applicationHealthPolicy()
+                .defaultServiceTypeHealthPolicy()
+                .maxPercentUnhealthyPartitionsPerService());
+        Assertions.assertEquals(482170286,
+            response.iterator()
+                .next()
+                .upgradePolicy()
+                .applicationHealthPolicy()
+                .defaultServiceTypeHealthPolicy()
+                .maxPercentUnhealthyReplicasPerPartition());
         Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_AUTO,
             response.iterator().next().upgradePolicy().upgradeMode());
         Assertions.assertEquals(false, response.iterator().next().upgradePolicy().recreateApplication());

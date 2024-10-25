@@ -54,7 +54,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
         this.refreshInterval = refreshInterval;
 
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, disableChallengeResourceVerification);
+        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+            disableChallengeResourceVerification);
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -158,22 +159,20 @@ public final class KeyVaultCertificates implements AzureCertificates {
         certificates.clear();
         certificateChains.clear();
 
-        Optional.ofNullable(aliases)
-            .orElse(Collections.emptyList())
-            .forEach(alias -> {
-                Key key = keyVaultClient.getKey(alias, null);
-                if (!Objects.isNull(key)) {
-                    certificateKeys.put(alias, key);
-                }
-                Certificate certificate = keyVaultClient.getCertificate(alias);
-                if (!Objects.isNull(certificate)) {
-                    certificates.put(alias, certificate);
-                }
-                Certificate[] certificateChain = keyVaultClient.getCertificateChain(alias);
-                if (!Objects.isNull(certificateChain)) {
-                    certificateChains.put(alias, certificateChain);
-                }
-            });
+        Optional.ofNullable(aliases).orElse(Collections.emptyList()).forEach(alias -> {
+            Key key = keyVaultClient.getKey(alias, null);
+            if (!Objects.isNull(key)) {
+                certificateKeys.put(alias, key);
+            }
+            Certificate certificate = keyVaultClient.getCertificate(alias);
+            if (!Objects.isNull(certificate)) {
+                certificates.put(alias, certificate);
+            }
+            Certificate[] certificateChain = keyVaultClient.getCertificateChain(alias);
+            if (!Objects.isNull(certificateChain)) {
+                certificateChains.put(alias, certificateChain);
+            }
+        });
 
         lastRefreshTime = new Date();
     }

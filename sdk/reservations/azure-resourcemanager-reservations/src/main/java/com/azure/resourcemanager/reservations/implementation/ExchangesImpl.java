@@ -19,8 +19,8 @@ public final class ExchangesImpl implements Exchanges {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public ExchangesImpl(
-        ExchangesClient innerClient, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    public ExchangesImpl(ExchangesClient innerClient,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

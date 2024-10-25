@@ -80,8 +80,8 @@ public interface HierarchySettingsOperationsClient {
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HierarchySettingsInner> createOrUpdateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettingsInner> createOrUpdateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
@@ -108,8 +108,8 @@ public interface HierarchySettingsOperationsClient {
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HierarchySettingsInner> updateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettingsInner> updateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.

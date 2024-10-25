@@ -105,8 +105,8 @@ public final class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen1EnvironmentCreateOrUpdateParameters withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentCreateOrUpdateParameters
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen1EnvironmentCreationProperties();
         }
@@ -131,8 +131,8 @@ public final class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * @param partitionKeyProperties the partitionKeyProperties value to set.
      * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen1EnvironmentCreateOrUpdateParameters withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
+    public Gen1EnvironmentCreateOrUpdateParameters
+        withPartitionKeyProperties(List<TimeSeriesIdProperty> partitionKeyProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen1EnvironmentCreationProperties();
         }
@@ -149,10 +149,8 @@ public final class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model Gen1EnvironmentCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model Gen1EnvironmentCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }

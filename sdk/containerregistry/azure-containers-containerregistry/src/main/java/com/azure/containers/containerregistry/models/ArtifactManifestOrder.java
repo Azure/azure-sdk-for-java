@@ -24,7 +24,8 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ArtifactManifestOrder() {}
+    public ArtifactManifestOrder() {
+    }
 
     /**
      * Creates or finds a ArtifactManifestOrder from its string representation.

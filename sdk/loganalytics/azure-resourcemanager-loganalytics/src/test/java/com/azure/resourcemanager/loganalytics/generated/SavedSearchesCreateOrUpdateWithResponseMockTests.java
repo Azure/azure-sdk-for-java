@@ -32,53 +32,38 @@ public final class SavedSearchesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"etag\":\"refqy\",\"properties\":{\"category\":\"qotoihiqakydiwfb\",\"displayName\":\"kwpzdqtvh\",\"query\":\"spodaqax\",\"functionAlias\":\"pie\",\"functionParameters\":\"bebjfu\",\"version\":8153035996823274813,\"tags\":[{\"name\":\"h\",\"value\":\"lpnfpubntnb\"},{\"name\":\"tzviqsowsaaelcat\",\"value\":\"cjuhplrvkm\"},{\"name\":\"cwmjvlg\",\"value\":\"ggcvk\"}]},\"id\":\"y\",\"name\":\"izrzb\",\"type\":\"psfxsf\"}";
+        String responseStr
+            = "{\"etag\":\"refqy\",\"properties\":{\"category\":\"qotoihiqakydiwfb\",\"displayName\":\"kwpzdqtvh\",\"query\":\"spodaqax\",\"functionAlias\":\"pie\",\"functionParameters\":\"bebjfu\",\"version\":8153035996823274813,\"tags\":[{\"name\":\"h\",\"value\":\"lpnfpubntnb\"},{\"name\":\"tzviqsowsaaelcat\",\"value\":\"cjuhplrvkm\"},{\"name\":\"cwmjvlg\",\"value\":\"ggcvk\"}]},\"id\":\"y\",\"name\":\"izrzb\",\"type\":\"psfxsf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SavedSearch response =
-            manager
-                .savedSearches()
-                .define("ikcyyc")
-                .withExistingWorkspace("khlowkxxpv", "rdfjmzsyzfhotl")
-                .withCategory("hv")
-                .withDisplayName("uic")
-                .withQuery("hvtrrmhwrbfdpyf")
-                .withTags(
-                    Arrays
-                        .asList(
-                            new Tag().withName("ooclutnp").withValue("memczjkmmyk"),
-                            new Tag().withName("ujxsglhsr").withValue("rye")))
-                .withEtag("nsjlpjrtws")
-                .withFunctionAlias("bhvjglr")
-                .withFunctionParameters("uyzlw")
-                .withVersion(5515716031108163936L)
-                .create();
+        SavedSearch response = manager.savedSearches()
+            .define("ikcyyc")
+            .withExistingWorkspace("khlowkxxpv", "rdfjmzsyzfhotl")
+            .withCategory("hv")
+            .withDisplayName("uic")
+            .withQuery("hvtrrmhwrbfdpyf")
+            .withTags(Arrays.asList(new Tag().withName("ooclutnp").withValue("memczjkmmyk"),
+                new Tag().withName("ujxsglhsr").withValue("rye")))
+            .withEtag("nsjlpjrtws")
+            .withFunctionAlias("bhvjglr")
+            .withFunctionParameters("uyzlw")
+            .withVersion(5515716031108163936L)
+            .create();
 
         Assertions.assertEquals("refqy", response.etag());
         Assertions.assertEquals("qotoihiqakydiwfb", response.category());

@@ -21,8 +21,8 @@ public interface ComponentCurrentBillingFeatures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component billing features along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentBillingFeatures> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentBillingFeatures> getWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Returns current billing features for an Application Insights component.
@@ -49,10 +49,8 @@ public interface ComponentCurrentBillingFeatures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component billing features along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentBillingFeatures> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
+    Response<ApplicationInsightsComponentBillingFeatures> updateWithResponse(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
         Context context);
 
     /**
@@ -67,8 +65,6 @@ public interface ComponentCurrentBillingFeatures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component billing features.
      */
-    ApplicationInsightsComponentBillingFeatures update(
-        String resourceGroupName,
-        String resourceName,
+    ApplicationInsightsComponentBillingFeatures update(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties);
 }

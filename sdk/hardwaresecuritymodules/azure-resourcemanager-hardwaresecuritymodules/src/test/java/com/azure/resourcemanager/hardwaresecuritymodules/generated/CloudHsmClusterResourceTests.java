@@ -35,7 +35,8 @@ public final class CloudHsmClusterResourceTests {
         CloudHsmClusterResource model = new CloudHsmClusterResource().withLocation("sezcxtb")
             .withTags(mapOf("newmdwzjeiachbo", "fycc", "eeh", "sflnrosfqp"))
             .withSku(new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
-                .withName(CloudHsmClusterSkuName.STANDARD_B1).withCapacity(1582483628))
+                .withName(CloudHsmClusterSkuName.STANDARD_B1)
+                .withCapacity(1582483628))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf("fufsrpymzi", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterResource.class);

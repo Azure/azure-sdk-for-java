@@ -42,8 +42,8 @@ public interface Issues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<IssueContract> listByService(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets API Management issue details.
@@ -57,8 +57,8 @@ public interface Issues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aPI Management issue details.
      */
-    Response<IssueContract> getWithResponse(
-        String resourceGroupName, String serviceName, String issueId, Context context);
+    Response<IssueContract> getWithResponse(String resourceGroupName, String serviceName, String issueId,
+        Context context);
 
     /**
      * Gets API Management issue details.

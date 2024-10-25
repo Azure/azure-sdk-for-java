@@ -10,10 +10,8 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInfoInner;
 public final class ArmTemplateInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateInfoInner model =
-            BinaryData
-                .fromString("{\"template\":\"datat\",\"parameters\":\"datafikdowwqu\"}")
-                .toObject(ArmTemplateInfoInner.class);
+        ArmTemplateInfoInner model = BinaryData.fromString("{\"template\":\"datat\",\"parameters\":\"datafikdowwqu\"}")
+            .toObject(ArmTemplateInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test

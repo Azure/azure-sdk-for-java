@@ -15,8 +15,7 @@ public final class EnvironmentResourceImpl implements EnvironmentResource {
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    EnvironmentResourceImpl(
-        EnvironmentResourceInner innerObject,
+    EnvironmentResourceImpl(EnvironmentResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

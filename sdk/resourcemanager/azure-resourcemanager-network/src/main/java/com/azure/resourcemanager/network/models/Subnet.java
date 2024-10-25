@@ -25,14 +25,36 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      */
     Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations();
 
-    /** @return available private IP addresses within this network */
+    /**
+     * List available private IP addresses within this subnet.
+     * <pre>Starting IPs of the address prefixes are not returned, due to:
+     * 1. They are usually reserved by platform(e.g. for gateway usage).
+     * 2. For backward-compatibility.</pre>
+     *
+     * @return available private IP addresses within this network
+     */
     Set<String> listAvailablePrivateIPAddresses();
 
     /** @return number of network interface IP configurations associated with this subnet */
     int networkInterfaceIPConfigurationCount();
 
-    /** @return the address space prefix, in CIDR notation, assigned to this subnet */
+    /**
+     * Gets the address space prefix, in CIDR notation, assigned to this subnet.
+     * <p>Use {@link Subnet#addressPrefixes} if this subnet has multiple prefixes.</p>
+     *
+     * @return the address space prefix, in CIDR notation, assigned to this subnet
+     * @see Subnet#addressPrefixes
+     */
     String addressPrefix();
+
+    /**
+     * Gets address space prefixes, in CIDR notation, assigned to this subnet.
+     * <p>Use {@link Subnet#addressPrefix} if this subnet is created/updated using that property.</p>
+     *
+     * @return address space prefixes, in CIDR notation, assigned to this subnet
+     * @see Subnet#addressPrefix
+     */
+    List<String> addressPrefixes();
 
     /**
      * @return the network security group associated with this subnet, if any
@@ -84,6 +106,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /**
@@ -248,6 +278,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage
              */
             Update withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage
+             */
+            Update withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /** The stage of the subnet update allowing to change the network security group to assign to the subnet. */
@@ -435,6 +473,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /**

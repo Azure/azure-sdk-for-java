@@ -22,21 +22,18 @@ public final class ForecastsImpl implements Forecasts {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public ForecastsImpl(
-        ForecastsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public ForecastsImpl(ForecastsClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ForecastResult> usageWithResponse(
-        String scope, ForecastDefinition parameters, String filter, Context context) {
-        Response<ForecastResultInner> inner =
-            this.serviceClient().usageWithResponse(scope, parameters, filter, context);
+    public Response<ForecastResult> usageWithResponse(String scope, ForecastDefinition parameters, String filter,
+        Context context) {
+        Response<ForecastResultInner> inner
+            = this.serviceClient().usageWithResponse(scope, parameters, filter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ForecastResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,35 +50,23 @@ public final class ForecastsImpl implements Forecasts {
     }
 
     public Response<ForecastResult> externalCloudProviderUsageWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter,
-        Context context) {
-        Response<ForecastResultInner> inner =
-            this
-                .serviceClient()
-                .externalCloudProviderUsageWithResponse(
-                    externalCloudProviderType, externalCloudProviderId, parameters, filter, context);
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
+        ForecastDefinition parameters, String filter, Context context) {
+        Response<ForecastResultInner> inner = this.serviceClient()
+            .externalCloudProviderUsageWithResponse(externalCloudProviderType, externalCloudProviderId, parameters,
+                filter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ForecastResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ForecastResult externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters) {
-        ForecastResultInner inner =
-            this
-                .serviceClient()
-                .externalCloudProviderUsage(externalCloudProviderType, externalCloudProviderId, parameters);
+    public ForecastResult externalCloudProviderUsage(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, ForecastDefinition parameters) {
+        ForecastResultInner inner = this.serviceClient()
+            .externalCloudProviderUsage(externalCloudProviderType, externalCloudProviderId, parameters);
         if (inner != null) {
             return new ForecastResultImpl(inner, this.manager());
         } else {

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The object that describes the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
      * Friendly name of the resource provider.

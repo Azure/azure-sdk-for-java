@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TrackDescriptor")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioTrackDescriptor", value = AudioTrackDescriptor.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrackDescriptor", value = VideoTrackDescriptor.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrackDescriptor", value = VideoTrackDescriptor.class) })
 @Immutable
 public class TrackDescriptor {
     /** Creates an instance of TrackDescriptor class. */

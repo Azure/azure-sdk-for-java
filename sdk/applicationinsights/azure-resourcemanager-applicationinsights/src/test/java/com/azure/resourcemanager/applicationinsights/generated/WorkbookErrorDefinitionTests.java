@@ -10,9 +10,8 @@ import com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinit
 public final class WorkbookErrorDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookErrorDefinition model =
-            BinaryData
-                .fromString("{\"innererror\":{\"trace\":[\"ca\",\"vxb\",\"t\",\"udutnco\"]}}")
+        WorkbookErrorDefinition model
+            = BinaryData.fromString("{\"innererror\":{\"trace\":[\"ca\",\"vxb\",\"t\",\"udutnco\"]}}")
                 .toObject(WorkbookErrorDefinition.class);
     }
 

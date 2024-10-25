@@ -43,8 +43,8 @@ public interface VirtualNetworkRulesClient {
      * @return a virtual network rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkRuleInner> getWithResponse(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
+    Response<VirtualNetworkRuleInner> getWithResponse(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName, Context context);
 
     /**
      * Creates or updates an existing virtual network rule.
@@ -77,10 +77,7 @@ public interface VirtualNetworkRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualNetworkRuleName,
-        VirtualNetworkRuleInner parameters,
+        String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters,
         Context context);
 
     /**
@@ -96,8 +93,8 @@ public interface VirtualNetworkRulesClient {
      * @return a virtual network rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkRuleInner createOrUpdate(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters);
+    VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName, String virtualNetworkRuleName,
+        VirtualNetworkRuleInner parameters);
 
     /**
      * Creates or updates an existing virtual network rule.
@@ -113,12 +110,8 @@ public interface VirtualNetworkRulesClient {
      * @return a virtual network rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkRuleInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualNetworkRuleName,
-        VirtualNetworkRuleInner parameters,
-        Context context);
+    VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName, String virtualNetworkRuleName,
+        VirtualNetworkRuleInner parameters, Context context);
 
     /**
      * Deletes the virtual network rule with the given name.
@@ -132,8 +125,8 @@ public interface VirtualNetworkRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName);
 
     /**
      * Deletes the virtual network rule with the given name.
@@ -148,8 +141,8 @@ public interface VirtualNetworkRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName, Context context);
 
     /**
      * Deletes the virtual network rule with the given name.

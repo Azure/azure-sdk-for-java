@@ -32,41 +32,28 @@ public final class KustoPoolDatabasePrincipalAssignmentsGetWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"principalId\":\"syqcjnqswxdowum\",\"role\":\"Viewer\",\"tenantId\":\"krcdi\",\"principalType\":\"Group\",\"tenantName\":\"lqddnhfknebwedd\",\"principalName\":\"yzcwy\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"aqld\"},\"id\":\"bnwvpaq\",\"name\":\"qxfbbigcfddofx\",\"type\":\"fbmjyyrqaedwo\"}";
+        String responseStr
+            = "{\"properties\":{\"principalId\":\"syqcjnqswxdowum\",\"role\":\"Viewer\",\"tenantId\":\"krcdi\",\"principalType\":\"Group\",\"tenantName\":\"lqddnhfknebwedd\",\"principalName\":\"yzcwy\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"aqld\"},\"id\":\"bnwvpaq\",\"name\":\"qxfbbigcfddofx\",\"type\":\"fbmjyyrqaedwo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DatabasePrincipalAssignment response =
-            manager
-                .kustoPoolDatabasePrincipalAssignments()
-                .getWithResponse(
-                    "l", "okjyghzt", "smiwtpcflc", "zswwvwi", "tdjtvbfpfhru", com.azure.core.util.Context.NONE)
-                .getValue();
+        DatabasePrincipalAssignment response = manager.kustoPoolDatabasePrincipalAssignments()
+            .getWithResponse("l", "okjyghzt", "smiwtpcflc", "zswwvwi", "tdjtvbfpfhru", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("syqcjnqswxdowum", response.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.VIEWER, response.role());

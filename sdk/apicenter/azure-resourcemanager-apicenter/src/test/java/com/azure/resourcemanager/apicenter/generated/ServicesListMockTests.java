@@ -46,9 +46,10 @@ public final class ServicesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 

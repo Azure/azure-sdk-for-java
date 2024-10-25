@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlTempDbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlTempDbSettings model =
-            BinaryData
-                .fromString(
-                    "{\"dataFileSize\":1322831619,\"dataGrowth\":999035629,\"logFileSize\":2085551487,\"logGrowth\":2041227856,\"dataFileCount\":688230720,\"persistFolder\":false,\"persistFolderPath\":\"vjsllrmvvdfw\",\"luns\":[1825333220,207833423,500448783,676639191],\"defaultFilePath\":\"exxbczwtr\"}")
-                .toObject(SqlTempDbSettings.class);
+        SqlTempDbSettings model = BinaryData.fromString(
+            "{\"dataFileSize\":1322831619,\"dataGrowth\":999035629,\"logFileSize\":2085551487,\"logGrowth\":2041227856,\"dataFileCount\":688230720,\"persistFolder\":false,\"persistFolderPath\":\"vjsllrmvvdfw\",\"luns\":[1825333220,207833423,500448783,676639191],\"defaultFilePath\":\"exxbczwtr\"}")
+            .toObject(SqlTempDbSettings.class);
         Assertions.assertEquals(1322831619, model.dataFileSize());
         Assertions.assertEquals(999035629, model.dataGrowth());
         Assertions.assertEquals(2085551487, model.logFileSize());
@@ -30,17 +28,15 @@ public final class SqlTempDbSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlTempDbSettings model =
-            new SqlTempDbSettings()
-                .withDataFileSize(1322831619)
-                .withDataGrowth(999035629)
-                .withLogFileSize(2085551487)
-                .withLogGrowth(2041227856)
-                .withDataFileCount(688230720)
-                .withPersistFolder(false)
-                .withPersistFolderPath("vjsllrmvvdfw")
-                .withLuns(Arrays.asList(1825333220, 207833423, 500448783, 676639191))
-                .withDefaultFilePath("exxbczwtr");
+        SqlTempDbSettings model = new SqlTempDbSettings().withDataFileSize(1322831619)
+            .withDataGrowth(999035629)
+            .withLogFileSize(2085551487)
+            .withLogGrowth(2041227856)
+            .withDataFileCount(688230720)
+            .withPersistFolder(false)
+            .withPersistFolderPath("vjsllrmvvdfw")
+            .withLuns(Arrays.asList(1825333220, 207833423, 500448783, 676639191))
+            .withDefaultFilePath("exxbczwtr");
         model = BinaryData.fromObject(model).toObject(SqlTempDbSettings.class);
         Assertions.assertEquals(1322831619, model.dataFileSize());
         Assertions.assertEquals(999035629, model.dataGrowth());

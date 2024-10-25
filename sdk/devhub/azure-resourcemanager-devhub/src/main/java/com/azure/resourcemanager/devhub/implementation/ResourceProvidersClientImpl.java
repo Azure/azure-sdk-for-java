@@ -46,8 +46,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DeveloperHubServiceClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,59 +58,41 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "DeveloperHubServiceC")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default/getGitHubOAuthInfo")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default/getGitHubOAuthInfo")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuth(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @BodyParam("application/json") GitHubOAuthCallRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuth(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @BodyParam("application/json") GitHubOAuthCallRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallback(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("code") String code,
-            @QueryParam("state") String state,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallback(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @QueryParam("code") String code, @QueryParam("state") String state,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuth(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuth(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/generatePreviewArtifacts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/generatePreviewArtifacts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Map<String, String>>> generatePreviewArtifacts(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Map<String, String>>> generatePreviewArtifacts(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @BodyParam("application/json") ArtifactGenerationProperties parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -125,19 +107,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(
-        String location, GitHubOAuthCallRequest parameters) {
+    private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(String location,
+        GitHubOAuthCallRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -147,17 +125,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .gitHubOAuth(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.gitHubOAuth(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -174,19 +143,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(
-        String location, GitHubOAuthCallRequest parameters, Context context) {
+    private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(String location,
+        GitHubOAuthCallRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -196,15 +161,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .gitHubOAuth(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                parameters,
-                accept,
-                context);
+        return service.gitHubOAuth(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, parameters, accept, context);
     }
 
     /**
@@ -236,8 +194,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(
-        String location, GitHubOAuthCallRequest parameters, Context context) {
+    public Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(String location,
+        GitHubOAuthCallRequest parameters, Context context) {
         return gitHubOAuthWithResponseAsync(location, parameters, context).block();
     }
 
@@ -269,19 +227,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(
-        String location, String code, String state) {
+    private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(String location, String code,
+        String state) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -294,18 +248,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .gitHubOAuthCallback(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            code,
-                            state,
-                            accept,
-                            context))
+            .withContext(context -> service.gitHubOAuthCallback(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, code, state, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -323,19 +267,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(
-        String location, String code, String state, Context context) {
+    private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(String location, String code,
+        String state, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -348,16 +288,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .gitHubOAuthCallback(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                code,
-                state,
-                accept,
-                context);
+        return service.gitHubOAuthCallback(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, code, state, accept, context);
     }
 
     /**
@@ -390,8 +322,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return singleton response of GitHubOAuth containing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GitHubOAuthResponseInner> gitHubOAuthCallbackWithResponse(
-        String location, String code, String state, Context context) {
+    public Response<GitHubOAuthResponseInner> gitHubOAuthCallbackWithResponse(String location, String code,
+        String state, Context context) {
         return gitHubOAuthCallbackWithResponseAsync(location, code, state, context).block();
     }
 
@@ -424,32 +356,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuthWithResponseAsync(String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listGitHubOAuth(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            accept,
-                            context))
+            .withContext(context -> service.listGitHubOAuth(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -465,33 +385,23 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuthWithResponseAsync(
-        String location, Context context) {
+    private Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuthWithResponseAsync(String location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listGitHubOAuth(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                accept,
-                context);
+        return service.listGitHubOAuth(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, accept, context);
     }
 
     /**
@@ -549,19 +459,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(
-        String location, ArtifactGenerationProperties parameters) {
+    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(String location,
+        ArtifactGenerationProperties parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -573,17 +479,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generatePreviewArtifacts(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.generatePreviewArtifacts(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), location, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -600,19 +497,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(
-        String location, ArtifactGenerationProperties parameters, Context context) {
+    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(String location,
+        ArtifactGenerationProperties parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -624,15 +517,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generatePreviewArtifacts(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                parameters,
-                accept,
-                context);
+        return service.generatePreviewArtifacts(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, parameters, accept, context);
     }
 
     /**
@@ -647,8 +533,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     string&gt; on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Map<String, String>> generatePreviewArtifactsAsync(
-        String location, ArtifactGenerationProperties parameters) {
+    private Mono<Map<String, String>> generatePreviewArtifactsAsync(String location,
+        ArtifactGenerationProperties parameters) {
         return generatePreviewArtifactsWithResponseAsync(location, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -666,8 +552,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     string&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, String>> generatePreviewArtifactsWithResponse(
-        String location, ArtifactGenerationProperties parameters, Context context) {
+    public Response<Map<String, String>> generatePreviewArtifactsWithResponse(String location,
+        ArtifactGenerationProperties parameters, Context context) {
         return generatePreviewArtifactsWithResponseAsync(location, parameters, context).block();
     }
 
