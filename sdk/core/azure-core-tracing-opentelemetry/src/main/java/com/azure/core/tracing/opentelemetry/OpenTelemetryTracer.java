@@ -79,11 +79,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             // to resolve the actual io.opentelemetry.context.Context.
             applicationContextClass = Class.forName("#io.opentelemetry.context.Context".substring(1));
             convertAppToAgentContextMethod = agentCtxStorageClass.getMethod("getAgentContext", applicationContextClass);
-        } catch (ReflectiveOperationException t) {
+        } catch (ReflectiveOperationException | RuntimeException t) {
             // it's expected if we're not running in the agent
             LOGGER.verbose("Failed to resolve AgentContextStorage.getAgentContext or one of its dependencies", t);
-        } catch (RuntimeException t) {
-            throw LOGGER.logExceptionAsError(t);
         }
     }
 
