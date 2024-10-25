@@ -113,7 +113,9 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
             return false;
         }
 
-        return getRawId() == null || thatId.getRawId() == null || thatId.getRawId().equals(this.getRawId());
+        return getRawId() == null
+            || thatId.getRawId() == null
+            || thatId.getRawId().equals(this.getRawId());
     }
 
     @Override
