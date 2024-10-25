@@ -36,6 +36,7 @@ import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -92,6 +93,7 @@ public class HDInsightManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("User Subscription does not have cores left to create resource. Required: 48, Available: 0.")
     public void testCreateCluster() {
         Cluster cluster = null;
         String randomPadding = randomPadding();
