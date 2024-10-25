@@ -46,8 +46,7 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = setUpCommunicationResponseExceptionWithAllProperties();
 
         // Action
-        IdentityErrorResponseException identityResponseException
-            = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -62,8 +61,7 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = setUpCommunicationResponseExceptionWithoutAllProperties();
 
         // Action
-        IdentityErrorResponseException identityResponseException
-            = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -78,8 +76,7 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = new CommunicationErrorResponseException("Exception Message", httpResponse);
 
         // Action
-        IdentityErrorResponseException identityResponseException
-            = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -98,15 +95,13 @@ public class IdentityErrorConverterUnitTests {
     }
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithoutAllProperties() {
-        CommunicationError communicationError
-            = new CommunicationError().setCode("Error Code").setMessage("Error Message");
+        CommunicationError communicationError = new CommunicationError().setCode("Error Code").setMessage("Error Message");
         CommunicationErrorResponse errorResponse = new CommunicationErrorResponse().setError(communicationError);
         return new CommunicationErrorResponseException("Exception Message", httpResponse, errorResponse);
     }
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithAllProperties() {
-        String value
-            = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
+        String value = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
         CommunicationError communicationError;
         try (JsonReader jsonReader = JsonProviders.createReader(value)) {
             communicationError = CommunicationError.fromJson(jsonReader);

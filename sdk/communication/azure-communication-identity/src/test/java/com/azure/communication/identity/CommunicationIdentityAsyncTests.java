@@ -35,14 +35,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @Test
     public void createAsyncIdentityClientUsingConnectionString() {
         // Arrange
-        CommunicationIdentityClientBuilder builder
-            = createClientBuilderUsingConnectionString(buildAsyncAssertingClient(httpClient));
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(buildAsyncAssertingClient(httpClient));
         asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingConnectionString");
         assertNotNull(asyncClient);
 
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
-        StepVerifier.create(response).assertNext(this::verifyUserNotEmpty).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(this::verifyUserNotEmpty)
+            .verifyComplete();
     }
 
     @Test
@@ -52,7 +53,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
-        StepVerifier.create(response).assertNext(this::verifyUserNotEmpty).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(this::verifyUserNotEmpty)
+            .verifyComplete();
     }
 
     @Test
@@ -62,10 +65,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
-        StepVerifier.create(response).assertNext(item -> {
-            assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
-            verifyUserNotEmpty(item.getValue());
-        }).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
+                verifyUserNotEmpty(item.getValue());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
@@ -76,10 +81,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
-        StepVerifier.create(createUserAndToken).assertNext(result -> {
-            verifyUserNotEmpty(result.getUser());
-            verifyTokenNotEmpty(result.getUserToken());
-        }).verifyComplete();
+        StepVerifier.create(createUserAndToken)
+            .assertNext(result -> {
+                verifyUserNotEmpty(result.getUser());
+                verifyTokenNotEmpty(result.getUserToken());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
@@ -89,13 +96,14 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken
-            = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).assertNext(result -> {
-            verifyUserNotEmpty(result.getUser());
-            verifyTokenNotEmpty(result.getUserToken());
-            assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-        }).verifyComplete();
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .assertNext(result -> {
+                verifyUserNotEmpty(result.getUser());
+                verifyTokenNotEmpty(result.getUserToken());
+                assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
@@ -105,12 +113,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken
-            = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -120,31 +128,31 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken
-            = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).assertNext(result -> {
-            assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
-            verifyUserNotEmpty(result.getValue().getUser());
-            verifyTokenNotEmpty(result.getValue().getUserToken());
-            assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn,
-                result.getValue().getUserToken().getExpiresAt());
-        }).verifyComplete();
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
+            asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .assertNext(result -> {
+                assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
+                verifyUserNotEmpty(result.getValue().getUser());
+                verifyTokenNotEmpty(result.getValue().getUserToken());
+                assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getValue().getUserToken().getExpiresAt());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        asyncClient
-            = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken
-            = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
     }
 
     @Test
@@ -154,13 +162,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken
-            = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).verifyErrorSatisfies(throwable -> {
-            assertTrue(throwable instanceof IllegalArgumentException);
-            assertNotNull(throwable.getMessage());
-            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
-        });
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof IllegalArgumentException);
+                assertNotNull(throwable.getMessage());
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
+            });
     }
 
     @Test
@@ -170,13 +178,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken
-            = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
-        StepVerifier.create(createUserAndToken).verifyErrorSatisfies(throwable -> {
-            assertTrue(throwable instanceof IllegalArgumentException);
-            assertNotNull(throwable.getMessage());
-            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
-        });
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof IllegalArgumentException);
+                assertNotNull(throwable.getMessage());
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
+            });
     }
 
     @Test
@@ -185,13 +193,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponse");
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken
-            = asyncClient.createUserAndTokenWithResponse(SCOPES);
-        StepVerifier.create(createUserAndToken).assertNext(result -> {
-            assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
-            verifyUserNotEmpty(result.getValue().getUser());
-            verifyTokenNotEmpty(result.getValue().getUserToken());
-        }).verifyComplete();
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
+            asyncClient.createUserAndTokenWithResponse(SCOPES);
+        StepVerifier.create(createUserAndToken)
+            .assertNext(result -> {
+                assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
+                verifyUserNotEmpty(result.getValue().getUser());
+                verifyTokenNotEmpty(result.getValue().getUserToken());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -200,7 +210,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenNullScopes");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUserAndToken(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.createUserAndToken(null))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -209,7 +221,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseNullScopes");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUserAndTokenWithResponse(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.createUserAndTokenWithResponse(null))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -218,9 +232,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "deleteUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.deleteUser(communicationUser);
-        })).verifyComplete();
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUser(communicationUser);
+                }))
+            .verifyComplete();
     }
 
     @Test
@@ -229,11 +246,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponse");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.deleteUserWithResponse(communicationUser);
-        })).assertNext(item -> {
-            assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
-        }).verifyComplete();
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUserWithResponse(communicationUser);
+                }))
+            .assertNext(item -> {
+                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -242,7 +263,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "deleteUserWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.deleteUser(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.deleteUser(null))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -251,7 +274,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponseWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.deleteUserWithResponse(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.deleteUserWithResponse(null))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -260,11 +285,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "revokeToken");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap((CommunicationUserIdentifier communicationUser) -> {
-            return asyncClient.getToken(communicationUser, SCOPES).flatMap((AccessToken communicationUserToken) -> {
-                return asyncClient.revokeTokens(communicationUser);
-            });
-        })).verifyComplete();
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap((CommunicationUserIdentifier communicationUser) -> {
+                    return asyncClient.getToken(communicationUser, SCOPES)
+                        .flatMap((AccessToken communicationUserToken) -> {
+                            return asyncClient.revokeTokens(communicationUser);
+                        });
+                }))
+            .verifyComplete();
     }
 
     @Test
@@ -273,13 +302,18 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponse");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap((CommunicationUserIdentifier communicationUser) -> {
-            return asyncClient.getToken(communicationUser, SCOPES).flatMap((AccessToken communicationUserToken) -> {
-                return asyncClient.revokeTokensWithResponse(communicationUser);
-            });
-        })).assertNext(item -> {
-            assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
-        }).verifyComplete();
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap((CommunicationUserIdentifier communicationUser) -> {
+                    return asyncClient.getToken(communicationUser, SCOPES)
+                        .flatMap((AccessToken communicationUserToken) -> {
+                            return asyncClient.revokeTokensWithResponse(communicationUser);
+                        });
+                }))
+            .assertNext(item -> {
+                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -288,7 +322,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "revokeTokenWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.revokeTokens(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.revokeTokens(null))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -297,7 +333,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponseWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.revokeTokensWithResponse(null)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.revokeTokensWithResponse(null))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest(name = "{0}")
@@ -307,9 +345,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWith" + testName);
 
         // Action & Assert
-        StepVerifier
-            .create(
-                asyncClient.createUser().flatMap(communicationUser -> asyncClient.getToken(communicationUser, scopes)))
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> asyncClient.getToken(communicationUser, scopes)))
             .assertNext(this::verifyTokenNotEmpty)
             .verifyComplete();
     }
@@ -321,12 +359,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithValidCustomExpiration " + testName);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
-        })).assertNext(issuedToken -> {
-            verifyTokenNotEmpty(issuedToken);
-            assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
-        }).verifyComplete();
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .assertNext(issuedToken -> {
+                verifyTokenNotEmpty(issuedToken);
+                assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
@@ -336,12 +378,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
-        })).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -351,13 +396,17 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
-        })).assertNext(issuedToken -> {
-            verifyTokenNotEmpty(issuedToken.getValue());
-            assertEquals(issuedToken.getStatusCode(), 200);
-            assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getValue().getExpiresAt());
-        }).verifyComplete();
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .assertNext(issuedToken -> {
+                verifyTokenNotEmpty(issuedToken.getValue());
+                assertEquals(issuedToken.getStatusCode(), 200);
+                assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getValue().getExpiresAt());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
@@ -367,12 +416,15 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
-        })).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
     }
 
     @Test
@@ -382,13 +434,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
-        })).verifyErrorSatisfies(throwable -> {
-            assertTrue(throwable instanceof IllegalArgumentException);
-            assertNotNull(throwable.getMessage());
-            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
-        });
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof IllegalArgumentException);
+                assertNotNull(throwable.getMessage());
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
+            });
     }
 
     @Test
@@ -398,13 +453,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
-        })).verifyErrorSatisfies(throwable -> {
-            assertTrue(throwable instanceof IllegalArgumentException);
-            assertNotNull(throwable.getMessage());
-            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
-        });
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof IllegalArgumentException);
+                assertNotNull(throwable.getMessage());
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
+            });
     }
 
     @Test
@@ -413,12 +471,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithResponse");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.createUser().flatMap(communicationUser -> {
-            return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
-        })).assertNext(issuedToken -> {
-            verifyTokenNotEmpty(issuedToken.getValue());
-            assertEquals(issuedToken.getStatusCode(), 200);
-        }).verifyComplete();
+        StepVerifier.create(
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
+                }))
+            .assertNext(issuedToken -> {
+                verifyTokenNotEmpty(issuedToken.getValue());
+                assertEquals(issuedToken.getStatusCode(), 200);
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -427,7 +489,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.getToken(null, SCOPES)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.getToken(null, SCOPES))
+            .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -446,7 +510,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithNullUser");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.getTokenWithResponse(null, SCOPES)).verifyError(NullPointerException.class);
+        StepVerifier.create(
+            asyncClient.getTokenWithResponse(null, SCOPES))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -460,7 +526,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
-        StepVerifier.create(response).assertNext(this::verifyTokenNotEmpty).verifyComplete();
+        StepVerifier.create(response)
+                .assertNext(this::verifyTokenNotEmpty)
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -474,10 +542,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(options);
-        StepVerifier.create(response).assertNext(issuedTokenResponse -> {
-            verifyTokenNotEmpty(issuedTokenResponse.getValue());
-            assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
-        }).verifyComplete();
+        StepVerifier.create(response)
+                .assertNext(issuedTokenResponse -> {
+                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest(name = "when {1} is null")
@@ -491,10 +561,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
-        StepVerifier.create(response).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains(exceptionMessage));
-        });
+        StepVerifier.create(response)
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains(exceptionMessage));
+                });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -508,10 +579,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
-        StepVerifier.create(response).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("401"));
-        });
+        StepVerifier.create(response)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("401"));
+            });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -525,10 +597,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
-        StepVerifier.create(response).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        StepVerifier.create(response)
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains("400"));
+                });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -542,9 +615,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
-        StepVerifier.create(response).verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+        StepVerifier.create(response)
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains("400"));
+                });
     }
 }
