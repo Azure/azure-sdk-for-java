@@ -6,36 +6,26 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Capabilities of a phone number.
- */
+/** The PhoneNumberCapabilitiesRequest model. */
 @Fluent
-public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<PhoneNumberCapabilitiesRequest> {
+public final class PhoneNumberCapabilitiesRequest {
     /*
      * Capability value for calling.
      */
+    @JsonProperty(value = "calling")
     private PhoneNumberCapabilityType calling;
 
     /*
      * Capability value for SMS.
      */
+    @JsonProperty(value = "sms")
     private PhoneNumberCapabilityType sms;
 
     /**
-     * Creates an instance of PhoneNumberCapabilitiesRequest class.
-     */
-    public PhoneNumberCapabilitiesRequest() {
-    }
-
-    /**
      * Get the calling property: Capability value for calling.
-     * 
+     *
      * @return the calling value.
      */
     public PhoneNumberCapabilityType getCalling() {
@@ -44,7 +34,7 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
 
     /**
      * Set the calling property: Capability value for calling.
-     * 
+     *
      * @param calling the calling value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
@@ -55,7 +45,7 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
 
     /**
      * Get the sms property: Capability value for SMS.
-     * 
+     *
      * @return the sms value.
      */
     public PhoneNumberCapabilityType getSms() {
@@ -64,54 +54,12 @@ public final class PhoneNumberCapabilitiesRequest implements JsonSerializable<Ph
 
     /**
      * Set the sms property: Capability value for SMS.
-     * 
+     *
      * @param sms the sms value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
     public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("calling", this.calling == null ? null : this.calling.toString());
-        jsonWriter.writeStringField("sms", this.sms == null ? null : this.sms.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PhoneNumberCapabilitiesRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberCapabilitiesRequest if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PhoneNumberCapabilitiesRequest.
-     */
-    public static PhoneNumberCapabilitiesRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberCapabilitiesRequest deserializedPhoneNumberCapabilitiesRequest
-                = new PhoneNumberCapabilitiesRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("calling".equals(fieldName)) {
-                    deserializedPhoneNumberCapabilitiesRequest.calling
-                        = PhoneNumberCapabilityType.fromString(reader.getString());
-                } else if ("sms".equals(fieldName)) {
-                    deserializedPhoneNumberCapabilitiesRequest.sms
-                        = PhoneNumberCapabilityType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPhoneNumberCapabilitiesRequest;
-        });
     }
 }

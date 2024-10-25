@@ -17,7 +17,8 @@ public class PhoneNumberErrorResponseException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public PhoneNumberErrorResponseException(String message, HttpResponse response, PhoneNumberError value) {
+    public PhoneNumberErrorResponseException(
+        String message, HttpResponse response, PhoneNumberError value) {
         super(message, response, value);
     }
 

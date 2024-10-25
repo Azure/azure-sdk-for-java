@@ -5,47 +5,47 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PhoneNumberOperation model. */
 @Immutable
-public final class PhoneNumberOperation implements JsonSerializable<PhoneNumberOperation> {
+public final class PhoneNumberOperation {
     /*
      * Status of operation.
      */
-    private final PhoneNumberOperationStatus status;
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private PhoneNumberOperationStatus status;
 
     /*
      * URL for retrieving the result of the operation, if any.
      */
-    private final String resourceLocation;
+    @JsonProperty(value = "resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceLocation;
 
     /*
      * The date that the operation was created.
      */
-    private final OffsetDateTime createdDateTime;
+    @JsonProperty(value = "createdDateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdDateTime;
 
     /*
      * Id of operation.
      */
-    private final String id;
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * The type of operation, e.g. Search
      */
-    private final PhoneNumberOperationType operationType;
+    @JsonProperty(value = "operationType", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private PhoneNumberOperationType operationType;
 
     /*
      * The most recent date that the operation was changed.
      */
-    private final OffsetDateTime lastActionDateTime;
+    @JsonProperty(value = "lastActionDateTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastActionDateTime;
 
     /**
      * The PhoneNumberOperation model.
@@ -56,9 +56,8 @@ public final class PhoneNumberOperation implements JsonSerializable<PhoneNumberO
      * @param operationType The operationType property: The type of operation, e.g. Search.
      * @param lastActionDateTime The lastActionDateTime property: The most recent date that the operation was changed.
      */
-    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation,
-        OffsetDateTime createdDateTime, String id, PhoneNumberOperationType operationType,
-        OffsetDateTime lastActionDateTime) {
+    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation, OffsetDateTime createdDateTime, String id,
+        PhoneNumberOperationType operationType, OffsetDateTime lastActionDateTime) {
         this.status = status;
         this.resourceLocation = resourceLocation;
         this.createdDateTime = createdDateTime;
@@ -119,52 +118,5 @@ public final class PhoneNumberOperation implements JsonSerializable<PhoneNumberO
      */
     public OffsetDateTime getLastActionDateTime() {
         return this.lastActionDateTime;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject().writeEndObject();
-    }
-
-    /**
-     * Reads an instance of {@link PhoneNumberOperation} from the {@code jsonReader}.
-     *
-     * @param jsonReader The {@link JsonReader} to read from.
-     * @return An instance of {@link PhoneNumberOperation}, or null if pointing to {@link JsonToken#NULL}.
-     * @throws IOException If an error occurs while reading the {@link JsonReader}.
-     */
-    public static PhoneNumberOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberOperationStatus status = null;
-            String resourceLocation = null;
-            OffsetDateTime createdDateTime = null;
-            String id = null;
-            PhoneNumberOperationType operationType = null;
-            OffsetDateTime lastActionDateTime = null;
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("status".equals(fieldName)) {
-                    status = PhoneNumberOperationStatus.fromString(reader.getString());
-                } else if ("resourceLocation".equals(fieldName)) {
-                    resourceLocation = reader.getString();
-                } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("operationType".equals(fieldName)) {
-                    operationType = PhoneNumberOperationType.fromString(reader.getString());
-                } else if ("lastActionDateTime".equals(fieldName)) {
-                    lastActionDateTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return new PhoneNumberOperation(status, resourceLocation, createdDateTime, id, operationType,
-                lastActionDateTime);
-        });
     }
 }
