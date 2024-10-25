@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class KeyVaultConnectionsAsyncClient {
-    @Generated private final KeyVaultConnectionsImpl serviceClient;
+    @Generated
+    private final KeyVaultConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of KeyVaultConnectionsAsyncClient class.
@@ -104,8 +105,8 @@ public final class KeyVaultConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(
-            String keyVaultName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createWithResponse(String keyVaultName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createWithResponseAsync(keyVaultName, body, requestOptions);
     }
 

@@ -23,7 +23,8 @@ public final class AccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccountProperties model = new AccountProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-            .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.DISABLED);
+            .withScalableExecution(EnablementStatus.DISABLED)
+            .withReporting(EnablementStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(AccountProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.scalableExecution());

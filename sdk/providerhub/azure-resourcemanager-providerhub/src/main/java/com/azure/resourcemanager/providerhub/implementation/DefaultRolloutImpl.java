@@ -49,20 +49,16 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DefaultRollout create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
         return this;
     }
 
@@ -77,25 +73,21 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DefaultRollout apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
         return this;
     }
 
-    DefaultRolloutImpl(
-        DefaultRolloutInner innerObject, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    DefaultRolloutImpl(DefaultRolloutInner innerObject,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
@@ -103,22 +95,18 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
     }
 
     public DefaultRollout refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .getWithResponse(providerNamespace, rolloutName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .getWithResponse(providerNamespace, rolloutName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DefaultRollout refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDefaultRollouts()
-                .getWithResponse(providerNamespace, rolloutName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefaultRollouts()
+            .getWithResponse(providerNamespace, rolloutName, context)
+            .getValue();
         return this;
     }
 

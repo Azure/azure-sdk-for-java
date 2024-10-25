@@ -17,8 +17,8 @@ public final class ResourceDeletionPolicy extends ExpandableStringEnum<ResourceD
     public static final ResourceDeletionPolicy CASCADE_DELETE_ALL = fromString("CascadeDeleteAll");
 
     /** Static value CascadeDeleteProxyOnlyChildren for ResourceDeletionPolicy. */
-    public static final ResourceDeletionPolicy CASCADE_DELETE_PROXY_ONLY_CHILDREN =
-        fromString("CascadeDeleteProxyOnlyChildren");
+    public static final ResourceDeletionPolicy CASCADE_DELETE_PROXY_ONLY_CHILDREN
+        = fromString("CascadeDeleteProxyOnlyChildren");
 
     /**
      * Creates a new instance of ResourceDeletionPolicy value.

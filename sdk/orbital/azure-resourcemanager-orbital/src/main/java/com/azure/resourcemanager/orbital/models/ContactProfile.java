@@ -145,18 +145,16 @@ public interface ContactProfile {
 
     /** The entirety of the ContactProfile definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkConfiguration,
-            DefinitionStages.WithLinks,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithNetworkConfiguration, DefinitionStages.WithLinks, DefinitionStages.WithCreate {
     }
+
     /** The ContactProfile definition stages. */
     interface DefinitionStages {
         /** The first stage of the ContactProfile definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ContactProfile definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -175,6 +173,7 @@ public interface ContactProfile {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ContactProfile definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -185,6 +184,7 @@ public interface ContactProfile {
              */
             WithNetworkConfiguration withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ContactProfile definition allowing to specify networkConfiguration. */
         interface WithNetworkConfiguration {
             /**
@@ -195,6 +195,7 @@ public interface ContactProfile {
              */
             WithLinks withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration);
         }
+
         /** The stage of the ContactProfile definition allowing to specify links. */
         interface WithLinks {
             /**
@@ -206,18 +207,15 @@ public interface ContactProfile {
              */
             WithCreate withLinks(List<ContactProfileLink> links);
         }
+
         /**
          * The stage of the ContactProfile definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithMinimumViableContactDuration,
-                DefinitionStages.WithMinimumElevationDegrees,
-                DefinitionStages.WithAutoTrackingConfiguration,
-                DefinitionStages.WithEventHubUri,
-                DefinitionStages.WithThirdPartyConfigurations {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState,
+            DefinitionStages.WithMinimumViableContactDuration, DefinitionStages.WithMinimumElevationDegrees,
+            DefinitionStages.WithAutoTrackingConfiguration, DefinitionStages.WithEventHubUri,
+            DefinitionStages.WithThirdPartyConfigurations {
             /**
              * Executes the create request.
              *
@@ -233,6 +231,7 @@ public interface ContactProfile {
              */
             ContactProfile create(Context context);
         }
+
         /** The stage of the ContactProfile definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -243,6 +242,7 @@ public interface ContactProfile {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ContactProfile definition allowing to specify provisioningState. */
         interface WithProvisioningState {
             /**
@@ -254,6 +254,7 @@ public interface ContactProfile {
              */
             WithCreate withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState);
         }
+
         /** The stage of the ContactProfile definition allowing to specify minimumViableContactDuration. */
         interface WithMinimumViableContactDuration {
             /**
@@ -266,6 +267,7 @@ public interface ContactProfile {
              */
             WithCreate withMinimumViableContactDuration(String minimumViableContactDuration);
         }
+
         /** The stage of the ContactProfile definition allowing to specify minimumElevationDegrees. */
         interface WithMinimumElevationDegrees {
             /**
@@ -278,6 +280,7 @@ public interface ContactProfile {
              */
             WithCreate withMinimumElevationDegrees(Float minimumElevationDegrees);
         }
+
         /** The stage of the ContactProfile definition allowing to specify autoTrackingConfiguration. */
         interface WithAutoTrackingConfiguration {
             /**
@@ -288,6 +291,7 @@ public interface ContactProfile {
              */
             WithCreate withAutoTrackingConfiguration(AutoTrackingConfiguration autoTrackingConfiguration);
         }
+
         /** The stage of the ContactProfile definition allowing to specify eventHubUri. */
         interface WithEventHubUri {
             /**
@@ -300,6 +304,7 @@ public interface ContactProfile {
              */
             WithCreate withEventHubUri(String eventHubUri);
         }
+
         /** The stage of the ContactProfile definition allowing to specify thirdPartyConfigurations. */
         interface WithThirdPartyConfigurations {
             /**
@@ -310,10 +315,11 @@ public interface ContactProfile {
              *     links, modem processing, and IP endpoints.
              * @return the next definition stage.
              */
-            WithCreate withThirdPartyConfigurations(
-                List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations);
+            WithCreate
+                withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations);
         }
     }
+
     /**
      * Begins update for the ContactProfile resource.
      *
@@ -338,6 +344,7 @@ public interface ContactProfile {
          */
         ContactProfile apply(Context context);
     }
+
     /** The ContactProfile update stages. */
     interface UpdateStages {
         /** The stage of the ContactProfile update allowing to specify tags. */
@@ -351,6 +358,7 @@ public interface ContactProfile {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

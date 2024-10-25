@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowRunClientBuilder.class, isAsync = true)
 public final class WorkflowRunAsyncClient {
-    @Generated private final WorkflowRunsOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowRunsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowRunAsyncClient class.
@@ -98,8 +99,8 @@ public final class WorkflowRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponse(
-            String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
+    public Mono<Response<Void>> cancelWithResponse(String workflowRunId, BinaryData runCancelReply,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelWithResponseAsync(workflowRunId, runCancelReply, requestOptions);
     }
 }

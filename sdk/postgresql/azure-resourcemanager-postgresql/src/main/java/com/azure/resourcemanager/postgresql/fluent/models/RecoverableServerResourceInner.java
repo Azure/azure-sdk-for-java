@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A recoverable server resource. */
 @Fluent
 public final class RecoverableServerResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServerResourceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecoverableServerResourceInner.class);
 
     /*
      * Resource properties.

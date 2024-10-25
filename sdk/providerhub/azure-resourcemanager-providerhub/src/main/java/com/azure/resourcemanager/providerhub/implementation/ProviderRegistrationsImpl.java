@@ -26,8 +26,7 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    public ProviderRegistrationsImpl(
-        ProviderRegistrationsClient innerClient,
+    public ProviderRegistrationsImpl(ProviderRegistrationsClient innerClient,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,10 +35,7 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
     public Response<ProviderRegistration> getWithResponse(String providerNamespace, Context context) {
         Response<ProviderRegistrationInner> inner = this.serviceClient().getWithResponse(providerNamespace, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProviderRegistrationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,8 +60,8 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
         }
     }
 
-    public ProviderRegistration createOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
+    public ProviderRegistration createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
+        Context context) {
         ProviderRegistrationInner inner = this.serviceClient().createOrUpdate(providerNamespace, properties, context);
         if (inner != null) {
             return new ProviderRegistrationImpl(inner, this.manager());
@@ -92,17 +88,13 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
         return Utils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
     }
 
-    public Response<List<OperationsDefinition>> generateOperationsWithResponse(
-        String providerNamespace, Context context) {
-        Response<List<OperationsDefinitionInner>> inner =
-            this.serviceClient().generateOperationsWithResponse(providerNamespace, context);
+    public Response<List<OperationsDefinition>> generateOperationsWithResponse(String providerNamespace,
+        Context context) {
+        Response<List<OperationsDefinitionInner>> inner
+            = this.serviceClient().generateOperationsWithResponse(providerNamespace, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -114,12 +106,9 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
     public List<OperationsDefinition> generateOperations(String providerNamespace) {
         List<OperationsDefinitionInner> inner = this.serviceClient().generateOperations(providerNamespace);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

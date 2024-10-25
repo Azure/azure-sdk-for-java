@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ClassificationRulesAsyncClient {
-    @Generated private final ClassificationRulesImpl serviceClient;
+    @Generated
+    private final ClassificationRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ClassificationRulesAsyncClient class.
@@ -101,8 +102,8 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(classificationRuleName, requestOptions);
     }
 
@@ -179,8 +180,8 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listVersionsByClassificationRuleName(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listVersionsByClassificationRuleNameAsync(classificationRuleName, requestOptions);
     }
 
@@ -225,12 +226,9 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(
-            String classificationRuleName,
-            int classificationRuleVersion,
-            String action,
-            RequestOptions requestOptions) {
-        return this.serviceClient.tagClassificationVersionWithResponseAsync(
-                classificationRuleName, classificationRuleVersion, action, requestOptions);
+    public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(String classificationRuleName,
+        int classificationRuleVersion, String action, RequestOptions requestOptions) {
+        return this.serviceClient.tagClassificationVersionWithResponseAsync(classificationRuleName,
+            classificationRuleVersion, action, requestOptions);
     }
 }

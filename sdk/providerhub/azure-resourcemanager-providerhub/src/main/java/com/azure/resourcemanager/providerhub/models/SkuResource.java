@@ -48,11 +48,13 @@ public interface SkuResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SkuResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the SkuResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SkuResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -64,6 +66,7 @@ public interface SkuResource {
              */
             WithCreate withExistingResourcetypeRegistration(String providerNamespace, String resourceType);
         }
+
         /**
          * The stage of the SkuResource definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -84,6 +87,7 @@ public interface SkuResource {
              */
             SkuResource create(Context context);
         }
+
         /** The stage of the SkuResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -95,6 +99,7 @@ public interface SkuResource {
             WithCreate withProperties(SkuResourceProperties properties);
         }
     }
+
     /**
      * Begins update for the SkuResource resource.
      *
@@ -119,6 +124,7 @@ public interface SkuResource {
          */
         SkuResource apply(Context context);
     }
+
     /** The SkuResource update stages. */
     interface UpdateStages {
         /** The stage of the SkuResource update allowing to specify properties. */
@@ -132,6 +138,7 @@ public interface SkuResource {
             Update withProperties(SkuResourceProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -48,11 +48,13 @@ public interface NotificationRegistration {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The NotificationRegistration definition stages. */
     interface DefinitionStages {
         /** The first stage of the NotificationRegistration definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the NotificationRegistration definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -63,6 +65,7 @@ public interface NotificationRegistration {
              */
             WithCreate withExistingProviderRegistration(String providerNamespace);
         }
+
         /**
          * The stage of the NotificationRegistration definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -83,6 +86,7 @@ public interface NotificationRegistration {
              */
             NotificationRegistration create(Context context);
         }
+
         /** The stage of the NotificationRegistration definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -94,6 +98,7 @@ public interface NotificationRegistration {
             WithCreate withProperties(NotificationRegistrationProperties properties);
         }
     }
+
     /**
      * Begins update for the NotificationRegistration resource.
      *
@@ -118,6 +123,7 @@ public interface NotificationRegistration {
          */
         NotificationRegistration apply(Context context);
     }
+
     /** The NotificationRegistration update stages. */
     interface UpdateStages {
         /** The stage of the NotificationRegistration update allowing to specify properties. */
@@ -131,6 +137,7 @@ public interface NotificationRegistration {
             Update withProperties(NotificationRegistrationProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

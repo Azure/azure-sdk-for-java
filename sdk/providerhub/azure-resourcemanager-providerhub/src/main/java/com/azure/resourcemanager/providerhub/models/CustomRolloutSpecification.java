@@ -70,8 +70,8 @@ public class CustomRolloutSpecification {
      * @param providerRegistration the providerRegistration value to set.
      * @return the CustomRolloutSpecification object itself.
      */
-    public CustomRolloutSpecification withProviderRegistration(
-        CustomRolloutSpecificationProviderRegistration providerRegistration) {
+    public CustomRolloutSpecification
+        withProviderRegistration(CustomRolloutSpecificationProviderRegistration providerRegistration) {
         this.providerRegistration = providerRegistration;
         return this;
     }
@@ -91,8 +91,8 @@ public class CustomRolloutSpecification {
      * @param resourceTypeRegistrations the resourceTypeRegistrations value to set.
      * @return the CustomRolloutSpecification object itself.
      */
-    public CustomRolloutSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public CustomRolloutSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         this.resourceTypeRegistrations = resourceTypeRegistrations;
         return this;
     }
@@ -104,10 +104,8 @@ public class CustomRolloutSpecification {
      */
     public void validate() {
         if (canary() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property canary in model CustomRolloutSpecification"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property canary in model CustomRolloutSpecification"));
         } else {
             canary().validate();
         }

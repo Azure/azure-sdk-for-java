@@ -77,7 +77,8 @@ public final class NonAzureOpenAIClientImpl {
     public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -87,308 +88,168 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceInterface(name = "OpenAIClient")
     public interface NonAzureOpenAIClientService {
         @Post("/embeddings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEmbeddings(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getEmbeddings(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/embeddings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEmbeddingsSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> getEmbeddingsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCompletions(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getCompletions(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCompletionsSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> getCompletionsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getChatCompletions(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getChatCompletions(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getChatCompletionsSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> getChatCompletionsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/images/generations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getImageGenerations(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getImageGenerations(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/images/generations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getImageGenerationsSync(
-            @HostParam("endpoint") String endpoint,
+        Response<BinaryData> getImageGenerationsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/audio/transcriptions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(@HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
         @Post("/audio/transcriptions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/audio/transcriptions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/audio/transcriptions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/audio/transcriptions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranscriptionAsPlainTextSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/audio/translations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/audio/translations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranslationAsResponseObjectSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getAudioTranslationAsResponseObjectSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/audio/translations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranslationAsPlainText(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/audio/translations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranslationAsPlainTextSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/audio/speech")
         @ExpectedResponses({ 200 })
@@ -396,12 +257,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> generateSpeechFromText(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData speechGenerationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/audio/speech")
         @ExpectedResponses({ 200 })
@@ -409,12 +267,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> generateSpeechFromTextSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData speechGenerationOptions,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
+            RequestOptions requestOptions, Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -422,11 +277,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listFiles(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -434,10 +286,19 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            RequestOptions requestOptions,
+        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
             Context context);
 
         // @Multipart not supported by RestProxy
@@ -447,27 +308,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> uploadFile(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest,
-            RequestOptions requestOptions,
-            Context context);
-
-        // @Multipart not supported by RestProxy
-        @Post("/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> uploadFileSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest,
-            RequestOptions requestOptions,
+        Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
             Context context);
 
         @Delete("/files/{fileId}")
@@ -477,8 +320,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
-                                              @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                              Context context);
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -487,7 +330,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-                                            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -496,7 +339,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFile(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-                                           @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -505,7 +348,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-                                         @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}/content")
         @ExpectedResponses({ 200 })
@@ -514,8 +357,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
-                                                  @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                                  Context context);
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/files/{fileId}/content")
         @ExpectedResponses({ 200 })
@@ -524,8 +367,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
-                                                @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                                Context context);
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/batches")
         @ExpectedResponses({ 200 })
@@ -534,7 +377,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listBatches(@HostParam("endpoint") String endpoint,
-                                               @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/batches")
         @ExpectedResponses({ 200 })
@@ -543,7 +386,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listBatchesSync(@HostParam("endpoint") String endpoint,
-                                             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/batches")
         @ExpectedResponses({ 200 })
@@ -552,8 +395,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createBatch(@HostParam("endpoint") String endpoint,
-                                               @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
-                                               RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/batches")
         @ExpectedResponses({ 200 })
@@ -562,8 +405,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createBatchSync(@HostParam("endpoint") String endpoint,
-                                             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
-                                             RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("/batches/{batchId}")
         @ExpectedResponses({ 200 })
@@ -572,8 +415,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBatch(@HostParam("endpoint") String endpoint,
-                                            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                            Context context);
+            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/batches/{batchId}")
         @ExpectedResponses({ 200 })
@@ -582,7 +425,7 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBatchSync(@HostParam("endpoint") String endpoint, @PathParam("batchId") String batchId,
-                                          @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
@@ -591,8 +434,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelBatch(@HostParam("endpoint") String endpoint,
-                                               @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                               Context context);
+            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
@@ -601,8 +444,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelBatchSync(@HostParam("endpoint") String endpoint,
-                                             @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-                                             Context context);
+            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/uploads")
         @ExpectedResponses({ 200 })
@@ -611,8 +454,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createUpload(@HostParam("endpoint") String endpoint,
-                                                @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-                                                @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         @Post("/uploads")
         @ExpectedResponses({ 200 })
@@ -621,8 +464,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createUploadSync(@HostParam("endpoint") String endpoint,
-                                              @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-                                              @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/uploads/{upload_id}/parts")
@@ -632,9 +475,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> addUploadPart(@HostParam("endpoint") String endpoint,
-                                                 @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
-                                                 @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
-                                                 RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/uploads/{upload_id}/parts")
@@ -644,9 +487,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> addUploadPartSync(@HostParam("endpoint") String endpoint,
-                                               @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
-                                               @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
-                                               RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
 
         @Post("/uploads/{upload_id}/complete")
         @ExpectedResponses({ 200 })
@@ -655,9 +498,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> completeUpload(@HostParam("endpoint") String endpoint,
-                                                  @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
-                                                  @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
-                                                  RequestOptions requestOptions, Context context);
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
 
         @Post("/uploads/{upload_id}/complete")
         @ExpectedResponses({ 200 })
@@ -666,9 +509,9 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> completeUploadSync(@HostParam("endpoint") String endpoint,
-                                                @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
-                                                @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
-                                                RequestOptions requestOptions, Context context);
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
 
         @Post("/uploads/{upload_id}/cancel")
         @ExpectedResponses({ 200 })
@@ -677,8 +520,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelUpload(@HostParam("endpoint") String endpoint,
-                                                @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
-                                                RequestOptions requestOptions, Context context);
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/uploads/{upload_id}/cancel")
         @ExpectedResponses({ 200 })
@@ -687,8 +530,8 @@ public final class NonAzureOpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelUploadSync(@HostParam("endpoint") String endpoint,
-                                              @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
-                                              RequestOptions requestOptions, Context context);
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -739,19 +582,13 @@ public final class NonAzureOpenAIClientImpl {
      * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String modelId,
-        BinaryData embeddingsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String modelId, BinaryData embeddingsOptions,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-        return FluxUtil.withContext(
-                context ->
-                        service.getEmbeddings(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                embeddingsOptionsUpdated,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getEmbeddings(OPEN_AI_ENDPOINT, accept, embeddingsOptionsUpdated,
+            requestOptions, context));
     }
 
     /**
@@ -803,16 +640,12 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String modelId, BinaryData embeddingsOptions,
-                                                          RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-        return service.getEmbeddingsSync(
-                OPEN_AI_ENDPOINT,
-                accept,
-                embeddingsOptionsUpdated,
-                requestOptions,
-                Context.NONE);
+        return service.getEmbeddingsSync(OPEN_AI_ENDPOINT, accept, embeddingsOptionsUpdated, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -898,19 +731,13 @@ public final class NonAzureOpenAIClientImpl {
      * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String modelId,
-        BinaryData completionsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String modelId, BinaryData completionsOptions,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
-        return FluxUtil.withContext(
-            context ->
-                service.getCompletions(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    completionsOptionsUpdated,
-                    requestOptions,
-                    context));
+        return FluxUtil.withContext(context -> service.getCompletions(OPEN_AI_ENDPOINT, accept,
+            completionsOptionsUpdated, requestOptions, context));
     }
 
     /**
@@ -995,15 +822,11 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(String modelId, BinaryData completionsOptions,
-                                                           RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
-        return service.getCompletionsSync(
-            OPEN_AI_ENDPOINT,
-            accept,
-            completionsOptionsUpdated,
-            requestOptions,
+        return service.getCompletionsSync(OPEN_AI_ENDPOINT, accept, completionsOptionsUpdated, requestOptions,
             Context.NONE);
     }
 
@@ -1086,14 +909,8 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
-        return FluxUtil.withContext(
-            context ->
-                service.getChatCompletions(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    chatCompletionsOptionsUpdated,
-                    requestOptions,
-                    context));
+        return FluxUtil.withContext(context -> service.getChatCompletions(OPEN_AI_ENDPOINT, accept,
+            chatCompletionsOptionsUpdated, requestOptions, context));
     }
 
     /**
@@ -1170,15 +987,11 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(String modelId, BinaryData chatCompletionsOptions,
-                                                               RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
-        return service.getChatCompletionsSync(
-            OPEN_AI_ENDPOINT,
-            accept,
-            chatCompletionsOptionsUpdated,
-            requestOptions,
+        return service.getChatCompletionsSync(OPEN_AI_ENDPOINT, accept, chatCompletionsOptionsUpdated, requestOptions,
             Context.NONE);
     }
 
@@ -1231,14 +1044,8 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData imageGenerationOptionsUpdated = addModelIdJson(imageGenerationOptions, modelId);
-        return FluxUtil.withContext(
-                context ->
-                        service.getImageGenerations(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                imageGenerationOptionsUpdated,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getImageGenerations(OPEN_AI_ENDPOINT, accept,
+            imageGenerationOptionsUpdated, requestOptions, context));
     }
 
     /**
@@ -1285,17 +1092,12 @@ public final class NonAzureOpenAIClientImpl {
      * @return A list of image URLs that were generated based on the prompt sent in the request
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageGenerationsWithResponse(String modelId,
-        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getImageGenerationsWithResponse(String modelId, BinaryData imageGenerationOptions,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         final BinaryData imageGenerationOptionsUpdated = addModelIdJson(imageGenerationOptions, modelId);
-        return service.getImageGenerationsSync(
-            OPEN_AI_ENDPOINT,
-            accept,
-            imageGenerationOptionsUpdated,
-            requestOptions,
-            Context.NONE
-        );
+        return service.getImageGenerationsSync(OPEN_AI_ENDPOINT, accept, imageGenerationOptionsUpdated, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1370,17 +1172,11 @@ public final class NonAzureOpenAIClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
-            String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(String modelId,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranscriptionAsResponseObject(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                audioTranscriptionOptions,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getAudioTranscriptionAsResponseObject(OPEN_AI_ENDPOINT, accept,
+            audioTranscriptionOptions, requestOptions, context));
     }
 
     /**
@@ -1437,15 +1233,11 @@ public final class NonAzureOpenAIClientImpl {
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(
-            String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(String modelId,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioTranscriptionAsResponseObjectSync(
-                OPEN_AI_ENDPOINT,
-                accept,
-                audioTranscriptionOptions,
-                requestOptions,
-                Context.NONE);
+        return service.getAudioTranscriptionAsResponseObjectSync(OPEN_AI_ENDPOINT, accept, audioTranscriptionOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1482,17 +1274,11 @@ public final class NonAzureOpenAIClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(
-            String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String modelId,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranscriptionAsPlainText(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                audioTranscriptionOptions,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getAudioTranscriptionAsPlainText(OPEN_AI_ENDPOINT, accept,
+            audioTranscriptionOptions, requestOptions, context));
     }
 
     /**
@@ -1528,15 +1314,11 @@ public final class NonAzureOpenAIClientImpl {
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(
-            String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String modelId,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioTranscriptionAsPlainTextSync(
-                OPEN_AI_ENDPOINT,
-                accept,
-                audioTranscriptionOptions,
-                requestOptions,
-                Context.NONE);
+        return service.getAudioTranscriptionAsPlainTextSync(OPEN_AI_ENDPOINT, accept, audioTranscriptionOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1592,17 +1374,11 @@ public final class NonAzureOpenAIClientImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(String deploymentOrModelName,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranslationAsResponseObject(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                audioTranslationOptions,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getAudioTranslationAsResponseObject(OPEN_AI_ENDPOINT, accept,
+            audioTranslationOptions, requestOptions, context));
     }
 
     /**
@@ -1658,15 +1434,11 @@ public final class NonAzureOpenAIClientImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(
-            String modelId, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String modelId,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioTranslationAsResponseObjectSync(
-                OPEN_AI_ENDPOINT,
-                accept,
-                audioTranslationOptions,
-                requestOptions,
-                Context.NONE);
+        return service.getAudioTranslationAsResponseObjectSync(OPEN_AI_ENDPOINT, accept, audioTranslationOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1701,17 +1473,11 @@ public final class NonAzureOpenAIClientImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(
-            String modelId, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String modelId,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAudioTranslationAsPlainText(
-                                OPEN_AI_ENDPOINT,
-                                accept,
-                                audioTranslationOptions,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getAudioTranslationAsPlainText(OPEN_AI_ENDPOINT, accept,
+            audioTranslationOptions, requestOptions, context));
     }
 
     /**
@@ -1746,15 +1512,11 @@ public final class NonAzureOpenAIClientImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(
-            String modelId, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String modelId,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAudioTranslationAsPlainTextSync(
-                OPEN_AI_ENDPOINT,
-                accept,
-                audioTranslationOptions,
-                requestOptions,
-                Context.NONE);
+        return service.getAudioTranslationAsPlainTextSync(OPEN_AI_ENDPOINT, accept, audioTranslationOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1791,8 +1553,8 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String modelId,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(context -> service.generateSpeechFromText(
-                    OPEN_AI_ENDPOINT, accept, speechGenerationOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.generateSpeechFromText(OPEN_AI_ENDPOINT, accept,
+            speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1826,10 +1588,10 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(BinaryData speechGenerationOptions,
-                                                                   RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptions,
-                requestOptions, Context.NONE);
+        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptions, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1948,7 +1710,7 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
-                                                                  RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.uploadFile(OPEN_AI_ENDPOINT, contentType, accept,
@@ -2125,8 +1887,8 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getFileContent(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getFileContent(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2224,8 +1986,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listBatchesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listBatches(OPEN_AI_ENDPOINT, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listBatches(OPEN_AI_ENDPOINT, accept, requestOptions, context));
     }
 
     /**
@@ -2373,7 +2134,7 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createBatchWithResponseAsync(BinaryData createBatchRequest,
-                                                                   RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createBatch(OPEN_AI_ENDPOINT, accept, createBatchRequest, requestOptions, context));
@@ -2752,11 +2513,11 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createUploadWithResponseAsync(BinaryData requestBody,
-                                                                    RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpload(OPEN_AI_ENDPOINT, contentType, accept,
-            requestBody, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createUpload(OPEN_AI_ENDPOINT, contentType, accept, requestBody,
+            requestOptions, context));
     }
 
     /**
@@ -2853,7 +2614,7 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> addUploadPartWithResponseAsync(String uploadId, BinaryData requestBody,
-                                                                     RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addUploadPart(OPEN_AI_ENDPOINT, contentType, uploadId, accept,
@@ -2889,7 +2650,7 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
-                                                          RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.addUploadPartSync(OPEN_AI_ENDPOINT, contentType, uploadId, accept, requestBody, requestOptions,
@@ -2954,7 +2715,7 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> completeUploadWithResponseAsync(String uploadId, BinaryData requestBody,
-                                                                      RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.completeUpload(OPEN_AI_ENDPOINT, uploadId, contentType, accept,
@@ -3018,11 +2779,11 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> completeUploadWithResponse(String uploadId, BinaryData requestBody,
-                                                           RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.completeUploadSync(OPEN_AI_ENDPOINT, uploadId, contentType, accept, requestBody,
-            requestOptions, Context.NONE);
+        return service.completeUploadSync(OPEN_AI_ENDPOINT, uploadId, contentType, accept, requestBody, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3064,8 +2825,8 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelUploadWithResponseAsync(String uploadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.cancelUpload(OPEN_AI_ENDPOINT, uploadId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.cancelUpload(OPEN_AI_ENDPOINT, uploadId, accept, requestOptions, context));
     }
 
     /**

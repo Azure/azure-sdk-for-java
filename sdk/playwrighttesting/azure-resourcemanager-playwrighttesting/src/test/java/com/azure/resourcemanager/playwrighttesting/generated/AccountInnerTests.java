@@ -27,10 +27,11 @@ public final class AccountInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountInner model
-            = new AccountInner().withLocation("htnapczwlokjyem").withTags(mapOf("joxzjnchgejspodm", "ni", "h", "ilzyd"))
-                .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                    .withScalableExecution(EnablementStatus.ENABLED).withReporting(EnablementStatus.ENABLED));
+        AccountInner model = new AccountInner().withLocation("htnapczwlokjyem")
+            .withTags(mapOf("joxzjnchgejspodm", "ni", "h", "ilzyd"))
+            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withScalableExecution(EnablementStatus.ENABLED)
+                .withReporting(EnablementStatus.ENABLED));
         model = BinaryData.fromObject(model).toObject(AccountInner.class);
         Assertions.assertEquals("htnapczwlokjyem", model.location());
         Assertions.assertEquals("ni", model.tags().get("joxzjnchgejspodm"));

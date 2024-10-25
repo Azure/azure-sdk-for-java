@@ -44,12 +44,14 @@ public final class FqdnListLocalRulestacksGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks()
-            .getWithResponse("rngl", "mbiipsnawwlqk", "nxhhl", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rngl", "mbiipsnawwlqk", "nxhhl", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ricctkwmuqqoa", response.description());
         Assertions.assertEquals("eiyglesrwvaexhdc", response.fqdnList().get(0));

@@ -282,9 +282,8 @@ public final class ContactInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ContactInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ContactInner"));
         } else {
             innerProperties().validate();
         }

@@ -51,8 +51,8 @@ public final class CollectionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     CollectionsImpl(PurviewAccountClientImpl client) {
-        this.service =
-                RestProxy.create(CollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,320 +64,166 @@ public final class CollectionsImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     public interface CollectionsService {
         @Get("/collections/{collectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getCollection(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/collections/{collectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getCollectionSync(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/collections/{collectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData collection,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateCollection(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData collection, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/collections/{collectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData collection,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createOrUpdateCollectionSync(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData collection, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/collections/{collectionName}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteCollection(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/collections/{collectionName}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteCollectionSync(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/collections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollections(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listCollections(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/collections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCollectionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listCollectionsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/collections/{collectionName}/getChildCollectionNames")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listChildCollectionNames(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listChildCollectionNames(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/collections/{collectionName}/getChildCollectionNames")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listChildCollectionNamesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listChildCollectionNamesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/collections/{collectionName}/getCollectionPath")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionPath(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getCollectionPath(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/collections/{collectionName}/getCollectionPath")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionPathSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("collectionName") String collectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getCollectionPathSync(@HostParam("endpoint") String endpoint,
+            @PathParam("collectionName") String collectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollectionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listCollectionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCollectionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listCollectionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listChildCollectionNamesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listChildCollectionNamesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -415,18 +261,11 @@ public final class CollectionsImpl {
      * @return a collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionWithResponseAsync(
-            String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionWithResponseAsync(String collectionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCollection(
-                                this.client.getEndpoint(),
-                                collectionName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getCollection(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -466,13 +305,8 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCollectionSync(
-                this.client.getEndpoint(),
-                collectionName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getCollectionSync(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -534,19 +368,11 @@ public final class CollectionsImpl {
      * @return collection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(String collectionName,
+        BinaryData collection, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateCollection(
-                                this.client.getEndpoint(),
-                                collectionName,
-                                this.client.getServiceVersion().getVersion(),
-                                collection,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateCollection(this.client.getEndpoint(),
+            collectionName, this.client.getServiceVersion().getVersion(), collection, accept, requestOptions, context));
     }
 
     /**
@@ -608,17 +434,11 @@ public final class CollectionsImpl {
      * @return collection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(String collectionName, BinaryData collection,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createOrUpdateCollectionSync(
-                this.client.getEndpoint(),
-                collectionName,
-                this.client.getServiceVersion().getVersion(),
-                collection,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createOrUpdateCollectionSync(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), collection, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -633,18 +453,11 @@ public final class CollectionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCollectionWithResponseAsync(
-            String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteCollectionWithResponseAsync(String collectionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteCollection(
-                                this.client.getEndpoint(),
-                                collectionName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteCollection(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -661,13 +474,8 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteCollectionSync(
-                this.client.getEndpoint(),
-                collectionName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteCollectionSync(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -716,23 +524,11 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listCollections(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listCollections(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -782,12 +578,9 @@ public final class CollectionsImpl {
     public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listCollectionsSinglePageAsync(requestOptions),
-                nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listCollectionsSinglePageAsync(requestOptions),
+            nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -836,20 +629,10 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listCollectionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listCollectionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listCollectionsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -899,12 +682,9 @@ public final class CollectionsImpl {
     public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listCollectionsSinglePage(requestOptions),
-                nextLink -> listCollectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listCollectionsSinglePage(requestOptions),
+            nextLink -> listCollectionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -938,27 +718,14 @@ public final class CollectionsImpl {
      * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
-            String collectionName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(String collectionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChildCollectionNames(
-                                        this.client.getEndpoint(),
-                                        collectionName,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listChildCollectionNames(this.client.getEndpoint(), collectionName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -995,12 +762,9 @@ public final class CollectionsImpl {
     public PagedFlux<BinaryData> listChildCollectionNamesAsync(String collectionName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
-                nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
+            nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1034,24 +798,13 @@ public final class CollectionsImpl {
      * @return paged list of collections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listChildCollectionNamesSinglePage(
-            String collectionName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listChildCollectionNamesSinglePage(String collectionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listChildCollectionNamesSync(
-                        this.client.getEndpoint(),
-                        collectionName,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listChildCollectionNamesSync(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -1088,12 +841,9 @@ public final class CollectionsImpl {
     public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listChildCollectionNamesSinglePage(collectionName, requestOptions),
-                nextLink -> listChildCollectionNamesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listChildCollectionNamesSinglePage(collectionName, requestOptions),
+            nextLink -> listChildCollectionNamesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1122,18 +872,11 @@ public final class CollectionsImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(
-            String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(String collectionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCollectionPath(
-                                this.client.getEndpoint(),
-                                collectionName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getCollectionPath(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1164,13 +907,8 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionPathWithResponse(String collectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCollectionPathSync(
-                this.client.getEndpoint(),
-                collectionName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getCollectionPathSync(this.client.getEndpoint(), collectionName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1209,22 +947,14 @@ public final class CollectionsImpl {
      * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listCollectionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listCollectionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1265,16 +995,10 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listCollectionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listCollectionsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listCollectionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -1299,22 +1023,14 @@ public final class CollectionsImpl {
      * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChildCollectionNamesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listChildCollectionNamesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1339,19 +1055,13 @@ public final class CollectionsImpl {
      * @return paged list of collections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listChildCollectionNamesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listChildCollectionNamesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listChildCollectionNamesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listChildCollectionNamesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

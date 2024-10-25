@@ -74,14 +74,12 @@ public final class SkuCapability {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SkuCapability"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SkuCapability"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SkuCapability"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SkuCapability"));
         }
     }
 

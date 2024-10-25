@@ -17,16 +17,16 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications withEnableDefaultValidation(
-        Boolean enableDefaultValidation) {
+    public ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications
+        withEnableDefaultValidation(Boolean enableDefaultValidation) {
         super.withEnableDefaultValidation(enableDefaultValidation);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications withResourceTypesWithCustomValidation(
-        List<String> resourceTypesWithCustomValidation) {
+    public ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications
+        withResourceTypesWithCustomValidation(List<String> resourceTypesWithCustomValidation) {
         super.withResourceTypesWithCustomValidation(resourceTypesWithCustomValidation);
         return this;
     }

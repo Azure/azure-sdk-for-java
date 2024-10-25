@@ -26,8 +26,10 @@ public final class DestinationAddrTests {
     public void testSerialize() throws Exception {
         DestinationAddr model
             = new DestinationAddr().withCidrs(Arrays.asList("bkrvrnsvshqj", "hxcr", "bfovasrruvwbhsq"))
-                .withCountries(Arrays.asList("bcgjbirxbp", "bsrfbj", "dtws")).withFeeds(Arrays.asList("ftpvjzbexil"))
-                .withPrefixLists(Arrays.asList("fqqnvwpmqtaruo", "jmkcjhwqytj")).withFqdnLists(Arrays.asList("n"));
+                .withCountries(Arrays.asList("bcgjbirxbp", "bsrfbj", "dtws"))
+                .withFeeds(Arrays.asList("ftpvjzbexil"))
+                .withPrefixLists(Arrays.asList("fqqnvwpmqtaruo", "jmkcjhwqytj"))
+                .withFqdnLists(Arrays.asList("n"));
         model = BinaryData.fromObject(model).toObject(DestinationAddr.class);
         Assertions.assertEquals("bkrvrnsvshqj", model.cidrs().get(0));
         Assertions.assertEquals("bcgjbirxbp", model.countries().get(0));

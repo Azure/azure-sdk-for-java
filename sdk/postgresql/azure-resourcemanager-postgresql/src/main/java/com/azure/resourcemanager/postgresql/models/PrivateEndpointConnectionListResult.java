@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of private endpoint connections. */
 @Immutable
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
 
     /*
      * Array of results.

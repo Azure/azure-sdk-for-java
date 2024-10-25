@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = TaskStatusClientBuilder.class)
 public final class TaskStatusClient {
-    @Generated private final TaskStatusImpl serviceClient;
+    @Generated
+    private final TaskStatusImpl serviceClient;
 
     /**
      * Initializes an instance of TaskStatusClient class.
@@ -55,8 +56,8 @@ public final class TaskStatusClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Response<Void> updateWithResponse(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateWithResponse(taskId, taskUpdateCommand, requestOptions);
     }
 }

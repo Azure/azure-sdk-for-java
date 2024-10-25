@@ -101,9 +101,8 @@ public final class ThrottlingMetric {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ThrottlingMetric"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ThrottlingMetric"));
         }
     }
 

@@ -29,37 +29,31 @@ class PurviewMetadataClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        MetadataRolesClientBuilder metadataRolesClientbuilder =
-                new MetadataRolesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        MetadataRolesClientBuilder metadataRolesClientbuilder = new MetadataRolesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            metadataRolesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            metadataRolesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            metadataRolesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            metadataRolesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             metadataRolesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         metadataRolesClient = metadataRolesClientbuilder.buildClient();
 
-        MetadataPolicyClientBuilder metadataPolicyClientbuilder =
-                new MetadataPolicyClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        MetadataPolicyClientBuilder metadataPolicyClientbuilder = new MetadataPolicyClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            metadataPolicyClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            metadataPolicyClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            metadataPolicyClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            metadataPolicyClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             metadataPolicyClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }

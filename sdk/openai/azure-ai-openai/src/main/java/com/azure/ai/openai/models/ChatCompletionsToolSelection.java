@@ -75,12 +75,14 @@ public final class ChatCompletionsToolSelection {
         }
 
         try {
-            ChatCompletionsNamedToolSelection namedToolSelection = chatCompletionsToolSelectionJson.toObject(ChatCompletionsNamedToolSelection.class);
+            ChatCompletionsNamedToolSelection namedToolSelection
+                = chatCompletionsToolSelectionJson.toObject(ChatCompletionsNamedToolSelection.class);
             if (namedToolSelection != null) {
                 return new ChatCompletionsToolSelection(namedToolSelection);
             }
         } catch (UncheckedIOException e) {
-            ChatCompletionsToolSelectionPreset preset = chatCompletionsToolSelectionJson.toObject(ChatCompletionsToolSelectionPreset.class);
+            ChatCompletionsToolSelectionPreset preset
+                = chatCompletionsToolSelectionJson.toObject(ChatCompletionsToolSelectionPreset.class);
             if (ChatCompletionsToolSelectionPreset.values().contains(preset)) {
                 return new ChatCompletionsToolSelection(preset);
             }

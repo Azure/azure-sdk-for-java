@@ -50,9 +50,8 @@ public final class OperationsPutContent {
      */
     public void validate() {
         if (contents() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contents in model OperationsPutContent"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contents in model OperationsPutContent"));
         } else {
             contents().forEach(e -> e.validate());
         }

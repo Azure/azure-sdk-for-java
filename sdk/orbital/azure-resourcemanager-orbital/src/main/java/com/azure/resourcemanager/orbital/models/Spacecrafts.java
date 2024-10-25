@@ -72,8 +72,8 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified spacecraft in a specified resource group along with {@link Response}.
      */
-    Response<Spacecraft> getByResourceGroupWithResponse(
-        String resourceGroupName, String spacecraftName, Context context);
+    Response<Spacecraft> getByResourceGroupWithResponse(String resourceGroupName, String spacecraftName,
+        Context context);
 
     /**
      * Gets the specified spacecraft in a specified resource group.
@@ -122,8 +122,8 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters);
+    PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters);
 
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
@@ -138,8 +138,8 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters, Context context);
+    PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters, Context context);
 
     /**
      * Gets the specified spacecraft in a specified resource group.

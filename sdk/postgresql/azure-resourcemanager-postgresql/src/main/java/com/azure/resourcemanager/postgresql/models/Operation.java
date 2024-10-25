@@ -14,7 +14,8 @@ import java.util.Map;
 /** REST API operation definition. */
 @Immutable
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Operation.class);
 
     /*
      * The name of the operation being performed on this particular object.

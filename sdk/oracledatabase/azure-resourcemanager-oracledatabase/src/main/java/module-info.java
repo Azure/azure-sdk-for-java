@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.oracledatabase {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.oracledatabase;
     exports com.azure.resourcemanager.oracledatabase.fluent;
     exports com.azure.resourcemanager.oracledatabase.fluent.models;
     exports com.azure.resourcemanager.oracledatabase.models;
+
     opens com.azure.resourcemanager.oracledatabase.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.oracledatabase.models to com.azure.core, com.fasterxml.jackson.databind;
 }

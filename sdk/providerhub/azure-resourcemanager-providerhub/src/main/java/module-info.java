@@ -10,10 +10,6 @@ module com.azure.resourcemanager.providerhub {
     exports com.azure.resourcemanager.providerhub.fluent.models;
     exports com.azure.resourcemanager.providerhub.models;
 
-    opens com.azure.resourcemanager.providerhub.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.providerhub.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.providerhub.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.providerhub.models to com.azure.core, com.fasterxml.jackson.databind;
 }

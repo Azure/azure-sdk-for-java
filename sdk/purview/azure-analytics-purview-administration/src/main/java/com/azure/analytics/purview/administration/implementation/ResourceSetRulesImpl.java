@@ -51,9 +51,8 @@ public final class ResourceSetRulesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ResourceSetRulesImpl(PurviewAccountClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        ResourceSetRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceSetRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,196 +64,106 @@ public final class ResourceSetRulesImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     public interface ResourceSetRulesService {
         @Get("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getResourceSetRule(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getResourceSetRule(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getResourceSetRuleSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getResourceSetRuleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateResourceSetRule(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData resourceSetRuleConfig,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateResourceSetRule(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData resourceSetRuleConfig, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateResourceSetRuleSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData resourceSetRuleConfig,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createOrUpdateResourceSetRuleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData resourceSetRuleConfig, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteResourceSetRule(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteResourceSetRule(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteResourceSetRuleSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteResourceSetRuleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/resourceSetRuleConfigs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listResourceSetRules(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listResourceSetRules(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/resourceSetRuleConfigs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listResourceSetRulesSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listResourceSetRulesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listResourceSetRulesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listResourceSetRulesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -371,14 +280,8 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getResourceSetRule(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getResourceSetRule(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -495,12 +398,8 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getResourceSetRuleSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getResourceSetRuleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -718,18 +617,11 @@ public final class ResourceSetRulesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(BinaryData resourceSetRuleConfig,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateResourceSetRule(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                resourceSetRuleConfig,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateResourceSetRule(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), resourceSetRuleConfig, accept, requestOptions, context));
     }
 
     /**
@@ -946,16 +838,11 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(BinaryData resourceSetRuleConfig,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createOrUpdateResourceSetRuleSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                resourceSetRuleConfig,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createOrUpdateResourceSetRuleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), resourceSetRuleConfig, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -971,14 +858,8 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteResourceSetRule(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteResourceSetRule(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -994,12 +875,8 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteResourceSetRuleSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteResourceSetRuleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1127,23 +1004,11 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listResourceSetRules(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listResourceSetRules(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1271,12 +1136,9 @@ public final class ResourceSetRulesImpl {
     public PagedFlux<BinaryData> listResourceSetRulesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listResourceSetRulesSinglePageAsync(requestOptions),
-                nextLink -> listResourceSetRulesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listResourceSetRulesSinglePageAsync(requestOptions),
+            nextLink -> listResourceSetRulesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1403,20 +1265,10 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listResourceSetRulesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listResourceSetRulesSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listResourceSetRulesSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -1544,12 +1396,9 @@ public final class ResourceSetRulesImpl {
     public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listResourceSetRulesSinglePage(requestOptions),
-                nextLink -> listResourceSetRulesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listResourceSetRulesSinglePage(requestOptions),
+            nextLink -> listResourceSetRulesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1667,22 +1516,14 @@ public final class ResourceSetRulesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listResourceSetRulesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listResourceSetRulesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1799,19 +1640,13 @@ public final class ResourceSetRulesImpl {
      * @return paged list of account resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listResourceSetRulesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listResourceSetRulesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listResourceSetRulesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listResourceSetRulesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

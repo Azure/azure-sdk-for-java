@@ -337,31 +337,23 @@ public final class ContactsProperties {
      */
     public void validate() {
         if (reservationStartTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property reservationStartTime in model ContactsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property reservationStartTime in model ContactsProperties"));
         }
         if (reservationEndTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property reservationEndTime in model ContactsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property reservationEndTime in model ContactsProperties"));
         }
         if (groundStationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groundStationName in model ContactsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groundStationName in model ContactsProperties"));
         }
         if (antennaConfiguration() != null) {
             antennaConfiguration().validate();
         }
         if (contactProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contactProfile in model ContactsProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contactProfile in model ContactsProperties"));
         } else {
             contactProfile().validate();
         }

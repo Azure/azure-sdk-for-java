@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewMetadataClient type. */
 @ServiceClient(builder = MetadataPolicyClientBuilder.class)
 public final class MetadataPolicyClient {
-    @Generated private final MetadataPoliciesImpl serviceClient;
+    @Generated
+    private final MetadataPoliciesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataPolicyClient class.

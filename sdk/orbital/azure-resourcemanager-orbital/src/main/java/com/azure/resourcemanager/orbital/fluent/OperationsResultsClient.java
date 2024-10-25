@@ -38,8 +38,8 @@ public interface OperationsResultsClient {
      * @return the {@link SyncPoller} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
-        String location, String operationId, Context context);
+    SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(String location, String operationId,
+        Context context);
 
     /**
      * Returns operation results.

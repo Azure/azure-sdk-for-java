@@ -20,15 +20,12 @@ public final class CollectionsGetCollectionTests extends PurviewAccountClientTes
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("Wed, 13 Sep 2017 18:04:32 GMT", response.getHeaders().get("Date").getValue());
         Assertions.assertEquals("nosniff", response.getHeaders().get("X-Content-Type-Options").getValue());
-        Assertions.assertEquals(
-                "d5496da4-9c52-402f-b067-83cc9ddea888", response.getHeaders().get("x-ms-request-id").getValue());
-        Assertions.assertEquals(
-                "25c78f97-0b0a-4fe9-ad39-883a482265cd",
-                response.getHeaders().get("x-ms-correlation-request-id").getValue());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"mycollection1\",\"collectionProvisioningState\":\"Succeeded\",\"friendlyName\":\"Finance\",\"parentCollection\":{\"type\":\"CollectionReference\",\"referenceName\":\"accountName\"}}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals("d5496da4-9c52-402f-b067-83cc9ddea888",
+            response.getHeaders().get("x-ms-request-id").getValue());
+        Assertions.assertEquals("25c78f97-0b0a-4fe9-ad39-883a482265cd",
+            response.getHeaders().get("x-ms-correlation-request-id").getValue());
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"name\":\"mycollection1\",\"collectionProvisioningState\":\"Succeeded\",\"friendlyName\":\"Finance\",\"parentCollection\":{\"type\":\"CollectionReference\",\"referenceName\":\"accountName\"}}")
+            .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

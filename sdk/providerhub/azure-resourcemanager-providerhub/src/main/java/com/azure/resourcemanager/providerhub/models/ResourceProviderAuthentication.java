@@ -49,10 +49,8 @@ public class ResourceProviderAuthentication {
      */
     public void validate() {
         if (allowedAudiences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property allowedAudiences in model ResourceProviderAuthentication"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property allowedAudiences in model ResourceProviderAuthentication"));
         }
     }
 

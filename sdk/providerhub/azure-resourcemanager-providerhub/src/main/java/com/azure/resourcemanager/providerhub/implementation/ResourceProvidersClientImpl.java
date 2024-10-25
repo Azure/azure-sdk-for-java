@@ -42,8 +42,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ProviderHubImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,34 +54,26 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "ProviderHubResourceP")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/generateManifest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/generateManifest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceProviderManifestInner>> generateManifest(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceProviderManifestInner>> generateManifest(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/checkinManifest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/checkinManifest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckinManifestInfoInner>> checkinManifest(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckinManifestInfoInner>> checkinManifest(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckinManifestParams checkinManifestParams,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -96,16 +88,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceProviderManifestInner>> generateManifestWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -113,16 +101,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateManifest(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.generateManifest(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -137,19 +117,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceProviderManifestInner>> generateManifestWithResponseAsync(
-        String providerNamespace, Context context) {
+    private Mono<Response<ResourceProviderManifestInner>> generateManifestWithResponseAsync(String providerNamespace,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -157,14 +133,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateManifest(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.generateManifest(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -192,8 +162,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceProviderManifestInner> generateManifestWithResponse(
-        String providerNamespace, Context context) {
+    public Response<ResourceProviderManifestInner> generateManifestWithResponse(String providerNamespace,
+        Context context) {
         return generateManifestWithResponseAsync(providerNamespace, context).block();
     }
 
@@ -222,19 +192,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -248,17 +214,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkinManifest(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            checkinManifestParams,
-                            accept,
-                            context))
+            .withContext(context -> service.checkinManifest(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), checkinManifestParams, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -274,19 +231,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context) {
+    private Mono<Response<CheckinManifestInfoInner>> checkinManifestWithResponseAsync(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -300,15 +253,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkinManifest(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                checkinManifestParams,
-                accept,
-                context);
+        return service.checkinManifest(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), checkinManifestParams, accept, context);
     }
 
     /**
@@ -322,8 +268,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckinManifestInfoInner> checkinManifestAsync(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    private Mono<CheckinManifestInfoInner> checkinManifestAsync(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         return checkinManifestWithResponseAsync(providerNamespace, checkinManifestParams)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -340,8 +286,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckinManifestInfoInner> checkinManifestWithResponse(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context) {
+    public Response<CheckinManifestInfoInner> checkinManifestWithResponse(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context) {
         return checkinManifestWithResponseAsync(providerNamespace, checkinManifestParams, context).block();
     }
 
@@ -356,8 +302,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckinManifestInfoInner checkinManifest(
-        String providerNamespace, CheckinManifestParams checkinManifestParams) {
+    public CheckinManifestInfoInner checkinManifest(String providerNamespace,
+        CheckinManifestParams checkinManifestParams) {
         return checkinManifestWithResponse(providerNamespace, checkinManifestParams, Context.NONE).getValue();
     }
 }

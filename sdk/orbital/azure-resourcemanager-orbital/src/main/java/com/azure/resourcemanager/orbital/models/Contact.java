@@ -167,20 +167,17 @@ public interface Contact {
     ContactInner innerModel();
 
     /** The entirety of the Contact definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithReservationStartTime,
-            DefinitionStages.WithReservationEndTime,
-            DefinitionStages.WithGroundStationName,
-            DefinitionStages.WithContactProfile,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithReservationStartTime, DefinitionStages.WithReservationEndTime,
+        DefinitionStages.WithGroundStationName, DefinitionStages.WithContactProfile, DefinitionStages.WithCreate {
     }
+
     /** The Contact definition stages. */
     interface DefinitionStages {
         /** The first stage of the Contact definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Contact definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -192,6 +189,7 @@ public interface Contact {
              */
             WithReservationStartTime withExistingSpacecraft(String resourceGroupName, String spacecraftName);
         }
+
         /** The stage of the Contact definition allowing to specify reservationStartTime. */
         interface WithReservationStartTime {
             /**
@@ -203,6 +201,7 @@ public interface Contact {
              */
             WithReservationEndTime withReservationStartTime(OffsetDateTime reservationStartTime);
         }
+
         /** The stage of the Contact definition allowing to specify reservationEndTime. */
         interface WithReservationEndTime {
             /**
@@ -213,6 +212,7 @@ public interface Contact {
              */
             WithGroundStationName withReservationEndTime(OffsetDateTime reservationEndTime);
         }
+
         /** The stage of the Contact definition allowing to specify groundStationName. */
         interface WithGroundStationName {
             /**
@@ -223,6 +223,7 @@ public interface Contact {
              */
             WithContactProfile withGroundStationName(String groundStationName);
         }
+
         /** The stage of the Contact definition allowing to specify contactProfile. */
         interface WithContactProfile {
             /**
@@ -233,6 +234,7 @@ public interface Contact {
              */
             WithCreate withContactProfile(ContactsPropertiesContactProfile contactProfile);
         }
+
         /**
          * The stage of the Contact definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -253,6 +255,7 @@ public interface Contact {
              */
             Contact create(Context context);
         }
+
         /** The stage of the Contact definition allowing to specify provisioningState. */
         interface WithProvisioningState {
             /**
@@ -265,6 +268,7 @@ public interface Contact {
             WithCreate withProvisioningState(ContactsPropertiesProvisioningState provisioningState);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

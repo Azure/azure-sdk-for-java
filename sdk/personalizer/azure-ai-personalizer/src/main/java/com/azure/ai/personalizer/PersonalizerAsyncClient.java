@@ -90,7 +90,8 @@ public final class PersonalizerAsyncClient {
 
     Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankOptions, Context context) {
         if (rankOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rankOptions' is required and cannot be null"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'rankOptions' is required and cannot be null"));
         }
         return service.rankWithResponseAsync(rankOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
@@ -135,9 +136,11 @@ public final class PersonalizerAsyncClient {
 
     Mono<Response<Void>> rewardWithResponse(String eventId, float rewardValue, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        return service.getEvents().rewardWithResponseAsync(eventId, new PersonalizerRewardOptions().setValue(rewardValue), context)
+        return service.getEvents()
+            .rewardWithResponseAsync(eventId, new PersonalizerRewardOptions().setValue(rewardValue), context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -178,9 +181,11 @@ public final class PersonalizerAsyncClient {
 
     Mono<Response<Void>> activateWithResponse(String eventId, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        return service.getEvents().activateWithResponseAsync(eventId, context)
+        return service.getEvents()
+            .activateWithResponseAsync(eventId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -210,7 +215,8 @@ public final class PersonalizerAsyncClient {
      * @throws IllegalArgumentException if rankMultiSlotOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions) {
+    public Mono<Response<PersonalizerRankMultiSlotResult>>
+        rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions) {
         try {
             return withContext(context -> rankMultiSlotWithResponse(rankMultiSlotOptions, context));
         } catch (RuntimeException ex) {
@@ -218,11 +224,14 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
+    Mono<Response<PersonalizerRankMultiSlotResult>>
+        rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
         if (rankMultiSlotOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rankMultiSlotOptions' is required and cannot be null"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'rankMultiSlotOptions' is required and cannot be null"));
         }
-        return service.getMultiSlots().rankWithResponseAsync(rankMultiSlotOptions, context)
+        return service.getMultiSlots()
+            .rankWithResponseAsync(rankMultiSlotOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -255,7 +264,8 @@ public final class PersonalizerAsyncClient {
      * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
+    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId,
+        PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
         try {
             return withContext(context -> rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions, context));
         } catch (RuntimeException ex) {
@@ -263,14 +273,18 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
+    Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId,
+        PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
         if (rewardMultiSlotOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rewardMultiSlotOptions' is required and cannot be null"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'rewardMultiSlotOptions' is required and cannot be null"));
         }
-        return service.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardMultiSlotOptions, context)
+        return service.getMultiSlotEvents()
+            .rewardWithResponseAsync(eventId, rewardMultiSlotOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -311,9 +325,11 @@ public final class PersonalizerAsyncClient {
 
     Mono<Response<Void>> activateMultiSlotWithResponse(String eventId, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        return service.getMultiSlotEvents().activateWithResponseAsync(eventId, context)
+        return service.getMultiSlotEvents()
+            .activateWithResponseAsync(eventId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }

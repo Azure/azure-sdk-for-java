@@ -76,16 +76,12 @@ public final class CheckinManifestParams {
      */
     public void validate() {
         if (environment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property environment in model CheckinManifestParams"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property environment in model CheckinManifestParams"));
         }
         if (baselineArmManifestLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baselineArmManifestLocation in model CheckinManifestParams"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baselineArmManifestLocation in model CheckinManifestParams"));
         }
     }
 

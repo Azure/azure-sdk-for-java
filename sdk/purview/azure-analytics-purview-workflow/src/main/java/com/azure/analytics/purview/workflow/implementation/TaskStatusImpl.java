@@ -42,8 +42,8 @@ public final class TaskStatusImpl {
      * @param client the instance of the service client containing this operation class.
      */
     TaskStatusImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(TaskStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TaskStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,46 +55,24 @@ public final class TaskStatusImpl {
     @ServiceInterface(name = "PurviewWorkflowTaskS")
     public interface TaskStatusService {
         @Post("/workflowtasks/{taskId}/change-task-status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> update(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData taskUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> update(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData taskUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/workflowtasks/{taskId}/change-task-status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> updateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData taskUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> updateSync(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData taskUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -119,19 +97,11 @@ public final class TaskStatusImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateWithResponseAsync(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(),
-                                taskId,
-                                this.client.getServiceVersion().getVersion(),
-                                taskUpdateCommand,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), taskId,
+            this.client.getServiceVersion().getVersion(), taskUpdateCommand, accept, requestOptions, context));
     }
 
     /**
@@ -156,16 +126,10 @@ public final class TaskStatusImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Response<Void> updateWithResponse(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateSync(
-                this.client.getEndpoint(),
-                taskId,
-                this.client.getServiceVersion().getVersion(),
-                taskUpdateCommand,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), taskId, this.client.getServiceVersion().getVersion(),
+            taskUpdateCommand, accept, requestOptions, Context.NONE);
     }
 }

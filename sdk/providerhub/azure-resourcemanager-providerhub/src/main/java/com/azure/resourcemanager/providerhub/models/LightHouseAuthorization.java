@@ -74,16 +74,12 @@ public final class LightHouseAuthorization {
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model LightHouseAuthorization"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property principalId in model LightHouseAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model LightHouseAuthorization"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property roleDefinitionId in model LightHouseAuthorization"));
         }
     }
 

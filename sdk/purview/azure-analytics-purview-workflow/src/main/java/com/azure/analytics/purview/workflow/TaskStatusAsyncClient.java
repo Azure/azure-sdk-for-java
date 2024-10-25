@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = TaskStatusClientBuilder.class, isAsync = true)
 public final class TaskStatusAsyncClient {
-    @Generated private final TaskStatusImpl serviceClient;
+    @Generated
+    private final TaskStatusImpl serviceClient;
 
     /**
      * Initializes an instance of TaskStatusAsyncClient class.
@@ -56,8 +57,8 @@ public final class TaskStatusAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponse(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateWithResponse(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateWithResponseAsync(taskId, taskUpdateCommand, requestOptions);
     }
 }

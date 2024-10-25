@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizedGroundstationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizedGroundstation model =
-            BinaryData.fromString("{\"groundStation\":\"zrnf\"}").toObject(AuthorizedGroundstation.class);
+        AuthorizedGroundstation model
+            = BinaryData.fromString("{\"groundStation\":\"zrnf\"}").toObject(AuthorizedGroundstation.class);
         Assertions.assertEquals("zrnf", model.groundStation());
     }
 

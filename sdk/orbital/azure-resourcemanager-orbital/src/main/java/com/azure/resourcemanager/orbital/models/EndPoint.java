@@ -126,23 +126,20 @@ public final class EndPoint {
      */
     public void validate() {
         if (ipAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipAddress in model EndPoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipAddress in model EndPoint"));
         }
         if (endPointName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endPointName in model EndPoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endPointName in model EndPoint"));
         }
         if (port() == null) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property port in model EndPoint"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property protocol in model EndPoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model EndPoint"));
         }
     }
 

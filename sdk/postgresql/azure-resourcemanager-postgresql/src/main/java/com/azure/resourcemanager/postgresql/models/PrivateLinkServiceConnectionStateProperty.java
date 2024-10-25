@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The PrivateLinkServiceConnectionStateProperty model. */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
 
     /*
      * The private link service connection status.
@@ -88,16 +89,12 @@ public final class PrivateLinkServiceConnectionStateProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
         }
     }
 }

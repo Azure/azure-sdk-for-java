@@ -22,7 +22,8 @@ public final class Parameters implements JsonSerializable<Parameters> {
 
     private List<String> required = Arrays.asList("location", "unit");
 
-    public Parameters() {}
+    public Parameters() {
+    }
 
     public String getType() {
         return type;

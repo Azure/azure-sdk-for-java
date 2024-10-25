@@ -27,8 +27,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -43,17 +43,13 @@ public final class OperationsImpl implements Operations {
         return Utils.mapPage(inner, inner1 -> new OperationsDefinitionImpl(inner1, this.manager()));
     }
 
-    public Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(
-        String providerNamespace, Context context) {
-        Response<List<OperationsDefinitionInner>> inner =
-            this.serviceClient().listByProviderRegistrationWithResponse(providerNamespace, context);
+    public Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(String providerNamespace,
+        Context context) {
+        Response<List<OperationsDefinitionInner>> inner
+            = this.serviceClient().listByProviderRegistrationWithResponse(providerNamespace, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -65,26 +61,20 @@ public final class OperationsImpl implements Operations {
     public List<OperationsDefinition> listByProviderRegistration(String providerNamespace) {
         List<OperationsDefinitionInner> inner = this.serviceClient().listByProviderRegistration(providerNamespace);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<OperationsContent> createOrUpdateWithResponse(
-        String providerNamespace, OperationsPutContent operationsPutContent, Context context) {
-        Response<OperationsContentInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(providerNamespace, operationsPutContent, context);
+    public Response<OperationsContent> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContent operationsPutContent, Context context) {
+        Response<OperationsContentInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(providerNamespace, operationsPutContent, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationsContentImpl(inner.getValue(), this.manager()));
         } else {
             return null;

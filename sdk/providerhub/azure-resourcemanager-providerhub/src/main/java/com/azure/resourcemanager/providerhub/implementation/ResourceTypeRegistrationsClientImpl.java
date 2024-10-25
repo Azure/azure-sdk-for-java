@@ -52,10 +52,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @param client the instance of the service client containing this operation class.
      */
     ResourceTypeRegistrationsClientImpl(ProviderHubImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ResourceTypeRegistrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ResourceTypeRegistrationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,75 +64,55 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @Host("{$host}")
     @ServiceInterface(name = "ProviderHubResourceT")
     public interface ResourceTypeRegistrationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceTypeRegistrationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceTypeRegistrationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ResourceTypeRegistrationInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationArrayResponseWithContinuation>> listByProviderRegistration(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationArrayResponseWithContinuation>> listByProviderRegistrationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -149,19 +127,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(
-        String providerNamespace, String resourceType) {
+    private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(String providerNamespace,
+        String resourceType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -172,17 +146,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -199,19 +164,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(
-        String providerNamespace, String resourceType, Context context) {
+    private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(String providerNamespace,
+        String resourceType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -222,15 +183,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, resourceType,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -260,8 +214,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return a resource type details in the given subscription and provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceTypeRegistrationInner> getWithResponse(
-        String providerNamespace, String resourceType, Context context) {
+    public Response<ResourceTypeRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
+        Context context) {
         return getWithResponseAsync(providerNamespace, resourceType, context).block();
     }
 
@@ -293,19 +247,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String resourceType, ResourceTypeRegistrationInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -321,18 +271,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, this.client.getApiVersion(), properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -350,19 +290,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String resourceType, ResourceTypeRegistrationInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -378,16 +314,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, this.client.getApiVersion(), properties, accept, context);
     }
 
     /**
@@ -404,18 +332,13 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
-        beginCreateOrUpdateAsync(
-            String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(providerNamespace, resourceType, properties);
-        return this
-            .client
-            .<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTypeRegistrationInner.class,
-                ResourceTypeRegistrationInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String providerNamespace, String resourceType,
+            ResourceTypeRegistrationInner properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(providerNamespace, resourceType, properties);
+        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -433,19 +356,14 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
-        beginCreateOrUpdateAsync(
-            String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
+        beginCreateOrUpdateAsync(String providerNamespace, String resourceType,
+            ResourceTypeRegistrationInner properties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(providerNamespace, resourceType, properties, context);
-        return this
-            .client
-            .<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTypeRegistrationInner.class,
-                ResourceTypeRegistrationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(providerNamespace, resourceType, properties, context);
+        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class,
+            context);
     }
 
     /**
@@ -461,8 +379,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
+    public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
         return this.beginCreateOrUpdateAsync(providerNamespace, resourceType, properties).getSyncPoller();
     }
 
@@ -498,10 +416,9 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTypeRegistrationInner> createOrUpdateAsync(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
-        return beginCreateOrUpdateAsync(providerNamespace, resourceType, properties)
-            .last()
+    private Mono<ResourceTypeRegistrationInner> createOrUpdateAsync(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties) {
+        return beginCreateOrUpdateAsync(providerNamespace, resourceType, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -519,10 +436,9 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTypeRegistrationInner> createOrUpdateAsync(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
-        return beginCreateOrUpdateAsync(providerNamespace, resourceType, properties, context)
-            .last()
+    private Mono<ResourceTypeRegistrationInner> createOrUpdateAsync(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties, Context context) {
+        return beginCreateOrUpdateAsync(providerNamespace, resourceType, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -539,8 +455,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
+    public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties) {
         return createOrUpdateAsync(providerNamespace, resourceType, properties).block();
     }
 
@@ -558,8 +474,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
+    public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties, Context context) {
         return createOrUpdateAsync(providerNamespace, resourceType, properties, context).block();
     }
 
@@ -576,16 +492,12 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -596,17 +508,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -622,19 +525,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String providerNamespace, String resourceType, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -645,15 +544,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -712,19 +604,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>> listByProviderRegistrationSinglePageAsync(
-        String providerNamespace) {
+    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
+        listByProviderRegistrationSinglePageAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -732,25 +620,10 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProviderRegistration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ResourceTypeRegistrationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProviderRegistration(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ResourceTypeRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -766,19 +639,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>> listByProviderRegistrationSinglePageAsync(
-        String providerNamespace, Context context) {
+    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
+        listByProviderRegistrationSinglePageAsync(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -787,22 +656,10 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProviderRegistration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProviderRegistration(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -816,8 +673,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceTypeRegistrationInner> listByProviderRegistrationAsync(String providerNamespace) {
-        return new PagedFlux<>(
-            () -> listByProviderRegistrationSinglePageAsync(providerNamespace),
+        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace),
             nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink));
     }
 
@@ -832,10 +688,9 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the list of the resource types for the given provider as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceTypeRegistrationInner> listByProviderRegistrationAsync(
-        String providerNamespace, Context context) {
-        return new PagedFlux<>(
-            () -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
+    private PagedFlux<ResourceTypeRegistrationInner> listByProviderRegistrationAsync(String providerNamespace,
+        Context context) {
+        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
             nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink, context));
     }
 
@@ -864,8 +719,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the list of the resource types for the given provider as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(
-        String providerNamespace, Context context) {
+    public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace,
+        Context context) {
         return new PagedIterable<>(listByProviderRegistrationAsync(providerNamespace, context));
     }
 
@@ -880,30 +735,21 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>> listByProviderRegistrationNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
+        listByProviderRegistrationNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ResourceTypeRegistrationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ResourceTypeRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -919,29 +765,19 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>> listByProviderRegistrationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
+        listByProviderRegistrationNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

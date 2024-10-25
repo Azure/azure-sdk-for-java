@@ -15,17 +15,13 @@ public final class WorkflowRunsListTests extends PurviewWorkflowClientTestBase {
     @Test
     @Disabled
     public void testWorkflowRunsListTests() {
-        RequestOptions requestOptions =
-                new RequestOptions()
-                        .addQueryParam("maxpagesize", "1000")
-                        .addQueryParam("orderby", "startTime desc")
-                        .addQueryParam("timeWindow", "30d");
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("maxpagesize", "1000")
+            .addQueryParam("orderby", "startTime desc")
+            .addQueryParam("timeWindow", "30d");
         PagedIterable<BinaryData> response = workflowRunsClient.list(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"id\":\"4f8d70c3-c09b-4e56-bfd1-8b86c79bd4d9\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"runPayload\":{\"type\":\"CreateTerm\",\"targetValue\":\"term123\"},\"startTime\":\"2023-01-12T09:36:11.533263721Z\",\"status\":\"InProgress\",\"userRequestId\":\"4f8d70c3-c09b-4e56-bfd1-8b86c79bd4d9\",\"workflowId\":\"3fb9ba13-bf35-4f29-ab63-70b5234923c2\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"id\":\"4f8d70c3-c09b-4e56-bfd1-8b86c79bd4d9\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"runPayload\":{\"type\":\"CreateTerm\",\"targetValue\":\"term123\"},\"startTime\":\"2023-01-12T09:36:11.533263721Z\",\"status\":\"InProgress\",\"userRequestId\":\"4f8d70c3-c09b-4e56-bfd1-8b86c79bd4d9\",\"workflowId\":\"3fb9ba13-bf35-4f29-ab63-70b5234923c2\"}")
+            .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

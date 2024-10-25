@@ -207,8 +207,8 @@ public final class ContactProfileInner extends Resource {
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the ContactProfileInner object itself.
      */
-    public ContactProfileInner withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfileInner
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContactProfileProperties();
         }
@@ -233,8 +233,8 @@ public final class ContactProfileInner extends Resource {
      * @param thirdPartyConfigurations the thirdPartyConfigurations value to set.
      * @return the ContactProfileInner object itself.
      */
-    public ContactProfileInner withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfileInner
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContactProfileProperties();
         }
@@ -272,10 +272,8 @@ public final class ContactProfileInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ContactProfileInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ContactProfileInner"));
         } else {
             innerProperties().validate();
         }

@@ -241,15 +241,12 @@ public final class ContactProfileLinkChannel {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ContactProfileLinkChannel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ContactProfileLinkChannel"));
         }
         if (endPoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endPoint in model ContactProfileLinkChannel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endPoint in model ContactProfileLinkChannel"));
         } else {
             endPoint().validate();
         }

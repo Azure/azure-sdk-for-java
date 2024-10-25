@@ -58,8 +58,8 @@ public interface ProviderRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ProviderRegistration createOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context);
+    ProviderRegistration createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
+        Context context);
 
     /**
      * Deletes a provider registration.

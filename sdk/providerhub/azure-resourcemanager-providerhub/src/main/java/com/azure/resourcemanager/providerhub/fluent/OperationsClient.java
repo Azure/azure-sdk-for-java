@@ -49,8 +49,8 @@ public interface OperationsClient {
      * @return the operations supported by the given provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<OperationsDefinitionInner>> listByProviderRegistrationWithResponse(
-        String providerNamespace, Context context);
+    Response<List<OperationsDefinitionInner>> listByProviderRegistrationWithResponse(String providerNamespace,
+        Context context);
 
     /**
      * Gets the operations supported by the given provider.
@@ -76,8 +76,8 @@ public interface OperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationsContentInner> createOrUpdateWithResponse(
-        String providerNamespace, OperationsPutContent operationsPutContent, Context context);
+    Response<OperationsContentInner> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContent operationsPutContent, Context context);
 
     /**
      * Creates or updates the operation supported by the given provider.

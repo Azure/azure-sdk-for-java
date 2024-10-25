@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ClassificationRulesClient {
-    @Generated private final ClassificationRulesImpl serviceClient;
+    @Generated
+    private final ClassificationRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ClassificationRulesClient class.
@@ -100,8 +101,8 @@ public final class ClassificationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponse(classificationRuleName, requestOptions);
     }
 
@@ -178,8 +179,8 @@ public final class ClassificationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listVersionsByClassificationRuleName(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listVersionsByClassificationRuleName(classificationRuleName, requestOptions);
     }
 
@@ -224,12 +225,9 @@ public final class ClassificationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> tagClassificationVersionWithResponse(
-            String classificationRuleName,
-            int classificationRuleVersion,
-            String action,
-            RequestOptions requestOptions) {
-        return this.serviceClient.tagClassificationVersionWithResponse(
-                classificationRuleName, classificationRuleVersion, action, requestOptions);
+    public Response<BinaryData> tagClassificationVersionWithResponse(String classificationRuleName,
+        int classificationRuleVersion, String action, RequestOptions requestOptions) {
+        return this.serviceClient.tagClassificationVersionWithResponse(classificationRuleName,
+            classificationRuleVersion, action, requestOptions);
     }
 }

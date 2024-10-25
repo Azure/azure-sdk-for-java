@@ -16,8 +16,8 @@ public final class ResourceProviderManifestPropertiesProviderAuthentication exte
 
     /** {@inheritDoc} */
     @Override
-    public ResourceProviderManifestPropertiesProviderAuthentication withAllowedAudiences(
-        List<String> allowedAudiences) {
+    public ResourceProviderManifestPropertiesProviderAuthentication
+        withAllowedAudiences(List<String> allowedAudiences) {
         super.withAllowedAudiences(allowedAudiences);
         return this;
     }

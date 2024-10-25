@@ -51,8 +51,8 @@ public interface Contacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact in a specified resource group along with {@link Response}.
      */
-    Response<Contact> getWithResponse(
-        String resourceGroupName, String spacecraftName, String contactName, Context context);
+    Response<Contact> getWithResponse(String resourceGroupName, String spacecraftName, String contactName,
+        Context context);
 
     /**
      * Gets the specified contact in a specified resource group.

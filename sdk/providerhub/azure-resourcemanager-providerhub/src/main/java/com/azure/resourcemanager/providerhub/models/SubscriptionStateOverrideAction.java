@@ -74,16 +74,12 @@ public final class SubscriptionStateOverrideAction {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SubscriptionStateOverrideAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model SubscriptionStateOverrideAction"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model SubscriptionStateOverrideAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property action in model SubscriptionStateOverrideAction"));
         }
     }
 

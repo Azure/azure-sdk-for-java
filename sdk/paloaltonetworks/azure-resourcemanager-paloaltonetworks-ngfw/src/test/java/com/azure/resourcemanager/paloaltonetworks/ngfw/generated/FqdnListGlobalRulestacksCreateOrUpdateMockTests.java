@@ -46,15 +46,18 @@ public final class FqdnListGlobalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FqdnListGlobalRulestackResource response = manager.fqdnListGlobalRulestacks().createOrUpdate("q", "fuarenlvhht",
-            new FqdnListGlobalRulestackResourceInner().withDescription("nvnaf")
-                .withFqdnList(Arrays.asList("kyfede", "jboslcqxypok", "hminqcymczngnbdx", "ewuninvud")).withEtag("h")
-                .withAuditComment("dtvqe"),
-            com.azure.core.util.Context.NONE);
+        FqdnListGlobalRulestackResource response = manager.fqdnListGlobalRulestacks()
+            .createOrUpdate("q", "fuarenlvhht",
+                new FqdnListGlobalRulestackResourceInner().withDescription("nvnaf")
+                    .withFqdnList(Arrays.asList("kyfede", "jboslcqxypok", "hminqcymczngnbdx", "ewuninvud"))
+                    .withEtag("h")
+                    .withAuditComment("dtvqe"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tprwnw", response.description());
         Assertions.assertEquals("oevytlyokr", response.fqdnList().get(0));

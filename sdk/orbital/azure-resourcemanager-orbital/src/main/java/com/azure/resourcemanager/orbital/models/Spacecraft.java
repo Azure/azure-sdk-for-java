@@ -127,21 +127,17 @@ public interface Spacecraft {
     SpacecraftInner innerModel();
 
     /** The entirety of the Spacecraft definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithTitleLine,
-            DefinitionStages.WithTleLine1,
-            DefinitionStages.WithTleLine2,
-            DefinitionStages.WithLinks,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithTitleLine, DefinitionStages.WithTleLine1,
+        DefinitionStages.WithTleLine2, DefinitionStages.WithLinks, DefinitionStages.WithCreate {
     }
+
     /** The Spacecraft definition stages. */
     interface DefinitionStages {
         /** The first stage of the Spacecraft definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Spacecraft definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -160,6 +156,7 @@ public interface Spacecraft {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Spacecraft definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -170,6 +167,7 @@ public interface Spacecraft {
              */
             WithTitleLine withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Spacecraft definition allowing to specify titleLine. */
         interface WithTitleLine {
             /**
@@ -180,6 +178,7 @@ public interface Spacecraft {
              */
             WithTleLine1 withTitleLine(String titleLine);
         }
+
         /** The stage of the Spacecraft definition allowing to specify tleLine1. */
         interface WithTleLine1 {
             /**
@@ -190,6 +189,7 @@ public interface Spacecraft {
              */
             WithTleLine2 withTleLine1(String tleLine1);
         }
+
         /** The stage of the Spacecraft definition allowing to specify tleLine2. */
         interface WithTleLine2 {
             /**
@@ -200,6 +200,7 @@ public interface Spacecraft {
              */
             WithLinks withTleLine2(String tleLine2);
         }
+
         /** The stage of the Spacecraft definition allowing to specify links. */
         interface WithLinks {
             /**
@@ -210,6 +211,7 @@ public interface Spacecraft {
              */
             WithCreate withLinks(List<SpacecraftLink> links);
         }
+
         /**
          * The stage of the Spacecraft definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -231,6 +233,7 @@ public interface Spacecraft {
              */
             Spacecraft create(Context context);
         }
+
         /** The stage of the Spacecraft definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -241,6 +244,7 @@ public interface Spacecraft {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Spacecraft definition allowing to specify provisioningState. */
         interface WithProvisioningState {
             /**
@@ -252,6 +256,7 @@ public interface Spacecraft {
              */
             WithCreate withProvisioningState(SpacecraftsPropertiesProvisioningState provisioningState);
         }
+
         /** The stage of the Spacecraft definition allowing to specify noradId. */
         interface WithNoradId {
             /**
@@ -263,6 +268,7 @@ public interface Spacecraft {
             WithCreate withNoradId(String noradId);
         }
     }
+
     /**
      * Begins update for the Spacecraft resource.
      *
@@ -287,6 +293,7 @@ public interface Spacecraft {
          */
         Spacecraft apply(Context context);
     }
+
     /** The Spacecraft update stages. */
     interface UpdateStages {
         /** The stage of the Spacecraft update allowing to specify tags. */
@@ -300,6 +307,7 @@ public interface Spacecraft {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

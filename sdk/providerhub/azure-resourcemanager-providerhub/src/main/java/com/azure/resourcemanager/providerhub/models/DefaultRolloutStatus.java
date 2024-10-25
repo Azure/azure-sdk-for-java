@@ -90,8 +90,8 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
      * @param subscriptionReregistrationResult the subscriptionReregistrationResult value to set.
      * @return the DefaultRolloutStatus object itself.
      */
-    public DefaultRolloutStatus withSubscriptionReregistrationResult(
-        SubscriptionReregistrationResult subscriptionReregistrationResult) {
+    public DefaultRolloutStatus
+        withSubscriptionReregistrationResult(SubscriptionReregistrationResult subscriptionReregistrationResult) {
         this.subscriptionReregistrationResult = subscriptionReregistrationResult;
         return this;
     }

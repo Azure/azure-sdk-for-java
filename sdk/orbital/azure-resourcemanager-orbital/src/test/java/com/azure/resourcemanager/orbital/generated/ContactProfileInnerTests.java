@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfileInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"deleting\",\"minimumViableContactDuration\":\"mjthjqkwp\",\"minimumElevationDegrees\":21.441769,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"qciwqvhkhixuigdt\",\"networkConfiguration\":{\"subnetId\":\"pbobjo\"},\"thirdPartyConfigurations\":[{\"providerName\":\"e\",\"missionConfiguration\":\"u\"}],\"links\":[{\"name\":\"a\",\"polarization\":\"linearHorizontal\",\"direction\":\"Uplink\",\"gainOverTemperature\":59.897835,\"eirpdBW\":64.31821,\"channels\":[]}]},\"location\":\"t\",\"tags\":{\"ftutqxlngxlefgu\":\"dfgiot\",\"qmi\":\"nxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"}")
-                .toObject(ContactProfileInner.class);
+        ContactProfileInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"deleting\",\"minimumViableContactDuration\":\"mjthjqkwp\",\"minimumElevationDegrees\":21.441769,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"qciwqvhkhixuigdt\",\"networkConfiguration\":{\"subnetId\":\"pbobjo\"},\"thirdPartyConfigurations\":[{\"providerName\":\"e\",\"missionConfiguration\":\"u\"}],\"links\":[{\"name\":\"a\",\"polarization\":\"linearHorizontal\",\"direction\":\"Uplink\",\"gainOverTemperature\":59.897835,\"eirpdBW\":64.31821,\"channels\":[]}]},\"location\":\"t\",\"tags\":{\"ftutqxlngxlefgu\":\"dfgiot\",\"qmi\":\"nxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"}")
+            .toObject(ContactProfileInner.class);
         Assertions.assertEquals("t", model.location());
         Assertions.assertEquals("dfgiot", model.tags().get("ftutqxlngxlefgu"));
         Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.DELETING, model.provisioningState());
@@ -45,32 +43,22 @@ public final class ContactProfileInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactProfileInner model =
-            new ContactProfileInner()
-                .withLocation("t")
-                .withTags(mapOf("ftutqxlngxlefgu", "dfgiot", "qmi", "nxkrx"))
-                .withProvisioningState(ContactProfilesPropertiesProvisioningState.DELETING)
-                .withMinimumViableContactDuration("mjthjqkwp")
-                .withMinimumElevationDegrees(21.441769F)
-                .withAutoTrackingConfiguration(AutoTrackingConfiguration.DISABLED)
-                .withEventHubUri("qciwqvhkhixuigdt")
-                .withNetworkConfiguration(new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("pbobjo"))
-                .withThirdPartyConfigurations(
-                    Arrays
-                        .asList(
-                            new ContactProfileThirdPartyConfiguration()
-                                .withProviderName("e")
-                                .withMissionConfiguration("u")))
-                .withLinks(
-                    Arrays
-                        .asList(
-                            new ContactProfileLink()
-                                .withName("a")
-                                .withPolarization(Polarization.LINEAR_HORIZONTAL)
-                                .withDirection(Direction.UPLINK)
-                                .withGainOverTemperature(59.897835F)
-                                .withEirpdBW(64.31821F)
-                                .withChannels(Arrays.asList())));
+        ContactProfileInner model = new ContactProfileInner().withLocation("t")
+            .withTags(mapOf("ftutqxlngxlefgu", "dfgiot", "qmi", "nxkrx"))
+            .withProvisioningState(ContactProfilesPropertiesProvisioningState.DELETING)
+            .withMinimumViableContactDuration("mjthjqkwp")
+            .withMinimumElevationDegrees(21.441769F)
+            .withAutoTrackingConfiguration(AutoTrackingConfiguration.DISABLED)
+            .withEventHubUri("qciwqvhkhixuigdt")
+            .withNetworkConfiguration(new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("pbobjo"))
+            .withThirdPartyConfigurations(Arrays.asList(
+                new ContactProfileThirdPartyConfiguration().withProviderName("e").withMissionConfiguration("u")))
+            .withLinks(Arrays.asList(new ContactProfileLink().withName("a")
+                .withPolarization(Polarization.LINEAR_HORIZONTAL)
+                .withDirection(Direction.UPLINK)
+                .withGainOverTemperature(59.897835F)
+                .withEirpdBW(64.31821F)
+                .withChannels(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ContactProfileInner.class);
         Assertions.assertEquals("t", model.location());
         Assertions.assertEquals("dfgiot", model.tags().get("ftutqxlngxlefgu"));

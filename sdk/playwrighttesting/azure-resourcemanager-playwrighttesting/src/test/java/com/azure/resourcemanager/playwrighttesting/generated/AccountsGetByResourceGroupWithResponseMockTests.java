@@ -45,12 +45,14 @@ public final class AccountsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Account response = manager.accounts()
-            .getByResourceGroupWithResponse("uouq", "prwzwbnguitnwui", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("uouq", "prwzwbnguitnwui", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("dfvzwdzuhty", response.location());
         Assertions.assertEquals("sdkf", response.tags().get("hwxmnteiwa"));

@@ -37,10 +37,10 @@ class DataMapClientTest extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        DataMapClientBuilder entityClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder entityClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             entityClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -52,10 +52,10 @@ class DataMapClientTest extends TestProxyTestBase {
         }
         entityClient = entityClientbuilder.buildEntityClient();
 
-        DataMapClientBuilder glossaryClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder glossaryClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             glossaryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -67,10 +67,10 @@ class DataMapClientTest extends TestProxyTestBase {
         }
         glossaryClient = glossaryClientbuilder.buildGlossaryClient();
 
-        DataMapClientBuilder discoveryClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder discoveryClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             discoveryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -82,10 +82,10 @@ class DataMapClientTest extends TestProxyTestBase {
         }
         discoveryClient = discoveryClientbuilder.buildDiscoveryClient();
 
-        DataMapClientBuilder lineageClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder lineageClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             lineageClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -97,10 +97,10 @@ class DataMapClientTest extends TestProxyTestBase {
         }
         lineageClient = lineageClientbuilder.buildLineageClient();
 
-        DataMapClientBuilder relationshipClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder relationshipClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             relationshipClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -112,10 +112,10 @@ class DataMapClientTest extends TestProxyTestBase {
         }
         relationshipClient = relationshipClientbuilder.buildRelationshipClient();
 
-        DataMapClientBuilder typeDefinitionClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder typeDefinitionClientbuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             typeDefinitionClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));

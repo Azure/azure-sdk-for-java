@@ -56,132 +56,70 @@ public final class TriggersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     public interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> deleteTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> deleteTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -247,19 +185,11 @@ public final class TriggersImpl {
      * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTriggerWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getTrigger(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -325,17 +255,11 @@ public final class TriggersImpl {
      * @return trigger information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> getTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -452,20 +376,11 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTriggerWithResponseAsync(String dataSourceName, String scanName,
+        BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createTrigger(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -582,18 +497,11 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createTriggerWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -659,19 +567,11 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteTrigger(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -737,16 +637,10 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 }

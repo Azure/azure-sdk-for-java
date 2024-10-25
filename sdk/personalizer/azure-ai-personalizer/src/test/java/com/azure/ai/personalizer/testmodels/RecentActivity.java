@@ -25,9 +25,7 @@ public class RecentActivity implements JsonSerializable<RecentActivity> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeNumberField("itemsInCart", itemsInCart)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeNumberField("itemsInCart", itemsInCart).writeEndObject();
     }
 
     public static RecentActivity fromJson(JsonReader jsonReader) throws IOException {

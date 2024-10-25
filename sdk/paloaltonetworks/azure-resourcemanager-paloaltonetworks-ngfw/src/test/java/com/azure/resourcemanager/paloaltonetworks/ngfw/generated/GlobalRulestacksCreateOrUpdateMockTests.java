@@ -54,32 +54,41 @@ public final class GlobalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalRulestackResource response = manager.globalRulestacks().createOrUpdate("crpfbcunez",
-            new GlobalRulestackResourceInner().withLocation("xmonstshi")
-                .withIdentity(new AzureResourceManagerManagedIdentityProperties()
-                    .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("zvners",
-                        new AzureResourceManagerUserAssignedIdentity().withClientId("wjizcilnghgsh")
-                            .withPrincipalId("jtbxqmuluxlx"),
-                        "ziqgfuh",
-                        new AzureResourceManagerUserAssignedIdentity().withClientId("cucrwnamikze")
-                            .withPrincipalId("qbsms"),
-                        "wix",
-                        new AzureResourceManagerUserAssignedIdentity().withClientId("zruswh")
-                            .withPrincipalId("czznvfbycjsxj"))))
-                .withPanEtag("e").withPanLocation("lfwyfwlwxjwetn").withScope(ScopeType.LOCAL)
-                .withAssociatedSubscriptions(Arrays.asList("lafzvaylptr", "qqwzt", "mwqkchcxwaxf"))
-                .withDescription("zjkjexfdeqv").withDefaultMode(DefaultMode.FIREWALL)
-                .withMinAppIdVersion("lkkshkbffmbmx")
-                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("wwp")
-                    .withAntiSpywareProfile("xs").withAntiVirusProfile("tf").withUrlFilteringProfile("gicgaaoepttaq")
-                    .withFileBlockingProfile("dewemxswv").withDnsSubscription("unzzjgehk")
-                    .withOutboundUnTrustCertificate("imrt").withOutboundTrustCertificate("okffqyinljqepqwh")),
-            com.azure.core.util.Context.NONE);
+        GlobalRulestackResource response = manager.globalRulestacks()
+            .createOrUpdate("crpfbcunez",
+                new GlobalRulestackResourceInner().withLocation("xmonstshi")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties()
+                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("zvners",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("wjizcilnghgsh")
+                                .withPrincipalId("jtbxqmuluxlx"),
+                            "ziqgfuh",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("cucrwnamikze")
+                                .withPrincipalId("qbsms"),
+                            "wix",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("zruswh")
+                                .withPrincipalId("czznvfbycjsxj"))))
+                    .withPanEtag("e")
+                    .withPanLocation("lfwyfwlwxjwetn")
+                    .withScope(ScopeType.LOCAL)
+                    .withAssociatedSubscriptions(Arrays.asList("lafzvaylptr", "qqwzt", "mwqkchcxwaxf"))
+                    .withDescription("zjkjexfdeqv")
+                    .withDefaultMode(DefaultMode.FIREWALL)
+                    .withMinAppIdVersion("lkkshkbffmbmx")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("wwp")
+                        .withAntiSpywareProfile("xs")
+                        .withAntiVirusProfile("tf")
+                        .withUrlFilteringProfile("gicgaaoepttaq")
+                        .withFileBlockingProfile("dewemxswv")
+                        .withDnsSubscription("unzzjgehk")
+                        .withOutboundUnTrustCertificate("imrt")
+                        .withOutboundTrustCertificate("okffqyinljqepqwh")),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("atbhjmznn", response.location());
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, response.identity().type());

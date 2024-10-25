@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class KeyVaultConnectionsClient {
-    @Generated private final KeyVaultConnectionsImpl serviceClient;
+    @Generated
+    private final KeyVaultConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of KeyVaultConnectionsClient class.
@@ -103,8 +104,8 @@ public final class KeyVaultConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(
-            String keyVaultName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createWithResponse(String keyVaultName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createWithResponse(keyVaultName, body, requestOptions);
     }
 

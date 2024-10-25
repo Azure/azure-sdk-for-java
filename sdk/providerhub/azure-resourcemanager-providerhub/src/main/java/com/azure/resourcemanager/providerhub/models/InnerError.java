@@ -30,7 +30,8 @@ public class InnerError {
     /*
      * Inner error containing list of errors.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of InnerError class. */
     public InnerError() {

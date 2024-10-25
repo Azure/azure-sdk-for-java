@@ -24,8 +24,8 @@ public final class SpacecraftsImpl implements Spacecrafts {
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    public SpacecraftsImpl(
-        SpacecraftsClient innerClient, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    public SpacecraftsImpl(SpacecraftsClient innerClient,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -46,20 +46,17 @@ public final class SpacecraftsImpl implements Spacecrafts {
     }
 
     public PagedIterable<Spacecraft> listByResourceGroup(String resourceGroupName, String skiptoken, Context context) {
-        PagedIterable<SpacecraftInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, skiptoken, context);
+        PagedIterable<SpacecraftInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, skiptoken, context);
         return Utils.mapPage(inner, inner1 -> new SpacecraftImpl(inner1, this.manager()));
     }
 
-    public Response<Spacecraft> getByResourceGroupWithResponse(
-        String resourceGroupName, String spacecraftName, Context context) {
-        Response<SpacecraftInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context);
+    public Response<Spacecraft> getByResourceGroupWithResponse(String resourceGroupName, String spacecraftName,
+        Context context) {
+        Response<SpacecraftInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SpacecraftImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -83,35 +80,30 @@ public final class SpacecraftsImpl implements Spacecrafts {
         this.serviceClient().delete(resourceGroupName, spacecraftName, context);
     }
 
-    public PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters) {
-        PagedIterable<AvailableContactsInner> inner =
-            this.serviceClient().listAvailableContacts(resourceGroupName, spacecraftName, parameters);
+    public PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters) {
+        PagedIterable<AvailableContactsInner> inner
+            = this.serviceClient().listAvailableContacts(resourceGroupName, spacecraftName, parameters);
         return Utils.mapPage(inner, inner1 -> new AvailableContactsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters, Context context) {
-        PagedIterable<AvailableContactsInner> inner =
-            this.serviceClient().listAvailableContacts(resourceGroupName, spacecraftName, parameters, context);
+    public PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters, Context context) {
+        PagedIterable<AvailableContactsInner> inner
+            = this.serviceClient().listAvailableContacts(resourceGroupName, spacecraftName, parameters, context);
         return Utils.mapPage(inner, inner1 -> new AvailableContactsImpl(inner1, this.manager()));
     }
 
     public Spacecraft getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String spacecraftName = Utils.getValueFromIdByName(id, "spacecrafts");
         if (spacecraftName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, spacecraftName, Context.NONE).getValue();
     }
@@ -119,18 +111,13 @@ public final class SpacecraftsImpl implements Spacecrafts {
     public Response<Spacecraft> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String spacecraftName = Utils.getValueFromIdByName(id, "spacecrafts");
         if (spacecraftName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context);
     }
@@ -138,18 +125,13 @@ public final class SpacecraftsImpl implements Spacecrafts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String spacecraftName = Utils.getValueFromIdByName(id, "spacecrafts");
         if (spacecraftName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
         }
         this.delete(resourceGroupName, spacecraftName, Context.NONE);
     }
@@ -157,18 +139,13 @@ public final class SpacecraftsImpl implements Spacecrafts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String spacecraftName = Utils.getValueFromIdByName(id, "spacecrafts");
         if (spacecraftName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'spacecrafts'.", id)));
         }
         this.delete(resourceGroupName, spacecraftName, context);
     }

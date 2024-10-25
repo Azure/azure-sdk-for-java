@@ -13,8 +13,7 @@ public final class ProviderRegistrationImpl implements ProviderRegistration {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    ProviderRegistrationImpl(
-        ProviderRegistrationInner innerObject,
+    ProviderRegistrationImpl(ProviderRegistrationInner innerObject,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

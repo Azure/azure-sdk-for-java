@@ -181,24 +181,20 @@ public final class SpacecraftsProperties {
      */
     public void validate() {
         if (titleLine() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property titleLine in model SpacecraftsProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property titleLine in model SpacecraftsProperties"));
         }
         if (tleLine1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tleLine1 in model SpacecraftsProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tleLine1 in model SpacecraftsProperties"));
         }
         if (tleLine2() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tleLine2 in model SpacecraftsProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tleLine2 in model SpacecraftsProperties"));
         }
         if (links() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property links in model SpacecraftsProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property links in model SpacecraftsProperties"));
         } else {
             links().forEach(e -> e.validate());
         }

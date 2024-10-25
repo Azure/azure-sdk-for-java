@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowRunClientBuilder.class)
 public final class WorkflowRunClient {
-    @Generated private final WorkflowRunsOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowRunsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowRunClient class.
@@ -97,8 +98,8 @@ public final class WorkflowRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-            String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
+    public Response<Void> cancelWithResponse(String workflowRunId, BinaryData runCancelReply,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelWithResponse(workflowRunId, runCancelReply, requestOptions);
     }
 }

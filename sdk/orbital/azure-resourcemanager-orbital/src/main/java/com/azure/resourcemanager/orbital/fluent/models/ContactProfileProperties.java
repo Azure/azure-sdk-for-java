@@ -22,8 +22,8 @@ public final class ContactProfileProperties extends ContactProfilesProperties {
 
     /** {@inheritDoc} */
     @Override
-    public ContactProfileProperties withProvisioningState(
-        ContactProfilesPropertiesProvisioningState provisioningState) {
+    public ContactProfileProperties
+        withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState) {
         super.withProvisioningState(provisioningState);
         return this;
     }
@@ -58,16 +58,16 @@ public final class ContactProfileProperties extends ContactProfilesProperties {
 
     /** {@inheritDoc} */
     @Override
-    public ContactProfileProperties withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfileProperties
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         super.withNetworkConfiguration(networkConfiguration);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ContactProfileProperties withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfileProperties
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         super.withThirdPartyConfigurations(thirdPartyConfigurations);
         return this;
     }

@@ -10,7 +10,7 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
-public final class StringField implements JsonSerializable<StringField > {
+public final class StringField implements JsonSerializable<StringField> {
 
     private String type = "string";
 

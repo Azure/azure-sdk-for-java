@@ -16,16 +16,16 @@ public final class ResourceTypeRegistrationPropertiesTemplateDeploymentOptions e
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions withPreflightSupported(
-        Boolean preflightSupported) {
+    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+        withPreflightSupported(Boolean preflightSupported) {
         super.withPreflightSupported(preflightSupported);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions withPreflightOptions(
-        List<PreflightOption> preflightOptions) {
+    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+        withPreflightOptions(List<PreflightOption> preflightOptions) {
         super.withPreflightOptions(preflightOptions);
         return this;
     }

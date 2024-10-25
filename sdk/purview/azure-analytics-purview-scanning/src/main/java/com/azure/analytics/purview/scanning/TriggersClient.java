@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class TriggersClient {
-    @Generated private final TriggersImpl serviceClient;
+    @Generated
+    private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of TriggersClient class.
@@ -96,8 +97,8 @@ public final class TriggersClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> getTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTriggerWithResponse(dataSourceName, scanName, requestOptions);
     }
 
@@ -216,8 +217,8 @@ public final class TriggersClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createTriggerWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createTriggerWithResponse(dataSourceName, scanName, body, requestOptions);
     }
 
@@ -285,8 +286,8 @@ public final class TriggersClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteTriggerWithResponse(dataSourceName, scanName, requestOptions);
     }
 }

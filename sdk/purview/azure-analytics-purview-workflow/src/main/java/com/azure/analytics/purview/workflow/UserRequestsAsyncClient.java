@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = UserRequestsClientBuilder.class, isAsync = true)
 public final class UserRequestsAsyncClient {
-    @Generated private final UserRequestsImpl serviceClient;
+    @Generated
+    private final UserRequestsImpl serviceClient;
 
     /**
      * Initializes an instance of UserRequestsAsyncClient class.
@@ -82,8 +83,8 @@ public final class UserRequestsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> submitWithResponse(
-            BinaryData userRequestsPayload, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> submitWithResponse(BinaryData userRequestsPayload,
+        RequestOptions requestOptions) {
         return this.serviceClient.submitWithResponseAsync(userRequestsPayload, requestOptions);
     }
 }

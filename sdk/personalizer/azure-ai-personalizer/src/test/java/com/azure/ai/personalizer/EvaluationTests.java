@@ -34,8 +34,8 @@ public class EvaluationTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void listEvaluationsTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdministrationClient client = getStaticAdministrationClientBuilder(httpClient, serviceVersion)
-            .buildClient();
+        PersonalizerAdministrationClient client
+            = getStaticAdministrationClientBuilder(httpClient, serviceVersion).buildClient();
         PagedIterable<PersonalizerEvaluation> evaluations = client.listEvaluations();
         assertNotNull(evaluations);
         assertTrue(evaluations.stream().findAny().isPresent());
@@ -44,24 +44,25 @@ public class EvaluationTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void runEvaluationLifecycleTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerEvaluationOptions evaluationOptions = new PersonalizerEvaluationOptions()
-            .setName("JavaSDKTestEvaluation")
-            .setOfflineExperimentationEnabled(true)
-            // We have cooked log data for this date for the static test resource and know that they will not be purged.
-            .setStartTime(OffsetDateTime.parse("2022-09-20T00:00:00+00:00"))
-            .setEndTime(OffsetDateTime.parse("2022-09-30T00:00:00+00:00"))
-            .setPolicies(new ArrayList<>());
-        PersonalizerAdministrationAsyncClient client = getStaticAdministrationClientBuilder(httpClient, serviceVersion)
-            .buildAsyncClient();
-        SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller =
-            setPlaybackPollerFluxPollInterval(client.beginCreateEvaluation(evaluationOptions)).getSyncPoller();
+        PersonalizerEvaluationOptions evaluationOptions
+            = new PersonalizerEvaluationOptions().setName("JavaSDKTestEvaluation")
+                .setOfflineExperimentationEnabled(true)
+                // We have cooked log data for this date for the static test resource and know that they will not be purged.
+                .setStartTime(OffsetDateTime.parse("2022-09-20T00:00:00+00:00"))
+                .setEndTime(OffsetDateTime.parse("2022-09-30T00:00:00+00:00"))
+                .setPolicies(new ArrayList<>());
+        PersonalizerAdministrationAsyncClient client
+            = getStaticAdministrationClientBuilder(httpClient, serviceVersion).buildAsyncClient();
+        SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller
+            = setPlaybackPollerFluxPollInterval(client.beginCreateEvaluation(evaluationOptions)).getSyncPoller();
 
         syncPoller.waitForCompletion();
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();
         assertNotNull(evaluationResult);
         assertEquals(EvaluationJobStatus.COMPLETED, evaluationResult.getStatus());
-        assertTrue(evaluationResult.getPolicyResults().stream()
+        assertTrue(evaluationResult.getPolicyResults()
+            .stream()
             .anyMatch(p -> p.getPolicySource().equals(PolicySource.ONLINE)));
         assertFalse(CoreUtils.isNullOrEmpty(evaluationResult.getOptimalPolicy()));
 

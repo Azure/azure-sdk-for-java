@@ -27,9 +27,9 @@ public class AudioTranslationValidator {
         acceptedFormats.add(AudioTranslationFormat.VERBOSE_JSON);
         AudioTranslationFormat responseFormat = audioTranslationOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This operation does not support the requested audio format: " + responseFormat
-                    + ", supported formats: JSON, VERBOSE_JSON."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format: "
+                    + responseFormat + ", supported formats: JSON, VERBOSE_JSON."));
         }
     }
 
@@ -45,9 +45,9 @@ public class AudioTranslationValidator {
         acceptedFormats.add(AudioTranslationFormat.SRT);
         AudioTranslationFormat responseFormat = audioTranslationOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This operation does not support the requested audio format: " + responseFormat
-                    + ", supported formats: TEXT, VTT, SRT."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format: "
+                    + responseFormat + ", supported formats: TEXT, VTT, SRT."));
         }
     }
 }

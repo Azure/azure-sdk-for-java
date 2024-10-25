@@ -29,7 +29,8 @@ public final class FrontendSettingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendSetting model = new FrontendSetting().withName("kixqtnqtt").withProtocol(ProtocolType.UDP)
+        FrontendSetting model = new FrontendSetting().withName("kixqtnqtt")
+            .withProtocol(ProtocolType.UDP)
             .withFrontendConfiguration(new EndpointConfiguration().withPort("lwfffi")
                 .withAddress(new IpAddress().withResourceId("pjpqqmtedltmmji").withAddress("eozphv")))
             .withBackendConfiguration(new EndpointConfiguration().withPort("auyqncygupkv")

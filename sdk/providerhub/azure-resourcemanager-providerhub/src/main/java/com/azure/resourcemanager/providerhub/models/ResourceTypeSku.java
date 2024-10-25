@@ -75,9 +75,8 @@ public class ResourceTypeSku {
      */
     public void validate() {
         if (skuSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property skuSettings in model ResourceTypeSku"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property skuSettings in model ResourceTypeSku"));
         } else {
             skuSettings().forEach(e -> e.validate());
         }

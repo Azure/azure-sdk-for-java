@@ -14,8 +14,8 @@ public final class LinkedOperation extends ExpandableStringEnum<LinkedOperation>
     public static final LinkedOperation NONE = fromString("None");
 
     /** Static value CrossResourceGroupResourceMove for LinkedOperation. */
-    public static final LinkedOperation CROSS_RESOURCE_GROUP_RESOURCE_MOVE =
-        fromString("CrossResourceGroupResourceMove");
+    public static final LinkedOperation CROSS_RESOURCE_GROUP_RESOURCE_MOVE
+        = fromString("CrossResourceGroupResourceMove");
 
     /** Static value CrossSubscriptionResourceMove for LinkedOperation. */
     public static final LinkedOperation CROSS_SUBSCRIPTION_RESOURCE_MOVE = fromString("CrossSubscriptionResourceMove");

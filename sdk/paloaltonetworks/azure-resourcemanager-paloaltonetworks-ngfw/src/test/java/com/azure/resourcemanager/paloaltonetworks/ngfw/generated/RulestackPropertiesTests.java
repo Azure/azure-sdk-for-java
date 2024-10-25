@@ -37,13 +37,21 @@ public final class RulestackPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulestackProperties model = new RulestackProperties().withPanEtag("jq").withPanLocation("hmuouqfprwzwbn")
-            .withScope(ScopeType.GLOBAL).withAssociatedSubscriptions(Arrays.asList("wu")).withDescription("gazxuf")
-            .withDefaultMode(DefaultMode.NONE).withMinAppIdVersion("kyfi")
+        RulestackProperties model = new RulestackProperties().withPanEtag("jq")
+            .withPanLocation("hmuouqfprwzwbn")
+            .withScope(ScopeType.GLOBAL)
+            .withAssociatedSubscriptions(Arrays.asList("wu"))
+            .withDescription("gazxuf")
+            .withDefaultMode(DefaultMode.NONE)
+            .withMinAppIdVersion("kyfi")
             .withSecurityServices(new SecurityServices().withVulnerabilityProfile("fvzwdzuhty")
-                .withAntiSpywareProfile("isdkfthwxmnteiw").withAntiVirusProfile("pvkmijcmmxdcuf")
-                .withUrlFilteringProfile("srp").withFileBlockingProfile("zidnsezcxtbzsgfy").withDnsSubscription("sne")
-                .withOutboundUnTrustCertificate("dwzjeiach").withOutboundTrustCertificate("osfln"));
+                .withAntiSpywareProfile("isdkfthwxmnteiw")
+                .withAntiVirusProfile("pvkmijcmmxdcuf")
+                .withUrlFilteringProfile("srp")
+                .withFileBlockingProfile("zidnsezcxtbzsgfy")
+                .withDnsSubscription("sne")
+                .withOutboundUnTrustCertificate("dwzjeiach")
+                .withOutboundTrustCertificate("osfln"));
         model = BinaryData.fromObject(model).toObject(RulestackProperties.class);
         Assertions.assertEquals("jq", model.panEtag());
         Assertions.assertEquals("hmuouqfprwzwbn", model.panLocation());

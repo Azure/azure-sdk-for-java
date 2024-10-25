@@ -14,7 +14,7 @@ import java.util.List;
  * @param <T> the type of the items in the list.
  */
 @Immutable
-public final class PageableList<T>  {
+public final class PageableList<T> {
 
     static {
         PageableListAccessHelper.setAccessor(PageableList::new);

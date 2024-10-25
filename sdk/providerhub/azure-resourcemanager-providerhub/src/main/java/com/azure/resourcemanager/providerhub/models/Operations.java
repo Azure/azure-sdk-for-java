@@ -41,8 +41,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operations supported by the given provider along with {@link Response}.
      */
-    Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(
-        String providerNamespace, Context context);
+    Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(String providerNamespace,
+        Context context);
 
     /**
      * Gets the operations supported by the given provider.
@@ -66,8 +66,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<OperationsContent> createOrUpdateWithResponse(
-        String providerNamespace, OperationsPutContent operationsPutContent, Context context);
+    Response<OperationsContent> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContent operationsPutContent, Context context);
 
     /**
      * Creates or updates the operation supported by the given provider.

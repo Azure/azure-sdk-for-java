@@ -102,8 +102,8 @@ public class ResourceProviderManifestProperties {
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withProviderAuthentication(
-        ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
+    public ResourceProviderManifestProperties
+        withProviderAuthentication(ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
         this.providerAuthentication = providerAuthentication;
         return this;
     }
@@ -123,8 +123,8 @@ public class ResourceProviderManifestProperties {
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ResourceProviderManifestProperties
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         this.providerAuthorizations = providerAuthorizations;
         return this;
     }
@@ -224,8 +224,8 @@ public class ResourceProviderManifestProperties {
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withFeaturesRule(
-        ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
+    public ResourceProviderManifestProperties
+        withFeaturesRule(ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
         this.featuresRule = featuresRule;
         return this;
     }
@@ -245,8 +245,8 @@ public class ResourceProviderManifestProperties {
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withRequestHeaderOptions(
-        ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
+    public ResourceProviderManifestProperties
+        withRequestHeaderOptions(ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
         this.requestHeaderOptions = requestHeaderOptions;
         return this;
     }

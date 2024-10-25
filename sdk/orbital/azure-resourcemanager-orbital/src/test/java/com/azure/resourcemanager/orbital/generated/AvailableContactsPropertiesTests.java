@@ -10,11 +10,9 @@ import com.azure.resourcemanager.orbital.fluent.models.AvailableContactsProperti
 public final class AvailableContactsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableContactsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"maximumElevationDegrees\":55.43876,\"txStartTime\":\"2021-11-06T03:25:01Z\",\"txEndTime\":\"2021-07-16T10:06:47Z\",\"rxStartTime\":\"2021-10-19T10:06:57Z\",\"rxEndTime\":\"2021-07-25T12:09:19Z\",\"startAzimuthDegrees\":65.08808,\"endAzimuthDegrees\":72.176315,\"startElevationDegrees\":61.281292,\"endElevationDegrees\":98.4703}")
-                .toObject(AvailableContactsProperties.class);
+        AvailableContactsProperties model = BinaryData.fromString(
+            "{\"maximumElevationDegrees\":55.43876,\"txStartTime\":\"2021-11-06T03:25:01Z\",\"txEndTime\":\"2021-07-16T10:06:47Z\",\"rxStartTime\":\"2021-10-19T10:06:57Z\",\"rxEndTime\":\"2021-07-25T12:09:19Z\",\"startAzimuthDegrees\":65.08808,\"endAzimuthDegrees\":72.176315,\"startElevationDegrees\":61.281292,\"endElevationDegrees\":98.4703}")
+            .toObject(AvailableContactsProperties.class);
     }
 
     @org.junit.jupiter.api.Test

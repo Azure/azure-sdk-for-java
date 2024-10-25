@@ -31,8 +31,8 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesSpecification withMediumTraffic(
-        DefaultRolloutSpecificationMediumTraffic mediumTraffic) {
+    public DefaultRolloutPropertiesSpecification
+        withMediumTraffic(DefaultRolloutSpecificationMediumTraffic mediumTraffic) {
         super.withMediumTraffic(mediumTraffic);
         return this;
     }
@@ -46,32 +46,32 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesSpecification withRestOfTheWorldGroupOne(
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
+    public DefaultRolloutPropertiesSpecification
+        withRestOfTheWorldGroupOne(DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
         super.withRestOfTheWorldGroupOne(restOfTheWorldGroupOne);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesSpecification withRestOfTheWorldGroupTwo(
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
+    public DefaultRolloutPropertiesSpecification
+        withRestOfTheWorldGroupTwo(DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
         super.withRestOfTheWorldGroupTwo(restOfTheWorldGroupTwo);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesSpecification withProviderRegistration(
-        DefaultRolloutSpecificationProviderRegistration providerRegistration) {
+    public DefaultRolloutPropertiesSpecification
+        withProviderRegistration(DefaultRolloutSpecificationProviderRegistration providerRegistration) {
         super.withProviderRegistration(providerRegistration);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public DefaultRolloutPropertiesSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         super.withResourceTypeRegistrations(resourceTypeRegistrations);
         return this;
     }

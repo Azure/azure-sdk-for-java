@@ -39,9 +39,8 @@ public class MetadataPolicyClientTests extends PurviewAccountClientTestBase {
         JsonObject policy = jsonReader.readObject();
         String policyId = policy.getString("id");
 
-        RequestOptions requestOptions = new RequestOptions()
-            .addHeader("Content-Type", "application/json")
-            .setBody(item);
+        RequestOptions requestOptions
+            = new RequestOptions().addHeader("Content-Type", "application/json").setBody(item);
 
         BinaryData response = client.updateWithResponse(policyId, requestOptions).getValue();
         System.out.println(response);

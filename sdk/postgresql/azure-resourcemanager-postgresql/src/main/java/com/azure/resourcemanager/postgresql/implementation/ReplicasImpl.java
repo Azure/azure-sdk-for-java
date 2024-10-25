@@ -14,14 +14,15 @@ import com.azure.resourcemanager.postgresql.models.Server;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReplicasImpl implements Replicas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicasImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ReplicasImpl.class);
 
     private final ReplicasClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ReplicasImpl(
-        ReplicasClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    public ReplicasImpl(ReplicasClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

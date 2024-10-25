@@ -37,8 +37,8 @@ public final class NotificationRegistrationProperties extends NotificationRegist
 
     /** {@inheritDoc} */
     @Override
-    public NotificationRegistrationProperties withNotificationEndpoints(
-        List<NotificationEndpoint> notificationEndpoints) {
+    public NotificationRegistrationProperties
+        withNotificationEndpoints(List<NotificationEndpoint> notificationEndpoints) {
         super.withNotificationEndpoints(notificationEndpoints);
         return this;
     }

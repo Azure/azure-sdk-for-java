@@ -67,59 +67,58 @@ public final class OpenAIServerSentEvents {
      * @return A stream of server sent events deserialized into StreamUpdates.
      */
     private Flux<StreamUpdate> mapEventStream() {
-        return source
-            .publishOn(Schedulers.boundedElastic())
-            .concatMap(byteBuffer -> {
-                List<StreamUpdate> values = new ArrayList<>();
-                byte[] byteArray = byteBuffer.array();
-                // We check whether we ended the last byteBuffer with a line feed or not, in case we need to close this
-                // chunk soon after
-                byte[] outByteArray = outStream.toByteArray();
-                int lineBreakCharsEncountered = outByteArray.length > 0 && isByteLineFeed(outByteArray[outByteArray.length  - 1]) ? 1 : 0;
+        return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
+            List<StreamUpdate> values = new ArrayList<>();
+            byte[] byteArray = byteBuffer.array();
+            // We check whether we ended the last byteBuffer with a line feed or not, in case we need to close this
+            // chunk soon after
+            byte[] outByteArray = outStream.toByteArray();
+            int lineBreakCharsEncountered
+                = outByteArray.length > 0 && isByteLineFeed(outByteArray[outByteArray.length - 1]) ? 1 : 0;
 
-                for (byte currentByte : byteArray) {
-                    outStream.write(currentByte);
-                    if (isByteLineFeed(currentByte)) {
-                        lineBreakCharsEncountered++;
+            for (byte currentByte : byteArray) {
+                outStream.write(currentByte);
+                if (isByteLineFeed(currentByte)) {
+                    lineBreakCharsEncountered++;
 
-                        // We are looking for 2 line breaks to signify the end of a server sent event.
-                        if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
-                            String currentLine;
-                            try {
-                                currentLine = outStream.toString(StandardCharsets.UTF_8.name());
-                                handleCurrentEvent(currentLine, values);
-                            } catch (IOException e) {
-                                return Flux.error(e);
-                            }
-                            outStream = new ByteArrayOutputStream();
+                    // We are looking for 2 line breaks to signify the end of a server sent event.
+                    if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
+                        String currentLine;
+                        try {
+                            currentLine = outStream.toString(StandardCharsets.UTF_8.name());
+                            handleCurrentEvent(currentLine, values);
+                        } catch (IOException e) {
+                            return Flux.error(e);
                         }
-                    } else {
-                        // In some cases line breaks can contain both the line feed and carriage return characters.
-                        // We don't want to reset the line break count if we encounter a carriage return character.
-                        // We are assuming that line feeds and carriage returns, if both present, are always paired.
-                        // With this assumption, we are able to operate when carriage returns aren't present in the input also.
-                        if (!isByteCarriageReturn(currentByte)) {
-                            lineBreakCharsEncountered = 0;
-                        }
+                        outStream = new ByteArrayOutputStream();
+                    }
+                } else {
+                    // In some cases line breaks can contain both the line feed and carriage return characters.
+                    // We don't want to reset the line break count if we encounter a carriage return character.
+                    // We are assuming that line feeds and carriage returns, if both present, are always paired.
+                    // With this assumption, we are able to operate when carriage returns aren't present in the input also.
+                    if (!isByteCarriageReturn(currentByte)) {
+                        lineBreakCharsEncountered = 0;
                     }
                 }
+            }
 
-                try {
-                    String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
-                    // If this is in fact, the last event, it will be appropriately chunked. Otherwise, we will cache and
-                    // try again in the next byte buffer with a fuller event.
-                    if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
-                        handleCurrentEvent(remainingBytes, values);
-                    }
-                } catch (IllegalArgumentException | UncheckedIOException e) {
-                    // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON
-                    // Even split across different ByteBuffers, the next one will contain the rest of the event.
-                    return Flux.fromIterable(values);
-                } catch (IOException e) {
-                    return Flux.error(e);
+            try {
+                String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
+                // If this is in fact, the last event, it will be appropriately chunked. Otherwise, we will cache and
+                // try again in the next byte buffer with a fuller event.
+                if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
+                    handleCurrentEvent(remainingBytes, values);
                 }
+            } catch (IllegalArgumentException | UncheckedIOException e) {
+                // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON
+                // Even split across different ByteBuffers, the next one will contain the rest of the event.
                 return Flux.fromIterable(values);
-            }).cache();
+            } catch (IOException e) {
+                return Flux.error(e);
+            }
+            return Flux.fromIterable(values);
+        }).cache();
     }
 
     /**
@@ -149,7 +148,8 @@ public final class OpenAIServerSentEvents {
      * @param outputValues The list of values to add the current line to.
      * @throws IllegalStateException If the current event contains a server side error.
      */
-    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues) throws IllegalArgumentException {
+    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues)
+        throws IllegalArgumentException {
         if (currentEvent.isEmpty()) {
             return;
         }

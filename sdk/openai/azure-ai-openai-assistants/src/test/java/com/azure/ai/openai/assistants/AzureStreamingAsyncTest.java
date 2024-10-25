@@ -38,7 +38,7 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             StepVerifier.create(client.createThreadAndRunStream(createAndRunThreadOptions))
-                    .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
+                .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
                 .verifyComplete();
         }, mathTutorAssistantId);
     }
@@ -54,15 +54,15 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
             final AtomicReference<RequiredAction> requiredAction = new AtomicReference<>();
             final AtomicReference<RunStep> runStep = new AtomicReference<>();
             StepVerifier.create(client.createThreadAndRunStream(createAndRunThreadOptions))
-                    .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
-                        assertStreamUpdate(streamUpdate);
-                        if (streamUpdate instanceof StreamRequiredAction) {
-                            requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
-                        }
-                        if (streamUpdate instanceof StreamRunCreation) {
-                            runStep.set(((StreamRunCreation) streamUpdate).getMessage());
-                        }
-                    })
+                .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
+                    assertStreamUpdate(streamUpdate);
+                    if (streamUpdate instanceof StreamRequiredAction) {
+                        requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
+                    }
+                    if (streamUpdate instanceof StreamRunCreation) {
+                        runStep.set(((StreamRunCreation) streamUpdate).getMessage());
+                    }
+                })
                 .verifyComplete();
 
             assertNotNull(runStep.get());
@@ -70,15 +70,17 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
             assertInstanceOf(SubmitToolOutputsAction.class, requiredAction.get());
 
             List<ToolOutput> toolOutputs = null;
-            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction.get()).getSubmitToolOutputs().getToolCalls()) {
+            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction.get()).getSubmitToolOutputs()
+                .getToolCalls()) {
                 assertInstanceOf(RequiredFunctionToolCall.class, toolCall);
                 assertEquals(((RequiredFunctionToolCall) toolCall).getFunction().getName(), "get_boilerplate_equation");
-                toolOutputs = Arrays.asList(new ToolOutput()
-                    .setToolCallId(toolCall.getId())
-                    .setOutput("x^2 + y^2 = z^2"));
+                toolOutputs
+                    = Arrays.asList(new ToolOutput().setToolCallId(toolCall.getId()).setOutput("x^2 + y^2 = z^2"));
             }
 
-            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
+            StepVerifier
+                .create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(),
+                    toolOutputs))
                 .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
                 .verifyComplete();
         }, mathTutorAssistantId);
@@ -91,12 +93,15 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
 
-        StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?")))
+        StepVerifier
+            .create(client.createMessage(threadId,
+                new ThreadMessageOptions(MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?")))
             .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
             .verifyComplete();
 
         StepVerifier.create(client.createRunStream(threadId, mathTutorAssistantId))
-            .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate).verifyComplete();
+            .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -107,41 +112,44 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
         createRunRunner(createThreadOption -> {
             String threadId = createThread(client);
 
-            StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "Please make a graph for my boilerplate equation")))
+            StepVerifier
+                .create(client.createMessage(threadId,
+                    new ThreadMessageOptions(MessageRole.USER, "Please make a graph for my boilerplate equation")))
                 .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
                 .verifyComplete();
 
             final AtomicReference<RequiredAction> requiredAction = new AtomicReference<>();
             final AtomicReference<RunStep> runStep = new AtomicReference<>();
-            StepVerifier.create(client.createRunStream(threadId, createThreadOption))
-                .thenConsumeWhile(streamUpdate -> {
-                    assertStreamUpdate(streamUpdate);
-                    if (streamUpdate instanceof StreamRequiredAction) {
-                        requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
-                    }
+            StepVerifier.create(client.createRunStream(threadId, createThreadOption)).thenConsumeWhile(streamUpdate -> {
+                assertStreamUpdate(streamUpdate);
+                if (streamUpdate instanceof StreamRequiredAction) {
+                    requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
+                }
 
-                    if (streamUpdate instanceof StreamRunCreation) {
-                        runStep.set(((StreamRunCreation) streamUpdate).getMessage());
-                    }
-                    return true;
-                }).verifyComplete();
-
+                if (streamUpdate instanceof StreamRunCreation) {
+                    runStep.set(((StreamRunCreation) streamUpdate).getMessage());
+                }
+                return true;
+            }).verifyComplete();
 
             assertNotNull(runStep.get());
             assertNotNull(requiredAction.get());
             assertInstanceOf(SubmitToolOutputsAction.class, requiredAction.get());
 
             List<ToolOutput> toolOutputs = null;
-            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction.get()).getSubmitToolOutputs().getToolCalls()) {
+            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction.get()).getSubmitToolOutputs()
+                .getToolCalls()) {
                 assertInstanceOf(RequiredFunctionToolCall.class, toolCall);
                 assertEquals(((RequiredFunctionToolCall) toolCall).getFunction().getName(), "get_boilerplate_equation");
-                toolOutputs = Arrays.asList(new ToolOutput()
-                    .setToolCallId(toolCall.getId())
-                    .setOutput("x^2 + y^2 = z^2"));
+                toolOutputs
+                    = Arrays.asList(new ToolOutput().setToolCallId(toolCall.getId()).setOutput("x^2 + y^2 = z^2"));
             }
 
-            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
-                .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate).verifyComplete();
+            StepVerifier
+                .create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(),
+                    toolOutputs))
+                .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
+                .verifyComplete();
         }, assistantId);
 
     }

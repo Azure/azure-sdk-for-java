@@ -101,14 +101,12 @@ public final class ThrottlingRule {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model ThrottlingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model ThrottlingRule"));
         }
         if (metrics() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metrics in model ThrottlingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property metrics in model ThrottlingRule"));
         } else {
             metrics().forEach(e -> e.validate());
         }

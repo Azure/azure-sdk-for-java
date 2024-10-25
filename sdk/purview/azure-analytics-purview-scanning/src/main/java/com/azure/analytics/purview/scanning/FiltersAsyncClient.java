@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class FiltersAsyncClient {
-    @Generated private final FiltersImpl serviceClient;
+    @Generated
+    private final FiltersImpl serviceClient;
 
     /**
      * Initializes an instance of FiltersAsyncClient class.
@@ -64,8 +65,8 @@ public final class FiltersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 
@@ -127,8 +128,8 @@ public final class FiltersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

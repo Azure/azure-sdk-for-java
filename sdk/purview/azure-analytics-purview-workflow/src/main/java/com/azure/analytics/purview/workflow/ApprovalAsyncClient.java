@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = ApprovalClientBuilder.class, isAsync = true)
 public final class ApprovalAsyncClient {
-    @Generated private final ApprovalsImpl serviceClient;
+    @Generated
+    private final ApprovalsImpl serviceClient;
 
     /**
      * Initializes an instance of ApprovalAsyncClient class.
@@ -55,8 +56,8 @@ public final class ApprovalAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> approveWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Mono<Response<Void>> approveWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         return this.serviceClient.approveWithResponseAsync(taskId, approvalResponseComment, requestOptions);
     }
 
@@ -82,8 +83,8 @@ public final class ApprovalAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Mono<Response<Void>> rejectWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         return this.serviceClient.rejectWithResponseAsync(taskId, approvalResponseComment, requestOptions);
     }
 }

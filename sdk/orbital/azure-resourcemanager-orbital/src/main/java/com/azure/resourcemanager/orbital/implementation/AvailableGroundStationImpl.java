@@ -13,8 +13,8 @@ public final class AvailableGroundStationImpl implements AvailableGroundStation 
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    AvailableGroundStationImpl(
-        AvailableGroundStationInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    AvailableGroundStationImpl(AvailableGroundStationInner innerObject,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

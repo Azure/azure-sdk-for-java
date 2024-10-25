@@ -43,8 +43,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<CheckinManifestInfo> checkinManifestWithResponse(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context);
+    Response<CheckinManifestInfo> checkinManifestWithResponse(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context);
 
     /**
      * Checkin the manifest.

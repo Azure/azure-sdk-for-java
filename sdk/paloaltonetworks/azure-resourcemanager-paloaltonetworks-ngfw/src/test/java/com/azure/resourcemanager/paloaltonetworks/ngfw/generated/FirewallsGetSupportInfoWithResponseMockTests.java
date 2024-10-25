@@ -45,12 +45,14 @@ public final class FirewallsGetSupportInfoWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SupportInfo response = manager.firewalls()
-            .getSupportInfoWithResponse("byl", "ui", "vxva", com.azure.core.util.Context.NONE).getValue();
+            .getSupportInfoWithResponse("byl", "ui", "vxva", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("crkdlbn", response.productSku());
         Assertions.assertEquals("xvhcs", response.productSerial());

@@ -63,9 +63,8 @@ public final class TypedErrorInfo {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model TypedErrorInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model TypedErrorInfo"));
         }
     }
 

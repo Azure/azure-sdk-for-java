@@ -22,11 +22,11 @@ public class ChatCompletionsToolCallUnitTests {
 
     @Test
     public void testSerialization() {
-        ChatCompletionsToolCall functionToolCall =
-                new ChatCompletionsFunctionToolCall("id", new FunctionCall("name", "arguments"));
+        ChatCompletionsToolCall functionToolCall
+            = new ChatCompletionsFunctionToolCall("id", new FunctionCall("name", "arguments"));
 
         ChatCompletionsOptions options = new ChatCompletionsOptions(Collections.singletonList(
-                new ChatRequestAssistantMessage("content").setToolCalls(Collections.singletonList(functionToolCall))));
+            new ChatRequestAssistantMessage("content").setToolCalls(Collections.singletonList(functionToolCall))));
 
         String json = BinaryData.fromObject(options).toString();
         // Ensure property `type` is serialized and included.
@@ -35,10 +35,10 @@ public class ChatCompletionsToolCallUnitTests {
 
     @Test
     public void testDeserialization() {
-        String jsonWithoutType = "{\"messages\":[{\"role\":\"assistant\",\"content\":\"content\",\"tool_calls\":[{\"id\":\"id\",\"function\":{\"name\":\"name\",\"arguments\":\"arguments\"}}]}]}";
+        String jsonWithoutType
+            = "{\"messages\":[{\"role\":\"assistant\",\"content\":\"content\",\"tool_calls\":[{\"id\":\"id\",\"function\":{\"name\":\"name\",\"arguments\":\"arguments\"}}]}]}";
 
-        ChatCompletionsOptions options =
-                BinaryData.fromString(jsonWithoutType).toObject(ChatCompletionsOptions.class);
+        ChatCompletionsOptions options = BinaryData.fromString(jsonWithoutType).toObject(ChatCompletionsOptions.class);
 
         Assertions.assertInstanceOf(ChatRequestAssistantMessage.class, options.getMessages().get(0));
         ChatRequestAssistantMessage assistantMessage = (ChatRequestAssistantMessage) options.getMessages().get(0);

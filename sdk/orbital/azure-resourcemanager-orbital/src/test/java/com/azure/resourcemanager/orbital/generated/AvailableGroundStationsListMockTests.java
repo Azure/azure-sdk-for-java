@@ -33,37 +33,27 @@ public final class AvailableGroundStationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"iobyu\",\"name\":\"rpqlp\",\"location\":\"cciuqgbdbutau\",\"type\":\"btkuwhh\",\"properties\":{\"city\":\"ykojoxafnndlpic\",\"providerName\":\"o\",\"longitudeDegrees\":45.185616,\"latitudeDegrees\":12.691486,\"altitudeMeters\":1.9727468,\"releaseMode\":\"Preview\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"iobyu\",\"name\":\"rpqlp\",\"location\":\"cciuqgbdbutau\",\"type\":\"btkuwhh\",\"properties\":{\"city\":\"ykojoxafnndlpic\",\"providerName\":\"o\",\"longitudeDegrees\":45.185616,\"latitudeDegrees\":12.691486,\"altitudeMeters\":1.9727468,\"releaseMode\":\"Preview\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AvailableGroundStation> response =
-            manager.availableGroundStations().list(CapabilityParameter.COMMUNICATION, com.azure.core.util.Context.NONE);
+        PagedIterable<AvailableGroundStation> response = manager.availableGroundStations()
+            .list(CapabilityParameter.COMMUNICATION, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("cciuqgbdbutau", response.iterator().next().location());
         Assertions.assertEquals("ykojoxafnndlpic", response.iterator().next().city());

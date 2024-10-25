@@ -21,8 +21,8 @@ public class TestUtils {
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
     private static final String AZURE_OPENAI_TEST_SERVICE_VERSIONS = "AZURE_OPENAI_TEST_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-            Configuration.getGlobalConfiguration().get(AZURE_OPENAI_TEST_SERVICE_VERSIONS);
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_OPENAI_TEST_SERVICE_VERSIONS);
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -35,8 +35,8 @@ public class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients().forEach(httpClient -> Arrays.stream(AssistantsServiceVersion.values())
-                .filter(TestUtils::shouldServiceVersionBeTested)
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+            .filter(TestUtils::shouldServiceVersionBeTested)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
@@ -64,7 +64,7 @@ public class TestUtils {
             return true;
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-                serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

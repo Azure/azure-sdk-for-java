@@ -15,14 +15,15 @@ import com.azure.resourcemanager.postgresql.models.RecoverableServers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoverableServersImpl implements RecoverableServers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecoverableServersImpl.class);
 
     private final RecoverableServersClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public RecoverableServersImpl(
-        RecoverableServersClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    public RecoverableServersImpl(RecoverableServersClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -36,15 +37,12 @@ public final class RecoverableServersImpl implements RecoverableServers {
         }
     }
 
-    public Response<RecoverableServerResource> getWithResponse(
-        String resourceGroupName, String serverName, Context context) {
-        Response<RecoverableServerResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
+    public Response<RecoverableServerResource> getWithResponse(String resourceGroupName, String serverName,
+        Context context) {
+        Response<RecoverableServerResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoverableServerResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

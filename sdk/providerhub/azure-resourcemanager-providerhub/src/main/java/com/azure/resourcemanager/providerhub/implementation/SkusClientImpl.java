@@ -58,344 +58,248 @@ public final class SkusClientImpl implements SkusClient {
     @Host("{$host}")
     @ServiceInterface(name = "ProviderHubSkus")
     public interface SkusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("sku") String sku, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SkuResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("sku") String sku, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SkuResourceInner properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SkuResourceInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("sku") String sku, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
+            + "/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> getNestedResourceTypeFirst(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-                + "/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
+            + "/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> getNestedResourceTypeFirst(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeFirst(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SkuResourceInner properties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
+            + "/{sku}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> deleteNestedResourceTypeFirst(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SkuResourceInner>> getNestedResourceTypeSecond(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-                + "/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeFirst(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecond(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SkuResourceInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SkuResourceInner properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-                + "/{sku}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteNestedResourceTypeFirst(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> deleteNestedResourceTypeSecond(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
+            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> getNestedResourceTypeSecond(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> getNestedResourceTypeThird(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecond(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
             @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SkuResourceInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
+            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteNestedResourceTypeSecond(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThird(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
             @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SkuResourceInner properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-                + "/{nestedResourceTypeThird}/skus/{sku}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
+            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> getNestedResourceTypeThird(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> deleteNestedResourceTypeThird(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
             @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird, @PathParam("sku") String sku,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-                + "/{nestedResourceTypeThird}/skus/{sku}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThird(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SkuResourceInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-                + "/{nestedResourceTypeThird}/skus/{sku}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteNestedResourceTypeThird(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-            @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird,
-            @PathParam("sku") String sku,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrations(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrationsNestedResourceTypeFirst(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>>
-            listByResourceTypeRegistrationsNestedResourceTypeSecond(
-                @HostParam("$host") String endpoint,
+            listByResourceTypeRegistrationsNestedResourceTypeSecond(@HostParam("$host") String endpoint,
                 @PathParam("subscriptionId") String subscriptionId,
                 @PathParam("providerNamespace") String providerNamespace,
                 @PathParam("resourceType") String resourceType,
                 @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
                 @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+                @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-                + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-                + "/{nestedResourceTypeThird}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
+            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
+            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
+            + "/{nestedResourceTypeThird}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrationsNestedResourceTypeThird(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceType") String resourceType,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @PathParam("nestedResourceTypeFirst") String nestedResourceTypeFirst,
             @PathParam("nestedResourceTypeSecond") String nestedResourceTypeSecond,
             @PathParam("nestedResourceTypeThird") String nestedResourceTypeThird,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>>
             listByResourceTypeRegistrationsNestedResourceTypeFirstNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+                @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>>
             listByResourceTypeRegistrationsNestedResourceTypeSecondNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+                @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>>
             listByResourceTypeRegistrationsNestedResourceTypeThirdNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+                @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -411,19 +315,15 @@ public final class SkusClientImpl implements SkusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getWithResponseAsync(
-        String providerNamespace, String resourceType, String sku) {
+    private Mono<Response<SkuResourceInner>> getWithResponseAsync(String providerNamespace, String resourceType,
+        String sku) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -437,18 +337,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, sku, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -466,19 +356,15 @@ public final class SkusClientImpl implements SkusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getWithResponseAsync(
-        String providerNamespace, String resourceType, String sku, Context context) {
+    private Mono<Response<SkuResourceInner>> getWithResponseAsync(String providerNamespace, String resourceType,
+        String sku, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -492,16 +378,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, resourceType,
+            sku, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -534,8 +412,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> getWithResponse(
-        String providerNamespace, String resourceType, String sku, Context context) {
+    public Response<SkuResourceInner> getWithResponse(String providerNamespace, String resourceType, String sku,
+        Context context) {
         return getWithResponseAsync(providerNamespace, resourceType, sku, context).block();
     }
 
@@ -568,19 +446,15 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties) {
+    private Mono<Response<SkuResourceInner>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String resourceType, String sku, SkuResourceInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -599,19 +473,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            sku,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, sku, this.client.getApiVersion(), properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -629,19 +492,15 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties, Context context) {
+    private Mono<Response<SkuResourceInner>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String resourceType, String sku, SkuResourceInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -660,17 +519,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                sku,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, sku, this.client.getApiVersion(), properties, accept, context);
     }
 
     /**
@@ -686,8 +536,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> createOrUpdateAsync(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties) {
+    private Mono<SkuResourceInner> createOrUpdateAsync(String providerNamespace, String resourceType, String sku,
+        SkuResourceInner properties) {
         return createOrUpdateWithResponseAsync(providerNamespace, resourceType, sku, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -706,8 +556,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> createOrUpdateWithResponse(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties, Context context) {
+    public Response<SkuResourceInner> createOrUpdateWithResponse(String providerNamespace, String resourceType,
+        String sku, SkuResourceInner properties, Context context) {
         return createOrUpdateWithResponseAsync(providerNamespace, resourceType, sku, properties, context).block();
     }
 
@@ -724,8 +574,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner createOrUpdate(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties) {
+    public SkuResourceInner createOrUpdate(String providerNamespace, String resourceType, String sku,
+        SkuResourceInner properties) {
         return createOrUpdateWithResponse(providerNamespace, resourceType, sku, properties, Context.NONE).getValue();
     }
 
@@ -743,16 +593,12 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType, String sku) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -766,18 +612,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, sku, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -794,19 +630,15 @@ public final class SkusClientImpl implements SkusClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String providerNamespace, String resourceType, String sku, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType, String sku,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -820,16 +652,8 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, sku, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -861,8 +685,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String providerNamespace, String resourceType, String sku, Context context) {
+    public Response<Void> deleteWithResponse(String providerNamespace, String resourceType, String sku,
+        Context context) {
         return deleteWithResponseAsync(providerNamespace, resourceType, sku, context).block();
     }
 
@@ -895,19 +719,15 @@ public final class SkusClientImpl implements SkusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -917,28 +737,17 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getNestedResourceTypeFirst(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getNestedResourceTypeFirst(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, sku,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -957,19 +766,15 @@ public final class SkusClientImpl implements SkusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -979,26 +784,17 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getNestedResourceTypeFirst(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getNestedResourceTypeFirst(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, sku, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -1014,11 +810,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the sku details for the given resource type and sku name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> getNestedResourceTypeFirstAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
-        return getNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<SkuResourceInner> getNestedResourceTypeFirstAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku) {
+        return getNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1035,11 +830,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> getNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
-        return getNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, context)
-            .block();
+    public Response<SkuResourceInner> getNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
+        return getNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            sku, context).block();
     }
 
     /**
@@ -1055,11 +849,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the sku details for the given resource type and sku name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner getNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
-        return getNestedResourceTypeFirstWithResponse(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, Context.NONE)
-            .getValue();
+    public SkuResourceInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku) {
+        return getNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst, sku,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1077,22 +870,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku,
         SkuResourceInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -1102,9 +888,8 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
@@ -1116,20 +901,9 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateNestedResourceTypeFirst(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            sku,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateNestedResourceTypeFirst(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, sku,
+                this.client.getApiVersion(), properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1149,23 +923,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku,
+        SkuResourceInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -1175,9 +941,8 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
@@ -1189,18 +954,9 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateNestedResourceTypeFirst(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                sku,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
+        return service.createOrUpdateNestedResourceTypeFirst(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, sku, this.client.getApiVersion(), properties,
+            accept, context);
     }
 
     /**
@@ -1217,15 +973,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeFirstAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, properties)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeFirstAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, sku, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1243,16 +994,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeFirstWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
-        return createOrUpdateNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, properties, context)
-            .block();
+    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, SkuResourceInner properties, Context context) {
+        return createOrUpdateNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, sku, properties, context).block();
     }
 
     /**
@@ -1269,15 +1014,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner createOrUpdateNestedResourceTypeFirst(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeFirstWithResponse(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, properties, Context.NONE)
-            .getValue();
+    public SkuResourceInner createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeFirstWithResponse(providerNamespace, resourceType,
+            nestedResourceTypeFirst, sku, properties, Context.NONE).getValue();
     }
 
     /**
@@ -1293,19 +1033,15 @@ public final class SkusClientImpl implements SkusClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
+    private Mono<Response<Void>> deleteNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -1315,28 +1051,17 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteNestedResourceTypeFirst(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.deleteNestedResourceTypeFirst(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, sku,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1354,19 +1079,15 @@ public final class SkusClientImpl implements SkusClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeFirstWithResponseAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
+    private Mono<Response<Void>> deleteNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -1376,26 +1097,17 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteNestedResourceTypeFirst(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deleteNestedResourceTypeFirst(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, sku, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -1411,11 +1123,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteNestedResourceTypeFirstAsync(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
-        return deleteNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteNestedResourceTypeFirstAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku) {
+        return deleteNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            sku).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1432,11 +1143,10 @@ public final class SkusClientImpl implements SkusClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context) {
-        return deleteNestedResourceTypeFirstWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, sku, context)
-            .block();
+    public Response<Void> deleteNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, Context context) {
+        return deleteNestedResourceTypeFirstWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            sku, context).block();
     }
 
     /**
@@ -1451,1497 +1161,1073 @@ public final class SkusClientImpl implements SkusClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku) {
-        deleteNestedResourceTypeFirstWithResponse(
-            providerNamespace, resourceType, nestedResourceTypeFirst, sku, Context.NONE);
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getNestedResourceTypeSecond(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getNestedResourceTypeSecond(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> getNestedResourceTypeSecondAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        return getNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> getNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context) {
-        return getNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku, context)
-            .block();
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner getNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        return getNestedResourceTypeSecondWithResponse(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateNestedResourceTypeSecond(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            sku,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateNestedResourceTypeSecond(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                sku,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeSecondAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku, properties)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
-        return createOrUpdateNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                sku,
-                properties,
-                context)
-            .block();
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner createOrUpdateNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeSecondWithResponse(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                sku,
-                properties,
-                Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteNestedResourceTypeSecond(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeSecondWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .deleteNestedResourceTypeSecond(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteNestedResourceTypeSecondAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        return deleteNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context) {
-        return deleteNestedResourceTypeSecondWithResponseAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku, context)
-            .block();
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku) {
-        deleteNestedResourceTypeSecondWithResponse(
-            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku, Context.NONE);
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getNestedResourceTypeThird(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            nestedResourceTypeThird,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getNestedResourceTypeThird(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> getNestedResourceTypeThirdAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        return getNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> getNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        Context context) {
-        return getNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                context)
-            .block();
-    }
-
-    /**
-     * Gets the sku details for the given resource type and sku name.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sku details for the given resource type and sku name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner getNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        return getNestedResourceTypeThirdWithResponse(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateNestedResourceTypeThird(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            nestedResourceTypeThird,
-                            sku,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateNestedResourceTypeThird(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeThirdAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                properties)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties,
-        Context context) {
-        return createOrUpdateNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                properties,
-                context)
-            .block();
-    }
-
-    /**
-     * Creates or updates the resource type skus in the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param properties The required body parameters supplied to the resource sku operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuResourceInner createOrUpdateNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties) {
-        return createOrUpdateNestedResourceTypeThirdWithResponse(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                properties,
-                Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteNestedResourceTypeThird(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            nestedResourceTypeThird,
-                            sku,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteNestedResourceTypeThirdWithResponseAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        if (sku == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .deleteNestedResourceTypeThird(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteNestedResourceTypeThirdAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        return deleteNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        Context context) {
-        return deleteNestedResourceTypeThirdWithResponseAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                sku,
-                context)
-            .block();
-    }
-
-    /**
-     * Deletes a resource type sku.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param sku The SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku) {
-        deleteNestedResourceTypeThirdWithResponse(
-            providerNamespace,
-            resourceType,
-            nestedResourceTypeFirst,
-            nestedResourceTypeSecond,
-            nestedResourceTypeThird,
-            sku,
+    public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku) {
+        deleteNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst, sku,
             Context.NONE);
     }
 
     /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getNestedResourceTypeSecond(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, sku, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getNestedResourceTypeSecond(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku,
+            this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuResourceInner> getNestedResourceTypeSecondAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        return getNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuResourceInner> getNestedResourceTypeSecondWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        Context context) {
+        return getNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, context).block();
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuResourceInner getNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        return getNestedResourceTypeSecondWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecondWithResponseAsync(
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String sku, SkuResourceInner properties) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdateNestedResourceTypeSecond(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, sku, this.client.getApiVersion(), properties, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecondWithResponseAsync(
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String sku, SkuResourceInner properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdateNestedResourceTypeSecond(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, this.client.getApiVersion(), properties, accept, context);
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeSecondAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, sku, properties)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeSecondWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        SkuResourceInner properties, Context context) {
+        return createOrUpdateNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, sku, properties, context).block();
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuResourceInner createOrUpdateNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeSecondWithResponse(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, sku, properties, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteNestedResourceTypeSecond(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, sku, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteNestedResourceTypeSecond(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, sku,
+            this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteNestedResourceTypeSecondAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        return deleteNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context) {
+        return deleteNestedResourceTypeSecondWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, context).block();
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku) {
+        deleteNestedResourceTypeSecondWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, sku, Context.NONE);
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getNestedResourceTypeThird(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, nestedResourceTypeThird, sku, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getNestedResourceTypeThird(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird,
+            sku, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuResourceInner> getNestedResourceTypeThirdAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
+        return getNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuResourceInner> getNestedResourceTypeThirdWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, Context context) {
+        return getNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku, context).block();
+    }
+
+    /**
+     * Gets the sku details for the given resource type and sku name.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sku details for the given resource type and sku name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuResourceInner getNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
+        return getNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThirdWithResponseAsync(
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdateNestedResourceTypeThird(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, nestedResourceTypeThird, sku, this.client.getApiVersion(), properties, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThirdWithResponseAsync(
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdateNestedResourceTypeThird(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird,
+            sku, this.client.getApiVersion(), properties, accept, context);
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuResourceInner> createOrUpdateNestedResourceTypeThirdAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, sku, properties)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuResourceInner> createOrUpdateNestedResourceTypeThirdWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties, Context context) {
+        return createOrUpdateNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, sku, properties, context)
+                .block();
+    }
+
+    /**
+     * Creates or updates the resource type skus in the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param properties The required body parameters supplied to the resource sku operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuResourceInner createOrUpdateNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
+        SkuResourceInner properties) {
+        return createOrUpdateNestedResourceTypeThirdWithResponse(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, sku, properties, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteNestedResourceTypeThird(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, nestedResourceTypeThird, sku, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (nestedResourceTypeFirst == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+        }
+        if (nestedResourceTypeSecond == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+        }
+        if (nestedResourceTypeThird == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+        }
+        if (sku == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteNestedResourceTypeThird(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird,
+            sku, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteNestedResourceTypeThirdAsync(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
+        return deleteNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
+        Context context) {
+        return deleteNestedResourceTypeThirdWithResponseAsync(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku, context).block();
+    }
+
+    /**
+     * Deletes a resource type sku.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param nestedResourceTypeThird The third child resource type.
+     * @param sku The SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku) {
+        deleteNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, sku, Context.NONE);
+    }
+
+    /**
      * Gets the list of skus for the given resource type.
      *
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
@@ -2953,19 +2239,15 @@ public final class SkusClientImpl implements SkusClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsSinglePageAsync(
-        String providerNamespace, String resourceType) {
+    private Mono<PagedResponse<SkuResourceInner>>
+        listByResourceTypeRegistrationsSinglePageAsync(String providerNamespace, String resourceType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -2976,26 +2258,11 @@ public final class SkusClientImpl implements SkusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrations(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, this.client.getApiVersion(), accept,
+                context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3012,19 +2279,15 @@ public final class SkusClientImpl implements SkusClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsSinglePageAsync(
-        String providerNamespace, String resourceType, Context context) {
+    private Mono<PagedResponse<SkuResourceInner>>
+        listByResourceTypeRegistrationsSinglePageAsync(String providerNamespace, String resourceType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3036,23 +2299,10 @@ public final class SkusClientImpl implements SkusClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, resourceType, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3066,10 +2316,9 @@ public final class SkusClientImpl implements SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsAsync(
-        String providerNamespace, String resourceType) {
-        return new PagedFlux<>(
-            () -> listByResourceTypeRegistrationsSinglePageAsync(providerNamespace, resourceType),
+    private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsAsync(String providerNamespace,
+        String resourceType) {
+        return new PagedFlux<>(() -> listByResourceTypeRegistrationsSinglePageAsync(providerNamespace, resourceType),
             nextLink -> listByResourceTypeRegistrationsNextSinglePageAsync(nextLink));
     }
 
@@ -3085,8 +2334,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsAsync(
-        String providerNamespace, String resourceType, Context context) {
+    private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsAsync(String providerNamespace,
+        String resourceType, Context context) {
         return new PagedFlux<>(
             () -> listByResourceTypeRegistrationsSinglePageAsync(providerNamespace, resourceType, context),
             nextLink -> listByResourceTypeRegistrationsNextSinglePageAsync(nextLink, context));
@@ -3103,8 +2352,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(
-        String providerNamespace, String resourceType) {
+    public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(String providerNamespace,
+        String resourceType) {
         return new PagedIterable<>(listByResourceTypeRegistrationsAsync(providerNamespace, resourceType));
     }
 
@@ -3120,8 +2369,8 @@ public final class SkusClientImpl implements SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(
-        String providerNamespace, String resourceType, Context context) {
+    public PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(String providerNamespace,
+        String resourceType, Context context) {
         return new PagedIterable<>(listByResourceTypeRegistrationsAsync(providerNamespace, resourceType, context));
     }
 
@@ -3141,16 +2390,12 @@ public final class SkusClientImpl implements SkusClient {
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3160,33 +2405,16 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeFirst(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNestedResourceTypeFirst(
+                this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, resourceType,
+                nestedResourceTypeFirst, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3207,16 +2435,12 @@ public final class SkusClientImpl implements SkusClient {
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3226,31 +2450,17 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeFirst(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeFirst(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3268,9 +2478,8 @@ public final class SkusClientImpl implements SkusClient {
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
-                    providerNamespace, resourceType, nestedResourceTypeFirst),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(providerNamespace, resourceType,
+                nestedResourceTypeFirst),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeFirstNextSinglePageAsync(nextLink));
     }
 
@@ -3290,9 +2499,8 @@ public final class SkusClientImpl implements SkusClient {
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
-                    providerNamespace, resourceType, nestedResourceTypeFirst, context),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(providerNamespace, resourceType,
+                nestedResourceTypeFirst, context),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeFirstNextSinglePageAsync(nextLink, context));
     }
 
@@ -3310,9 +2518,8 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst));
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst));
     }
 
     /**
@@ -3330,9 +2537,8 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, context));
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeFirstAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst, context));
     }
 
     /**
@@ -3350,22 +2556,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
-        listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(
-            String providerNamespace,
-            String resourceType,
-            String nestedResourceTypeFirst,
-            String nestedResourceTypeSecond) {
+        listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(String providerNamespace,
+            String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3375,39 +2574,20 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeSecond(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNestedResourceTypeSecond(
+                this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, resourceType,
+                nestedResourceTypeFirst, nestedResourceTypeSecond, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3427,23 +2607,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
-        listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(
-            String providerNamespace,
-            String resourceType,
-            String nestedResourceTypeFirst,
-            String nestedResourceTypeSecond,
-            Context context) {
+        listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(String providerNamespace,
+            String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3453,37 +2625,21 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeSecond(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeSecond(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3500,14 +2656,11 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(
-                    providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(providerNamespace,
+                resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeSecondNextSinglePageAsync(nextLink));
     }
 
@@ -3526,15 +2679,11 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         Context context) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(
-                    providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, context),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeSecondSinglePageAsync(providerNamespace,
+                resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, context),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeSecondNextSinglePageAsync(nextLink, context));
     }
 
@@ -3552,13 +2701,10 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond));
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond));
     }
 
     /**
@@ -3576,14 +2722,10 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         Context context) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(
-                providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, context));
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeSecondAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, context));
     }
 
     /**
@@ -3602,22 +2744,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3627,45 +2762,25 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
         }
         if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeThird(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            resourceType,
-                            nestedResourceTypeFirst,
-                            nestedResourceTypeSecond,
-                            nestedResourceTypeThird,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceTypeRegistrationsNestedResourceTypeThird(this.client.getEndpoint(),
+                    this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                    nestedResourceTypeSecond, nestedResourceTypeThird, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3686,23 +2801,15 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        Context context) {
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -3712,43 +2819,25 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (nestedResourceTypeFirst == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
         }
         if (nestedResourceTypeSecond == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
         }
         if (nestedResourceTypeThird == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeThird(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeThird(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst,
+                nestedResourceTypeSecond, nestedResourceTypeThird, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3766,19 +2855,11 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
-                    providerNamespace,
-                    resourceType,
-                    nestedResourceTypeFirst,
-                    nestedResourceTypeSecond,
-                    nestedResourceTypeThird),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(providerNamespace, resourceType,
+                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeThirdNextSinglePageAsync(nextLink));
     }
 
@@ -3798,21 +2879,11 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        Context context) {
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
-                    providerNamespace,
-                    resourceType,
-                    nestedResourceTypeFirst,
-                    nestedResourceTypeSecond,
-                    nestedResourceTypeThird,
-                    context),
+            () -> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(providerNamespace, resourceType,
+                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, context),
             nextLink -> listByResourceTypeRegistrationsNestedResourceTypeThirdNextSinglePageAsync(nextLink, context));
     }
 
@@ -3831,18 +2902,10 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird));
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird));
     }
 
     /**
@@ -3861,20 +2924,10 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        Context context) {
-        return new PagedIterable<>(
-            listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(
-                providerNamespace,
-                resourceType,
-                nestedResourceTypeFirst,
-                nestedResourceTypeSecond,
-                nestedResourceTypeThird,
-                context));
+        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, Context context) {
+        return new PagedIterable<>(listByResourceTypeRegistrationsNestedResourceTypeThirdAsync(providerNamespace,
+            resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, context));
     }
 
     /**
@@ -3893,25 +2946,15 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listByResourceTypeRegistrationsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3927,30 +2970,20 @@ public final class SkusClientImpl implements SkusClient {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceTypeRegistrationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceTypeRegistrationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3970,27 +3003,15 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeFirstNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNestedResourceTypeFirstNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4012,25 +3033,16 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeFirstNext(
-                nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeFirstNext(nextLink, this.client.getEndpoint(), accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -4050,27 +3062,15 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeSecondNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNestedResourceTypeSecondNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4092,25 +3092,16 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeSecondNext(
-                nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeSecondNext(nextLink, this.client.getEndpoint(), accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -4130,27 +3121,15 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceTypeRegistrationsNestedResourceTypeThirdNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceTypeRegistrationsNestedResourceTypeThirdNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4172,24 +3151,15 @@ public final class SkusClientImpl implements SkusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceTypeRegistrationsNestedResourceTypeThirdNext(
-                nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceTypeRegistrationsNestedResourceTypeThirdNext(nextLink, this.client.getEndpoint(), accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

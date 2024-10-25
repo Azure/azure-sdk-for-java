@@ -50,9 +50,8 @@ public final class CustomRolloutInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model CustomRolloutInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model CustomRolloutInner"));
         } else {
             properties().validate();
         }

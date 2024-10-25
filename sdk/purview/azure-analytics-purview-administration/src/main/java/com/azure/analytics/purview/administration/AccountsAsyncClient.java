@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = AccountsClientBuilder.class, isAsync = true)
 public final class AccountsAsyncClient {
-    @Generated private final AccountsImpl serviceClient;
+    @Generated
+    private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of AccountsAsyncClient class.
@@ -212,8 +213,8 @@ public final class AccountsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponse(
-            BinaryData accountUpdateParameters, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponse(BinaryData accountUpdateParameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions);
     }
 
@@ -272,8 +273,8 @@ public final class AccountsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponse(
-            BinaryData keyOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponse(BinaryData keyOptions,
+        RequestOptions requestOptions) {
         return this.serviceClient.regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions);
     }
 }

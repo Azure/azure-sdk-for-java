@@ -15,8 +15,8 @@ public final class ResourceTypeRegistrationPropertiesFeaturesRule extends Featur
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesFeaturesRule withRequiredFeaturesPolicy(
-        FeaturesPolicy requiredFeaturesPolicy) {
+    public ResourceTypeRegistrationPropertiesFeaturesRule
+        withRequiredFeaturesPolicy(FeaturesPolicy requiredFeaturesPolicy) {
         super.withRequiredFeaturesPolicy(requiredFeaturesPolicy);
         return this;
     }

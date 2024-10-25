@@ -43,8 +43,8 @@ public class SubscriptionLifecycleNotificationSpecifications {
      * @param subscriptionStateOverrideActions the subscriptionStateOverrideActions value to set.
      * @return the SubscriptionLifecycleNotificationSpecifications object itself.
      */
-    public SubscriptionLifecycleNotificationSpecifications withSubscriptionStateOverrideActions(
-        List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions) {
+    public SubscriptionLifecycleNotificationSpecifications
+        withSubscriptionStateOverrideActions(List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions) {
         this.subscriptionStateOverrideActions = subscriptionStateOverrideActions;
         return this;
     }

@@ -50,14 +50,14 @@ class SentShareClientTest extends PurviewShareTestBase {
 
         this.createSentShare(sentShareId);
 
-        UserInvitation sentShareInvitation = new UserInvitation().setProperties(new UserInvitationProperties()
-                .setTargetEmail(super.consumerEmail)
+        UserInvitation sentShareInvitation
+            = new UserInvitation().setProperties(new UserInvitationProperties().setTargetEmail(super.consumerEmail)
                 .setNotify(true)
                 .setExpirationDate(OffsetDateTime.of(2500, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)));
 
-        Response<BinaryData> invitationResponse = sentSharesClient.createSentShareInvitationWithResponse(
-                sentShareId.toString(), sentShareInvitationId, BinaryData.fromObject(sentShareInvitation),
-                new RequestOptions());
+        Response<BinaryData> invitationResponse
+            = sentSharesClient.createSentShareInvitationWithResponse(sentShareId.toString(), sentShareInvitationId,
+                BinaryData.fromObject(sentShareInvitation), new RequestOptions());
 
         UserInvitation invitation = invitationResponse.getValue().toObject(UserInvitation.class);
 
@@ -72,8 +72,9 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 
-        SentShare retrievedSentShare = super.sentSharesClient
-                .getSentShareWithResponse(sentShareId.toString(), new RequestOptions()).getValue()
+        SentShare retrievedSentShare
+            = super.sentSharesClient.getSentShareWithResponse(sentShareId.toString(), new RequestOptions())
+                .getValue()
                 .toObject(SentShare.class);
 
         assertNotNull(retrievedSentShare);
@@ -87,12 +88,13 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 
-        PagedIterable<BinaryData> sentShares = super.sentSharesClient
-                .listSentShares(super.providerStorageAccountResourceId, new RequestOptions());
+        PagedIterable<BinaryData> sentShares
+            = super.sentSharesClient.listSentShares(super.providerStorageAccountResourceId, new RequestOptions());
 
         assertTrue(sentShares.stream().findAny().isPresent());
-        assertTrue(sentShares.stream().map(binaryData -> binaryData.toObject(SentShare.class))
-                .anyMatch(share -> share.getId().equals(sentShare.getId())));
+        assertTrue(sentShares.stream()
+            .map(binaryData -> binaryData.toObject(SentShare.class))
+            .anyMatch(share -> share.getId().equals(sentShare.getId())));
     }
 
     @Test
@@ -112,9 +114,8 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
 
-        Response<BinaryData> invitationResponse = super.createSentShareAndServiceInvitation(
-                sentShareId,
-                sentShareInvitationId);
+        Response<BinaryData> invitationResponse
+            = super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         ServiceInvitation invitation = invitationResponse.getValue().toObject(ServiceInvitation.class);
 
@@ -131,7 +132,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         Response<BinaryData> invitationResponse = super.sentSharesClient.getSentShareInvitationWithResponse(
-                sentShareId.toString(), sentShareInvitationId.toString(), new RequestOptions());
+            sentShareId.toString(), sentShareInvitationId.toString(), new RequestOptions());
 
         ServiceInvitation invitation = invitationResponse.getValue().toObject(ServiceInvitation.class);
 
@@ -147,12 +148,13 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
-        PagedIterable<BinaryData> invitations = super.sentSharesClient
-                .listSentShareInvitations(sentShareId.toString(), new RequestOptions());
+        PagedIterable<BinaryData> invitations
+            = super.sentSharesClient.listSentShareInvitations(sentShareId.toString(), new RequestOptions());
 
         assertTrue(invitations.stream().findAny().isPresent());
-        assertTrue(invitations.stream().map(binaryData -> binaryData.toObject(ServiceInvitation.class))
-                .anyMatch(invitation -> invitation.getId().equals(sentShareInvitationId.toString())));
+        assertTrue(invitations.stream()
+            .map(binaryData -> binaryData.toObject(ServiceInvitation.class))
+            .anyMatch(invitation -> invitation.getId().equals(sentShareInvitationId.toString())));
     }
 
     @Test
@@ -160,14 +162,14 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
 
-        Response<BinaryData> invitationResponse = super.createSentShareAndServiceInvitation(sentShareId,
-                sentShareInvitationId);
+        Response<BinaryData> invitationResponse
+            = super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         ServiceInvitation invitation = invitationResponse.getValue().toObject(ServiceInvitation.class);
 
-        SyncPoller<BinaryData, Void> syncPoller = setPlaybackSyncPollerPollInterval(
-            super.sentSharesClient.beginDeleteSentShareInvitation(sentShareId.toString(),
-                sentShareInvitationId.toString(), new RequestOptions()));
+        SyncPoller<BinaryData, Void> syncPoller
+            = setPlaybackSyncPollerPollInterval(super.sentSharesClient.beginDeleteSentShareInvitation(
+                sentShareId.toString(), sentShareInvitationId.toString(), new RequestOptions()));
 
         PollResponse<BinaryData> result = syncPoller.waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());

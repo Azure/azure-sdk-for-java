@@ -25,8 +25,8 @@ public interface NotificationRegistrationsClient {
      * @return the notification registration details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationRegistrationInner> getWithResponse(
-        String providerNamespace, String notificationRegistrationName, Context context);
+    Response<NotificationRegistrationInner> getWithResponse(String providerNamespace,
+        String notificationRegistrationName, Context context);
 
     /**
      * Gets the notification registration details.
@@ -54,11 +54,8 @@ public interface NotificationRegistrationsClient {
      * @return the notification registration definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationRegistrationInner> createOrUpdateWithResponse(
-        String providerNamespace,
-        String notificationRegistrationName,
-        NotificationRegistrationInner properties,
-        Context context);
+    Response<NotificationRegistrationInner> createOrUpdateWithResponse(String providerNamespace,
+        String notificationRegistrationName, NotificationRegistrationInner properties, Context context);
 
     /**
      * Creates or updates a notification registration.
@@ -72,8 +69,8 @@ public interface NotificationRegistrationsClient {
      * @return the notification registration definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationRegistrationInner createOrUpdate(
-        String providerNamespace, String notificationRegistrationName, NotificationRegistrationInner properties);
+    NotificationRegistrationInner createOrUpdate(String providerNamespace, String notificationRegistrationName,
+        NotificationRegistrationInner properties);
 
     /**
      * Deletes a notification registration.

@@ -42,42 +42,43 @@ import java.util.Objects;
 
 /** A builder for creating a new instance of the PurviewScanningClient type. */
 @ServiceClientBuilder(
-        serviceClients = {
-            KeyVaultConnectionsClient.class,
-            ClassificationRulesClient.class,
-            DataSourcesClient.class,
-            FiltersClient.class,
-            ScansClient.class,
-            ScanResultClient.class,
-            ScanRulesetsClient.class,
-            SystemScanRulesetsClient.class,
-            TriggersClient.class,
-            KeyVaultConnectionsAsyncClient.class,
-            ClassificationRulesAsyncClient.class,
-            DataSourcesAsyncClient.class,
-            FiltersAsyncClient.class,
-            ScansAsyncClient.class,
-            ScanResultAsyncClient.class,
-            ScanRulesetsAsyncClient.class,
-            SystemScanRulesetsAsyncClient.class,
-            TriggersAsyncClient.class
-        })
+    serviceClients = {
+        KeyVaultConnectionsClient.class,
+        ClassificationRulesClient.class,
+        DataSourcesClient.class,
+        FiltersClient.class,
+        ScansClient.class,
+        ScanResultClient.class,
+        ScanRulesetsClient.class,
+        SystemScanRulesetsClient.class,
+        TriggersClient.class,
+        KeyVaultConnectionsAsyncClient.class,
+        ClassificationRulesAsyncClient.class,
+        DataSourcesAsyncClient.class,
+        FiltersAsyncClient.class,
+        ScansAsyncClient.class,
+        ScanResultAsyncClient.class,
+        ScanRulesetsAsyncClient.class,
+        SystemScanRulesetsAsyncClient.class,
+        TriggersAsyncClient.class })
 public final class PurviewScanningClientBuilder
-        implements HttpTrait<PurviewScanningClientBuilder>,
-                ConfigurationTrait<PurviewScanningClientBuilder>,
-                TokenCredentialTrait<PurviewScanningClientBuilder>,
-                EndpointTrait<PurviewScanningClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
-
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
+    implements HttpTrait<PurviewScanningClientBuilder>, ConfigurationTrait<PurviewScanningClientBuilder>,
+    TokenCredentialTrait<PurviewScanningClientBuilder>, EndpointTrait<PurviewScanningClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final Map<String, String> PROPERTIES =
-            CoreUtils.getProperties("azure-analytics-purview-scanning.properties");
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://purview.azure.net/.default" };
+
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-analytics-purview-scanning.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the PurviewScanningClientBuilder. */
     @Generated
@@ -88,7 +89,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -101,7 +103,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -114,7 +117,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -127,7 +131,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -140,7 +145,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -162,7 +168,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -175,7 +182,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -188,7 +196,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
     /** {@inheritDoc}. */
     @Generated
@@ -201,7 +210,8 @@ public final class PurviewScanningClientBuilder
     /*
      * Service version
      */
-    @Generated private PurviewScanningServiceVersion serviceVersion;
+    @Generated
+    private PurviewScanningServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -218,7 +228,8 @@ public final class PurviewScanningClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -240,18 +251,17 @@ public final class PurviewScanningClientBuilder
     @Generated
     private PurviewScanningClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        PurviewScanningServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : PurviewScanningServiceVersion.getLatest();
-        PurviewScanningClientImpl client =
-                new PurviewScanningClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+        PurviewScanningServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : PurviewScanningServiceVersion.getLatest();
+        PurviewScanningClientImpl client = new PurviewScanningClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -267,8 +277,8 @@ public final class PurviewScanningClientBuilder
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -277,16 +287,14 @@ public final class PurviewScanningClientBuilder
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 

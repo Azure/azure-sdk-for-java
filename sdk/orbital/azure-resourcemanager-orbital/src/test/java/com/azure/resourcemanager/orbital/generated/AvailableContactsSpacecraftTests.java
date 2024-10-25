@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableContactsSpacecraftTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableContactsSpacecraft model =
-            BinaryData.fromString("{\"id\":\"bqe\"}").toObject(AvailableContactsSpacecraft.class);
+        AvailableContactsSpacecraft model
+            = BinaryData.fromString("{\"id\":\"bqe\"}").toObject(AvailableContactsSpacecraft.class);
         Assertions.assertEquals("bqe", model.id());
     }
 

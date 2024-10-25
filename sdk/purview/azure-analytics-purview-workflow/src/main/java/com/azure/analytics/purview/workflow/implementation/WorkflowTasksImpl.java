@@ -49,8 +49,8 @@ public final class WorkflowTasksImpl {
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowTasksImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(WorkflowTasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowTasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,80 +62,44 @@ public final class WorkflowTasksImpl {
     @ServiceInterface(name = "PurviewWorkflowWorkf")
     public interface WorkflowTasksService {
         @Get("/workflowtasks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/workflowtasks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -205,23 +169,11 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -292,35 +244,29 @@ public final class WorkflowTasksImpl {
     public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
                 });
+            }
+            return listSinglePageAsync(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+        });
     }
 
     /**
@@ -390,20 +336,10 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -474,35 +410,29 @@ public final class WorkflowTasksImpl {
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listNextSinglePage(nextLink, requestOptionsLocal);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
                 });
+            }
+            return listSinglePage(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listNextSinglePage(nextLink, requestOptionsLocal);
+        });
     }
 
     /**
@@ -555,18 +485,11 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -619,15 +542,10 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

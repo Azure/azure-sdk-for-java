@@ -85,14 +85,16 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject = serviceManager.serviceClient().getAccounts().createOrUpdate(resourceGroupName, name,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Account create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts().createOrUpdate(resourceGroupName, name,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
         return this;
     }
 
@@ -108,14 +110,18 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .updateWithResponse(resourceGroupName, name, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, name, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Account apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .updateWithResponse(resourceGroupName, name, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, name, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -128,14 +134,18 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account refresh() {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Account refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, name, context)
+            .getValue();
         return this;
     }
 

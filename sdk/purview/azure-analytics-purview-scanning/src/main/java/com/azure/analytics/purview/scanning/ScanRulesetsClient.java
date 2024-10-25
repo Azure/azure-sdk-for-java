@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScanRulesetsClient {
-    @Generated private final ScanRulesetsImpl serviceClient;
+    @Generated
+    private final ScanRulesetsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanRulesetsClient class.

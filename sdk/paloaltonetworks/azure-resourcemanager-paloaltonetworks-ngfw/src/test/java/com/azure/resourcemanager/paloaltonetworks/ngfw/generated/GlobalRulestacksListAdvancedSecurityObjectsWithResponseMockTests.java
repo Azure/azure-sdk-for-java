@@ -45,13 +45,15 @@ public final class GlobalRulestacksListAdvancedSecurityObjectsWithResponseMockTe
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AdvSecurityObjectListResponse response
-            = manager.globalRulestacks().listAdvancedSecurityObjectsWithResponse("lkm", AdvSecurityObjectTypeEnum.FEEDS,
-                "zoyhlfbcgwg", 125495169, com.azure.core.util.Context.NONE).getValue();
+        AdvSecurityObjectListResponse response = manager.globalRulestacks()
+            .listAdvancedSecurityObjectsWithResponse("lkm", AdvSecurityObjectTypeEnum.FEEDS, "zoyhlfbcgwg", 125495169,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("xoe", response.value().type());
         Assertions.assertEquals("injipnwjf", response.value().entry().get(0).name());

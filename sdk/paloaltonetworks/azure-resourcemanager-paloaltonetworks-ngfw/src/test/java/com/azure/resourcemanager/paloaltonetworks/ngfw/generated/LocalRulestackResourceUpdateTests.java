@@ -60,14 +60,20 @@ public final class LocalRulestackResourceUpdateTests {
                     new AzureResourceManagerUserAssignedIdentity().withClientId("hhzjhfj").withPrincipalId("vvmu"))))
             .withTags(mapOf("ypoh", "hsasbhu", "sqy", "uemsly"))
             .withProperties(new LocalRulestackResourceUpdateProperties().withPanEtag("oobrlttyms")
-                .withPanLocation("ygqdnfwqzdz").withScope(ScopeType.LOCAL)
+                .withPanLocation("ygqdnfwqzdz")
+                .withScope(ScopeType.LOCAL)
                 .withAssociatedSubscriptions(Arrays.asList("xhnfhqly", "ijouwivkxoyzunb"))
-                .withDescription("xrtikvcpwpgclr").withDefaultMode(DefaultMode.FIREWALL).withMinAppIdVersion("soxfrken")
-                .withSecurityServices(
-                    new SecurityServices().withVulnerabilityProfile("yyefrpmpdnqqs").withAntiSpywareProfile("waoqvmmb")
-                        .withAntiVirusProfile("qfr").withUrlFilteringProfile("lkzmegnitgvkxl")
-                        .withFileBlockingProfile("qdrfegcealzxwhc").withDnsSubscription("symoyq")
-                        .withOutboundUnTrustCertificate("wigdi").withOutboundTrustCertificate("kbxgom")));
+                .withDescription("xrtikvcpwpgclr")
+                .withDefaultMode(DefaultMode.FIREWALL)
+                .withMinAppIdVersion("soxfrken")
+                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("yyefrpmpdnqqs")
+                    .withAntiSpywareProfile("waoqvmmb")
+                    .withAntiVirusProfile("qfr")
+                    .withUrlFilteringProfile("lkzmegnitgvkxl")
+                    .withFileBlockingProfile("qdrfegcealzxwhc")
+                    .withDnsSubscription("symoyq")
+                    .withOutboundUnTrustCertificate("wigdi")
+                    .withOutboundTrustCertificate("kbxgom")));
         model = BinaryData.fromObject(model).toObject(LocalRulestackResourceUpdate.class);
         Assertions.assertEquals(ManagedIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("djtxvzflbq", model.identity().userAssignedIdentities().get("vetnwsdtutn").clientId());

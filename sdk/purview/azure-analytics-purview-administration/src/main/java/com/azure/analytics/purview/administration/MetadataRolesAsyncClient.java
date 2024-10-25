@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the asynchronous PurviewMetadataClient type. */
 @ServiceClient(builder = MetadataRolesClientBuilder.class, isAsync = true)
 public final class MetadataRolesAsyncClient {
-    @Generated private final MetadataRolesImpl serviceClient;
+    @Generated
+    private final MetadataRolesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataRolesAsyncClient class.

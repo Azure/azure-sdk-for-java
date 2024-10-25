@@ -54,13 +54,20 @@ public final class GlobalRulestackResourceUpdateTests {
                     new AzureResourceManagerUserAssignedIdentity().withClientId("ddtocjjxhvp")
                         .withPrincipalId("uexhdzx"))))
             .withProperties(new GlobalRulestackResourceUpdateProperties().withPanEtag("xqbzvddntwnd")
-                .withPanLocation("cbtwnpzaoqvuh").withScope(ScopeType.GLOBAL)
-                .withAssociatedSubscriptions(Arrays.asList("cyddglmjthjqk", "pyeicxm")).withDescription("iwqvhkh")
-                .withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("gdtopbobjogh")
-                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("u").withAntiSpywareProfile("a")
-                    .withAntiVirusProfile("rzayv").withUrlFilteringProfile("pgvdf")
-                    .withFileBlockingProfile("otkftutqxlngx").withDnsSubscription("fgugnxkrxdqmid")
-                    .withOutboundUnTrustCertificate("hzrvqd").withOutboundTrustCertificate("bhj")));
+                .withPanLocation("cbtwnpzaoqvuh")
+                .withScope(ScopeType.GLOBAL)
+                .withAssociatedSubscriptions(Arrays.asList("cyddglmjthjqk", "pyeicxm"))
+                .withDescription("iwqvhkh")
+                .withDefaultMode(DefaultMode.IPS)
+                .withMinAppIdVersion("gdtopbobjogh")
+                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("u")
+                    .withAntiSpywareProfile("a")
+                    .withAntiVirusProfile("rzayv")
+                    .withUrlFilteringProfile("pgvdf")
+                    .withFileBlockingProfile("otkftutqxlngx")
+                    .withDnsSubscription("fgugnxkrxdqmid")
+                    .withOutboundUnTrustCertificate("hzrvqd")
+                    .withOutboundTrustCertificate("bhj")));
         model = BinaryData.fromObject(model).toObject(GlobalRulestackResourceUpdate.class);
         Assertions.assertEquals("aqsqsycbkbfk", model.location());
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());

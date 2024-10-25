@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableGroundStationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableGroundStationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"city\":\"yxczfclh\",\"providerName\":\"xdbabphlwr\",\"longitudeDegrees\":19.05045,\"latitudeDegrees\":56.638123,\"altitudeMeters\":23.375446,\"releaseMode\":\"GA\"}")
-                .toObject(AvailableGroundStationProperties.class);
+        AvailableGroundStationProperties model = BinaryData.fromString(
+            "{\"city\":\"yxczfclh\",\"providerName\":\"xdbabphlwr\",\"longitudeDegrees\":19.05045,\"latitudeDegrees\":56.638123,\"altitudeMeters\":23.375446,\"releaseMode\":\"GA\"}")
+            .toObject(AvailableGroundStationProperties.class);
         Assertions.assertEquals("yxczfclh", model.city());
         Assertions.assertEquals("xdbabphlwr", model.providerName());
         Assertions.assertEquals(19.05045F, model.longitudeDegrees());
@@ -27,14 +25,12 @@ public final class AvailableGroundStationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableGroundStationProperties model =
-            new AvailableGroundStationProperties()
-                .withCity("yxczfclh")
-                .withProviderName("xdbabphlwr")
-                .withLongitudeDegrees(19.05045F)
-                .withLatitudeDegrees(56.638123F)
-                .withAltitudeMeters(23.375446F)
-                .withReleaseMode(ReleaseMode.GA);
+        AvailableGroundStationProperties model = new AvailableGroundStationProperties().withCity("yxczfclh")
+            .withProviderName("xdbabphlwr")
+            .withLongitudeDegrees(19.05045F)
+            .withLatitudeDegrees(56.638123F)
+            .withAltitudeMeters(23.375446F)
+            .withReleaseMode(ReleaseMode.GA);
         model = BinaryData.fromObject(model).toObject(AvailableGroundStationProperties.class);
         Assertions.assertEquals("yxczfclh", model.city());
         Assertions.assertEquals("xdbabphlwr", model.providerName());

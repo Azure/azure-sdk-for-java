@@ -30,11 +30,13 @@ public final class AccountListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountListResult model = new AccountListResult()
-            .withValue(Arrays.asList(new AccountInner().withLocation("pqxu").withTags(mapOf("n", "y"))
+        AccountListResult model
+            = new AccountListResult().withValue(Arrays.asList(new AccountInner().withLocation("pqxu")
+                .withTags(mapOf("n", "y"))
                 .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED)
-                    .withScalableExecution(EnablementStatus.ENABLED).withReporting(EnablementStatus.ENABLED))))
-            .withNextLink("gaudcc");
+                    .withScalableExecution(EnablementStatus.ENABLED)
+                    .withReporting(EnablementStatus.ENABLED))))
+                .withNextLink("gaudcc");
         model = BinaryData.fromObject(model).toObject(AccountListResult.class);
         Assertions.assertEquals("pqxu", model.value().get(0).location());
         Assertions.assertEquals("y", model.value().get(0).tags().get("n"));

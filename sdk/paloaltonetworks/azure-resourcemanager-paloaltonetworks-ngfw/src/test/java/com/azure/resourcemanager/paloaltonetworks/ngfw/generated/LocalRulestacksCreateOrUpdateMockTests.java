@@ -53,12 +53,16 @@ public final class LocalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LocalRulestackResource response
-            = manager.localRulestacks().define("tuicds").withRegion("onoyjf").withExistingResourceGroup("akeciqchx")
+            = manager.localRulestacks()
+                .define("tuicds")
+                .withRegion("onoyjf")
+                .withExistingResourceGroup("akeciqchx")
                 .withTags(mapOf("lkfk", "ubyzn"))
                 .withIdentity(new AzureResourceManagerManagedIdentityProperties()
                     .withType(ManagedIdentityType.USER_ASSIGNED)
@@ -72,13 +76,21 @@ public final class LocalRulestacksCreateOrUpdateMockTests {
                         "ywzash",
                         new AzureResourceManagerUserAssignedIdentity().withClientId("lusrv")
                             .withPrincipalId("simjceagbjqvlsu"))))
-                .withPanEtag("dfmmpzhzzwvy").withPanLocation("gyngydgrpxncak").withScope(ScopeType.GLOBAL)
-                .withAssociatedSubscriptions(Arrays.asList("djrkclamggl", "lmf", "jdoq")).withDescription("kgltyg")
-                .withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("gqkayejsxtl")
+                .withPanEtag("dfmmpzhzzwvy")
+                .withPanLocation("gyngydgrpxncak")
+                .withScope(ScopeType.GLOBAL)
+                .withAssociatedSubscriptions(Arrays.asList("djrkclamggl", "lmf", "jdoq"))
+                .withDescription("kgltyg")
+                .withDefaultMode(DefaultMode.IPS)
+                .withMinAppIdVersion("gqkayejsxtl")
                 .withSecurityServices(new SecurityServices().withVulnerabilityProfile("gziiucijjcea")
-                    .withAntiSpywareProfile("ijjj").withAntiVirusProfile("va").withUrlFilteringProfile("a")
-                    .withFileBlockingProfile("knxkvccxetyvkunm").withDnsSubscription("nohikkgq")
-                    .withOutboundUnTrustCertificate("jwpindedvabbxbh").withOutboundTrustCertificate("dei"))
+                    .withAntiSpywareProfile("ijjj")
+                    .withAntiVirusProfile("va")
+                    .withUrlFilteringProfile("a")
+                    .withFileBlockingProfile("knxkvccxetyvkunm")
+                    .withDnsSubscription("nohikkgq")
+                    .withOutboundUnTrustCertificate("jwpindedvabbxbh")
+                    .withOutboundTrustCertificate("dei"))
                 .create();
 
         Assertions.assertEquals("xlb", response.location());

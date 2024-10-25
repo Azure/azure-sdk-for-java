@@ -14,8 +14,8 @@ public final class ExtensionOptionType extends ExpandableStringEnum<ExtensionOpt
     public static final ExtensionOptionType NOT_SPECIFIED = fromString("NotSpecified");
 
     /** Static value DoNotMergeExistingReadOnlyAndSecretProperties for ExtensionOptionType. */
-    public static final ExtensionOptionType DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES =
-        fromString("DoNotMergeExistingReadOnlyAndSecretProperties");
+    public static final ExtensionOptionType DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES
+        = fromString("DoNotMergeExistingReadOnlyAndSecretProperties");
 
     /** Static value IncludeInternalMetadata for ExtensionOptionType. */
     public static final ExtensionOptionType INCLUDE_INTERNAL_METADATA = fromString("IncludeInternalMetadata");

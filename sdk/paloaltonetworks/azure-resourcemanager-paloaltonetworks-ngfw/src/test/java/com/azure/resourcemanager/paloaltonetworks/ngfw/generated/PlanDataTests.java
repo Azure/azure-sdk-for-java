@@ -23,7 +23,8 @@ public final class PlanDataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanData model = new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.MONTHLY)
+        PlanData model = new PlanData().withUsageType(UsageType.PAYG)
+            .withBillingCycle(BillingCycle.MONTHLY)
             .withPlanId("nujrywvtyl");
         model = BinaryData.fromObject(model).toObject(PlanData.class);
         Assertions.assertEquals(UsageType.PAYG, model.usageType());

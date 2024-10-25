@@ -25,9 +25,7 @@ public class ActionCategory implements JsonSerializable<ActionCategory> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("mostWatchedByAge", mostWatchedByAge)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("mostWatchedByAge", mostWatchedByAge).writeEndObject();
     }
 
     public static ActionCategory fromJson(JsonReader jsonReader) throws IOException {

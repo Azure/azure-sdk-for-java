@@ -26,8 +26,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> getWithResponse(
-        String providerNamespace, String resourceType, String sku, Context context);
+    Response<SkuResourceInner> getWithResponse(String providerNamespace, String resourceType, String sku,
+        Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
@@ -57,8 +57,8 @@ public interface SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> createOrUpdateWithResponse(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties, Context context);
+    Response<SkuResourceInner> createOrUpdateWithResponse(String providerNamespace, String resourceType, String sku,
+        SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -73,8 +73,8 @@ public interface SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner createOrUpdate(
-        String providerNamespace, String resourceType, String sku, SkuResourceInner properties);
+    SkuResourceInner createOrUpdate(String providerNamespace, String resourceType, String sku,
+        SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
@@ -118,8 +118,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> getNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context);
+    Response<SkuResourceInner> getNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
@@ -134,8 +134,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner getNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku);
+    SkuResourceInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -152,13 +152,8 @@ public interface SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> createOrUpdateNestedResourceTypeFirstWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResourceInner> createOrUpdateNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -174,12 +169,8 @@ public interface SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner createOrUpdateNestedResourceTypeFirst(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties);
+    SkuResourceInner createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
@@ -195,8 +186,8 @@ public interface SkusClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context);
+    Response<Void> deleteNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, Context context);
 
     /**
      * Deletes a resource type sku.
@@ -210,8 +201,8 @@ public interface SkusClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku);
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String sku);
 
     /**
      * Gets the sku details for the given resource type and sku name.
@@ -228,13 +219,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> getNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context);
+    Response<SkuResourceInner> getNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
@@ -250,12 +236,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner getNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku);
+    SkuResourceInner getNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -273,14 +255,9 @@ public interface SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> createOrUpdateNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResourceInner> createOrUpdateNestedResourceTypeSecondWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -297,13 +274,8 @@ public interface SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner createOrUpdateNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties);
+    SkuResourceInner createOrUpdateNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
@@ -320,13 +292,8 @@ public interface SkusClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context);
+    Response<Void> deleteNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context);
 
     /**
      * Deletes a resource type sku.
@@ -341,12 +308,8 @@ public interface SkusClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku);
+    void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String nestedResourceTypeSecond, String sku);
 
     /**
      * Gets the sku details for the given resource type and sku name.
@@ -364,13 +327,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> getNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    Response<SkuResourceInner> getNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         Context context);
 
     /**
@@ -388,13 +346,8 @@ public interface SkusClient {
      * @return the sku details for the given resource type and sku name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner getNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku);
+    SkuResourceInner getNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -413,15 +366,9 @@ public interface SkusClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuResourceInner> createOrUpdateNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResourceInner> createOrUpdateNestedResourceTypeThirdWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
@@ -439,13 +386,8 @@ public interface SkusClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuResourceInner createOrUpdateNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    SkuResourceInner createOrUpdateNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         SkuResourceInner properties);
 
     /**
@@ -464,13 +406,8 @@ public interface SkusClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    Response<Void> deleteNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         Context context);
 
     /**
@@ -487,13 +424,8 @@ public interface SkusClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku);
+    void deleteNestedResourceTypeThird(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku);
 
     /**
      * Gets the list of skus for the given resource type.
@@ -520,76 +452,72 @@ public interface SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(
-        String providerNamespace, String resourceType, Context context);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrations(String providerNamespace, String resourceType,
         Context context);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, Context context);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     *
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, Context context);
 
     /**
      * Gets the list of skus for the given resource type.
@@ -605,11 +533,8 @@ public interface SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird);
 
     /**
@@ -627,11 +552,7 @@ public interface SkusClient {
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        Context context);
+    PagedIterable<SkuResourceInner> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, Context context);
 }

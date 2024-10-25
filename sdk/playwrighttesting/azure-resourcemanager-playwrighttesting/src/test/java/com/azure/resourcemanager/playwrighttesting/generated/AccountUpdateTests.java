@@ -29,7 +29,8 @@ public final class AccountUpdateTests {
         AccountUpdate model = new AccountUpdate()
             .withTags(mapOf("wrwclxxwrljd", "ntnbybkzg", "kwt", "uskcqvkocrcj", "ssainqpjwnzll", "hxbnjbiksqrg"))
             .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.DISABLED));
+                .withScalableExecution(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.DISABLED));
         model = BinaryData.fromObject(model).toObject(AccountUpdate.class);
         Assertions.assertEquals("ntnbybkzg", model.tags().get("wrwclxxwrljd"));
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().regionalAffinity());

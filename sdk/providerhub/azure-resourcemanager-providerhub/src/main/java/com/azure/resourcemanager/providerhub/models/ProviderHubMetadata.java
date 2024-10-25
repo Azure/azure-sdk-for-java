@@ -68,8 +68,8 @@ public class ProviderHubMetadata {
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ProviderHubMetadata object itself.
      */
-    public ProviderHubMetadata withProviderAuthentication(
-        ProviderHubMetadataProviderAuthentication providerAuthentication) {
+    public ProviderHubMetadata
+        withProviderAuthentication(ProviderHubMetadataProviderAuthentication providerAuthentication) {
         this.providerAuthentication = providerAuthentication;
         return this;
     }

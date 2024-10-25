@@ -14,12 +14,14 @@ public final class PersonalizerAudience extends ExpandableStringEnum<Personalize
     /**
      * Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for PersonalizerAudience.
      */
-    public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_US_GOVERNMENT = fromString("https://cognitiveservices.azure.us");
+    public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_US_GOVERNMENT
+        = fromString("https://cognitiveservices.azure.us");
 
     /**
      * Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for PersonalizerAudience.
      */
-    public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://cognitiveservices.azure.com");
+    public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD
+        = fromString("https://cognitiveservices.azure.com");
 
     /**
      * Creates or finds a PersonalizerAudience from its string representation.

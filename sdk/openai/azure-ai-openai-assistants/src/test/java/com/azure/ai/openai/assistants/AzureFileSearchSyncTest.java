@@ -49,10 +49,8 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
             // Create assistant
             CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
             createToolResourcesOptions.setFileSearch(
-                new CreateFileSearchToolResourceOptions(
-                    new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                            Arrays.asList(openAIFile.getId()))))));
+                new CreateFileSearchToolResourceOptions(new CreateFileSearchToolResourceVectorStoreOptionsList(Arrays
+                    .asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
@@ -60,11 +58,8 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
             AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
 
             // Assign message to thread
-            client.createMessage(
-                thread.getId(),
-                new ThreadMessageOptions(
-                    MessageRole.USER,
-                    "Can you give me the documented codes for 'banana' and 'orange'?"));
+            client.createMessage(thread.getId(), new ThreadMessageOptions(MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?"));
 
             // Pass the message to the assistant and start the run
             ThreadRun run = client.createRun(thread, assistant);
@@ -72,8 +67,7 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
             do {
                 sleepIfRunningAgainstService(1000);
                 run = client.getRun(thread.getId(), run.getId());
-            } while (run.getStatus() == RunStatus.IN_PROGRESS
-                || run.getStatus() == RunStatus.QUEUED);
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertEquals(RunStatus.COMPLETED, run.getStatus());
             assertEquals(assistant.getId(), run.getAssistantId());
@@ -110,11 +104,8 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
             // Create assistant
             CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
             createToolResourcesOptions.setFileSearch(
-                new CreateFileSearchToolResourceOptions(
-                    new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(
-                            new CreateFileSearchToolResourceVectorStoreOptions(
-                                Arrays.asList(openAIFile.getId()))))));
+                new CreateFileSearchToolResourceOptions(new CreateFileSearchToolResourceVectorStoreOptionsList(Arrays
+                    .asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
 
             assertThrows(HttpResponseException.class, () -> {

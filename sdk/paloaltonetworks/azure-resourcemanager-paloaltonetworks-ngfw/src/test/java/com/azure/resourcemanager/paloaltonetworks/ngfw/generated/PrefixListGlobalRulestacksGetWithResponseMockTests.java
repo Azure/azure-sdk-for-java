@@ -44,12 +44,14 @@ public final class PrefixListGlobalRulestacksGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks()
-            .getWithResponse("lhkgmnsghp", "ycphdrwjjkhvyo", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("lhkgmnsghp", "ycphdrwjjkhvyo", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("c", response.description());
         Assertions.assertEquals("zvxnqmhrp", response.prefixList().get(0));

@@ -46,9 +46,8 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private void rankMultiSlotNullParameters(PersonalizerClient client) {
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions()
-            .setActions(getActions())
-            .setSlots(getSlots());
+        PersonalizerRankMultiSlotOptions request
+            = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots());
         // Action
         PersonalizerRankMultiSlotResult response = client.rankMultiSlot(request);
         // Assert
@@ -80,8 +79,8 @@ public class MultiSlotTests extends PersonalizerTestBase {
 
     private void rankMultiSlot(PersonalizerClient client) {
         String eventId = "sdkTestEventId";
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions()
-            .setActions(getActions()).setSlots(getSlots())
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions())
+            .setSlots(getSlots())
             .setContextFeatures(getContextFeatures())
             .setEventId(eventId);
 
@@ -113,14 +112,14 @@ public class MultiSlotTests extends PersonalizerTestBase {
 
     private static List<PersonalizerRankableAction> getActions() {
         ArrayList<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<BinaryData> newsFeatures = Collections.singletonList(
-            BinaryData.fromObject(new FeatureMetadata().setFeatureType("News")));
+        List<BinaryData> newsFeatures
+            = Collections.singletonList(BinaryData.fromObject(new FeatureMetadata().setFeatureType("News")));
 
-        List<BinaryData> sportsFeatures = Collections.singletonList(
-            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Sports")));
+        List<BinaryData> sportsFeatures
+            = Collections.singletonList(BinaryData.fromObject(new FeatureMetadata().setFeatureType("Sports")));
 
-        List<BinaryData> entertainmentFeatures = Collections.singletonList(
-            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Entertainment")));
+        List<BinaryData> entertainmentFeatures
+            = Collections.singletonList(BinaryData.fromObject(new FeatureMetadata().setFeatureType("Entertainment")));
 
         actions.add(new PersonalizerRankableAction().setId("NewsArticle").setFeatures(newsFeatures));
         actions.add(new PersonalizerRankableAction().setId("SportsArticle").setFeatures(sportsFeatures));

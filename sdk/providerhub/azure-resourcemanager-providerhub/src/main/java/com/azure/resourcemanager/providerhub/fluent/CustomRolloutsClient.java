@@ -53,8 +53,8 @@ public interface CustomRolloutsClient {
      * @return rollout details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomRolloutInner> createOrUpdateWithResponse(
-        String providerNamespace, String rolloutName, CustomRolloutInner properties, Context context);
+    Response<CustomRolloutInner> createOrUpdateWithResponse(String providerNamespace, String rolloutName,
+        CustomRolloutInner properties, Context context);
 
     /**
      * Creates or updates the rollout details.
