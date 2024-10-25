@@ -56,8 +56,8 @@ public final class Gen2EnvironmentCreationProperties {
      * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
      * @return the Gen2EnvironmentCreationProperties object itself.
      */
-    public Gen2EnvironmentCreationProperties withTimeSeriesIdProperties(
-        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
+    public Gen2EnvironmentCreationProperties
+        withTimeSeriesIdProperties(List<TimeSeriesIdProperty> timeSeriesIdProperties) {
         this.timeSeriesIdProperties = timeSeriesIdProperties;
         return this;
     }
@@ -81,8 +81,8 @@ public final class Gen2EnvironmentCreationProperties {
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentCreationProperties object itself.
      */
-    public Gen2EnvironmentCreationProperties withStorageConfiguration(
-        Gen2StorageConfigurationInput storageConfiguration) {
+    public Gen2EnvironmentCreationProperties
+        withStorageConfiguration(Gen2StorageConfigurationInput storageConfiguration) {
         this.storageConfiguration = storageConfiguration;
         return this;
     }
@@ -104,8 +104,8 @@ public final class Gen2EnvironmentCreationProperties {
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentCreationProperties object itself.
      */
-    public Gen2EnvironmentCreationProperties withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentCreationProperties
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         this.warmStoreConfiguration = warmStoreConfiguration;
         return this;
     }
@@ -117,18 +117,14 @@ public final class Gen2EnvironmentCreationProperties {
      */
     public void validate() {
         if (timeSeriesIdProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeSeriesIdProperties in model Gen2EnvironmentCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property timeSeriesIdProperties in model Gen2EnvironmentCreationProperties"));
         } else {
             timeSeriesIdProperties().forEach(e -> e.validate());
         }
         if (storageConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageConfiguration in model Gen2EnvironmentCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageConfiguration in model Gen2EnvironmentCreationProperties"));
         } else {
             storageConfiguration().validate();
         }

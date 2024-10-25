@@ -10,9 +10,8 @@ import com.azure.resourcemanager.timeseriesinsights.models.ResourceProperties;
 public final class ResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"creationTime\":\"2021-01-31T06:13:45Z\"}")
+        ResourceProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"creationTime\":\"2021-01-31T06:13:45Z\"}")
                 .toObject(ResourceProperties.class);
     }
 

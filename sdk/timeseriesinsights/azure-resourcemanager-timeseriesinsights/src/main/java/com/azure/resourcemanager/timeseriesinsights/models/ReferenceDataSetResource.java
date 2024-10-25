@@ -108,18 +108,16 @@ public interface ReferenceDataSetResource {
     ReferenceDataSetResourceInner innerModel();
 
     /** The entirety of the ReferenceDataSetResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithKeyProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithKeyProperties, DefinitionStages.WithCreate {
     }
+
     /** The ReferenceDataSetResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ReferenceDataSetResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ReferenceDataSetResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -138,6 +136,7 @@ public interface ReferenceDataSetResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ReferenceDataSetResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -150,6 +149,7 @@ public interface ReferenceDataSetResource {
              */
             WithKeyProperties withExistingEnvironment(String resourceGroupName, String environmentName);
         }
+
         /** The stage of the ReferenceDataSetResource definition allowing to specify keyProperties. */
         interface WithKeyProperties {
             /**
@@ -160,6 +160,7 @@ public interface ReferenceDataSetResource {
              */
             WithCreate withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties);
         }
+
         /**
          * The stage of the ReferenceDataSetResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -180,6 +181,7 @@ public interface ReferenceDataSetResource {
              */
             ReferenceDataSetResource create(Context context);
         }
+
         /** The stage of the ReferenceDataSetResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -190,6 +192,7 @@ public interface ReferenceDataSetResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ReferenceDataSetResource definition allowing to specify dataStringComparisonBehavior. */
         interface WithDataStringComparisonBehavior {
             /**
@@ -207,6 +210,7 @@ public interface ReferenceDataSetResource {
             WithCreate withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior);
         }
     }
+
     /**
      * Begins update for the ReferenceDataSetResource resource.
      *
@@ -231,6 +235,7 @@ public interface ReferenceDataSetResource {
          */
         ReferenceDataSetResource apply(Context context);
     }
+
     /** The ReferenceDataSetResource update stages. */
     interface UpdateStages {
         /** The stage of the ReferenceDataSetResource update allowing to specify tags. */
@@ -244,6 +249,7 @@ public interface ReferenceDataSetResource {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

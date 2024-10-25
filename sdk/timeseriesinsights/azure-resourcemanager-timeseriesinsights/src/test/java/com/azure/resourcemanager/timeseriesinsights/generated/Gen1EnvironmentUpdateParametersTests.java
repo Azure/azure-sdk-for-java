@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class Gen1EnvironmentUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Gen1EnvironmentUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Gen1\",\"sku\":{\"name\":\"L1\",\"capacity\":891942589},\"properties\":{\"dataRetentionTime\":\"PT50H33M14S\",\"storageLimitExceededBehavior\":\"PurgeOldData\"},\"tags\":{\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\"}}")
-                .toObject(Gen1EnvironmentUpdateParameters.class);
+        Gen1EnvironmentUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"Gen1\",\"sku\":{\"name\":\"L1\",\"capacity\":891942589},\"properties\":{\"dataRetentionTime\":\"PT50H33M14S\",\"storageLimitExceededBehavior\":\"PurgeOldData\"},\"tags\":{\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\"}}")
+            .toObject(Gen1EnvironmentUpdateParameters.class);
         Assertions.assertEquals("beypewrmjmw", model.tags().get("vjektcxsenh"));
         Assertions.assertEquals(SkuName.L1, model.sku().name());
         Assertions.assertEquals(891942589, model.sku().capacity());
@@ -31,12 +29,11 @@ public final class Gen1EnvironmentUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Gen1EnvironmentUpdateParameters model =
-            new Gen1EnvironmentUpdateParameters()
-                .withTags(mapOf("vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf"))
-                .withSku(new Sku().withName(SkuName.L1).withCapacity(891942589))
-                .withDataRetentionTime(Duration.parse("PT50H33M14S"))
-                .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PURGE_OLD_DATA);
+        Gen1EnvironmentUpdateParameters model = new Gen1EnvironmentUpdateParameters()
+            .withTags(mapOf("vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf"))
+            .withSku(new Sku().withName(SkuName.L1).withCapacity(891942589))
+            .withDataRetentionTime(Duration.parse("PT50H33M14S"))
+            .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PURGE_OLD_DATA);
         model = BinaryData.fromObject(model).toObject(Gen1EnvironmentUpdateParameters.class);
         Assertions.assertEquals("beypewrmjmw", model.tags().get("vjektcxsenh"));
         Assertions.assertEquals(SkuName.L1, model.sku().name());
