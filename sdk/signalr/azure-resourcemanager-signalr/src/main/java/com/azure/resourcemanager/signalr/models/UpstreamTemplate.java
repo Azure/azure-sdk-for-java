@@ -196,9 +196,8 @@ public final class UpstreamTemplate {
      */
     public void validate() {
         if (urlTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property urlTemplate in model UpstreamTemplate"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property urlTemplate in model UpstreamTemplate"));
         }
         if (auth() != null) {
             auth().validate();
