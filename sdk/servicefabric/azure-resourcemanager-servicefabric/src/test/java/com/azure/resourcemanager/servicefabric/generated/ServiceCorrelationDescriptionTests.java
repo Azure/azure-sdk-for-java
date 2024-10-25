@@ -21,8 +21,9 @@ public final class ServiceCorrelationDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceCorrelationDescription model = new ServiceCorrelationDescription()
-            .withScheme(ServiceCorrelationScheme.INVALID).withServiceName("pofncck");
+        ServiceCorrelationDescription model
+            = new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                .withServiceName("pofncck");
         model = BinaryData.fromObject(model).toObject(ServiceCorrelationDescription.class);
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.scheme());
         Assertions.assertEquals("pofncck", model.serviceName());

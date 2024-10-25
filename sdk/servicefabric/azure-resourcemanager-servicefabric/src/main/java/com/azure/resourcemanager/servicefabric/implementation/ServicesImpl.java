@@ -29,8 +29,8 @@ public final class ServicesImpl implements Services {
 
     public Response<ServiceResource> getWithResponse(String resourceGroupName, String clusterName,
         String applicationName, String serviceName, Context context) {
-        Response<ServiceResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName, clusterName,
-            applicationName, serviceName, context);
+        Response<ServiceResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServiceResourceImpl(inner.getValue(), this.manager()));
