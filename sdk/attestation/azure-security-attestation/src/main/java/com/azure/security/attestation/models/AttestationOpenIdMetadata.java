@@ -33,6 +33,7 @@ public interface AttestationOpenIdMetadata {
      */
     String getIssuer();
 
+
     /**
      * Returns the response types which are supported by the attestation service.
      *

@@ -31,9 +31,9 @@ import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationToken;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
-import com.azure.security.attestation.models.TpmAttestationResult;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -192,13 +192,12 @@ public final class AttestationAsyncClient {
 
     Mono<Response<AttestationOpenIdMetadata>> getOpenIdMetadataWithResponse(Context context) {
         return this.metadataImpl.getWithResponseAsync(context)
-            .map(generated -> Utilities.generateResponseFromModelType(generated,
-                AttestationOpenIdMetadataImpl.fromGenerated(generated.getValue())));
+            .map(generated -> Utilities.generateResponseFromModelType(generated, AttestationOpenIdMetadataImpl.fromGenerated(generated.getValue())));
     }
 
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
-    
+
      * <p><strong>Retrieve the OpenID metadata for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata -->
      * <pre>
@@ -213,7 +212,8 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationOpenIdMetadata> getOpenIdMetadata() {
         // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
-        return this.getOpenIdMetadataWithResponse().flatMap(FluxUtil::toMono);
+        return this.getOpenIdMetadataWithResponse()
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -245,7 +245,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationSignerCollection> listAttestationSigners() {
-        return this.listAttestationSignersWithResponse().flatMap(FluxUtil::toMono);
+        return this.listAttestationSignersWithResponse()
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -270,10 +271,10 @@ public final class AttestationAsyncClient {
     }
 
     Mono<Response<AttestationSignerCollection>> listAttestationSignersWithResponse(Context context) {
-        return this.signerImpl.getWithResponseAsync(context)
-            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationSignerCollectionImpl(
-                AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))));
+        return  this.signerImpl.getWithResponseAsync(context)
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationSignerCollectionImpl(AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))));
     }
+
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.
@@ -305,6 +306,7 @@ public final class AttestationAsyncClient {
         }
     }
 
+
     /**
      * Attest an OpenEnclave report.
      *
@@ -326,7 +328,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestOpenEnclave(BinaryData report) {
-        return attestOpenEnclaveWithResponse(new AttestationOptions(report)).flatMap(FluxUtil::toMono);
+        return attestOpenEnclaveWithResponse(new AttestationOptions(report))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -361,6 +364,7 @@ public final class AttestationAsyncClient {
         return withContext(context -> attestOpenEnclaveWithResponse(options, context));
     }
 
+
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
@@ -373,7 +377,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestOpenEnclave(AttestationOptions options) {
-        return attestOpenEnclaveWithResponse(options).flatMap(FluxUtil::toMono);
+        return attestOpenEnclaveWithResponse(options)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -382,8 +387,7 @@ public final class AttestationAsyncClient {
      * @param context - context for the operation.
      * @return The result of the attestation operation.
      */
-    Mono<AttestationResponse<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options,
-        Context context) {
+    Mono<AttestationResponse<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
         AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
@@ -392,27 +396,23 @@ public final class AttestationAsyncClient {
         }
 
         AttestationTokenValidationOptions finalValidationOptions = validationOptions;
-        return this.attestImpl
-            .attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
             .onErrorMap(Utilities::mapException)
-            .map(response -> Utilities.generateResponseFromModelType(response,
-                new AttestationTokenImpl(response.getValue().getToken())))
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.isValidateToken()) {
-                    return getCachedAttestationSigners(context).map(signers -> {
-                        response.getValue().validate(signers, finalValidationOptions);
-                        return response;
-                    });
+                    return getCachedAttestationSigners(context)
+                        .map(signers -> {
+                            response.getValue().validate(signers, finalValidationOptions);
+                            return response;
+                        });
                 } else {
                     return Mono.just(response);
                 }
             })
             .map(response -> {
-                com.azure.security.attestation.implementation.models.AttestationResult generatedResult
-                    = response.getValue()
-                        .getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
-                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(),
-                    AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 
@@ -437,7 +437,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestSgxEnclave(BinaryData quote) {
-        return attestSgxEnclaveWithResponse(new AttestationOptions(quote)).flatMap(FluxUtil::toMono);
+        return attestSgxEnclaveWithResponse(new AttestationOptions(quote))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -499,11 +500,11 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestSgxEnclave(AttestationOptions options) {
-        return attestSgxEnclaveWithResponse(options).flatMap(FluxUtil::toMono);
+        return attestSgxEnclaveWithResponse(options)
+            .flatMap(FluxUtil::toMono);
     }
 
-    Mono<AttestationResponse<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options,
-        Context context) {
+    Mono<AttestationResponse<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
@@ -515,77 +516,89 @@ public final class AttestationAsyncClient {
         AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
             .onErrorMap(Utilities::mapException)
-            .map(response -> Utilities.generateResponseFromModelType(response,
-                new AttestationTokenImpl(response.getValue().getToken())))
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.isValidateToken()) {
-                    return getCachedAttestationSigners(context).map(signers -> {
-                        response.getValue().validate(signers, finalValidationOptions);
-                        return response;
-                    });
+                    return getCachedAttestationSigners(context)
+                        .map(signers -> {
+                            response.getValue().validate(signers, finalValidationOptions);
+                            return response;
+                        });
                 } else {
                     return Mono.just(response);
                 }
             })
             .map(response -> {
-                com.azure.security.attestation.implementation.models.AttestationResult generatedResult
-                    = response.getValue()
-                        .getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
-                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(),
-                    AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 
-    /**
-     * Performs TPM attestation.
+    /** Performs TPM attestation.
      *
-     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
-     *
-     * <p><strong>Attest using TPM.</strong></p>
+     * Processes attestation evidence from a VBS enclave, producing an attestation result.
+     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
+     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
+     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
+     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
+     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;TpmAttestationResult&gt;&gt; result = client.attestTpmWithResponse&#40;BinaryData.fromString&#40;attestInitialPayload&#41;&#41;;
+     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
+     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
      *
+     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
+     * Mono&lt;Response&lt;String&gt;&gt; responseMono = client.attestTpmWithResponse&#40;attestInitialPayload&#41;;
      * </pre>
-     * 
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse -->
+     *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TpmAttestationResult>> attestTpmWithResponse(BinaryData request) {
+    public Mono<Response<String>> attestTpmWithResponse(String request) {
         return withContext(context -> this.attestTpmWithResponse(request, context));
     }
 
-    /**
-     * Performs TPM attestation.
+    /** Performs TPM attestation.
      *
-     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
-     *
-     * <p><strong>Attest using TPM.</strong></p>
+     * Processes attestation evidence from a VBS enclave, producing an attestation result.
+     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
+     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
+     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
+     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
+     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestTpm -->
      * <pre>
-     * Mono&lt;TpmAttestationResult&gt; result = client.attestTpm&#40;BinaryData.fromString&#40;attestInitialPayload&#41;&#41;;
+     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
+     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
      *
+     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
+     * Mono&lt;String&gt; tpmResponse = client.attestTpm&#40;attestInitialPayload&#41;;
      * </pre>
-     * 
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestTpm -->
+     *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TpmAttestationResult> attestTpm(BinaryData request) {
-        return attestTpmWithResponse(request).onErrorMap(Utilities::mapException).flatMap(FluxUtil::toMono);
+    public Mono<String> attestTpm(String request) {
+        return attestTpmWithResponse(request)
+            .onErrorMap(Utilities::mapException)
+            .flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<TpmAttestationResult>> attestTpmWithResponse(BinaryData request, Context context) {
+    Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
         Objects.requireNonNull(request);
-        return this.attestImpl
-            .attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest()
-                .setData(request.toBytes()), context)
-            .map(response -> Utilities.generateResponseFromModelType(response,
-                new TpmAttestationResult(BinaryData.fromBytes(response.getValue().getData()))));
+        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
+            .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
     }
 }
