@@ -21,11 +21,11 @@ import io.clientcore.core.json.implementation.jackson.core.type.TypeReference;
  * <code>com.fasterxml.jackson.databind.ObjectMapper</code>,
  * defined in the "jackson-databind".
  */
-public abstract class ObjectCodec
-    extends TreeCodec // since 2.3
+public abstract class ObjectCodec extends TreeCodec // since 2.3
     implements Versioned // since 2.3
 {
-    protected ObjectCodec() { }
+    protected ObjectCodec() {
+    }
 
     // Since 2.3
     @Override
@@ -57,8 +57,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> T readValue(JsonParser p, Class<T> valueType)
-        throws IOException;
+    public abstract <T> T readValue(JsonParser p, Class<T> valueType) throws IOException;
 
     /**
      * Method to deserialize JSON content into a Java type, reference
@@ -77,8 +76,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> T readValue(JsonParser p, TypeReference<T> valueTypeRef)
-        throws IOException;
+    public abstract <T> T readValue(JsonParser p, TypeReference<T> valueTypeRef) throws IOException;
 
     /**
      * Method to deserialize JSON content into a POJO, type specified
@@ -96,8 +94,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> T readValue(JsonParser p, ResolvedType valueType)
-        throws IOException;
+    public abstract <T> T readValue(JsonParser p, ResolvedType valueType) throws IOException;
 
     /**
      * Method for reading sequence of Objects from parser stream,
@@ -113,8 +110,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> Iterator<T> readValues(JsonParser p, Class<T> valueType)
-        throws IOException;
+    public abstract <T> Iterator<T> readValues(JsonParser p, Class<T> valueType) throws IOException;
 
     /**
      * Method for reading sequence of Objects from parser stream,
@@ -130,8 +126,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> Iterator<T> readValues(JsonParser p, TypeReference<T> valueTypeRef)
-        throws IOException;
+    public abstract <T> Iterator<T> readValues(JsonParser p, TypeReference<T> valueTypeRef) throws IOException;
 
     /**
      * Method for reading sequence of Objects from parser stream,
@@ -147,8 +142,7 @@ public abstract class ObjectCodec
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract <T> Iterator<T> readValues(JsonParser p, ResolvedType valueType)
-        throws IOException;
+    public abstract <T> Iterator<T> readValues(JsonParser p, ResolvedType valueType) throws IOException;
 
     /*
     /**********************************************************
@@ -253,8 +247,7 @@ public abstract class ObjectCodec
      *
      * @throws JsonProcessingException if structural conversion fails
      */
-    public abstract <T> T treeToValue(TreeNode n, Class<T> valueType)
-        throws JsonProcessingException;
+    public abstract <T> T treeToValue(TreeNode n, Class<T> valueType) throws JsonProcessingException;
 
     /*
     /**********************************************************
@@ -268,7 +261,9 @@ public abstract class ObjectCodec
      * @return Underlying {@link JsonFactory} instance
      */
     @Deprecated
-    public JsonFactory getJsonFactory() { return getFactory(); }
+    public JsonFactory getJsonFactory() {
+        return getFactory();
+    }
 
     /**
      * Accessor for finding underlying data format factory
@@ -276,5 +271,7 @@ public abstract class ObjectCodec
      *
      * @return Underlying {@link JsonFactory} instance
      */
-    public JsonFactory getFactory() { return getJsonFactory(); }
+    public JsonFactory getFactory() {
+        return getJsonFactory();
+    }
 }

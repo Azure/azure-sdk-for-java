@@ -41,8 +41,8 @@ public final class JsonProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<JsonProvider> serviceLoader = ServiceLoader.load(JsonProvider.class,
-            JsonProvider.class.getClassLoader());
+        ServiceLoader<JsonProvider> serviceLoader
+            = ServiceLoader.load(JsonProvider.class, JsonProvider.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         List<String> implementationNames = new ArrayList<>();
         Iterator<JsonProvider> it = serviceLoader.iterator();
@@ -61,11 +61,12 @@ public final class JsonProviders {
         }
 
         if (implementationNames.size() > 1) {
-            throw new IllegalStateException("More than one implementation of 'io.clientcore.core.json.JsonProvider' was found "
-                + "on the classpath. At this time 'core-json' only supports one implementation being on the "
-                + "classpath. Remove all implementations, except the one that should be used during runtime, from "
-                + "'META-INF/services/io.clientcore.core.json.JsonProvider'. Found implementations were: "
-                + String.join(", ", implementationNames));
+            throw new IllegalStateException(
+                "More than one implementation of 'io.clientcore.core.json.JsonProvider' was found "
+                    + "on the classpath. At this time 'core-json' only supports one implementation being on the "
+                    + "classpath. Remove all implementations, except the one that should be used during runtime, from "
+                    + "'META-INF/services/io.clientcore.core.json.JsonProvider'. Found implementations were: "
+                    + String.join(", ", implementationNames));
         }
     }
 

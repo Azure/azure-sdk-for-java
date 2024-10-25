@@ -281,8 +281,8 @@ public class BinaryDataTest {
         int chunkSize = 1024 * 1024; // 1 MB
         long numberOfChunks = 2200L; // 2200 MB total
 
-        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
-            numberOfChunks * chunkSize);
+        MockFile mockFile
+            = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA, numberOfChunks * chunkSize);
         FileBinaryData fileContent = new MockFileBinaryData(new MockPath(mockFile), 32768, null, null);
 
         try (InputStream is = fileContent.toStream()) {
@@ -308,7 +308,7 @@ public class BinaryDataTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 113, 1024, 1024 + 113, 10 * 1024 * 1024 + 13})
+    @ValueSource(ints = { 10, 113, 1024, 1024 + 113, 10 * 1024 * 1024 + 13 })
     public void testFromFileSegment(int size) throws Exception {
         int leftPadding = 10 * 1024 + 13;
         int rightPadding = 10 * 1024 + 27;
@@ -316,10 +316,10 @@ public class BinaryDataTest {
 
         fillArray(fullFile);
 
-        MockFile mockFile =
-            new MockFile("binaryDataFromFileSegment" + UUID.randomUUID() + ".txt", fullFile, fullFile.length);
-        FileBinaryData fileContent = new MockFileBinaryData(new MockPath(mockFile), 8192, (long) leftPadding,
-            (long) size);
+        MockFile mockFile
+            = new MockFile("binaryDataFromFileSegment" + UUID.randomUUID() + ".txt", fullFile, fullFile.length);
+        FileBinaryData fileContent
+            = new MockFileBinaryData(new MockPath(mockFile), 8192, (long) leftPadding, (long) size);
 
         assertEquals(size, fileContent.getLength());
 
@@ -363,14 +363,10 @@ public class BinaryDataTest {
         fillArray(bytes);
 
         return Stream.of(
-            Arguments.of(
-                Named.named("stream",
-                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)))),
-            Arguments.of(
-                Named.named("byte array stream",
-                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))
-            )
-        );
+            Arguments.of(Named.named("stream",
+                (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)))),
+            Arguments.of(Named.named("byte array stream",
+                (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))));
     }
 
     @ParameterizedTest
@@ -414,33 +410,23 @@ public class BinaryDataTest {
         MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", bytes, 1024);
 
         return Stream.of(
-            Arguments.of(
-                Named.named("bytes", (Supplier<BinaryData>) () -> BinaryData.fromBytes(bytes)),
-                Named.named("expected bytes", bytes)
-            ),
-            Arguments.of(
-                Named.named("string", (Supplier<BinaryData>) () -> BinaryData.fromString("test string")),
-                Named.named("expected bytes", "test string".getBytes(StandardCharsets.UTF_8))
-            ),
-            Arguments.of(
-                Named.named("object", (Supplier<BinaryData>) () -> BinaryData.fromObject("\"test string\"")),
-                Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))
-            ),
+            Arguments.of(Named.named("bytes", (Supplier<BinaryData>) () -> BinaryData.fromBytes(bytes)),
+                Named.named("expected bytes", bytes)),
+            Arguments.of(Named.named("string", (Supplier<BinaryData>) () -> BinaryData.fromString("test string")),
+                Named.named("expected bytes", "test string".getBytes(StandardCharsets.UTF_8))),
+            Arguments.of(Named.named("object", (Supplier<BinaryData>) () -> BinaryData.fromObject("\"test string\"")),
+                Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))),
             Arguments.of(
                 Named.named("file", (Supplier<BinaryData>) () -> new MockFileBinaryData(new MockPath(mockFile))),
-                Named.named("expected bytes", bytes)
-            ),
+                Named.named("expected bytes", bytes)),
             Arguments.of(
                 Named.named("byte buffer",
                     (Supplier<BinaryData>) () -> BinaryData.fromByteBuffer(ByteBuffer.wrap(bytes))),
-                Named.named("expected bytes", bytes)
-            ),
+                Named.named("expected bytes", bytes)),
             Arguments.of(
-                Named.named("byte array stream", (Supplier<BinaryData>) () -> BinaryData.fromStream(
-                    new ByteArrayInputStream(bytes), (long) bytes.length)),
-                Named.named("expected bytes", bytes)
-            )
-        );
+                Named.named("byte array stream", (Supplier<BinaryData>) () -> BinaryData
+                    .fromStream(new ByteArrayInputStream(bytes), (long) bytes.length)),
+                Named.named("expected bytes", bytes)));
     }
 
     @Test
@@ -455,10 +441,8 @@ public class BinaryDataTest {
 
         // When using markable stream
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        assertSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryData().toStream()
-        );
+        assertSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryData().toStream());
     }
 
     @Test
@@ -468,15 +452,12 @@ public class BinaryDataTest {
 
         // Delegate to testReplayableContentTypes to assert accessors replayability
         testReplayableContentTypes(
-            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryData(),
-            bytes);
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryData(), bytes);
 
         // When using markable stream
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        assertNotSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream()
-        );
+        assertNotSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream());
 
         // Check that buffering happened. This is part assumes implementation.
         assertInstanceOf(IterableOfByteBuffersInputStream.class,
@@ -485,8 +466,16 @@ public class BinaryDataTest {
 
     @ParameterizedTest
     // Try various sizes. That hit MIN and MAX buffers size in the InputStreamContent
-    @ValueSource(ints = {10, 1024, 8 * 1024 - 1, 8 * 1024 + 113, 4 * 1024 * 1024 + 117,
-        8 * 1024 * 1024, 8 * 1024 * 1024 + 117, 64 * 1024 * 1024 + 117})
+    @ValueSource(
+        ints = {
+            10,
+            1024,
+            8 * 1024 - 1,
+            8 * 1024 + 113,
+            4 * 1024 * 1024 + 117,
+            8 * 1024 * 1024,
+            8 * 1024 * 1024 + 117,
+            64 * 1024 * 1024 + 117 })
     public void testCanBufferNotMarkableStreams(int size) throws IOException {
         byte[] bytes = new byte[size];
         fillArray(bytes);
@@ -546,8 +535,8 @@ public class BinaryDataTest {
         BinaryDataAsProperty expected = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";
-        BinaryDataAsProperty actual = new DefaultJsonSerializer()
-            .deserializeFromBytes(json.getBytes(), BinaryDataAsProperty.class);
+        BinaryDataAsProperty actual
+            = new DefaultJsonSerializer().deserializeFromBytes(json.getBytes(), BinaryDataAsProperty.class);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
     }
@@ -565,13 +554,12 @@ public class BinaryDataTest {
             return this;
         }
 
-
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
 
-            BinaryDataPropertyClass binaryDataPropertyClass =
-                property.toObject(BinaryDataPropertyClass.class, SERIALIZER);
+            BinaryDataPropertyClass binaryDataPropertyClass
+                = property.toObject(BinaryDataPropertyClass.class, SERIALIZER);
 
             jsonWriter.writeJsonField("property", binaryDataPropertyClass);
             jsonWriter.writeEndObject();
@@ -580,23 +568,22 @@ public class BinaryDataTest {
         }
 
         public static BinaryDataAsProperty fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(
-                reader -> {
-                    BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty();
+            return jsonReader.readObject(reader -> {
+                BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty();
 
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                        if ("property".equals(fieldName)) {
-                            binaryDataAsProperty.setProperty(BinaryData.fromObject(reader.readUntyped()));
-                        } else {
-                            reader.skipChildren();
-                        }
+                    if ("property".equals(fieldName)) {
+                        binaryDataAsProperty.setProperty(BinaryData.fromObject(reader.readUntyped()));
+                    } else {
+                        reader.skipChildren();
                     }
+                }
 
-                    return binaryDataAsProperty;
-                });
+                return binaryDataAsProperty;
+            });
         }
     }
 
@@ -623,23 +610,22 @@ public class BinaryDataTest {
         }
 
         public static BinaryDataPropertyClass fromJson(JsonReader jsonReader) throws IOException {
-            return jsonReader.readObject(
-                reader -> {
-                    BinaryDataPropertyClass binaryDataPropertyClass = new BinaryDataPropertyClass();
+            return jsonReader.readObject(reader -> {
+                BinaryDataPropertyClass binaryDataPropertyClass = new BinaryDataPropertyClass();
 
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-                        if ("test".equals(fieldName)) {
-                            binaryDataPropertyClass.setTest(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
+                    if ("test".equals(fieldName)) {
+                        binaryDataPropertyClass.setTest(reader.getString());
+                    } else {
+                        reader.skipChildren();
                     }
+                }
 
-                    return binaryDataPropertyClass;
-                });
+                return binaryDataPropertyClass;
+            });
         }
     }
 

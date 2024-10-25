@@ -49,11 +49,11 @@ public class HttpClientTestsServer {
     private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
     private static final String ECHO_RESPONSE = "/echo";
 
-    private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
-    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+    private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+    private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_16LE_BOM = { (byte) 0xFF, (byte) 0xFE };
+    private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
     private static final String SSE_RESPONSE = "/serversentevent";
@@ -188,8 +188,7 @@ public class HttpClientTestsServer {
         response.flushBuffer();
     }
 
-    private static void sendBytesResponse(String uriPath, Response resp)
-        throws IOException {
+    private static void sendBytesResponse(String uriPath, Response resp) throws IOException {
         int bodySize = Integer.parseInt(uriPath.split("/", 3)[2]);
         setBaseHttpHeaders(resp);
         resp.addHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM);
@@ -205,7 +204,7 @@ public class HttpClientTestsServer {
     }
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
-                                                  String requestString, String contentType) throws IOException {
+        String requestString, String contentType) throws IOException {
         HttpBinJSON responseBody = new HttpBinJSON();
 
         responseBody.uri(cleanseUri(req));

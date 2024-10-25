@@ -12,8 +12,7 @@ package io.clientcore.core.json.implementation.jackson.core.type;
  *
  * @since 2.0
  */
-public abstract class ResolvedType
-{
+public abstract class ResolvedType {
     /*
     /**********************************************************
     /* Public API, simple property accessors

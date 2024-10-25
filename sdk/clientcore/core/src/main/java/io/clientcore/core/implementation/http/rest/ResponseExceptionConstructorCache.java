@@ -15,7 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * A concurrent cache of {@link HttpResponseException} {@link ReflectiveInvoker} constructors.
  */
 public final class ResponseExceptionConstructorCache {
-    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE
+        = new ConcurrentHashMap<>();
     private static final ClientLogger LOGGER = new ClientLogger(ResponseExceptionConstructorCache.class);
 
     /**
@@ -36,8 +37,7 @@ public final class ResponseExceptionConstructorCache {
 
     @SuppressWarnings("unchecked")
     public static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker,
-                                                             String exceptionMessage, Response<?> response,
-                                                             Object exceptionBody) {
+        String exceptionMessage, Response<?> response, Object exceptionBody) {
         try {
             return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, response, exceptionBody);
         } catch (Exception exception) {
