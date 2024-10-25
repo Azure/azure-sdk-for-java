@@ -161,9 +161,11 @@ public class ReactorSession implements AmqpSession {
         shutdownSignals = amqpConnection.getShutdownSignals();
         subscriptions
             .add(this.endpointStates.subscribe(null, e -> logger.warning("Session endpoint state signaled error.", e)));
-        subscriptions.add(shutdownSignals
-            .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
-            .subscribe());
+        subscriptions.add(shutdownSignals.flatMap(signal -> {
+            logger.info("Closing started...");
+            return Mono.delay(Duration.ofMillis(10))
+                .then(Mono.fromRunnable(() -> closeAsync("Shutdown signal received", null, false).subscribe()));
+        }).subscribe());
 
         final boolean isV1OrV2WithoutSessionCache = !protonSession.isV2ClientOnSessionCache();
         if (isV1OrV2WithoutSessionCache) {

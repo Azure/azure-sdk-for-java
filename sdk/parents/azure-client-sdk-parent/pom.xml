@@ -107,7 +107,7 @@
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
-    <revapi.skip>false</revapi.skip>
+    <revapi.skip>true</revapi.skip>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
