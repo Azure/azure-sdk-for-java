@@ -50,8 +50,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     /**
      * Creates an instance of MetricUnit.
      */
-    public MetricUnit() {
-    }
+    public MetricUnit() { }
 
     /**
      * Creates or finds a MetricUnit from its string representation.

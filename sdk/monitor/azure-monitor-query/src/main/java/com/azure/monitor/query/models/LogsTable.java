@@ -24,7 +24,7 @@ public final class LogsTable {
      * @param tableColumns All the columns in this table.
      */
     public LogsTable(List<LogsTableCell> allTableCells, List<LogsTableRow> tableRows,
-        List<LogsTableColumn> tableColumns) {
+                     List<LogsTableColumn> tableColumns) {
         this.tableColumns = tableColumns;
         this.allTableCells = allTableCells;
         this.tableRows = tableRows;
@@ -62,6 +62,9 @@ public final class LogsTable {
      * @return A list of objects corresponding to the list of rows in the table.
      */
     <T> List<T> toObject(Class<T> type) {
-        return tableRows.stream().map(row -> row.toObject(type)).collect(Collectors.toList());
+        return tableRows
+                .stream()
+                .map(row -> row.toObject(type))
+                .collect(Collectors.toList());
     }
 }
