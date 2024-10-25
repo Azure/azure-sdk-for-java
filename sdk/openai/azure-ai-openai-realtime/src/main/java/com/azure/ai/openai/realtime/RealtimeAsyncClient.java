@@ -123,6 +123,8 @@ public final class RealtimeAsyncClient implements Closeable {
                 isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
             })).block();
         }
+        // TODO jpalvarezl: should this be here?
+        webSocketSession.close();
     }
 
 // --------------- Code gen stuff --------------------------------

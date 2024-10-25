@@ -88,15 +88,15 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
                 String frameSoFar = textFrameAccumulator.getAndSet("");
                 String finalFrameTextValue = frameSoFar + textFrame.text();
 
-                loggerReference.get().atInfo().log("Last bit of the frame: " + textFrame.text());
-                loggerReference.get().atInfo().log("Complete frame       : " + finalFrameTextValue);
+                System.out.println("Last bit of the frame: " + textFrame.text());
+                System.out.println("Complete frame       : " + finalFrameTextValue);
 
                 Object wpsMessage = messageDecoder.decode(finalFrameTextValue);
                 messageHandler.accept(wpsMessage);
             } else {
                 String completeWpsMessage = textFrameAccumulator.accumulateAndGet(textFrame.text(), String::concat);
-                loggerReference.get().atInfo().log("Incomplete frame: " + textFrame.text());
-                loggerReference.get().atInfo().log("Accumulat so far: " + completeWpsMessage);
+                System.out.println("Incomplete frame: " + textFrame.text());
+                System.out.println("Accumulat so far: " + completeWpsMessage);
             }
         } else if (frame instanceof PingWebSocketFrame) {
             // Ping, reply Pong
