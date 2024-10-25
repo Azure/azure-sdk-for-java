@@ -25,6 +25,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -65,8 +66,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     }
 
     private void setupTest(HttpClient httpClient, String testName) {
-        communicationClient = getCommunicationIdentityClientBuilder(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
+        communicationClient =
+            getCommunicationIdentityClientBuilder(interceptorManager.isPlaybackMode()
+                ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
         firstParticipant = communicationClient.createUser();
         secondParticipant = communicationClient.createUser();
         firstAddedParticipant = communicationClient.createUser();
@@ -78,8 +80,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
 
-        CreateChatThreadOptions threadRequest
-            = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(), secondParticipant.getId());
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
+            firstParticipant.getId(), secondParticipant.getId());
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
         chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
@@ -89,14 +91,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     private void setupUnitTest(HttpClient mockHttpClient) {
         String threadId = "19:4b72178530934b7790135dd9359205e0@thread.v2";
-        String mockToken
-            = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
+        String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
         client = getChatClientBuilder(mockToken, mockHttpClient).buildClient();
         chatThreadClient = client.getChatThreadClient(threadId);
     }
 
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateThread");
@@ -111,6 +114,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateThreadWithResponse");
@@ -125,14 +129,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipants(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipants");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        Iterable<ChatParticipant> participants
-            = ChatOptionsProvider.addParticipantsOptions(firstAddedParticipant.getId(), secondAddedParticipant.getId());
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
+            firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
         chatThreadClient.addParticipants(participants);
@@ -160,20 +165,21 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipantsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithOptions");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        Iterable<ChatParticipant> participants
-            = ChatOptionsProvider.addParticipantsOptions(firstAddedParticipant.getId(), secondAddedParticipant.getId());
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
+            firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
         chatThreadClient.addParticipants(participants);
 
-        PagedIterable<ChatParticipant> participantsResponse
-            = chatThreadClient.listParticipants(new ListParticipantsOptions().setMaxPageSize(2), Context.NONE);
+        PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants(
+            new ListParticipantsOptions().setMaxPageSize(2), Context.NONE);
 
         // process the iterableByPage
         List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
@@ -196,6 +202,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveParticipantsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithResponse");
@@ -215,14 +222,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddListAndRemoveMembersWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddListAndRemoveMembersWithResponse");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        Iterable<ChatParticipant> participants
-            = ChatOptionsProvider.addParticipantsOptions(firstAddedParticipant.getId(), secondAddedParticipant.getId());
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
+            firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
         chatThreadClient.addParticipantsWithResponse(participants, Context.NONE);
@@ -250,6 +258,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddSingleParticipant(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddSingleParticipant");
@@ -259,30 +268,31 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.addParticipant(new ChatParticipant().setCommunicationIdentifier(participant));
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream()
-            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId()
-                .equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canAddSingleParticipantWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canAddSingleParticipantWithResponse");
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant),
-            Context.NONE);
+        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant), Context.NONE);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream()
-            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId()
-                .equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenGetMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetMessage");
@@ -299,14 +309,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenGetMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetMessageWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
-        SendChatMessageResult response
-            = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
+        SendChatMessageResult response = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
 
         ChatMessage message = chatThreadClient.getMessageWithResponse(response.getId(), Context.NONE).getValue();
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
@@ -316,6 +326,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteExistingMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteExistingMessage");
@@ -329,6 +340,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteExistingMessageWithResponse");
@@ -342,6 +354,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateExistingMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateExistingMessage");
@@ -358,14 +371,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         assertFalse(message.getMetadata().containsKey("tags"));
         assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
-        assertEquals(message.getMetadata().get("onedriveReferences"),
-            updateMessageRequest.getMetadata().get("onedriveReferences"));
+        assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
         assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
         assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canUpdateExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canUpdateExistingMessageWithResponse");
@@ -382,14 +395,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         assertFalse(message.getMetadata().containsKey("tags"));
         assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
-        assertEquals(message.getMetadata().get("onedriveReferences"),
-            updateMessageRequest.getMetadata().get("onedriveReferences"));
+        assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
         assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
         assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canListMessagesWithOptionsSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListMessagesWithOptionsSync");
@@ -416,6 +429,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canListMessagesWithOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListMessagesWithOptions");
@@ -446,6 +460,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotification(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotification");
@@ -456,6 +471,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotificationWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithResponse");
@@ -466,6 +482,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
@@ -479,7 +496,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceipts");
@@ -505,7 +525,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceiptsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithOptions");
@@ -516,8 +539,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.sendReadReceipt(response.getId());
 
-        PagedIterable<ChatMessageReadReceipt> readReceiptsResponse
-            = chatThreadClient.listReadReceipts(new ListReadReceiptOptions().setMaxPageSize(1), Context.NONE);
+        PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts(
+            new ListReadReceiptOptions().setMaxPageSize(1), Context.NONE);
 
         // process the iterableByPage
         List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<ChatMessageReadReceipt>();
@@ -532,7 +555,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithResponse");
@@ -558,6 +584,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendReadReceiptSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptSync");
@@ -571,6 +598,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canSendReadReceiptWithResponseSync(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptWithResponseSync");
@@ -585,6 +613,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetChatThreadProperties(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetChatThreadPropertiesSync");
@@ -596,6 +625,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canGetChatThreadPropertiesWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canGetChatThreadPropertiesWithResponseSync");
