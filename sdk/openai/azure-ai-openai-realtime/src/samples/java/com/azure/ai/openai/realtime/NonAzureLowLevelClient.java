@@ -1,6 +1,8 @@
 package com.azure.ai.openai.realtime;
 
 
+import com.azure.ai.openai.realtime.utils.FileUtils;
+import com.azure.ai.openai.realtime.utils.RealtimeEventHandler;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;

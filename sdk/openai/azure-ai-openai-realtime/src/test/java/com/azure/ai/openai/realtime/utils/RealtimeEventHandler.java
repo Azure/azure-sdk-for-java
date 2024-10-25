@@ -1,4 +1,4 @@
-package com.azure.ai.openai.realtime;
+package com.azure.ai.openai.realtime.utils;
 
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;

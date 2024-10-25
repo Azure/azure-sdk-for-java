@@ -1,5 +1,6 @@
-package com.azure.ai.openai.realtime;
+package com.azure.ai.openai.realtime.utils;
 
+import com.azure.ai.openai.realtime.RealtimeAsyncClient;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventInputAudioBufferAppend;
 import reactor.core.publisher.Mono;
 

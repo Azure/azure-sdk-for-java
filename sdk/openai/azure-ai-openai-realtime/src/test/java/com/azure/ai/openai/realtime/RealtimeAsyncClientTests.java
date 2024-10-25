@@ -3,6 +3,8 @@ package com.azure.ai.openai.realtime;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
+import com.azure.ai.openai.realtime.utils.FileUtils;
+import com.azure.ai.openai.realtime.utils.RealtimeEventHandler;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
