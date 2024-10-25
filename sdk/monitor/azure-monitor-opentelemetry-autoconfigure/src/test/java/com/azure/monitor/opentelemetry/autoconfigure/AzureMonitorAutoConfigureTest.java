@@ -15,14 +15,14 @@ import java.util.stream.Stream;
 /**
  * Unit tests for {@link AzureMonitorAutoconfigureOptions}.
  */
-public class AzureMonitorAutoconfigureTest {
+public class AzureMonitorAutoConfigureTest {
     @ParameterizedTest
     @MethodSource("getInvalidConnectionStrings")
     public <T extends RuntimeException> void testInvalidConnectionStrings(String connectionString,
         Class<T> exceptionExpected) {
         Assertions.assertThrows(exceptionExpected, () -> {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            AzureMonitorAutoconfigure.customize(sdkBuilder, connectionString);
+            AzureMonitorAutoConfigure.customize(sdkBuilder, connectionString);
             sdkBuilder.build();
         });
     }
