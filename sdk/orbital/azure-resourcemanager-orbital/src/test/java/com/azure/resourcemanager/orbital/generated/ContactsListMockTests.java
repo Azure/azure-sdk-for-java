@@ -32,47 +32,34 @@ public final class ContactsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"status\":\"providerCancelled\",\"reservationStartTime\":\"2021-02-02T03:25:54Z\",\"reservationEndTime\":\"2021-06-29T22:28:15Z\",\"rxStartTime\":\"2021-08-06T12:01:01Z\",\"rxEndTime\":\"2021-08-14T03:50:42Z\",\"txStartTime\":\"2021-09-20T16:59Z\",\"txEndTime\":\"2021-05-30T09:03:19Z\",\"errorMessage\":\"caalnjixisxyaw\",\"maximumElevationDegrees\":82.835205,\"startAzimuthDegrees\":64.62957,\"endAzimuthDegrees\":50.503685,\"groundStationName\":\"lyjpk\",\"startElevationDegrees\":70.68801,\"endElevationDegrees\":22.889233,\"antennaConfiguration\":{\"destinationIp\":\"znelixhnrztfolh\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"xknalaulppg\"}},\"id\":\"tpnapnyiropuhpig\",\"name\":\"pgylg\",\"type\":\"git\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"status\":\"providerCancelled\",\"reservationStartTime\":\"2021-02-02T03:25:54Z\",\"reservationEndTime\":\"2021-06-29T22:28:15Z\",\"rxStartTime\":\"2021-08-06T12:01:01Z\",\"rxEndTime\":\"2021-08-14T03:50:42Z\",\"txStartTime\":\"2021-09-20T16:59Z\",\"txEndTime\":\"2021-05-30T09:03:19Z\",\"errorMessage\":\"caalnjixisxyaw\",\"maximumElevationDegrees\":82.835205,\"startAzimuthDegrees\":64.62957,\"endAzimuthDegrees\":50.503685,\"groundStationName\":\"lyjpk\",\"startElevationDegrees\":70.68801,\"endElevationDegrees\":22.889233,\"antennaConfiguration\":{\"destinationIp\":\"znelixhnrztfolh\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"xknalaulppg\"}},\"id\":\"tpnapnyiropuhpig\",\"name\":\"pgylg\",\"type\":\"git\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Contact> response =
-            manager.contacts().list("bsjyofdx", "uusdttouwa", "oekqvk", com.azure.core.util.Context.NONE);
+        PagedIterable<Contact> response
+            = manager.contacts().list("bsjyofdx", "uusdttouwa", "oekqvk", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                ContactsPropertiesProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-02T03:25:54Z"), response.iterator().next().reservationStartTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-29T22:28:15Z"), response.iterator().next().reservationEndTime());
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.SUCCEEDED,
+            response.iterator().next().provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T03:25:54Z"),
+            response.iterator().next().reservationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T22:28:15Z"),
+            response.iterator().next().reservationEndTime());
         Assertions.assertEquals("lyjpk", response.iterator().next().groundStationName());
         Assertions.assertEquals("xknalaulppg", response.iterator().next().contactProfile().id());
     }

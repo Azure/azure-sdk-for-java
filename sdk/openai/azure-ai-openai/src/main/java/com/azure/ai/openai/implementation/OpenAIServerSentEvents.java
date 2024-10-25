@@ -37,36 +37,34 @@ public final class OpenAIServerSentEvents<T> {
     }
 
     private Flux<T> mapByteBuffersToEvents() {
-        return source
-            .publishOn(Schedulers.boundedElastic())
-            .concatMap(byteBuffer -> {
-                List<T> values = new ArrayList<>();
-                byte[] byteArray = byteBuffer.array();
-                for (byte currentByte : byteArray) {
-                    if (currentByte == 0xA || currentByte == 0xD) {
-                        try {
-                            handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
-                        } catch (UnsupportedEncodingException | UncheckedIOException e) {
-                            return Flux.error(e);
-                        }
-                        outStream = new ByteArrayOutputStream();
-                    } else {
-                        outStream.write(currentByte);
+        return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
+            List<T> values = new ArrayList<>();
+            byte[] byteArray = byteBuffer.array();
+            for (byte currentByte : byteArray) {
+                if (currentByte == 0xA || currentByte == 0xD) {
+                    try {
+                        handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
+                    } catch (UnsupportedEncodingException | UncheckedIOException e) {
+                        return Flux.error(e);
                     }
-                }
-                try {
-                    handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
                     outStream = new ByteArrayOutputStream();
-                } catch (IllegalStateException | UncheckedIOException e) {
-                    // return the values collected so far, as this could be because the server sent event is
-                    // split across two byte buffers and the last line is incomplete and will be continued in
-                    // the next byte buffer
-                    return Flux.fromIterable(values);
-                } catch (UnsupportedEncodingException e) {
-                    return Flux.error(e);
+                } else {
+                    outStream.write(currentByte);
                 }
+            }
+            try {
+                handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
+                outStream = new ByteArrayOutputStream();
+            } catch (IllegalStateException | UncheckedIOException e) {
+                // return the values collected so far, as this could be because the server sent event is
+                // split across two byte buffers and the last line is incomplete and will be continued in
+                // the next byte buffer
                 return Flux.fromIterable(values);
-            }).cache();
+            } catch (UnsupportedEncodingException e) {
+                return Flux.error(e);
+            }
+            return Flux.fromIterable(values);
+        }).cache();
     }
 
     private void handleCurrentLine(String currentLine, List<T> values) throws UncheckedIOException {
@@ -85,7 +83,8 @@ public final class OpenAIServerSentEvents<T> {
             dataValue = split[1].substring(1);
         }
 
-        T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
+        T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8),
+            TypeReference.createInstance(type));
         if (value == null) {
             throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
         }
