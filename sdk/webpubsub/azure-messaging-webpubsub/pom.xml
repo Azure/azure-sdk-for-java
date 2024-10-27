@@ -35,6 +35,7 @@
   <properties>
     <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

@@ -56,6 +56,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.phonenumbers/com.azure.communication.phonenumbers=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

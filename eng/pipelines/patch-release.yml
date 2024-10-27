@@ -4,10 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-storage-queue
-      groupId: com.azure
-      safeName: azurestoragequeue
-      ServiceDirectory: storage
     - name: azure-messaging-webpubsub
       groupId: com.azure
       safeName: azuremessagingwebpubsub
@@ -52,10 +48,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationcommon
       ServiceDirectory: communication
-    - name: azure-storage-common
-      groupId: com.azure
-      safeName: azurestoragecommon
-      ServiceDirectory: storage
     - name: azure-developer-loadtesting
       groupId: com.azure
       safeName: azuredeveloperloadtesting
@@ -72,18 +64,10 @@ extends:
       groupId: com.azure
       safeName: azureaicontentsafety
       ServiceDirectory: contentsafety
-    - name: azure-storage-blob
-      groupId: com.azure
-      safeName: azurestorageblob
-      ServiceDirectory: storage
     - name: azure-mixedreality-remoterendering
       groupId: com.azure
       safeName: azuremixedrealityremoterendering
       ServiceDirectory: remoterendering
-    - name: azure-storage-blob-batch
-      groupId: com.azure
-      safeName: azurestorageblobbatch
-      ServiceDirectory: storage
     - name: azure-messaging-eventhubs-checkpointstore-blob
       groupId: com.azure
       safeName: azuremessagingeventhubscheckpointstoreblob
@@ -112,10 +96,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationchatclient
       ServiceDirectory: communication
-    - name: azure-storage-file-share
-      groupId: com.azure
-      safeName: azurestoragefileshare
-      ServiceDirectory: storage
     - name: azure-iot-deviceupdate
       groupId: com.azure
       safeName: azureiotdeviceupdate
@@ -136,24 +116,10 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationphonenumbers
       ServiceDirectory: communication
-    - name: azure-storage-blob-cryptography
-      groupId: com.azure
-      safeName: azurestorageblobcryptography
-      ServiceDirectory: storage
-    - name: azure-storage-internal-avro
-      groupId: com.azure
-      safeName: azurestorageinternalavro
-      skipPublishDocMs: true
-      skipPublishDocGithubIo: true
-      ServiceDirectory: storage
     - name: azure-developer-devcenter
       groupId: com.azure
       safeName: azuredeveloperdevcenter
       ServiceDirectory: devcenter
-    - name: azure-storage-file-datalake
-      groupId: com.azure
-      safeName: azurestoragefiledatalake
-      ServiceDirectory: storage
     - name: azure-communication-jobrouter
       groupId: com.azure
       safeName: azurecommunicationjobrouterclient
