@@ -22,16 +22,19 @@ public class MessageTemplateClientTest extends CommunicationMessagesTestBase {
     public void shouldReturnWhatsTemplateList(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateClient(httpClient);
 
-        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID).iterableByPage().forEach(resp -> {
-            assertEquals(200, resp.getStatusCode());
-            resp.getValue().forEach(template -> {
-                assertNotNull(template.getName());
-                assertNotNull(template.getLanguage());
-                assertNotNull(template.getStatus());
-                assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
-            });
-        });
+        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
+            .iterableByPage()
+                .forEach(resp -> {
+                    assertEquals(200, resp.getStatusCode());
+                    resp.getValue()
+                        .forEach(template -> {
+                            assertNotNull(template.getName());
+                            assertNotNull(template.getLanguage());
+                            assertNotNull(template.getStatus());
+                            assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
+                            assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
+                        });
+                });
 
     }
 
@@ -40,13 +43,15 @@ public class MessageTemplateClientTest extends CommunicationMessagesTestBase {
     public void shouldReturnWhatsTemplateListInSinglePage(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateClient(httpClient);
 
-        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID).stream().forEach(template -> {
-            assertNotNull(template.getName());
-            assertNotNull(template.getLanguage());
-            assertNotNull(template.getStatus());
-            assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-            assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
-        });
+        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
+            .stream()
+            .forEach(template -> {
+                assertNotNull(template.getName());
+                assertNotNull(template.getLanguage());
+                assertNotNull(template.getStatus());
+                assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
+                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
+            });
     }
 
     private MessageTemplateClient buildMessageTemplateClient(HttpClient httpClient) {
@@ -60,7 +65,7 @@ public class MessageTemplateClientTest extends CommunicationMessagesTestBase {
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
         }
-        return getMessageTemplateClientBuilder(httpClient, tokenCredential)
+        return  getMessageTemplateClientBuilder(httpClient, tokenCredential)
             .addPolicy((context, next) -> logHeaders(next))
             .buildClient();
     }

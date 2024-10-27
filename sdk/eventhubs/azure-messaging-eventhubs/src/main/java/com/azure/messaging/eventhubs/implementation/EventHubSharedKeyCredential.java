@@ -116,8 +116,8 @@ public class EventHubSharedKeyCredential implements TokenCredential {
      * @throws NullPointerException if {@code sharedAccessSignature} is null.
      */
     public EventHubSharedKeyCredential(String sharedAccessSignature) {
-        this.sharedAccessSignature
-            = Objects.requireNonNull(sharedAccessSignature, "'sharedAccessSignature' cannot be null");
+        this.sharedAccessSignature = Objects.requireNonNull(sharedAccessSignature,
+            "'sharedAccessSignature' cannot be null");
         this.policyName = null;
         this.secretKeySpec = null;
         this.tokenValidity = null;
@@ -159,8 +159,8 @@ public class EventHubSharedKeyCredential implements TokenCredential {
             throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
         } catch (InvalidKeyException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
         }
 
         final String utf8Encoding = UTF_8.name();
@@ -172,8 +172,10 @@ public class EventHubSharedKeyCredential implements TokenCredential {
         final byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
         final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT, audienceUri,
-            URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT,
+            audienceUri,
+            URLEncoder.encode(signature, utf8Encoding),
+            URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
             URLEncoder.encode(policyName, utf8Encoding));
 
         return new AccessToken(token, expiresOn);

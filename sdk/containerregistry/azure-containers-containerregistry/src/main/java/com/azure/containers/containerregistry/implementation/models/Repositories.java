@@ -26,8 +26,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
     private String link;
 
     /** Creates an instance of Repositories class. */
-    public Repositories() {
-    }
+    public Repositories() {}
 
     /**
      * Get the repositories property: Repository names.
@@ -86,23 +85,24 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * @throws IOException If an error occurs while reading the Repositories.
      */
     public static Repositories fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Repositories deserializedRepositories = new Repositories();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    Repositories deserializedRepositories = new Repositories();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("repositories".equals(fieldName)) {
-                    List<String> repositories = reader.readArray(reader1 -> reader1.getString());
-                    deserializedRepositories.repositories = repositories;
-                } else if ("link".equals(fieldName)) {
-                    deserializedRepositories.link = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("repositories".equals(fieldName)) {
+                            List<String> repositories = reader.readArray(reader1 -> reader1.getString());
+                            deserializedRepositories.repositories = repositories;
+                        } else if ("link".equals(fieldName)) {
+                            deserializedRepositories.link = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRepositories;
-        });
+                    return deserializedRepositories;
+                });
     }
 }

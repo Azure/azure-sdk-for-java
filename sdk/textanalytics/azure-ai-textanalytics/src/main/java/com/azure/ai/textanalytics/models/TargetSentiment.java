@@ -30,8 +30,7 @@ public final class TargetSentiment {
             }
 
             @Override
-            public void setConfidenceScores(TargetSentiment targetSentiment,
-                SentimentConfidenceScores confidenceScores) {
+            public void setConfidenceScores(TargetSentiment targetSentiment, SentimentConfidenceScores confidenceScores) {
                 targetSentiment.setConfidenceScores(confidenceScores);
             }
 

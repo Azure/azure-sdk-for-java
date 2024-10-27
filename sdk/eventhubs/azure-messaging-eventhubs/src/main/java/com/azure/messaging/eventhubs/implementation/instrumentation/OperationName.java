@@ -13,7 +13,6 @@ public enum OperationName {
     GET_PARTITION_PROPERTIES("get_partition_properties");
 
     private final String value;
-
     OperationName(String operationName) {
         this.value = operationName;
     }

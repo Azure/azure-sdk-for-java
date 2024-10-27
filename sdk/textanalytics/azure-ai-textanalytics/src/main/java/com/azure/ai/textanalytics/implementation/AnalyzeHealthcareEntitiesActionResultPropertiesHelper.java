@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 public final class AnalyzeHealthcareEntitiesActionResultPropertiesHelper {
     private static AnalyzeHealthcareEntitiesActionResultAccessor accessor;
 
-    private AnalyzeHealthcareEntitiesActionResultPropertiesHelper() {
-    }
+    private AnalyzeHealthcareEntitiesActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnalyzeHealthcareEntitiesActionResult}
@@ -29,8 +28,8 @@ public final class AnalyzeHealthcareEntitiesActionResultPropertiesHelper {
      *
      * @param analyzeHealthcareEntitiesActionResultAccessor The accessor.
      */
-    public static void
-        setAccessor(final AnalyzeHealthcareEntitiesActionResultAccessor analyzeHealthcareEntitiesActionResultAccessor) {
+    public static void setAccessor(
+        final AnalyzeHealthcareEntitiesActionResultAccessor analyzeHealthcareEntitiesActionResultAccessor) {
         accessor = analyzeHealthcareEntitiesActionResultAccessor;
     }
 

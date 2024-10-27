@@ -6,7 +6,6 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -19,7 +18,6 @@ import java.util.Map;
 public final class ShareFileCopyOptions {
     private FileSmbProperties smbProperties;
     private String filePermission;
-    private FilePermissionFormat filePermissionFormat;
     private PermissionCopyModeType permissionCopyModeType;
     private Boolean ignoreReadOnly;
     private Boolean setArchiveAttribute;
@@ -207,26 +205,6 @@ public final class ShareFileCopyOptions {
      */
     public ShareFileCopyOptions setSmbPropertiesToCopy(CopyableFileSmbPropertiesList smbProperties) {
         smbPropertiesToCopy = smbProperties;
-        return this;
-    }
-
-    /**
-     * Gets the file permission format.
-     *
-     * @return file permission format.
-     */
-    public FilePermissionFormat getFilePermissionFormat() {
-        return filePermissionFormat;
-    }
-
-    /**
-     * Sets the file permission format.
-     *
-     * @param filePermissionFormat the file permission format.
-     * @return The updated options.
-     */
-    public ShareFileCopyOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        this.filePermissionFormat = filePermissionFormat;
         return this;
     }
 }

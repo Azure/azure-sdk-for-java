@@ -92,13 +92,15 @@ public final class MetricSeriesGroupDetectionCondition {
         return this.changeThresholdCondition;
     }
 
+
     /**
      * Sets the logical operator to apply across conditions.
      *
      * @param conditionOperator The logical operator.
      * @return The MetricSeriesGroupDetectionCondition object itself.
      */
-    public MetricSeriesGroupDetectionCondition setConditionOperator(DetectionConditionOperator conditionOperator) {
+    public MetricSeriesGroupDetectionCondition setConditionOperator(
+        DetectionConditionOperator conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
     }
@@ -116,8 +118,8 @@ public final class MetricSeriesGroupDetectionCondition {
      * @param smartDetectionCondition The smart detection condition.
      * @return The MetricSeriesGroupDetectionCondition object itself.
      */
-    public MetricSeriesGroupDetectionCondition
-        setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
+    public MetricSeriesGroupDetectionCondition setSmartDetectionCondition(
+        SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
     }
@@ -133,8 +135,8 @@ public final class MetricSeriesGroupDetectionCondition {
      * @param hardThresholdCondition The hard threshold condition.
      * @return The MetricSeriesGroupDetectionCondition object itself.
      */
-    public MetricSeriesGroupDetectionCondition
-        setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
+    public MetricSeriesGroupDetectionCondition setHardThresholdCondition(
+        HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
     }
@@ -151,8 +153,8 @@ public final class MetricSeriesGroupDetectionCondition {
      * @param changeThresholdCondition The change threshold condition.
      * @return The MetricSeriesGroupDetectionCondition object itself.
      */
-    public MetricSeriesGroupDetectionCondition
-        setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
+    public MetricSeriesGroupDetectionCondition setChangeThresholdCondition(ChangeThresholdCondition
+                                                                    changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
     }

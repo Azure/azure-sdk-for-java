@@ -72,8 +72,7 @@ public final class ManifestWrapper extends Manifest {
     private List<ImageSignature> signatures;
 
     /** Creates an instance of ManifestWrapper class. */
-    public ManifestWrapper() {
-    }
+    public ManifestWrapper() {}
 
     /**
      * Get the mediaType property: Media type for this Manifest.
@@ -329,48 +328,50 @@ public final class ManifestWrapper extends Manifest {
      * @throws IOException If an error occurs while reading the ManifestWrapper.
      */
     public static ManifestWrapper fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ManifestWrapper deserializedManifestWrapper = new ManifestWrapper();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestWrapper deserializedManifestWrapper = new ManifestWrapper();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("schemaVersion".equals(fieldName)) {
-                    deserializedManifestWrapper.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                } else if ("mediaType".equals(fieldName)) {
-                    deserializedManifestWrapper.mediaType = reader.getString();
-                } else if ("manifests".equals(fieldName)) {
-                    List<ManifestListAttributes> manifests
-                        = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                    deserializedManifestWrapper.manifests = manifests;
-                } else if ("config".equals(fieldName)) {
-                    deserializedManifestWrapper.config = OciDescriptor.fromJson(reader);
-                } else if ("layers".equals(fieldName)) {
-                    List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                    deserializedManifestWrapper.layers = layers;
-                } else if ("annotations".equals(fieldName)) {
-                    deserializedManifestWrapper.annotations = OciAnnotations.fromJson(reader);
-                } else if ("architecture".equals(fieldName)) {
-                    deserializedManifestWrapper.architecture = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedManifestWrapper.name = reader.getString();
-                } else if ("tag".equals(fieldName)) {
-                    deserializedManifestWrapper.tag = reader.getString();
-                } else if ("fsLayers".equals(fieldName)) {
-                    List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
-                    deserializedManifestWrapper.fsLayers = fsLayers;
-                } else if ("history".equals(fieldName)) {
-                    List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
-                    deserializedManifestWrapper.history = history;
-                } else if ("signatures".equals(fieldName)) {
-                    List<ImageSignature> signatures = reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
-                    deserializedManifestWrapper.signatures = signatures;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedManifestWrapper.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                        } else if ("mediaType".equals(fieldName)) {
+                            deserializedManifestWrapper.mediaType = reader.getString();
+                        } else if ("manifests".equals(fieldName)) {
+                            List<ManifestListAttributes> manifests =
+                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            deserializedManifestWrapper.manifests = manifests;
+                        } else if ("config".equals(fieldName)) {
+                            deserializedManifestWrapper.config = OciDescriptor.fromJson(reader);
+                        } else if ("layers".equals(fieldName)) {
+                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                            deserializedManifestWrapper.layers = layers;
+                        } else if ("annotations".equals(fieldName)) {
+                            deserializedManifestWrapper.annotations = OciAnnotations.fromJson(reader);
+                        } else if ("architecture".equals(fieldName)) {
+                            deserializedManifestWrapper.architecture = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedManifestWrapper.name = reader.getString();
+                        } else if ("tag".equals(fieldName)) {
+                            deserializedManifestWrapper.tag = reader.getString();
+                        } else if ("fsLayers".equals(fieldName)) {
+                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                            deserializedManifestWrapper.fsLayers = fsLayers;
+                        } else if ("history".equals(fieldName)) {
+                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
+                            deserializedManifestWrapper.history = history;
+                        } else if ("signatures".equals(fieldName)) {
+                            List<ImageSignature> signatures =
+                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                            deserializedManifestWrapper.signatures = signatures;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifestWrapper;
-        });
+                    return deserializedManifestWrapper;
+                });
     }
 }

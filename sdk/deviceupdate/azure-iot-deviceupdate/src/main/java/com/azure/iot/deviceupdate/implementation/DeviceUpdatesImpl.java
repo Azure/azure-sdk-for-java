@@ -33,8 +33,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
@@ -57,8 +55,8 @@ public final class DeviceUpdatesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DeviceUpdatesImpl(DeviceUpdateClientImpl client) {
-        this.service
-            = RestProxy.create(DeviceUpdatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(DeviceUpdatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,374 +68,356 @@ public final class DeviceUpdatesImpl {
     @ServiceInterface(name = "DeviceUpdateClientDe")
     public interface DeviceUpdatesService {
         @Get("/deviceUpdate/{instanceId}/updates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listUpdates(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listUpdatesSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listUpdates(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/deviceUpdate/{instanceId}/updates:import")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> importUpdate(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData updateToImport,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/deviceUpdate/{instanceId}/updates:import")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> importUpdateSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData updateToImport,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getUpdate(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> importUpdate(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData updateToImport,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getUpdate(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @PathParam("name") String name,
+                @PathParam("version") String version,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteUpdate(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteUpdateSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listProviders(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<Void>> deleteUpdate(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @PathParam("name") String name,
+                @PathParam("version") String version,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listProvidersSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listProviders(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNames(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNamesSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listVersions(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listNames(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listVersionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listVersions(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @PathParam("name") String name,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getFile(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version, @PathParam("fileId") String fileId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listFiles(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @PathParam("name") String name,
+                @PathParam("version") String version,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("provider") String provider,
-            @PathParam("name") String name, @PathParam("version") String version, @PathParam("fileId") String fileId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getFile(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("provider") String provider,
+                @PathParam("name") String name,
+                @PathParam("version") String version,
+                @PathParam("fileId") String fileId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/operations")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperationStatuses(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/operations")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationStatusesSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listOperationStatuses(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/operations/{operationId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperationStatus(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/deviceUpdate/{instanceId}/updates/operations/{operationId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationStatusSync(@HostParam("endpoint") String endpoint,
-            @PathParam(value = "instanceId", encoded = true) String instanceId,
-            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listUpdatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getOperationStatus(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @PathParam("operationId") String operationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listUpdatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listUpdatesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listProvidersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listProvidersNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listProvidersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listNamesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNamesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listVersionsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNamesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listFilesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listOperationStatusesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationStatusesNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -458,43 +438,48 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
+     *     value (Required): [
      *          (Required){
-     *             String: String (Required)
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
+     *                 }
+     *             ]
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         updateId (Optional): (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -507,13 +492,26 @@ public final class DeviceUpdatesImpl {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listUpdates(this.client.getEndpoint(), this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listUpdates(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -534,43 +532,48 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
+     *     value (Required): [
      *          (Required){
-     *             String: String (Required)
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
+     *                 }
+     *             ]
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         updateId (Optional): (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -586,9 +589,12 @@ public final class DeviceUpdatesImpl {
     public PagedFlux<BinaryData> listUpdatesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listUpdatesSinglePageAsync(requestOptions),
-            nextLink -> listUpdatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listUpdatesSinglePageAsync(requestOptions),
+                nextLink -> listUpdatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -609,118 +615,48 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
+     *     value (Required): [
      *          (Required){
-     *             String: String (Required)
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
+     *                 }
+     *             ]
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         updateId (Optional): (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all updates that have been imported to Device Update for IoT Hub along with {@link
-     *     PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listUpdatesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listUpdatesSync(this.client.getEndpoint(), this.client.getInstanceId(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all updates that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
-     *          (Required){
-     *             String: String (Required)
-     *         }
-     *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -734,11 +670,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listUpdates(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listUpdatesSinglePage(requestOptions),
-            nextLink -> listUpdatesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listUpdatesAsync(requestOptions));
     }
 
     /**
@@ -822,99 +754,19 @@ public final class DeviceUpdatesImpl {
      * @return update metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> importUpdateWithResponseAsync(BinaryData updateToImport,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> importUpdateWithResponseAsync(
+            BinaryData updateToImport, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.importUpdate(this.client.getEndpoint(), this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(), updateToImport, accept, requestOptions, context));
-    }
-
-    /**
-     * Import new update version. This is a long-running-operation; use Operation-Location response header value to
-     * check for operation status.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         importManifest (Required): {
-     *             url: String (Required)
-     *             sizeInBytes: long (Required)
-     *             hashes (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *         friendlyName: String (Optional)
-     *         files (Optional): [
-     *              (Optional){
-     *                 filename: String (Required)
-     *                 url: String (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
-     *          (Required){
-     *             String: String (Required)
-     *         }
-     *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param updateToImport The update to be imported (see schema
-     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return update metadata along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> importUpdateWithResponse(BinaryData updateToImport, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.importUpdateSync(this.client.getEndpoint(), this.client.getInstanceId(),
-            this.client.getServiceVersion().getVersion(), updateToImport, accept, requestOptions, Context.NONE);
+        return FluxUtil.withContext(
+                context ->
+                        service.importUpdate(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                this.client.getServiceVersion().getVersion(),
+                                updateToImport,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -998,16 +850,21 @@ public final class DeviceUpdatesImpl {
      * @return the {@link PollerFlux} for polling of update metadata.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(BinaryData updateToImport,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions),
-            new OperationResourcePollingStrategyWithEndpoint<>(this.client.getHttpPipeline(),
-                "https://" + this.client.getEndpoint(), null, null,
-                requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(
+            BinaryData updateToImport, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions),
+                new OperationResourcePollingStrategyWithEndpoint<>(
+                        this.client.getHttpPipeline(),
+                        "https://" + this.client.getEndpoint(),
+                        null,
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1091,16 +948,9 @@ public final class DeviceUpdatesImpl {
      * @return the {@link SyncPoller} for polling of update metadata.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(BinaryData updateToImport,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.importUpdateWithResponse(updateToImport, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(
+            BinaryData updateToImport, RequestOptions requestOptions) {
+        return this.beginImportUpdateAsync(updateToImport, requestOptions).getSyncPoller();
     }
 
     /**
@@ -1171,11 +1021,21 @@ public final class DeviceUpdatesImpl {
      * @return a specific update version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUpdateWithResponseAsync(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getUpdate(this.client.getEndpoint(), this.client.getInstanceId(),
-            provider, name, version, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getUpdate(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                provider,
+                                name,
+                                version,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1246,11 +1106,9 @@ public final class DeviceUpdatesImpl {
      * @return a specific update version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUpdateWithResponse(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getUpdateSync(this.client.getEndpoint(), this.client.getInstanceId(), provider, name, version,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    public Response<BinaryData> getUpdateWithResponse(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return getUpdateWithResponseAsync(provider, name, version, requestOptions).block();
     }
 
     /**
@@ -1268,34 +1126,21 @@ public final class DeviceUpdatesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteUpdateWithResponseAsync(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    private Mono<Response<Void>> deleteUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteUpdate(this.client.getEndpoint(), this.client.getInstanceId(), provider, name,
-                version, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
-     * to check for operation status.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> deleteUpdateWithResponse(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteUpdateSync(this.client.getEndpoint(), this.client.getInstanceId(), provider, name, version,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+                context ->
+                        service.deleteUpdate(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                provider,
+                                name,
+                                version,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1313,16 +1158,21 @@ public final class DeviceUpdatesImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions),
-            new OperationResourcePollingStrategyWithEndpoint<>(this.client.getHttpPipeline(),
-                "https://" + this.client.getEndpoint(), null, null,
-                requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions),
+                new OperationResourcePollingStrategyWithEndpoint<>(
+                        this.client.getHttpPipeline(),
+                        "https://" + this.client.getEndpoint(),
+                        null,
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1340,16 +1190,9 @@ public final class DeviceUpdatesImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deleteUpdateWithResponse(provider, name, version, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return this.beginDeleteUpdateAsync(provider, name, version, requestOptions).getSyncPoller();
     }
 
     /**
@@ -1358,7 +1201,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1370,13 +1218,26 @@ public final class DeviceUpdatesImpl {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listProviders(this.client.getEndpoint(), this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listProviders(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -1385,7 +1246,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1400,9 +1266,12 @@ public final class DeviceUpdatesImpl {
     public PagedFlux<BinaryData> listProvidersAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listProvidersSinglePageAsync(requestOptions),
-            nextLink -> listProvidersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listProvidersSinglePageAsync(requestOptions),
+                nextLink -> listProvidersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1411,33 +1280,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub along with {@link
-     *     PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listProvidersSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listProvidersSync(this.client.getEndpoint(), this.client.getInstanceId(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1450,11 +1298,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listProviders(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listProvidersSinglePage(requestOptions),
-            nextLink -> listProvidersNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listProvidersAsync(requestOptions));
     }
 
     /**
@@ -1463,7 +1307,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1476,13 +1325,27 @@ public final class DeviceUpdatesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(String provider, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(String provider, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNames(this.client.getEndpoint(), this.client.getInstanceId(), provider,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listNames(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -1491,7 +1354,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1507,9 +1375,12 @@ public final class DeviceUpdatesImpl {
     public PagedFlux<BinaryData> listNamesAsync(String provider, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listNamesSinglePageAsync(provider, requestOptions),
-            nextLink -> listNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listNamesSinglePageAsync(provider, requestOptions),
+                nextLink -> listNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1518,33 +1389,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update names that match the specified provider along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNamesSinglePage(String provider, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listNamesSync(this.client.getEndpoint(), this.client.getInstanceId(),
-            provider, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1558,11 +1408,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listNames(String provider, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listNamesSinglePage(provider, requestOptions),
-            nextLink -> listNamesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listNamesAsync(provider, requestOptions));
     }
 
     /**
@@ -1581,7 +1427,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1595,14 +1446,29 @@ public final class DeviceUpdatesImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(String provider, String name,
-        RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
+            String provider, String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listVersions(this.client.getEndpoint(), this.client.getInstanceId(),
-                provider, name, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listVersions(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        name,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -1621,7 +1487,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1638,9 +1509,12 @@ public final class DeviceUpdatesImpl {
     public PagedFlux<BinaryData> listVersionsAsync(String provider, String name, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listVersionsSinglePageAsync(provider, name, requestOptions),
-            nextLink -> listVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listVersionsSinglePageAsync(provider, name, requestOptions),
+                nextLink -> listVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1659,46 +1533,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update versions that match the specified provider and name along with {@link
-     *     PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listVersionsSinglePage(String provider, String name,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listVersionsSync(this.client.getEndpoint(), this.client.getInstanceId(),
-            provider, name, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1713,11 +1553,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersions(String provider, String name, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listVersionsSinglePage(provider, name, requestOptions),
-            nextLink -> listVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listVersionsAsync(provider, name, requestOptions));
     }
 
     /**
@@ -1726,7 +1562,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1741,14 +1582,30 @@ public final class DeviceUpdatesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listFiles(this.client.getEndpoint(), this.client.getInstanceId(), provider,
-                name, version, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFiles(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        name,
+                                        version,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -1757,7 +1614,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1772,13 +1634,16 @@ public final class DeviceUpdatesImpl {
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listFilesAsync(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listFilesAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listFilesSinglePageAsync(provider, name, version, requestOptions),
-            nextLink -> listFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listFilesSinglePageAsync(provider, name, version, requestOptions),
+                nextLink -> listFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1787,37 +1652,12 @@ public final class DeviceUpdatesImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update file identifiers for the specified version along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listFilesSinglePage(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listFilesSync(this.client.getEndpoint(), this.client.getInstanceId(), provider, name, version,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -1832,13 +1672,9 @@ public final class DeviceUpdatesImpl {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listFiles(String provider, String name, String version,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listFilesSinglePage(provider, name, version, requestOptions),
-            nextLink -> listFilesNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<BinaryData> listFiles(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return new PagedIterable<>(listFilesAsync(provider, name, version, requestOptions));
     }
 
     /**
@@ -1905,12 +1741,22 @@ public final class DeviceUpdatesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponseAsync(String provider, String name, String version,
-        String fileId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getFileWithResponseAsync(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getFile(this.client.getEndpoint(), this.client.getInstanceId(), provider,
-                name, version, fileId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getFile(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                provider,
+                                name,
+                                version,
+                                fileId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1976,11 +1822,9 @@ public final class DeviceUpdatesImpl {
      * @return a specific update file from the version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String provider, String name, String version, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getFileSync(this.client.getEndpoint(), this.client.getInstanceId(), provider, name, version,
-            fileId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    public Response<BinaryData> getFileWithResponse(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
+        return getFileWithResponseAsync(provider, name, version, fileId, requestOptions).block();
     }
 
     /**
@@ -2002,37 +1846,42 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2045,14 +1894,26 @@ public final class DeviceUpdatesImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listOperationStatuses(this.client.getEndpoint(), this.client.getInstanceId(),
-                    this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listOperationStatuses(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -2074,37 +1935,42 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2119,9 +1985,12 @@ public final class DeviceUpdatesImpl {
     public PagedFlux<BinaryData> listOperationStatusesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listOperationStatusesSinglePageAsync(requestOptions),
-            nextLink -> listOperationStatusesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listOperationStatusesSinglePageAsync(requestOptions),
+                nextLink -> listOperationStatusesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2143,107 +2012,42 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all import update operations along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOperationStatusesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listOperationStatusesSync(this.client.getEndpoint(), this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2256,11 +2060,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listOperationStatusesSinglePage(requestOptions),
-            nextLink -> listOperationStatusesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listOperationStatusesAsync(requestOptions));
     }
 
     /**
@@ -2323,12 +2123,19 @@ public final class DeviceUpdatesImpl {
      * @return operation metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationStatusWithResponseAsync(String operationId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOperationStatusWithResponseAsync(
+            String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getOperationStatus(this.client.getEndpoint(), this.client.getInstanceId(),
-                operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getOperationStatus(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                operationId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -2392,9 +2199,7 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOperationStatusSync(this.client.getEndpoint(), this.client.getInstanceId(), operationId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return getOperationStatusWithResponseAsync(operationId, requestOptions).block();
     }
 
     /**
@@ -2404,43 +2209,48 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
+     *     value (Required): [
      *          (Required){
-     *             String: String (Required)
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
+     *                 }
+     *             ]
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         updateId (Optional): (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2454,13 +2264,22 @@ public final class DeviceUpdatesImpl {
      * @return the list of updates along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listUpdatesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+                        context ->
+                                service.listUpdatesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -2470,43 +2289,10 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
-     *          (Required){
-     *             String: String (Required)
-     *         }
+     *     value (Required): [
+     *         String (Required)
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2517,241 +2303,26 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of updates along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listUpdatesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listUpdatesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listProvidersNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listProvidersNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listProvidersNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listNamesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNamesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNamesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listVersionsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listFilesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listFilesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+                        context ->
+                                service.listProvidersNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -2761,37 +2332,171 @@ public final class DeviceUpdatesImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listNamesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listVersionsNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFilesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2806,74 +2511,22 @@ public final class DeviceUpdatesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOperationStatusesNext(nextLink, this.client.getEndpoint(), accept,
-                requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of operations with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOperationStatusesNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listOperationStatusesNextSync(nextLink, this.client.getEndpoint(), accept,
-            requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+        return FluxUtil.withContext(
+                        context ->
+                                service.listOperationStatusesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

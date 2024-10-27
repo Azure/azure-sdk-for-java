@@ -270,10 +270,8 @@ public final class AzureDataLakeStorageGen2DataFeed extends DataFeedDetail {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null
-                ? null
-                : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
+        jsonWriter.writeStringField("dataSourceType", DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null ? null
+            : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());

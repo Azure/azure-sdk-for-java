@@ -47,12 +47,8 @@ public class TextAnalyticsException extends AzureException {
 
     @Override
     public String getMessage() {
-        StringBuilder baseMessage = new StringBuilder().append(super.getMessage())
-            .append(" ")
-            .append(ERROR_CODE)
-            .append(": {")
-            .append(errorCode)
-            .append("}");
+        StringBuilder baseMessage = new StringBuilder().append(super.getMessage()).append(" ").append(ERROR_CODE)
+            .append(": {").append(errorCode).append("}");
 
         if (this.target == null) {
             return baseMessage.toString();

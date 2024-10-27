@@ -42,7 +42,8 @@ public class SkillsSupportedVersionsTests {
             () -> new SentimentSkill(null, null).setModelVersion(""),
 
             // V1 doesn't support setting include opinion mining.
-            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(false));
+            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(false)
+        );
     }
 
     @ParameterizedTest
@@ -66,6 +67,7 @@ public class SkillsSupportedVersionsTests {
             () -> new SentimentSkill(null, null).setModelVersion(null),
 
             // V1 doesn't support setting include opinion mining.
-            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(null));
+            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(null)
+        );
     }
 }

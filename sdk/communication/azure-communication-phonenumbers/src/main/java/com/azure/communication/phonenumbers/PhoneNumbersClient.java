@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import java.util.List;
 import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.models.OperatorInformationResult;
-import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -65,7 +61,7 @@ public final class PhoneNumbersClient {
     }
 
     PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient, PhoneNumbersAsyncClient asyncClient,
-        String acceptLanguage) {
+            String acceptLanguage) {
         this.client = phoneNumberAdminClient.getPhoneNumbers();
         this.asyncClient = asyncClient;
         this.acceptLanguage = acceptLanguage;
@@ -108,7 +104,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.getPurchasedWithResponse -->
-     *
+     * 
      * <pre>
      * Response&lt;PurchasedPhoneNumber&gt; response = phoneNumberClient
      *         .getPurchasedPhoneNumberWithResponse&#40;&quot;+18001234567&quot;, Context.NONE&#41;;
@@ -116,7 +112,7 @@ public final class PhoneNumbersClient {
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.getPurchasedWithResponse
      * -->
      *
@@ -168,14 +164,14 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.listPurchasedWithContext -->
-     *
+     * 
      * <pre>
      * PagedIterable&lt;PurchasedPhoneNumber&gt; phoneNumbers = phoneNumberClient.listPurchasedPhoneNumbers&#40;Context.NONE&#41;;
      * PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator&#40;&#41;.next&#40;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.listPurchasedWithContext
      * -->
      *
@@ -202,7 +198,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginSearchAvailable -->
-     *
+     * 
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -222,7 +218,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginSearchAvailable -->
      *
      * @param countryCode The ISO 3166-2 country code.
@@ -237,10 +233,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-        PhoneNumberCapabilities capabilities) {
+            String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+            PhoneNumberCapabilities capabilities) {
         return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities)
-            .getSyncPoller();
+                .getSyncPoller();
     }
 
     /**
@@ -257,7 +253,7 @@ public final class PhoneNumbersClient {
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
      * -->
-     *
+     * 
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -278,7 +274,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     *
+     * 
      * <!-- end
      * com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
      * -->
@@ -297,12 +293,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
-        return asyncClient
-            .beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions,
-                context)
-            .getSyncPoller();
+            String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+            PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities,
+                searchOptions, context).getSyncPoller();
     }
 
     /**
@@ -348,13 +342,13 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginPurchaseWithContext -->
-     *
+     * 
      * <pre>
      * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse = phoneNumberClient
      *         .beginPurchasePhoneNumbers&#40;searchId, Context.NONE&#41;.waitForCompletion&#40;&#41;;
      * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginPurchaseWithContext
      * -->
      *
@@ -365,7 +359,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
-        Context context) {
+            Context context) {
         return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
     }
 
@@ -412,13 +406,13 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginReleaseWithContext -->
-     *
+     * 
      * <pre>
      * PollResponse&lt;PhoneNumberOperation&gt; releaseResponse = phoneNumberClient
      *         .beginReleasePhoneNumber&#40;&quot;+18001234567&quot;, Context.NONE&#41;.waitForCompletion&#40;&#41;;
      * System.out.println&#40;&quot;Release phone number is complete: &quot; + releaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginReleaseWithContext
      * -->
      *
@@ -431,7 +425,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber,
-        Context context) {
+            Context context) {
         return asyncClient.beginReleasePhoneNumber(phoneNumber, context).getSyncPoller();
     }
 
@@ -448,7 +442,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilities -->
-     *
+     * 
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;;
      * capabilities
@@ -465,7 +459,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone Number SMS capabilities: &quot; + phoneNumber.getCapabilities&#40;&#41;.getSms&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     *
+     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginUpdateCapabilities
      * -->
      *
@@ -479,7 +473,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-        PhoneNumberCapabilities capabilities) {
+            PhoneNumberCapabilities capabilities) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities).getSyncPoller();
     }
 
@@ -497,7 +491,7 @@ public final class PhoneNumbersClient {
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
      * -->
-     *
+     * 
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;;
      * capabilities
@@ -514,7 +508,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone Number SMS capabilities: &quot; + phoneNumber.getCapabilities&#40;&#41;.getSms&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     *
+     * 
      * <!-- end
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
      * -->
@@ -530,7 +524,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-        PhoneNumberCapabilities capabilities, Context context) {
+            PhoneNumberCapabilities capabilities, Context context) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, context).getSyncPoller();
     }
 
@@ -570,7 +564,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode,
-        String administrativeDivision) {
+            String administrativeDivision) {
         return this.listAvailableLocalities(countryCode, administrativeDivision, null);
     }
 
@@ -588,7 +582,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
-        Context context) {
+            Context context) {
         context = context == null ? Context.NONE : context;
         return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, context);
     }
@@ -616,7 +610,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableTollFreeAreaCodes(String countryCode, Context context) {
         return client.listAreaCodes(countryCode, PhoneNumberType.TOLL_FREE, null, null,
-            PhoneNumberAssignmentType.APPLICATION, null, null, acceptLanguage);
+                PhoneNumberAssignmentType.APPLICATION, null, null, acceptLanguage);
     }
 
     /**
@@ -636,9 +630,9 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode,
-        PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
+            PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
         return this.listAvailableGeographicAreaCodes(countryCode, assignmentType, locality, administrativeDivision,
-            null);
+                null);
     }
 
     /**
@@ -660,10 +654,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode,
-        PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
+            PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
         context = context == null ? Context.NONE : context;
         return client.listAreaCodes(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType, locality,
-            administrativeDivision, acceptLanguage, context);
+                administrativeDivision, acceptLanguage, context);
     }
 
     /**
@@ -679,7 +673,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode,
-        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
+            PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
         return this.listAvailableOfferings(countryCode, phoneNumberType, assignmentType, null);
     }
 
@@ -697,43 +691,8 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode,
-        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
+            PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
         context = context == null ? Context.NONE : context;
         return client.listOfferings(countryCode, null, null, phoneNumberType, assignmentType, acceptLanguage, context);
-    }
-
-    /**
-     * Searches for operator information for a given list of phone numbers.
-     *
-     * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     *
-     * @return A {@link OperatorInformationResult} which contains the results of the search.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers) {
-        OperatorInformationRequest request = new OperatorInformationRequest();
-        request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(false));
-        return client.operatorInformationSearch(request);
-    }
-
-    /**
-     * Searches for operator information for a given list of phone numbers.
-     *
-     * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param requestOptions Modifies the search to include additional fields in the response.
-     *                  Please note: use of options will affect the cost of the search.
-     * @param context A {@link Context} representing the request context.
-     *
-     * @return A {@link OperatorInformationResult} which contains the results of the search.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperatorInformationResult> searchOperatorInformationWithResponse(List<String> phoneNumbers,
-        OperatorInformationOptions requestOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-        OperatorInformationRequest request = new OperatorInformationRequest();
-        request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(requestOptions);
-        return client.operatorInformationSearchWithResponse(request, context);
     }
 }

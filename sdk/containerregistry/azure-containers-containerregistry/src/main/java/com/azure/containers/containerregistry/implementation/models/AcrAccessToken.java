@@ -20,8 +20,7 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
     private String accessToken;
 
     /** Creates an instance of AcrAccessToken class. */
-    public AcrAccessToken() {
-    }
+    public AcrAccessToken() {}
 
     /**
      * Get the accessToken property: The access token for performing authenticated requests.
@@ -59,20 +58,21 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
      * @throws IOException If an error occurs while reading the AcrAccessToken.
      */
     public static AcrAccessToken fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcrAccessToken deserializedAcrAccessToken = new AcrAccessToken();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    AcrAccessToken deserializedAcrAccessToken = new AcrAccessToken();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("access_token".equals(fieldName)) {
-                    deserializedAcrAccessToken.accessToken = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("access_token".equals(fieldName)) {
+                            deserializedAcrAccessToken.accessToken = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedAcrAccessToken;
-        });
+                    return deserializedAcrAccessToken;
+                });
     }
 }

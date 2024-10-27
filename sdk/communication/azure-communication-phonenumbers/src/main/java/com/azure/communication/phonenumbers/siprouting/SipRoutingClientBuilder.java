@@ -66,11 +66,14 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.communication.phonenumbers.siprouting.client.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = { SipRoutingClient.class, SipRoutingAsyncClient.class })
-public final class SipRoutingClientBuilder
-    implements AzureKeyCredentialTrait<SipRoutingClientBuilder>, ConfigurationTrait<SipRoutingClientBuilder>,
-    ConnectionStringTrait<SipRoutingClientBuilder>, EndpointTrait<SipRoutingClientBuilder>,
-    HttpTrait<SipRoutingClientBuilder>, TokenCredentialTrait<SipRoutingClientBuilder> {
+@ServiceClientBuilder(serviceClients = {SipRoutingClient.class, SipRoutingAsyncClient.class})
+public final class SipRoutingClientBuilder implements
+    AzureKeyCredentialTrait<SipRoutingClientBuilder>,
+    ConfigurationTrait<SipRoutingClientBuilder>,
+    ConnectionStringTrait<SipRoutingClientBuilder>,
+    EndpointTrait<SipRoutingClientBuilder>,
+    HttpTrait<SipRoutingClientBuilder>,
+    TokenCredentialTrait<SipRoutingClientBuilder> {
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-phonenumbers-siprouting.properties";
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
     private static final String SDK_NAME = "name";
@@ -219,7 +222,9 @@ public final class SipRoutingClientBuilder
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+        this
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -389,8 +394,8 @@ public final class SipRoutingClientBuilder
                 new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
@@ -399,8 +404,8 @@ public final class SipRoutingClientBuilder
         }
     }
 
-    UserAgentPolicy createUserAgentPolicy(String applicationId, String sdkName, String sdkVersion,
-        Configuration configuration) {
+    UserAgentPolicy createUserAgentPolicy(
+        String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
@@ -425,7 +430,8 @@ public final class SipRoutingClientBuilder
     }
 
     private SipRoutingAdminClientImpl createAdminClientImpl() {
-        return new SipRoutingAdminClientImplBuilder().endpoint(this.endpoint)
+        return new SipRoutingAdminClientImplBuilder()
+            .endpoint(this.endpoint)
             .pipeline(this.createHttpPipeline())
             .buildClient();
     }
@@ -442,8 +448,12 @@ public final class SipRoutingClientBuilder
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(this.createUserAgentPolicy(applicationId, PROPERTIES.get(SDK_NAME), PROPERTIES.get(SDK_VERSION),
-            this.configuration));
+        policies.add(this.createUserAgentPolicy(
+            applicationId,
+            PROPERTIES.get(SDK_NAME),
+            PROPERTIES.get(SDK_VERSION),
+            this.configuration
+        ));
         policies.add(this.createRequestIdPolicy());
 
         policies.addAll(perCallPolicies);
@@ -458,7 +468,8 @@ public final class SipRoutingClientBuilder
 
         policies.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(this.httpClient)
             .clientOptions(clientOptions)
             .build();

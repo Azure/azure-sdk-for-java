@@ -47,6 +47,7 @@ public final class CreateClassificationPolicyOptions {
      */
     private List<WorkerSelectorAttachment> workerSelectors;
 
+
     /**
      * Constructor for CreateClassificationPolicyOptions
      * @param classificationPolicyId ClassificationPolicy id

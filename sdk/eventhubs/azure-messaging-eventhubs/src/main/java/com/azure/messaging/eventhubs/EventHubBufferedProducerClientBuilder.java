@@ -130,13 +130,14 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
  * @see EventHubBufferedProducerAsyncClient
  */
 @ServiceClientBuilder(
-    serviceClients = { EventHubBufferedProducerAsyncClient.class, EventHubBufferedProducerClient.class },
+    serviceClients = {EventHubBufferedProducerAsyncClient.class, EventHubBufferedProducerClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class EventHubBufferedProducerClientBuilder
-    implements TokenCredentialTrait<EventHubBufferedProducerClientBuilder>,
+public final class EventHubBufferedProducerClientBuilder implements
+    TokenCredentialTrait<EventHubBufferedProducerClientBuilder>,
     AzureNamedKeyCredentialTrait<EventHubBufferedProducerClientBuilder>,
     ConnectionStringTrait<EventHubBufferedProducerClientBuilder>,
-    AzureSasCredentialTrait<EventHubBufferedProducerClientBuilder>, AmqpTrait<EventHubBufferedProducerClientBuilder>,
+    AzureSasCredentialTrait<EventHubBufferedProducerClientBuilder>,
+    AmqpTrait<EventHubBufferedProducerClientBuilder>,
     ConfigurationTrait<EventHubBufferedProducerClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedProducerClientBuilder.class);
 
@@ -412,7 +413,7 @@ public final class EventHubBufferedProducerClientBuilder
      * Sets the name of the Event Hub to connect the client to.
      *
      * @param eventHubName The name of the Event Hub to connect the client to.
-    
+
      * @return The updated object.
      * @throws IllegalArgumentException if {@code eventHubName} is an empty string.
      * @throws NullPointerException if {@code eventHubName} is null.
@@ -468,8 +469,7 @@ public final class EventHubBufferedProducerClientBuilder
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder
-        maxEventBufferLengthPerPartition(int maxEventBufferLengthPerPartition) {
+    public EventHubBufferedProducerClientBuilder maxEventBufferLengthPerPartition(int maxEventBufferLengthPerPartition) {
         clientOptions.maxEventBufferLengthPerPartition(maxEventBufferLengthPerPartition);
         return this;
     }
@@ -494,7 +494,8 @@ public final class EventHubBufferedProducerClientBuilder
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder onSendBatchFailed(Consumer<SendBatchFailedContext> sendFailedContext) {
+    public EventHubBufferedProducerClientBuilder onSendBatchFailed(
+        Consumer<SendBatchFailedContext> sendFailedContext) {
         clientOptions.setSendFailedContext(sendFailedContext);
         return this;
     }
@@ -506,8 +507,8 @@ public final class EventHubBufferedProducerClientBuilder
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder
-        onSendBatchSucceeded(Consumer<SendBatchSucceededContext> sendSucceededContext) {
+    public EventHubBufferedProducerClientBuilder onSendBatchSucceeded(
+        Consumer<SendBatchSucceededContext> sendSucceededContext) {
         clientOptions.setSendSucceededContext(sendSucceededContext);
         return this;
     }
@@ -579,24 +580,25 @@ public final class EventHubBufferedProducerClientBuilder
         }
 
         if (clientOptions.getMaxEventBufferLengthPerPartition() < 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maxEventBufferLengthPerPartition' cannot be less than 1."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxEventBufferLengthPerPartition' cannot be less than 1."));
         }
 
         if (clientOptions.getMaxConcurrentSends() < 1) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'maxConcurrentSends' cannot be less than 1."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxConcurrentSends' cannot be less than 1."));
         }
 
         if (clientOptions.getMaxConcurrentSendsPerPartition() < 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maxConcurrentSendsPerPartition' cannot be less than 1."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxConcurrentSendsPerPartition' cannot be less than 1."));
         }
 
-        final AmqpRetryOptions options = retryOptions == null ? EventHubClientBuilder.DEFAULT_RETRY : retryOptions;
+        final AmqpRetryOptions options = retryOptions == null
+            ? EventHubClientBuilder.DEFAULT_RETRY
+            : retryOptions;
 
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options,
-            builder.createTracer());
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options, builder.createTracer());
     }
 
     /**
@@ -605,7 +607,9 @@ public final class EventHubBufferedProducerClientBuilder
      * @return A new instance of {@link EventHubBufferedProducerClient}.
      */
     public EventHubBufferedProducerClient buildClient() {
-        final AmqpRetryOptions options = retryOptions == null ? EventHubClientBuilder.DEFAULT_RETRY : retryOptions;
+        final AmqpRetryOptions options = retryOptions == null
+            ? EventHubClientBuilder.DEFAULT_RETRY
+            : retryOptions;
 
         return new EventHubBufferedProducerClient(buildAsyncClient(), options.getTryTimeout());
     }

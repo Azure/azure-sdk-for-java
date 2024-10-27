@@ -151,6 +151,7 @@ public final class SearchOptions {
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
 
+
     /**
      * Creates an instance of {@link SearchOptions}.
      */

@@ -473,8 +473,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesCreateHeaders, Void> createWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), queueName, timeout, metadata, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -526,8 +526,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -693,8 +693,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesDeleteHeaders, Void> deleteWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId,
                 accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -738,8 +738,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -917,9 +917,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesGetPropertiesHeaders, Void> getPropertiesWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -965,9 +965,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1168,9 +1168,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesSetMetadataHeaders, Void> setMetadataWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), queueName, comp, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1222,9 +1222,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1406,9 +1406,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>
         getAccessPolicyWithResponse(String queueName, Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
         try {
-            final String comp = "acl";
-            final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1459,9 +1459,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersWithResponse(String queueName,
         Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
         try {
-            final String comp = "acl";
-            final String accept = "application/xml";
             return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1645,10 +1645,10 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(String queueName,
         Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         try {
-            final String comp = "acl";
-            final String accept = "application/xml";
-            QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
             return service.setAccessPolicySync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, queueAclConverted, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1695,10 +1695,10 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(String queueName, Integer timeout,
         String requestId, List<QueueSignedIdentifier> queueAcl, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         try {
-            final String comp = "acl";
-            final String accept = "application/xml";
-            QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
             return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, queueAclConverted, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {

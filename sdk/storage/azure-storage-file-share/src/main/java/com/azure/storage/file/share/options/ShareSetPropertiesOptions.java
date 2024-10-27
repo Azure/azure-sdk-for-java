@@ -22,8 +22,6 @@ public class ShareSetPropertiesOptions {
     private Boolean enablePaidBursting;
     private Long paidBurstingMaxIops;
     private Long paidBurstingMaxBandwidthMibps;
-    private Long provisionedMaxIops;
-    private Long provisionedMaxBandwidthMibps;
 
     /**
      * @return {@link ShareAccessTier}
@@ -183,55 +181,6 @@ public class ShareSetPropertiesOptions {
      */
     public ShareSetPropertiesOptions setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
         this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
-        return this;
-    }
-
-
-    /**
-     * Get the provisionedMaxIops property:
-     * Optional. Only applicable to provisioned v2 storage accounts.
-     * The provisioned IOPS of the share. For SSD, minimum IOPS is 3,000 and maximum is 100,000.
-     * For HDD, minimum IOPS is 500 and maximum is 50,000.
-     * @return the provisionedMaxIops value.
-     */
-    public Long getProvisionedMaxIops() {
-        return provisionedMaxIops;
-    }
-
-    /**
-     * Set the provisionedMaxIops property:
-     * Optional. Only applicable to provisioned v2 storage accounts.
-     * The provisioned IOPS of the share. For SSD, minimum IOPS is 3,000 and maximum is 100,000.
-     * For HDD, minimum IOPS is 500 and maximum is 50,000.
-     * @param provisionedMaxIops the provisionedIops value to set.
-     * @return the ShareSetPropertiesOptions object itself.
-     */
-    public ShareSetPropertiesOptions setProvisionedMaxIops(Long provisionedMaxIops) {
-        this.provisionedMaxIops = provisionedMaxIops;
-        return this;
-    }
-
-    /**
-     * Get the provisionedMaxBandwidthMibps property:
-     * Optional. Only applicable to provisioned v2 storage accounts.
-     * The provisioned throughput of the share. For SSD, minimum throughput is 125 MiB/sec and maximum is 10,340 MiB/sec.
-     * For HDD, minimum throughput is 60 MiB/sec and maximum is 5,125 MiB/sec.
-     * @return the provisionedMaxBandwidthMibps value.
-     */
-    public Long getProvisionedMaxBandwidthMibps() {
-        return provisionedMaxBandwidthMibps;
-    }
-
-    /**
-     * Set the provisionedMaxBandwidthMibps property:
-     * Optional. Only applicable to provisioned v2 storage accounts.
-     * The provisioned throughput of the share. For SSD, minimum throughput is 125 MiB/sec and maximum is 10,340 MiB/sec.
-     * For HDD, minimum throughput is 60 MiB/sec and maximum is 5,125 MiB/sec.
-     * @param provisionedMaxBandwidthMibps the provisionedMaxBandwidthMibps value to set.
-     * @return the ShareSetPropertiesOptions object itself.
-     */
-    public ShareSetPropertiesOptions setProvisionedMaxBandwidthMibps(Long provisionedMaxBandwidthMibps) {
-        this.provisionedMaxBandwidthMibps = provisionedMaxBandwidthMibps;
         return this;
     }
 }

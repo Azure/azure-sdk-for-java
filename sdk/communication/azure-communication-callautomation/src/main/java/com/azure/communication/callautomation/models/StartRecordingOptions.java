@@ -146,7 +146,7 @@ public final class StartRecordingOptions {
     /**
      * Set the pause on start property.
      *
-     * @param pauseOnStart indicate if the recording should be paused on start.
+     * @param pauseOnStart the {@link pauseOnStart}.
      * @return the {@link StartRecordingOptions}
      */
     public StartRecordingOptions setPauseOnStart(Boolean pauseOnStart) {
@@ -177,25 +177,24 @@ public final class StartRecordingOptions {
      * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions
-        setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
+    public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }
 
     /**
-     * Get the externalStorage property: Used to specify external storage for call recording
+     * Get the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @return the externalStorage value.
+     * @return the recordingStorage value.
      */
     public RecordingStorage getRecordingStorage() {
         return this.recordingStorage;
     }
 
     /**
-     * Set the externalStorage property: Used to specify external storage for call recording
+     * Set the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @param recordingStorage the external storage for call recording
+     * @param recordingStorage the recording storage for call recording
      * @return the StartRecordingOptions object itself.
      */
     public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {

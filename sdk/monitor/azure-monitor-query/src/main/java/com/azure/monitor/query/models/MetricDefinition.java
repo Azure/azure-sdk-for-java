@@ -33,13 +33,21 @@ public final class MetricDefinition {
     /**
      * Creates an instance of MetricDefinition.
      */
-    public MetricDefinition() {
-    }
+    public MetricDefinition() { }
 
-    private void setMetricDefinitionProperties(Boolean dimensionRequired, String resourceId, String namespace,
-        String name, String displayDescription, String category, MetricClass metricClass, MetricUnit unit,
-        AggregationType primaryAggregationType, List<AggregationType> supportedAggregationTypes,
-        List<MetricAvailability> metricAvailabilities, String id, List<String> dimensions) {
+    private void setMetricDefinitionProperties(Boolean dimensionRequired,
+                                               String resourceId,
+                                               String namespace,
+                                               String name,
+                                               String displayDescription,
+                                               String category,
+                                               MetricClass metricClass,
+                                               MetricUnit unit,
+                                               AggregationType primaryAggregationType,
+                                               List<AggregationType> supportedAggregationTypes,
+                                               List<MetricAvailability> metricAvailabilities,
+                                               String id,
+                                               List<String> dimensions) {
 
         this.isDimensionRequired = dimensionRequired;
         this.resourceId = resourceId;

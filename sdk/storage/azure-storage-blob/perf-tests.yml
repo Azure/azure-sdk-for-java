@@ -55,8 +55,3 @@ Tests:
   - --count 5 --parallel 64
   - --count 500 --parallel 32
   - --count 50000 --parallel 32 --warmup 60 --duration 60
-
-- Test: get-properties
-  Class: getproperties
-  Arguments:
-  - --parallel 64 --get-properties --duration 30

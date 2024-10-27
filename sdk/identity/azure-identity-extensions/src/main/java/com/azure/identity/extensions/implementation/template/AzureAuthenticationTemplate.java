@@ -27,6 +27,7 @@ public class AzureAuthenticationTemplate {
 
     private AccessTokenResolver accessTokenResolver;
 
+
     /**
      * Default constructor for AzureAuthenticationTemplate
      */
@@ -42,7 +43,7 @@ public class AzureAuthenticationTemplate {
      * @param accessTokenResolver An AccessTokenResolver class instance.
      */
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,
-        AccessTokenResolver accessTokenResolver) {
+                                       AccessTokenResolver accessTokenResolver) {
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.accessTokenResolver = accessTokenResolver;
     }
@@ -57,13 +58,13 @@ public class AzureAuthenticationTemplate {
             LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider
-                    = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
+                    new TokenCredentialProviderOptions(properties));
             }
 
             if (getAccessTokenResolver() == null) {
-                this.accessTokenResolver
-                    = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
+                this.accessTokenResolver = AccessTokenResolver.createDefault(
+                    new AccessTokenResolverOptions(properties));
             }
 
             LOGGER.verbose("Initialized AzureAuthenticationTemplate.");
@@ -82,9 +83,9 @@ public class AzureAuthenticationTemplate {
             throw LOGGER.logExceptionAsError(new IllegalStateException("must call init() first"));
         }
         return Mono.fromSupplier(getTokenCredentialProvider())
-            .flatMap(getAccessTokenResolver())
-            .filter(token -> !token.isExpired())
-            .map(AccessToken::getToken);
+                   .flatMap(getAccessTokenResolver())
+                   .filter(token -> !token.isExpired())
+                   .map(AccessToken::getToken);
     }
 
     /**

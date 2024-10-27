@@ -35,8 +35,7 @@ public final class RepositoryWriteableProperties implements JsonSerializable<Rep
     private Boolean readEnabled;
 
     /** Creates an instance of RepositoryWriteableProperties class. */
-    public RepositoryWriteableProperties() {
-    }
+    public RepositoryWriteableProperties() {}
 
     /**
      * Get the deleteEnabled property: Delete enabled.
@@ -137,28 +136,32 @@ public final class RepositoryWriteableProperties implements JsonSerializable<Rep
      * @throws IOException If an error occurs while reading the RepositoryWriteableProperties.
      */
     public static RepositoryWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RepositoryWriteableProperties deserializedRepositoryWriteableProperties
-                = new RepositoryWriteableProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    RepositoryWriteableProperties deserializedRepositoryWriteableProperties =
+                            new RepositoryWriteableProperties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("deleteEnabled".equals(fieldName)) {
-                    deserializedRepositoryWriteableProperties.deleteEnabled
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("writeEnabled".equals(fieldName)) {
-                    deserializedRepositoryWriteableProperties.writeEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("listEnabled".equals(fieldName)) {
-                    deserializedRepositoryWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("readEnabled".equals(fieldName)) {
-                    deserializedRepositoryWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("deleteEnabled".equals(fieldName)) {
+                            deserializedRepositoryWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("writeEnabled".equals(fieldName)) {
+                            deserializedRepositoryWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("listEnabled".equals(fieldName)) {
+                            deserializedRepositoryWriteableProperties.listEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("readEnabled".equals(fieldName)) {
+                            deserializedRepositoryWriteableProperties.readEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRepositoryWriteableProperties;
-        });
+                    return deserializedRepositoryWriteableProperties;
+                });
     }
 }

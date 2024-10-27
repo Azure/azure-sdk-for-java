@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class CallIntelligenceOptions {
 
+
     /**
      * The endpoint URL of the Azure Cognitive Services resource attached
      */

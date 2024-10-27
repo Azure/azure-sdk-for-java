@@ -242,10 +242,8 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_APPLICATION_INSIGHTS == null
-                ? null
-                : DataSourceType.AZURE_APPLICATION_INSIGHTS.toString());
+        jsonWriter.writeStringField("dataSourceType", DataSourceType.AZURE_APPLICATION_INSIGHTS == null ? null
+            : DataSourceType.AZURE_APPLICATION_INSIGHTS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());

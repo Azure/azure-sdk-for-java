@@ -82,6 +82,8 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         this(response, continuationToken, facets, count, coverage, null, null, null);
     }
 
+
+
     /**
      * Constructor
      *

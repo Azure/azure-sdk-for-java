@@ -17,7 +17,8 @@ public final class IdentityErrorResponseException extends HttpResponseException 
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public IdentityErrorResponseException(String message, HttpResponse response, IdentityError value) {
+    public IdentityErrorResponseException(
+        String message, HttpResponse response, IdentityError value) {
         super(message, response, value);
     }
 

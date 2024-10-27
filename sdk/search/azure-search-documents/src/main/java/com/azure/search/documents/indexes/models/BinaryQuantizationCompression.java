@@ -64,21 +64,11 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
      * {@inheritDoc}
      */
     @Override
-    public BinaryQuantizationCompression setTruncationDimension(Integer truncationDimension) {
-        super.setTruncationDimension(truncationDimension);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getCompressionName());
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", isRerankWithOriginalVectors());
         jsonWriter.writeNumberField("defaultOversampling", getDefaultOversampling());
-        jsonWriter.writeNumberField("truncationDimension", getTruncationDimension());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -98,7 +88,6 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
             String compressionName = null;
             Boolean rerankWithOriginalVectors = null;
             Double defaultOversampling = null;
-            Integer truncationDimension = null;
             VectorSearchCompressionKind kind = VectorSearchCompressionKind.BINARY_QUANTIZATION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -111,8 +100,6 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
                     rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
                     defaultOversampling = reader.getNullable(JsonReader::getDouble);
-                } else if ("truncationDimension".equals(fieldName)) {
-                    truncationDimension = reader.getNullable(JsonReader::getInt);
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorSearchCompressionKind.fromString(reader.getString());
                 } else {
@@ -124,7 +111,6 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
                     = new BinaryQuantizationCompression(compressionName);
                 deserializedBinaryQuantizationCompression.setRerankWithOriginalVectors(rerankWithOriginalVectors);
                 deserializedBinaryQuantizationCompression.setDefaultOversampling(defaultOversampling);
-                deserializedBinaryQuantizationCompression.setTruncationDimension(truncationDimension);
                 deserializedBinaryQuantizationCompression.kind = kind;
 
                 return deserializedBinaryQuantizationCompression;

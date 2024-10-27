@@ -181,10 +181,10 @@ public final class MetricsAdvisorClient {
      * client routes its request through.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorClient(MetricsAdvisorImpl service, MetricsAdvisorServiceVersion serviceVersion) {
+    MetricsAdvisorClient(MetricsAdvisorImpl service,
+                         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
-
     /**
      * List series (dimension combinations) from metric.
      *
@@ -212,8 +212,8 @@ public final class MetricsAdvisorClient {
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
-        OffsetDateTime activeSince) {
+    public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(
+        String metricId, OffsetDateTime activeSince) {
         return listMetricSeriesDefinitions(metricId, activeSince, null, Context.NONE);
     }
 
@@ -260,15 +260,15 @@ public final class MetricsAdvisorClient {
     }
 
     private PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitionsSync(String metricId,
-        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listMetricSeriesDefinitionSinglePageSync(metricId, activeSince, options, context),
+                                                                  OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+        return new PagedIterable<>(() -> listMetricSeriesDefinitionSinglePageSync(metricId, activeSince, options,
+            context),
             continuationToken -> listMetricSeriesDefinitionNextPageSync(continuationToken, activeSince, options,
                 context));
     }
 
     private PagedResponse<MetricSeriesDefinition> listMetricSeriesDefinitionSinglePageSync(String metricId,
-        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+                                                                                                  OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
 
         validateActiveSinceInput(activeSince, logger);
 
@@ -276,15 +276,17 @@ public final class MetricsAdvisorClient {
             options = new ListMetricSeriesDefinitionOptions();
         }
 
-        final MetricSeriesQueryOptions metricSeriesQueryOptions = getMetricSeriesQueryOptions(activeSince, options);
+        final MetricSeriesQueryOptions metricSeriesQueryOptions =
+            getMetricSeriesQueryOptions(activeSince, options);
 
-        PagedResponse<MetricSeriesItem> res = service.getMetricSeriesSinglePage(UUID.fromString(metricId),
-            metricSeriesQueryOptions, options.getSkip(), options.getMaxPageSize(), context);
+        PagedResponse<MetricSeriesItem> res =
+            service.getMetricSeriesSinglePage(UUID.fromString(metricId), metricSeriesQueryOptions,
+                options.getSkip(), options.getMaxPageSize(), context);
         return MetricSeriesDefinitionTransforms.fromInnerResponse(res);
     }
 
     private PagedResponse<MetricSeriesDefinition> listMetricSeriesDefinitionNextPageSync(String nextPageLink,
-        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
+                                                                                         OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
@@ -293,7 +295,8 @@ public final class MetricsAdvisorClient {
         if (options == null) {
             options = new ListMetricSeriesDefinitionOptions();
         }
-        final MetricSeriesQueryOptions metricSeriesQueryOptions = getMetricSeriesQueryOptions(activeSince, options);
+        final MetricSeriesQueryOptions metricSeriesQueryOptions =
+            getMetricSeriesQueryOptions(activeSince, options);
 
         PagedResponse<MetricSeriesItem> res
             = service.getMetricSeriesNextSinglePage(nextPageLink, metricSeriesQueryOptions, context);
@@ -339,8 +342,8 @@ public final class MetricsAdvisorClient {
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricSeriesData> listMetricSeriesData(String metricId, List<DimensionKey> seriesKeys,
-        OffsetDateTime startTime, OffsetDateTime endTime) {
+    public PagedIterable<MetricSeriesData> listMetricSeriesData(String metricId,
+        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime) {
         return listMetricSeriesData(metricId, seriesKeys, startTime, endTime, Context.NONE);
     }
 
@@ -387,21 +390,23 @@ public final class MetricsAdvisorClient {
     }
 
     private PagedIterable<MetricSeriesData> listMetricSeriesDataSync(String metricId, List<DimensionKey> seriesKeys,
-        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
-        return new PagedIterable<>(
-            () -> listMetricSeriesDataInternal(metricId, seriesKeys, startTime, endTime, context), null);
+                                                     OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+        return new PagedIterable<>(() -> listMetricSeriesDataInternal(metricId, seriesKeys, startTime, endTime, context),
+            null);
     }
 
-    private PagedResponse<MetricSeriesData> listMetricSeriesDataInternal(String metricId, List<DimensionKey> seriesKeys,
-        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+    private PagedResponse<MetricSeriesData> listMetricSeriesDataInternal(String metricId,
+                                                                         List<DimensionKey> seriesKeys, OffsetDateTime startTime,
+                                                                         OffsetDateTime endTime, Context context) {
         validateMetricSeriesInputs(metricId, seriesKeys, startTime, endTime, logger);
 
-        List<Map<String, String>> dimensionList
-            = seriesKeys.stream().map(DimensionKey::asMap).collect(Collectors.toList());
-        final MetricDataQueryOptions metricDataQueryOptions = getMetricDataQueryOptions(startTime, dimensionList);
+        List<Map<String, String>> dimensionList =
+            seriesKeys.stream().map(DimensionKey::asMap).collect(Collectors.toList());
+        final MetricDataQueryOptions metricDataQueryOptions =
+            getMetricDataQueryOptions(startTime, dimensionList);
 
-        Response<MetricDataList> response
-            = service.getMetricDataWithResponse(UUID.fromString(metricId), metricDataQueryOptions, context);
+        Response<MetricDataList> response =
+            service.getMetricDataWithResponse(UUID.fromString(metricId), metricDataQueryOptions, context);
         return MetricSeriesDataTransforms.fromInnerResponse(response);
     }
 
@@ -435,8 +440,8 @@ public final class MetricsAdvisorClient {
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(String metricId, OffsetDateTime startTime,
-        OffsetDateTime endTime) {
+    public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(
+        String metricId, OffsetDateTime startTime, OffsetDateTime endTime) {
         return listMetricEnrichmentStatus(metricId, startTime, endTime, null, Context.NONE);
     }
 
@@ -474,48 +479,64 @@ public final class MetricsAdvisorClient {
      * is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(String metricId, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+    public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(
+        String metricId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
         return listMetricEnrichmentStatusSync(metricId, startTime, endTime, options, context);
     }
 
-    private PagedIterable<EnrichmentStatus> listMetricEnrichmentStatusSync(String metricId, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listMetricEnrichmentStatusSinglePageSync(metricId, startTime, endTime, options, context),
+    private PagedIterable<EnrichmentStatus> listMetricEnrichmentStatusSync(
+        String metricId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+        return new PagedIterable<>(() -> listMetricEnrichmentStatusSinglePageSync(metricId, startTime, endTime,
+            options, context),
             continuationToken -> listMetricEnrichmentStatusNextPageSync(continuationToken, startTime, endTime,
                 context));
     }
 
     private PagedResponse<EnrichmentStatus> listMetricEnrichmentStatusSinglePageSync(String metricId,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
+                                                                                            OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
         validateMetricEnrichmentStatusInputs(metricId, "'metricId' is required.", startTime, endTime);
         if (options == null) {
             options = new ListMetricEnrichmentStatusOptions();
         }
-        final EnrichmentStatusQueryOption enrichmentStatusQueryOption
-            = getEnrichmentStatusQueryOptions(startTime, endTime);
+        final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
+            getEnrichmentStatusQueryOptions(startTime, endTime);
 
-        PagedResponse<EnrichmentStatus> res = service.getEnrichmentStatusByMetricSinglePage(UUID.fromString(metricId),
-            enrichmentStatusQueryOption, options.getSkip(), options.getMaxPageSize(), context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue(),
-            res.getContinuationToken(), null);
+        PagedResponse<EnrichmentStatus> res = service.getEnrichmentStatusByMetricSinglePage(
+            UUID.fromString(metricId),
+            enrichmentStatusQueryOption,
+            options.getSkip(),
+            options.getMaxPageSize(),
+            context);
+        return new PagedResponseBase<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            res.getValue(),
+            res.getContinuationToken(),
+            null);
     }
-
     private PagedResponse<EnrichmentStatus> listMetricEnrichmentStatusNextPageSync(String nextPageLink,
-        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
+                                                                                   OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
         validateStartEndTime(startTime, endTime);
 
-        final EnrichmentStatusQueryOption enrichmentStatusQueryOption
-            = getEnrichmentStatusQueryOptions(startTime, endTime);
+        final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
+            getEnrichmentStatusQueryOptions(startTime, endTime);
 
-        PagedResponse<EnrichmentStatus> res
-            = service.getEnrichmentStatusByMetricNextSinglePage(nextPageLink, enrichmentStatusQueryOption, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue(),
-            res.getContinuationToken(), null);
+        PagedResponse<EnrichmentStatus> res =
+            service.getEnrichmentStatusByMetricNextSinglePage(nextPageLink, enrichmentStatusQueryOption,
+                context);
+        return new PagedResponseBase<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            res.getValue(),
+            res.getContinuationToken(),
+            null);
     }
 
     /**
@@ -567,32 +588,56 @@ public final class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
-        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listMetricEnrichedSeriesDataSync(detectionConfigurationId, seriesKeys, startTime, endTime, Context.NONE);
+                                                                                List<DimensionKey> seriesKeys,
+                                                                                OffsetDateTime startTime,
+                                                                                OffsetDateTime endTime) {
+        return listMetricEnrichedSeriesDataSync(detectionConfigurationId,
+            seriesKeys,
+            startTime,
+            endTime,
+            Context.NONE);
     }
 
     private PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesDataSync(String detectionConfigurationId,
-        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
-        return new PagedIterable<>(() -> listMetricEnrichedSeriesDataInternal(detectionConfigurationId, seriesKeys,
+                                                                     List<DimensionKey> seriesKeys,
+                                                                     OffsetDateTime startTime,
+                                                                     OffsetDateTime endTime,
+                                                                     Context context) {
+        return new PagedIterable<>(() -> listMetricEnrichedSeriesDataInternal(detectionConfigurationId,
+            seriesKeys,
             startTime, endTime, context), null);
     }
 
-    private PagedResponse<MetricEnrichedSeriesData> listMetricEnrichedSeriesDataInternal(
-        String detectionConfigurationId, List<DimensionKey> seriesKeys, OffsetDateTime startTime,
-        OffsetDateTime endTime, Context context) {
+    private PagedResponse<MetricEnrichedSeriesData>
+        listMetricEnrichedSeriesDataInternal(String detectionConfigurationId,
+                                         List<DimensionKey> seriesKeys,
+                                         OffsetDateTime startTime,
+                                         OffsetDateTime endTime,
+                                         Context context) {
         validateMetricEnrichedSeriesInputs(detectionConfigurationId, seriesKeys, startTime, endTime, logger);
 
-        final List<SeriesIdentity> innerSeriesKeys = seriesKeys.stream()
+        final List<SeriesIdentity> innerSeriesKeys = seriesKeys
+            .stream()
             .map(seriesId -> new SeriesIdentity().setDimension(seriesId.asMap()))
             .collect(Collectors.toList());
 
-        DetectionSeriesQuery query
-            = new DetectionSeriesQuery().setSeries(innerSeriesKeys).setStartTime(startTime).setEndTime(endTime);
+        DetectionSeriesQuery query = new DetectionSeriesQuery()
+            .setSeries(innerSeriesKeys)
+            .setStartTime(startTime)
+            .setEndTime(endTime);
 
-        Response<SeriesResultList> res = service.getSeriesByAnomalyDetectionConfigurationWithResponse(
-            UUID.fromString(detectionConfigurationId), query, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            MetricEnrichedSeriesDataTransformations.fromInnerList(res.getValue()), null, null);
+        Response<SeriesResultList> res =
+            service.getSeriesByAnomalyDetectionConfigurationWithResponse(
+                UUID.fromString(detectionConfigurationId),
+                query,
+                context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                MetricEnrichedSeriesDataTransformations.fromInnerList(res.getValue()),
+                null,
+                null);
     }
 
     /**
@@ -651,9 +696,17 @@ public final class MetricsAdvisorClient {
      * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
-        List<DimensionKey> seriesKeys, OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
-        return listMetricEnrichedSeriesDataSync(detectionConfigurationId, seriesKeys, startTime, endTime, context);
+    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(
+        String detectionConfigurationId,
+        List<DimensionKey> seriesKeys,
+        OffsetDateTime startTime,
+        OffsetDateTime endTime,
+        Context context) {
+        return listMetricEnrichedSeriesDataSync(detectionConfigurationId,
+            seriesKeys,
+            startTime,
+            endTime,
+            context);
     }
 
     /**
@@ -697,8 +750,8 @@ public final class MetricsAdvisorClient {
      * {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(String detectionConfigurationId,
-        OffsetDateTime startTime, OffsetDateTime endTime) {
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
+        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         return listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
@@ -752,49 +805,64 @@ public final class MetricsAdvisorClient {
      * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(String detectionConfigurationId,
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
+        String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
-        return listAnomaliesForDetectionConfigSync(detectionConfigurationId, startTime, endTime, options, context);
+        return listAnomaliesForDetectionConfigSync(detectionConfigurationId,
+            startTime,
+            endTime,
+            options,
+            context);
     }
 
-    private PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfigSync(String detectionConfigurationId,
+    private PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfigSync(
+        String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listAnomaliesForDetectionConfigSinglePageSync(detectionConfigurationId, startTime, endTime, options,
+        return new PagedIterable<>(() ->
+            listAnomaliesForDetectionConfigSinglePageSync(detectionConfigurationId, startTime, endTime, options,
                 context),
-            continuationToken -> listAnomaliesForDetectionConfigNextPageSync(continuationToken, startTime, endTime,
-                options, context));
+            continuationToken ->
+                listAnomaliesForDetectionConfigNextPageSync(continuationToken, startTime, endTime, options, context));
     }
 
     private PagedResponse<DataPointAnomaly> listAnomaliesForDetectionConfigSinglePageSync(
-        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime,
-        ListAnomaliesDetectedOptions options, Context context) {
-        validateMetricEnrichmentStatusInputs(detectionConfigurationId, "'detectionConfigurationId' is required.",
-            startTime, endTime);
+        String detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options,
+        Context context) {
+        validateMetricEnrichmentStatusInputs(detectionConfigurationId, "'detectionConfigurationId' is required.", startTime, endTime);
 
-        DetectionAnomalyResultQuery query
-            = new DetectionAnomalyResultQuery().setStartTime(startTime).setEndTime(endTime);
+        DetectionAnomalyResultQuery query = new DetectionAnomalyResultQuery()
+            .setStartTime(startTime)
+            .setEndTime(endTime);
 
         options = getListAnomaliesDetectedOptions(options, query, logger);
 
-        PagedResponse<AnomalyResult> response = service.getAnomaliesByAnomalyDetectionConfigurationSinglePage(
-            UUID.fromString(detectionConfigurationId), query, options.getSkip(), options.getMaxPageSize(), context);
+        PagedResponse<AnomalyResult> response =
+            service.getAnomaliesByAnomalyDetectionConfigurationSinglePage(
+                UUID.fromString(detectionConfigurationId),
+                query,
+                options.getSkip(),
+                options.getMaxPageSize(),
+                context);
         return AnomalyTransforms.fromInnerPagedResponse(response);
     }
 
-    private PagedResponse<DataPointAnomaly> listAnomaliesForDetectionConfigNextPageSync(String nextPageLink,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
+    private PagedResponse<DataPointAnomaly> listAnomaliesForDetectionConfigNextPageSync(
+        String nextPageLink,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
 
-        DetectionAnomalyResultQuery query
-            = new DetectionAnomalyResultQuery().setStartTime(startTime).setEndTime(endTime);
+        DetectionAnomalyResultQuery query = new DetectionAnomalyResultQuery()
+            .setStartTime(startTime)
+            .setEndTime(endTime);
 
         getListAnomaliesDetectedOptions(options, query, logger);
 
-        PagedResponse<AnomalyResult> response
-            = service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, query, context);
+        PagedResponse<AnomalyResult> response =
+            service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, query, context);
         return AnomalyTransforms.fromInnerPagedResponse(response);
     }
 
@@ -833,8 +901,8 @@ public final class MetricsAdvisorClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(String detectionConfigurationId,
-        OffsetDateTime startTime, OffsetDateTime endTime) {
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
+        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         return listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
@@ -887,39 +955,51 @@ public final class MetricsAdvisorClient {
      * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(String detectionConfigurationId,
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
+        String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
-        return listIncidentsForDetectionConfigSync(detectionConfigurationId, startTime, endTime, options, context);
+        return listIncidentsForDetectionConfigSync(detectionConfigurationId,
+            startTime, endTime, options, context);
     }
 
-    private PagedIterable<AnomalyIncident> listIncidentsForDetectionConfigSync(String detectionConfigurationId,
+    private PagedIterable<AnomalyIncident> listIncidentsForDetectionConfigSync(
+        String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
-        return new PagedIterable<>(() -> listIncidentsForDetectionConfigSinglePageSync(detectionConfigurationId,
-            startTime, endTime, options, context),
-            continuationToken -> listIncidentsForDetectionConfigNextPageSync(continuationToken, context));
+        return new PagedIterable<>(() ->
+            listIncidentsForDetectionConfigSinglePageSync(detectionConfigurationId, startTime, endTime, options,
+                context),
+            continuationToken ->
+                listIncidentsForDetectionConfigNextPageSync(continuationToken, context));
     }
 
     private PagedResponse<AnomalyIncident> listIncidentsForDetectionConfigSinglePageSync(
-        String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime,
-        ListIncidentsDetectedOptions options, Context context) {
+        String detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options,
+        Context context) {
         validateIncidentsForDetectionConfigInputs(detectionConfigurationId, startTime, endTime);
 
-        DetectionIncidentResultQuery query
-            = new DetectionIncidentResultQuery().setStartTime(startTime).setEndTime(endTime);
+        DetectionIncidentResultQuery query = new DetectionIncidentResultQuery()
+            .setStartTime(startTime)
+            .setEndTime(endTime);
         options = getListIncidentsDetectedOptions(options, query);
 
-        PagedResponse<IncidentResult> response = service.getIncidentsByAnomalyDetectionConfigurationSinglePage(
-            UUID.fromString(detectionConfigurationId), query, options.getMaxPageSize(), context);
+
+        PagedResponse<IncidentResult> response =
+            service.getIncidentsByAnomalyDetectionConfigurationSinglePage(
+                UUID.fromString(detectionConfigurationId),
+                query,
+                options.getMaxPageSize(),
+                context);
         return IncidentTransforms.fromInnerPagedResponse(response);
     }
 
-    private PagedResponse<AnomalyIncident> listIncidentsForDetectionConfigNextPageSync(String nextPageLink,
-        Context context) {
+    private PagedResponse<AnomalyIncident> listIncidentsForDetectionConfigNextPageSync(
+        String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
-        PagedResponse<IncidentResult> response
-            = service.getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, context);
+        PagedResponse<IncidentResult> response =
+            service.getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, context);
         return IncidentTransforms.fromInnerPagedResponse(response);
     }
 
@@ -953,7 +1033,9 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentRootCause> listIncidentRootCauses(String detectionConfigurationId, String incidentId) {
+    public PagedIterable<IncidentRootCause> listIncidentRootCauses(
+        String detectionConfigurationId,
+        String incidentId) {
         return listIncidentRootCauses(detectionConfigurationId, incidentId, Context.NONE);
     }
 
@@ -994,12 +1076,14 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentRootCause> listIncidentRootCauses(String detectionConfigurationId, String incidentId,
-        Context context) {
+    public PagedIterable<IncidentRootCause> listIncidentRootCauses(
+        String detectionConfigurationId,
+        String incidentId, Context context) {
         return listIncidentRootCausesSync(detectionConfigurationId, incidentId, context);
     }
 
-    private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(String detectionConfigurationId,
+    private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(
+        String detectionConfigurationId,
         String incidentId, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
         Objects.requireNonNull(incidentId, "'incidentId' is required.");
@@ -1045,17 +1129,18 @@ public final class MetricsAdvisorClient {
         return listIncidentRootCausesSync(anomalyIncident, Context.NONE);
     }
 
-    private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(AnomalyIncident anomalyIncident,
-        Context context) {
+    private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(AnomalyIncident anomalyIncident, Context context) {
         return new PagedIterable<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
     }
 
     private PagedResponse<IncidentRootCause> listIncidentRootCausesInternal(AnomalyIncident anomalyIncident,
-        Context context) {
+                                                                                  Context context) {
         validateAnomalyIncidentRootCausesInputs(anomalyIncident, logger);
 
-        Response<RootCauseList> res = service.getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
-            UUID.fromString(anomalyIncident.getDetectionConfigurationId()), anomalyIncident.getId(), context);
+        Response<RootCauseList> res =
+            service.getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
+                UUID.fromString(anomalyIncident.getDetectionConfigurationId()),
+                anomalyIncident.getId(), context);
 
         return IncidentRootCauseTransforms.fromInnerResponse(res);
     }
@@ -1093,10 +1178,11 @@ public final class MetricsAdvisorClient {
      * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listAnomalyDimensionValues(String detectionConfigurationId, String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listAnomalyDimensionValues(detectionConfigurationId, dimensionName, startTime, endTime, null,
-            Context.NONE);
+    public PagedIterable<String> listAnomalyDimensionValues(
+        String detectionConfigurationId,
+        String dimensionName, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAnomalyDimensionValues(detectionConfigurationId,
+            dimensionName, startTime, endTime, null, Context.NONE);
     }
 
     /**
@@ -1145,24 +1231,41 @@ public final class MetricsAdvisorClient {
      * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listAnomalyDimensionValues(String detectionConfigurationId, String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options, Context context) {
-        return listAnomalyDimensionValuesSync(detectionConfigurationId, dimensionName, startTime, endTime, options,
-            context);
-    }
-
-    private PagedIterable<String> listAnomalyDimensionValuesSync(String detectionConfigurationId, String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listAnomalyDimensionValuesSinglePageSync(detectionConfigurationId, dimensionName, startTime, endTime,
-                options, context),
-            continuationToken -> listAnomalyDimensionValuesNextPageSync(continuationToken, dimensionName, startTime,
-                endTime, options, context));
-    }
-
-    private PagedResponse<String> listAnomalyDimensionValuesSinglePageSync(String detectionConfigurationId,
-        String dimensionName, OffsetDateTime startTime, OffsetDateTime endTime,
+    public PagedIterable<String> listAnomalyDimensionValues(
+        String detectionConfigurationId,
+        String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime,
         ListAnomalyDimensionValuesOptions options, Context context) {
+        return listAnomalyDimensionValuesSync(detectionConfigurationId,
+            dimensionName, startTime, endTime, options, context);
+    }
+
+    private PagedIterable<String> listAnomalyDimensionValuesSync(
+        String detectionConfigurationId,
+        String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
+        Context context) {
+        return new PagedIterable<>(() ->
+            listAnomalyDimensionValuesSinglePageSync(detectionConfigurationId,
+                dimensionName,
+                startTime,
+                endTime,
+                options,
+                context),
+            continuationToken ->
+                listAnomalyDimensionValuesNextPageSync(continuationToken,
+                    dimensionName,
+                    startTime,
+                    endTime,
+                    options,
+                    context));
+    }
+
+    private PagedResponse<String> listAnomalyDimensionValuesSinglePageSync(
+        String detectionConfigurationId,
+        String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
+        Context context) {
         validateAnomalyDimensionValuesInputs(detectionConfigurationId, dimensionName, startTime, endTime);
 
         AnomalyDimensionQuery query = new AnomalyDimensionQuery();
@@ -1172,11 +1275,18 @@ public final class MetricsAdvisorClient {
         options = getListAnomalyDimensionValuesOptions(options, query);
 
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
-            UUID.fromString(detectionConfigurationId), query, options.getSkip(), options.getMaxPageSize(), context);
+            UUID.fromString(detectionConfigurationId),
+            query,
+            options.getSkip(),
+            options.getMaxPageSize(),
+            context);
     }
 
-    private PagedResponse<String> listAnomalyDimensionValuesNextPageSync(String nextPageLink, String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options, Context context) {
+    private PagedResponse<String> listAnomalyDimensionValuesNextPageSync(
+        String nextPageLink,
+        String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
@@ -1187,8 +1297,9 @@ public final class MetricsAdvisorClient {
         query.setEndTime(endTime);
         getListAnomalyDimensionValuesOptions(options, query);
 
-        return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, query,
-            context);
+        return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextPageLink,
+                query,
+                context);
     }
 
     /**
@@ -1222,8 +1333,8 @@ public final class MetricsAdvisorClient {
      * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlert> listAlerts(String alertConfigurationId, OffsetDateTime startTime,
-        OffsetDateTime endTime) {
+    public PagedIterable<AnomalyAlert> listAlerts(
+        String alertConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         return listAlerts(alertConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
@@ -1271,20 +1382,25 @@ public final class MetricsAdvisorClient {
      * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlert> listAlerts(String alertConfigurationId, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListAlertOptions options, Context context) {
+    public PagedIterable<AnomalyAlert> listAlerts(
+        String alertConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
         return listAlertsSync(alertConfigurationId, startTime, endTime, options, context);
     }
 
-    private PagedIterable<AnomalyAlert> listAlertsSync(String alertConfigurationId, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListAlertOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listAlertsSinglePageSync(alertConfigurationId, startTime, endTime, options, context),
-            continuationToken -> listAlertsNextPageSync(continuationToken, startTime, endTime, options, context));
+    private PagedIterable<AnomalyAlert> listAlertsSync(
+        String alertConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
+        return new PagedIterable<>(() ->
+            listAlertsSinglePageSync(alertConfigurationId, startTime, endTime, options, context),
+            continuationToken ->
+                listAlertsNextPageSync(continuationToken, startTime, endTime, options, context));
     }
 
-    private PagedResponse<AnomalyAlert> listAlertsSinglePageSync(String alertConfigurationId, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListAlertOptions options, Context context) {
+    private PagedResponse<AnomalyAlert> listAlertsSinglePageSync(
+        String alertConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options,
+        Context context) {
         validateListAlertsInputs(alertConfigurationId, startTime, endTime);
 
         if (options == null) {
@@ -1295,12 +1411,18 @@ public final class MetricsAdvisorClient {
         query.setEndTime(endTime);
         query.setTimeMode(TimeMode.fromString(toStringOrNull(options.getTimeMode())));
 
-        return service.getAlertsByAnomalyAlertingConfigurationSinglePage(UUID.fromString(alertConfigurationId), query,
-            options.getSkip(), options.getMaxPageSize(), context);
+        return service.getAlertsByAnomalyAlertingConfigurationSinglePage(
+                UUID.fromString(alertConfigurationId),
+                query,
+                options.getSkip(),
+                options.getMaxPageSize(),
+                context);
     }
 
-    private PagedResponse<AnomalyAlert> listAlertsNextPageSync(String nextPageLink, OffsetDateTime startTime,
-        OffsetDateTime endTime, ListAlertOptions options, Context context) {
+    private PagedResponse<AnomalyAlert> listAlertsNextPageSync(
+        String nextPageLink,
+        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
@@ -1310,7 +1432,9 @@ public final class MetricsAdvisorClient {
         query.setEndTime(endTime);
         query.setTimeMode(TimeMode.fromString(toStringOrNull(options.getTimeMode())));
 
-        return service.getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextPageLink, query, context);
+        return service.getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextPageLink,
+            query,
+            context);
     }
 
     /**
@@ -1347,7 +1471,9 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(String alertConfigurationId, String alertId) {
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
+        String alertConfigurationId,
+        String alertId) {
         return listAnomaliesForAlert(alertConfigurationId, alertId, null, Context.NONE);
     }
 
@@ -1397,36 +1523,53 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(String alertConfigurationId, String alertId,
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
+        String alertConfigurationId,
+        String alertId,
         ListAnomaliesAlertedOptions options, Context context) {
-        return listAnomaliesForAlertSync(alertConfigurationId, alertId, options, context);
+        return listAnomaliesForAlertSync(alertConfigurationId,
+            alertId,
+            options,
+            context);
     }
 
-    private PagedIterable<DataPointAnomaly> listAnomaliesForAlertSync(String alertConfigurationId, String alertId,
-        ListAnomaliesAlertedOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listAnomaliesForAlertSinglePageSync(alertConfigurationId, alertId, options, context),
-            continuationToken -> listAnomaliesForAlertNextPageSync(continuationToken, context));
+    private PagedIterable<DataPointAnomaly> listAnomaliesForAlertSync(
+        String alertConfigurationId,
+        String alertId,
+        ListAnomaliesAlertedOptions options,
+        Context context) {
+        return new PagedIterable<>(() ->
+            listAnomaliesForAlertSinglePageSync(alertConfigurationId, alertId, options, context),
+            continuationToken ->
+                listAnomaliesForAlertNextPageSync(continuationToken, context));
     }
 
-    private PagedResponse<DataPointAnomaly> listAnomaliesForAlertSinglePageSync(String alertConfigurationId,
-        String alertId, ListAnomaliesAlertedOptions options, Context context) {
+    private PagedResponse<DataPointAnomaly> listAnomaliesForAlertSinglePageSync(
+        String alertConfigurationId,
+        String alertId,
+        ListAnomaliesAlertedOptions options,
+        Context context) {
         validateListAnomaliesInputs(alertConfigurationId, alertId);
 
         PagedResponse<AnomalyResult> response = service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
-            UUID.fromString(alertConfigurationId), alertId, options == null ? null : options.getSkip(),
-            options == null ? null : options.getMaxPageSize(), context);
+            UUID.fromString(alertConfigurationId),
+            alertId,
+            options == null ? null : options.getSkip(),
+            options == null ? null : options.getMaxPageSize(),
+            context);
 
         return AnomalyTransforms.fromInnerPagedResponse(response);
     }
 
-    private PagedResponse<DataPointAnomaly> listAnomaliesForAlertNextPageSync(String nextPageLink, Context context) {
+    private PagedResponse<DataPointAnomaly> listAnomaliesForAlertNextPageSync(
+        String nextPageLink,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
 
-        PagedResponse<AnomalyResult> response
-            = service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextPageLink, context);
+        PagedResponse<AnomalyResult> response =
+            service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextPageLink, context);
         return AnomalyTransforms.fromInnerPagedResponse(response);
     }
 
@@ -1475,8 +1618,13 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidentsForAlert(String alertConfigurationId, String alertId) {
-        return this.listIncidentsForAlert(alertConfigurationId, alertId, null, Context.NONE);
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
+        String alertConfigurationId,
+        String alertId) {
+        return this.listIncidentsForAlert(alertConfigurationId,
+            alertId,
+            null,
+            Context.NONE);
     }
 
     /**
@@ -1530,35 +1678,49 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidentsForAlert(String alertConfigurationId, String alertId,
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
+        String alertConfigurationId,
+        String alertId,
         ListIncidentsAlertedOptions options, Context context) {
-        return listIncidentsForAlertSync(alertConfigurationId, alertId, options, context);
+        return listIncidentsForAlertSync(alertConfigurationId,
+            alertId,
+            options, context);
     }
 
-    private PagedIterable<AnomalyIncident> listIncidentsForAlertSync(String alertConfigurationId, String alertId,
+    private PagedIterable<AnomalyIncident> listIncidentsForAlertSync(
+        String alertConfigurationId,
+        String alertId,
         ListIncidentsAlertedOptions options, Context context) {
-        return new PagedIterable<>(
-            () -> listIncidentsForAlertSinglePageSync(alertConfigurationId, alertId, options, context),
-            continuationToken -> listIncidentsForAlertNextPageSync(continuationToken, context));
+        return new PagedIterable<>(() ->
+            listIncidentsForAlertSinglePageSync(alertConfigurationId, alertId, options, context),
+            continuationToken ->
+                listIncidentsForAlertNextPageSync(continuationToken, context));
     }
 
-    private PagedResponse<AnomalyIncident> listIncidentsForAlertSinglePageSync(String alertConfigurationId,
-        String alertId, ListIncidentsAlertedOptions options, Context context) {
+    private PagedResponse<AnomalyIncident> listIncidentsForAlertSinglePageSync(
+        String alertConfigurationId,
+        String alertId,
+        ListIncidentsAlertedOptions options, Context context) {
         validateListAnomaliesInputs(alertConfigurationId, alertId);
 
         PagedResponse<IncidentResult> response = service.getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
-            UUID.fromString(alertConfigurationId), alertId, options == null ? null : options.getSkip(),
-            options == null ? null : options.getMaxPageSize(), context);
+            UUID.fromString(alertConfigurationId),
+            alertId,
+            options == null ? null : options.getSkip(),
+            options == null ? null : options.getMaxPageSize(),
+            context);
         return IncidentTransforms.fromInnerPagedResponse(response);
     }
 
-    private PagedResponse<AnomalyIncident> listIncidentsForAlertNextPageSync(String nextPageLink, Context context) {
+    private PagedResponse<AnomalyIncident> listIncidentsForAlertNextPageSync(
+        String nextPageLink,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
 
-        PagedResponse<IncidentResult> response
-            = service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextPageLink, context);
+        PagedResponse<IncidentResult> response =
+            service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextPageLink, context);
         return IncidentTransforms.fromInnerPagedResponse(response);
     }
 
@@ -1639,77 +1801,88 @@ public final class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricFeedback> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
-        Context context) {
+                                                            Context context) {
         return addFeedbackWithResponseSync(metricId, metricFeedback, context);
     }
 
     private Response<MetricFeedback> addFeedbackWithResponseSync(String metricId, MetricFeedback metricFeedback,
-        Context context) {
+                                                           Context context) {
         validateAddFeedbackInputs(metricId, metricFeedback);
 
         com.azure.ai.metricsadvisor.implementation.models.MetricFeedback innerMetricFeedback;
         if (metricFeedback instanceof MetricAnomalyFeedback) {
             MetricAnomalyFeedback metricAnomalyFeedback = (MetricAnomalyFeedback) metricFeedback;
-            Objects.requireNonNull(metricAnomalyFeedback.getStartTime(), "'metricFeedback.startTime' is required.");
-            Objects.requireNonNull(metricAnomalyFeedback.getEndTime(), "'metricFeedback.endTime' is required.");
+            Objects.requireNonNull(metricAnomalyFeedback.getStartTime(),
+                "'metricFeedback.startTime' is required.");
+            Objects.requireNonNull(metricAnomalyFeedback.getEndTime(),
+                "'metricFeedback.endTime' is required.");
             Objects.requireNonNull(metricAnomalyFeedback.getAnomalyValue(),
                 "'metricFeedback.anomalyValue' is required.");
 
-            AnomalyFeedback innerAnomalyFeedback
-                = new AnomalyFeedback().setStartTime(metricAnomalyFeedback.getStartTime())
-                    .setEndTime(metricAnomalyFeedback.getEndTime())
-                    .setValue(new AnomalyFeedbackValue().setAnomalyValue(metricAnomalyFeedback.getAnomalyValue()));
+            AnomalyFeedback innerAnomalyFeedback = new AnomalyFeedback()
+                .setStartTime(metricAnomalyFeedback.getStartTime())
+                .setEndTime(metricAnomalyFeedback.getEndTime())
+                .setValue(new AnomalyFeedbackValue().setAnomalyValue(metricAnomalyFeedback.getAnomalyValue()));
 
             if (metricAnomalyFeedback.getDetectionConfiguration() != null) {
                 innerAnomalyFeedback
                     .setAnomalyDetectionConfigurationId(
                         UUID.fromString(metricAnomalyFeedback.getDetectionConfiguration().getId()))
-                    .setAnomalyDetectionConfigurationSnapshot(DetectionConfigurationTransforms.toInnerForCreate(logger,
-                        metricId, metricAnomalyFeedback.getDetectionConfiguration()));
+                    .setAnomalyDetectionConfigurationSnapshot(
+                        DetectionConfigurationTransforms.toInnerForCreate(logger, metricId,
+                            metricAnomalyFeedback.getDetectionConfiguration()));
             }
-            innerMetricFeedback = innerAnomalyFeedback.setMetricId(UUID.fromString(metricId))
-                .setDimensionFilter(
-                    new FeedbackDimensionFilter().setDimension(metricAnomalyFeedback.getDimensionFilter().asMap()));
+            innerMetricFeedback = innerAnomalyFeedback
+                .setMetricId(UUID.fromString(metricId))
+                .setDimensionFilter(new FeedbackDimensionFilter()
+                    .setDimension(metricAnomalyFeedback.getDimensionFilter().asMap()));
         } else if (metricFeedback instanceof MetricChangePointFeedback) {
             MetricChangePointFeedback metricChangePointFeedback = (MetricChangePointFeedback) metricFeedback;
-            Objects.requireNonNull(metricChangePointFeedback.getStartTime(), "'metricFeedback.startTime' is required.");
-            Objects.requireNonNull(metricChangePointFeedback.getEndTime(), "'metricFeedback.endTime' is required.");
+            Objects.requireNonNull(metricChangePointFeedback.getStartTime(),
+                "'metricFeedback.startTime' is required.");
+            Objects.requireNonNull(metricChangePointFeedback.getEndTime(),
+                "'metricFeedback.endTime' is required.");
             Objects.requireNonNull(metricChangePointFeedback.getChangePointValue(),
                 "'metricFeedback.changePointValue' is required.");
-            innerMetricFeedback = new ChangePointFeedback().setStartTime(metricChangePointFeedback.getStartTime())
+            innerMetricFeedback = new ChangePointFeedback()
+                .setStartTime(metricChangePointFeedback.getStartTime())
                 .setEndTime(metricChangePointFeedback.getEndTime())
-                .setValue(
-                    new ChangePointFeedbackValue().setChangePointValue(metricChangePointFeedback.getChangePointValue()))
+                .setValue(new ChangePointFeedbackValue()
+                    .setChangePointValue(metricChangePointFeedback.getChangePointValue()))
                 .setMetricId(UUID.fromString(metricId))
-                .setDimensionFilter(
-                    new FeedbackDimensionFilter().setDimension(metricChangePointFeedback.getDimensionFilter().asMap()));
+                .setDimensionFilter(new FeedbackDimensionFilter()
+                    .setDimension(metricChangePointFeedback.getDimensionFilter().asMap()));
 
         } else if (metricFeedback instanceof MetricPeriodFeedback) {
             MetricPeriodFeedback metricPeriodFeedback = (MetricPeriodFeedback) metricFeedback;
-            Objects.requireNonNull(metricPeriodFeedback.getPeriodType(), "'metricFeedback.periodType' is required.");
-            Objects.requireNonNull(metricPeriodFeedback.getPeriodValue(), "'metricFeedback.periodValue' is required.");
+            Objects.requireNonNull(metricPeriodFeedback.getPeriodType(),
+                "'metricFeedback.periodType' is required.");
+            Objects.requireNonNull(metricPeriodFeedback.getPeriodValue(),
+                "'metricFeedback.periodValue' is required.");
             innerMetricFeedback = new PeriodFeedback()
                 .setValue(new PeriodFeedbackValue().setPeriodValue(metricPeriodFeedback.getPeriodValue())
                     .setPeriodType(metricPeriodFeedback.getPeriodType()))
                 .setMetricId(UUID.fromString(metricId))
-                .setDimensionFilter(
-                    new FeedbackDimensionFilter().setDimension(metricPeriodFeedback.getDimensionFilter().asMap()));
+                .setDimensionFilter(new FeedbackDimensionFilter()
+                    .setDimension(metricPeriodFeedback.getDimensionFilter().asMap()));
         } else if (metricFeedback instanceof MetricCommentFeedback) {
             MetricCommentFeedback metricCommentFeedback = (MetricCommentFeedback) metricFeedback;
-            Objects.requireNonNull(metricCommentFeedback.getComment(), "'metricFeedback.comment' is required.");
-            innerMetricFeedback = new CommentFeedback().setStartTime(metricCommentFeedback.getStartTime())
+            Objects.requireNonNull(metricCommentFeedback.getComment(),
+                "'metricFeedback.comment' is required.");
+            innerMetricFeedback = new CommentFeedback()
+                .setStartTime(metricCommentFeedback.getStartTime())
                 .setEndTime(metricCommentFeedback.getEndTime())
                 .setValue(new CommentFeedbackValue().setCommentValue(metricCommentFeedback.getComment()))
                 .setMetricId(UUID.fromString(metricId))
-                .setDimensionFilter(
-                    new FeedbackDimensionFilter().setDimension(metricCommentFeedback.getDimensionFilter().asMap()));
+                .setDimensionFilter(new FeedbackDimensionFilter()
+                    .setDimension(metricCommentFeedback.getDimensionFilter().asMap()));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Unknown feedback type."));
         }
-        CreateMetricFeedbackResponse createdMetricFeedbackResponse
-            = service.createMetricFeedbackWithResponse(innerMetricFeedback, context);
-        return getFeedbackWithResponse(
-            parseOperationId(createdMetricFeedbackResponse.getDeserializedHeaders().getLocation()), context);
+        CreateMetricFeedbackResponse createdMetricFeedbackResponse =
+            service.createMetricFeedbackWithResponse(innerMetricFeedback, context);
+        return getFeedbackWithResponse(parseOperationId(createdMetricFeedbackResponse
+                    .getDeserializedHeaders().getLocation()), context);
     }
 
     /**
@@ -1787,10 +1960,10 @@ public final class MetricsAdvisorClient {
 
     private Response<MetricFeedback> getFeedbackWithResponseSync(String feedbackId, Context context) {
         Objects.requireNonNull(feedbackId, "'feedbackId' is required.");
-        Response<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> metricFeedbackResponse
-            = service.getMetricFeedbackWithResponse(UUID.fromString(feedbackId), context);
+        Response<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> metricFeedbackResponse =
+            service.getMetricFeedbackWithResponse(UUID.fromString(feedbackId), context);
         return new SimpleResponse<>(metricFeedbackResponse,
-            MetricFeedbackTransforms.fromInner(metricFeedbackResponse.getValue()));
+                MetricFeedbackTransforms.fromInner(metricFeedbackResponse.getValue()));
     }
 
     /**
@@ -1839,7 +2012,8 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricFeedback> listFeedback(String metricId) {
+    public PagedIterable<MetricFeedback> listFeedback(
+        String metricId) {
         return listFeedback(metricId, null, Context.NONE);
     }
 
@@ -1901,46 +2075,54 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricFeedback> listFeedback(String metricId, ListMetricFeedbackOptions options,
-        Context context) {
+    public PagedIterable<MetricFeedback> listFeedback(
+        String metricId,
+        ListMetricFeedbackOptions options, Context context) {
         return listFeedbackSync(metricId, options, context);
     }
 
-    private PagedIterable<MetricFeedback> listFeedbackSync(String metricId, ListMetricFeedbackOptions options,
-        Context context) {
+    private PagedIterable<MetricFeedback> listFeedbackSync(String metricId, ListMetricFeedbackOptions options, Context context) {
         if (options == null) {
             options = new ListMetricFeedbackOptions();
         }
         final MetricFeedbackFilter metricFeedbackFilter = MetricFeedbackTransforms.toInnerFilter(metricId, options);
 
         ListMetricFeedbackOptions finalOptions = options;
-        return new PagedIterable<>(
-            () -> listMetricFeedbacksSinglePageSync(metricFeedbackFilter, finalOptions.getMaxPageSize(),
+        return new PagedIterable<>(() ->
+            listMetricFeedbacksSinglePageSync(metricFeedbackFilter, finalOptions.getMaxPageSize(),
                 finalOptions.getSkip(), context),
-            continuationToken -> listMetricFeedbacksNextPageSync(continuationToken, metricFeedbackFilter, context));
+            continuationToken ->
+                listMetricFeedbacksNextPageSync(continuationToken, metricFeedbackFilter,
+                    context));
     }
-
     private PagedResponse<MetricFeedback> listMetricFeedbacksSinglePageSync(MetricFeedbackFilter metricFeedbackFilter,
-        Integer maxPageSize, Integer skip, Context context) {
+                                                                              Integer maxPageSize, Integer skip, Context context) {
 
-        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> res
-            = service.listMetricFeedbacksSinglePage(metricFeedbackFilter, skip, maxPageSize, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().stream().map(MetricFeedbackTransforms::fromInner).collect(Collectors.toList()),
-            res.getContinuationToken(), null);
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> res =
+            service.listMetricFeedbacksSinglePage(metricFeedbackFilter, skip, maxPageSize, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().stream().map(MetricFeedbackTransforms::fromInner).collect(Collectors.toList()),
+                res.getContinuationToken(),
+                null);
     }
-
     private PagedResponse<MetricFeedback> listMetricFeedbacksNextPageSync(String nextPageLink,
-        MetricFeedbackFilter metricFeedbackFilter, Context context) {
+                                                                            MetricFeedbackFilter metricFeedbackFilter, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
 
-        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> res
-            = service.listMetricFeedbacksNextSinglePage(nextPageLink, metricFeedbackFilter, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.MetricFeedback> res =
+            service.listMetricFeedbacksNextSinglePage(nextPageLink, metricFeedbackFilter, context);
+        return new PagedResponseBase<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
             res.getValue().stream().map(MetricFeedbackTransforms::fromInner).collect(Collectors.toList()),
-            res.getContinuationToken(), null);
+            res.getContinuationToken(),
+            null);
     }
 
     /**
@@ -1964,7 +2146,9 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listMetricDimensionValues(String metricId, String dimensionName) {
+    public PagedIterable<String> listMetricDimensionValues(
+        String metricId,
+        String dimensionName) {
         return listMetricDimensionValues(metricId, dimensionName, null, Context.NONE);
     }
 
@@ -1993,47 +2177,60 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listMetricDimensionValues(String metricId, String dimensionName,
+    public PagedIterable<String> listMetricDimensionValues(
+        String metricId,
+        String dimensionName,
         ListMetricDimensionValuesOptions options, Context context) {
         return listMetricDimensionValuesSync(metricId, dimensionName, options, context);
     }
 
     private PagedIterable<String> listMetricDimensionValuesSync(final String metricId, final String dimensionName,
-        final ListMetricDimensionValuesOptions options, final Context context) {
-        return new PagedIterable<>(
-            () -> listMetricDimensionValuesSinglePageAsync(metricId, dimensionName, options, context),
-            continuationToken -> listMetricDimensionValuesNextPageAsync(continuationToken, dimensionName, options,
-                context));
+                                                final ListMetricDimensionValuesOptions options, final Context context) {
+        return new PagedIterable<>(() -> listMetricDimensionValuesSinglePageAsync(metricId, dimensionName,
+            options, context),
+            continuationToken -> listMetricDimensionValuesNextPageAsync(continuationToken, dimensionName,
+                options, context));
     }
 
     private PagedResponse<String> listMetricDimensionValuesSinglePageAsync(String metricId, String dimensionName,
-        ListMetricDimensionValuesOptions options, Context context) {
+                                                                                 ListMetricDimensionValuesOptions options, Context context) {
         Objects.requireNonNull(metricId, "'metricId' cannot be null.");
         Objects.requireNonNull(dimensionName, "'dimensionName' cannot be null.");
         if (options == null) {
             options = new ListMetricDimensionValuesOptions();
         }
 
-        final MetricDimensionQueryOptions metricDimensionQueryOptions
-            = getMetricDimensionQueryOptions(dimensionName, options);
+        final MetricDimensionQueryOptions metricDimensionQueryOptions =
+            getMetricDimensionQueryOptions(dimensionName, options);
 
-        PagedResponse<String> res = service.getMetricDimensionSinglePage(UUID.fromString(metricId),
-            metricDimensionQueryOptions, options.getSkip(), options.getMaxPageSize(), context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue(),
-            res.getContinuationToken(), null);
+        PagedResponse<String> res =
+            service.getMetricDimensionSinglePage(UUID.fromString(metricId), metricDimensionQueryOptions,
+                options.getSkip(), options.getMaxPageSize(), context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue(),
+                res.getContinuationToken(),
+                null);
     }
 
-    private PagedResponse<String> listMetricDimensionValuesNextPageAsync(String nextPageLink, String dimensionName,
-        ListMetricDimensionValuesOptions options, Context context) {
+    private PagedResponse<String> listMetricDimensionValuesNextPageAsync(String nextPageLink,
+                                                                               String dimensionName, ListMetricDimensionValuesOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return null;
         }
-        final MetricDimensionQueryOptions metricDimensionQueryOptions
-            = getMetricDimensionQueryOptions(dimensionName, options);
+        final MetricDimensionQueryOptions metricDimensionQueryOptions =
+            getMetricDimensionQueryOptions(dimensionName, options);
 
-        PagedResponse<String> res
-            = service.getMetricDimensionNextSinglePage(nextPageLink, metricDimensionQueryOptions, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue(),
-            res.getContinuationToken(), null);
+        PagedResponse<String> res =
+            service.getMetricDimensionNextSinglePage(nextPageLink, metricDimensionQueryOptions, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue(),
+                res.getContinuationToken(),
+                null);
     }
 }

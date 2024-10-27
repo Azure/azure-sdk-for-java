@@ -42,13 +42,11 @@ public final class ConstructorAccessors {
         setManifestResultAccessor = accessor;
     }
 
-    public static GetManifestResult createGetManifestResult(String digest, ManifestMediaType mediaType,
-        BinaryData rawData) {
+    public static GetManifestResult createGetManifestResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
         if (getManifestAccessor == null) {
             try {
                 // it's possible that nobody yet created DownloadBlobAsyncResult, so we'll need to force its static section to run and set accessor.
-                Class.forName(GetManifestResult.class.getName(), true,
-                    GetManifestResultConstructorAccessor.class.getClassLoader());
+                Class.forName(GetManifestResult.class.getName(), true, GetManifestResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
@@ -61,8 +59,7 @@ public final class ConstructorAccessors {
         if (uploadBlobResultAccessor == null) {
             try {
                 // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
-                Class.forName(UploadRegistryBlobResult.class.getName(), true,
-                    UploadRegistryBlobResultConstructorAccessor.class.getClassLoader());
+                Class.forName(UploadRegistryBlobResult.class.getName(), true, UploadRegistryBlobResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
@@ -75,8 +72,7 @@ public final class ConstructorAccessors {
         if (setManifestResultAccessor == null) {
             try {
                 // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
-                Class.forName(SetManifestResult.class.getName(), true,
-                    SetManifestResultConstructorAccessor.class.getClassLoader());
+                Class.forName(SetManifestResult.class.getName(), true, SetManifestResultConstructorAccessor.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }

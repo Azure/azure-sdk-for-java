@@ -25,8 +25,7 @@ public final class ManifestList extends Manifest {
     private List<ManifestListAttributes> manifests;
 
     /** Creates an instance of ManifestList class. */
-    public ManifestList() {
-    }
+    public ManifestList() {}
 
     /**
      * Get the mediaType property: Media type for this Manifest.
@@ -93,26 +92,27 @@ public final class ManifestList extends Manifest {
      * @throws IOException If an error occurs while reading the ManifestList.
      */
     public static ManifestList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ManifestList deserializedManifestList = new ManifestList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestList deserializedManifestList = new ManifestList();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("schemaVersion".equals(fieldName)) {
-                    deserializedManifestList.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                } else if ("mediaType".equals(fieldName)) {
-                    deserializedManifestList.mediaType = reader.getString();
-                } else if ("manifests".equals(fieldName)) {
-                    List<ManifestListAttributes> manifests
-                        = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                    deserializedManifestList.manifests = manifests;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedManifestList.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                        } else if ("mediaType".equals(fieldName)) {
+                            deserializedManifestList.mediaType = reader.getString();
+                        } else if ("manifests".equals(fieldName)) {
+                            List<ManifestListAttributes> manifests =
+                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            deserializedManifestList.manifests = manifests;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifestList;
-        });
+                    return deserializedManifestList;
+                });
     }
 }

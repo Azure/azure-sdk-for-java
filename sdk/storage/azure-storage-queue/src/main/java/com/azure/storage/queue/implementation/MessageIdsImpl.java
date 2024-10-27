@@ -385,8 +385,8 @@ public final class MessageIdsImpl {
     public ResponseBase<MessageIdsUpdateHeaders, Void> updateWithResponse(String queueName, String messageid,
         String popReceipt, int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage,
         Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.updateSync(this.client.getUrl(), queueName, messageid, popReceipt, visibilitytimeout,
                 timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -454,8 +454,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateNoCustomHeadersWithResponse(String queueName, String messageid, String popReceipt,
         int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.updateNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -645,8 +645,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessageIdsDeleteHeaders, Void> deleteWithResponse(String queueName, String messageid,
         String popReceipt, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -696,8 +696,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String queueName, String messageid, String popReceipt,
         Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {

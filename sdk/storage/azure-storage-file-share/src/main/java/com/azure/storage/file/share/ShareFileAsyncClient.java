@@ -623,8 +623,7 @@ public class ShareFileAsyncClient {
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
-     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;;;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
      *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
@@ -708,9 +707,8 @@ public class ShareFileAsyncClient {
                 try {
                     return withContext(context -> azureFileStorageClient.getFiles()
                         .startCopyWithResponseAsync(shareName, filePath, copySource, null,
-                            options.getMetadata(), options.getFilePermission(), options.getFilePermissionFormat(),
-                            tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
-                            copyFileSmbInfo, context))
+                            options.getMetadata(), options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
+                            finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
                         .map(response -> {
                             final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                             copyId.set(headers.getXMsCopyId());
@@ -1236,7 +1234,7 @@ public class ShareFileAsyncClient {
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
-            rangeString, rangeGetContentMD5, null, requestConditions.getLeaseId(), context);
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -2291,8 +2289,8 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
-                null, null, data, context)
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data,
+                context)
             .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
     }
 
@@ -2568,8 +2566,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, requestConditions.getLeaseId(), null,
-                null, null, (Flux<ByteBuffer>) null, context)
+                0L, null, null, requestConditions.getLeaseId(), null, (Flux<ByteBuffer>) null, context)
             .map(ModelHelper::transformUploadResponse);
     }
 

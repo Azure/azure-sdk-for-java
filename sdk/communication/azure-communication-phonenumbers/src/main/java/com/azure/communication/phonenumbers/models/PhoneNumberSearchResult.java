@@ -5,73 +5,61 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The result of a phone number search operation.
- */
+/** The PhoneNumberSearchResult model. */
 @Immutable
-public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumberSearchResult> {
+public final class PhoneNumberSearchResult {
     /*
      * The search id.
      */
+    @JsonProperty(value = "searchId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String searchId;
 
     /*
-     * The phone numbers that are available. Can be fewer than the desired search quantity.
+     * The phone numbers that are available. Can be fewer than the desired
+     * search quantity.
      */
+    @JsonProperty(value = "phoneNumbers", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<String> phoneNumbers;
 
     /*
      * The phone number's type, e.g. geographic, or tollFree.
      */
+    @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Phone number's assignment type.
      */
+    @JsonProperty(value = "assignmentType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
+    @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The incurred cost for a single phone number.
      */
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /*
-     * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
+     * The date that this search result expires and phone numbers are no longer
+     * on hold. A search result expires in less than 15min, e.g.
+     * 2020-11-19T16:31:49.048Z.
      */
+    @JsonProperty(value = "searchExpiresBy", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime searchExpiresBy;
-
-    /*
-     * The error code of the search.
-     */
-    private Integer errorCode;
-
-    /*
-     * Mapping Error Messages to Codes
-     */
-    private PhoneNumberSearchResultError error;
-
-    /**
-     * Creates an instance of PhoneNumberSearchResult class.
-     */
-    public PhoneNumberSearchResult() {
-    }
 
     /**
      * Get the searchId property: The search id.
-     * 
+     *
      * @return the searchId value.
      */
     public String getSearchId() {
@@ -81,7 +69,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     /**
      * Get the phoneNumbers property: The phone numbers that are available. Can be fewer than the desired search
      * quantity.
-     * 
+     *
      * @return the phoneNumbers value.
      */
     public List<String> getPhoneNumbers() {
@@ -90,7 +78,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
 
     /**
      * Get the phoneNumberType property: The phone number's type, e.g. geographic, or tollFree.
-     * 
+     *
      * @return the phoneNumberType value.
      */
     public PhoneNumberType getPhoneNumberType() {
@@ -99,7 +87,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
 
     /**
      * Get the assignmentType property: Phone number's assignment type.
-     * 
+     *
      * @return the assignmentType value.
      */
     public PhoneNumberAssignmentType getAssignmentType() {
@@ -108,7 +96,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
 
     /**
      * Get the capabilities property: Capabilities of a phone number.
-     * 
+     *
      * @return the capabilities value.
      */
     public PhoneNumberCapabilities getCapabilities() {
@@ -117,7 +105,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
 
     /**
      * Get the cost property: The incurred cost for a single phone number.
-     * 
+     *
      * @return the cost value.
      */
     public PhoneNumberCost getCost() {
@@ -127,85 +115,10 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     /**
      * Get the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
      * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
-     * 
+     *
      * @return the searchExpiresBy value.
      */
     public OffsetDateTime getSearchExpiresBy() {
         return this.searchExpiresBy;
-    }
-
-    /**
-     * Get the errorCode property: The error code of the search.
-     * 
-     * @return the errorCode value.
-     */
-    public Integer getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Get the error property: Mapping Error Messages to Codes.
-     * 
-     * @return the error value.
-     */
-    public PhoneNumberSearchResultError getError() {
-        return this.error;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PhoneNumberSearchResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberSearchResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PhoneNumberSearchResult.
-     */
-    public static PhoneNumberSearchResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberSearchResult deserializedPhoneNumberSearchResult = new PhoneNumberSearchResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("searchId".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.searchId = reader.getString();
-                } else if ("phoneNumbers".equals(fieldName)) {
-                    List<String> phoneNumbers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedPhoneNumberSearchResult.phoneNumbers = phoneNumbers;
-                } else if ("phoneNumberType".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.phoneNumberType
-                        = PhoneNumberType.fromString(reader.getString());
-                } else if ("assignmentType".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.assignmentType
-                        = PhoneNumberAssignmentType.fromString(reader.getString());
-                } else if ("capabilities".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.capabilities = PhoneNumberCapabilities.fromJson(reader);
-                } else if ("cost".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.cost = PhoneNumberCost.fromJson(reader);
-                } else if ("searchExpiresBy".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.searchExpiresBy
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("errorCode".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.errorCode = reader.getNullable(JsonReader::getInt);
-                } else if ("error".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.error
-                        = PhoneNumberSearchResultError.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPhoneNumberSearchResult;
-        });
     }
 }

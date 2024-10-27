@@ -29,6 +29,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -385,7 +386,7 @@ public final class DataLakePathClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
                 : parts.getBlobContainerName();
-            this.pathName = parts.getBlobName() == null ? this.pathName : parts.getBlobName();
+            this.pathName = parts.getBlobName() == null ? this.pathName : Utility.urlEncode(parts.getBlobName());
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -421,7 +422,8 @@ public final class DataLakePathClientBuilder implements
      */
     public DataLakePathClientBuilder pathName(String pathName) {
         blobClientBuilder.blobName(pathName);
-        this.pathName = Objects.requireNonNull(pathName, "'pathName' cannot be null.");
+        this.pathName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(pathName,
+            "'pathName' cannot be null.")));
         return this;
     }
 

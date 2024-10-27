@@ -31,11 +31,9 @@ class ReadWriteState {
             case CLIENT:
                 writer = "ClientWriter";
                 break;
-
             case SERVICE:
                 writer = "ServiceWriter";
                 break;
-
             default:
                 writer = "";
                 break;
@@ -74,6 +72,7 @@ class ReadWriteState {
      * Indicates which socket to target when performing a read or write.
      */
     enum Target {
-        CLIENT, SERVICE,
+        CLIENT,
+        SERVICE,
     }
 }

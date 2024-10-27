@@ -29,7 +29,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,8 +49,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BlobBaseApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -272,7 +269,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             /* Input Stream. */
             InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression)
                 .setInputSerialization(ser).setOutputSerialization(ser)).getValue();
-            byte[] queryData;
+            byte[] queryData = new byte[0];
             try {
                 queryData = readFromInputStream(qqStream, downloadedData.length);
             } catch (IOException e) {
@@ -632,7 +629,6 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
-    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void querySnapshot() {
@@ -692,20 +688,6 @@ public class BlobBaseApiTests extends BlobTestBase {
                 () -> bc.openQueryInputStreamWithResponse(options).getValue()); /* Don't need to call read. */
             assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options, null, null));
         });
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void nullQueryResponse() {
-        String expression = "garbage";
-        BlobQueryOptions options = new BlobQueryOptions(expression);
-
-        BlobAsyncClientBase clientMock = mock(BlobAsyncClientBase.class);
-        when(clientMock.queryWithResponse(options)).thenReturn(Mono.empty());
-        when(clientMock.getServiceVersion()).thenReturn(BlobServiceVersion.getLatest());
-        BlobClientBase bc = new BlobClientBase(clientMock);
-
-        assertThrows(IllegalStateException.class, () -> bc.openQueryInputStreamWithResponse(options));
     }
 
     private static class RandomOtherSerialization implements BlobQuerySerialization {

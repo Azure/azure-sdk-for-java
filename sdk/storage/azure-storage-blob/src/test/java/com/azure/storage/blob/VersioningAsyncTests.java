@@ -114,7 +114,6 @@ public class VersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void downloadBlobByVersion() {
         Flux<ByteBuffer> inputV1 = Flux.just(ByteBuffer.wrap(contentV1.getBytes(StandardCharsets.UTF_8)));
@@ -382,15 +381,16 @@ public class VersioningAsyncTests extends BlobTestBase {
     @Test
     public void copyFromUrlBlobsWithVersion() {
         BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        Mono<Tuple2<Response<String>, BlockBlobItem>> response =
-            blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-                .flatMap(blobItemV1 ->
-                    sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-                        .then(Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
-                            null, null, null, null), Mono.just(blobItemV1))));
+        Mono<Tuple2<Response<String>, BlockBlobItem>> response = sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
+                DATA.getDefaultDataSize()))
+            .flatMap(r -> {
+                String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+                return Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
+                    null, null, null, null), Mono.just(r));
+            });
 
         StepVerifier.create(response)
             .assertNext(r -> {

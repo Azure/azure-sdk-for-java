@@ -95,7 +95,6 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
         int responseViolenceResultSeverity = responseViolenceResult.getSeverity();
         Assertions.assertEquals(0, responseViolenceResultSeverity);
     }
-
     @Test
     public void testAnalyzeTextWithText() {
         // method invocation
@@ -139,8 +138,8 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
     @Test
     public void testAnalyzeTextEightSeverity() {
         // method invocation
-        AnalyzeTextResult response = contentSafetyClient.analyzeText(
-            new AnalyzeTextOptions("This is text example").setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS));
+        AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example")
+            .setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS));
 
         // response assertion
         Assertions.assertNotNull(response);

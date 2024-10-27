@@ -24,7 +24,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -47,7 +46,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -266,8 +264,6 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         // and: "channel has appropriate values"
         assertEquals(blockSize == null ? 4 * Constants.MB : blockSize, channel.getChunkSize());
         assertEquals(position == null ? 0 : position, channel.position());
-
-        versionedCC.delete();
     }
 
     static Stream<Arguments> channelReadModeDataSupplier() {
@@ -331,16 +327,6 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
             Arguments.of(OVERWRITE, null, null, null, null, AccessTier.COOL, null),
             Arguments.of(OVERWRITE, null, null, null, null, null, new BlobRequestConditions())
         );
-    }
-
-    @Test
-    public void channelConsistentReadControlNullVersion() {
-        byte[] data = getRandomByteArray(Constants.KB);
-        bc.upload(BinaryData.fromBytes(data));
-
-        // Version ID set but not a versioned account
-        assertThrows(UnsupportedOperationException.class, () -> bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setConsistentReadControl(ConsistentReadControl.VERSION_ID), null));
     }
 
 }

@@ -35,9 +35,11 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             super.creatDatasourceCredentialRunner(expectedCredential -> {
                 // Act & Assert
-                DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(expectedCredential);
+                DataSourceCredentialEntity createdCredential
+                        = client.createDataSourceCredential(expectedCredential);
                 credentialId.set(createdCredential.getId());
-                super.validateCredentialResult(expectedCredential, createdCredential,
+                super.validateCredentialResult(expectedCredential,
+                    createdCredential,
                     DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
             }, DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
 
@@ -58,9 +60,11 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             super.creatDatasourceCredentialRunner(expectedCredential -> {
                 // Act & Assert
-                DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(expectedCredential);
+                DataSourceCredentialEntity createdCredential
+                    = client.createDataSourceCredential(expectedCredential);
                 credentialId.set(createdCredential.getId());
-                super.validateCredentialResult(expectedCredential, createdCredential,
+                super.validateCredentialResult(expectedCredential,
+                    createdCredential,
                     DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
             }, DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
 
@@ -81,9 +85,11 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             super.creatDatasourceCredentialRunner(expectedCredential -> {
                 // Act & Assert
-                DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(expectedCredential);
+                DataSourceCredentialEntity createdCredential
+                    = client.createDataSourceCredential(expectedCredential);
                 credentialId.set(createdCredential.getId());
-                super.validateCredentialResult(expectedCredential, createdCredential,
+                super.validateCredentialResult(expectedCredential,
+                    createdCredential,
                     DataSourceAuthenticationType.SERVICE_PRINCIPAL);
             }, DataSourceAuthenticationType.SERVICE_PRINCIPAL);
 
@@ -102,9 +108,11 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             super.creatDatasourceCredentialRunner(expectedCredential -> {
                 // Act & Assert
-                DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(expectedCredential);
+                DataSourceCredentialEntity createdCredential
+                    = client.createDataSourceCredential(expectedCredential);
                 credentialId.set(createdCredential.getId());
-                super.validateCredentialResult(expectedCredential, createdCredential,
+                super.validateCredentialResult(expectedCredential,
+                    createdCredential,
                     DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
             }, DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
 
@@ -124,15 +132,16 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
             super.listDatasourceCredentialRunner(inputCredentialList -> {
-                final List<String> ids = inputCredentialList.stream()
-                    .map(credential -> client.createDataSourceCredential(credential))
-                    .map(credential -> credential.getId())
-                    .collect(Collectors.toList());
+                final List<String> ids =
+                    inputCredentialList.stream()
+                        .map(credential -> client.createDataSourceCredential(credential))
+                        .map(credential -> credential.getId())
+                        .collect(Collectors.toList());
                 createdCredentialIdList.set(ids);
 
                 List<DataSourceCredentialEntity> retrievedCredentialList = new ArrayList<>();
                 PagedIterable<DataSourceCredentialEntity> credentialsIterable = client.listDataSourceCredentials();
-                for (DataSourceCredentialEntity credential : credentialsIterable) {
+                for (DataSourceCredentialEntity credential: credentialsIterable) {
                     retrievedCredentialList.add(credential);
                     if (retrievedCredentialList.size() >= inputCredentialList.size()) {
                         break;

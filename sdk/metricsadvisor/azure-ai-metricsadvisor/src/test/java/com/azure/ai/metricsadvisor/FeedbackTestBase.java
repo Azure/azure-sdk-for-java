@@ -79,7 +79,8 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    abstract void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    abstract void getMetricFeedbackValidId(HttpClient httpClient,
+                                                                MetricsAdvisorServiceVersion serviceVersion);
 
     void listMetricFeedbackRunner(Consumer<List<MetricFeedback>> testRunner) {
         // create data feeds
@@ -95,11 +96,11 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         // create data feeds
         MetricFeedback metricFeedback;
         if (ANOMALY.equals(metricFeedbackType)) {
-            metricFeedback
-                = new MetricAnomalyFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME, AnomalyValue.NOT_ANOMALY);
+            metricFeedback = new MetricAnomalyFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME,
+                AnomalyValue.NOT_ANOMALY);
         } else if (CHANGE_POINT.equals(metricFeedbackType)) {
-            metricFeedback
-                = new MetricChangePointFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME, ChangePointValue.AUTO_DETECT);
+            metricFeedback = new MetricChangePointFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME,
+                ChangePointValue.AUTO_DETECT);
         } else if (PERIOD.equals(metricFeedbackType)) {
             metricFeedback = new MetricPeriodFeedback(PeriodType.AUTO_DETECT, 3);
         } else if (COMMENT.equals(metricFeedbackType)) {
@@ -109,6 +110,7 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         }
         testRunner.accept(metricFeedback.setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
     }
+
 
     void validateMetricFeedbackResult(MetricFeedback expectedMetricFeedback, MetricFeedback actualMetricFeedback,
         FeedbackType feedbackType) {
@@ -140,7 +142,8 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         } else if (COMMENT.equals(feedbackType)) {
             MetricCommentFeedback expectedCommentFeedback = (MetricCommentFeedback) expectedMetricFeedback;
             MetricCommentFeedback actualChangePointFeedback = (MetricCommentFeedback) actualMetricFeedback;
-            assertEquals(expectedCommentFeedback.getComment(), actualChangePointFeedback.getComment());
+            assertEquals(expectedCommentFeedback.getComment(),
+                actualChangePointFeedback.getComment());
             assertEquals(expectedCommentFeedback.getStartTime(), actualChangePointFeedback.getStartTime());
             assertEquals(expectedCommentFeedback.getEndTime(), actualChangePointFeedback.getEndTime());
         } else {

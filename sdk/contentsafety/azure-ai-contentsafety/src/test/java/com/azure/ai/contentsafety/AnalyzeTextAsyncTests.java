@@ -19,8 +19,7 @@ public final class AnalyzeTextAsyncTests extends ContentSafetyClientTestBase {
     @Test
     public void testAnalyzeTextAsyncTests() {
         // method invocation
-        AnalyzeTextResult response
-            = contentSafetyAsyncClient.analyzeText(new AnalyzeTextOptions("This is text example")).block();
+        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText(new AnalyzeTextOptions("This is text example")).block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -100,9 +99,8 @@ public final class AnalyzeTextAsyncTests extends ContentSafetyClientTestBase {
     @Test
     public void testAnalyzeTextAsyncEightSeverity() {
         // method invocation
-        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText(
-            new AnalyzeTextOptions("This is text example").setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS))
-            .block();
+        AnalyzeTextResult response = contentSafetyAsyncClient.analyzeText(new AnalyzeTextOptions("This is text example")
+            .setOutputType(AnalyzeTextOutputType.EIGHT_SEVERITY_LEVELS)).block();
 
         // response assertion
         Assertions.assertNotNull(response);

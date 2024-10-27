@@ -5,19 +5,17 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
-import com.azure.digitaltwins.core.DigitalTwinsClient;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-// This class manually copies the generated class of the same name, but also adds the property for timestamp since the
-// swagger does not group it in with these options for us.
+// This class manually copies the generated class of the same name, but also adds the property for timestamp
+// since the swagger does not group it in with these options for us.
 
 /**
  * The optional parameters for
- * {@link DigitalTwinsClient#publishTelemetryWithResponse(String, String, Object, PublishTelemetryOptions, Context)}
- * and {@link DigitalTwinsAsyncClient#publishTelemetryWithResponse(String, String, Object, PublishTelemetryOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#publishTelemetryWithResponse(String, String, Object, PublishTelemetryOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#publishTelemetryWithResponse(String, String, Object, PublishTelemetryOptions)}
  */
 @Fluent
 public final class PublishTelemetryOptions {
@@ -28,14 +26,7 @@ public final class PublishTelemetryOptions {
     private OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
 
     /**
-     * Creates a new instance of {@link PublishTelemetryOptions}.
-     */
-    public PublishTelemetryOptions() {
-    }
-
-    /**
      * Gets the timestamp.
-     *
      * @return The timestamp that identifies the time the telemetry was measured.
      */
     public OffsetDateTime getTimestamp() {
@@ -44,7 +35,6 @@ public final class PublishTelemetryOptions {
 
     /**
      * Set the timestamp
-     *
      * @param timestamp The timestamp that identifies the time the telemetry was measured.
      * @return The PublishTelemetryRequestOptions object itself.
      */

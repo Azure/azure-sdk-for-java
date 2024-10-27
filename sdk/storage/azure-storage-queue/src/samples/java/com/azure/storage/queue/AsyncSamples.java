@@ -3,6 +3,8 @@
 
 package com.azure.storage.queue;
 
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
+
 /*
  *  This example mimics some arbitrary number of clients continuously sending messages up to a queue in a parallel and
  *  a server dequeuing the messages and processing them.
@@ -10,7 +12,7 @@ package com.azure.storage.queue;
 public class AsyncSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
-    private static final String QUEUE_NAME = SampleHelper.generateRandomName("async-call", 16);
+    private static final String QUEUE_NAME = generateRandomName("async-call", 16);
 
     /**
      * The main method shows how we do the basic operations of enqueueing and dequeueing messages on async queue client.

@@ -45,8 +45,7 @@ public final class V1Manifest extends Manifest {
     private List<ImageSignature> signatures;
 
     /** Creates an instance of V1Manifest class. */
-    public V1Manifest() {
-    }
+    public V1Manifest() {}
 
     /**
      * Get the architecture property: CPU architecture.
@@ -197,35 +196,37 @@ public final class V1Manifest extends Manifest {
      * @throws IOException If an error occurs while reading the V1Manifest.
      */
     public static V1Manifest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            V1Manifest deserializedV1Manifest = new V1Manifest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    V1Manifest deserializedV1Manifest = new V1Manifest();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("schemaVersion".equals(fieldName)) {
-                    deserializedV1Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                } else if ("architecture".equals(fieldName)) {
-                    deserializedV1Manifest.architecture = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedV1Manifest.name = reader.getString();
-                } else if ("tag".equals(fieldName)) {
-                    deserializedV1Manifest.tag = reader.getString();
-                } else if ("fsLayers".equals(fieldName)) {
-                    List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
-                    deserializedV1Manifest.fsLayers = fsLayers;
-                } else if ("history".equals(fieldName)) {
-                    List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
-                    deserializedV1Manifest.history = history;
-                } else if ("signatures".equals(fieldName)) {
-                    List<ImageSignature> signatures = reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
-                    deserializedV1Manifest.signatures = signatures;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedV1Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                        } else if ("architecture".equals(fieldName)) {
+                            deserializedV1Manifest.architecture = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedV1Manifest.name = reader.getString();
+                        } else if ("tag".equals(fieldName)) {
+                            deserializedV1Manifest.tag = reader.getString();
+                        } else if ("fsLayers".equals(fieldName)) {
+                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                            deserializedV1Manifest.fsLayers = fsLayers;
+                        } else if ("history".equals(fieldName)) {
+                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
+                            deserializedV1Manifest.history = history;
+                        } else if ("signatures".equals(fieldName)) {
+                            List<ImageSignature> signatures =
+                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                            deserializedV1Manifest.signatures = signatures;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedV1Manifest;
-        });
+                    return deserializedV1Manifest;
+                });
     }
 }

@@ -108,9 +108,11 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.construct -->
  */
-@ServiceClientBuilder(serviceClients = { SchemaRegistryAsyncClient.class, SchemaRegistryClient.class })
-public class SchemaRegistryClientBuilder implements ConfigurationTrait<SchemaRegistryClientBuilder>,
-    HttpTrait<SchemaRegistryClientBuilder>, TokenCredentialTrait<SchemaRegistryClientBuilder> {
+@ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
+public class SchemaRegistryClientBuilder implements
+    ConfigurationTrait<SchemaRegistryClientBuilder>,
+    HttpTrait<SchemaRegistryClientBuilder>,
+    TokenCredentialTrait<SchemaRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -390,12 +392,13 @@ public class SchemaRegistryClientBuilder implements ConfigurationTrait<SchemaReg
             "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
 
         HttpPipeline buildPipeline = this.httpPipeline;
         // Create a default Pipeline if it is not given
@@ -432,7 +435,8 @@ public class SchemaRegistryClientBuilder implements ConfigurationTrait<SchemaReg
 
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-            buildPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            buildPipeline = new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .clientOptions(clientOptions)
                 .build();

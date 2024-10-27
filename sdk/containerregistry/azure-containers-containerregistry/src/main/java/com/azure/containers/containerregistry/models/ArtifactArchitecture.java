@@ -54,8 +54,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ArtifactArchitecture() {
-    }
+    public ArtifactArchitecture() {}
 
     /**
      * Creates or finds a ArtifactArchitecture from its string representation.

@@ -20,8 +20,7 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
     private String blobSum;
 
     /** Creates an instance of FsLayer class. */
-    public FsLayer() {
-    }
+    public FsLayer() {}
 
     /**
      * Get the blobSum property: SHA of an image layer.
@@ -59,20 +58,21 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
      * @throws IOException If an error occurs while reading the FsLayer.
      */
     public static FsLayer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            FsLayer deserializedFsLayer = new FsLayer();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    FsLayer deserializedFsLayer = new FsLayer();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("blobSum".equals(fieldName)) {
-                    deserializedFsLayer.blobSum = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("blobSum".equals(fieldName)) {
+                            deserializedFsLayer.blobSum = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedFsLayer;
-        });
+                    return deserializedFsLayer;
+                });
     }
 }

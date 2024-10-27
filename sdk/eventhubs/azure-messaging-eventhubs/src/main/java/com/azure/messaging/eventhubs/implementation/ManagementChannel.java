@@ -67,8 +67,8 @@ public class ManagementChannel implements EventHubManagementNode {
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
     private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
-    private final FluxSink<AmqpEndpointState> endpointStateSink
-        = endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final FluxSink<AmqpEndpointState> endpointStateSink =
+        endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Disposable subscription;
 
     private volatile boolean isDisposed;
@@ -83,10 +83,11 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(ChannelCacheWrapper channelCache, String eventHubName, TokenCredential credential,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        Scheduler scheduler) {
 
-        this.tokenManagerProvider
-            = Objects.requireNonNull(tokenManagerProvider, "'tokenManagerProvider' cannot be null.");
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
+            "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
@@ -158,18 +159,19 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelCache.get().flatMap(channel -> channel.sendWithAck(request).handle((message, sink) -> {
-                if (RequestResponseUtils.isSuccessful(message)) {
-                    sink.next(messageSerializer.deserialize(message, responseType));
-                } else {
-                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
-                        statusDescription, channel.getErrorContext());
+            return channelCache.get().flatMap(channel -> channel.sendWithAck(request)
+                .handle((message, sink) -> {
+                    if (RequestResponseUtils.isSuccessful(message)) {
+                        sink.next(messageSerializer.deserialize(message, responseType));
+                    } else {
+                        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                        final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                        final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                            statusDescription, channel.getErrorContext());
 
-                    sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
-                }
-            }));
+                        sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
+                    }
+                }));
         });
     }
 

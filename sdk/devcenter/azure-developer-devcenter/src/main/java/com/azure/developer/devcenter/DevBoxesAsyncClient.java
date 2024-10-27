@@ -55,8 +55,7 @@ public final class DevBoxesAsyncClient {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -86,8 +85,7 @@ public final class DevBoxesAsyncClient {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -107,8 +105,7 @@ public final class DevBoxesAsyncClient {
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -138,8 +135,7 @@ public final class DevBoxesAsyncClient {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -161,8 +157,7 @@ public final class DevBoxesAsyncClient {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -170,8 +165,7 @@ public final class DevBoxesAsyncClient {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -192,8 +186,7 @@ public final class DevBoxesAsyncClient {
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -201,8 +194,7 @@ public final class DevBoxesAsyncClient {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -225,8 +217,7 @@ public final class DevBoxesAsyncClient {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -271,8 +262,7 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -291,8 +281,7 @@ public final class DevBoxesAsyncClient {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -337,8 +326,7 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -359,8 +347,7 @@ public final class DevBoxesAsyncClient {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -405,8 +392,7 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -428,8 +414,7 @@ public final class DevBoxesAsyncClient {
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -474,8 +459,7 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -499,8 +483,7 @@ public final class DevBoxesAsyncClient {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -545,13 +528,11 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -596,8 +577,7 @@ public final class DevBoxesAsyncClient {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -623,8 +603,7 @@ public final class DevBoxesAsyncClient {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -647,8 +626,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -672,8 +650,7 @@ public final class DevBoxesAsyncClient {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -696,8 +673,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -728,8 +704,7 @@ public final class DevBoxesAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -752,8 +727,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -777,8 +751,7 @@ public final class DevBoxesAsyncClient {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -801,8 +774,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -826,14 +798,12 @@ public final class DevBoxesAsyncClient {
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -857,8 +827,7 @@ public final class DevBoxesAsyncClient {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -868,8 +837,7 @@ public final class DevBoxesAsyncClient {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -893,8 +861,7 @@ public final class DevBoxesAsyncClient {
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -904,8 +871,7 @@ public final class DevBoxesAsyncClient {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -954,8 +920,7 @@ public final class DevBoxesAsyncClient {
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -965,8 +930,7 @@ public final class DevBoxesAsyncClient {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -994,8 +958,7 @@ public final class DevBoxesAsyncClient {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -1021,8 +984,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication

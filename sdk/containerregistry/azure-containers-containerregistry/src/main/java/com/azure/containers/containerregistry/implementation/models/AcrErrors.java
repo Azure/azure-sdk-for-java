@@ -21,8 +21,7 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
     private List<AcrErrorInfo> errors;
 
     /** Creates an instance of AcrErrors class. */
-    public AcrErrors() {
-    }
+    public AcrErrors() {}
 
     /**
      * Get the errors property: Array of detailed error.
@@ -60,21 +59,22 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
      * @throws IOException If an error occurs while reading the AcrErrors.
      */
     public static AcrErrors fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcrErrors deserializedAcrErrors = new AcrErrors();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    AcrErrors deserializedAcrErrors = new AcrErrors();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("errors".equals(fieldName)) {
-                    List<AcrErrorInfo> errors = reader.readArray(reader1 -> AcrErrorInfo.fromJson(reader1));
-                    deserializedAcrErrors.errors = errors;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("errors".equals(fieldName)) {
+                            List<AcrErrorInfo> errors = reader.readArray(reader1 -> AcrErrorInfo.fromJson(reader1));
+                            deserializedAcrErrors.errors = errors;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedAcrErrors;
-        });
+                    return deserializedAcrErrors;
+                });
     }
 }

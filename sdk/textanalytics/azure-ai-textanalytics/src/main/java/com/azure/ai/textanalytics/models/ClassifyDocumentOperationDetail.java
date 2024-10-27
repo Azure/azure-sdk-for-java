@@ -20,10 +20,11 @@ public final class ClassifyDocumentOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        ClassifyDocumentOperationDetailPropertiesHelper
-            .setAccessor(new ClassifyDocumentOperationDetailPropertiesHelper.ClassifyDocumentOperationDetailAccessor() {
+        ClassifyDocumentOperationDetailPropertiesHelper.setAccessor(
+            new ClassifyDocumentOperationDetailPropertiesHelper.ClassifyDocumentOperationDetailAccessor() {
                 @Override
-                public void setOperationId(ClassifyDocumentOperationDetail operationResult, String operationId) {
+                public void setOperationId(ClassifyDocumentOperationDetail operationResult,
+                    String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
@@ -33,12 +34,14 @@ public final class ClassifyDocumentOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime expiresAt) {
+                public void setExpiresAt(ClassifyDocumentOperationDetail operationDetail,
+                    OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime createdAt) {
+                public void setCreatedAt(ClassifyDocumentOperationDetail operationDetail,
+                    OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
@@ -47,7 +50,8 @@ public final class ClassifyDocumentOperationDetail {
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            });
+            }
+        );
     }
 
     /**

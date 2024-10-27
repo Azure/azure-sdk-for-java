@@ -3,9 +3,9 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.NodeList;
@@ -291,8 +291,10 @@ public class DataLakeStorageCustomization extends Customization {
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
-        // Turn the entire method into a BlockStmt that will be used as the try block.
-        BlockStmt tryBlock = method.getBody().get();
+        BlockStmt body = method.getBody().get();
+
+        // Turn the last statement into a BlockStmt that will be used as the try block.
+        BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
             "throw ModelHelper.mapToDataLakeStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("DataLakeStorageExceptionInternal")
@@ -301,6 +303,6 @@ public class DataLakeStorageCustomization extends Customization {
         TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
 
         // Replace the last statement with the try-catch block.
-        method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
+        body.getStatements().set(body.getStatements().size() - 1, tryCatchMap);
     }
 }
