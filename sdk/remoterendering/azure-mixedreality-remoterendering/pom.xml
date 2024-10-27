@@ -28,7 +28,7 @@
   </scm>
 
   <properties>
-    <spotless.skip>false</spotless.skip>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
