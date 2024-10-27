@@ -8,7 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.http.vertx.VertxHttpClientProvider;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -55,7 +55,7 @@ public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
-    private static final HttpClient VERTX_HTTP_CLIENT = new VertxAsyncHttpClientProvider().createInstance();
+    private static final HttpClient VERTX_HTTP_CLIENT = new VertxHttpClientProvider().createInstance();
     private static final HttpClient JDK_HTTP_HTTP_CLIENT;
 
     static {
