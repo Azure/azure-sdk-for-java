@@ -100,10 +100,6 @@ extends:
       groupId: com.azure
       safeName: azuremessagingeventhubs
       ServiceDirectory: eventhubs
-    - name: azure-communication-messages
-      groupId: com.azure
-      safeName: azurecommunicationmessages
-      ServiceDirectory: communication
     - name: azure-communication-sms
       groupId: com.azure
       safeName: azurecommunicationsms
