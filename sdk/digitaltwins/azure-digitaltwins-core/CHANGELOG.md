@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for 
+- Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
   more serialization frameworks than just Jackson.
 
 ### Breaking Changes
@@ -14,6 +14,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.25 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
 
 
 ## 1.3.24 (2024-09-27)
