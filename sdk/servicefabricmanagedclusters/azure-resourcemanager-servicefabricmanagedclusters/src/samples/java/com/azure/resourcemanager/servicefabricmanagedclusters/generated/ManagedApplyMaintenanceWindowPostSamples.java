@@ -10,8 +10,8 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 public final class ManagedApplyMaintenanceWindowPostSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ManagedApplyMaintenanceWindowPost_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ManagedApplyMaintenanceWindowPost_example.json
      */
     /**
      * Sample code: Maintenance Window Status.

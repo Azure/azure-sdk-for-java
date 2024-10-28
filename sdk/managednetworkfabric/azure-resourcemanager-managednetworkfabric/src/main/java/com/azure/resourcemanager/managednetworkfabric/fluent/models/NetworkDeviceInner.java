@@ -239,10 +239,8 @@ public final class NetworkDeviceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkDeviceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model NetworkDeviceInner"));
         } else {
             innerProperties().validate();
         }

@@ -29,10 +29,9 @@ import reactor.core.publisher.Mono;
  * <p>Step5: GET /api/v1/acr/repositories
  * Request Header: {Bearer acrTokenAccess}</p>
  */
-public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
-    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    public static final String SCOPES_PARAMETER = "scope";
-    public static final String SERVICE_PARAMETER = "service";
+public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
+    private static final String SCOPES_PARAMETER = "scope";
+    private static final String SERVICE_PARAMETER = "service";
     private final ContainerRegistryTokenService acrCredential;
 
     /**
@@ -68,7 +67,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return Mono.just(false);
         } else {
@@ -108,11 +107,11 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
-            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String scope = extractValue(authHeader, SCOPES_PARAMETER);
             String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
 
             if (scope != null && serviceName != null) {

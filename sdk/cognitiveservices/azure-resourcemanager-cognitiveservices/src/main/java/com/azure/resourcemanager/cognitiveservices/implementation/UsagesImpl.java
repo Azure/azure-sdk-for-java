@@ -19,8 +19,8 @@ public final class UsagesImpl implements Usages {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public UsagesImpl(
-        UsagesClient innerClient, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    public UsagesImpl(UsagesClient innerClient,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

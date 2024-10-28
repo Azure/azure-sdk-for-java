@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"hairsbrgzdwms\",\"value\":[{\"currentValue\":827255205,\"limit\":151812446,\"name\":{\"localizedValue\":\"xggicccnxqhuexmk\",\"value\":\"lstvlzywe\"},\"unit\":\"Bytes\"},{\"currentValue\":218184123,\"limit\":955341099,\"name\":{\"localizedValue\":\"dtclusiypb\",\"value\":\"gytguslfead\"},\"unit\":\"CountPerSecond\"},{\"currentValue\":317244500,\"limit\":448514309,\"name\":{\"localizedValue\":\"hejhzisx\",\"value\":\"pelol\"},\"unit\":\"BytesPerSecond\"}]}")
-                .toObject(UsageListResponse.class);
-        Assertions.assertEquals("hairsbrgzdwms", model.nextLink());
+        UsageListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"jraaeranokqguk\",\"value\":[{\"currentValue\":531608748,\"limit\":380919763,\"name\":{\"localizedValue\":\"oylaxxul\",\"value\":\"isdos\"},\"unit\":\"BytesPerSecond\"}]}")
+            .toObject(UsageListResponse.class);
+        Assertions.assertEquals("jraaeranokqguk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageListResponse model = new UsageListResponse().withNextLink("hairsbrgzdwms");
+        UsageListResponse model = new UsageListResponse().withNextLink("jraaeranokqguk");
         model = BinaryData.fromObject(model).toObject(UsageListResponse.class);
-        Assertions.assertEquals("hairsbrgzdwms", model.nextLink());
+        Assertions.assertEquals("jraaeranokqguk", model.nextLink());
     }
 }

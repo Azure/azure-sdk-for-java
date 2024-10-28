@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIntegrationRuntime model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Managed\",\"state\":\"Limited\",\"typeProperties\":{\"computeProperties\":{\"location\":\"lkhhu\",\"nodeSize\":\"cpoq\",\"numberOfNodes\":2065973208,\"maxParallelExecutionsPerNode\":1853837051,\"\":{\"nlejjjkxybwf\":\"datao\"}},\"ssisProperties\":{\"licenseType\":\"LicenseIncluded\",\"edition\":\"Standard\",\"expressCustomSetupProperties\":[],\"\":{\"tjknsxfwushcdp\":\"datayk\",\"kuwxeoiojfizfavk\":\"dataupnqrmgjfb\",\"fwxrzxmdew\":\"datazwfbcyaykmmfzs\"}}},\"managedVirtualNetwork\":{\"referenceName\":\"xkrplbjaz\",\"type\":\"wwviyo\",\"id\":\"suhbrnn\"},\"description\":\"xs\",\"\":{\"wetp\":\"datahqkb\",\"se\":\"datazycyqiqyhg\",\"sfledyn\":\"datazlex\",\"fbzkk\":\"datajpziu\"}}")
-                .toObject(ManagedIntegrationRuntime.class);
+        ManagedIntegrationRuntime model = BinaryData.fromString(
+            "{\"type\":\"Managed\",\"state\":\"Limited\",\"typeProperties\":{\"computeProperties\":{\"location\":\"lkhhu\",\"nodeSize\":\"cpoq\",\"numberOfNodes\":2065973208,\"maxParallelExecutionsPerNode\":1853837051,\"\":{\"nlejjjkxybwf\":\"datao\"}},\"ssisProperties\":{\"licenseType\":\"LicenseIncluded\",\"edition\":\"Standard\",\"expressCustomSetupProperties\":[],\"\":{\"tjknsxfwushcdp\":\"datayk\",\"kuwxeoiojfizfavk\":\"dataupnqrmgjfb\",\"fwxrzxmdew\":\"datazwfbcyaykmmfzs\"}}},\"managedVirtualNetwork\":{\"referenceName\":\"xkrplbjaz\",\"type\":\"wwviyo\",\"id\":\"suhbrnn\"},\"description\":\"xs\",\"\":{\"wetp\":\"datahqkb\",\"se\":\"datazycyqiqyhg\",\"sfledyn\":\"datazlex\",\"fbzkk\":\"datajpziu\"}}")
+            .toObject(ManagedIntegrationRuntime.class);
         Assertions.assertEquals("xs", model.description());
         Assertions.assertEquals("lkhhu", model.computeProperties().location());
         Assertions.assertEquals("cpoq", model.computeProperties().nodeSize());
@@ -37,25 +35,20 @@ public final class ManagedIntegrationRuntimeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIntegrationRuntime model =
-            new ManagedIntegrationRuntime()
-                .withDescription("xs")
-                .withComputeProperties(
-                    new IntegrationRuntimeComputeProperties()
-                        .withLocation("lkhhu")
-                        .withNodeSize("cpoq")
-                        .withNumberOfNodes(2065973208)
-                        .withMaxParallelExecutionsPerNode(1853837051)
-                        .withAdditionalProperties(mapOf()))
-                .withSsisProperties(
-                    new IntegrationRuntimeSsisProperties()
-                        .withLicenseType(IntegrationRuntimeLicenseType.LICENSE_INCLUDED)
-                        .withEdition(IntegrationRuntimeEdition.STANDARD)
-                        .withExpressCustomSetupProperties(Arrays.asList())
-                        .withAdditionalProperties(mapOf()))
-                .withReferenceName("xkrplbjaz")
-                .withTypeManagedVirtualNetworkType("wwviyo")
-                .withId("suhbrnn");
+        ManagedIntegrationRuntime model = new ManagedIntegrationRuntime().withDescription("xs")
+            .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("lkhhu")
+                .withNodeSize("cpoq")
+                .withNumberOfNodes(2065973208)
+                .withMaxParallelExecutionsPerNode(1853837051)
+                .withAdditionalProperties(mapOf()))
+            .withSsisProperties(
+                new IntegrationRuntimeSsisProperties().withLicenseType(IntegrationRuntimeLicenseType.LICENSE_INCLUDED)
+                    .withEdition(IntegrationRuntimeEdition.STANDARD)
+                    .withExpressCustomSetupProperties(Arrays.asList())
+                    .withAdditionalProperties(mapOf()))
+            .withReferenceName("xkrplbjaz")
+            .withTypeManagedVirtualNetworkType("wwviyo")
+            .withId("suhbrnn");
         model = BinaryData.fromObject(model).toObject(ManagedIntegrationRuntime.class);
         Assertions.assertEquals("xs", model.description());
         Assertions.assertEquals("lkhhu", model.computeProperties().location());

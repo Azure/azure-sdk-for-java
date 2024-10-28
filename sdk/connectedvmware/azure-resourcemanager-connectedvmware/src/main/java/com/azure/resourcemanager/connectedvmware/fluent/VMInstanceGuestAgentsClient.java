@@ -45,8 +45,8 @@ public interface VMInstanceGuestAgentsClient {
      * @return the {@link SyncPoller} for polling of defines the GuestAgent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(
-        String resourceUri, GuestAgentInner body, Context context);
+    SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(String resourceUri, GuestAgentInner body,
+        Context context);
 
     /**
      * Implements GuestAgent PUT method.

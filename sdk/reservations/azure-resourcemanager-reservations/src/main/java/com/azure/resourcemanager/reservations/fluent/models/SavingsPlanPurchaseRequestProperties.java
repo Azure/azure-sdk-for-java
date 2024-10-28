@@ -181,8 +181,8 @@ public final class SavingsPlanPurchaseRequestProperties {
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
-    public SavingsPlanPurchaseRequestProperties withAppliedScopeProperties(
-        AppliedScopeProperties appliedScopeProperties) {
+    public SavingsPlanPurchaseRequestProperties
+        withAppliedScopeProperties(AppliedScopeProperties appliedScopeProperties) {
         this.appliedScopeProperties = appliedScopeProperties;
         return this;
     }

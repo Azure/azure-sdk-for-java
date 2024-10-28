@@ -41,8 +41,8 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ApiExportsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApiExportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApiExportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,22 +53,15 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface ApiExportsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiExportResultInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @QueryParam("format") ExportFormat format,
-            @QueryParam("export") ExportApi export,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiExportResultInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @QueryParam("format") ExportFormat format,
+            @QueryParam("export") ExportApi export, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -88,13 +81,11 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      *     Key valid for 5 minutes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiExportResultInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export) {
+    private Mono<Response<ApiExportResultInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, ExportFormat format, ExportApi export) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,27 +104,13 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
             return Mono.error(new IllegalArgumentException("Parameter export is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            format,
-                            export,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                format, export, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -155,18 +132,11 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      *     Key valid for 5 minutes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiExportResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ExportFormat format,
-        ExportApi export,
-        Context context) {
+    private Mono<Response<ApiExportResultInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, ExportFormat format, ExportApi export, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,25 +155,13 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
             return Mono.error(new IllegalArgumentException("Parameter export is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                format,
-                export,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, format, export,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -223,8 +181,8 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      *     Key valid for 5 minutes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiExportResultInner> getAsync(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export) {
+    private Mono<ApiExportResultInner> getAsync(String resourceGroupName, String serviceName, String apiId,
+        ExportFormat format, ExportApi export) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, format, export)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -247,13 +205,8 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      *     Key valid for 5 minutes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiExportResultInner> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ExportFormat format,
-        ExportApi export,
-        Context context) {
+    public Response<ApiExportResultInner> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        ExportFormat format, ExportApi export, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, format, export, context).block();
     }
 
@@ -274,8 +227,8 @@ public final class ApiExportsClientImpl implements ApiExportsClient {
      *     Key valid for 5 minutes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiExportResultInner get(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export) {
+    public ApiExportResultInner get(String resourceGroupName, String serviceName, String apiId, ExportFormat format,
+        ExportApi export) {
         return getWithResponse(resourceGroupName, serviceName, apiId, format, export, Context.NONE).getValue();
     }
 }

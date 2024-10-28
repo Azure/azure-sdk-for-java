@@ -7,11 +7,13 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Roles. */
+/**
+ * Resource collection API of Roles.
+ */
 public interface Roles {
     /**
      * Gets all the roles for the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface Roles {
 
     /**
      * Gets all the roles for the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.

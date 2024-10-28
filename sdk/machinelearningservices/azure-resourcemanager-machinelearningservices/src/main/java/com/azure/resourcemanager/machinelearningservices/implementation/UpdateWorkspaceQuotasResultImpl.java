@@ -15,8 +15,7 @@ public final class UpdateWorkspaceQuotasResultImpl implements UpdateWorkspaceQuo
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    UpdateWorkspaceQuotasResultImpl(
-        UpdateWorkspaceQuotasResultInner innerObject,
+    UpdateWorkspaceQuotasResultImpl(UpdateWorkspaceQuotasResultInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -15,32 +15,26 @@ import org.junit.jupiter.api.Test;
 public final class PrivateEndpointConnectionPropertiesTests {
     @Test
     public void testDeserialize() {
-        PrivateEndpointConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"oodqxhcrm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"t\",\"actionsRequired\":\"whdsoifiyip\"},\"provisioningState\":\"Creating\"}")
-                .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        PrivateEndpointConnectionProperties model = BinaryData.fromString(
+            "{\"privateEndpoint\":{\"id\":\"oodqxhcrm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"t\",\"actionsRequired\":\"whdsoifiyip\"},\"provisioningState\":\"Creating\"}")
+            .toObject(PrivateEndpointConnectionProperties.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("t", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("whdsoifiyip", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @Test
     public void testSerialize() {
-        PrivateEndpointConnectionProperties model =
-            new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpoint())
+        PrivateEndpointConnectionProperties model
+            = new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                         .withDescription("t")
                         .withActionsRequired("whdsoifiyip"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("t", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("whdsoifiyip", model.privateLinkServiceConnectionState().actionsRequired());
     }

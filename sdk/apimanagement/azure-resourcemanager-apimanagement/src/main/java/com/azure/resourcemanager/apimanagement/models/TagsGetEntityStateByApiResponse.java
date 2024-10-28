@@ -19,11 +19,7 @@ public final class TagsGetEntityStateByApiResponse extends ResponseBase<TagsGetE
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TagsGetEntityStateByApiResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public TagsGetEntityStateByApiResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         TagsGetEntityStateByApiHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

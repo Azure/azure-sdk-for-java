@@ -52,8 +52,8 @@ public class SqlDatabasesAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlDatabasesAsExternalChildResourcesImpl(
-        TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlDatabasesAsExternalChildResourcesImpl(TaskGroup parentTaskGroup, SqlServerManager sqlServerManager,
+        String childResourceName) {
         super(null, parentTaskGroup, childResourceName);
 
         Objects.requireNonNull(sqlServerManager);
@@ -82,12 +82,12 @@ public class SqlDatabasesAsExternalChildResourcesImpl
         if (this.getParent() == null) {
             // resource group and server name will be set by the next method in the Fluent flow
             return prepareInlineUpdate(
-                    new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager))
-                .withPatchUpdate();
+                new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager))
+                    .withPatchUpdate();
         } else {
             return prepareInlineUpdate(
-                    new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()))
-                .withPatchUpdate();
+                new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()))
+                    .withPatchUpdate();
         }
     }
 

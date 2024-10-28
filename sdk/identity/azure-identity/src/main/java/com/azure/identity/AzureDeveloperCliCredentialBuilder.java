@@ -95,8 +95,8 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      */
     @SuppressWarnings("unchecked")
     public AzureDeveloperCliCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -111,7 +111,8 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      */
     @SuppressWarnings("unchecked")
     public AzureDeveloperCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 }

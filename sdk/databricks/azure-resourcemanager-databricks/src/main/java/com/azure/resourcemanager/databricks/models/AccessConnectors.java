@@ -8,31 +8,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AccessConnectors. */
+/**
+ * Resource collection API of AccessConnectors.
+ */
 public interface AccessConnectors {
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an azure databricks accessConnector along with {@link Response}.
      */
-    Response<AccessConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectorName, Context context);
+    Response<AccessConnector> getByResourceGroupWithResponse(String resourceGroupName, String connectorName,
+        Context context);
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an azure databricks accessConnector.
      */
@@ -40,87 +42,87 @@ public interface AccessConnectors {
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByResourceGroup(String resourceGroupName, String connectorName);
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String connectorName, Context context);
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AccessConnector> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AccessConnector> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AccessConnector> list();
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AccessConnector> list(Context context);
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an azure databricks accessConnector along with {@link Response}.
      */
@@ -128,12 +130,12 @@ public interface AccessConnectors {
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an azure databricks accessConnector along with {@link Response}.
      */
@@ -141,30 +143,30 @@ public interface AccessConnectors {
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new AccessConnector resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AccessConnector definition.
      */

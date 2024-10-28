@@ -25,8 +25,8 @@ public interface SqlPoolWorkloadGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's workload group along with {@link Response}.
      */
-    Response<WorkloadGroup> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    Response<WorkloadGroup> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
      * Sql pool's workload group
@@ -73,8 +73,8 @@ public interface SqlPoolWorkloadGroups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        Context context);
 
     /**
      * Sql pool's workload groups
@@ -105,8 +105,8 @@ public interface SqlPoolWorkloadGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadGroup> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<WorkloadGroup> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Sql pool's workload group

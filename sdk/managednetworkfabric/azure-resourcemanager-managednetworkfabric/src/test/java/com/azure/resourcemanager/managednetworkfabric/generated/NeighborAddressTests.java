@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborAddress model =
-            BinaryData
-                .fromString("{\"address\":\"kw\",\"configurationState\":\"Provisioned\"}")
-                .toObject(NeighborAddress.class);
+        NeighborAddress model = BinaryData.fromString("{\"address\":\"kw\",\"configurationState\":\"Provisioned\"}")
+            .toObject(NeighborAddress.class);
         Assertions.assertEquals("kw", model.address());
     }
 

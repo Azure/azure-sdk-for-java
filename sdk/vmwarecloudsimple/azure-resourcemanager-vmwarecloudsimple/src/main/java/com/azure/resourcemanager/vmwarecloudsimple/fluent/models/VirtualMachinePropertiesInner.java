@@ -6,156 +6,142 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOSCustomization;
 import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOSType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of virtual machine. */
+/**
+ * Properties of virtual machine.
+ */
 @Fluent
-public final class VirtualMachinePropertiesInner {
+public final class VirtualMachinePropertiesInner implements JsonSerializable<VirtualMachinePropertiesInner> {
     /*
      * The amount of memory
      */
-    @JsonProperty(value = "amountOfRam", required = true)
     private int amountOfRam;
 
     /*
      * The list of Virtual Disks' Controllers
      */
-    @JsonProperty(value = "controllers", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualDiskController> controllers;
 
     /*
      * Virtual machine properties
      */
-    @JsonProperty(value = "customization")
     private GuestOSCustomization customization;
 
     /*
      * The list of Virtual Disks
      */
-    @JsonProperty(value = "disks")
     private List<VirtualDisk> disks;
 
     /*
      * The DNS name of Virtual Machine in VCenter
      */
-    @JsonProperty(value = "dnsname", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsname;
 
     /*
      * Expose Guest OS or not
      */
-    @JsonProperty(value = "exposeToGuestVM")
     private Boolean exposeToGuestVM;
 
     /*
      * The path to virtual machine folder in VCenter
      */
-    @JsonProperty(value = "folder", access = JsonProperty.Access.WRITE_ONLY)
     private String folder;
 
     /*
      * The name of Guest OS
      */
-    @JsonProperty(value = "guestOS", access = JsonProperty.Access.WRITE_ONLY)
     private String guestOS;
 
     /*
      * The Guest OS type
      */
-    @JsonProperty(value = "guestOSType", access = JsonProperty.Access.WRITE_ONLY)
     private GuestOSType guestOSType;
 
     /*
      * The list of Virtual NICs
      */
-    @JsonProperty(value = "nics")
     private List<VirtualNicInner> nics;
 
     /*
      * The number of CPU cores
      */
-    @JsonProperty(value = "numberOfCores", required = true)
     private int numberOfCores;
 
     /*
      * Password for login. Deprecated - use customization property
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Private Cloud Id
      */
-    @JsonProperty(value = "privateCloudId", required = true)
     private String privateCloudId;
 
     /*
      * The provisioning status of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The public ip of Virtual Machine
      */
-    @JsonProperty(value = "publicIP", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIp;
 
     /*
      * Virtual Machines Resource Pool
      */
-    @JsonProperty(value = "resourcePool")
     private ResourcePoolInner resourcePool;
 
     /*
      * The status of Virtual machine
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineStatus status;
 
     /*
      * Virtual Machine Template Id
      */
-    @JsonProperty(value = "templateId")
     private String templateId;
 
     /*
      * Username for login. Deprecated - use customization property
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The list of Virtual VSphere Networks
      */
-    @JsonProperty(value = "vSphereNetworks")
     private List<String> vSphereNetworks;
 
     /*
      * The internal id of Virtual Machine in VCenter
      */
-    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
      * VMware tools version
      */
-    @JsonProperty(value = "vmwaretools", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwaretools;
 
-    /** Creates an instance of VirtualMachinePropertiesInner class. */
+    /**
+     * Creates an instance of VirtualMachinePropertiesInner class.
+     */
     public VirtualMachinePropertiesInner() {
     }
 
     /**
      * Get the amountOfRam property: The amount of memory.
-     *
+     * 
      * @return the amountOfRam value.
      */
     public int amountOfRam() {
@@ -164,7 +150,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the amountOfRam property: The amount of memory.
-     *
+     * 
      * @param amountOfRam the amountOfRam value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -175,7 +161,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the controllers property: The list of Virtual Disks' Controllers.
-     *
+     * 
      * @return the controllers value.
      */
     public List<VirtualDiskController> controllers() {
@@ -184,7 +170,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the customization property: Virtual machine properties.
-     *
+     * 
      * @return the customization value.
      */
     public GuestOSCustomization customization() {
@@ -193,7 +179,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the customization property: Virtual machine properties.
-     *
+     * 
      * @param customization the customization value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -204,7 +190,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the disks property: The list of Virtual Disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<VirtualDisk> disks() {
@@ -213,7 +199,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the disks property: The list of Virtual Disks.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -224,7 +210,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the dnsname property: The DNS name of Virtual Machine in VCenter.
-     *
+     * 
      * @return the dnsname value.
      */
     public String dnsname() {
@@ -233,7 +219,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @return the exposeToGuestVM value.
      */
     public Boolean exposeToGuestVM() {
@@ -242,7 +228,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @param exposeToGuestVM the exposeToGuestVM value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -253,7 +239,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the folder property: The path to virtual machine folder in VCenter.
-     *
+     * 
      * @return the folder value.
      */
     public String folder() {
@@ -262,7 +248,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the guestOS property: The name of Guest OS.
-     *
+     * 
      * @return the guestOS value.
      */
     public String guestOS() {
@@ -271,7 +257,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the guestOSType property: The Guest OS type.
-     *
+     * 
      * @return the guestOSType value.
      */
     public GuestOSType guestOSType() {
@@ -280,7 +266,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the nics property: The list of Virtual NICs.
-     *
+     * 
      * @return the nics value.
      */
     public List<VirtualNicInner> nics() {
@@ -289,7 +275,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the nics property: The list of Virtual NICs.
-     *
+     * 
      * @param nics the nics value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -300,7 +286,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public int numberOfCores() {
@@ -309,7 +295,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @param numberOfCores the numberOfCores value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -320,7 +306,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the password property: Password for login. Deprecated - use customization property.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -329,7 +315,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the password property: Password for login. Deprecated - use customization property.
-     *
+     * 
      * @param password the password value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -340,7 +326,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the privateCloudId property: Private Cloud Id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -349,7 +335,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the privateCloudId property: Private Cloud Id.
-     *
+     * 
      * @param privateCloudId the privateCloudId value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -360,7 +346,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -369,7 +355,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the publicIp property: The public ip of Virtual Machine.
-     *
+     * 
      * @return the publicIp value.
      */
     public String publicIp() {
@@ -378,7 +364,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the resourcePool property: Virtual Machines Resource Pool.
-     *
+     * 
      * @return the resourcePool value.
      */
     public ResourcePoolInner resourcePool() {
@@ -387,7 +373,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the resourcePool property: Virtual Machines Resource Pool.
-     *
+     * 
      * @param resourcePool the resourcePool value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -398,7 +384,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the status property: The status of Virtual machine.
-     *
+     * 
      * @return the status value.
      */
     public VirtualMachineStatus status() {
@@ -407,7 +393,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the templateId property: Virtual Machine Template Id.
-     *
+     * 
      * @return the templateId value.
      */
     public String templateId() {
@@ -416,7 +402,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the templateId property: Virtual Machine Template Id.
-     *
+     * 
      * @param templateId the templateId value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -427,7 +413,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the username property: Username for login. Deprecated - use customization property.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -436,7 +422,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the username property: Username for login. Deprecated - use customization property.
-     *
+     * 
      * @param username the username value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -447,7 +433,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the vSphereNetworks property: The list of Virtual VSphere Networks.
-     *
+     * 
      * @return the vSphereNetworks value.
      */
     public List<String> vSphereNetworks() {
@@ -456,7 +442,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the vSphereNetworks property: The list of Virtual VSphere Networks.
-     *
+     * 
      * @param vSphereNetworks the vSphereNetworks value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -467,7 +453,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the vmId property: The internal id of Virtual Machine in VCenter.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -476,7 +462,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the vmwaretools property: VMware tools version.
-     *
+     * 
      * @return the vmwaretools value.
      */
     public String vmwaretools() {
@@ -485,7 +471,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -502,10 +488,9 @@ public final class VirtualMachinePropertiesInner {
             nics().forEach(e -> e.validate());
         }
         if (privateCloudId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateCloudId in model VirtualMachinePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateCloudId in model VirtualMachinePropertiesInner"));
         }
         if (resourcePool() != null) {
             resourcePool().validate();
@@ -513,4 +498,103 @@ public final class VirtualMachinePropertiesInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinePropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("amountOfRam", this.amountOfRam);
+        jsonWriter.writeIntField("numberOfCores", this.numberOfCores);
+        jsonWriter.writeStringField("privateCloudId", this.privateCloudId);
+        jsonWriter.writeJsonField("customization", this.customization);
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("exposeToGuestVM", this.exposeToGuestVM);
+        jsonWriter.writeArrayField("nics", this.nics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeJsonField("resourcePool", this.resourcePool);
+        jsonWriter.writeStringField("templateId", this.templateId);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeArrayField("vSphereNetworks", this.vSphereNetworks,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachinePropertiesInner.
+     */
+    public static VirtualMachinePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePropertiesInner deserializedVirtualMachinePropertiesInner
+                = new VirtualMachinePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amountOfRam".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.amountOfRam = reader.getInt();
+                } else if ("numberOfCores".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.numberOfCores = reader.getInt();
+                } else if ("privateCloudId".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.privateCloudId = reader.getString();
+                } else if ("controllers".equals(fieldName)) {
+                    List<VirtualDiskController> controllers
+                        = reader.readArray(reader1 -> VirtualDiskController.fromJson(reader1));
+                    deserializedVirtualMachinePropertiesInner.controllers = controllers;
+                } else if ("customization".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.customization = GuestOSCustomization.fromJson(reader);
+                } else if ("disks".equals(fieldName)) {
+                    List<VirtualDisk> disks = reader.readArray(reader1 -> VirtualDisk.fromJson(reader1));
+                    deserializedVirtualMachinePropertiesInner.disks = disks;
+                } else if ("dnsname".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.dnsname = reader.getString();
+                } else if ("exposeToGuestVM".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.exposeToGuestVM
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.folder = reader.getString();
+                } else if ("guestOS".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.guestOS = reader.getString();
+                } else if ("guestOSType".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.guestOSType = GuestOSType.fromString(reader.getString());
+                } else if ("nics".equals(fieldName)) {
+                    List<VirtualNicInner> nics = reader.readArray(reader1 -> VirtualNicInner.fromJson(reader1));
+                    deserializedVirtualMachinePropertiesInner.nics = nics;
+                } else if ("password".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.password = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.provisioningState = reader.getString();
+                } else if ("publicIP".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.publicIp = reader.getString();
+                } else if ("resourcePool".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.resourcePool = ResourcePoolInner.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.status
+                        = VirtualMachineStatus.fromString(reader.getString());
+                } else if ("templateId".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.templateId = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.username = reader.getString();
+                } else if ("vSphereNetworks".equals(fieldName)) {
+                    List<String> vSphereNetworks = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachinePropertiesInner.vSphereNetworks = vSphereNetworks;
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.vmId = reader.getString();
+                } else if ("vmwaretools".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.vmwaretools = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePropertiesInner;
+        });
+    }
 }

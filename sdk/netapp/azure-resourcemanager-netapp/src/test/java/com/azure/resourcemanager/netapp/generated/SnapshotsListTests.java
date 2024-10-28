@@ -14,16 +14,17 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"qnzarrwl\",\"properties\":{\"snapshotId\":\"ijfqkacewiipfp\",\"created\":\"2021-05-21T04:17:15Z\",\"provisioningState\":\"bwwift\"},\"id\":\"qkvpuvksgplsakn\",\"name\":\"n\",\"type\":\"synljphuopxodl\"}]}")
+            "{\"value\":[{\"location\":\"lqiyntorzihl\",\"properties\":{\"snapshotId\":\"jswsrmslyz\",\"created\":\"2021-12-02T00:17:01Z\",\"provisioningState\":\"c\"},\"id\":\"kqqzqioxiysu\",\"name\":\"i\",\"type\":\"ynkedyatrwyhqmib\"},{\"location\":\"yhwitsmypyynpcdp\",\"properties\":{\"snapshotId\":\"zgmwznmabikns\",\"created\":\"2021-07-29T00:05:15Z\",\"provisioningState\":\"hxbld\"},\"id\":\"wwrlkdmtncv\",\"name\":\"kotl\",\"type\":\"xdy\"},{\"location\":\"gsyocogj\",\"properties\":{\"snapshotId\":\"tbnnha\",\"created\":\"2021-08-07T12:30:48Z\",\"provisioningState\":\"rkvcikhnvpa\"},\"id\":\"gxqquezik\",\"name\":\"wggxkallat\",\"type\":\"elwuipi\"}]}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("qnzarrwl", model.value().get(0).location());
+        Assertions.assertEquals("lqiyntorzihl", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotsList model
-            = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("qnzarrwl")));
+            = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("lqiyntorzihl"),
+                new SnapshotInner().withLocation("yhwitsmypyynpcdp"), new SnapshotInner().withLocation("gsyocogj")));
         model = BinaryData.fromObject(model).toObject(SnapshotsList.class);
-        Assertions.assertEquals("qnzarrwl", model.value().get(0).location());
+        Assertions.assertEquals("lqiyntorzihl", model.value().get(0).location());
     }
 }

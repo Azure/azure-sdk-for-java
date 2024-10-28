@@ -1,10 +1,20 @@
 # Release History
 
-## 2.44.0-beta.1 (Unreleased)
+## 2.45.0-beta.1 (Unreleased)
 
 ### Features Added
 
-- Added data boundary client of api-version 2024-03-01.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.44.0 (2024-10-25)
+
+### Features Added
+
+- Added data boundary client of api-version 2024-08-01.
 
 ## 2.43.0 (2024-09-27)
 

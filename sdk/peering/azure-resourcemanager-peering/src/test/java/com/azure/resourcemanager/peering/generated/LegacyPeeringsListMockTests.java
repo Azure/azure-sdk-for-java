@@ -6,79 +6,63 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
 import com.azure.resourcemanager.peering.models.DirectPeeringType;
 import com.azure.resourcemanager.peering.models.Family;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.LegacyPeeringsKind;
 import com.azure.resourcemanager.peering.models.Peering;
+import com.azure.resourcemanager.peering.models.SessionAddressProvider;
 import com.azure.resourcemanager.peering.models.Size;
 import com.azure.resourcemanager.peering.models.Tier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LegacyPeeringsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"sku\":{\"name\":\"ealmfmtdaaygdvwv\",\"tier\":\"Premium\",\"family\":\"Exchange\",\"size\":\"Free\"},\"kind\":\"Exchange\",\"properties\":{\"direct\":{\"connections\":[{\"bandwidthInMbps\":1401740843,\"provisionedBandwidthInMbps\":999653937,\"sessionAddressProvider\":\"Peer\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"gvr\",\"peeringDBFacilityId\":1104557585,\"connectionState\":\"None\",\"bgpSession\":{},\"connectionIdentifier\":\"ghimdblx\",\"errorMessage\":\"imfnjhfjx\"},{\"bandwidthInMbps\":205109580,\"provisionedBandwidthInMbps\":1343784830,\"sessionAddressProvider\":\"Peer\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"eyfkzikfja\",\"peeringDBFacilityId\":398738394,\"connectionState\":\"PendingApproval\",\"bgpSession\":{},\"connectionIdentifier\":\"wczelpci\",\"errorMessage\":\"lsfeaenwabfatkld\"},{\"bandwidthInMbps\":2043314878,\"provisionedBandwidthInMbps\":1025445351,\"sessionAddressProvider\":\"Peer\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"oz\",\"peeringDBFacilityId\":1294061553,\"connectionState\":\"ProvisioningStarted\",\"bgpSession\":{},\"connectionIdentifier\":\"ulpjr\",\"errorMessage\":\"ag\"}],\"useForPeeringService\":false,\"peerAsn\":{\"id\":\"jwosytxitcskfck\"},\"directPeeringType\":\"Internal\"},\"exchange\":{\"connections\":[{\"peeringDBFacilityId\":344446461,\"connectionState\":\"ProvisioningCompleted\",\"bgpSession\":{},\"connectionIdentifier\":\"khly\",\"errorMessage\":\"hdgqggeb\"},{\"peeringDBFacilityId\":1059730193,\"connectionState\":\"None\",\"bgpSession\":{},\"connectionIdentifier\":\"qidbqfatpxllrxcy\",\"errorMessage\":\"oadsuvar\"},{\"peeringDBFacilityId\":1301778060,\"connectionState\":\"Approved\",\"bgpSession\":{},\"connectionIdentifier\":\"jqbjhhy\",\"errorMessage\":\"rw\"},{\"peeringDBFacilityId\":324291601,\"connectionState\":\"Approved\",\"bgpSession\":{},\"connectionIdentifier\":\"p\",\"errorMessage\":\"kgymareqnajxqug\"}],\"peerAsn\":{\"id\":\"ycubeddgs\"}},\"peeringLocation\":\"fwqmzqalkrmn\",\"provisioningState\":\"Updating\"},\"location\":\"pxacqqudfn\",\"tags\":{\"jyvayffimrzrtuz\":\"baaa\",\"xnevfdnwn\":\"ogs\",\"uzsoi\":\"mewzsyyc\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"zapvhelx\",\"tier\":\"Premium\",\"family\":\"Direct\",\"size\":\"Unlimited\"},\"kind\":\"Direct\",\"properties\":{\"direct\":{\"connections\":[],\"useForPeeringService\":true,\"directPeeringType\":\"Voice\"},\"exchange\":{\"connections\":[]},\"peeringLocation\":\"gciqibrh\",\"provisioningState\":\"Failed\"},\"location\":\"sdqrhzoymibmrq\",\"tags\":{\"ofyyvoqacpi\":\"ahwfluszdtmhrk\",\"nwashrtd\":\"xpbtgiwbwo\"},\"id\":\"kcnqxwbpo\",\"name\":\"ulpiuj\",\"type\":\"aasipqi\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Peering> response = manager.legacyPeerings()
+            .list("wq", LegacyPeeringsKind.DIRECT, 1018889547, com.azure.core.util.Context.NONE);
 
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Peering> response =
-            manager
-                .legacyPeerings()
-                .list("fqvm", LegacyPeeringsKind.EXCHANGE, 1181340997, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("zapvhelx", response.iterator().next().sku().name());
+        Assertions.assertEquals("ealmfmtdaaygdvwv", response.iterator().next().sku().name());
         Assertions.assertEquals(Tier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals(Family.DIRECT, response.iterator().next().sku().family());
-        Assertions.assertEquals(Size.UNLIMITED, response.iterator().next().sku().size());
-        Assertions.assertEquals(Kind.DIRECT, response.iterator().next().kind());
-        Assertions.assertEquals("sdqrhzoymibmrq", response.iterator().next().location());
-        Assertions.assertEquals("ahwfluszdtmhrk", response.iterator().next().tags().get("ofyyvoqacpi"));
-        Assertions.assertEquals(DirectPeeringType.VOICE, response.iterator().next().direct().directPeeringType());
-        Assertions.assertEquals("gciqibrh", response.iterator().next().peeringLocation());
+        Assertions.assertEquals(Family.EXCHANGE, response.iterator().next().sku().family());
+        Assertions.assertEquals(Size.FREE, response.iterator().next().sku().size());
+        Assertions.assertEquals(Kind.EXCHANGE, response.iterator().next().kind());
+        Assertions.assertEquals("pxacqqudfn", response.iterator().next().location());
+        Assertions.assertEquals("baaa", response.iterator().next().tags().get("jyvayffimrzrtuz"));
+        Assertions.assertEquals(1401740843, response.iterator().next().direct().connections().get(0).bandwidthInMbps());
+        Assertions.assertEquals(SessionAddressProvider.PEER,
+            response.iterator().next().direct().connections().get(0).sessionAddressProvider());
+        Assertions.assertEquals(false, response.iterator().next().direct().connections().get(0).useForPeeringService());
+        Assertions.assertEquals(1104557585,
+            response.iterator().next().direct().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("ghimdblx",
+            response.iterator().next().direct().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("jwosytxitcskfck", response.iterator().next().direct().peerAsn().id());
+        Assertions.assertEquals(DirectPeeringType.INTERNAL, response.iterator().next().direct().directPeeringType());
+        Assertions.assertEquals(344446461,
+            response.iterator().next().exchange().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("khly",
+            response.iterator().next().exchange().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("ycubeddgs", response.iterator().next().exchange().peerAsn().id());
+        Assertions.assertEquals("fwqmzqalkrmn", response.iterator().next().peeringLocation());
     }
 }

@@ -32,7 +32,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         this.work = Objects.requireNonNull(work, "'work' cannot be null.");
         this.subscriberId = String.valueOf(work.getId());
         this.context = super.currentContext().put(SUBSCRIBER_ID_KEY, subscriberId);
-        this.logger = new ClientLogger(SynchronousEventSubscriber.class, Collections.singletonMap(SUBSCRIBER_ID_KEY, subscriberId));
+        this.logger = new ClientLogger(SynchronousEventSubscriber.class,
+            Collections.singletonMap(SUBSCRIBER_ID_KEY, subscriberId));
     }
 
     @Override
@@ -51,9 +52,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
             this.subscription = subscription;
         }
 
-        logger.atInfo()
-            .addKeyValue("pendingEvents", work.getNumberOfEvents())
-            .log("Scheduling receive timeout task.");
+        logger.atInfo().addKeyValue("pendingEvents", work.getNumberOfEvents()).log("Scheduling receive timeout task.");
         subscription.request(work.getNumberOfEvents());
 
         timer.schedule(new ReceiveTimeoutTask(this::dispose, this.logger), work.getTimeout().toMillis());
@@ -118,4 +117,3 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         }
     }
 }
-

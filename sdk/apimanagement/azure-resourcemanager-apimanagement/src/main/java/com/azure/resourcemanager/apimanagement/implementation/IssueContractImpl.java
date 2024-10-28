@@ -86,24 +86,20 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
     }
 
     public IssueContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -121,29 +117,25 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
     }
 
     public IssueContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, issueId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, issueId, updateIfMatch, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    IssueContractImpl(
-        IssueContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    IssueContractImpl(IssueContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -154,25 +146,20 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
 
     public IssueContract refresh() {
         Boolean localExpandCommentsAttachments = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .getWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, localExpandCommentsAttachments, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, localExpandCommentsAttachments,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueContract refresh(Context context) {
         Boolean localExpandCommentsAttachments = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssues()
-                .getWithResponse(
-                    resourceGroupName, serviceName, apiId, issueId, localExpandCommentsAttachments, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssues()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, localExpandCommentsAttachments, context)
+            .getValue();
         return this;
     }
 

@@ -13,11 +13,13 @@ import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionI
 import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner;
 import com.azure.resourcemanager.subscription.models.SubscriptionName;
 
-/** An instance of this class provides access to all the operations defined in SubscriptionOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubscriptionOperationsClient.
+ */
 public interface SubscriptionOperationsClient {
     /**
      * The operation to cancel a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SubscriptionOperationsClient {
 
     /**
      * The operation to cancel a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface SubscriptionOperationsClient {
 
     /**
      * The operation to rename a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param body Subscription Name.
      * @param context The context to associate with this operation.
@@ -52,12 +54,12 @@ public interface SubscriptionOperationsClient {
      * @return the ID of the subscriptions that is being renamed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RenamedSubscriptionIdInner> renameWithResponse(
-        String subscriptionId, SubscriptionName body, Context context);
+    Response<RenamedSubscriptionIdInner> renameWithResponse(String subscriptionId, SubscriptionName body,
+        Context context);
 
     /**
      * The operation to rename a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param body Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,7 +72,7 @@ public interface SubscriptionOperationsClient {
 
     /**
      * The operation to enable a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface SubscriptionOperationsClient {
 
     /**
      * The operation to enable a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

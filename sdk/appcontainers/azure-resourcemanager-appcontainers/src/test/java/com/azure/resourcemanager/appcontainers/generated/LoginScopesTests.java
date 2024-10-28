@@ -12,15 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class LoginScopesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoginScopes model = BinaryData.fromString("{\"scopes\":[\"uticndvkaozwyif\",\"yhxhu\",\"okftyxolniwpwcuk\"]}")
-            .toObject(LoginScopes.class);
-        Assertions.assertEquals("uticndvkaozwyif", model.scopes().get(0));
+        LoginScopes model = BinaryData.fromString("{\"scopes\":[\"clwhijcoejctbz\"]}").toObject(LoginScopes.class);
+        Assertions.assertEquals("clwhijcoejctbz", model.scopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoginScopes model = new LoginScopes().withScopes(Arrays.asList("uticndvkaozwyif", "yhxhu", "okftyxolniwpwcuk"));
+        LoginScopes model = new LoginScopes().withScopes(Arrays.asList("clwhijcoejctbz"));
         model = BinaryData.fromObject(model).toObject(LoginScopes.class);
-        Assertions.assertEquals("uticndvkaozwyif", model.scopes().get(0));
+        Assertions.assertEquals("clwhijcoejctbz", model.scopes().get(0));
     }
 }

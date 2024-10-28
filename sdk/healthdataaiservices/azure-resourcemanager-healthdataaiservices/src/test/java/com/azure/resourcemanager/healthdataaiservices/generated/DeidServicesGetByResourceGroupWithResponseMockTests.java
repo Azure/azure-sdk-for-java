@@ -39,6 +39,6 @@ public final class DeidServicesGetByResourceGroupWithResponseMockTests {
         Assertions.assertEquals("ylihkaetckt", response.location());
         Assertions.assertEquals("ivfsnk", response.tags().get("m"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

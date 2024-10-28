@@ -92,20 +92,16 @@ public final class FileServerImpl implements FileServer, FileServer.Definition {
     }
 
     public FileServer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .create(resourceGroupName, workspaceName, fileServerName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFileServers()
+            .create(resourceGroupName, workspaceName, fileServerName, createParameters, Context.NONE);
         return this;
     }
 
     public FileServer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .create(resourceGroupName, workspaceName, fileServerName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFileServers()
+            .create(resourceGroupName, workspaceName, fileServerName, createParameters, context);
         return this;
     }
 
@@ -117,22 +113,18 @@ public final class FileServerImpl implements FileServer, FileServer.Definition {
     }
 
     public FileServer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .getWithResponse(resourceGroupName, workspaceName, fileServerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileServers()
+            .getWithResponse(resourceGroupName, workspaceName, fileServerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileServer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .getWithResponse(resourceGroupName, workspaceName, fileServerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileServers()
+            .getWithResponse(resourceGroupName, workspaceName, fileServerName, context)
+            .getValue();
         return this;
     }
 

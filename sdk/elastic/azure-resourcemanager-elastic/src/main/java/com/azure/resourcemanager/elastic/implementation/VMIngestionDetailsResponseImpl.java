@@ -12,8 +12,8 @@ public final class VMIngestionDetailsResponseImpl implements VMIngestionDetailsR
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    VMIngestionDetailsResponseImpl(
-        VMIngestionDetailsResponseInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    VMIngestionDetailsResponseImpl(VMIngestionDetailsResponseInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

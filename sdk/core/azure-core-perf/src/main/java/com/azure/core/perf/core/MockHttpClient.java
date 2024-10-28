@@ -37,7 +37,7 @@ public class MockHttpClient implements HttpClient {
                     .map(bytes -> responseSupplier.apply(request));
             }
         } else {
-            return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
+            return Mono.just(new MockHttpResponse(request, 404));
         }
     }
 }

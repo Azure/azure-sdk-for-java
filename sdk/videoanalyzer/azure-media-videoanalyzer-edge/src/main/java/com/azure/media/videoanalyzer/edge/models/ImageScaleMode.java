@@ -5,32 +5,54 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageScaleMode. */
+/**
+ * Describes the image scaling mode to be applied. Default mode is 'pad'.
+ */
 public final class ImageScaleMode extends ExpandableStringEnum<ImageScaleMode> {
-    /** Static value preserveAspectRatio for ImageScaleMode. */
+    /**
+     * Preserves the same aspect ratio as the input image. If only one image dimension is provided, the second dimension
+     * is calculated based on the input image aspect ratio. When 2 dimensions are provided, the image is resized to fit
+     * the most constraining dimension, considering the input image size and aspect ratio.
+     */
     public static final ImageScaleMode PRESERVE_ASPECT_RATIO = fromString("preserveAspectRatio");
 
-    /** Static value pad for ImageScaleMode. */
+    /**
+     * Pads the image with black horizontal stripes (letterbox) or black vertical stripes (pillar-box) so the image is
+     * resized to the specified dimensions while not altering the content aspect ratio.
+     */
     public static final ImageScaleMode PAD = fromString("pad");
 
-    /** Static value stretch for ImageScaleMode. */
+    /**
+     * Stretches the original image so it resized to the specified dimensions.
+     */
     public static final ImageScaleMode STRETCH = fromString("stretch");
 
     /**
+     * Creates a new instance of ImageScaleMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImageScaleMode() {
+    }
+
+    /**
      * Creates or finds a ImageScaleMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageScaleMode.
      */
-    @JsonCreator
     public static ImageScaleMode fromString(String name) {
         return fromString(name, ImageScaleMode.class);
     }
 
-    /** @return known ImageScaleMode values. */
+    /**
+     * Gets known ImageScaleMode values.
+     * 
+     * @return known ImageScaleMode values.
+     */
     public static Collection<ImageScaleMode> values() {
         return values(ImageScaleMode.class);
     }

@@ -12,12 +12,12 @@ import java.util.Collection;
 public final class IntegrationRuntimeEntityReferenceType
     extends ExpandableStringEnum<IntegrationRuntimeEntityReferenceType> {
     /** Static value IntegrationRuntimeReference for IntegrationRuntimeEntityReferenceType. */
-    public static final IntegrationRuntimeEntityReferenceType INTEGRATION_RUNTIME_REFERENCE =
-        fromString("IntegrationRuntimeReference");
+    public static final IntegrationRuntimeEntityReferenceType INTEGRATION_RUNTIME_REFERENCE
+        = fromString("IntegrationRuntimeReference");
 
     /** Static value LinkedServiceReference for IntegrationRuntimeEntityReferenceType. */
-    public static final IntegrationRuntimeEntityReferenceType LINKED_SERVICE_REFERENCE =
-        fromString("LinkedServiceReference");
+    public static final IntegrationRuntimeEntityReferenceType LINKED_SERVICE_REFERENCE
+        = fromString("LinkedServiceReference");
 
     /**
      * Creates a new instance of IntegrationRuntimeEntityReferenceType value.

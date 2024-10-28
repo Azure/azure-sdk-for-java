@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class KustomizationPatchDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustomizationPatchDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"path\":\"ncghkje\",\"dependsOn\":[\"hbijhtxfvgxb\",\"smx\",\"eh\"],\"timeoutInSeconds\":5279138530813051963,\"syncIntervalInSeconds\":6726437827425904455,\"retryIntervalInSeconds\":8488647462806528566,\"prune\":false,\"force\":false,\"wait\":true,\"postBuild\":{\"substitute\":{\"flz\":\"ukgri\",\"qzahmgkbrp\":\"fbxzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"substituteFrom\":[{\"kind\":\"iarbutrcvpna\",\"name\":\"mhjrunmpxttdbhr\",\"optional\":false},{\"kind\":\"nkxmyskpbhenbtk\",\"name\":\"ywn\",\"optional\":false},{\"kind\":\"synlqidybyxczfc\",\"name\":\"aaxdbabphlwrq\",\"optional\":true}]}}")
-                .toObject(KustomizationPatchDefinition.class);
+        KustomizationPatchDefinition model = BinaryData.fromString(
+            "{\"path\":\"ncghkje\",\"dependsOn\":[\"hbijhtxfvgxb\",\"smx\",\"eh\"],\"timeoutInSeconds\":5279138530813051963,\"syncIntervalInSeconds\":6726437827425904455,\"retryIntervalInSeconds\":8488647462806528566,\"prune\":false,\"force\":false,\"wait\":true,\"postBuild\":{\"substitute\":{\"flz\":\"ukgri\",\"qzahmgkbrp\":\"fbxzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"substituteFrom\":[{\"kind\":\"iarbutrcvpna\",\"name\":\"mhjrunmpxttdbhr\",\"optional\":false},{\"kind\":\"nkxmyskpbhenbtk\",\"name\":\"ywn\",\"optional\":false},{\"kind\":\"synlqidybyxczfc\",\"name\":\"aaxdbabphlwrq\",\"optional\":true}]}}")
+            .toObject(KustomizationPatchDefinition.class);
         Assertions.assertEquals("ncghkje", model.path());
         Assertions.assertEquals("hbijhtxfvgxb", model.dependsOn().get(0));
         Assertions.assertEquals(5279138530813051963L, model.timeoutInSeconds());
@@ -37,43 +35,25 @@ public final class KustomizationPatchDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustomizationPatchDefinition model =
-            new KustomizationPatchDefinition()
-                .withPath("ncghkje")
-                .withDependsOn(Arrays.asList("hbijhtxfvgxb", "smx", "eh"))
-                .withTimeoutInSeconds(5279138530813051963L)
-                .withSyncIntervalInSeconds(6726437827425904455L)
-                .withRetryIntervalInSeconds(8488647462806528566L)
-                .withPrune(false)
-                .withForce(false)
-                .withEnableWait(true)
-                .withPostBuild(
-                    new PostBuildDefinition()
-                        .withSubstitute(
-                            mapOf(
-                                "flz",
-                                "ukgri",
-                                "qzahmgkbrp",
-                                "fbxzpuzycisp",
-                                "hibnuqqkpika",
-                                "y",
-                                "buynhijggm",
-                                "rgvtqag"))
-                        .withSubstituteFrom(
-                            Arrays
-                                .asList(
-                                    new SubstituteFromDefinition()
-                                        .withKind("iarbutrcvpna")
-                                        .withName("mhjrunmpxttdbhr")
-                                        .withOptional(false),
-                                    new SubstituteFromDefinition()
-                                        .withKind("nkxmyskpbhenbtk")
-                                        .withName("ywn")
-                                        .withOptional(false),
-                                    new SubstituteFromDefinition()
-                                        .withKind("synlqidybyxczfc")
-                                        .withName("aaxdbabphlwrq")
-                                        .withOptional(true))));
+        KustomizationPatchDefinition model = new KustomizationPatchDefinition().withPath("ncghkje")
+            .withDependsOn(Arrays.asList("hbijhtxfvgxb", "smx", "eh"))
+            .withTimeoutInSeconds(5279138530813051963L)
+            .withSyncIntervalInSeconds(6726437827425904455L)
+            .withRetryIntervalInSeconds(8488647462806528566L)
+            .withPrune(false)
+            .withForce(false)
+            .withEnableWait(true)
+            .withPostBuild(new PostBuildDefinition()
+                .withSubstitute(
+                    mapOf("flz", "ukgri", "qzahmgkbrp", "fbxzpuzycisp", "hibnuqqkpika", "y", "buynhijggm", "rgvtqag"))
+                .withSubstituteFrom(Arrays.asList(
+                    new SubstituteFromDefinition().withKind("iarbutrcvpna")
+                        .withName("mhjrunmpxttdbhr")
+                        .withOptional(false),
+                    new SubstituteFromDefinition().withKind("nkxmyskpbhenbtk").withName("ywn").withOptional(false),
+                    new SubstituteFromDefinition().withKind("synlqidybyxczfc")
+                        .withName("aaxdbabphlwrq")
+                        .withOptional(true))));
         model = BinaryData.fromObject(model).toObject(KustomizationPatchDefinition.class);
         Assertions.assertEquals("ncghkje", model.path());
         Assertions.assertEquals("hbijhtxfvgxb", model.dependsOn().get(0));

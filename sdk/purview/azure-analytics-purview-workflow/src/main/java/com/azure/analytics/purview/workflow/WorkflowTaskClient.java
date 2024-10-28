@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowTaskClientBuilder.class)
 public final class WorkflowTaskClient {
-    @Generated private final WorkflowTasksOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowTasksOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowTaskClient class.
@@ -111,8 +112,8 @@ public final class WorkflowTaskClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reassignWithResponse(
-            String taskId, BinaryData reassignCommand, RequestOptions requestOptions) {
+    public Response<Void> reassignWithResponse(String taskId, BinaryData reassignCommand,
+        RequestOptions requestOptions) {
         return this.serviceClient.reassignWithResponse(taskId, reassignCommand, requestOptions);
     }
 }

@@ -192,18 +192,16 @@ public interface Server {
     ServerInner innerModel();
 
     /** The entirety of the Server definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
+
     /** The Server definition stages. */
     interface DefinitionStages {
         /** The first stage of the Server definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Server definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -222,6 +220,7 @@ public interface Server {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Server definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -232,6 +231,7 @@ public interface Server {
              */
             WithProperties withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Server definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -242,6 +242,7 @@ public interface Server {
              */
             WithCreate withProperties(ServerPropertiesForCreate properties);
         }
+
         /**
          * The stage of the Server definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -263,6 +264,7 @@ public interface Server {
              */
             Server create(Context context);
         }
+
         /** The stage of the Server definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -273,6 +275,7 @@ public interface Server {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -283,6 +286,7 @@ public interface Server {
              */
             WithCreate withIdentity(ResourceIdentity identity);
         }
+
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -294,6 +298,7 @@ public interface Server {
             WithCreate withSku(Sku sku);
         }
     }
+
     /**
      * Begins update for the Server resource.
      *
@@ -303,16 +308,9 @@ public interface Server {
 
     /** The template for Server update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithStorageProfile,
-            UpdateStages.WithAdministratorLoginPassword,
-            UpdateStages.WithVersion,
-            UpdateStages.WithSslEnforcement,
-            UpdateStages.WithMinimalTlsVersion,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithReplicationRole {
+        extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku, UpdateStages.WithStorageProfile,
+        UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithVersion, UpdateStages.WithSslEnforcement,
+        UpdateStages.WithMinimalTlsVersion, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithReplicationRole {
         /**
          * Executes the update request.
          *
@@ -328,6 +326,7 @@ public interface Server {
          */
         Server apply(Context context);
     }
+
     /** The Server update stages. */
     interface UpdateStages {
         /** The stage of the Server update allowing to specify tags. */
@@ -340,6 +339,7 @@ public interface Server {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -350,6 +350,7 @@ public interface Server {
              */
             Update withIdentity(ResourceIdentity identity);
         }
+
         /** The stage of the Server update allowing to specify sku. */
         interface WithSku {
             /**
@@ -360,6 +361,7 @@ public interface Server {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the Server update allowing to specify storageProfile. */
         interface WithStorageProfile {
             /**
@@ -370,6 +372,7 @@ public interface Server {
              */
             Update withStorageProfile(StorageProfile storageProfile);
         }
+
         /** The stage of the Server update allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -380,6 +383,7 @@ public interface Server {
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Server update allowing to specify version. */
         interface WithVersion {
             /**
@@ -390,6 +394,7 @@ public interface Server {
              */
             Update withVersion(ServerVersion version);
         }
+
         /** The stage of the Server update allowing to specify sslEnforcement. */
         interface WithSslEnforcement {
             /**
@@ -400,6 +405,7 @@ public interface Server {
              */
             Update withSslEnforcement(SslEnforcementEnum sslEnforcement);
         }
+
         /** The stage of the Server update allowing to specify minimalTlsVersion. */
         interface WithMinimalTlsVersion {
             /**
@@ -410,6 +416,7 @@ public interface Server {
              */
             Update withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion);
         }
+
         /** The stage of the Server update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -422,6 +429,7 @@ public interface Server {
              */
             Update withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess);
         }
+
         /** The stage of the Server update allowing to specify replicationRole. */
         interface WithReplicationRole {
             /**
@@ -433,6 +441,7 @@ public interface Server {
             Update withReplicationRole(String replicationRole);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

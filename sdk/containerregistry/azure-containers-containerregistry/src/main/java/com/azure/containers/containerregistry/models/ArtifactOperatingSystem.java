@@ -57,7 +57,8 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ArtifactOperatingSystem() {}
+    public ArtifactOperatingSystem() {
+    }
 
     /**
      * Creates or finds a ArtifactOperatingSystem from its string representation.

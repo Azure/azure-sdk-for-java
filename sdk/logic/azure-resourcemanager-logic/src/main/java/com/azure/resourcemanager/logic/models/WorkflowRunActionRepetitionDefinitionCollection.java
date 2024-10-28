@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of workflow run action repetitions. */
+/**
+ * A collection of workflow run action repetitions.
+ */
 @Fluent
-public final class WorkflowRunActionRepetitionDefinitionCollection {
+public final class WorkflowRunActionRepetitionDefinitionCollection
+    implements JsonSerializable<WorkflowRunActionRepetitionDefinitionCollection> {
     /*
      * The link used to get the next page of recommendations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<WorkflowRunActionRepetitionDefinitionInner> value;
 
-    /** Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class. */
+    /**
+     * Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class.
+     */
     public WorkflowRunActionRepetitionDefinitionCollection() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +46,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
      */
@@ -50,7 +57,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkflowRunActionRepetitionDefinitionInner> value() {
@@ -59,24 +66,66 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
      */
-    public WorkflowRunActionRepetitionDefinitionCollection withValue(
-        List<WorkflowRunActionRepetitionDefinitionInner> value) {
+    public WorkflowRunActionRepetitionDefinitionCollection
+        withValue(List<WorkflowRunActionRepetitionDefinitionInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunActionRepetitionDefinitionCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionRepetitionDefinitionCollection if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionRepetitionDefinitionCollection.
+     */
+    public static WorkflowRunActionRepetitionDefinitionCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunActionRepetitionDefinitionCollection deserializedWorkflowRunActionRepetitionDefinitionCollection
+                = new WorkflowRunActionRepetitionDefinitionCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionCollection.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<WorkflowRunActionRepetitionDefinitionInner> value
+                        = reader.readArray(reader1 -> WorkflowRunActionRepetitionDefinitionInner.fromJson(reader1));
+                    deserializedWorkflowRunActionRepetitionDefinitionCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunActionRepetitionDefinitionCollection;
+        });
     }
 }

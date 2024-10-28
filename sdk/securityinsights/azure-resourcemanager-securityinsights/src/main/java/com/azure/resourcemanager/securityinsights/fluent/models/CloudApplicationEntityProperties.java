@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** CloudApplication entity property bag. */
+/**
+ * CloudApplication entity property bag.
+ */
 @Immutable
 public final class CloudApplicationEntityProperties extends EntityCommonProperties {
     /*
      * The technical identifier of the application.
      */
-    @JsonProperty(value = "appId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer appId;
 
     /*
      * The name of the related cloud application.
      */
-    @JsonProperty(value = "appName", access = JsonProperty.Access.WRITE_ONLY)
     private String appName;
 
     /*
      * The user defined instance name of the cloud application. It is often used to distinguish between several
      * applications of the same type that a customer has.
      */
-    @JsonProperty(value = "instanceName", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceName;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of CloudApplicationEntityProperties class.
+     */
+    public CloudApplicationEntityProperties() {
+    }
 
     /**
      * Get the appId property: The technical identifier of the application.
-     *
+     * 
      * @return the appId value.
      */
     public Integer appId() {
@@ -41,7 +61,7 @@ public final class CloudApplicationEntityProperties extends EntityCommonProperti
 
     /**
      * Get the appName property: The name of the related cloud application.
-     *
+     * 
      * @return the appName value.
      */
     public String appName() {
@@ -51,7 +71,7 @@ public final class CloudApplicationEntityProperties extends EntityCommonProperti
     /**
      * Get the instanceName property: The user defined instance name of the cloud application. It is often used to
      * distinguish between several applications of the same type that a customer has.
-     *
+     * 
      * @return the instanceName value.
      */
     public String instanceName() {
@@ -59,12 +79,78 @@ public final class CloudApplicationEntityProperties extends EntityCommonProperti
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudApplicationEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudApplicationEntityProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudApplicationEntityProperties.
+     */
+    public static CloudApplicationEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudApplicationEntityProperties deserializedCloudApplicationEntityProperties
+                = new CloudApplicationEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedCloudApplicationEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedCloudApplicationEntityProperties.friendlyName = reader.getString();
+                } else if ("appId".equals(fieldName)) {
+                    deserializedCloudApplicationEntityProperties.appId = reader.getNullable(JsonReader::getInt);
+                } else if ("appName".equals(fieldName)) {
+                    deserializedCloudApplicationEntityProperties.appName = reader.getString();
+                } else if ("instanceName".equals(fieldName)) {
+                    deserializedCloudApplicationEntityProperties.instanceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudApplicationEntityProperties;
+        });
     }
 }

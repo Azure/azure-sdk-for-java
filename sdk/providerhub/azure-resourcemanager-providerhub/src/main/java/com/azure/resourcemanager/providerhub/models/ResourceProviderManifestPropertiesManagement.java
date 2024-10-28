@@ -58,8 +58,8 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
 
     /** {@inheritDoc} */
     @Override
-    public ResourceProviderManifestPropertiesManagement withResourceAccessPolicy(
-        ResourceAccessPolicy resourceAccessPolicy) {
+    public ResourceProviderManifestPropertiesManagement
+        withResourceAccessPolicy(ResourceAccessPolicy resourceAccessPolicy) {
         super.withResourceAccessPolicy(resourceAccessPolicy);
         return this;
     }

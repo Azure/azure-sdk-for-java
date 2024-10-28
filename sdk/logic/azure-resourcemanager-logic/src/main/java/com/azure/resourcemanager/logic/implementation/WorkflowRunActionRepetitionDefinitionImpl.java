@@ -21,8 +21,7 @@ public final class WorkflowRunActionRepetitionDefinitionImpl implements Workflow
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    WorkflowRunActionRepetitionDefinitionImpl(
-        WorkflowRunActionRepetitionDefinitionInner innerObject,
+    WorkflowRunActionRepetitionDefinitionImpl(WorkflowRunActionRepetitionDefinitionInner innerObject,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

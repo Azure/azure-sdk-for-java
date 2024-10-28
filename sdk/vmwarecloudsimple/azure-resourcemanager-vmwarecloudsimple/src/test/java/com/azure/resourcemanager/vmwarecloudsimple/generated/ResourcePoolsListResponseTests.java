@@ -13,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePoolsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolsListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"oruzfgsquyfxrxx\",\"value\":[{\"id\":\"tramxjez\",\"location\":\"wnwxuqlcvyd\",\"name\":\"atdooaojkniod\",\"privateCloudId\":\"oebwnujhemms\",\"properties\":{\"fullName\":\"kcrodtjinfw\"},\"type\":\"fltkacjv\"},{\"id\":\"f\",\"location\":\"lfoakg\",\"name\":\"fpagaowpulp\",\"privateCloudId\":\"lyls\",\"properties\":{\"fullName\":\"qjnsjervtia\"},\"type\":\"sdszue\"}]}")
-                .toObject(ResourcePoolsListResponse.class);
-        Assertions.assertEquals("oruzfgsquyfxrxx", model.nextLink());
-        Assertions.assertEquals("tramxjez", model.value().get(0).id());
+        ResourcePoolsListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"mduvw\",\"value\":[{\"id\":\"vxwmygd\",\"location\":\"gpqch\",\"name\":\"zepn\",\"privateCloudId\":\"jcrxgibbdaxcon\",\"properties\":{\"fullName\":\"auorsukokw\"},\"type\":\"plhlvnuuepzlrp\"},{\"id\":\"wzsoldweyuqdunv\",\"location\":\"nrwrbiork\",\"name\":\"lywjhh\",\"privateCloudId\":\"nhxmsi\",\"properties\":{\"fullName\":\"miloxggdufiqndie\"},\"type\":\"ao\"}]}")
+            .toObject(ResourcePoolsListResponse.class);
+        Assertions.assertEquals("mduvw", model.nextLink());
+        Assertions.assertEquals("vxwmygd", model.value().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePoolsListResponse model =
-            new ResourcePoolsListResponse()
-                .withNextLink("oruzfgsquyfxrxx")
-                .withValue(
-                    Arrays.asList(new ResourcePoolInner().withId("tramxjez"), new ResourcePoolInner().withId("f")));
+        ResourcePoolsListResponse model = new ResourcePoolsListResponse().withNextLink("mduvw")
+            .withValue(Arrays.asList(new ResourcePoolInner().withId("vxwmygd"),
+                new ResourcePoolInner().withId("wzsoldweyuqdunv")));
         model = BinaryData.fromObject(model).toObject(ResourcePoolsListResponse.class);
-        Assertions.assertEquals("oruzfgsquyfxrxx", model.nextLink());
-        Assertions.assertEquals("tramxjez", model.value().get(0).id());
+        Assertions.assertEquals("mduvw", model.nextLink());
+        Assertions.assertEquals("vxwmygd", model.value().get(0).id());
     }
 }

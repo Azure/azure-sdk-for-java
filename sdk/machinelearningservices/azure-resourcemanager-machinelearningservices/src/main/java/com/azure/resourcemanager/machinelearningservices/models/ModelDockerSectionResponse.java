@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ModelDockerSectionResponse model. */
 @Fluent
 public class ModelDockerSectionResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelDockerSectionResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelDockerSectionResponse.class);
 
     /*
      * Base image used for Docker-based runs. Mutually exclusive with
@@ -89,8 +90,8 @@ public class ModelDockerSectionResponse {
      * @param baseImageRegistry the baseImageRegistry value to set.
      * @return the ModelDockerSectionResponse object itself.
      */
-    public ModelDockerSectionResponse withBaseImageRegistry(
-        ModelDockerSectionResponseBaseImageRegistry baseImageRegistry) {
+    public ModelDockerSectionResponse
+        withBaseImageRegistry(ModelDockerSectionResponseBaseImageRegistry baseImageRegistry) {
         this.baseImageRegistry = baseImageRegistry;
         return this;
     }

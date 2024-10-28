@@ -136,9 +136,8 @@ public final class RolloutStep {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RolloutStep"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RolloutStep"));
         }
         if (operationInfo() != null) {
             operationInfo().validate();

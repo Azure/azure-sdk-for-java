@@ -36,42 +36,26 @@ public final class AssetsListContainerSasWithResponseMockTests {
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AssetContainerSas response =
-            manager
-                .assets()
-                .listContainerSasWithResponse(
-                    "jng",
-                    "qdqx",
-                    "bjwgnyfus",
-                    new ListContainerSasInput()
-                        .withPermissions(AssetContainerPermission.READ_WRITE)
-                        .withExpiryTime(OffsetDateTime.parse("2021-10-02T06:50:13Z")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        AssetContainerSas response = manager.assets()
+            .listContainerSasWithResponse("jng", "qdqx", "bjwgnyfus",
+                new ListContainerSasInput().withPermissions(AssetContainerPermission.READ_WRITE)
+                    .withExpiryTime(OffsetDateTime.parse("2021-10-02T06:50:13Z")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("kzhajqglcfhm", response.assetContainerSasUrls().get(0));
     }

@@ -27,7 +27,8 @@ public final class AzureMachineLearningStudioInputsTests {
         AzureMachineLearningStudioInputs model = new AzureMachineLearningStudioInputs().withName("xjyngudivk")
             .withColumnNames(Arrays.asList(
                 new AzureMachineLearningStudioInputColumn().withName("bxqz").withDataType("zjf").withMapTo(1306170568),
-                new AzureMachineLearningStudioInputColumn().withName("fdxxivetvtcqaqtd").withDataType("mcbxvwvxysl")
+                new AzureMachineLearningStudioInputColumn().withName("fdxxivetvtcqaqtd")
+                    .withDataType("mcbxvwvxysl")
                     .withMapTo(675840078)));
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningStudioInputs.class);
         Assertions.assertEquals("xjyngudivk", model.name());

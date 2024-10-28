@@ -17,12 +17,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /** Implementation for ApplicationGatewayBackend. */
-class ApplicationGatewayBackendImpl
-    extends ChildResourceImpl<ApplicationGatewayBackendAddressPool, ApplicationGatewayImpl, ApplicationGateway>
-    implements ApplicationGatewayBackend,
-        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayBackend.Update {
+class ApplicationGatewayBackendImpl extends
+    ChildResourceImpl<ApplicationGatewayBackendAddressPool, ApplicationGatewayImpl, ApplicationGateway> implements
+    ApplicationGatewayBackend, ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>, ApplicationGatewayBackend.Update {
 
     ApplicationGatewayBackendImpl(ApplicationGatewayBackendAddressPool inner, ApplicationGatewayImpl parent) {
         super(inner, parent);

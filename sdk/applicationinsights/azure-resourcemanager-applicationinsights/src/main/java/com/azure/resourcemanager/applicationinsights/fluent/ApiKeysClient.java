@@ -39,8 +39,8 @@ public interface ApiKeysClient {
      * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationInsightsComponentApiKeyInner> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<ApplicationInsightsComponentApiKeyInner> list(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Create an API Key of an Application Insights component.
@@ -56,8 +56,8 @@ public interface ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context);
+    Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties, Context context);
 
     /**
      * Create an API Key of an Application Insights component.
@@ -72,8 +72,8 @@ public interface ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentApiKeyInner create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties);
+    ApplicationInsightsComponentApiKeyInner create(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties);
 
     /**
      * Delete an API Key of an Application Insights component.
@@ -88,8 +88,8 @@ public interface ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context);
+    Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(String resourceGroupName, String resourceName,
+        String keyId, Context context);
 
     /**
      * Delete an API Key of an Application Insights component.
@@ -118,8 +118,8 @@ public interface ApiKeysClient {
      * @return the API Key for this key id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context);
+    Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(String resourceGroupName, String resourceName,
+        String keyId, Context context);
 
     /**
      * Get the API Key for this key id.

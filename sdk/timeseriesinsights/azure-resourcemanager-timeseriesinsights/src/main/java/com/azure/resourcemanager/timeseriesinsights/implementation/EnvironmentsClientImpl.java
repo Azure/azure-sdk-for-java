@@ -51,8 +51,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @param client the instance of the service client containing this operation class.
      */
     EnvironmentsClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(EnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,93 +63,69 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
     public interface EnvironmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}")
-        @ExpectedResponses({200, 201, 404})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}")
+        @ExpectedResponses({ 200, 201, 404 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EnvironmentCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EnvironmentResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("$expand") String expand,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EnvironmentUpdateParameters environmentUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentListResponseInner>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EnvironmentListResponseInner>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.TimeSeriesInsights/environments")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentListResponseInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EnvironmentListResponseInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -165,19 +141,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,18 +166,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -223,22 +185,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, EnvironmentCreateOrUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,16 +210,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -282,16 +229,11 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, environmentName, parameters);
-        return this
-            .client
-            .<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EnvironmentResourceInner.class,
-                EnvironmentResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, environmentName, parameters);
+        return this.client.<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EnvironmentResourceInner.class, EnvironmentResourceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -309,21 +251,13 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
+        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, environmentName, parameters, context);
-        return this
-            .client
-            .<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EnvironmentResourceInner.class,
-                EnvironmentResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, environmentName, parameters, context);
+        return this.client.<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EnvironmentResourceInner.class, EnvironmentResourceInner.class, context);
     }
 
     /**
@@ -359,9 +293,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
+        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters,
         Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, environmentName, parameters, context).getSyncPoller();
     }
@@ -379,10 +311,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, parameters)
-            .last()
+    private Mono<EnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -400,13 +331,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, parameters, context)
-            .last()
+    private Mono<EnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -423,8 +350,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentResourceInner createOrUpdate(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
+    public EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters) {
         return createOrUpdateAsync(resourceGroupName, environmentName, parameters).block();
     }
 
@@ -442,11 +369,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context) {
+    public EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, environmentName, parameters, context).block();
     }
 
@@ -465,19 +389,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String environmentName, String expand) {
+    private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String environmentName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -490,17 +410,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -520,19 +431,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String environmentName, String expand, Context context) {
+    private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String environmentName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -544,16 +451,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -591,8 +490,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String environmentName, String expand, Context context) {
+    public Response<EnvironmentResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String environmentName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, environmentName, expand, context).block();
     }
 
@@ -627,19 +526,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -650,27 +545,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
                 .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentUpdateParameters is required and cannot be null."));
         } else {
             environmentUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            environmentUpdateParameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    environmentName, this.client.getApiVersion(), environmentUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -689,22 +573,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -715,25 +592,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
                 .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentUpdateParameters is required and cannot be null."));
         } else {
             environmentUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                environmentUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), environmentUpdateParameters, accept, context);
     }
 
     /**
@@ -752,16 +619,11 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdateAsync(
         String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, environmentName, environmentUpdateParameters);
-        return this
-            .client
-            .<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EnvironmentResourceInner.class,
-                EnvironmentResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, environmentName, environmentUpdateParameters);
+        return this.client.<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EnvironmentResourceInner.class, EnvironmentResourceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -780,21 +642,13 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
+        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, environmentName, environmentUpdateParameters, context);
-        return this
-            .client
-            .<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EnvironmentResourceInner.class,
-                EnvironmentResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, environmentName, environmentUpdateParameters, context);
+        return this.client.<EnvironmentResourceInner, EnvironmentResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EnvironmentResourceInner.class, EnvironmentResourceInner.class, context);
     }
 
     /**
@@ -832,12 +686,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
+        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters, context)
+        return this.beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -855,10 +706,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentResourceInner> updateAsync(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters)
-            .last()
+    private Mono<EnvironmentResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -877,13 +727,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters, context)
-            .last()
+    private Mono<EnvironmentResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -901,8 +747,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentResourceInner update(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters) {
+    public EnvironmentResourceInner update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters) {
         return updateAsync(resourceGroupName, environmentName, environmentUpdateParameters).block();
     }
 
@@ -921,11 +767,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context) {
+    public EnvironmentResourceInner update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, environmentName, environmentUpdateParameters, context).block();
     }
 
@@ -943,16 +786,12 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -964,17 +803,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -991,19 +821,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1015,15 +841,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1085,19 +904,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentListResponseInner>> listByResourceGroupWithResponseAsync(
-        String resourceGroupName) {
+    private Mono<Response<EnvironmentListResponseInner>>
+        listByResourceGroupWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1105,16 +920,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1130,19 +937,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentListResponseInner>> listByResourceGroupWithResponseAsync(
-        String resourceGroupName, Context context) {
+    private Mono<Response<EnvironmentListResponseInner>> listByResourceGroupWithResponseAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1150,14 +953,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1185,8 +982,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @return the response of the List Environments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentListResponseInner> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context) {
+    public Response<EnvironmentListResponseInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
         return listByResourceGroupWithResponseAsync(resourceGroupName, context).block();
     }
 
@@ -1215,28 +1012,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1253,26 +1039,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>> listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

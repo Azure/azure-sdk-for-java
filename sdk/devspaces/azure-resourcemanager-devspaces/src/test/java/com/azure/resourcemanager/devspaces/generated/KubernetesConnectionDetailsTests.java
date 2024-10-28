@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class KubernetesConnectionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KubernetesConnectionDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"Kubernetes\",\"kubeConfig\":\"hiv\"}")
+        KubernetesConnectionDetails model
+            = BinaryData.fromString("{\"instanceType\":\"Kubernetes\",\"kubeConfig\":\"hiv\"}")
                 .toObject(KubernetesConnectionDetails.class);
         Assertions.assertEquals("hiv", model.kubeConfig());
     }

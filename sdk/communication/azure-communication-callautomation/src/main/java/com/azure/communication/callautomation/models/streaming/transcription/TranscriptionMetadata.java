@@ -10,7 +10,6 @@ import com.azure.communication.callautomation.models.streaming.StreamingData;
  */
 public final class TranscriptionMetadata extends StreamingData {
 
-
     /*
      * Transcription Subscription Id.
      */
@@ -38,7 +37,8 @@ public final class TranscriptionMetadata extends StreamingData {
      * @param callConnectionId Call connection id
      * @param correlationId Correlation id
      */
-    public TranscriptionMetadata(String transcriptionSubscriptionId, String locale, String callConnectionId, String correlationId) {
+    public TranscriptionMetadata(String transcriptionSubscriptionId, String locale, String callConnectionId,
+        String correlationId) {
         this.transcriptionSubscriptionId = transcriptionSubscriptionId;
         this.locale = locale;
         this.callConnectionId = callConnectionId;

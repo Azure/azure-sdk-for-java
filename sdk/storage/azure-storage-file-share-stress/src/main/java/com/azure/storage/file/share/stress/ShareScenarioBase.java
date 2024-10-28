@@ -21,7 +21,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {

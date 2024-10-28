@@ -31,14 +31,18 @@ public final class DeploymentInnerTests {
         DeploymentInner model
             = new DeploymentInner().withProperties(new DeploymentProperties().withDeploymentId("jrmvdjwzrlo")
                 .withDeployedImages(Arrays.asList(
-                    new ImageInner().withProperties(new ImageProperties().withImage("hijco").withImageId("ctbzaq")
+                    new ImageInner().withProperties(new ImageProperties().withImage("hijco")
+                        .withImageId("ctbzaq")
                         .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
-                    new ImageInner().withProperties(new ImageProperties().withImage("ddglm").withImageId("hjq")
+                    new ImageInner().withProperties(new ImageProperties().withImage("ddglm")
+                        .withImageId("hjq")
                         .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
-                    new ImageInner().withProperties(new ImageProperties().withImage("gxlefgugnxkrxd").withImageId("i")
+                    new ImageInner().withProperties(new ImageProperties().withImage("gxlefgugnxkrxd")
+                        .withImageId("i")
                         .withRegionalDataBoundary(RegionalDataBoundary.EU)),
                     new ImageInner().withProperties(new ImageProperties().withImage("xlzevgbmqjqabcy")
-                        .withImageId("ivkwlzuvccfwnfnb").withRegionalDataBoundary(RegionalDataBoundary.NONE)))));
+                        .withImageId("ivkwlzuvccfwnfnb")
+                        .withRegionalDataBoundary(RegionalDataBoundary.NONE)))));
         model = BinaryData.fromObject(model).toObject(DeploymentInner.class);
         Assertions.assertEquals("jrmvdjwzrlo", model.properties().deploymentId());
         Assertions.assertEquals("hijco", model.properties().deployedImages().get(0).properties().image());

@@ -34,21 +34,21 @@ public final class PublisherListResultTests {
         PublisherListResult model
             = new PublisherListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new PublisherInner()
-                                .withLocation("bjbsybb").withTags(mapOf("slthaq", "vtldgmfpgvmpip"))
-                                .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("gzrf", new UserAssignedIdentity(), "yebizikayuh",
-                                        new UserAssignedIdentity()))),
-                            new PublisherInner().withLocation("q").withTags(mapOf("szrnwo", "gzpfrla"))
-                                .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.UNKNOWN))
-                                .withIdentity(
-                                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("pzimejzanlfzxi", new UserAssignedIdentity(),
-                                            "mbzonokix", new UserAssignedIdentity())))));
+                    Arrays.asList(
+                        new PublisherInner().withLocation("bjbsybb")
+                            .withTags(mapOf("slthaq", "vtldgmfpgvmpip"))
+                            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
+                            .withIdentity(new ManagedServiceIdentity()
+                                .withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentities(mapOf("gzrf", new UserAssignedIdentity(), "yebizikayuh",
+                                    new UserAssignedIdentity()))),
+                        new PublisherInner().withLocation("q")
+                            .withTags(mapOf("szrnwo", "gzpfrla"))
+                            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.UNKNOWN))
+                            .withIdentity(
+                                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                    .withUserAssignedIdentities(mapOf("pzimejzanlfzxi", new UserAssignedIdentity(),
+                                        "mbzonokix", new UserAssignedIdentity())))));
         model = BinaryData.fromObject(model).toObject(PublisherListResult.class);
         Assertions.assertEquals("bjbsybb", model.value().get(0).location());
         Assertions.assertEquals("vtldgmfpgvmpip", model.value().get(0).tags().get("slthaq"));

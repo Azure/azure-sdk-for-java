@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databox.fluent.models.ShipmentPickUpResponseInn
 public final class ShipmentPickUpResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShipmentPickUpResponseInner model =
-            BinaryData
-                .fromString("{\"confirmationNumber\":\"jixisxyawjoyaqcs\",\"readyByTime\":\"2021-01-14T07:52:43Z\"}")
-                .toObject(ShipmentPickUpResponseInner.class);
+        ShipmentPickUpResponseInner model = BinaryData
+            .fromString("{\"confirmationNumber\":\"jixisxyawjoyaqcs\",\"readyByTime\":\"2021-01-14T07:52:43Z\"}")
+            .toObject(ShipmentPickUpResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

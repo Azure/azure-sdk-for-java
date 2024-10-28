@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List of available operation display property service specification metrics. */
+/**
+ * List of available operation display property service specification metrics.
+ */
 @Fluent
-public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsList {
+public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsList
+    implements JsonSerializable<AvailableOperationDisplayPropertyServiceSpecificationMetricsList> {
     /*
      * Metric specifications of operation
      */
-    @JsonProperty(value = "metricSpecifications")
     private List<AvailableOperationDisplayPropertyServiceSpecificationMetricsItem> metricSpecifications;
 
-    /** Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsList class. */
+    /**
+     * Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsList class.
+     */
     public AvailableOperationDisplayPropertyServiceSpecificationMetricsList() {
     }
 
     /**
      * Get the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<AvailableOperationDisplayPropertyServiceSpecificationMetricsItem> metricSpecifications() {
@@ -32,7 +40,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsL
 
     /**
      * Set the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsList object itself.
      */
@@ -44,12 +52,56 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsL
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (metricSpecifications() != null) {
             metricSpecifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metricSpecifications", this.metricSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsList if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * AvailableOperationDisplayPropertyServiceSpecificationMetricsList.
+     */
+    public static AvailableOperationDisplayPropertyServiceSpecificationMetricsList fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationDisplayPropertyServiceSpecificationMetricsList deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsList
+                = new AvailableOperationDisplayPropertyServiceSpecificationMetricsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricSpecifications".equals(fieldName)) {
+                    List<AvailableOperationDisplayPropertyServiceSpecificationMetricsItem> metricSpecifications
+                        = reader.readArray(reader1 -> AvailableOperationDisplayPropertyServiceSpecificationMetricsItem
+                            .fromJson(reader1));
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsList.metricSpecifications
+                        = metricSpecifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsList;
+        });
     }
 }

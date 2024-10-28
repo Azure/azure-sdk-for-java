@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScanRulesetsAsyncClient {
-    @Generated private final ScanRulesetsImpl serviceClient;
+    @Generated
+    private final ScanRulesetsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanRulesetsAsyncClient class.
@@ -110,8 +111,8 @@ public final class ScanRulesetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String scanRulesetName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String scanRulesetName,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(scanRulesetName, requestOptions);
     }
 

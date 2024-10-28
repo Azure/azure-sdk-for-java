@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteProperties model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dbhrbnlankxm\",\"source\":\"TwinChangeEvents\",\"condition\":\"pbh\",\"endpointNames\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"isEnabled\":false}")
-                .toObject(RouteProperties.class);
+        RouteProperties model = BinaryData.fromString(
+            "{\"name\":\"dbhrbnlankxm\",\"source\":\"TwinChangeEvents\",\"condition\":\"pbh\",\"endpointNames\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"isEnabled\":false}")
+            .toObject(RouteProperties.class);
         Assertions.assertEquals("dbhrbnlankxm", model.name());
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
         Assertions.assertEquals("pbh", model.condition());
@@ -27,13 +25,11 @@ public final class RoutePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteProperties model =
-            new RouteProperties()
-                .withName("dbhrbnlankxm")
-                .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
-                .withCondition("pbh")
-                .withEndpointNames(Arrays.asList("btkcxywnytnrsyn", "qidybyx", "zfcl", "aaxdbabphlwrq"))
-                .withIsEnabled(false);
+        RouteProperties model = new RouteProperties().withName("dbhrbnlankxm")
+            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
+            .withCondition("pbh")
+            .withEndpointNames(Arrays.asList("btkcxywnytnrsyn", "qidybyx", "zfcl", "aaxdbabphlwrq"))
+            .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
         Assertions.assertEquals("dbhrbnlankxm", model.name());
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());

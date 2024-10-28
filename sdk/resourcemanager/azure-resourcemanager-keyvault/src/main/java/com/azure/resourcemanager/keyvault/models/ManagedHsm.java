@@ -16,10 +16,8 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Managed Hardware Security Module. */
 @Fluent
-public interface ManagedHsm
-    extends GroupableResource<KeyVaultManager, ManagedHsmInner>, Refreshable<ManagedHsm>,
-    SupportsListingPrivateLinkResource,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface ManagedHsm extends GroupableResource<KeyVaultManager, ManagedHsmInner>, Refreshable<ManagedHsm>,
+    SupportsListingPrivateLinkResource, SupportsUpdatingPrivateEndpointConnection {
 
     /** @return the AAD tenant ID that should be used for authenticating requests to the managed HSM */
     String tenantId();

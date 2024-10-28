@@ -44,12 +44,15 @@ public final class ReplicationNetworkMappingsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkMapping response = manager.replicationNetworkMappings().getWithResponse("jbvyezjwjkqo", "bwh",
-            "ieyozvrcwfpucwnb", "gqefgzjvbxqcb", "oarx", com.azure.core.util.Context.NONE).getValue();
+        NetworkMapping response = manager.replicationNetworkMappings()
+            .getWithResponse("jbvyezjwjkqo", "bwh", "ieyozvrcwfpucwnb", "gqefgzjvbxqcb", "oarx",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ciagvkdlhu", response.properties().state());
         Assertions.assertEquals("klbjoafmjfe", response.properties().primaryNetworkFriendlyName());

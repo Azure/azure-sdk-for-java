@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.PrivateLinkResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * Gets the private link resources for MariaDB server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Gets the private link resources for MariaDB server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Gets a private link resource for MariaDB server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.
@@ -53,12 +55,12 @@ public interface PrivateLinkResourcesClient {
      * @return a private link resource for MariaDB server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String serverName, String groupName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String serverName, String groupName,
+        Context context);
 
     /**
      * Gets a private link resource for MariaDB server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.

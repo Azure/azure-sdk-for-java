@@ -25,7 +25,9 @@ public final class AccessInviteUserAccountModelTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessInviteUserAccountModel model = new AccessInviteUserAccountModel().withOrganizationId("buxwgip")
-            .withEmail("onowk").withUpn("hwankixzbinjepu").withInvitedUserDetails(
+            .withEmail("onowk")
+            .withUpn("hwankixzbinjepu")
+            .withInvitedUserDetails(
                 new AccessInvitedUserDetails().withInvitedEmail("rywn").withAuthType("oqftiyqzrnkcq"));
         model = BinaryData.fromObject(model).toObject(AccessInviteUserAccountModel.class);
         Assertions.assertEquals("buxwgip", model.organizationId());

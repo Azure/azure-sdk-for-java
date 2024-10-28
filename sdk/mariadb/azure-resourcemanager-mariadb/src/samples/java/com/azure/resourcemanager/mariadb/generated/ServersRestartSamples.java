@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Servers Restart. */
+/**
+ * Samples for Servers Restart.
+ */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerRestart.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerRestart.json
      */
     /**
      * Sample code: ServerRestart.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void serverRestart(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

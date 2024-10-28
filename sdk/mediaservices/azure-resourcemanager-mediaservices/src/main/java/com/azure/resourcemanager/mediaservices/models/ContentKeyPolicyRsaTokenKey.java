@@ -81,16 +81,12 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
     public void validate() {
         super.validate();
         if (exponent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exponent in model ContentKeyPolicyRsaTokenKey"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property exponent in model ContentKeyPolicyRsaTokenKey"));
         }
         if (modulus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property modulus in model ContentKeyPolicyRsaTokenKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property modulus in model ContentKeyPolicyRsaTokenKey"));
         }
     }
 

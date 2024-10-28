@@ -10,10 +10,6 @@ module com.azure.resourcemanager.operationsmanagement {
     exports com.azure.resourcemanager.operationsmanagement.fluent.models;
     exports com.azure.resourcemanager.operationsmanagement.models;
 
-    opens com.azure.resourcemanager.operationsmanagement.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.operationsmanagement.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.operationsmanagement.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.operationsmanagement.models to com.azure.core;
 }

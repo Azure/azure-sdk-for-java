@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RouteTargetInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteTargetInformation model =
-            BinaryData
-                .fromString(
-                    "{\"importIpv4RouteTargets\":[\"pwwobtdphti\"],\"importIpv6RouteTargets\":[\"fofwan\",\"hks\"],\"exportIpv4RouteTargets\":[\"w\",\"zcgwdfriw\",\"ybjpozoks\",\"vgllixdgby\"],\"exportIpv6RouteTargets\":[\"ewqkjvxprwpxs\",\"ohutxlcsk\"]}")
-                .toObject(RouteTargetInformation.class);
+        RouteTargetInformation model = BinaryData.fromString(
+            "{\"importIpv4RouteTargets\":[\"pwwobtdphti\"],\"importIpv6RouteTargets\":[\"fofwan\",\"hks\"],\"exportIpv4RouteTargets\":[\"w\",\"zcgwdfriw\",\"ybjpozoks\",\"vgllixdgby\"],\"exportIpv6RouteTargets\":[\"ewqkjvxprwpxs\",\"ohutxlcsk\"]}")
+            .toObject(RouteTargetInformation.class);
         Assertions.assertEquals("pwwobtdphti", model.importIpv4RouteTargets().get(0));
         Assertions.assertEquals("fofwan", model.importIpv6RouteTargets().get(0));
         Assertions.assertEquals("w", model.exportIpv4RouteTargets().get(0));
@@ -25,9 +23,8 @@ public final class RouteTargetInformationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteTargetInformation model =
-            new RouteTargetInformation()
-                .withImportIpv4RouteTargets(Arrays.asList("pwwobtdphti"))
+        RouteTargetInformation model
+            = new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("pwwobtdphti"))
                 .withImportIpv6RouteTargets(Arrays.asList("fofwan", "hks"))
                 .withExportIpv4RouteTargets(Arrays.asList("w", "zcgwdfriw", "ybjpozoks", "vgllixdgby"))
                 .withExportIpv6RouteTargets(Arrays.asList("ewqkjvxprwpxs", "ohutxlcsk"));

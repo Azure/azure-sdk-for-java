@@ -100,9 +100,8 @@ public final class SkuCost {
      */
     public void validate() {
         if (meterId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property meterId in model SkuCost"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property meterId in model SkuCost"));
         }
     }
 

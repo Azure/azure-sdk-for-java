@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceLocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceLocationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"country\":\"r\",\"state\":\"xpvgo\",\"azureRegion\":\"lf\"},\"id\":\"isgwbnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}")
-                .toObject(PeeringServiceLocationInner.class);
-        Assertions.assertEquals("r", model.country());
-        Assertions.assertEquals("xpvgo", model.state());
-        Assertions.assertEquals("lf", model.azureRegion());
+        PeeringServiceLocationInner model = BinaryData.fromString(
+            "{\"properties\":{\"country\":\"mfqjhhkxbp\",\"state\":\"ymjhxxjyngudivkr\",\"azureRegion\":\"wbxqzvszjfau\"},\"id\":\"j\",\"name\":\"dxxiv\",\"type\":\"tvtc\"}")
+            .toObject(PeeringServiceLocationInner.class);
+        Assertions.assertEquals("mfqjhhkxbp", model.country());
+        Assertions.assertEquals("ymjhxxjyngudivkr", model.state());
+        Assertions.assertEquals("wbxqzvszjfau", model.azureRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceLocationInner model =
-            new PeeringServiceLocationInner().withCountry("r").withState("xpvgo").withAzureRegion("lf");
+        PeeringServiceLocationInner model = new PeeringServiceLocationInner().withCountry("mfqjhhkxbp")
+            .withState("ymjhxxjyngudivkr")
+            .withAzureRegion("wbxqzvszjfau");
         model = BinaryData.fromObject(model).toObject(PeeringServiceLocationInner.class);
-        Assertions.assertEquals("r", model.country());
-        Assertions.assertEquals("xpvgo", model.state());
-        Assertions.assertEquals("lf", model.azureRegion());
+        Assertions.assertEquals("mfqjhhkxbp", model.country());
+        Assertions.assertEquals("ymjhxxjyngudivkr", model.state());
+        Assertions.assertEquals("wbxqzvszjfau", model.azureRegion());
     }
 }

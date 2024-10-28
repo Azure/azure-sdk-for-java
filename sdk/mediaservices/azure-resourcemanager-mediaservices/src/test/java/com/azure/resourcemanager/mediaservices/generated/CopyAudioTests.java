@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CopyAudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyAudio model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.CopyAudio\",\"label\":\"drihpfhoqcaaewda\"}")
+        CopyAudio model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.CopyAudio\",\"label\":\"drihpfhoqcaaewda\"}")
                 .toObject(CopyAudio.class);
         Assertions.assertEquals("drihpfhoqcaaewda", model.label());
     }

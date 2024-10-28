@@ -26,8 +26,8 @@ public final class ProviderRegistrationPropertiesSubscriptionLifecycleNotificati
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications withSoftDeleteTtl(
-        Duration softDeleteTtl) {
+    public ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications
+        withSoftDeleteTtl(Duration softDeleteTtl) {
         super.withSoftDeleteTtl(softDeleteTtl);
         return this;
     }

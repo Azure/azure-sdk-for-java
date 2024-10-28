@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UnhealthyReplicaInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnhealthyReplicaInfo model =
-            BinaryData.fromString("{\"availabilityGroupName\":\"ciwwzjuqkhr\"}").toObject(UnhealthyReplicaInfo.class);
+        UnhealthyReplicaInfo model
+            = BinaryData.fromString("{\"availabilityGroupName\":\"ciwwzjuqkhr\"}").toObject(UnhealthyReplicaInfo.class);
         Assertions.assertEquals("ciwwzjuqkhr", model.availabilityGroupName());
     }
 

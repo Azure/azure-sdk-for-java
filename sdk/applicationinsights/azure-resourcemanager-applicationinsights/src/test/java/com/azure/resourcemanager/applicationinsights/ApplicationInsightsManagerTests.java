@@ -39,18 +39,15 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        applicationInsightsManager = ApplicationInsightsManager
-            .configure()
+        applicationInsightsManager = ApplicationInsightsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        logAnalyticsManager = LogAnalyticsManager
-            .configure()
+        logAnalyticsManager = LogAnalyticsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -61,10 +58,7 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -83,7 +77,7 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
         try {
             String componentName = "component" + randomPadding;
             String spaceName = "space" + randomPadding;
-            // @embedStart
+            // @embedmeStart
             Workspace workspace = logAnalyticsManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
@@ -99,10 +93,11 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
                 .withWorkspaceResourceId(workspace.id())
                 .withIngestionMode(IngestionMode.LOG_ANALYTICS)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             component.refresh();
             Assertions.assertEquals(component.name(), componentName);
-            Assertions.assertEquals(component.name(), applicationInsightsManager.components().getById(component.id()).name());
+            Assertions.assertEquals(component.name(),
+                applicationInsightsManager.components().getById(component.id()).name());
             Assertions.assertTrue(applicationInsightsManager.components().list().stream().findAny().isPresent());
         } finally {
             if (component != null) {

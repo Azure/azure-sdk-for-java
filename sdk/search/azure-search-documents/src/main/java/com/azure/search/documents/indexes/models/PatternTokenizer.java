@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache

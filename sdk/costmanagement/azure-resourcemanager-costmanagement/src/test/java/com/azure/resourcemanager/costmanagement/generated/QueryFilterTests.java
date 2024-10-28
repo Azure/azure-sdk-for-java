@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryFilter model =
-            BinaryData
-                .fromString(
-                    "{\"and\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"m\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"rq\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"luszdtmhrkwof\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"oqac\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"giwbwoenwa\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"tdtkcn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"ulpiuj\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"sipqii\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"lp\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ciuqgbdb\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"tkuwhhmhykojo\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"nn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"o\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"cdyhbpkkpwdreqn\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"qfovljxywsuws\",\"operator\":\"In\",\"values\":[\"ndsytgadg\"]},\"tags\":{\"name\":\"aeaeneqnzarrw\",\"operator\":\"In\",\"values\":[\"uijfqk\"]}}")
-                .toObject(QueryFilter.class);
+        QueryFilter model = BinaryData.fromString(
+            "{\"and\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"m\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"rq\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"luszdtmhrkwof\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"oqac\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"giwbwoenwa\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"tdtkcn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"ulpiuj\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"sipqii\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"lp\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ciuqgbdb\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"tkuwhhmhykojo\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"nn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"o\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"cdyhbpkkpwdreqn\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"qfovljxywsuws\",\"operator\":\"In\",\"values\":[\"ndsytgadg\"]},\"tags\":{\"name\":\"aeaeneqnzarrw\",\"operator\":\"In\",\"values\":[\"uijfqk\"]}}")
+            .toObject(QueryFilter.class);
         Assertions.assertEquals("m", model.and().get(0).dimensions().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.and().get(0).dimensions().operator());
         Assertions.assertEquals("rq", model.and().get(0).tags().name());
@@ -37,115 +35,71 @@ public final class QueryFilterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryFilter model =
-            new QueryFilter()
-                .withAnd(
-                    Arrays
-                        .asList(
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("m")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("rq")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("luszdtmhrkwof")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("oqac")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("giwbwoenwa")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("tdtkcn")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("ulpiuj")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("sipqii")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withOr(
-                    Arrays
-                        .asList(
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("lp")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("ciuqgbdb")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("tkuwhhmhykojo")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("nn")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new QueryFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new QueryComparisonExpression()
-                                        .withName("o")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new QueryComparisonExpression()
-                                        .withName("cdyhbpkkpwdreqn")
-                                        .withOperator(QueryOperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withDimensions(
-                    new QueryComparisonExpression()
-                        .withName("qfovljxywsuws")
+        QueryFilter model = new QueryFilter()
+            .withAnd(Arrays.asList(
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("m")
                         .withOperator(QueryOperatorType.IN)
-                        .withValues(Arrays.asList("ndsytgadg")))
-                .withTags(
-                    new QueryComparisonExpression()
-                        .withName("aeaeneqnzarrw")
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("rq")
                         .withOperator(QueryOperatorType.IN)
-                        .withValues(Arrays.asList("uijfqk")));
+                        .withValues(Arrays.asList())),
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("luszdtmhrkwof")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("oqac")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList())),
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("giwbwoenwa")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("tdtkcn")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList())),
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("ulpiuj")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("sipqii")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))))
+            .withOr(Arrays.asList(
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("lp")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("ciuqgbdb")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList())),
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("tkuwhhmhykojo")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("nn")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList())),
+                new QueryFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new QueryComparisonExpression().withName("o")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new QueryComparisonExpression().withName("cdyhbpkkpwdreqn")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList()))))
+            .withDimensions(new QueryComparisonExpression().withName("qfovljxywsuws")
+                .withOperator(QueryOperatorType.IN)
+                .withValues(Arrays.asList("ndsytgadg")))
+            .withTags(new QueryComparisonExpression().withName("aeaeneqnzarrw")
+                .withOperator(QueryOperatorType.IN)
+                .withValues(Arrays.asList("uijfqk")));
         model = BinaryData.fromObject(model).toObject(QueryFilter.class);
         Assertions.assertEquals("m", model.and().get(0).dimensions().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.and().get(0).dimensions().operator());

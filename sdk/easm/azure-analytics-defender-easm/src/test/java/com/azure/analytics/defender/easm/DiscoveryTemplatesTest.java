@@ -30,5 +30,4 @@ public class DiscoveryTemplatesTest extends EasmClientTestBase {
         assertNotNull(discoTemplateResponse.getId());
     }
 
-
 }

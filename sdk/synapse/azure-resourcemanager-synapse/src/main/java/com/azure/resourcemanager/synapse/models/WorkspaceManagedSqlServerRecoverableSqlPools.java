@@ -55,8 +55,8 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recoverable sql pools for workspace managed sql server along with {@link Response}.
      */
-    Response<RecoverableSqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<RecoverableSqlPool> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get recoverable sql pools for the server.

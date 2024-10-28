@@ -44,12 +44,14 @@ public final class ReplicationProtectableItemsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProtectableItem response = manager.replicationProtectableItems()
-            .getWithResponse("wdalisd", "qngca", "dz", "nloou", "p", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("wdalisd", "qngca", "dz", "nloou", "p", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("dahyclxrsidoeb", response.properties().friendlyName());
         Assertions.assertEquals("poiaffjkrtn", response.properties().protectionStatus());

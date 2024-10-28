@@ -10,10 +10,8 @@ import com.azure.resourcemanager.appconfiguration.models.UserIdentity;
 public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"vmgxsab\",\"clientId\":\"qduujitcjczdz\"}")
-                .toObject(UserIdentity.class);
+        UserIdentity model = BinaryData.fromString("{\"principalId\":\"vmgxsab\",\"clientId\":\"qduujitcjczdz\"}")
+            .toObject(UserIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

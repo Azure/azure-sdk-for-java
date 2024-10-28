@@ -118,8 +118,8 @@ public final class PortalDelegationSettingsInner extends ProxyResource {
      * @param userRegistration the userRegistration value to set.
      * @return the PortalDelegationSettingsInner object itself.
      */
-    public PortalDelegationSettingsInner withUserRegistration(
-        RegistrationDelegationSettingsProperties userRegistration) {
+    public PortalDelegationSettingsInner
+        withUserRegistration(RegistrationDelegationSettingsProperties userRegistration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PortalDelegationSettingsProperties();
         }

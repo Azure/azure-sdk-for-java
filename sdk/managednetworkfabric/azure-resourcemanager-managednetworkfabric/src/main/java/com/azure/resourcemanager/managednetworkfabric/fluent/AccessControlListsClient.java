@@ -33,8 +33,8 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(String resourceGroupName,
+        String accessControlListName, AccessControlListInner body);
 
     /**
      * Creates Access Control List.
@@ -51,8 +51,8 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(String resourceGroupName,
+        String accessControlListName, AccessControlListInner body, Context context);
 
     /**
      * Creates Access Control List.
@@ -85,8 +85,8 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessControlListInner create(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
+    AccessControlListInner create(String resourceGroupName, String accessControlListName, AccessControlListInner body,
+        Context context);
 
     /**
      * Gets a Access Control List.
@@ -102,8 +102,8 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessControlListInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context);
+    Response<AccessControlListInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String accessControlListName, Context context);
 
     /**
      * Gets a Access Control List.
@@ -134,8 +134,8 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(String resourceGroupName,
+        String accessControlListName, AccessControlListPatch body);
 
     /**
      * Updates the Access Control List.
@@ -152,8 +152,8 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(String resourceGroupName,
+        String accessControlListName, AccessControlListPatch body, Context context);
 
     /**
      * Updates the Access Control List.
@@ -186,8 +186,8 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessControlListInner update(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
+    AccessControlListInner update(String resourceGroupName, String accessControlListName, AccessControlListPatch body,
+        Context context);
 
     /**
      * Deletes a Access Control List.
@@ -218,8 +218,8 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accessControlListName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Deletes a Access Control List.
@@ -320,8 +320,8 @@ public interface AccessControlListsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String accessControlListName,
+            UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Access Control Lists.
@@ -339,8 +339,8 @@ public interface AccessControlListsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String accessControlListName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Updates administrative state of Access Control Lists.
@@ -356,8 +356,8 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Access Control Lists.
@@ -374,8 +374,8 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Access Control Lists.
@@ -439,8 +439,8 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String accessControlListName, Context context);
+    CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Validates the configuration of the Access Control Lists.
@@ -504,6 +504,6 @@ public interface AccessControlListsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String accessControlListName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String accessControlListName,
+        Context context);
 }

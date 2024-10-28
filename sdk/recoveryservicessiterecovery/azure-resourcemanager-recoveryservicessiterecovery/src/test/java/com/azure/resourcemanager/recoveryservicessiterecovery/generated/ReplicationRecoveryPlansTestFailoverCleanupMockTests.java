@@ -47,14 +47,16 @@ public final class ReplicationRecoveryPlansTestFailoverCleanupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().testFailoverCleanup("p", "addpxqrxipe", "rplf",
-            new RecoveryPlanTestFailoverCleanupInput()
-                .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("vmjjfz")),
-            com.azure.core.util.Context.NONE);
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .testFailoverCleanup("p", "addpxqrxipe", "rplf",
+                new RecoveryPlanTestFailoverCleanupInput()
+                    .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("vmjjfz")),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lbiqq", response.properties().friendlyName());
         Assertions.assertEquals("arxknfvbsym", response.properties().primaryFabricId());

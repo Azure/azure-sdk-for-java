@@ -44,9 +44,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolReplicationLinksClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolReplicationLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolReplicationLinksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,48 +56,34 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolReplicationLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationLinkListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReplicationLinkListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks/{linkId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks/{linkId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationLinkInner>> getByName(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("linkId") String linkId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReplicationLinkInner>> getByName(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("linkId") String linkId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationLinkListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -116,19 +101,15 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<ReplicationLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -143,27 +124,10 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
-            .<PagedResponse<ReplicationLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .<PagedResponse<ReplicationLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -183,19 +147,15 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<ReplicationLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -211,24 +171,10 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -246,10 +192,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationLinkInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
+    private PagedFlux<ReplicationLinkInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -269,10 +214,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationLinkInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
+    private PagedFlux<ReplicationLinkInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -291,8 +235,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationLinkInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<ReplicationLinkInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
@@ -312,8 +256,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationLinkInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<ReplicationLinkInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
@@ -332,19 +276,15 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @return sQL pool replication link by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationLinkInner>> getByNameWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+    private Mono<Response<ReplicationLinkInner>> getByNameWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String linkId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -363,18 +303,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByName(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            linkId,
-                            accept,
-                            context))
+                context -> service.getByName(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -394,19 +324,15 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @return sQL pool replication link by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationLinkInner>> getByNameWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context) {
+    private Mono<Response<ReplicationLinkInner>> getByNameWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String linkId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -424,17 +350,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByName(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                linkId,
-                accept,
-                context);
+        return service.getByName(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context);
     }
 
     /**
@@ -452,8 +369,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @return sQL pool replication link by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationLinkInner> getByNameAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+    private Mono<ReplicationLinkInner> getByNameAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String linkId) {
         return getByNameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -474,8 +391,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @return sQL pool replication link by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicationLinkInner> getByNameWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context) {
+    public Response<ReplicationLinkInner> getByNameWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String linkId, Context context) {
         return getByNameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId, context).block();
     }
 
@@ -494,8 +411,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @return sQL pool replication link by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationLinkInner getByName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+    public ReplicationLinkInner getByName(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String linkId) {
         return getByNameWithResponse(resourceGroupName, workspaceName, sqlPoolName, linkId, Context.NONE).getValue();
     }
 
@@ -516,23 +433,13 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReplicationLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReplicationLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -554,23 +461,13 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

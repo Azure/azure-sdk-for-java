@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineTemplateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of virtual machine templates. */
+/**
+ * List of virtual machine templates.
+ */
 @Fluent
-public final class VirtualMachineTemplateListResponse {
+public final class VirtualMachineTemplateListResponse implements JsonSerializable<VirtualMachineTemplateListResponse> {
     /*
      * Link for next list of VirtualMachineTemplate
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Results of the VM template list
      */
-    @JsonProperty(value = "value")
     private List<VirtualMachineTemplateInner> value;
 
-    /** Creates an instance of VirtualMachineTemplateListResponse class. */
+    /**
+     * Creates an instance of VirtualMachineTemplateListResponse class.
+     */
     public VirtualMachineTemplateListResponse() {
     }
 
     /**
      * Get the nextLink property: Link for next list of VirtualMachineTemplate.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class VirtualMachineTemplateListResponse {
 
     /**
      * Set the nextLink property: Link for next list of VirtualMachineTemplate.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineTemplateListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class VirtualMachineTemplateListResponse {
 
     /**
      * Get the value property: Results of the VM template list.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineTemplateInner> value() {
@@ -59,7 +65,7 @@ public final class VirtualMachineTemplateListResponse {
 
     /**
      * Set the value property: Results of the VM template list.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineTemplateListResponse object itself.
      */
@@ -70,12 +76,54 @@ public final class VirtualMachineTemplateListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateListResponse.
+     */
+    public static VirtualMachineTemplateListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateListResponse deserializedVirtualMachineTemplateListResponse
+                = new VirtualMachineTemplateListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateListResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<VirtualMachineTemplateInner> value
+                        = reader.readArray(reader1 -> VirtualMachineTemplateInner.fromJson(reader1));
+                    deserializedVirtualMachineTemplateListResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateListResponse;
+        });
     }
 }

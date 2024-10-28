@@ -74,29 +74,24 @@ public final class ComputePolicyImpl implements ComputePolicy, ComputePolicy.Def
     }
 
     public ComputePolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, computePolicyName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, computePolicyName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComputePolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, computePolicyName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, computePolicyName, createParameters, context)
+            .getValue();
         return this;
     }
 
-    ComputePolicyImpl(
-        String name, com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
+    ComputePolicyImpl(String name,
+        com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = new ComputePolicyInner();
         this.serviceManager = serviceManager;
         this.computePolicyName = name;
@@ -109,52 +104,43 @@ public final class ComputePolicyImpl implements ComputePolicy, ComputePolicy.Def
     }
 
     public ComputePolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .updateWithResponse(resourceGroupName, accountName, computePolicyName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .updateWithResponse(resourceGroupName, accountName, computePolicyName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComputePolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .updateWithResponse(resourceGroupName, accountName, computePolicyName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .updateWithResponse(resourceGroupName, accountName, computePolicyName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ComputePolicyImpl(
-        ComputePolicyInner innerObject,
+    ComputePolicyImpl(ComputePolicyInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.computePolicyName = Utils.getValueFromIdByName(innerObject.id(), "computePolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.computePolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "computePolicies");
     }
 
     public ComputePolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .getWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .getWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComputePolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputePolicies()
-                .getWithResponse(resourceGroupName, accountName, computePolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputePolicies()
+            .getWithResponse(resourceGroupName, accountName, computePolicyName, context)
+            .getValue();
         return this;
     }
 

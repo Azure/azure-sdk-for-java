@@ -7,11 +7,13 @@ package com.azure.resourcemanager.networkfunction.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AzureTrafficCollectorsByResourceGroups. */
+/**
+ * Resource collection API of AzureTrafficCollectorsByResourceGroups.
+ */
 public interface AzureTrafficCollectorsByResourceGroups {
     /**
      * Return list of Azure Traffic Collectors in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,7 +24,7 @@ public interface AzureTrafficCollectorsByResourceGroups {
 
     /**
      * Return list of Azure Traffic Collectors in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

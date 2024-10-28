@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ViewInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ViewInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"jzrnf\",\"scope\":\"xgispemvtzfkufu\",\"createdOn\":\"2021-04-27T12:55:33Z\",\"modifiedOn\":\"2021-02-25T05:54:32Z\",\"dateRange\":\"qeof\",\"currency\":\"e\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"MonthToDate\",\"includeMonetaryCommitment\":false},\"chart\":\"StackedColumn\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"ntnbybkzg\",\"enabled\":true},{\"type\":\"Budget\",\"id\":\"xxwr\",\"enabled\":true},{\"type\":\"Budget\",\"id\":\"kcqvkocrc\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"hxbnjbiksqrg\",\"enabled\":true}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"jwnzlljfmp\"},{\"type\":\"TagKey\",\"name\":\"vmgxsab\"},{\"type\":\"TagKey\",\"name\":\"uujitcjc\"}]},\"eTag\":\"zevndhkrwpdappds\",\"id\":\"dkvwrwjfe\",\"name\":\"snhu\",\"type\":\"je\"}")
-                .toObject(ViewInner.class);
+        ViewInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"jzrnf\",\"scope\":\"xgispemvtzfkufu\",\"createdOn\":\"2021-04-27T12:55:33Z\",\"modifiedOn\":\"2021-02-25T05:54:32Z\",\"dateRange\":\"qeof\",\"currency\":\"e\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"MonthToDate\",\"includeMonetaryCommitment\":false},\"chart\":\"StackedColumn\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"ntnbybkzg\",\"enabled\":true},{\"type\":\"Budget\",\"id\":\"xxwr\",\"enabled\":true},{\"type\":\"Budget\",\"id\":\"kcqvkocrc\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"hxbnjbiksqrg\",\"enabled\":true}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"jwnzlljfmp\"},{\"type\":\"TagKey\",\"name\":\"vmgxsab\"},{\"type\":\"TagKey\",\"name\":\"uujitcjc\"}]},\"eTag\":\"zevndhkrwpdappds\",\"id\":\"dkvwrwjfe\",\"name\":\"snhu\",\"type\":\"je\"}")
+            .toObject(ViewInner.class);
         Assertions.assertEquals("zevndhkrwpdappds", model.etag());
         Assertions.assertEquals("jzrnf", model.displayName());
         Assertions.assertEquals("xgispemvtzfkufu", model.scope());
@@ -44,30 +42,22 @@ public final class ViewInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ViewInner model =
-            new ViewInner()
-                .withEtag("zevndhkrwpdappds")
-                .withDisplayName("jzrnf")
-                .withScope("xgispemvtzfkufu")
-                .withChart(ChartType.STACKED_COLUMN)
-                .withAccumulated(AccumulatedType.FALSE)
-                .withMetric(MetricType.ACTUAL_COST)
-                .withKpis(
-                    Arrays
-                        .asList(
-                            new KpiProperties().withType(KpiType.BUDGET).withId("ntnbybkzg").withEnabled(true),
-                            new KpiProperties().withType(KpiType.BUDGET).withId("xxwr").withEnabled(true),
-                            new KpiProperties().withType(KpiType.BUDGET).withId("kcqvkocrc").withEnabled(false),
-                            new KpiProperties().withType(KpiType.FORECAST).withId("hxbnjbiksqrg").withEnabled(true)))
-                .withPivots(
-                    Arrays
-                        .asList(
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("jwnzlljfmp"),
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("vmgxsab"),
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("uujitcjc")))
-                .withTypePropertiesType(ReportType.USAGE)
-                .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
-                .withIncludeMonetaryCommitment(false);
+        ViewInner model = new ViewInner().withEtag("zevndhkrwpdappds")
+            .withDisplayName("jzrnf")
+            .withScope("xgispemvtzfkufu")
+            .withChart(ChartType.STACKED_COLUMN)
+            .withAccumulated(AccumulatedType.FALSE)
+            .withMetric(MetricType.ACTUAL_COST)
+            .withKpis(Arrays.asList(new KpiProperties().withType(KpiType.BUDGET).withId("ntnbybkzg").withEnabled(true),
+                new KpiProperties().withType(KpiType.BUDGET).withId("xxwr").withEnabled(true),
+                new KpiProperties().withType(KpiType.BUDGET).withId("kcqvkocrc").withEnabled(false),
+                new KpiProperties().withType(KpiType.FORECAST).withId("hxbnjbiksqrg").withEnabled(true)))
+            .withPivots(Arrays.asList(new PivotProperties().withType(PivotType.TAG_KEY).withName("jwnzlljfmp"),
+                new PivotProperties().withType(PivotType.TAG_KEY).withName("vmgxsab"),
+                new PivotProperties().withType(PivotType.TAG_KEY).withName("uujitcjc")))
+            .withTypePropertiesType(ReportType.USAGE)
+            .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
+            .withIncludeMonetaryCommitment(false);
         model = BinaryData.fromObject(model).toObject(ViewInner.class);
         Assertions.assertEquals("zevndhkrwpdappds", model.etag());
         Assertions.assertEquals("jzrnf", model.displayName());

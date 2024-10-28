@@ -561,8 +561,8 @@ public final class VirtualMachineInner extends Resource {
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachineInner object itself.
      */
-    public VirtualMachineInner withVmImageRepositoryCredentials(
-        ImageRepositoryCredentials vmImageRepositoryCredentials) {
+    public VirtualMachineInner
+        withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineProperties();
         }
@@ -586,18 +586,14 @@ public final class VirtualMachineInner extends Resource {
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property extendedLocation in model VirtualMachineInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property extendedLocation in model VirtualMachineInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualMachineInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model VirtualMachineInner"));
         } else {
             innerProperties().validate();
         }

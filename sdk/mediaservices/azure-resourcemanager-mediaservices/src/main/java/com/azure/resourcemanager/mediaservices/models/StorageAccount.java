@@ -121,9 +121,8 @@ public final class StorageAccount {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model StorageAccount"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model StorageAccount"));
         }
         if (identity() != null) {
             identity().validate();

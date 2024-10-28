@@ -37,7 +37,6 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     private final HttpPipeline pipeline;
     private final URI uri;
 
-
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
 
@@ -81,18 +80,18 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         HttpRequest request = new HttpRequest(HttpMethod.PATCH, uri).setBody(BinaryData.fromString(body));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
-        request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders()
+            .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.ACCEPT, "application/json");
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
+        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder
+            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

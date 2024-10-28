@@ -42,14 +42,8 @@ public interface ApiSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the schema configuration at the API level as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SchemaContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<SchemaContract> listByApi(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
@@ -65,8 +59,8 @@ public interface ApiSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
-    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
+    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
@@ -96,8 +90,8 @@ public interface ApiSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the schema configuration at the API level.
      */
-    Response<SchemaContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
+    Response<SchemaContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context);
 
     /**
      * Get the schema configuration at the API level.
@@ -131,14 +125,8 @@ public interface ApiSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        String ifMatch,
-        Boolean force,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        String ifMatch, Boolean force, Context context);
 
     /**
      * Deletes the schema configuration at the Api.

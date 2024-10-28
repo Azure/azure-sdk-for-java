@@ -30,6 +30,7 @@ public class RoleAssignmentHelper {
     public interface IdProvider {
         /** @return the service principal id (object id) */
         String principalId();
+
         /** @return ARM resource id of the resource */
         String resourceId();
     }
@@ -47,8 +48,8 @@ public class RoleAssignmentHelper {
      * @param taskGroup the pre-run task group after which role assignments create/remove tasks should run
      * @param idProvider the provider that provides service principal id and resource id
      */
-    public RoleAssignmentHelper(
-        final AuthorizationManager authorizationManager, TaskGroup taskGroup, IdProvider idProvider) {
+    public RoleAssignmentHelper(final AuthorizationManager authorizationManager, TaskGroup taskGroup,
+        IdProvider idProvider) {
         this.authorizationManager = Objects.requireNonNull(authorizationManager);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.preRunTaskGroup = Objects.requireNonNull(taskGroup);
@@ -74,35 +75,32 @@ public class RoleAssignmentHelper {
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withAccessTo(final String scope, final BuiltInRole asRole) {
-        FunctionalTaskItem creator =
-            cxt -> {
-                final String principalId = idProvider.principalId();
-                if (principalId == null) {
-                    return cxt.voidMono();
-                }
-                final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
-                final String resourceScope;
-                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
-                    resourceScope = resourceGroupId(idProvider.resourceId());
-                } else {
-                    resourceScope = scope;
-                }
-                return authorizationManager
-                    .roleAssignments()
-                    .define(roleAssignmentName)
-                    .forObjectId(principalId)
-                    .withBuiltInRole(asRole)
-                    .withScope(resourceScope)
-                    .createAsync()
-                    .cast(Indexable.class)
-                    .onErrorResume(
-                        throwable -> {
-                            if (isRoleAssignmentExists(throwable)) {
-                                return cxt.voidMono();
-                            }
-                            return Mono.error(throwable);
-                        });
-            };
+        FunctionalTaskItem creator = cxt -> {
+            final String principalId = idProvider.principalId();
+            if (principalId == null) {
+                return cxt.voidMono();
+            }
+            final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
+            final String resourceScope;
+            if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
+                resourceScope = resourceGroupId(idProvider.resourceId());
+            } else {
+                resourceScope = scope;
+            }
+            return authorizationManager.roleAssignments()
+                .define(roleAssignmentName)
+                .forObjectId(principalId)
+                .withBuiltInRole(asRole)
+                .withScope(resourceScope)
+                .createAsync()
+                .cast(Indexable.class)
+                .onErrorResume(throwable -> {
+                    if (isRoleAssignmentExists(throwable)) {
+                        return cxt.voidMono();
+                    }
+                    return Mono.error(throwable);
+                });
+        };
         this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
     }
@@ -127,35 +125,32 @@ public class RoleAssignmentHelper {
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withAccessTo(final String scope, final String roleDefinitionId) {
-        FunctionalTaskItem creator =
-            cxt -> {
-                final String principalId = idProvider.principalId();
-                if (principalId == null) {
-                    return cxt.voidMono();
-                }
-                final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
-                final String resourceScope;
-                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
-                    resourceScope = resourceGroupId(idProvider.resourceId());
-                } else {
-                    resourceScope = scope;
-                }
-                return authorizationManager
-                    .roleAssignments()
-                    .define(roleAssignmentName)
-                    .forObjectId(principalId)
-                    .withRoleDefinition(roleDefinitionId)
-                    .withScope(resourceScope)
-                    .createAsync()
-                    .cast(Indexable.class)
-                    .onErrorResume(
-                        throwable -> {
-                            if (isRoleAssignmentExists(throwable)) {
-                                return cxt.voidMono();
-                            }
-                            return Mono.error(throwable);
-                        });
-            };
+        FunctionalTaskItem creator = cxt -> {
+            final String principalId = idProvider.principalId();
+            if (principalId == null) {
+                return cxt.voidMono();
+            }
+            final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
+            final String resourceScope;
+            if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
+                resourceScope = resourceGroupId(idProvider.resourceId());
+            } else {
+                resourceScope = scope;
+            }
+            return authorizationManager.roleAssignments()
+                .define(roleAssignmentName)
+                .forObjectId(principalId)
+                .withRoleDefinition(roleDefinitionId)
+                .withScope(resourceScope)
+                .createAsync()
+                .cast(Indexable.class)
+                .onErrorResume(throwable -> {
+                    if (isRoleAssignmentExists(throwable)) {
+                        return cxt.voidMono();
+                    }
+                    return Mono.error(throwable);
+                });
+        };
         this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
     }
@@ -171,8 +166,8 @@ public class RoleAssignmentHelper {
         if (principalId == null || !principalId.equalsIgnoreCase(idProvider.principalId())) {
             return this;
         }
-        FunctionalTaskItem remover =
-            cxt -> authorizationManager.roleAssignments().deleteByIdAsync(roleAssignment.id()).then(cxt.voidMono());
+        FunctionalTaskItem remover
+            = cxt -> authorizationManager.roleAssignments().deleteByIdAsync(roleAssignment.id()).then(cxt.voidMono());
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }
@@ -185,38 +180,24 @@ public class RoleAssignmentHelper {
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withoutAccessTo(final String scope, final BuiltInRole asRole) {
-        FunctionalTaskItem remover =
-            cxt ->
-                authorizationManager
-                    .roleDefinitions()
-                    .getByScopeAndRoleNameAsync(scope, asRole.toString())
-                    .flatMap(
-                        (Function<RoleDefinition, Mono<RoleAssignment>>)
-                        roleDefinition ->
-                            authorizationManager
-                                .roleAssignments()
-                                .listByScopeAsync(scope)
-                                .filter(
-                                    roleAssignment -> {
-                                        if (roleDefinition != null && roleAssignment != null) {
-                                            return roleAssignment
-                                                    .roleDefinitionId()
-                                                    .equalsIgnoreCase(roleDefinition.id())
-                                                && roleAssignment
-                                                    .principalId()
-                                                    .equalsIgnoreCase(idProvider.principalId());
-                                        } else {
-                                            return false;
-                                        }
-                                    })
-                                .last())
-                    .flatMap(
-                        (Function<RoleAssignment, Mono<Indexable>>)
-                        roleAssignment ->
-                            authorizationManager
-                                .roleAssignments()
-                                .deleteByIdAsync(roleAssignment.id())
-                                .then(cxt.voidMono()));
+        FunctionalTaskItem remover = cxt -> authorizationManager.roleDefinitions()
+            .getByScopeAndRoleNameAsync(scope, asRole.toString())
+            .flatMap((Function<RoleDefinition, Mono<RoleAssignment>>) roleDefinition -> authorizationManager
+                .roleAssignments()
+                .listByScopeAsync(scope)
+                .filter(roleAssignment -> {
+                    if (roleDefinition != null && roleAssignment != null) {
+                        return roleAssignment.roleDefinitionId().equalsIgnoreCase(roleDefinition.id())
+                            && roleAssignment.principalId().equalsIgnoreCase(idProvider.principalId());
+                    } else {
+                        return false;
+                    }
+                })
+                .last())
+            .flatMap(
+                (Function<RoleAssignment, Mono<Indexable>>) roleAssignment -> authorizationManager.roleAssignments()
+                    .deleteByIdAsync(roleAssignment.id())
+                    .then(cxt.voidMono()));
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }
@@ -230,8 +211,7 @@ public class RoleAssignmentHelper {
     private static String resourceGroupId(String id) {
         final ResourceId resourceId = ResourceId.fromString(id);
         final StringBuilder builder = new StringBuilder();
-        builder
-            .append("/subscriptions/")
+        builder.append("/subscriptions/")
             .append(resourceId.subscriptionId())
             .append("/resourceGroups/")
             .append(resourceId.resourceGroupName());

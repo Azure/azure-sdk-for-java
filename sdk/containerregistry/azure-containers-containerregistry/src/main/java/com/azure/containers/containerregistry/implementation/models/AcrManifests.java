@@ -36,7 +36,8 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
     private String link;
 
     /** Creates an instance of AcrManifests class. */
-    public AcrManifests() {}
+    public AcrManifests() {
+    }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -139,29 +140,28 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * @throws IOException If an error occurs while reading the AcrManifests.
      */
     public static AcrManifests fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AcrManifests deserializedAcrManifests = new AcrManifests();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AcrManifests deserializedAcrManifests = new AcrManifests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("registry".equals(fieldName)) {
-                            deserializedAcrManifests.registryLoginServer = reader.getString();
-                        } else if ("imageName".equals(fieldName)) {
-                            deserializedAcrManifests.repository = reader.getString();
-                        } else if ("manifests".equals(fieldName)) {
-                            List<ManifestAttributesBase> manifests =
-                                    reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
-                            deserializedAcrManifests.manifests = manifests;
-                        } else if ("link".equals(fieldName)) {
-                            deserializedAcrManifests.link = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("registry".equals(fieldName)) {
+                    deserializedAcrManifests.registryLoginServer = reader.getString();
+                } else if ("imageName".equals(fieldName)) {
+                    deserializedAcrManifests.repository = reader.getString();
+                } else if ("manifests".equals(fieldName)) {
+                    List<ManifestAttributesBase> manifests
+                        = reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
+                    deserializedAcrManifests.manifests = manifests;
+                } else if ("link".equals(fieldName)) {
+                    deserializedAcrManifests.link = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAcrManifests;
-                });
+            return deserializedAcrManifests;
+        });
     }
 }

@@ -8,28 +8,30 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of JoinRequests. */
+/**
+ * Resource collection API of JoinRequests.
+ */
 public interface JoinRequests {
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JoinRequestDetails> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName);
+    PagedIterable<JoinRequestDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,109 +39,93 @@ public interface JoinRequests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JoinRequestDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context);
+    PagedIterable<JoinRequestDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied, Context context);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests along with {@link Response}.
      */
-    Response<JoinRequestDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<JoinRequestDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests.
      */
-    JoinRequestDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    JoinRequestDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName);
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> approveWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<Void> approveWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName, Context context);
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void approve(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    void approve(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName);
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> denyWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<Void> denyWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName, Context context);
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -17,25 +17,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SapCentralServerInstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapCentralServerInstanceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"instanceNo\":\"pbkwtmu\",\"subnet\":\"uqktap\",\"messageServerProperties\":{\"msPort\":3469094564596058624,\"internalMsPort\":8788787487119188648,\"httpPort\":5085835917600063324,\"httpsPort\":7897278653566127978,\"hostname\":\"vqwhbmdgbbjfd\",\"ipAddress\":\"mbmbexppbh\",\"health\":\"Healthy\"},\"enqueueServerProperties\":{\"hostname\":\"lfp\",\"ipAddress\":\"s\",\"port\":9219502024356576033,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":8329500561885071597,\"health\":\"Unhealthy\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator2\",\"instanceNo\":\"o\",\"hostname\":\"hr\",\"kernelVersion\":\"ilnerkujysvlejuv\",\"kernelPatch\":\"awrlyx\",\"ipAddress\":\"kcprbnw\",\"health\":\"Healthy\"},\"kernelVersion\":\"vtb\",\"kernelPatch\":\"ysszdnrujqguh\",\"loadBalancerDetails\":{\"id\":\"uqfprwzw\"},\"vmDetails\":[{\"type\":\"Unknown\",\"virtualMachineId\":\"nwui\",\"storageDetails\":[]}],\"status\":\"Stopping\",\"health\":\"Unhealthy\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"kyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
-                .toObject(SapCentralServerInstanceInner.class);
+        SapCentralServerInstanceInner model = BinaryData.fromString(
+            "{\"properties\":{\"instanceNo\":\"pbkwtmu\",\"subnet\":\"uqktap\",\"messageServerProperties\":{\"msPort\":3469094564596058624,\"internalMsPort\":8788787487119188648,\"httpPort\":5085835917600063324,\"httpsPort\":7897278653566127978,\"hostname\":\"vqwhbmdgbbjfd\",\"ipAddress\":\"mbmbexppbh\",\"health\":\"Healthy\"},\"enqueueServerProperties\":{\"hostname\":\"lfp\",\"ipAddress\":\"s\",\"port\":9219502024356576033,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":8329500561885071597,\"health\":\"Unhealthy\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator2\",\"instanceNo\":\"o\",\"hostname\":\"hr\",\"kernelVersion\":\"ilnerkujysvlejuv\",\"kernelPatch\":\"awrlyx\",\"ipAddress\":\"kcprbnw\",\"health\":\"Healthy\"},\"kernelVersion\":\"vtb\",\"kernelPatch\":\"ysszdnrujqguh\",\"loadBalancerDetails\":{\"id\":\"uqfprwzw\"},\"vmDetails\":[{\"type\":\"Unknown\",\"virtualMachineId\":\"nwui\",\"storageDetails\":[]}],\"status\":\"Stopping\",\"health\":\"Unhealthy\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"kyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
+            .toObject(SapCentralServerInstanceInner.class);
         Assertions.assertEquals("kyfi", model.location());
         Assertions.assertEquals("idf", model.tags().get("zwdzuh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCentralServerInstanceInner model =
-            new SapCentralServerInstanceInner()
-                .withLocation("kyfi")
-                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
-                .withMessageServerProperties(new MessageServerProperties())
-                .withEnqueueServerProperties(new EnqueueServerProperties())
-                .withGatewayServerProperties(new GatewayServerProperties())
-                .withEnqueueReplicationServerProperties(new EnqueueReplicationServerProperties());
+        SapCentralServerInstanceInner model = new SapCentralServerInstanceInner().withLocation("kyfi")
+            .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+            .withMessageServerProperties(new MessageServerProperties())
+            .withEnqueueServerProperties(new EnqueueServerProperties())
+            .withGatewayServerProperties(new GatewayServerProperties())
+            .withEnqueueReplicationServerProperties(new EnqueueReplicationServerProperties());
         model = BinaryData.fromObject(model).toObject(SapCentralServerInstanceInner.class);
         Assertions.assertEquals("kyfi", model.location());
         Assertions.assertEquals("idf", model.tags().get("zwdzuh"));

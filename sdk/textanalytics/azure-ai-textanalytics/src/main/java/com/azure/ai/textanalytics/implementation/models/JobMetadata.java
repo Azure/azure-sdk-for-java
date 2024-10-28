@@ -175,12 +175,16 @@ public class JobMetadata implements JsonSerializable<JobMetadata> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("createdDateTime",
-                this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
         jsonWriter.writeStringField("expirationDateTime",
-                this.expirationDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         jsonWriter.writeStringField("jobId", this.jobId == null ? null : this.jobId.toString());
         jsonWriter.writeStringField("lastUpdateDateTime",
-                this.lastUpdateDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateDateTime));
+            this.lastUpdateDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateDateTime));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
@@ -203,13 +207,16 @@ public class JobMetadata implements JsonSerializable<JobMetadata> {
                 if ("displayName".equals(fieldName)) {
                     jobMetadata.displayName = reader.getString();
                 } else if ("createdDateTime".equals(fieldName)) {
-                    jobMetadata.createdDateTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    jobMetadata.createdDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    jobMetadata.expirationDateTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    jobMetadata.expirationDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("jobId".equals(fieldName)) {
                     jobMetadata.jobId = UUID.fromString(reader.getString());
                 } else if ("lastUpdateDateTime".equals(fieldName)) {
-                    jobMetadata.lastUpdateDateTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    jobMetadata.lastUpdateDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     jobMetadata.status = State.fromString(reader.getString());
                 } else {

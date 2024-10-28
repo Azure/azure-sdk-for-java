@@ -31,8 +31,8 @@ public interface ApiTagDescriptionsClient {
      * @return paged TagDescription list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagDescriptionContractInner> listByService(
-        String resourceGroupName, String serviceName, String apiId);
+    PagedIterable<TagDescriptionContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId);
 
     /**
      * Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API level
@@ -55,14 +55,8 @@ public interface ApiTagDescriptionsClient {
      * @return paged TagDescription list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagDescriptionContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagDescriptionContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -80,8 +74,8 @@ public interface ApiTagDescriptionsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
+    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagDescriptionId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -115,8 +109,8 @@ public interface ApiTagDescriptionsClient {
      * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiTagDescriptionsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
+    ApiTagDescriptionsGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, Context context);
 
     /**
      * Get Tag description in scope of API.
@@ -133,8 +127,8 @@ public interface ApiTagDescriptionsClient {
      * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagDescriptionContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId);
+    TagDescriptionContractInner get(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId);
 
     /**
      * Create/Update tag description in scope of the Api.
@@ -154,13 +148,8 @@ public interface ApiTagDescriptionsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiTagDescriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        TagDescriptionCreateParameters parameters,
-        String ifMatch,
+    ApiTagDescriptionsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagDescriptionId, TagDescriptionCreateParameters parameters, String ifMatch,
         Context context);
 
     /**
@@ -179,12 +168,8 @@ public interface ApiTagDescriptionsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagDescriptionContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        TagDescriptionCreateParameters parameters);
+    TagDescriptionContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, TagDescriptionCreateParameters parameters);
 
     /**
      * Delete tag description for the Api.
@@ -204,13 +189,8 @@ public interface ApiTagDescriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, String ifMatch, Context context);
 
     /**
      * Delete tag description for the Api.

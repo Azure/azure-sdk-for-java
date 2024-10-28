@@ -99,8 +99,8 @@ public final class SapLandscapeMonitorInner extends ProxyResource {
      * @param topMetricsThresholds the topMetricsThresholds value to set.
      * @return the SapLandscapeMonitorInner object itself.
      */
-    public SapLandscapeMonitorInner withTopMetricsThresholds(
-        List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
+    public SapLandscapeMonitorInner
+        withTopMetricsThresholds(List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SapLandscapeMonitorProperties();
         }

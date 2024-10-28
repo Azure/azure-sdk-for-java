@@ -126,28 +126,20 @@ public class OperationsDisplayDefinition {
      */
     public void validate() {
         if (provider() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property provider in model OperationsDisplayDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property provider in model OperationsDisplayDefinition"));
         }
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model OperationsDisplayDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model OperationsDisplayDefinition"));
         }
         if (operation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operation in model OperationsDisplayDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operation in model OperationsDisplayDefinition"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model OperationsDisplayDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property description in model OperationsDisplayDefinition"));
         }
     }
 

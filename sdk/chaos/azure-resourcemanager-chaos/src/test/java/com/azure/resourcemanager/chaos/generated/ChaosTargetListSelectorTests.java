@@ -26,7 +26,8 @@ public final class ChaosTargetListSelectorTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChaosTargetListSelector model
-            = new ChaosTargetListSelector().withId("waezkojvd").withFilter(new ChaosTargetFilter())
+            = new ChaosTargetListSelector().withId("waezkojvd")
+                .withFilter(new ChaosTargetFilter())
                 .withTargets(Arrays.asList(
                     new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("puqujmqlgkfbtn"),
                     new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("aongbj"),

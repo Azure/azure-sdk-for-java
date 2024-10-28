@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LinkedIntegrationRuntimeType")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Key", value = LinkedIntegrationRuntimeKeyAuthorization.class),
-    @JsonSubTypes.Type(name = "RBAC", value = LinkedIntegrationRuntimeRbacAuthorization.class)
-})
+    @JsonSubTypes.Type(name = "RBAC", value = LinkedIntegrationRuntimeRbacAuthorization.class) })
 @Immutable
 public class LinkedIntegrationRuntimeType {
     /** Creates an instance of LinkedIntegrationRuntimeType class. */

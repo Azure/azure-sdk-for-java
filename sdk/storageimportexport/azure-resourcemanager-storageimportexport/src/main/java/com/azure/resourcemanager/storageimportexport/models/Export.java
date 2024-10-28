@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storageimportexport.fluent.models.ExportBlobList;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,27 +18,27 @@ import java.util.List;
  * export jobs, but must not be specified for import jobs.
  */
 @Fluent
-public final class Export {
+public final class Export implements JsonSerializable<Export> {
     /*
      * A list of the blobs to be exported.
      */
-    @JsonProperty(value = "blobList")
     private ExportBlobList innerBlobList;
 
     /*
      * The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above,
      * beginning with the container name. If the blob is in root container, the URI must begin with $root.
      */
-    @JsonProperty(value = "blobListBlobPath")
     private String blobListBlobPath;
 
-    /** Creates an instance of Export class. */
+    /**
+     * Creates an instance of Export class.
+     */
     public Export() {
     }
 
     /**
      * Get the innerBlobList property: A list of the blobs to be exported.
-     *
+     * 
      * @return the innerBlobList value.
      */
     private ExportBlobList innerBlobList() {
@@ -45,7 +49,7 @@ public final class Export {
      * Get the blobListBlobPath property: The relative URI to the block blob that contains the list of blob paths or
      * blob path prefixes as defined above, beginning with the container name. If the blob is in root container, the URI
      * must begin with $root.
-     *
+     * 
      * @return the blobListBlobPath value.
      */
     public String blobListBlobPath() {
@@ -56,7 +60,7 @@ public final class Export {
      * Set the blobListBlobPath property: The relative URI to the block blob that contains the list of blob paths or
      * blob path prefixes as defined above, beginning with the container name. If the blob is in root container, the URI
      * must begin with $root.
-     *
+     * 
      * @param blobListBlobPath the blobListBlobPath value to set.
      * @return the Export object itself.
      */
@@ -67,7 +71,7 @@ public final class Export {
 
     /**
      * Get the blobPath property: A collection of blob-path strings.
-     *
+     * 
      * @return the blobPath value.
      */
     public List<String> blobPath() {
@@ -76,7 +80,7 @@ public final class Export {
 
     /**
      * Set the blobPath property: A collection of blob-path strings.
-     *
+     * 
      * @param blobPath the blobPath value to set.
      * @return the Export object itself.
      */
@@ -90,7 +94,7 @@ public final class Export {
 
     /**
      * Get the blobPathPrefix property: A collection of blob-prefix strings.
-     *
+     * 
      * @return the blobPathPrefix value.
      */
     public List<String> blobPathPrefix() {
@@ -99,7 +103,7 @@ public final class Export {
 
     /**
      * Set the blobPathPrefix property: A collection of blob-prefix strings.
-     *
+     * 
      * @param blobPathPrefix the blobPathPrefix value to set.
      * @return the Export object itself.
      */
@@ -113,12 +117,51 @@ public final class Export {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerBlobList() != null) {
             innerBlobList().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("blobList", this.innerBlobList);
+        jsonWriter.writeStringField("blobListBlobPath", this.blobListBlobPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Export from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Export if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Export.
+     */
+    public static Export fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Export deserializedExport = new Export();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobList".equals(fieldName)) {
+                    deserializedExport.innerBlobList = ExportBlobList.fromJson(reader);
+                } else if ("blobListBlobPath".equals(fieldName)) {
+                    deserializedExport.blobListBlobPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExport;
+        });
     }
 }

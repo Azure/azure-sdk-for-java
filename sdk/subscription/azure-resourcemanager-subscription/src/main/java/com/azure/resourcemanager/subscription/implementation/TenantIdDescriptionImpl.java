@@ -12,8 +12,7 @@ public final class TenantIdDescriptionImpl implements TenantIdDescription {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    TenantIdDescriptionImpl(
-        TenantIdDescriptionInner innerObject,
+    TenantIdDescriptionImpl(TenantIdDescriptionInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

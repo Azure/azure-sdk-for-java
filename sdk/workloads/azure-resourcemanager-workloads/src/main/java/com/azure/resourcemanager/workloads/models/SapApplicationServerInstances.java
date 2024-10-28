@@ -23,8 +23,8 @@ public interface SapApplicationServerInstances {
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource
      *     along with {@link Response}.
      */
-    Response<SapApplicationServerInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, Context context);
+    Response<SapApplicationServerInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName, Context context);
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
@@ -37,8 +37,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
      */
-    SapApplicationServerInstance get(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName);
+    SapApplicationServerInstance get(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName);
 
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
@@ -52,8 +52,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName);
 
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
@@ -68,8 +68,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName, Context context);
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
@@ -96,8 +96,8 @@ public interface SapApplicationServerInstances {
      * @return defines the collection of SAP Application Server Instance resources as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<SapApplicationServerInstance> list(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    PagedIterable<SapApplicationServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context);
 
     /**
      * Starts the SAP Application Server Instance.
@@ -110,8 +110,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName);
 
     /**
      * Starts the SAP Application Server Instance.
@@ -125,8 +125,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, Context context);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName, Context context);
 
     /**
      * Stops the SAP Application Server Instance.
@@ -139,8 +139,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName);
 
     /**
      * Stops the SAP Application Server Instance.
@@ -155,12 +155,8 @@ public interface SapApplicationServerInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String applicationInstanceName,
-        StopRequest body,
-        Context context);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String applicationInstanceName, StopRequest body, Context context);
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.

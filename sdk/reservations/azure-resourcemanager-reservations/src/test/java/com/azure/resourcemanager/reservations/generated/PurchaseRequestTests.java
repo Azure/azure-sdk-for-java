@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PurchaseRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurchaseRequest model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"bljofxqeof\"},\"location\":\"e\",\"properties\":{\"reservedResourceType\":\"RedHatOsa\",\"billingScopeId\":\"b\",\"term\":\"P1Y\",\"billingPlan\":\"Monthly\",\"quantity\":928331689,\"displayName\":\"ulngsntn\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"gc\",\"rwclxxwrljdo\"],\"appliedScopeProperties\":{\"tenantId\":\"cqvkocrcjdkwtn\",\"managementGroupId\":\"bnjbiksqrglssain\",\"subscriptionId\":\"jwnzlljfmp\",\"resourceGroupId\":\"ebvmgxsabkyqd\",\"displayName\":\"jitcjczdzevn\"},\"renew\":false,\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"},\"reviewDateTime\":\"2021-04-18T17:34:07Z\"}}")
-                .toObject(PurchaseRequest.class);
+        PurchaseRequest model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"bljofxqeof\"},\"location\":\"e\",\"properties\":{\"reservedResourceType\":\"RedHatOsa\",\"billingScopeId\":\"b\",\"term\":\"P1Y\",\"billingPlan\":\"Monthly\",\"quantity\":928331689,\"displayName\":\"ulngsntn\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"gc\",\"rwclxxwrljdo\"],\"appliedScopeProperties\":{\"tenantId\":\"cqvkocrcjdkwtn\",\"managementGroupId\":\"bnjbiksqrglssain\",\"subscriptionId\":\"jwnzlljfmp\",\"resourceGroupId\":\"ebvmgxsabkyqd\",\"displayName\":\"jitcjczdzevn\"},\"renew\":false,\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"},\"reviewDateTime\":\"2021-04-18T17:34:07Z\"}}")
+            .toObject(PurchaseRequest.class);
         Assertions.assertEquals("bljofxqeof", model.sku().name());
         Assertions.assertEquals("e", model.location());
         Assertions.assertEquals(ReservedResourceType.RED_HAT_OSA, model.reservedResourceType());
@@ -48,30 +46,25 @@ public final class PurchaseRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurchaseRequest model =
-            new PurchaseRequest()
-                .withSku(new SkuName().withName("bljofxqeof"))
-                .withLocation("e")
-                .withReservedResourceType(ReservedResourceType.RED_HAT_OSA)
-                .withBillingScopeId("b")
-                .withTerm(ReservationTerm.P1Y)
-                .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                .withQuantity(928331689)
-                .withDisplayName("ulngsntn")
-                .withAppliedScopeType(AppliedScopeType.SHARED)
-                .withAppliedScopes(Arrays.asList("gc", "rwclxxwrljdo"))
-                .withAppliedScopeProperties(
-                    new AppliedScopeProperties()
-                        .withTenantId("cqvkocrcjdkwtn")
-                        .withManagementGroupId("bnjbiksqrglssain")
-                        .withSubscriptionId("jwnzlljfmp")
-                        .withResourceGroupId("ebvmgxsabkyqd")
-                        .withDisplayName("jitcjczdzevn"))
-                .withRenew(false)
-                .withReservedResourceProperties(
-                    new PurchaseRequestPropertiesReservedResourceProperties()
-                        .withInstanceFlexibility(InstanceFlexibility.ON))
-                .withReviewDateTime(OffsetDateTime.parse("2021-04-18T17:34:07Z"));
+        PurchaseRequest model = new PurchaseRequest().withSku(new SkuName().withName("bljofxqeof"))
+            .withLocation("e")
+            .withReservedResourceType(ReservedResourceType.RED_HAT_OSA)
+            .withBillingScopeId("b")
+            .withTerm(ReservationTerm.P1Y)
+            .withBillingPlan(ReservationBillingPlan.MONTHLY)
+            .withQuantity(928331689)
+            .withDisplayName("ulngsntn")
+            .withAppliedScopeType(AppliedScopeType.SHARED)
+            .withAppliedScopes(Arrays.asList("gc", "rwclxxwrljdo"))
+            .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("cqvkocrcjdkwtn")
+                .withManagementGroupId("bnjbiksqrglssain")
+                .withSubscriptionId("jwnzlljfmp")
+                .withResourceGroupId("ebvmgxsabkyqd")
+                .withDisplayName("jitcjczdzevn"))
+            .withRenew(false)
+            .withReservedResourceProperties(new PurchaseRequestPropertiesReservedResourceProperties()
+                .withInstanceFlexibility(InstanceFlexibility.ON))
+            .withReviewDateTime(OffsetDateTime.parse("2021-04-18T17:34:07Z"));
         model = BinaryData.fromObject(model).toObject(PurchaseRequest.class);
         Assertions.assertEquals("bljofxqeof", model.sku().name());
         Assertions.assertEquals("e", model.location());

@@ -29,8 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ValidateSkuAvailability", value = SkuAvailabilityValidationResponseProperties.class),
     @JsonSubTypes.Type(
         name = "ValidateSubscriptionIsAllowedToCreateJob",
-        value = SubscriptionIsAllowedToCreateJobValidationResponseProperties.class)
-})
+        value = SubscriptionIsAllowedToCreateJobValidationResponseProperties.class) })
 @Immutable
 public class ValidationInputResponse {
     /*

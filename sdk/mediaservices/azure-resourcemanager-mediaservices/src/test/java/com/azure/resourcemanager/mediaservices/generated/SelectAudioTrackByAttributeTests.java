@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectAudioTrackByAttributeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectAudioTrackByAttribute model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"Bottom\",\"filterValue\":\"yiopi\",\"channelMapping\":\"Center\"}")
-                .toObject(SelectAudioTrackByAttribute.class);
+        SelectAudioTrackByAttribute model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"Bottom\",\"filterValue\":\"yiopi\",\"channelMapping\":\"Center\"}")
+            .toObject(SelectAudioTrackByAttribute.class);
         Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
         Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
         Assertions.assertEquals(AttributeFilter.BOTTOM, model.filter());
@@ -27,12 +25,10 @@ public final class SelectAudioTrackByAttributeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelectAudioTrackByAttribute model =
-            new SelectAudioTrackByAttribute()
-                .withChannelMapping(ChannelMapping.CENTER)
-                .withAttribute(TrackAttribute.BITRATE)
-                .withFilter(AttributeFilter.BOTTOM)
-                .withFilterValue("yiopi");
+        SelectAudioTrackByAttribute model = new SelectAudioTrackByAttribute().withChannelMapping(ChannelMapping.CENTER)
+            .withAttribute(TrackAttribute.BITRATE)
+            .withFilter(AttributeFilter.BOTTOM)
+            .withFilterValue("yiopi");
         model = BinaryData.fromObject(model).toObject(SelectAudioTrackByAttribute.class);
         Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
         Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());

@@ -100,22 +100,16 @@ public final class SapAvailabilityZoneDetailsRequest {
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
         }
     }
 

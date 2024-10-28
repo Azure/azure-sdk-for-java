@@ -53,7 +53,6 @@
       --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=com.fasterxml.jackson.databind
       --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion.implementation=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>
@@ -86,12 +85,6 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -100,21 +93,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

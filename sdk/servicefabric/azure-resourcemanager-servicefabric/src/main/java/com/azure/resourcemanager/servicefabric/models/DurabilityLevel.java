@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class DurabilityLevel extends ExpandableStringEnum<DurabilityLevel>
      * @param name a name to look for.
      * @return the corresponding DurabilityLevel.
      */
-    @JsonCreator
     public static DurabilityLevel fromString(String name) {
         return fromString(name, DurabilityLevel.class);
     }

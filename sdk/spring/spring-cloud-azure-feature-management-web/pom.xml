@@ -22,6 +22,9 @@
       <name>Microsoft Corporation</name>
     </developer>
   </developers>
+  <properties>
+    <spotless.skip>true</spotless.skip>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -102,7 +105,11 @@
             <id>base-testCompile</id>
             <phase>none</phase>
           </execution>
+          <!-- Ensure we compile with Java 17 -->
           <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
             <configuration>
               <release>17</release>
               <compilerArgs>

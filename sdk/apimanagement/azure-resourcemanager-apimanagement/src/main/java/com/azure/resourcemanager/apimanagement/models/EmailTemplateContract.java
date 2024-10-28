@@ -116,12 +116,8 @@ public interface EmailTemplateContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithSubject,
-                DefinitionStages.WithTitle,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithBody,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithSubject, DefinitionStages.WithTitle, DefinitionStages.WithDescription,
+            DefinitionStages.WithBody, DefinitionStages.WithParameters, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -215,13 +211,8 @@ public interface EmailTemplateContract {
     EmailTemplateContract.Update update();
 
     /** The template for EmailTemplateContract update. */
-    interface Update
-        extends UpdateStages.WithSubject,
-            UpdateStages.WithTitle,
-            UpdateStages.WithDescription,
-            UpdateStages.WithBody,
-            UpdateStages.WithParameters,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithSubject, UpdateStages.WithTitle, UpdateStages.WithDescription,
+        UpdateStages.WithBody, UpdateStages.WithParameters, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

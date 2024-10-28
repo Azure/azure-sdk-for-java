@@ -243,8 +243,8 @@ public final class ApiContractInner extends ProxyResource {
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiContractInner object itself.
      */
-    public ApiContractInner withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiContractInner
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiContractProperties();
         }

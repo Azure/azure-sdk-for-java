@@ -65,9 +65,8 @@ public final class SqlPoolUsageListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SqlPoolUsageListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SqlPoolUsageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

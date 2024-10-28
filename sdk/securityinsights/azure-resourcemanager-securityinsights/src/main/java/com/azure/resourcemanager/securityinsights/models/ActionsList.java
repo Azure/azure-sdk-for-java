@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.ActionResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List all the actions. */
+/**
+ * List all the actions.
+ */
 @Fluent
-public final class ActionsList {
+public final class ActionsList implements JsonSerializable<ActionsList> {
     /*
      * URL to fetch the next set of actions.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of actions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<ActionResponseInner> value;
 
     /**
+     * Creates an instance of ActionsList class.
+     */
+    public ActionsList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of actions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class ActionsList {
 
     /**
      * Get the value property: Array of actions.
-     *
+     * 
      * @return the value value.
      */
     public List<ActionResponseInner> value() {
@@ -45,7 +55,7 @@ public final class ActionsList {
 
     /**
      * Set the value property: Array of actions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ActionsList object itself.
      */
@@ -56,18 +66,58 @@ public final class ActionsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ActionsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ActionsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActionsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionsList.
+     */
+    public static ActionsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionsList deserializedActionsList = new ActionsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ActionResponseInner> value
+                        = reader.readArray(reader1 -> ActionResponseInner.fromJson(reader1));
+                    deserializedActionsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedActionsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionsList;
+        });
+    }
 }

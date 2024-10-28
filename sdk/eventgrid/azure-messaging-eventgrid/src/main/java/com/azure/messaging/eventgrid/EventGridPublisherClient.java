@@ -139,12 +139,12 @@ public final class EventGridPublisherClient<T> {
     private final EventGridPublisherClientImpl impl;
     private final String hostname;
     private final Class<T> eventClass;
+
     EventGridPublisherClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
-                             Class<T> eventClass) {
+        Class<T> eventClass) {
         this.hostname = hostname;
         this.eventClass = eventClass;
-        this.impl = new EventGridPublisherClientImplBuilder()
-            .pipeline(pipeline)
+        this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
             .buildClient();
     }
@@ -245,7 +245,6 @@ public final class EventGridPublisherClient<T> {
         return this.sendEventsWithResponse(events, null, context);
     }
 
-
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
@@ -288,7 +287,8 @@ public final class EventGridPublisherClient<T> {
         return this.impl.publishEventGridEventsWithResponse(this.hostname, eventGridEvents, context);
     }
 
-    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName, Context context) {
+    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName,
+        Context context) {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }

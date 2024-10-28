@@ -21,6 +21,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     private final NetworkManager networkManager;
     private String secondaryNicName;
 
+    private final Region region = Region.US_WEST2;
+
     public TestVirtualMachineNics(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
@@ -28,70 +30,63 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
-        final String rgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
+        final String rgName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
-        Creatable<ResourceGroup> resourceGroupCreatable =
-            virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
+        Creatable<ResourceGroup> resourceGroupCreatable
+            = virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(region);
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
-        final String vnetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
+        final String vnetName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
 
-        Creatable<Network> networkCreatable =
-            this
-                .networkManager
-                .networks()
-                .define(vnetName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withAddressSpace("10.0.0.0/28");
+        Creatable<Network> networkCreatable = this.networkManager.networks()
+            .define(vnetName)
+            .withRegion(region)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withAddressSpace("10.0.0.0/28");
 
         // Prepare the secondary network interface definition
         secondaryNicName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic", 10);
 
-        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable =
-            this
-                .networkManager
-                .networkInterfaces()
-                .define(secondaryNicName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.5");
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkManager.networkInterfaces()
+            .define(secondaryNicName)
+            .withRegion(region)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.5");
         // .withNewPrimaryPublicIPAddress();
         // [Secondary NIC cannot have PublicIP - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
-        final String secondaryNicName2 = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic2", 10);
+        final String secondaryNicName2
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic2", 10);
 
-        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 =
-            this
-                .networkManager
-                .networkInterfaces()
-                .define(secondaryNicName2)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.6");
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkManager.networkInterfaces()
+            .define(secondaryNicName2)
+            .withRegion(region)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.6");
 
         // Create Virtual Machine
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final String primaryPipName = "pip" + vmName;
-        VirtualMachine virtualMachine =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.4")
-                .withNewPrimaryPublicIPAddress(primaryPipName)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("testuser")
-                .withRootPassword(ResourceManagerTestProxyTestBase.password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
-                .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
-                .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)
-                .create();
+        VirtualMachine virtualMachine = virtualMachines.define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.4")
+            .withNewPrimaryPublicIPAddress(primaryPipName)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withRootPassword(ResourceManagerTestProxyTestBase.password())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
+            .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
+            .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)
+            .create();
 
         Assertions.assertTrue(virtualMachine.networkInterfaceIds().size() == 3);
         NetworkInterface primaryNetworkInterface = virtualMachine.getPrimaryNetworkInterface();

@@ -692,8 +692,10 @@ public final class NetworkServiceDesignGroupsClientImpl implements NetworkServic
     public SyncPoller<PollResult<NetworkServiceDesignGroupInner>, NetworkServiceDesignGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
         NetworkServiceDesignGroupInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -712,7 +714,8 @@ public final class NetworkServiceDesignGroupsClientImpl implements NetworkServic
     private Mono<NetworkServiceDesignGroupInner> createOrUpdateAsync(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, NetworkServiceDesignGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

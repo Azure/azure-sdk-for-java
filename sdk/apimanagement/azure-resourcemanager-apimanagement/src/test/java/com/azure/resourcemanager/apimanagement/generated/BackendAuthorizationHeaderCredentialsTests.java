@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendAuthorizationHeaderCredentialsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendAuthorizationHeaderCredentials model =
-            BinaryData
-                .fromString("{\"scheme\":\"k\",\"parameter\":\"kbudbtwaokb\"}")
+        BackendAuthorizationHeaderCredentials model
+            = BinaryData.fromString("{\"scheme\":\"k\",\"parameter\":\"kbudbtwaokb\"}")
                 .toObject(BackendAuthorizationHeaderCredentials.class);
         Assertions.assertEquals("k", model.scheme());
         Assertions.assertEquals("kbudbtwaokb", model.parameter());
@@ -21,8 +20,8 @@ public final class BackendAuthorizationHeaderCredentialsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendAuthorizationHeaderCredentials model =
-            new BackendAuthorizationHeaderCredentials().withScheme("k").withParameter("kbudbtwaokb");
+        BackendAuthorizationHeaderCredentials model
+            = new BackendAuthorizationHeaderCredentials().withScheme("k").withParameter("kbudbtwaokb");
         model = BinaryData.fromObject(model).toObject(BackendAuthorizationHeaderCredentials.class);
         Assertions.assertEquals("k", model.scheme());
         Assertions.assertEquals("kbudbtwaokb", model.parameter());

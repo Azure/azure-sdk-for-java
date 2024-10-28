@@ -18,13 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of VirtualNetworkGatewayConnections. */
-class VirtualNetworkGatewayConnectionsImpl
-    extends GroupableResourcesImpl<
-        VirtualNetworkGatewayConnection,
-        VirtualNetworkGatewayConnectionImpl,
-        VirtualNetworkGatewayConnectionInner,
-        VirtualNetworkGatewayConnectionsClient,
-        NetworkManager>
+class VirtualNetworkGatewayConnectionsImpl extends
+    GroupableResourcesImpl<VirtualNetworkGatewayConnection, VirtualNetworkGatewayConnectionImpl, VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionsClient, NetworkManager>
     implements VirtualNetworkGatewayConnections {
 
     private final VirtualNetworkGatewayImpl parent;
@@ -71,12 +66,10 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public VirtualNetworkGatewayConnection getByName(String name) {
-        VirtualNetworkGatewayConnectionInner inner =
-            this
-                .manager()
-                .serviceClient()
-                .getVirtualNetworkGatewayConnections()
-                .getByResourceGroup(this.parent().resourceGroupName(), name);
+        VirtualNetworkGatewayConnectionInner inner = this.manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
+            .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);
     }
 
@@ -87,8 +80,9 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listAsync() {
-        return PagedConverter.mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(), rg ->
-            inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
+        return PagedConverter
+            .mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+                rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }
 
     @Override
@@ -134,8 +128,9 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public Mono<String> setSharedKeyByNameAsync(String name, String sharedKey) {
-        return inner().setSharedKeyAsync(
-            this.parent().resourceGroupName(), name, new ConnectionSharedKeyInner().withValue(sharedKey))
+        return inner()
+            .setSharedKeyAsync(this.parent().resourceGroupName(), name,
+                new ConnectionSharedKeyInner().withValue(sharedKey))
             .map(ConnectionSharedKeyInner::value);
     }
 }

@@ -4,32 +4,40 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Labs List. */
+/**
+ * Samples for Labs List.
+ */
 public final class LabsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListWithInvoiceSectionNameIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListWithInvoiceSectionNameIncludeBudget.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionNameIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
-    public static void labListWithInvoiceSectionNameIncludeBudget(
-        com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+    public static void
+        labListWithInvoiceSectionNameIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
+        manager.labs()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListWithInvoiceSectionName.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListWithInvoiceSectionName.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionName.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labListWithInvoiceSectionName(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+        manager.labs()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 }

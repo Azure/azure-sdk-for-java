@@ -21,8 +21,8 @@ public interface Environments {
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
      *     Insights resource.
      */
-    EnvironmentResource createOrUpdate(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters);
+    EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters);
 
     /**
      * Create or update an environment in the specified subscription and resource group.
@@ -37,11 +37,8 @@ public interface Environments {
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
      *     Insights resource.
      */
-    EnvironmentResource createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context);
+    EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
@@ -58,8 +55,8 @@ public interface Environments {
      * @return the environment with the specified name in the specified subscription and resource group along with
      *     {@link Response}.
      */
-    Response<EnvironmentResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String environmentName, String expand, Context context);
+    Response<EnvironmentResource> getByResourceGroupWithResponse(String resourceGroupName, String environmentName,
+        String expand, Context context);
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
@@ -87,8 +84,8 @@ public interface Environments {
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
      *     Insights resource.
      */
-    EnvironmentResource update(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters);
+    EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters);
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
@@ -104,11 +101,8 @@ public interface Environments {
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
      *     Insights resource.
      */
-    EnvironmentResource update(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context);
+    EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context);
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.

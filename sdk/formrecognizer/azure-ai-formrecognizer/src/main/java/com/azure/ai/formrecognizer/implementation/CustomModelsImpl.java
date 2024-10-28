@@ -92,6 +92,13 @@ public final class CustomModelsImpl {
             @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") TrainRequest trainRequest,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/custom/models")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> trainNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") TrainRequest trainRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Get("/custom/models/{modelId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -118,10 +125,30 @@ public final class CustomModelsImpl {
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") UUID modelId,
+            @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocument(
             @HostParam("endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
             @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails,
             @QueryParam("pages") String pages, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") UUID modelId,
+            @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
             @BodyParam("application/octet-stream") BinaryData fileStream,
             @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
 
@@ -134,6 +161,15 @@ public final class CustomModelsImpl {
             @QueryParam("pages") String pages, @BodyParam("application/json") SourcePath fileStream,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") UUID modelId,
+            @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("pages") String pages,
+            @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -145,6 +181,14 @@ public final class CustomModelsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<CustomModelsCopyHeaders, Void>> copy(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") UUID modelId,
+            @BodyParam("application/json") CopyRequest copyRequest, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/custom/models/{modelId}/copy")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> copyNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") UUID modelId,
             @BodyParam("application/json") CopyRequest copyRequest, @HeaderParam("Accept") String accept,
             Context context);
@@ -163,10 +207,24 @@ public final class CustomModelsImpl {
             @HostParam("endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/custom/models/copyAuthorization")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<CopyAuthorizationResult>> authorizeModelCopyNoCustomHeaders(
+            @HostParam("endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Post("/custom/models/compose")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<CustomModelsComposeHeaders, Void>> compose(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") ComposeRequest composeRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/custom/models/compose")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> composeNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") ComposeRequest composeRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -209,9 +267,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsTrainHeaders, Void>> trainWithResponseAsync(TrainRequest trainRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.train(this.client.getEndpoint(), this.client.getApiVersion(),
-            trainRequest, accept, context));
+        return FluxUtil.withContext(context -> trainWithResponseAsync(trainRequest, context));
     }
 
     /**
@@ -324,6 +380,73 @@ public final class CustomModelsImpl {
     }
 
     /**
+     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
+     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
+     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
+     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
+     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
+     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
+     * 'image/bmp'. Other type of content is ignored.
+     * 
+     * @param trainRequest Training request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> trainNoCustomHeadersWithResponseAsync(TrainRequest trainRequest) {
+        return FluxUtil.withContext(context -> trainNoCustomHeadersWithResponseAsync(trainRequest, context));
+    }
+
+    /**
+     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
+     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
+     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
+     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
+     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
+     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
+     * 'image/bmp'. Other type of content is ignored.
+     * 
+     * @param trainRequest Training request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> trainNoCustomHeadersWithResponseAsync(TrainRequest trainRequest, Context context) {
+        final String accept = "application/json";
+        return service.trainNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), trainRequest,
+            accept, context);
+    }
+
+    /**
+     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
+     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
+     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
+     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
+     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
+     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
+     * 'image/bmp'. Other type of content is ignored.
+     * 
+     * @param trainRequest Training request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> trainNoCustomHeadersWithResponse(TrainRequest trainRequest, Context context) {
+        return trainNoCustomHeadersWithResponseAsync(trainRequest, context).block();
+    }
+
+    /**
      * Get detailed information about a custom model.
      * 
      * @param modelId Model identifier.
@@ -336,9 +459,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getWithResponseAsync(UUID modelId, Boolean includeKeys) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-            modelId, includeKeys, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(modelId, includeKeys, context));
     }
 
     /**
@@ -433,9 +554,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(UUID modelId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            modelId, accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(modelId, context));
     }
 
     /**
@@ -533,12 +652,8 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
-                modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeDocumentWithResponseAsync(modelId, contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
     }
 
     /**
@@ -565,8 +680,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -689,18 +807,99 @@ public final class CustomModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeDocumentNoCustomHeadersWithResponseAsync(modelId, contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
+            includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeDocumentNoCustomHeadersWithResponse(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        return analyzeDocumentNoCustomHeadersWithResponseAsync(modelId, contentType, includeTextDetails, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
-                modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeDocumentWithResponseAsync(modelId, contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
     }
 
     /**
@@ -727,8 +926,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -842,6 +1044,89 @@ public final class CustomModelsImpl {
      * analyzed.
      * 
      * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeDocumentNoCustomHeadersWithResponseAsync(modelId, contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
+            includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeDocumentNoCustomHeadersWithResponse(UUID modelId, ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        return analyzeDocumentNoCustomHeadersWithResponseAsync(modelId, contentType, includeTextDetails, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -854,11 +1139,8 @@ public final class CustomModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(),
-            this.client.getApiVersion(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context));
+        return FluxUtil.withContext(
+            context -> analyzeDocumentWithResponseAsync(modelId, includeTextDetails, pages, fileStream, context));
     }
 
     /**
@@ -882,8 +1164,11 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, fileStream, accept, context);
     }
@@ -979,6 +1264,83 @@ public final class CustomModelsImpl {
     }
 
     /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId,
+        Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeDocumentNoCustomHeadersWithResponseAsync(modelId,
+            includeTextDetails, pages, fileStream, context));
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeDocumentNoCustomHeadersWithResponseAsync(UUID modelId,
+        Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
+            includeTextDetails, pagesConverted, fileStream, accept, context);
+    }
+
+    /**
+     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     * 
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeDocumentNoCustomHeadersWithResponse(UUID modelId, Boolean includeTextDetails,
+        List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeDocumentNoCustomHeadersWithResponseAsync(modelId, includeTextDetails, pages, fileStream, context)
+            .block();
+    }
+
+    /**
      * Obtain current status and the result of the analyze form operation.
      * 
      * @param modelId Model identifier.
@@ -991,9 +1353,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeResultWithResponseAsync(UUID modelId, UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), modelId, resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeResultWithResponseAsync(modelId, resultId, context));
     }
 
     /**
@@ -1092,9 +1452,7 @@ public final class CustomModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsCopyHeaders, Void>> copyWithResponseAsync(UUID modelId,
         CopyRequest copyRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.copy(this.client.getEndpoint(), this.client.getApiVersion(),
-            modelId, copyRequest, accept, context));
+        return FluxUtil.withContext(context -> copyWithResponseAsync(modelId, copyRequest, context));
     }
 
     /**
@@ -1179,6 +1537,56 @@ public final class CustomModelsImpl {
     }
 
     /**
+     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * 
+     * @param modelId Model identifier.
+     * @param copyRequest Copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> copyNoCustomHeadersWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
+        return FluxUtil.withContext(context -> copyNoCustomHeadersWithResponseAsync(modelId, copyRequest, context));
+    }
+
+    /**
+     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * 
+     * @param modelId Model identifier.
+     * @param copyRequest Copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> copyNoCustomHeadersWithResponseAsync(UUID modelId, CopyRequest copyRequest,
+        Context context) {
+        final String accept = "application/json";
+        return service.copyNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), modelId, copyRequest,
+            accept, context);
+    }
+
+    /**
+     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * 
+     * @param modelId Model identifier.
+     * @param copyRequest Copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> copyNoCustomHeadersWithResponse(UUID modelId, CopyRequest copyRequest, Context context) {
+        return copyNoCustomHeadersWithResponseAsync(modelId, copyRequest, context).block();
+    }
+
+    /**
      * Obtain current status and the result of a custom model copy operation.
      * 
      * @param modelId Model identifier.
@@ -1191,9 +1599,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyOperationResult>> getCopyResultWithResponseAsync(UUID modelId, UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCopyResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), modelId, resultId, accept, context));
+        return FluxUtil.withContext(context -> getCopyResultWithResponseAsync(modelId, resultId, context));
     }
 
     /**
@@ -1290,9 +1696,7 @@ public final class CustomModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsAuthorizeModelCopyHeaders, CopyAuthorizationResult>>
         authorizeModelCopyWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.authorizeModelCopy(this.client.getEndpoint(),
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> authorizeModelCopyWithResponseAsync(context));
     }
 
     /**
@@ -1368,6 +1772,50 @@ public final class CustomModelsImpl {
     }
 
     /**
+     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return request parameter that contains authorization claims for copy operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CopyAuthorizationResult>> authorizeModelCopyNoCustomHeadersWithResponseAsync() {
+        return FluxUtil.withContext(context -> authorizeModelCopyNoCustomHeadersWithResponseAsync(context));
+    }
+
+    /**
+     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return request parameter that contains authorization claims for copy operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CopyAuthorizationResult>> authorizeModelCopyNoCustomHeadersWithResponseAsync(Context context) {
+        final String accept = "application/json";
+        return service.authorizeModelCopyNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), accept,
+            context);
+    }
+
+    /**
+     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return request parameter that contains authorization claims for copy operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CopyAuthorizationResult> authorizeModelCopyNoCustomHeadersWithResponse(Context context) {
+        return authorizeModelCopyNoCustomHeadersWithResponseAsync(context).block();
+    }
+
+    /**
      * Compose request would include list of models ids.
      * It would validate what all models either trained with labels model or composed model.
      * It would validate limit of models put together.
@@ -1381,9 +1829,7 @@ public final class CustomModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CustomModelsComposeHeaders, Void>>
         composeWithResponseAsync(ComposeRequest composeRequest) {
-        final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.compose(this.client.getEndpoint(), this.client.getApiVersion(),
-            composeRequest, accept, context));
+        return FluxUtil.withContext(context -> composeWithResponseAsync(composeRequest, context));
     }
 
     /**
@@ -1469,6 +1915,59 @@ public final class CustomModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void compose(ComposeRequest composeRequest) {
         composeWithResponse(composeRequest, Context.NONE);
+    }
+
+    /**
+     * Compose request would include list of models ids.
+     * It would validate what all models either trained with labels model or composed model.
+     * It would validate limit of models put together.
+     * 
+     * @param composeRequest Compose models.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> composeNoCustomHeadersWithResponseAsync(ComposeRequest composeRequest) {
+        return FluxUtil.withContext(context -> composeNoCustomHeadersWithResponseAsync(composeRequest, context));
+    }
+
+    /**
+     * Compose request would include list of models ids.
+     * It would validate what all models either trained with labels model or composed model.
+     * It would validate limit of models put together.
+     * 
+     * @param composeRequest Compose models.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> composeNoCustomHeadersWithResponseAsync(ComposeRequest composeRequest,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.composeNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), composeRequest,
+            accept, context);
+    }
+
+    /**
+     * Compose request would include list of models ids.
+     * It would validate what all models either trained with labels model or composed model.
+     * It would validate limit of models put together.
+     * 
+     * @param composeRequest Compose models.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> composeNoCustomHeadersWithResponse(ComposeRequest composeRequest, Context context) {
+        return composeNoCustomHeadersWithResponseAsync(composeRequest, context).block();
     }
 
     /**
@@ -1597,10 +2096,7 @@ public final class CustomModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Models>> getSummaryWithResponseAsync() {
-        final String op = "summary";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getSummary(this.client.getEndpoint(), this.client.getApiVersion(), op, accept, context));
+        return FluxUtil.withContext(context -> getSummaryWithResponseAsync(context));
     }
 
     /**
@@ -1674,9 +2170,7 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1696,9 +2190,7 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1717,9 +2209,7 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1733,9 +2223,7 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

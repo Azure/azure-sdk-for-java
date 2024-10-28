@@ -225,26 +225,20 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
             networkConfiguration().validate();
         }
         if (centralServer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property centralServer in model ThreeTierConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property centralServer in model ThreeTierConfiguration"));
         } else {
             centralServer().validate();
         }
         if (applicationServer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationServer in model ThreeTierConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property applicationServer in model ThreeTierConfiguration"));
         } else {
             applicationServer().validate();
         }
         if (databaseServer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseServer in model ThreeTierConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseServer in model ThreeTierConfiguration"));
         } else {
             databaseServer().validate();
         }

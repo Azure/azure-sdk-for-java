@@ -53,10 +53,9 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
      */
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromCompletionStage(clientFuture
-            .thenComposeAsync(client -> {
-                final EventDataBatch batch = createEventDataBatch(client, options.getCount());
-                return client.send(batch);
-            }));
+        return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
+            final EventDataBatch batch = createEventDataBatch(client, options.getCount());
+            return client.send(batch);
+        }));
     }
 }

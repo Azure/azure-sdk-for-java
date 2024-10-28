@@ -14,30 +14,30 @@ public final class BackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyInner model = BinaryData.fromString(
-            "{\"etag\":\"ziuiefozbhdm\",\"properties\":{\"backupPolicyId\":\"l\",\"provisioningState\":\"qhoftrmaequiah\",\"dailyBackupsToKeep\":1867167840,\"weeklyBackupsToKeep\":1714280581,\"monthlyBackupsToKeep\":1274843530,\"volumesAssigned\":1615859989,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"lhalnswh\",\"volumeResourceId\":\"sp\",\"backupsCount\":896458989,\"policyEnabled\":true},{\"volumeName\":\"itqscywuggwoluhc\",\"volumeResourceId\":\"wem\",\"backupsCount\":19957652,\"policyEnabled\":false},{\"volumeName\":\"rgzdwmsweyp\",\"volumeResourceId\":\"dxggicccnxqhuexm\",\"backupsCount\":735026566,\"policyEnabled\":true},{\"volumeName\":\"vlz\",\"volumeResourceId\":\"emhzrncsdtc\",\"backupsCount\":1367209105,\"policyEnabled\":true}]},\"location\":\"bsfgytguslfea\",\"tags\":{\"kyhejhzisxgf\":\"gq\",\"raehtwdwrft\":\"elolppvksrpqvuj\",\"rcdlbhshfwpr\":\"wib\"},\"id\":\"cstwity\",\"name\":\"hevxcced\",\"type\":\"pnmdyodnwzxltjcv\"}")
+            "{\"etag\":\"rryuzhlhkjo\",\"properties\":{\"backupPolicyId\":\"vqqaatjinrvgo\",\"provisioningState\":\"mfiibfggj\",\"dailyBackupsToKeep\":1249202476,\"weeklyBackupsToKeep\":1373555947,\"monthlyBackupsToKeep\":330800818,\"volumesAssigned\":1483667739,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"llqwjygvjayvblmh\",\"volumeResourceId\":\"zuhbxvvyhgsopb\",\"backupsCount\":1164866415,\"policyEnabled\":true}]},\"location\":\"g\",\"tags\":{\"bnhlmc\":\"wz\"},\"id\":\"l\",\"name\":\"dn\",\"type\":\"itvgbmhrixkwm\"}")
             .toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("bsfgytguslfea", model.location());
-        Assertions.assertEquals("gq", model.tags().get("kyhejhzisxgf"));
-        Assertions.assertEquals(1867167840, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1714280581, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1274843530, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("g", model.location());
+        Assertions.assertEquals("wz", model.tags().get("bnhlmc"));
+        Assertions.assertEquals(1249202476, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1373555947, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(330800818, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyInner model = new BackupPolicyInner().withLocation("bsfgytguslfea")
-            .withTags(mapOf("kyhejhzisxgf", "gq", "raehtwdwrft", "elolppvksrpqvuj", "rcdlbhshfwpr", "wib"))
-            .withDailyBackupsToKeep(1867167840)
-            .withWeeklyBackupsToKeep(1714280581)
-            .withMonthlyBackupsToKeep(1274843530)
+        BackupPolicyInner model = new BackupPolicyInner().withLocation("g")
+            .withTags(mapOf("bnhlmc", "wz"))
+            .withDailyBackupsToKeep(1249202476)
+            .withWeeklyBackupsToKeep(1373555947)
+            .withMonthlyBackupsToKeep(330800818)
             .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("bsfgytguslfea", model.location());
-        Assertions.assertEquals("gq", model.tags().get("kyhejhzisxgf"));
-        Assertions.assertEquals(1867167840, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1714280581, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1274843530, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("g", model.location());
+        Assertions.assertEquals("wz", model.tags().get("bnhlmc"));
+        Assertions.assertEquals(1249202476, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1373555947, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(330800818, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 

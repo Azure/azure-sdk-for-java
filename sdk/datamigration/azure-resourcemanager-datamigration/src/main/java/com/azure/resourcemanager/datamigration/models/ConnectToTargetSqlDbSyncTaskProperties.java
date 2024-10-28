@@ -5,35 +5,67 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for the task that validates connection to SQL DB and target server requirements for online migration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("ConnectToTarget.SqlDb.Sync")
+/**
+ * Properties for the task that validates connection to SQL DB and target server requirements for online migration.
+ */
 @Fluent
 public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskProperties {
     /*
+     * Task type.
+     */
+    private String taskType = "ConnectToTarget.SqlDb.Sync";
+
+    /*
      * Task input
      */
-    @JsonProperty(value = "input")
     private ConnectToTargetSqlDbSyncTaskInput input;
 
     /*
      * Task output. This is ignored if submitted.
      */
-    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectToTargetSqlDbTaskOutput> output;
 
-    /** Creates an instance of ConnectToTargetSqlDbSyncTaskProperties class. */
+    /*
+     * Array of command properties.
+     */
+    private List<CommandProperties> commands;
+
+    /*
+     * The state of the task. This is ignored if submitted.
+     */
+    private TaskState state;
+
+    /*
+     * Array of errors. This is ignored if submitted.
+     */
+    private List<ManagementError> errors;
+
+    /**
+     * Creates an instance of ConnectToTargetSqlDbSyncTaskProperties class.
+     */
     public ConnectToTargetSqlDbSyncTaskProperties() {
     }
 
     /**
+     * Get the taskType property: Task type.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public String taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the input property: Task input.
-     *
+     * 
      * @return the input value.
      */
     public ConnectToTargetSqlDbSyncTaskInput input() {
@@ -42,7 +74,7 @@ public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskPro
 
     /**
      * Set the input property: Task input.
-     *
+     * 
      * @param input the input value to set.
      * @return the ConnectToTargetSqlDbSyncTaskProperties object itself.
      */
@@ -53,7 +85,7 @@ public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskPro
 
     /**
      * Get the output property: Task output. This is ignored if submitted.
-     *
+     * 
      * @return the output value.
      */
     public List<ConnectToTargetSqlDbTaskOutput> output() {
@@ -61,18 +93,103 @@ public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskPro
     }
 
     /**
+     * Get the commands property: Array of command properties.
+     * 
+     * @return the commands value.
+     */
+    @Override
+    public List<CommandProperties> commands() {
+        return this.commands;
+    }
+
+    /**
+     * Get the state property: The state of the task. This is ignored if submitted.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public TaskState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the errors property: Array of errors. This is ignored if submitted.
+     * 
+     * @return the errors value.
+     */
+    @Override
+    public List<ManagementError> errors() {
+        return this.errors;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (input() != null) {
             input().validate();
         }
         if (output() != null) {
             output().forEach(e -> e.validate());
         }
+        if (commands() != null) {
+            commands().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeJsonField("input", this.input);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToTargetSqlDbSyncTaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToTargetSqlDbSyncTaskProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToTargetSqlDbSyncTaskProperties.
+     */
+    public static ConnectToTargetSqlDbSyncTaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToTargetSqlDbSyncTaskProperties deserializedConnectToTargetSqlDbSyncTaskProperties
+                = new ConnectToTargetSqlDbSyncTaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.errors = errors;
+                } else if ("state".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.state = TaskState.fromString(reader.getString());
+                } else if ("commands".equals(fieldName)) {
+                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.commands = commands;
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.taskType = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.input
+                        = ConnectToTargetSqlDbSyncTaskInput.fromJson(reader);
+                } else if ("output".equals(fieldName)) {
+                    List<ConnectToTargetSqlDbTaskOutput> output
+                        = reader.readArray(reader1 -> ConnectToTargetSqlDbTaskOutput.fromJson(reader1));
+                    deserializedConnectToTargetSqlDbSyncTaskProperties.output = output;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToTargetSqlDbSyncTaskProperties;
+        });
     }
 }

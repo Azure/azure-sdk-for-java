@@ -48,9 +48,8 @@ public final class ExportDeliveryInfo {
      */
     public void validate() {
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property destination in model ExportDeliveryInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property destination in model ExportDeliveryInfo"));
         } else {
             destination().validate();
         }

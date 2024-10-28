@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/** The secret set parameters. */
+/**
+ * The secret set parameters.
+ */
 @Fluent
 public final class SecretSetParameters implements JsonSerializable<SecretSetParameters> {
     /*
@@ -35,12 +37,15 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
      */
     private SecretAttributes secretAttributes;
 
-    /** Creates an instance of SecretSetParameters class. */
-    public SecretSetParameters() {}
+    /**
+     * Creates an instance of SecretSetParameters class.
+     */
+    public SecretSetParameters() {
+    }
 
     /**
      * Get the value property: The value of the secret.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -49,7 +54,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Set the value property: The value of the secret.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecretSetParameters object itself.
      */
@@ -60,7 +65,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -69,7 +74,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SecretSetParameters object itself.
      */
@@ -80,7 +85,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Get the contentType property: Type of the secret value such as a password.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -89,7 +94,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Set the contentType property: Type of the secret value such as a password.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the SecretSetParameters object itself.
      */
@@ -100,7 +105,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Get the secretAttributes property: The secret management attributes.
-     *
+     * 
      * @return the secretAttributes value.
      */
     public SecretAttributes getSecretAttributes() {
@@ -109,7 +114,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Set the secretAttributes property: The secret management attributes.
-     *
+     * 
      * @param secretAttributes the secretAttributes value to set.
      * @return the SecretSetParameters object itself.
      */
@@ -118,6 +123,9 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,36 +138,35 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
 
     /**
      * Reads an instance of SecretSetParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretSetParameters if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecretSetParameters.
      */
     public static SecretSetParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedSecretSetParameters.value = reader.getString();
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedSecretSetParameters.tags = tags;
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedSecretSetParameters.contentType = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedSecretSetParameters.secretAttributes = SecretAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedSecretSetParameters.value = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretSetParameters.tags = tags;
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedSecretSetParameters.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedSecretSetParameters.secretAttributes = SecretAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretSetParameters;
-                });
+            return deserializedSecretSetParameters;
+        });
     }
 }

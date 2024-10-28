@@ -145,17 +145,10 @@ public interface DiagnosticContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithAlwaysLog,
-                DefinitionStages.WithLoggerId,
-                DefinitionStages.WithSampling,
-                DefinitionStages.WithFrontend,
-                DefinitionStages.WithBackend,
-                DefinitionStages.WithLogClientIp,
-                DefinitionStages.WithHttpCorrelationProtocol,
-                DefinitionStages.WithVerbosity,
-                DefinitionStages.WithOperationNameFormat,
-                DefinitionStages.WithMetrics,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithAlwaysLog, DefinitionStages.WithLoggerId, DefinitionStages.WithSampling,
+            DefinitionStages.WithFrontend, DefinitionStages.WithBackend, DefinitionStages.WithLogClientIp,
+            DefinitionStages.WithHttpCorrelationProtocol, DefinitionStages.WithVerbosity,
+            DefinitionStages.WithOperationNameFormat, DefinitionStages.WithMetrics, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -310,18 +303,10 @@ public interface DiagnosticContract {
     DiagnosticContract.Update update();
 
     /** The template for DiagnosticContract update. */
-    interface Update
-        extends UpdateStages.WithAlwaysLog,
-            UpdateStages.WithLoggerId,
-            UpdateStages.WithSampling,
-            UpdateStages.WithFrontend,
-            UpdateStages.WithBackend,
-            UpdateStages.WithLogClientIp,
-            UpdateStages.WithHttpCorrelationProtocol,
-            UpdateStages.WithVerbosity,
-            UpdateStages.WithOperationNameFormat,
-            UpdateStages.WithMetrics,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithAlwaysLog, UpdateStages.WithLoggerId, UpdateStages.WithSampling,
+        UpdateStages.WithFrontend, UpdateStages.WithBackend, UpdateStages.WithLogClientIp,
+        UpdateStages.WithHttpCorrelationProtocol, UpdateStages.WithVerbosity, UpdateStages.WithOperationNameFormat,
+        UpdateStages.WithMetrics, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

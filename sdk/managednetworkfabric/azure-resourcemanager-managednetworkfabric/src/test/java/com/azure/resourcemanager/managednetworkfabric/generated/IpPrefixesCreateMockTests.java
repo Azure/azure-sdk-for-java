@@ -36,59 +36,43 @@ public final class IpPrefixesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4449803466898573862,\"networkPrefix\":\"qgqs\",\"condition\":\"Range\",\"subnetMaskLength\":\"efeombo\"},{\"action\":\"Permit\",\"sequenceNumber\":6001894924580740479,\"networkPrefix\":\"fuakqsjymcfvvzc\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"qktcktnbpk\"},{\"action\":\"Permit\",\"sequenceNumber\":1226746474122202062,\"networkPrefix\":\"lncmlzvvrm\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"qsacjqz\"},{\"action\":\"Permit\",\"sequenceNumber\":3498512871956945291,\"networkPrefix\":\"wcbawapndmtq\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"zvagqxfblsx\"}],\"annotation\":\"qgtodgklle\"},\"location\":\"i\",\"tags\":{\"b\":\"sr\",\"gqbmxbpqcnxske\":\"nasgfyxhsx\",\"lfpiuuf\":\"ojvmazu\",\"givbhmn\":\"pdncokq\"},\"id\":\"mjlyhbjf\",\"name\":\"m\",\"type\":\"ibgwcduy\"}";
+        String responseStr
+            = "{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4449803466898573862,\"networkPrefix\":\"qgqs\",\"condition\":\"Range\",\"subnetMaskLength\":\"efeombo\"},{\"action\":\"Permit\",\"sequenceNumber\":6001894924580740479,\"networkPrefix\":\"fuakqsjymcfvvzc\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"qktcktnbpk\"},{\"action\":\"Permit\",\"sequenceNumber\":1226746474122202062,\"networkPrefix\":\"lncmlzvvrm\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"qsacjqz\"},{\"action\":\"Permit\",\"sequenceNumber\":3498512871956945291,\"networkPrefix\":\"wcbawapndmtq\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"zvagqxfblsx\"}],\"annotation\":\"qgtodgklle\"},\"location\":\"i\",\"tags\":{\"b\":\"sr\",\"gqbmxbpqcnxske\":\"nasgfyxhsx\",\"lfpiuuf\":\"ojvmazu\",\"givbhmn\":\"pdncokq\"},\"id\":\"mjlyhbjf\",\"name\":\"m\",\"type\":\"ibgwcduy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IpPrefix response =
-            manager
-                .ipPrefixes()
-                .define("gdmfvybfmpot")
-                .withRegion("vtkmx")
-                .withExistingResourceGroup("mazkmqfw")
-                .withTags(mapOf("v", "shnugfbpeigkf", "gtdjhtbarptxurs", "vriqtuzwbkqcgz", "oc", "oyyumhzps"))
-                .withIpPrefixRules(
-                    Arrays
-                        .asList(
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(8899164326683510311L)
-                                .withNetworkPrefix("codbqeo")
-                                .withCondition(Condition.RANGE)
-                                .withSubnetMaskLength("xxbjhsp"),
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(2386191404567686629L)
-                                .withNetworkPrefix("xrwqlwdflgqrplz")
-                                .withCondition(Condition.RANGE)
-                                .withSubnetMaskLength("dbboffgxtaelx")))
-                .withAnnotation("fcyatbxdwr")
-                .create();
+        IpPrefix response = manager.ipPrefixes()
+            .define("gdmfvybfmpot")
+            .withRegion("vtkmx")
+            .withExistingResourceGroup("mazkmqfw")
+            .withTags(mapOf("v", "shnugfbpeigkf", "gtdjhtbarptxurs", "vriqtuzwbkqcgz", "oc", "oyyumhzps"))
+            .withIpPrefixRules(Arrays.asList(
+                new IpPrefixRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(8899164326683510311L)
+                    .withNetworkPrefix("codbqeo")
+                    .withCondition(Condition.RANGE)
+                    .withSubnetMaskLength("xxbjhsp"),
+                new IpPrefixRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(2386191404567686629L)
+                    .withNetworkPrefix("xrwqlwdflgqrplz")
+                    .withCondition(Condition.RANGE)
+                    .withSubnetMaskLength("dbboffgxtaelx")))
+            .withAnnotation("fcyatbxdwr")
+            .create();
 
         Assertions.assertEquals("i", response.location());
         Assertions.assertEquals("sr", response.tags().get("b"));

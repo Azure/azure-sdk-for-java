@@ -23,8 +23,8 @@ public interface Libraries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return library by name in a workspace along with {@link Response}.
      */
-    Response<LibraryResource> getWithResponse(
-        String resourceGroupName, String libraryName, String workspaceName, Context context);
+    Response<LibraryResource> getWithResponse(String resourceGroupName, String libraryName, String workspaceName,
+        Context context);
 
     /**
      * Get library by name.

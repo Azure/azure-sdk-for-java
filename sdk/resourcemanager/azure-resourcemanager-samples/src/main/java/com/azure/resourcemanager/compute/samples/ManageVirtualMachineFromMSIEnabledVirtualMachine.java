@@ -33,7 +33,8 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
         // see https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
         //
 
-        final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>] [<cleanup-resource>]\"";
+        final String usage
+            = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>] [<cleanup-resource>]\"";
         if (args.length < 2) {
             throw new IllegalArgumentException(usage);
         }
@@ -49,9 +50,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
         //=============================================================
         // ManagedIdentityCredential Authenticate
 
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
-            .clientId(clientId)
-            .build();
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
 
         AzureProfile profile = new AzureProfile(null, subscriptionId, AzureEnvironment.AZURE);
 

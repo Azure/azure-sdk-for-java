@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzOrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzOrganizationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"companyName\":\"wzwbnguitn\",\"id\":\"izgazxu\",\"enterpriseAppId\":\"zuckyfi\",\"singleSignOnUrl\":\"fidfvzw\"}")
-                .toObject(LogzOrganizationProperties.class);
-        Assertions.assertEquals("wzwbnguitn", model.companyName());
-        Assertions.assertEquals("zuckyfi", model.enterpriseAppId());
-        Assertions.assertEquals("fidfvzw", model.singleSignOnUrl());
+        LogzOrganizationProperties model = BinaryData.fromString(
+            "{\"companyName\":\"k\",\"id\":\"kdkexxp\",\"enterpriseAppId\":\"fmxa\",\"singleSignOnUrl\":\"fjpgddtocjjxhvp\"}")
+            .toObject(LogzOrganizationProperties.class);
+        Assertions.assertEquals("k", model.companyName());
+        Assertions.assertEquals("fmxa", model.enterpriseAppId());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.singleSignOnUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzOrganizationProperties model =
-            new LogzOrganizationProperties()
-                .withCompanyName("wzwbnguitn")
-                .withEnterpriseAppId("zuckyfi")
-                .withSingleSignOnUrl("fidfvzw");
+        LogzOrganizationProperties model = new LogzOrganizationProperties().withCompanyName("k")
+            .withEnterpriseAppId("fmxa")
+            .withSingleSignOnUrl("fjpgddtocjjxhvp");
         model = BinaryData.fromObject(model).toObject(LogzOrganizationProperties.class);
-        Assertions.assertEquals("wzwbnguitn", model.companyName());
-        Assertions.assertEquals("zuckyfi", model.enterpriseAppId());
-        Assertions.assertEquals("fidfvzw", model.singleSignOnUrl());
+        Assertions.assertEquals("k", model.companyName());
+        Assertions.assertEquals("fmxa", model.enterpriseAppId());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.singleSignOnUrl());
     }
 }

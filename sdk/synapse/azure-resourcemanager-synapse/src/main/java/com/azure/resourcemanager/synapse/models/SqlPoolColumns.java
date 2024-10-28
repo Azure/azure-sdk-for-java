@@ -24,14 +24,8 @@ public interface SqlPoolColumns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql pool column along with {@link Response}.
      */
-    Response<SqlPoolColumn> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<SqlPoolColumn> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Get Sql pool column.
@@ -47,11 +41,6 @@ public interface SqlPoolColumns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql pool column.
      */
-    SqlPoolColumn get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    SqlPoolColumn get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 }

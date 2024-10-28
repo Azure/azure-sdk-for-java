@@ -75,14 +75,12 @@ public final class ForecastTimePeriod {
      */
     public void validate() {
         if (from() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property from in model ForecastTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property from in model ForecastTimePeriod"));
         }
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model ForecastTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property to in model ForecastTimePeriod"));
         }
     }
 

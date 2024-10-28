@@ -162,8 +162,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                     httpBinJSON.data = reader.readUntyped();
                 } else if ("queryParams".equalsIgnoreCase(fieldName)) {
                     // Pass the JsonReader to another JsonSerializable to read the inner object.
-                    httpBinJSON.queryParams = reader.readMap(
-                        paramReader -> paramReader.readArray(JsonReader::getString));
+                    httpBinJSON.queryParams
+                        = reader.readMap(paramReader -> paramReader.readArray(JsonReader::getString));
                 } else {
                     reader.skipChildren();
                 }

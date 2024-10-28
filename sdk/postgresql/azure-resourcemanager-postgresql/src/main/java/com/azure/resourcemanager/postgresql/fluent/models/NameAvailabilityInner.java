@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a resource name availability. */
 @Fluent
 public final class NameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
 
     /*
      * Error Message.

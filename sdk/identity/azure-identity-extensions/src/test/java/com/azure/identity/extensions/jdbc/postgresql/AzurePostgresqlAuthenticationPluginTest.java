@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
 class AzurePostgresqlAuthenticationPluginTest {
 
     @Test
@@ -41,7 +40,8 @@ class AzurePostgresqlAuthenticationPluginTest {
         AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
         when(template.getTokenAsPassword()).thenReturn("fake-password");
         AzurePostgresqlAuthenticationPlugin plugin = new AzurePostgresqlAuthenticationPlugin(template, properties);
-        assertEquals(new String(plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD)), template.getTokenAsPassword());
+        assertEquals(new String(plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD)),
+            template.getTokenAsPassword());
     }
 
 }

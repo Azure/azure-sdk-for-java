@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPacketBrokersListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPacketBrokersListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"igqkzjuqwqa\",\"networkDeviceIds\":[\"zxpixhyo\"],\"sourceInterfaceIds\":[\"f\",\"bgsosc\",\"enezfvbennmfkbpj\",\"rtek\"],\"networkTapIds\":[\"thr\",\"pmdudsyiurzt\",\"ktjhffe\",\"q\"],\"neighborGroupIds\":[\"youergaghp\",\"zxkpyehhfdyld\"],\"provisioningState\":\"Accepted\"},\"location\":\"d\",\"tags\":{\"htdereun\":\"qiyu\",\"edznmxrfomckewv\":\"kakzwhpjlwy\",\"fjjtpdyzou\":\"yifop\"},\"id\":\"xfptofh\",\"name\":\"nuywe\",\"type\":\"ygv\"}],\"nextLink\":\"gaaqw\"}")
-                .toObject(NetworkPacketBrokersListResult.class);
+        NetworkPacketBrokersListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"networkFabricId\":\"igqkzjuqwqa\",\"networkDeviceIds\":[\"zxpixhyo\"],\"sourceInterfaceIds\":[\"f\",\"bgsosc\",\"enezfvbennmfkbpj\",\"rtek\"],\"networkTapIds\":[\"thr\",\"pmdudsyiurzt\",\"ktjhffe\",\"q\"],\"neighborGroupIds\":[\"youergaghp\",\"zxkpyehhfdyld\"],\"provisioningState\":\"Accepted\"},\"location\":\"d\",\"tags\":{\"htdereun\":\"qiyu\",\"edznmxrfomckewv\":\"kakzwhpjlwy\",\"fjjtpdyzou\":\"yifop\"},\"id\":\"xfptofh\",\"name\":\"nuywe\",\"type\":\"ygv\"}],\"nextLink\":\"gaaqw\"}")
+            .toObject(NetworkPacketBrokersListResult.class);
         Assertions.assertEquals("d", model.value().get(0).location());
         Assertions.assertEquals("qiyu", model.value().get(0).tags().get("htdereun"));
         Assertions.assertEquals("igqkzjuqwqa", model.value().get(0).networkFabricId());
@@ -28,17 +26,11 @@ public final class NetworkPacketBrokersListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokersListResult model =
-            new NetworkPacketBrokersListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkPacketBrokerInner()
-                                .withLocation("d")
-                                .withTags(
-                                    mapOf("htdereun", "qiyu", "edznmxrfomckewv", "kakzwhpjlwy", "fjjtpdyzou", "yifop"))
-                                .withNetworkFabricId("igqkzjuqwqa")))
-                .withNextLink("gaaqw");
+        NetworkPacketBrokersListResult model = new NetworkPacketBrokersListResult()
+            .withValue(Arrays.asList(new NetworkPacketBrokerInner().withLocation("d")
+                .withTags(mapOf("htdereun", "qiyu", "edznmxrfomckewv", "kakzwhpjlwy", "fjjtpdyzou", "yifop"))
+                .withNetworkFabricId("igqkzjuqwqa")))
+            .withNextLink("gaaqw");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokersListResult.class);
         Assertions.assertEquals("d", model.value().get(0).location());
         Assertions.assertEquals("qiyu", model.value().get(0).tags().get("htdereun"));

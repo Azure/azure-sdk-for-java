@@ -38,8 +38,8 @@ public interface PrivateLinkResourcesClient {
      * @return list of group IDs for video analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get group ID for video analyzer account.
@@ -68,6 +68,6 @@ public interface PrivateLinkResourcesClient {
      * @return group ID for video analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 }

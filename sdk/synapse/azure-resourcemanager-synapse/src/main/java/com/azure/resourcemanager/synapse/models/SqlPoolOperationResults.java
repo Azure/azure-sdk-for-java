@@ -22,8 +22,8 @@ public interface SqlPoolOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a SQL pool operation.
      */
-    SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId);
 
     /**
      * Get SQL pool operation status
@@ -40,6 +40,6 @@ public interface SqlPoolOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a SQL pool operation.
      */
-    SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context);
 }

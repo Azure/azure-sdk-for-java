@@ -70,22 +70,18 @@ public final class ConfigDataImpl implements ConfigData, ConfigData.Definition {
     }
 
     public ConfigData create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createInResourceGroupWithResponse(configurationName, resourceGroup, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createInResourceGroupWithResponse(configurationName, resourceGroup, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigData create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createInResourceGroupWithResponse(configurationName, resourceGroup, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createInResourceGroupWithResponse(configurationName, resourceGroup, this.innerModel(), context)
+            .getValue();
         return this;
     }
 

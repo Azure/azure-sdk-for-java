@@ -84,7 +84,8 @@ public class KeyVaultKeylessEcSignatureTest {
 
     @Test
     public void engineInitSignWithRandomTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineInitSign(privateKey, null));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessEcSignature.engineInitSign(privateKey, null));
     }
 
     @Test
@@ -94,20 +95,24 @@ public class KeyVaultKeylessEcSignatureTest {
 
     @Test
     public void engineSetParameterTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineSetParameter("", null));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessEcSignature.engineSetParameter("", null));
     }
 
     @Test
     public void setDigestNameAndEngineSignTest() {
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
+        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(),
+            ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
         when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
-        Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeylessEcSignature.engineSign());
+        Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256),
+            keyVaultKeylessEcSignature.engineSign());
 
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha384Signature();
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
+        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(),
+            ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
         assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeylessEcSignature.engineSign());
     }
 

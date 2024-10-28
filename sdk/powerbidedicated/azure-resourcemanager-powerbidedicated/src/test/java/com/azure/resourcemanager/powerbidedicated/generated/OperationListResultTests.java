@@ -10,11 +10,9 @@ import com.azure.resourcemanager.powerbidedicated.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"xgjvtbv\",\"display\":{\"provider\":\"szdnr\",\"resource\":\"qguhmuo\",\"operation\":\"f\",\"description\":\"wzwbnguitn\"},\"origin\":\"izgazxu\",\"properties\":{}},{\"name\":\"ckyfih\",\"display\":{\"provider\":\"dfvzwdzuhty\",\"resource\":\"isdkfthwxmnteiw\",\"operation\":\"pvkmijcmmxdcuf\",\"description\":\"srp\"},\"origin\":\"zidnsezcxtbzsgfy\",\"properties\":{}}],\"nextLink\":\"ewmdw\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"fqawrlyxw\",\"display\":{\"provider\":\"prbnwbxgjvtbv\",\"resource\":\"sszdnru\",\"operation\":\"guhmuouqfpr\",\"description\":\"wbnguitnwui\"},\"origin\":\"a\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}],\"logSpecifications\":[{},{}]}}},{\"name\":\"kyfi\",\"display\":{\"provider\":\"idf\",\"resource\":\"wdzuhtymwisd\",\"operation\":\"thwxmnteiwaopvkm\",\"description\":\"c\"},\"origin\":\"xdcu\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{}],\"logSpecifications\":[{},{}]}}},{\"name\":\"zidnsezcxtbzsgfy\",\"display\":{\"provider\":\"newmdwzjeiachbo\",\"resource\":\"flnrosfqpteehzz\",\"operation\":\"pyqr\",\"description\":\"z\"},\"origin\":\"pvswjdkirso\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}],\"logSpecifications\":[{},{}]}}}],\"nextLink\":\"nohjt\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

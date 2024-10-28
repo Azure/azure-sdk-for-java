@@ -41,8 +41,8 @@ public interface Assets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Asset items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Asset> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<Asset> list(String resourceGroupName, String accountName, String filter, Integer top, String orderby,
+        Context context);
 
     /**
      * Get an Asset
@@ -121,12 +121,8 @@ public interface Assets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset Storage container SAS URLs along with {@link Response}.
      */
-    Response<AssetContainerSas> listContainerSasWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        ListContainerSasInput parameters,
-        Context context);
+    Response<AssetContainerSas> listContainerSasWithResponse(String resourceGroupName, String accountName,
+        String assetName, ListContainerSasInput parameters, Context context);
 
     /**
      * List the Asset URLs
@@ -143,8 +139,8 @@ public interface Assets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset Storage container SAS URLs.
      */
-    AssetContainerSas listContainerSas(
-        String resourceGroupName, String accountName, String assetName, ListContainerSasInput parameters);
+    AssetContainerSas listContainerSas(String resourceGroupName, String accountName, String assetName,
+        ListContainerSasInput parameters);
 
     /**
      * Gets the Asset storage key
@@ -161,8 +157,8 @@ public interface Assets {
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
      *     along with {@link Response}.
      */
-    Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(String resourceGroupName,
+        String accountName, String assetName, Context context);
 
     /**
      * Gets the Asset storage key
@@ -177,8 +173,8 @@ public interface Assets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      */
-    StorageEncryptedAssetDecryptionData getEncryptionKey(
-        String resourceGroupName, String accountName, String assetName);
+    StorageEncryptedAssetDecryptionData getEncryptionKey(String resourceGroupName, String accountName,
+        String assetName);
 
     /**
      * List Streaming Locators
@@ -194,8 +190,8 @@ public interface Assets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Streaming Locators associated with this Asset along with {@link Response}.
      */
-    Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(String resourceGroupName,
+        String accountName, String assetName, Context context);
 
     /**
      * List Streaming Locators

@@ -25,7 +25,8 @@ public final class BatchTaskListSubtasksResult implements JsonSerializable<Batch
 
     /** Creates an instance of BatchTaskListSubtasksResult class. */
     @Generated
-    private BatchTaskListSubtasksResult() {}
+    private BatchTaskListSubtasksResult() {
+    }
 
     /**
      * Get the value property: The list of subtasks.

@@ -25,48 +25,48 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         System.out.println("In createResource \n\n\n");
 
-        Creatable<ResourceGroup> rgCreatable =
-            virtualMachines
-                .manager()
-                .resourceManager()
-                .resourceGroups()
-                .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg" + vmName, 20))
-                .withRegion(Region.US_EAST);
+        Creatable<ResourceGroup> rgCreatable = virtualMachines.manager()
+            .resourceManager()
+            .resourceGroups()
+            .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg" + vmName, 20))
+            .withRegion(Region.US_EAST);
 
-        Creatable<StorageAccount> storageCreatable =
-            this
-                .storageAccounts
-                .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("stg", 20))
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgCreatable);
+        Creatable<StorageAccount> storageCreatable = this.storageAccounts
+            .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("stg", 20))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgCreatable);
 
-        VirtualMachine virtualMachine =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgCreatable)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress(
-                    virtualMachines.manager().resourceManager().internalContext().randomResourceName("pip", 20))
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUsername("testuser")
-                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withNewStorageAccount(storageCreatable)
-                .withNewAvailabilitySet(virtualMachines.manager().resourceManager().internalContext().randomResourceName("avset", 10))
-                .createAsync()
-                .block();
+        VirtualMachine virtualMachine = virtualMachines.define(vmName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgCreatable)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(
+                virtualMachines.manager().resourceManager().internalContext().randomResourceName("pip", 20))
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("testuser")
+            .withAdminPassword(ResourceManagerTestProxyTestBase.password())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withNewStorageAccount(storageCreatable)
+            .withNewAvailabilitySet(
+                virtualMachines.manager().resourceManager().internalContext().randomResourceName("avset", 10))
+            .createAsync()
+            .block();
 
         ComputeManager manager = virtualMachines.manager();
-        Assertions.assertEquals(1, manager.storageManager().storageAccounts().listByResourceGroup(rgCreatable.name()).stream().count());
-        Assertions.assertEquals(1, manager.networkManager().publicIpAddresses().listByResourceGroup(rgCreatable.name()).stream().count());
-        Assertions.assertEquals(1, manager.networkManager().networks().listByResourceGroup(rgCreatable.name()).stream().count());
-        Assertions.assertEquals(1, manager.networkManager().networkInterfaces().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1,
+            manager.storageManager().storageAccounts().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1,
+            manager.networkManager().publicIpAddresses().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1,
+            manager.networkManager().networks().listByResourceGroup(rgCreatable.name()).stream().count());
+        Assertions.assertEquals(1,
+            manager.networkManager().networkInterfaces().listByResourceGroup(rgCreatable.name()).stream().count());
         Assertions.assertEquals(1, manager.availabilitySets().listByResourceGroup(rgCreatable.name()).stream().count());
 
         return virtualMachine;

@@ -13,23 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"smy\",\"display\":{\"provider\":\"dtmlxhekuksjt\",\"resource\":\"kc\",\"operation\":\"parcry\",\"description\":\"nzwuxzd\"},\"origin\":\"a\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"smy\",\"display\":{\"provider\":\"dtmlxhekuksjt\",\"resource\":\"kc\",\"operation\":\"parcry\",\"description\":\"nzwuxzd\"},\"origin\":\"a\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("a", model.origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withOrigin("a")
-                .withServiceSpecification(
-                    new ServiceSpecification()
-                        .withMetricSpecifications(Arrays.asList())
-                        .withLogSpecifications(Arrays.asList()));
+        OperationInner model = new OperationInner().withOrigin("a")
+            .withServiceSpecification(new ServiceSpecification().withMetricSpecifications(Arrays.asList())
+                .withLogSpecifications(Arrays.asList()));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("a", model.origin());
     }

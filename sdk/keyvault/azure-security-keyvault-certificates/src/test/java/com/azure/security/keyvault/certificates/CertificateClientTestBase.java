@@ -73,21 +73,21 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS =
-        "AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS);
+    private static final String AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS
+        = "AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     private static final String TEST_CERTIFICATE_NAME = "testCert";
 
     private static final int MAX_RETRIES = 5;
-    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
-        .setMaxRetries(MAX_RETRIES)
-        .setBaseDelay(Duration.ofSeconds(2))
-        .setMaxDelay(Duration.ofSeconds(16)));
+    private static final RetryOptions LIVE_RETRY_OPTIONS
+        = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(MAX_RETRIES)
+            .setBaseDelay(Duration.ofSeconds(2))
+            .setMaxDelay(Duration.ofSeconds(16)));
 
-    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
-        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
@@ -102,7 +102,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isRecordMode()) {
             credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(
+                new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n",
+                    "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n",
+                    TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizers);
         } else {
             credential = new MockTokenCredential();
@@ -113,8 +116,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        CertificateClientBuilder builder = new CertificateClientBuilder()
-            .vaultUrl(endpoint)
+        CertificateClientBuilder builder = new CertificateClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);
@@ -230,7 +232,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void recoverDeletedCertificateNotFound(HttpClient httpClient,
-                                                           CertificateServiceVersion serviceVersion);
+        CertificateServiceVersion serviceVersion);
 
     @Test
     public abstract void backupCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
@@ -259,7 +261,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void cancelCertificateOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-
     void cancelCertificateOperationRunner(Consumer<String> testRunner) {
         testRunner.accept(testResourceNamer.randomName(TEST_CERTIFICATE_NAME, 25));
     }
@@ -287,7 +288,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void restoreCertificateFromMalformedBackup(HttpClient httpClient,
-                                                               CertificateServiceVersion serviceVersion);
+        CertificateServiceVersion serviceVersion);
 
     @Test
     public abstract void listCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
@@ -350,7 +351,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void deleteCertificateIssuerNotFound(HttpClient httpClient,
-                                                         CertificateServiceVersion serviceVersion);
+        CertificateServiceVersion serviceVersion);
 
     void deleteCertificateIssuerRunner(Consumer<CertificateIssuer> testRunner) {
         final CertificateIssuer certificateIssuer = setupIssuer(testResourceNamer.randomName("testIssuer", 25));
@@ -378,8 +379,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         String issuerName = testResourceNamer.randomName("testIssuer", 25);
         final CertificateIssuer certificateIssuer = setupIssuer(issuerName);
         final CertificateIssuer issuerForUpdate = new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact()
-                .setFirstName("otherFirst")
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact().setFirstName("otherFirst")
                 .setLastName("otherLast")
                 .setEmail("otherFirst.otherLast@hotmail.com")
                 .setPhone("000-000-0000")))
@@ -402,16 +402,13 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void getCertificateOperationNotFound(HttpClient httpClient,
-                                                         CertificateServiceVersion serviceVersion);
+        CertificateServiceVersion serviceVersion);
 
     @Test
     public abstract void getCertificatePolicyNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     static CertificateContact setupContact() {
-        return new CertificateContact()
-            .setName("name")
-            .setEmail("first.last@gmail.com")
-            .setPhone("000-000-0000");
+        return new CertificateContact().setName("name").setEmail("first.last@gmail.com").setPhone("000-000-0000");
     }
 
     static void validateContact(CertificateContact expected, CertificateContact actual) {
@@ -446,8 +443,8 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
         tags.put("key", "val");
 
-        ImportCertificateOptions importCertificateOptions =
-            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
+        ImportCertificateOptions importCertificateOptions
+            = new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
                 .setPassword(certificatePassword)
                 .setEnabled(true)
                 .setTags(tags);
@@ -465,10 +462,9 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
         HashMap<String, String> tags = new HashMap<>();
         tags.put("key", "val");
-        ImportCertificateOptions importCertificateOptions =
-            new ImportCertificateOptions(certificateName, certificateContent)
-                .setPolicy(new CertificatePolicy("Self", "CN=AzureSDK")
-                    .setContentType(CertificateContentType.PEM))
+        ImportCertificateOptions importCertificateOptions
+            = new ImportCertificateOptions(certificateName, certificateContent)
+                .setPolicy(new CertificatePolicy("Self", "CN=AzureSDK").setContentType(CertificateContentType.PEM))
                 .setEnabled(true)
                 .setTags(tags);
         testRunner.accept(importCertificateOptions);
@@ -479,6 +475,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
     protected PrivateKey loadPrivateKey(String filename)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -492,8 +489,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     static CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(Collections.singletonList(new AdministratorContact()
-                .setFirstName("first")
+            .setAdministratorContacts(Collections.singletonList(new AdministratorContact().setFirstName("first")
                 .setLastName("last")
                 .setEmail("first.last@hotmail.com")
                 .setPhone("000-000-0000")))
@@ -589,8 +585,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     static void assertResponseException(Runnable exceptionThrower,
-                                        Class<? extends HttpResponseException> expectedExceptionType,
-                                        int expectedStatusCode) {
+        Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -670,4 +665,3 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         }
     }
 }
-

@@ -39,10 +39,8 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
      * @param client the instance of the service client containing this operation class.
      */
     UserConfirmationPasswordsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    UserConfirmationPasswordsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(UserConfirmationPasswordsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,21 +51,15 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientU")
     public interface UserConfirmationPasswordsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/confirmations/password/send")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/confirmations/password/send")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> send(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("userId") String userId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("appType") AppType appType,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> send(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("userId") String userId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("appType") AppType appType,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,13 +76,11 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> sendWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, AppType appType) {
+    private Mono<Response<Void>> sendWithResponseAsync(String resourceGroupName, String serviceName, String userId,
+        AppType appType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -103,26 +93,13 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .send(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            userId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            appType,
-                            accept,
-                            context))
+            .withContext(context -> service.send(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), appType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -141,13 +118,11 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> sendWithResponseAsync(
-        String resourceGroupName, String serviceName, String userId, AppType appType, Context context) {
+    private Mono<Response<Void>> sendWithResponseAsync(String resourceGroupName, String serviceName, String userId,
+        AppType appType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -160,24 +135,13 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .send(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                userId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                appType,
-                accept,
-                context);
+        return service.send(this.client.getEndpoint(), resourceGroupName, serviceName, userId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), appType, accept, context);
     }
 
     /**
@@ -212,8 +176,8 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendWithResponse(
-        String resourceGroupName, String serviceName, String userId, AppType appType, Context context) {
+    public Response<Void> sendWithResponse(String resourceGroupName, String serviceName, String userId, AppType appType,
+        Context context) {
         return sendWithResponseAsync(resourceGroupName, serviceName, userId, appType, context).block();
     }
 

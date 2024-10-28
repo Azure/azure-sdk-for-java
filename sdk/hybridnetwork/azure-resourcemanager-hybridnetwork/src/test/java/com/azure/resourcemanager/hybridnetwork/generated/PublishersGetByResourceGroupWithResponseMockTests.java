@@ -46,12 +46,14 @@ public final class PublishersGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Publisher response = manager.publishers()
-            .getByResourceGroupWithResponse("vpinbmhwbj", "jkgqxnhmbkez", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("vpinbmhwbj", "jkgqxnhmbkez", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("sokdgoge", response.location());
         Assertions.assertEquals("ym", response.tags().get("hbguzo"));

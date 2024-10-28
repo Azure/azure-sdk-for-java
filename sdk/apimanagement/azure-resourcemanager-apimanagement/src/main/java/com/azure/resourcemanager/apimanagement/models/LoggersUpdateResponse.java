@@ -20,11 +20,7 @@ public final class LoggersUpdateResponse extends ResponseBase<LoggersUpdateHeade
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public LoggersUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        LoggerContractInner value,
+    public LoggersUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, LoggerContractInner value,
         LoggersUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

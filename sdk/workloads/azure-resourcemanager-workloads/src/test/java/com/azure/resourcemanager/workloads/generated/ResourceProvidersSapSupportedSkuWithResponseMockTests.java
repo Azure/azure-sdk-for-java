@@ -36,49 +36,35 @@ public final class ResourceProvidersSapSupportedSkuWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"supportedSkus\":[{\"vmSku\":\"ezbrhubskh\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"okkqfqjbvleo\",\"isAppServerCertified\":false,\"isDatabaseCertified\":true},{\"vmSku\":\"qtqzfavyv\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false}]}";
+        String responseStr
+            = "{\"supportedSkus\":[{\"vmSku\":\"ezbrhubskh\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"okkqfqjbvleo\",\"isAppServerCertified\":false,\"isDatabaseCertified\":true},{\"vmSku\":\"qtqzfavyv\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapSupportedResourceSkusResult response =
-            manager
-                .resourceProviders()
-                .sapSupportedSkuWithResponse(
-                    "lkxt",
-                    new SapSupportedSkusRequest()
-                        .withAppLocation("qjfsmlmbtxhw")
-                        .withEnvironment(SapEnvironmentType.PROD)
-                        .withSapProduct(SapProductType.ECC)
-                        .withDeploymentType(SapDeploymentType.THREE_TIER)
-                        .withDatabaseType(SapDatabaseType.DB2)
-                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        SapSupportedResourceSkusResult response = manager.resourceProviders()
+            .sapSupportedSkuWithResponse("lkxt",
+                new SapSupportedSkusRequest().withAppLocation("qjfsmlmbtxhw")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.ECC)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withDatabaseType(SapDatabaseType.DB2)
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ezbrhubskh", response.supportedSkus().get(0).vmSku());
         Assertions.assertEquals(false, response.supportedSkus().get(0).isAppServerCertified());

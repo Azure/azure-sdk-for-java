@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.VirtualNetworkR
 public final class VirtualNetworkRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRuleProperties model =
-            BinaryData
-                .fromString("{\"subnetId\":\"llr\",\"virtualNetworkRuleState\":\"Failed\"}")
+        VirtualNetworkRuleProperties model
+            = BinaryData.fromString("{\"subnetId\":\"umasxazjpq\",\"virtualNetworkRuleState\":\"Active\"}")
                 .toObject(VirtualNetworkRuleProperties.class);
     }
 

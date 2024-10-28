@@ -52,15 +52,8 @@ public interface ApiIssuesClient {
      * @return paged Issue list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Boolean expandCommentsAttachments,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Boolean expandCommentsAttachments, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
@@ -76,8 +69,8 @@ public interface ApiIssuesClient {
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, Context context);
+    ApiIssuesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
@@ -108,13 +101,8 @@ public interface ApiIssuesClient {
      * @return the details of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssuesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        Boolean expandCommentsAttachments,
-        Context context);
+    ApiIssuesGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        Boolean expandCommentsAttachments, Context context);
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
@@ -147,14 +135,8 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssuesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        IssueContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiIssuesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, IssueContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Issue for an API or updates an existing one.
@@ -170,8 +152,8 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, String issueId, IssueContractInner parameters);
+    IssueContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String issueId,
+        IssueContractInner parameters);
 
     /**
      * Updates an existing issue for an API.
@@ -190,14 +172,8 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssuesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String ifMatch,
-        IssueUpdateContract parameters,
-        Context context);
+    ApiIssuesUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String ifMatch, IssueUpdateContract parameters, Context context);
 
     /**
      * Updates an existing issue for an API.
@@ -215,13 +191,8 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String ifMatch,
-        IssueUpdateContract parameters);
+    IssueContractInner update(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String ifMatch, IssueUpdateContract parameters);
 
     /**
      * Deletes the specified Issue from an API.
@@ -239,8 +210,8 @@ public interface ApiIssuesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Issue from an API.

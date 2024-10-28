@@ -11,10 +11,10 @@ import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,19 +40,21 @@ public final class RepositoryHandler {
 
         if (this.repositoryUri.getScheme() != null
             && this.repositoryUri.getScheme()
-            .toLowerCase(Locale.getDefault())
-            .startsWith(ModelsRepositoryConstants.HTTP)) {
+                .toLowerCase(Locale.getDefault())
+                .startsWith(ModelsRepositoryConstants.HTTP)) {
             this.modelFetcher = new HttpModelFetcher(protocolLayer);
         } else {
             this.modelFetcher = new FileModelFetcher();
         }
     }
 
-    public Mono<Map<String, String>> processAsync(String dtmi, ModelDependencyResolution resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(String dtmi, ModelDependencyResolution resolutionOptions,
+        Context context) {
         return processAsync(Collections.singletonList(dtmi), resolutionOptions, context);
     }
 
-    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution resolutionOptions,
+        Context context) {
         List<String> modelsToProcess = prepareWork(dtmis);
 
         return isExpandedAvailable(resolutionOptions, context)
@@ -74,7 +76,7 @@ public final class RepositoryHandler {
                             processedModels.put(metadata.getId(), result.getDefinition());
                         }
                     }
-                } catch (JsonProcessingException ex) {
+                } catch (IOException ex) {
                     return Mono.error(ex);
                 }
 
@@ -82,38 +84,40 @@ public final class RepositoryHandler {
             });
     }
 
-    private Flux<FetchModelResult> processAsync(boolean tryExpanded, List<String> dtmis, ModelDependencyResolution resolution, Context context) {
-        return Flux.concat(dtmis.stream().map(dtmi -> processDtmi(tryExpanded, dtmi, resolution, context))
+    private Flux<FetchModelResult> processAsync(boolean tryExpanded, List<String> dtmis,
+        ModelDependencyResolution resolution, Context context) {
+        return Flux.concat(dtmis.stream()
+            .map(dtmi -> processDtmi(tryExpanded, dtmi, resolution, context))
             .collect(Collectors.toList()));
     }
 
-    private Flux<FetchModelResult> processDtmi(boolean tryExpanded, String dtmi, ModelDependencyResolution resolution, Context context) {
-        return modelFetcher.fetchModelAsync(dtmi, repositoryUri, tryExpanded, context)
-            .flatMapMany(response -> {
-                // If the model was pre-computed, already expanded, processing of it is done.
-                if (response.isFromExpanded()) {
-                    return Flux.just(response);
-                }
+    private Flux<FetchModelResult> processDtmi(boolean tryExpanded, String dtmi, ModelDependencyResolution resolution,
+        Context context) {
+        return modelFetcher.fetchModelAsync(dtmi, repositoryUri, tryExpanded, context).flatMapMany(response -> {
+            // If the model was pre-computed, already expanded, processing of it is done.
+            if (response.isFromExpanded()) {
+                return Flux.just(response);
+            }
 
-                // If resolving dependencies isn't supported processing completes once the model response is returned.
-                if (resolution != ModelDependencyResolution.ENABLED) {
-                    return Flux.just(response);
-                }
+            // If resolving dependencies isn't supported processing completes once the model response is returned.
+            if (resolution != ModelDependencyResolution.ENABLED) {
+                return Flux.just(response);
+            }
 
-                try {
-                    ModelMetadata metadata = new ModelsQuery(response.getDefinition()).parseModel();
-                    List<String> dependencies = metadata.getDependencies();
+            try {
+                ModelMetadata metadata = new ModelsQuery(response.getDefinition()).parseModel();
+                List<String> dependencies = metadata.getDependencies();
 
-                    if (!CoreUtils.isNullOrEmpty(dependencies)) {
-                        logger.log(LogLevel.INFORMATIONAL, () ->
-                            String.format(StatusStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies)));
-                        return processAsync(tryExpanded, dependencies, resolution, context).concatWith(Flux.just(response));
-                    }
-                    return Flux.just(response);
-                } catch (Exception e) {
-                    return Mono.error(e);
+                if (!CoreUtils.isNullOrEmpty(dependencies)) {
+                    logger.log(LogLevel.INFORMATIONAL, () -> String.format(StatusStrings.DISCOVERED_DEPENDENCIES,
+                        String.join("\", \"", dependencies)));
+                    return processAsync(tryExpanded, dependencies, resolution, context).concatWith(Flux.just(response));
                 }
-            });
+                return Flux.just(response);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
     }
 
     private List<String> prepareWork(Iterable<String> dtmis) {

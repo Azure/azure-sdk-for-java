@@ -44,14 +44,8 @@ public interface ProductApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiContract> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Product entity.
@@ -67,8 +61,8 @@ public interface ProductApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String apiId, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Product entity.
@@ -98,8 +92,8 @@ public interface ProductApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aPI details along with {@link Response}.
      */
-    Response<ApiContract> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<ApiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String apiId, Context context);
 
     /**
      * Adds an API to the specified product.
@@ -130,8 +124,8 @@ public interface ProductApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String apiId,
+        Context context);
 
     /**
      * Deletes the specified API from the specified product.

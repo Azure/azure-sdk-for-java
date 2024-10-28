@@ -38,14 +38,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByApi(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by User.
@@ -97,14 +91,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByUser(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByUser(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by API Operations.
@@ -156,14 +144,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByOperation(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Product.
@@ -213,14 +195,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByProduct(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by geography.
@@ -269,8 +245,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByGeo(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ReportRecordContract> listByGeo(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Lists report records by subscription.
@@ -320,14 +296,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listBySubscription(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listBySubscription(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Time.
@@ -353,8 +323,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByTime(
-        String resourceGroupName, String serviceName, String filter, Duration interval);
+    PagedIterable<ReportRecordContract> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval);
 
     /**
      * Lists report records by Time.
@@ -384,15 +354,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByTime(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval, Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Request.
@@ -409,8 +372,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestReportRecordContract> listByRequest(
-        String resourceGroupName, String serviceName, String filter);
+    PagedIterable<RequestReportRecordContract> listByRequest(String resourceGroupName, String serviceName,
+        String filter);
 
     /**
      * Lists report records by Request.
@@ -430,6 +393,6 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestReportRecordContract> listByRequest(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<RequestReportRecordContract> listByRequest(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 }

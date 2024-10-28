@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class DnsResolversListByVirtualNetworkMockTests {
     @Test
     public void testListByVirtualNetwork() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"blcg\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"vqtmnub\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class DnsResolversListByVirtualNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SubResource> response = manager.dnsResolvers()
-            .listByVirtualNetwork("khfxobbcswsrt", "riplrbpbewtg", 628576431, com.azure.core.util.Context.NONE);
+            .listByVirtualNetwork("modfvuefywsbpfvm", "yhrfouyftaakcpw", 1209208693, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("blcg", response.iterator().next().id());
+        Assertions.assertEquals("vqtmnub", response.iterator().next().id());
     }
 }

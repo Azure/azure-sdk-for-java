@@ -11,12 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elastic.models.ElasticMonitorUpgrade;
 
-/** An instance of this class provides access to all the operations defined in MonitorOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorOperationsClient.
+ */
 public interface MonitorOperationsClient {
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,8 +30,8 @@ public interface MonitorOperationsClient {
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.
@@ -39,13 +41,13 @@ public interface MonitorOperationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpgrade(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body, Context context);
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,8 +58,8 @@ public interface MonitorOperationsClient {
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.

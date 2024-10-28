@@ -236,16 +236,10 @@ public interface KubernetesCluster {
     KubernetesClusterInner innerModel();
 
     /** The entirety of the KubernetesCluster definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithControlPlaneNodeConfiguration,
-            DefinitionStages.WithInitialAgentPoolConfigurations,
-            DefinitionStages.WithKubernetesVersion,
-            DefinitionStages.WithNetworkConfiguration,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithControlPlaneNodeConfiguration, DefinitionStages.WithInitialAgentPoolConfigurations,
+        DefinitionStages.WithKubernetesVersion, DefinitionStages.WithNetworkConfiguration, DefinitionStages.WithCreate {
     }
 
     /** The KubernetesCluster definition stages. */
@@ -313,8 +307,8 @@ public interface KubernetesCluster {
              *     <p>The defining characteristics of the control plane for this Kubernetes Cluster.
              * @return the next definition stage.
              */
-            WithInitialAgentPoolConfigurations withControlPlaneNodeConfiguration(
-                ControlPlaneNodeConfiguration controlPlaneNodeConfiguration);
+            WithInitialAgentPoolConfigurations
+                withControlPlaneNodeConfiguration(ControlPlaneNodeConfiguration controlPlaneNodeConfiguration);
         }
 
         /** The stage of the KubernetesCluster definition allowing to specify initialAgentPoolConfigurations. */
@@ -331,8 +325,8 @@ public interface KubernetesCluster {
              *     management of agent pools is done using the agentPools sub-resource.
              * @return the next definition stage.
              */
-            WithKubernetesVersion withInitialAgentPoolConfigurations(
-                List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations);
+            WithKubernetesVersion
+                withInitialAgentPoolConfigurations(List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations);
         }
 
         /** The stage of the KubernetesCluster definition allowing to specify kubernetesVersion. */
@@ -371,11 +365,8 @@ public interface KubernetesCluster {
          * The stage of the KubernetesCluster definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAadConfiguration,
-                DefinitionStages.WithAdministratorConfiguration,
-                DefinitionStages.WithManagedResourceGroupConfiguration {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAadConfiguration,
+            DefinitionStages.WithAdministratorConfiguration, DefinitionStages.WithManagedResourceGroupConfiguration {
             /**
              * Executes the create request.
              *
@@ -463,10 +454,8 @@ public interface KubernetesCluster {
     KubernetesCluster.Update update();
 
     /** The template for KubernetesCluster update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithControlPlaneNodeConfiguration,
-            UpdateStages.WithKubernetesVersion {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithControlPlaneNodeConfiguration,
+        UpdateStages.WithKubernetesVersion {
         /**
          * Executes the update request.
          *
@@ -567,6 +556,6 @@ public interface KubernetesCluster {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult restartNode(
-        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
+    OperationStatusResult restartNode(KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
+        Context context);
 }

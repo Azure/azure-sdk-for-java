@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for ServerSecurityAlertPolicies ListByServer. */
+/**
+ * Samples for ServerSecurityAlertPolicies ListByServer.
+ */
 public final class ServerSecurityAlertPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsListByServer.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * ServerSecurityAlertsListByServer.json
      */
     /**
      * Sample code: List the server's threat detection policies.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void listTheServerSThreatDetectionPolicies(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .serverSecurityAlertPolicies()
+        manager.serverSecurityAlertPolicies()
             .listByServer("securityalert-4799", "securityalert-6440", com.azure.core.util.Context.NONE);
     }
 }

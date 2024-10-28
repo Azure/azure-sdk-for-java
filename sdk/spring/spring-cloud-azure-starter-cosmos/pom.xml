@@ -33,6 +33,7 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <licenses>
@@ -93,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.63.3</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.64.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
   </dependencies>
 

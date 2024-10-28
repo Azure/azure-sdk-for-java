@@ -55,8 +55,8 @@ public interface BmcKeySets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return baseboard management controller key set of the provided cluster along with {@link Response}.
      */
-    Response<BmcKeySet> getWithResponse(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context);
+    Response<BmcKeySet> getWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context);
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.

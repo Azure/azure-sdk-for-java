@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTrackStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTrackStatus model =
-            BinaryData
-                .fromString(
-                    "{\"trackId\":\"emmsbvdkc\",\"expectedBitrate\":7520814175527632507,\"incomingBitrate\":7476370599880379744,\"ingestDrift\":\"wj\",\"requestReceived\":1179971098107474850,\"requestSucceeded\":9167541690912774024}")
-                .toObject(LiveEventTrackStatus.class);
+        LiveEventTrackStatus model = BinaryData.fromString(
+            "{\"trackId\":\"emmsbvdkc\",\"expectedBitrate\":7520814175527632507,\"incomingBitrate\":7476370599880379744,\"ingestDrift\":\"wj\",\"requestReceived\":1179971098107474850,\"requestSucceeded\":9167541690912774024}")
+            .toObject(LiveEventTrackStatus.class);
         Assertions.assertEquals("emmsbvdkc", model.trackId());
         Assertions.assertEquals(7520814175527632507L, model.expectedBitrate());
         Assertions.assertEquals(7476370599880379744L, model.incomingBitrate());
@@ -26,14 +24,12 @@ public final class LiveEventTrackStatusTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTrackStatus model =
-            new LiveEventTrackStatus()
-                .withTrackId("emmsbvdkc")
-                .withExpectedBitrate(7520814175527632507L)
-                .withIncomingBitrate(7476370599880379744L)
-                .withIngestDrift("wj")
-                .withRequestReceived(1179971098107474850L)
-                .withRequestSucceeded(9167541690912774024L);
+        LiveEventTrackStatus model = new LiveEventTrackStatus().withTrackId("emmsbvdkc")
+            .withExpectedBitrate(7520814175527632507L)
+            .withIncomingBitrate(7476370599880379744L)
+            .withIngestDrift("wj")
+            .withRequestReceived(1179971098107474850L)
+            .withRequestSucceeded(9167541690912774024L);
         model = BinaryData.fromObject(model).toObject(LiveEventTrackStatus.class);
         Assertions.assertEquals("emmsbvdkc", model.trackId());
         Assertions.assertEquals(7520814175527632507L, model.expectedBitrate());

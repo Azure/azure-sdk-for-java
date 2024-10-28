@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data Lake Analytics account name availability result information. */
+/**
+ * Data Lake Analytics account name availability result information.
+ */
 @Immutable
-public final class NameAvailabilityInformationInner {
+public final class NameAvailabilityInformationInner implements JsonSerializable<NameAvailabilityInformationInner> {
     /*
      * The Boolean value of true or false to indicate whether the Data Lake Analytics account name is available or not.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
      * The reason why the Data Lake Analytics account name is not available, if nameAvailable is false.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /*
      * The message describing why the Data Lake Analytics account name is not available, if nameAvailable is false.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of NameAvailabilityInformationInner class. */
+    /**
+     * Creates an instance of NameAvailabilityInformationInner class.
+     */
     public NameAvailabilityInformationInner() {
     }
 
     /**
      * Get the nameAvailable property: The Boolean value of true or false to indicate whether the Data Lake Analytics
      * account name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -45,7 +50,7 @@ public final class NameAvailabilityInformationInner {
     /**
      * Get the reason property: The reason why the Data Lake Analytics account name is not available, if nameAvailable
      * is false.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -55,7 +60,7 @@ public final class NameAvailabilityInformationInner {
     /**
      * Get the message property: The message describing why the Data Lake Analytics account name is not available, if
      * nameAvailable is false.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -64,9 +69,50 @@ public final class NameAvailabilityInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityInformationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityInformationInner.
+     */
+    public static NameAvailabilityInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityInformationInner deserializedNameAvailabilityInformationInner
+                = new NameAvailabilityInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityInformationInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityInformationInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityInformationInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityInformationInner;
+        });
     }
 }

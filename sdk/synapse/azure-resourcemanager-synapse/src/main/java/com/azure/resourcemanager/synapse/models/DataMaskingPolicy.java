@@ -115,11 +115,13 @@ public interface DataMaskingPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The DataMaskingPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the DataMaskingPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DataMaskingPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -132,6 +134,7 @@ public interface DataMaskingPolicy {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the DataMaskingPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -152,6 +155,7 @@ public interface DataMaskingPolicy {
              */
             DataMaskingPolicy create(Context context);
         }
+
         /** The stage of the DataMaskingPolicy definition allowing to specify dataMaskingState. */
         interface WithDataMaskingState {
             /**
@@ -162,6 +166,7 @@ public interface DataMaskingPolicy {
              */
             WithCreate withDataMaskingState(DataMaskingState dataMaskingState);
         }
+
         /** The stage of the DataMaskingPolicy definition allowing to specify exemptPrincipals. */
         interface WithExemptPrincipals {
             /**
@@ -177,6 +182,7 @@ public interface DataMaskingPolicy {
             WithCreate withExemptPrincipals(String exemptPrincipals);
         }
     }
+
     /**
      * Begins update for the DataMaskingPolicy resource.
      *
@@ -201,6 +207,7 @@ public interface DataMaskingPolicy {
          */
         DataMaskingPolicy apply(Context context);
     }
+
     /** The DataMaskingPolicy update stages. */
     interface UpdateStages {
         /** The stage of the DataMaskingPolicy update allowing to specify dataMaskingState. */
@@ -213,6 +220,7 @@ public interface DataMaskingPolicy {
              */
             Update withDataMaskingState(DataMaskingState dataMaskingState);
         }
+
         /** The stage of the DataMaskingPolicy update allowing to specify exemptPrincipals. */
         interface WithExemptPrincipals {
             /**
@@ -228,6 +236,7 @@ public interface DataMaskingPolicy {
             Update withExemptPrincipals(String exemptPrincipals);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

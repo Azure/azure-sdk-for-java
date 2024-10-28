@@ -39,8 +39,8 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @param client the instance of the service client containing this operation class.
      */
     LibrariesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LibrariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LibrariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,21 +51,15 @@ public final class LibrariesClientImpl implements LibrariesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface LibrariesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/libraries/{libraryName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/libraries/{libraryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LibraryResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("libraryName") String libraryName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LibraryResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("libraryName") String libraryName,
+            @PathParam("workspaceName") String workspaceName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -82,19 +76,15 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String libraryName, String workspaceName) {
+    private Mono<Response<LibraryResourceInner>> getWithResponseAsync(String resourceGroupName, String libraryName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -109,18 +99,8 @@ public final class LibrariesClientImpl implements LibrariesClient {
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            libraryName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, libraryName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -139,19 +119,15 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String libraryName, String workspaceName, Context context) {
+    private Mono<Response<LibraryResourceInner>> getWithResponseAsync(String resourceGroupName, String libraryName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -166,16 +142,8 @@ public final class LibrariesClientImpl implements LibrariesClient {
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                libraryName,
-                workspaceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            libraryName, workspaceName, accept, context);
     }
 
     /**
@@ -212,8 +180,8 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @return library by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LibraryResourceInner> getWithResponse(
-        String resourceGroupName, String libraryName, String workspaceName, Context context) {
+    public Response<LibraryResourceInner> getWithResponse(String resourceGroupName, String libraryName,
+        String workspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, libraryName, workspaceName, context).block();
     }
 

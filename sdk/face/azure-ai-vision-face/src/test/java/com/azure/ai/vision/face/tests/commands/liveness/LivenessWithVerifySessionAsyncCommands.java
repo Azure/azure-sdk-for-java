@@ -18,8 +18,8 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
         this.mAsyncClient = asyncClient;
     }
 
-    public Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySession(
-        CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
+    public Mono<CreateLivenessWithVerifySessionResult>
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
         return mAsyncClient.createLivenessWithVerifySession(content, verifyImage);
     }
 
@@ -31,16 +31,15 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
         return mAsyncClient.deleteLivenessWithVerifySession(sessionId);
     }
 
-
     @Override
-    public CreateLivenessWithVerifySessionResult createLivenessWithVerifySessionSync(
-        CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
-        return  FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
+    public CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
+        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
     }
 
     @Override
     public LivenessWithVerifySession getLivenessWithVerifySessionResultSync(String sessionId) {
-        return  FunctionUtils.callAndAwait(() -> getLivenessWithVerifySessionResult(sessionId));
+        return FunctionUtils.callAndAwait(() -> getLivenessWithVerifySessionResult(sessionId));
     }
 
     @Override

@@ -14,8 +14,8 @@ public final class DataConnectionValidationImpl implements DataConnectionValidat
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DataConnectionValidationImpl(
-        DataConnectionValidationInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DataConnectionValidationImpl(DataConnectionValidationInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

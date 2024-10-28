@@ -25,8 +25,7 @@ class CaaRecordSetsImpl extends DnsRecordSetsBaseImpl<CaaRecordSet, CaaRecordSet
 
     @Override
     public Mono<CaaRecordSet> getByNameAsync(String name) {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -36,31 +35,21 @@ class CaaRecordSetsImpl extends DnsRecordSetsBaseImpl<CaaRecordSet, CaaRecordSet
 
     @Override
     protected PagedIterable<CaaRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
-        return super
-            .wrapList(
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getRecordSets()
-                    .listByType(
-                        this.dnsZone.resourceGroupName(),
-                        this.dnsZone.name(),
-                        this.recordType,
-                        pageSize,
-                        recordSetNameSuffix,
-                        Context.NONE));
+        return super.wrapList(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType, pageSize,
+                recordSetNameSuffix, Context.NONE));
     }
 
     @Override
     protected PagedFlux<CaaRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
-        return wrapPageAsync(
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getRecordSets()
-                .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
+        return wrapPageAsync(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
     @Override

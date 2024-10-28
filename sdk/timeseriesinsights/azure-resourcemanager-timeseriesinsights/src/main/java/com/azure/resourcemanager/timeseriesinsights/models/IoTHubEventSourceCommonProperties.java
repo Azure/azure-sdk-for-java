@@ -142,22 +142,16 @@ public class IoTHubEventSourceCommonProperties extends AzureEventSourcePropertie
     public void validate() {
         super.validate();
         if (iotHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property iotHubName in model IoTHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property iotHubName in model IoTHubEventSourceCommonProperties"));
         }
         if (consumerGroupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroupName in model IoTHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property consumerGroupName in model IoTHubEventSourceCommonProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model IoTHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model IoTHubEventSourceCommonProperties"));
         }
     }
 

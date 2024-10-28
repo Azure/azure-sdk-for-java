@@ -101,20 +101,16 @@ public final class RolloutRequestImpl implements RolloutRequest, RolloutRequest.
     }
 
     public RolloutRequest create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRollouts()
-                .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRollouts()
+            .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RolloutRequest create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRollouts()
-                .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRollouts()
+            .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), context);
         return this;
     }
 
@@ -129,25 +125,21 @@ public final class RolloutRequestImpl implements RolloutRequest, RolloutRequest.
     }
 
     public RolloutRequest apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRollouts()
-                .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRollouts()
+            .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RolloutRequest apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRollouts()
-                .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRollouts()
+            .createOrUpdate(resourceGroupName, rolloutName, this.innerModel(), context);
         return this;
     }
 
-    RolloutRequestImpl(
-        RolloutRequestInner innerObject, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    RolloutRequestImpl(RolloutRequestInner innerObject,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

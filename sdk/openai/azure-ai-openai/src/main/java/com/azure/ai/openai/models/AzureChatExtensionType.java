@@ -21,12 +21,6 @@ public final class AzureChatExtensionType extends ExpandableStringEnum<AzureChat
     public static final AzureChatExtensionType AZURE_SEARCH = fromString("azure_search");
 
     /**
-     * Represents the use of Azure Machine Learning index as an Azure OpenAI chat extension.
-     */
-    @Generated
-    public static final AzureChatExtensionType AZURE_MACHINE_LEARNING_INDEX = fromString("azure_ml_index");
-
-    /**
      * Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
      */
     @Generated
@@ -74,4 +68,10 @@ public final class AzureChatExtensionType extends ExpandableStringEnum<AzureChat
     public static Collection<AzureChatExtensionType> values() {
         return values(AzureChatExtensionType.class);
     }
+
+    /**
+     * Represents the use of a MongoDB chat extension.
+     */
+    @Generated
+    public static final AzureChatExtensionType MONGO_DB = fromString("mongo_db");
 }

@@ -62,11 +62,13 @@ public interface Key {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Key definition stages. */
     interface DefinitionStages {
         /** The first stage of the Key definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Key definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -78,6 +80,7 @@ public interface Key {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the Key definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -98,6 +101,7 @@ public interface Key {
              */
             Key create(Context context);
         }
+
         /** The stage of the Key definition allowing to specify isActiveCmk. */
         interface WithIsActiveCmk {
             /**
@@ -109,6 +113,7 @@ public interface Key {
              */
             WithCreate withIsActiveCmk(Boolean isActiveCmk);
         }
+
         /** The stage of the Key definition allowing to specify keyVaultUrl. */
         interface WithKeyVaultUrl {
             /**
@@ -120,6 +125,7 @@ public interface Key {
             WithCreate withKeyVaultUrl(String keyVaultUrl);
         }
     }
+
     /**
      * Begins update for the Key resource.
      *
@@ -144,6 +150,7 @@ public interface Key {
          */
         Key apply(Context context);
     }
+
     /** The Key update stages. */
     interface UpdateStages {
         /** The stage of the Key update allowing to specify isActiveCmk. */
@@ -158,6 +165,7 @@ public interface Key {
             Update withIsActiveCmk(Boolean isActiveCmk);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

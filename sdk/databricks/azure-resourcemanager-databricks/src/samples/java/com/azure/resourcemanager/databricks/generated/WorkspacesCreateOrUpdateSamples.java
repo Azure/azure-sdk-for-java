@@ -18,20 +18,22 @@ import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces CreateOrUpdate. */
+/**
+ * Samples for Workspaces CreateOrUpdate.
+ */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceManagedDiskEncryptionCreate.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
+     * WorkspaceManagedDiskEncryptionCreate.json
      */
     /**
      * Sample code: Create a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void createAWorkspaceWithCustomerManagedKeyCMKEncryptionForManagedDisks(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
@@ -39,31 +41,28 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withEncryption(
                 new WorkspacePropertiesEncryption()
                     .withEntities(
-                        new EncryptionEntitiesDefinition()
-                            .withManagedDisk(
-                                new ManagedDiskEncryption()
-                                    .withKeySource(EncryptionKeySource.MICROSOFT_KEYVAULT)
-                                    .withKeyVaultProperties(
-                                        new ManagedDiskEncryptionKeyVaultProperties()
-                                            .withKeyVaultUri("fakeTokenPlaceholder")
-                                            .withKeyName("fakeTokenPlaceholder")
-                                            .withKeyVersion("fakeTokenPlaceholder"))
-                                    .withRotationToLatestKeyVersionEnabled(true))))
+                        new EncryptionEntitiesDefinition().withManagedDisk(
+                            new ManagedDiskEncryption().withKeySource(EncryptionKeySource.MICROSOFT_KEYVAULT)
+                                .withKeyVaultProperties(new ManagedDiskEncryptionKeyVaultProperties()
+                                    .withKeyVaultUri("fakeTokenPlaceholder")
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder"))
+                                .withRotationToLatestKeyVersionEnabled(true))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceManagedDiskEncryptionUpdate.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
+     * WorkspaceManagedDiskEncryptionUpdate.json
      */
     /**
      * Sample code: Update a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void updateAWorkspaceWithCustomerManagedKeyCMKEncryptionForManagedDisks(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
@@ -72,103 +71,93 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withEncryption(
                 new WorkspacePropertiesEncryption()
                     .withEntities(
-                        new EncryptionEntitiesDefinition()
-                            .withManagedDisk(
-                                new ManagedDiskEncryption()
-                                    .withKeySource(EncryptionKeySource.MICROSOFT_KEYVAULT)
-                                    .withKeyVaultProperties(
-                                        new ManagedDiskEncryptionKeyVaultProperties()
-                                            .withKeyVaultUri("fakeTokenPlaceholder")
-                                            .withKeyName("fakeTokenPlaceholder")
-                                            .withKeyVersion("fakeTokenPlaceholder"))
-                                    .withRotationToLatestKeyVersionEnabled(true))))
+                        new EncryptionEntitiesDefinition().withManagedDisk(
+                            new ManagedDiskEncryption().withKeySource(EncryptionKeySource.MICROSOFT_KEYVAULT)
+                                .withKeyVaultProperties(new ManagedDiskEncryptionKeyVaultProperties()
+                                    .withKeyVaultUri("fakeTokenPlaceholder")
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder"))
+                                .withRotationToLatestKeyVersionEnabled(true))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/DisableEncryption.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/DisableEncryption.json
      */
     /**
      * Sample code: Revert Customer-Managed Key (CMK) encryption to Microsoft Managed Keys encryption on a workspace.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void revertCustomerManagedKeyCMKEncryptionToMicrosoftManagedKeysEncryptionOnAWorkspace(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
             .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
-            .withParameters(
-                new WorkspaceCustomParameters()
-                    .withEncryption(
-                        new WorkspaceEncryptionParameter()
-                            .withValue(new Encryption().withKeySource(KeySource.DEFAULT))))
+            .withParameters(new WorkspaceCustomParameters().withEncryption(
+                new WorkspaceEncryptionParameter().withValue(new Encryption().withKeySource(KeySource.DEFAULT))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/PrepareEncryption.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/PrepareEncryption.json
      */
     /**
      * Sample code: Create a workspace which is ready for Customer-Managed Key (CMK) encryption.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void createAWorkspaceWhichIsReadyForCustomerManagedKeyCMKEncryption(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
             .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
-            .withParameters(
-                new WorkspaceCustomParameters()
-                    .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true)))
+            .withParameters(new WorkspaceCustomParameters()
+                .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceCreateWithParameters.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
+     * WorkspaceCreateWithParameters.json
      */
     /**
      * Sample code: Create or update workspace with custom parameters.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void createOrUpdateWorkspaceWithCustomParameters(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
             .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
-            .withParameters(
-                new WorkspaceCustomParameters()
-                    .withCustomVirtualNetworkId(
-                        new WorkspaceCustomStringParameter()
-                            .withValue(
-                                "/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/myNetwork"))
-                    .withCustomPublicSubnetName(new WorkspaceCustomStringParameter().withValue("myPublicSubnet"))
-                    .withCustomPrivateSubnetName(new WorkspaceCustomStringParameter().withValue("myPrivateSubnet")))
+            .withParameters(new WorkspaceCustomParameters()
+                .withCustomVirtualNetworkId(new WorkspaceCustomStringParameter().withValue(
+                    "/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/myNetwork"))
+                .withCustomPublicSubnetName(new WorkspaceCustomStringParameter().withValue("myPublicSubnet"))
+                .withCustomPrivateSubnetName(new WorkspaceCustomStringParameter().withValue("myPrivateSubnet")))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceCreate.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceCreate.json
      */
     /**
      * Sample code: Create or update workspace.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void createOrUpdateWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
@@ -177,35 +166,32 @@ public final class WorkspacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/EnableEncryption.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/EnableEncryption.json
      */
     /**
      * Sample code: Enable Customer-Managed Key (CMK) encryption on a workspace which is prepared for encryption.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void enableCustomerManagedKeyCMKEncryptionOnAWorkspaceWhichIsPreparedForEncryption(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
             .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
-            .withParameters(
-                new WorkspaceCustomParameters()
-                    .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true))
-                    .withEncryption(
-                        new WorkspaceEncryptionParameter()
-                            .withValue(
-                                new Encryption()
-                                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
-                                    .withKeyName("fakeTokenPlaceholder")
-                                    .withKeyVersion("fakeTokenPlaceholder")
-                                    .withKeyVaultUri("fakeTokenPlaceholder"))))
+            .withParameters(new WorkspaceCustomParameters()
+                .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true))
+                .withEncryption(new WorkspaceEncryptionParameter()
+                    .withValue(new Encryption().withKeySource(KeySource.MICROSOFT_KEYVAULT)
+                        .withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withKeyVaultUri("fakeTokenPlaceholder"))))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

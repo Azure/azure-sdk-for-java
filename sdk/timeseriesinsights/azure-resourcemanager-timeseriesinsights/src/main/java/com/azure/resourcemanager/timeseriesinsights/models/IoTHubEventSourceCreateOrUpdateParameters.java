@@ -226,8 +226,8 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
      * @param localTimestamp the localTimestamp value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
-    public IoTHubEventSourceCreateOrUpdateParameters withLocalTimestampPropertiesLocalTimestamp(
-        LocalTimestamp localTimestamp) {
+    public IoTHubEventSourceCreateOrUpdateParameters
+        withLocalTimestampPropertiesLocalTimestamp(LocalTimestamp localTimestamp) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IoTHubEventSourceCreationProperties();
         }
@@ -312,11 +312,8 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " IoTHubEventSourceCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model" + " IoTHubEventSourceCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }

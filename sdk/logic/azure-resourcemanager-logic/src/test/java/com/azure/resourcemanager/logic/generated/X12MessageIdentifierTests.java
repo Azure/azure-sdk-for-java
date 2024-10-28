@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class X12MessageIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12MessageIdentifier model =
-            BinaryData.fromString("{\"messageId\":\"mflvest\"}").toObject(X12MessageIdentifier.class);
-        Assertions.assertEquals("mflvest", model.messageId());
+        X12MessageIdentifier model
+            = BinaryData.fromString("{\"messageId\":\"gnxf\"}").toObject(X12MessageIdentifier.class);
+        Assertions.assertEquals("gnxf", model.messageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12MessageIdentifier model = new X12MessageIdentifier().withMessageId("mflvest");
+        X12MessageIdentifier model = new X12MessageIdentifier().withMessageId("gnxf");
         model = BinaryData.fromObject(model).toObject(X12MessageIdentifier.class);
-        Assertions.assertEquals("mflvest", model.messageId());
+        Assertions.assertEquals("gnxf", model.messageId());
     }
 }

@@ -86,7 +86,9 @@ public class SpringServiceImpl
 
     @Override
     public Mono<MonitoringSettingProperties> getMonitoringSettingAsync() {
-        return manager().serviceClient().getMonitoringSettings().getAsync(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getMonitoringSettings()
+            .getAsync(resourceGroupName(), name())
             .map(MonitoringSettingResourceInner::properties);
     }
 
@@ -97,7 +99,9 @@ public class SpringServiceImpl
 
     @Override
     public Mono<ConfigServerProperties> getServerPropertiesAsync() {
-        return manager().serviceClient().getConfigServers().getAsync(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getConfigServers()
+            .getAsync(resourceGroupName(), name())
             .map(ConfigServerResourceInner::properties);
     }
 
@@ -118,7 +122,10 @@ public class SpringServiceImpl
 
     @Override
     public Mono<TestKeys> regenerateTestKeysAsync(TestKeyType keyType) {
-        return manager().serviceClient().getServices().regenerateTestKeyAsync(resourceGroupName(), name(), new RegenerateTestKeyRequestPayload().withKeyType(keyType));
+        return manager().serviceClient()
+            .getServices()
+            .regenerateTestKeyAsync(resourceGroupName(), name(),
+                new RegenerateTestKeyRequestPayload().withKeyType(keyType));
     }
 
     @Override
@@ -143,7 +150,9 @@ public class SpringServiceImpl
 
     @Override
     public SpringConfigurationService getDefaultConfigurationService() {
-        return manager().serviceClient().getConfigurationServices().list(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getConfigurationServices()
+            .list(resourceGroupName(), name())
             .stream()
             .filter(inner -> Objects.equals(inner.name(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
             .map(inner -> new SpringConfigurationServiceImpl(inner.name(), this, inner))
@@ -153,7 +162,9 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceRegistry getDefaultServiceRegistry() {
-        return manager().serviceClient().getServiceRegistries().list(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getServiceRegistries()
+            .list(resourceGroupName(), name())
             .stream()
             .filter(inner -> Objects.equals(inner.name(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
             .map(inner -> new SpringServiceRegistryImpl(inner.name(), this, inner))
@@ -194,10 +205,11 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
-        monitoringSettingTask =
-            context -> manager().serviceClient().getMonitoringSettings()
-                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingResourceInner().withProperties(
-                    new MonitoringSettingProperties()
+        monitoringSettingTask
+            = context -> manager().serviceClient()
+                .getMonitoringSettings()
+                .updatePatchAsync(resourceGroupName(), name(),
+                    new MonitoringSettingResourceInner().withProperties(new MonitoringSettingProperties()
                         .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
                         .withTraceEnabled(true)))
                 .then(context.voidMono());
@@ -206,56 +218,46 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withoutTracing() {
-        monitoringSettingTask =
-            context -> manager().serviceClient().getMonitoringSettings()
-                .updatePatchAsync(
-                    resourceGroupName(), name(), new MonitoringSettingResourceInner().withProperties(
-                        new MonitoringSettingProperties().withTraceEnabled(false)
-                    ))
-                .then(context.voidMono());
+        monitoringSettingTask = context -> manager().serviceClient()
+            .getMonitoringSettings()
+            .updatePatchAsync(resourceGroupName(), name(),
+                new MonitoringSettingResourceInner()
+                    .withProperties(new MonitoringSettingProperties().withTraceEnabled(false)))
+            .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUri(String uri) {
-        configServerTask =
-            context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
-                    new ConfigServerProperties()
-                        .withConfigServer(new ConfigServerSettings().withGitProperty(
-                            new ConfigServerGitProperty().withUri(uri)
-                        ))
-                ))
-                .then(context.voidMono());
+        configServerTask = context -> manager().serviceClient()
+            .getConfigServers()
+            .updatePatchAsync(resourceGroupName(), name(),
+                new ConfigServerResourceInner().withProperties(new ConfigServerProperties().withConfigServer(
+                    new ConfigServerSettings().withGitProperty(new ConfigServerGitProperty().withUri(uri)))))
+            .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
-        configServerTask =
-            context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
-                    new ConfigServerProperties()
-                        .withConfigServer(new ConfigServerSettings().withGitProperty(
-                            new ConfigServerGitProperty()
-                                .withUri(uri)
-                                .withUsername(username)
-                                .withPassword(password)
-                        ))
-                ))
-                .then(context.voidMono());
+        configServerTask = context -> manager().serviceClient()
+            .getConfigServers()
+            .updatePatchAsync(resourceGroupName(), name(),
+                new ConfigServerResourceInner().withProperties(
+                    new ConfigServerProperties().withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty().withUri(uri).withUsername(username).withPassword(password)))))
+            .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
-        configServerTask =
-            context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
-                    new ConfigServerProperties()
-                        .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig))
-                ))
-                .then(context.voidMono());
+        configServerTask = context -> manager().serviceClient()
+            .getConfigServers()
+            .updatePatchAsync(resourceGroupName(), name(),
+                new ConfigServerResourceInner().withProperties(new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig))))
+            .then(context.voidMono());
         return this;
     }
 
@@ -289,55 +291,49 @@ public class SpringServiceImpl
     public Mono<SpringService> createResourceAsync() {
         Mono<ServiceResourceInner> createOrUpdate;
         if (isInCreateMode()) {
-            createOrUpdate = manager().serviceClient().getServices()
+            createOrUpdate = manager().serviceClient()
+                .getServices()
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
             if (isEnterpriseTier()) {
                 createOrUpdate = createOrUpdate
                     // initialize build service agent pool
-                    .flatMap(inner ->
-                        manager().serviceClient().getBuildServiceAgentPools().updatePutAsync(
-                            resourceGroupName(),
-                            name(),
-                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                    .flatMap(inner -> manager().serviceClient()
+                        .getBuildServiceAgentPools()
+                        .updatePutAsync(resourceGroupName(), name(), Constants.DEFAULT_TANZU_COMPONENT_NAME,
                             Constants.DEFAULT_TANZU_COMPONENT_NAME,
                             new BuildServiceAgentPoolResourceInner()
-                                .withProperties(
-                                    new BuildServiceAgentPoolProperties()
-                                        .withPoolSize(
-                                            new BuildServiceAgentPoolSizeProperties()
-                                                .withName("S1"))) // S1, S2, S3, S4, S5.
-                        ).then(Mono.just(inner)));
+                                .withProperties(new BuildServiceAgentPoolProperties()
+                                    .withPoolSize(new BuildServiceAgentPoolSizeProperties().withName("S1"))) // S1, S2, S3, S4, S5.
+                        )
+                        .then(Mono.just(inner)));
             }
         } else if (updated) {
-            createOrUpdate = manager().serviceClient().getServices().updateAsync(
-                resourceGroupName(), name(), patchToUpdate);
+            createOrUpdate
+                = manager().serviceClient().getServices().updateAsync(resourceGroupName(), name(), patchToUpdate);
             patchToUpdate = new ServiceResourceInner();
             updated = false;
         } else {
             return Mono.just(this);
         }
-        return createOrUpdate
-            .map(inner -> {
-                this.setInner(inner);
-                return this;
-            });
+        return createOrUpdate.map(inner -> {
+            this.setInner(inner);
+            return this;
+        });
     }
 
     @Override
     public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
-        return Mono
-            .just(true)
-            .map(
-                ignored -> {
-                    clearCache();
-                    return ignored;
-                })
-            .then();
+        return Mono.just(true).map(ignored -> {
+            clearCache();
+            return ignored;
+        }).then();
     }
 
     @Override
     protected Mono<ServiceResourceInner> getInnerAsync() {
-        return manager().serviceClient().getServices().getByResourceGroupAsync(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getServices()
+            .getByResourceGroupAsync(resourceGroupName(), name())
             .map(inner -> {
                 clearCache();
                 return inner;
@@ -346,23 +342,18 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
-        certificates.prepareCreateOrUpdate(
-            name,
-            new KeyVaultCertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
-        );
+        certificates.prepareCreateOrUpdate(name,
+            new KeyVaultCertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault));
         return this;
     }
 
     @Override
-    public SpringServiceImpl withCertificate(String name, String keyVaultUri,
-                                             String certNameInKeyVault, String certVersion) {
-        certificates.prepareCreateOrUpdate(
-            name,
-            new KeyVaultCertificateProperties()
-                .withVaultUri(keyVaultUri)
+    public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault,
+        String certVersion) {
+        certificates.prepareCreateOrUpdate(name,
+            new KeyVaultCertificateProperties().withVaultUri(keyVaultUri)
                 .withKeyVaultCertName(certNameInKeyVault)
-                .withCertVersion(certVersion)
-        );
+                .withCertVersion(certVersion));
         return this;
     }
 
@@ -382,12 +373,10 @@ public class SpringServiceImpl
         if (CoreUtils.isNullOrEmpty(name)) {
             return this;
         }
-        this.configurationServiceConfig.addRepository(
-            new ConfigurationServiceGitRepository()
-                .withName(name)
-                .withUri(uri)
-                .withPatterns(filePatterns)
-                .withLabel(branch));
+        this.configurationServiceConfig.addRepository(new ConfigurationServiceGitRepository().withName(name)
+            .withUri(uri)
+            .withPatterns(filePatterns)
+            .withLabel(branch));
         return this;
     }
 
@@ -416,7 +405,8 @@ public class SpringServiceImpl
 
     private void prepareCreateOrUpdateConfigurationService() {
         List<ConfigurationServiceGitRepository> repositories = this.configurationServiceConfig.mergeRepositories();
-        this.configurationServices.prepareCreateOrUpdate(new ConfigurationServiceGitProperty().withRepositories(repositories));
+        this.configurationServices
+            .prepareCreateOrUpdate(new ConfigurationServiceGitProperty().withRepositories(repositories));
     }
 
     private void prepareCreateServiceRegistry() {
@@ -485,12 +475,17 @@ public class SpringServiceImpl
                     // get existing git repositories
                     SpringConfigurationService configurationService = getDefaultConfigurationService();
                     if (configurationService != null) {
-                        List<ConfigurationServiceGitRepository> repositoryList =
-                            configurationService.innerModel().properties().settings() == null
+                        List<ConfigurationServiceGitRepository> repositoryList
+                            = configurationService.innerModel().properties().settings() == null
                                 ? Collections.emptyList()
-                                : configurationService.innerModel().properties().settings().gitProperty().repositories();
+                                : configurationService.innerModel()
+                                    .properties()
+                                    .settings()
+                                    .gitProperty()
+                                    .repositories();
                         if (repositoryList != null) {
-                            repositoryList.forEach(repository -> existingGitRepositories.put(repository.name(), repository));
+                            repositoryList
+                                .forEach(repository -> existingGitRepositories.put(repository.name(), repository));
                         }
                     }
                 }

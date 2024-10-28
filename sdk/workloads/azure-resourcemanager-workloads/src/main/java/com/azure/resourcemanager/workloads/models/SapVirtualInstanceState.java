@@ -11,31 +11,31 @@ import java.util.Collection;
 /** Defines the Virtual Instance for SAP state. */
 public final class SapVirtualInstanceState extends ExpandableStringEnum<SapVirtualInstanceState> {
     /** Static value InfrastructureDeploymentPending for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_PENDING =
-        fromString("InfrastructureDeploymentPending");
+    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_PENDING
+        = fromString("InfrastructureDeploymentPending");
 
     /** Static value InfrastructureDeploymentInProgress for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_IN_PROGRESS =
-        fromString("InfrastructureDeploymentInProgress");
+    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_IN_PROGRESS
+        = fromString("InfrastructureDeploymentInProgress");
 
     /** Static value InfrastructureDeploymentFailed for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_FAILED =
-        fromString("InfrastructureDeploymentFailed");
+    public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_FAILED
+        = fromString("InfrastructureDeploymentFailed");
 
     /** Static value SoftwareInstallationPending for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_PENDING =
-        fromString("SoftwareInstallationPending");
+    public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_PENDING
+        = fromString("SoftwareInstallationPending");
 
     /** Static value SoftwareInstallationInProgress for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_IN_PROGRESS =
-        fromString("SoftwareInstallationInProgress");
+    public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_IN_PROGRESS
+        = fromString("SoftwareInstallationInProgress");
 
     /** Static value SoftwareInstallationFailed for SapVirtualInstanceState. */
     public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_FAILED = fromString("SoftwareInstallationFailed");
 
     /** Static value SoftwareDetectionInProgress for SapVirtualInstanceState. */
-    public static final SapVirtualInstanceState SOFTWARE_DETECTION_IN_PROGRESS =
-        fromString("SoftwareDetectionInProgress");
+    public static final SapVirtualInstanceState SOFTWARE_DETECTION_IN_PROGRESS
+        = fromString("SoftwareDetectionInProgress");
 
     /** Static value SoftwareDetectionFailed for SapVirtualInstanceState. */
     public static final SapVirtualInstanceState SOFTWARE_DETECTION_FAILED = fromString("SoftwareDetectionFailed");

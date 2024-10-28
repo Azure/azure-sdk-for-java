@@ -6,31 +6,51 @@ package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFileProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cloud specific manifest GET response. */
+/**
+ * Cloud specific manifest GET response.
+ */
 @Fluent
 public final class CloudManifestFileResponseInner extends ProxyResource {
     /*
      * Cloud specific manifest data.
      */
-    @JsonProperty(value = "properties")
     private CloudManifestFileProperties properties;
 
     /*
      * The entity tag used for optimistic concurrency when modifying the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of CloudManifestFileResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CloudManifestFileResponseInner class.
+     */
     public CloudManifestFileResponseInner() {
     }
 
     /**
      * Get the properties property: Cloud specific manifest data.
-     *
+     * 
      * @return the properties value.
      */
     public CloudManifestFileProperties properties() {
@@ -39,7 +59,7 @@ public final class CloudManifestFileResponseInner extends ProxyResource {
 
     /**
      * Set the properties property: Cloud specific manifest data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CloudManifestFileResponseInner object itself.
      */
@@ -50,7 +70,7 @@ public final class CloudManifestFileResponseInner extends ProxyResource {
 
     /**
      * Get the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +79,7 @@ public final class CloudManifestFileResponseInner extends ProxyResource {
 
     /**
      * Set the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CloudManifestFileResponseInner object itself.
      */
@@ -69,13 +89,91 @@ public final class CloudManifestFileResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudManifestFileResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudManifestFileResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudManifestFileResponseInner.
+     */
+    public static CloudManifestFileResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudManifestFileResponseInner deserializedCloudManifestFileResponseInner
+                = new CloudManifestFileResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCloudManifestFileResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudManifestFileResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudManifestFileResponseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCloudManifestFileResponseInner.properties
+                        = CloudManifestFileProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCloudManifestFileResponseInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudManifestFileResponseInner;
+        });
     }
 }

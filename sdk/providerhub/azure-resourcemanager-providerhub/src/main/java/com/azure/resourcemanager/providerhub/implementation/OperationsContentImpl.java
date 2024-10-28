@@ -15,8 +15,8 @@ public final class OperationsContentImpl implements OperationsContent {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    OperationsContentImpl(
-        OperationsContentInner innerObject, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    OperationsContentImpl(OperationsContentInner innerObject,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
