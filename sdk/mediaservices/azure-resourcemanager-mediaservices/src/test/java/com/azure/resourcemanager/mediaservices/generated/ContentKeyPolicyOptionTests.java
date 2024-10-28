@@ -14,17 +14,17 @@ public final class ContentKeyPolicyOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentKeyPolicyOption model = BinaryData.fromString(
-            "{\"policyOptionId\":\"f4e2b44a-02c8-4cc0-8e91-15e26828b0e9\",\"name\":\"hsfwxosowzxcug\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}")
+            "{\"policyOptionId\":\"4057b307-2d5e-40f4-a755-02dd7a07944e\",\"name\":\"wsbpfvm\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}")
             .toObject(ContentKeyPolicyOption.class);
-        Assertions.assertEquals("hsfwxosowzxcug", model.name());
+        Assertions.assertEquals("wsbpfvm", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentKeyPolicyOption model = new ContentKeyPolicyOption().withName("hsfwxosowzxcug")
+        ContentKeyPolicyOption model = new ContentKeyPolicyOption().withName("wsbpfvm")
             .withConfiguration(new ContentKeyPolicyConfiguration())
             .withRestriction(new ContentKeyPolicyRestriction());
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyOption.class);
-        Assertions.assertEquals("hsfwxosowzxcug", model.name());
+        Assertions.assertEquals("wsbpfvm", model.name());
     }
 }

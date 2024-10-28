@@ -6,57 +6,51 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyConfiguration;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyRestriction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContentKeyPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"policyId\":\"958d59ca-95b5-4756-971c-acf18a5f34b3\",\"created\":\"2021-02-19T02:47:18Z\",\"lastModified\":\"2021-03-05T20:29:17Z\",\"description\":\"wjrmzvuporqzd\",\"options\":[]},\"id\":\"dzvkfvxcnqmxq\",\"name\":\"swokm\",\"type\":\"khlg\"}";
+            = "{\"properties\":{\"policyId\":\"e23798b4-a860-447d-824e-a4b1cbd8c0e7\",\"created\":\"2021-03-02T09:33:59Z\",\"lastModified\":\"2021-06-06T03:18:11Z\",\"description\":\"gguxhemlwyw\",\"options\":[{\"policyOptionId\":\"0179bb08-90c7-4911-8bd8-d82a9373542e\",\"name\":\"zgfbukklelssx\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"7910d388-33d1-4cb3-8854-7259f1822579\",\"name\":\"c\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]},\"id\":\"zujksrlsmdes\",\"name\":\"plpvm\",\"type\":\"cdoewbidyv\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MediaServicesManager manager = MediaServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ContentKeyPolicy response = manager.contentKeyPolicies()
-            .define("nkvxlxpaglqi")
-            .withExistingMediaService("vczkcnyxrxmunjd", "vg")
-            .withDescription("pzvuqdflvo")
-            .withOptions(Arrays.asList())
+            .define("sqowxwc")
+            .withExistingMediaService("awzovgkk", "muikjcjcaztbws")
+            .withDescription("vc")
+            .withOptions(Arrays.asList(
+                new ContentKeyPolicyOption().withName("k")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("ejyfdvlvhbwrnfx")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("dpqthehn")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction())))
             .create();
 
-        Assertions.assertEquals("wjrmzvuporqzd", response.description());
+        Assertions.assertEquals("gguxhemlwyw", response.description());
+        Assertions.assertEquals("zgfbukklelssx", response.options().get(0).name());
     }
 }

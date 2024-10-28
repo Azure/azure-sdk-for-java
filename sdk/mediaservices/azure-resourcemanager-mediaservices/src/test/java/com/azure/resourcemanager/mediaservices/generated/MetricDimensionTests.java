@@ -10,9 +10,9 @@ import com.azure.resourcemanager.mediaservices.models.MetricDimension;
 public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricDimension model = BinaryData
-            .fromString("{\"name\":\"fsrpymzidnse\",\"displayName\":\"xtbzsgfyccsne\",\"toBeExportedForShoebox\":true}")
-            .toObject(MetricDimension.class);
+        MetricDimension model
+            = BinaryData.fromString("{\"name\":\"pu\",\"displayName\":\"mryw\",\"toBeExportedForShoebox\":true}")
+                .toObject(MetricDimension.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -13,13 +13,15 @@ import com.azure.resourcemanager.mediaservices.fluent.models.ListContentKeysResp
 import com.azure.resourcemanager.mediaservices.fluent.models.ListPathsResponseInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingLocatorInner;
 
-/** An instance of this class provides access to all the operations defined in StreamingLocatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingLocatorsClient.
+ */
 public interface StreamingLocatorsClient {
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,14 +34,14 @@ public interface StreamingLocatorsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,9 +55,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -71,9 +73,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -87,9 +89,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -106,9 +108,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -124,9 +126,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -142,9 +144,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -157,9 +159,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -175,9 +177,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -192,9 +194,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -210,9 +212,9 @@ public interface StreamingLocatorsClient {
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.

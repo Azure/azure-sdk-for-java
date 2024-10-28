@@ -7,13 +7,15 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationStatuses. */
+/**
+ * Resource collection API of OperationStatuses.
+ */
 public interface OperationStatuses {
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -30,9 +32,9 @@ public interface OperationStatuses {
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.

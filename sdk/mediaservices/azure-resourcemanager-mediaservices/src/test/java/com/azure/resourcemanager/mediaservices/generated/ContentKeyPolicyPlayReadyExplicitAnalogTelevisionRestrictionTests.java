@@ -12,20 +12,20 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestrictionT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction model
-            = BinaryData.fromString("{\"bestEffort\":false,\"configurationData\":462603095}")
+            = BinaryData.fromString("{\"bestEffort\":true,\"configurationData\":1625047918}")
                 .toObject(ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.class);
-        Assertions.assertEquals(false, model.bestEffort());
-        Assertions.assertEquals(462603095, model.configurationData());
+        Assertions.assertEquals(true, model.bestEffort());
+        Assertions.assertEquals(1625047918, model.configurationData());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction model
-            = new ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction().withBestEffort(false)
-                .withConfigurationData(462603095);
+            = new ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction().withBestEffort(true)
+                .withConfigurationData(1625047918);
         model
             = BinaryData.fromObject(model).toObject(ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.class);
-        Assertions.assertEquals(false, model.bestEffort());
-        Assertions.assertEquals(462603095, model.configurationData());
+        Assertions.assertEquals(true, model.bestEffort());
+        Assertions.assertEquals(1625047918, model.configurationData());
     }
 }

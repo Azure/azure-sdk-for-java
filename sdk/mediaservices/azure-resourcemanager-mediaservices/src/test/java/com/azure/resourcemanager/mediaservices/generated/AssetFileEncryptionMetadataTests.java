@@ -13,22 +13,21 @@ public final class AssetFileEncryptionMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssetFileEncryptionMetadata model = BinaryData.fromString(
-            "{\"initializationVector\":\"sucocmnyyazttbtw\",\"assetFileName\":\"qpuedckzywbiex\",\"assetFileId\":\"028a7ece-09bc-4d14-83ec-dceeb5a9710f\"}")
+            "{\"initializationVector\":\"ropuhpigv\",\"assetFileName\":\"ylgqgitxmedjvcsl\",\"assetFileId\":\"5b22cd13-b824-4377-b265-709a5747ab74\"}")
             .toObject(AssetFileEncryptionMetadata.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.initializationVector());
-        Assertions.assertEquals("qpuedckzywbiex", model.assetFileName());
-        Assertions.assertEquals(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"), model.assetFileId());
+        Assertions.assertEquals("ropuhpigv", model.initializationVector());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.assetFileName());
+        Assertions.assertEquals(UUID.fromString("5b22cd13-b824-4377-b265-709a5747ab74"), model.assetFileId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetFileEncryptionMetadata model
-            = new AssetFileEncryptionMetadata().withInitializationVector("sucocmnyyazttbtw")
-                .withAssetFileName("qpuedckzywbiex")
-                .withAssetFileId(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"));
+        AssetFileEncryptionMetadata model = new AssetFileEncryptionMetadata().withInitializationVector("ropuhpigv")
+            .withAssetFileName("ylgqgitxmedjvcsl")
+            .withAssetFileId(UUID.fromString("5b22cd13-b824-4377-b265-709a5747ab74"));
         model = BinaryData.fromObject(model).toObject(AssetFileEncryptionMetadata.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.initializationVector());
-        Assertions.assertEquals("qpuedckzywbiex", model.assetFileName());
-        Assertions.assertEquals(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"), model.assetFileId());
+        Assertions.assertEquals("ropuhpigv", model.initializationVector());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.assetFileName());
+        Assertions.assertEquals(UUID.fromString("5b22cd13-b824-4377-b265-709a5747ab74"), model.assetFileId());
     }
 }

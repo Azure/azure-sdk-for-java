@@ -24,17 +24,23 @@ import com.azure.resourcemanager.mediaservices.fluent.OperationsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(AzureMediaServicesImpl client) {
@@ -60,9 +66,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items along with {@link Response} on successful completion of {@link Mono}.
@@ -81,9 +87,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -104,9 +110,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items on successful completion of {@link Mono}.
@@ -118,9 +124,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -134,9 +140,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items.

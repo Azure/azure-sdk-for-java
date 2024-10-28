@@ -13,22 +13,22 @@ public final class StreamingLocatorContentKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamingLocatorContentKey model = BinaryData.fromString(
-            "{\"id\":\"3f672af9-ffd6-4688-835c-845126b962e5\",\"type\":\"CommonEncryptionCbcs\",\"labelReferenceInStreamingPolicy\":\"um\",\"value\":\"p\",\"policyName\":\"ebmnzbtbhjpglk\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
+            "{\"id\":\"c8e8eeaa-2233-4954-b06c-bdf9b9b0eea0\",\"type\":\"CommonEncryptionCenc\",\"labelReferenceInStreamingPolicy\":\"arz\",\"value\":\"zuf\",\"policyName\":\"ciqopidoa\",\"tracks\":[{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"azxkhnzbonlwnto\"},{\"property\":\"FourCC\",\"operation\":\"Unknown\",\"value\":\"dwbwhkszzcmrvexz\"}]},{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"sfraoyzko\"}]},{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"guxawqaldsyuuxi\"},{\"property\":\"Unknown\",\"operation\":\"Unknown\",\"value\":\"fobwy\"}]},{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Unknown\",\"value\":\"utwpfhp\"}]}]}")
             .toObject(StreamingLocatorContentKey.class);
-        Assertions.assertEquals(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"), model.id());
-        Assertions.assertEquals("um", model.labelReferenceInStreamingPolicy());
-        Assertions.assertEquals("p", model.value());
+        Assertions.assertEquals(UUID.fromString("c8e8eeaa-2233-4954-b06c-bdf9b9b0eea0"), model.id());
+        Assertions.assertEquals("arz", model.labelReferenceInStreamingPolicy());
+        Assertions.assertEquals("zuf", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamingLocatorContentKey model
-            = new StreamingLocatorContentKey().withId(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"))
-                .withLabelReferenceInStreamingPolicy("um")
-                .withValue("p");
+            = new StreamingLocatorContentKey().withId(UUID.fromString("c8e8eeaa-2233-4954-b06c-bdf9b9b0eea0"))
+                .withLabelReferenceInStreamingPolicy("arz")
+                .withValue("zuf");
         model = BinaryData.fromObject(model).toObject(StreamingLocatorContentKey.class);
-        Assertions.assertEquals(UUID.fromString("3f672af9-ffd6-4688-835c-845126b962e5"), model.id());
-        Assertions.assertEquals("um", model.labelReferenceInStreamingPolicy());
-        Assertions.assertEquals("p", model.value());
+        Assertions.assertEquals(UUID.fromString("c8e8eeaa-2233-4954-b06c-bdf9b9b0eea0"), model.id());
+        Assertions.assertEquals("arz", model.labelReferenceInStreamingPolicy());
+        Assertions.assertEquals("zuf", model.value());
     }
 }

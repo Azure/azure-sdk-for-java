@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StreamingPolicies. */
+/**
+ * Resource collection API of StreamingPolicies.
+ */
 public interface StreamingPolicies {
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,14 +28,14 @@ public interface StreamingPolicies {
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,9 +48,9 @@ public interface StreamingPolicies {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -63,9 +65,9 @@ public interface StreamingPolicies {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -78,9 +80,9 @@ public interface StreamingPolicies {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -95,9 +97,9 @@ public interface StreamingPolicies {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -109,9 +111,9 @@ public interface StreamingPolicies {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,9 +124,9 @@ public interface StreamingPolicies {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,9 +138,9 @@ public interface StreamingPolicies {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,9 +150,9 @@ public interface StreamingPolicies {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +164,7 @@ public interface StreamingPolicies {
 
     /**
      * Begins definition for a new StreamingPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new StreamingPolicy definition.
      */
