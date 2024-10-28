@@ -45,27 +45,28 @@ public class ImageBuilderManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-      final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-      final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-      
-      resourceManager = ResourceManager
-        .configure()
-        .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-        .authenticate(credential, profile)
-        .withDefaultSubscription();
-      
-      logAnalyticsManager = LogAnalyticsManager
-        .configure()
-        .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-        .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-        .authenticate(credential, profile);
-      
-      // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
-      String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-      testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);if (testEnv) {
-        resourceGroupName = testResourceGroup;
-        resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
-      }
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        resourceManager = ResourceManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
+        imageBuilderManager = ImageBuilderManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
+
+        // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
+        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+        if (testEnv) {
+            resourceGroupName = testResourceGroup;
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+
 import java.util.Random;
 
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -33,27 +34,27 @@ public class TestOrchestratorTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-      final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-      final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-      
-      resourceManager = ResourceManager.configure()
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .authenticate(credential, profile)
-          .withDefaultSubscription();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-      loadTestManager = LoadTestManager
-          .configure()
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-          .authenticate(credential, profile);
-      
-      String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-      testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
-      if (testEnv) {
-          resourceGroupName = testResourceGroup;
-      } else {
-          resourceManager.resourceGroups().define(resourceGroupName).withRegion(LOCATION).create();
-      }
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
+        loadTestManager = LoadTestManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
+
+        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+        if (testEnv) {
+            resourceGroupName = testResourceGroup;
+        } else {
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(LOCATION).create();
+        }
     }
 
     @Override
