@@ -23,6 +23,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
@@ -51,17 +52,15 @@ public class ResourceHealthTests extends TestProxyTestBase {
         TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        ResourceManager resourceManager = ResourceManager
-            .configure()
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+        ResourceManager resourceManager = ResourceManager.configure()
+            .authenticate(credential, profile).withDefaultSubscription();
 
-        ComputeManager computeManager = ComputeManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        ComputeManager computeManager = ComputeManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        ResourceHealthManager resourceHealthManager = ResourceHealthManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        ResourceHealthManager resourceHealthManager = ResourceHealthManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile);
 
         registeredProvider(resourceManager, Arrays.asList("Microsoft.Compute", "Microsoft.ResourceHealth"));
@@ -71,11 +70,9 @@ public class ResourceHealthTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            resourceManager.resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
-
+        
         try {
             // create vm
             VirtualMachine virtualMachine = computeManager.virtualMachines()
@@ -143,7 +140,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
      * Make sure the resource provider has been registered with this subscription.
      * So add function for registration provider.
      *
-     * @param resourceManager the resource manager
+     * @param resourceManager            the resource manager
      * @param resourceProviderNamespaces the namespace of resource providers
      */
     private static void registeredProvider(ResourceManager resourceManager, List<String> resourceProviderNamespaces) {
